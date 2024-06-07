@@ -1,0 +1,11 @@
+{
+  "version": "1.4.7",
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "useNx": false,
+  "npmClient": "pnpm",
+  "command": {
+    "version": {
+      "preid": "stg"
+    }
+  }
+}

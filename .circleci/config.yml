@@ -1,0 +1,135 @@
+version: 2.1
+
+parameters:
+  project-name:
+    type: string
+    default: "tags"
+
+orbs:
+  aws-cli: circleci/aws-cli@4.1.3
+  aws-s3: circleci/aws-s3@4.0.0
+
+image: &image
+  docker:
+    - image: cimg/node:20.11.0
+  resource_class: medium+
+
+setup: &setup
+  - run:
+      name: Setup
+      command: |
+        sudo npm install -g pnpm
+        pnpm install
+
+jobs:
+  test:
+    <<: *image
+    steps:
+      - checkout
+      - <<: *setup
+      - run:
+          name: Audit
+          command: pnpm audit || exit 0
+      - run:
+          name: Test
+          command: pnpm --if-present lint && pnpm --if-present ts:check && pnpm --if-present test
+  build:
+    <<: *image
+    environment:
+      PUBLIC_PROJECT_PATH: "<< pipeline.parameters.project-name >>"
+    steps:
+      - checkout
+      - <<: *setup
+      - run:
+          name: Build
+          command: pnpm build
+      - aws-cli/setup:
+          aws_access_key_id: AWS_ACCESS_KEY
+          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+      - aws-s3/sync:
+          from: packages/app/dist
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/<< pipeline.parameters.project-name >>/<< pipeline.git.tag >>"
+
+  preview:
+    <<: *image
+    parameters:
+      preview-env:
+        type: string
+        default: "prd"
+    environment:
+      PUBLIC_PROJECT_PATH: "<< pipeline.parameters.project-name >>/<< pipeline.git.tag >>-<< parameters.preview-env >>"
+    steps:
+      - checkout
+      - <<: *setup
+      - run:
+          name: Build
+          command: pnpm build
+      - run:
+          name: Inject configuration
+          command: "cp packages/app/public/config.preview-<< parameters.preview-env >>.js packages/app/dist/config.local.js"
+      - aws-cli/setup:
+          aws_access_key_id: AWS_ACCESS_KEY
+          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+      - aws-s3/sync:
+          from: packages/app/dist
+          to: "s3://$S3_ASSETS_DEV_BUCKET/team/fe-static-apps/<< pipeline.parameters.project-name >>/<< pipeline.git.tag >>-<< parameters.preview-env >>"
+
+workflows:
+  run-tests:
+    jobs:
+      - test:
+          context: commercelayer
+          filters:
+            tags:
+              ignore: /v.*|pr-.*/
+
+  test-build-and-push:
+    jobs:
+      - test:
+          context: commercelayer
+          filters:
+            tags:
+              only: /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*).*/
+            branches:
+              ignore: /.*/
+      - build:
+          requires:
+            - test
+          context: commercelayer
+          filters:
+            tags:
+              only: /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*).*/
+            branches:
+              ignore: /.*/
+
+  test-and-preview-link:
+    jobs:
+      - test:
+          context: commercelayer
+          filters:
+            tags:
+              only: /^pr-(0|[1-9]\d*).*/
+            branches:
+              ignore: /.*/
+      - preview:
+          name: preview-prd
+          requires:
+            - test
+          preview-env: prd
+          context: commercelayer
+          filters:
+            tags:
+              only: /^pr-(0|[1-9]\d*).*/
+            branches:
+              ignore: /.*/
+      - preview:
+          name: preview-stg
+          requires:
+            - test
+          preview-env: stg
+          context: commercelayer
+          filters:
+            tags:
+              only: /^pr-(0|[1-9]\d*).*/
+            branches:
+              ignore: /.*/
