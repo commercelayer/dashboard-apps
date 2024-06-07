@@ -24,6 +24,85 @@ importers:
         specifier: ^16.14.20
         version: 16.14.20
 
+  packages/customers:
+    dependencies:
+      '@commercelayer/app-elements':
+        specifier: ^1.24.3
+        version: 1.24.3(@commercelayer/sdk@5.37.0)(query-string@9.0.0)(react-dom@18.2.0(react@18.2.0))(react-gtm-module@2.0.11)(react-hook-form@7.51.3(react@18.2.0))(react@18.2.0)(wouter@3.1.2(react@18.2.0))
+      '@commercelayer/sdk':
+        specifier: 5.37.0
+        version: 5.37.0
+      '@hookform/resolvers':
+        specifier: ^3.3.4
+        version: 3.3.4(react-hook-form@7.51.3(react@18.2.0))
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      query-string:
+        specifier: ^9.0.0
+        version: 9.0.0
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: ^7.51.3
+        version: 7.51.3(react@18.2.0)
+      swr:
+        specifier: ^2.2.5
+        version: 2.2.5(react@18.2.0)
+      type-fest:
+        specifier: ^4.18.1
+        version: 4.18.1
+      wouter:
+        specifier: ^3.1.2
+        version: 3.1.2(react@18.2.0)
+      zod:
+        specifier: ^3.23.6
+        version: 3.23.6
+    devDependencies:
+      '@commercelayer/eslint-config-ts-react':
+        specifier: ^1.4.5
+        version: 1.4.5(eslint@8.57.0)(react@18.2.0)(typescript@5.4.5)
+      '@types/lodash':
+        specifier: ^4.17.0
+        version: 4.17.0
+      '@types/node':
+        specifier: 20.12.8
+        version: 20.12.8
+      '@types/react':
+        specifier: ^18.2.74
+        version: 18.2.78
+      '@types/react-dom':
+        specifier: ^18.2.24
+        version: 18.2.25
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.2.1(vite@5.2.11(@types/node@20.12.8))
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      jsdom:
+        specifier: ^24.0.0
+        version: 24.0.0
+      rollup-plugin-external-globals:
+        specifier: ^0.10.0
+        version: 0.10.0(rollup@4.14.0)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
+      vite:
+        specifier: ^5.2.11
+        version: 5.2.11(@types/node@20.12.8)
+      vite-tsconfig-paths:
+        specifier: ^4.3.2
+        version: 4.3.2(typescript@5.4.5)(vite@5.2.11(@types/node@20.12.8))
+      vitest:
+        specifier: ^1.5.3
+        version: 1.5.3(@types/node@20.12.8)(jsdom@24.0.0)
+
   packages/tags:
     dependencies:
       '@commercelayer/app-elements':
@@ -226,6 +305,18 @@ packages:
 
   '@commercelayer/app-elements@1.24.0':
     resolution: {integrity: sha512-2bW5+x7iRwyjrM5dhJPGVP0ViYlwX8H/JT+xmLLqO12f/Akq1dqpfF0aWJl+yYXMPxTyP+FapqB1Puk7Rx605w==}
+    engines: {node: '>=18', pnpm: '>=7'}
+    peerDependencies:
+      '@commercelayer/sdk': ^5.x
+      query-string: ^8.2.x
+      react: ^18.2.x
+      react-dom: ^18.2.x
+      react-gtm-module: ^2.x
+      react-hook-form: ^7.50.x
+      wouter: ^3.x
+
+  '@commercelayer/app-elements@1.24.3':
+    resolution: {integrity: sha512-r/qSZHT0D8qK2YtZqA7rUiXC40wcssoBb6p/6YNFNMiGUCwxB4TeU+V4oE9O4cCuRcHYk9chFnaLOfd21t6Fsg==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^5.x
@@ -4800,6 +4891,32 @@ snapshots:
     optional: true
 
   '@commercelayer/app-elements@1.24.0(@commercelayer/sdk@5.37.0)(query-string@9.0.0)(react-dom@18.2.0(react@18.2.0))(react-gtm-module@2.0.11)(react-hook-form@7.51.3(react@18.2.0))(react@18.2.0)(wouter@3.1.2(react@18.2.0))':
+    dependencies:
+      '@commercelayer/sdk': 5.37.0
+      '@types/lodash': 4.17.0
+      '@types/react': 18.2.78
+      '@types/react-datepicker': 6.2.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@types/react-dom': 18.2.25
+      classnames: 2.5.1
+      jwt-decode: 4.0.0
+      lodash: 4.17.21
+      pluralize: 8.0.0
+      query-string: 9.0.0
+      react: 18.2.0
+      react-currency-input-field: 3.8.0(react@18.2.0)
+      react-datepicker: 6.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react-dom: 18.2.0(react@18.2.0)
+      react-gtm-module: 2.0.11
+      react-hook-form: 7.51.3(react@18.2.0)
+      react-select: 5.8.0(@types/react@18.2.78)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react-tooltip: 5.26.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      swr: 2.2.5(react@18.2.0)
+      ts-invariant: 0.10.3
+      type-fest: 4.18.1
+      wouter: 3.1.2(react@18.2.0)
+      zod: 3.23.6
+
+  '@commercelayer/app-elements@1.24.3(@commercelayer/sdk@5.37.0)(query-string@9.0.0)(react-dom@18.2.0(react@18.2.0))(react-gtm-module@2.0.11)(react-hook-form@7.51.3(react@18.2.0))(react@18.2.0)(wouter@3.1.2(react@18.2.0))':
     dependencies:
       '@commercelayer/sdk': 5.37.0
       '@types/lodash': 4.17.0
