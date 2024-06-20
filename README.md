@@ -1,1 +1,1 @@
-packages/app/README.md
+./packages/index/README.md
