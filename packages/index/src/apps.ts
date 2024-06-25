@@ -161,7 +161,8 @@ export const appLazyImports = Object.values(apps).reduce(
     return {
       ...acc,
       [app.slug]: lazy(
-        async () => await import(`../../${app.packageName}/src/main.tsx`)
+        async () =>
+          await import(`../../../apps/${app.packageName}/src/main.tsx`)
       )
     }
   },
@@ -176,7 +177,7 @@ export const appPromiseImports = Object.values(apps).reduce(
       [app.slug]: {
         app,
         exists: async () =>
-          await import(`../../${app.packageName}/src/main.tsx`)
+          await import(`../../../apps/${app.packageName}/src/main.tsx`)
             .then(() => true)
             .catch(() => false)
       }
