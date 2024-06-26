@@ -1,0 +1,17 @@
+{
+  "name": "migrate",
+  "private": true,
+  "scripts": {
+    "clone": "tsx index.ts"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  },
+  "devDependencies": {
+    "degit": "^2.8.4",
+    "tsx": "^4.15.7"
+  }
+}
