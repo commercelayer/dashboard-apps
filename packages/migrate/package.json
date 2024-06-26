@@ -2,7 +2,7 @@
   "name": "migrate",
   "private": true,
   "scripts": {
-    "clone": "tsx index.ts"
+    "start": "tsx index.ts"
   },
   "keywords": [],
   "license": "MIT",
