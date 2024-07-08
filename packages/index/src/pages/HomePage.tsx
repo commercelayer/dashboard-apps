@@ -62,24 +62,28 @@ export function HomePage(): JSX.Element {
 
   return (
     <PageLayout title='App router'>
-      {Object.entries(appPromiseImports).map(([, { app }]) => {
-        return (
-          visibility[app.slug] === true && (
-            <ListItem
-              key={app.slug}
-              href={`/${app.slug}?accessToken=${accessToken}`}
-              icon={
-                <div className='bg-gray-50 rounded p-2'>
-                  <Icon name={app.icon} className='text-primary' size={24} />
-                </div>
-              }
-            >
-              <Text weight='bold'>{humanReadable(app.slug)}</Text>
-              <StatusIcon name='caretRight' />
-            </ListItem>
-          )
+      {Object.entries(appPromiseImports)
+        .sort(([, a], [, b]) =>
+          a.app.name < b.app.name ? -1 : a.app.name > b.app.name ? 1 : 0
         )
-      })}
+        .map(([, { app }]) => {
+          return (
+            visibility[app.slug] === true && (
+              <ListItem
+                key={app.slug}
+                href={`/${app.slug}?accessToken=${accessToken}`}
+                icon={
+                  <div className='bg-gray-50 rounded p-2'>
+                    <Icon name={app.icon} className='text-primary' size={24} />
+                  </div>
+                }
+              >
+                <Text weight='bold'>{humanReadable(app.slug)}</Text>
+                <StatusIcon name='caretRight' />
+              </ListItem>
+            )
+          )
+        })}
     </PageLayout>
   )
 }

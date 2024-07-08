@@ -64,52 +64,70 @@ Promise.all(appPromises)
       '../../packages/**/node_modules/**',
     ]
 
-    const tasks: ReplaceInFileConfig[] = [
+    const tasks: { name: string, config: ReplaceInFileConfig }[] = [
       {
-        // rename package.json `name`
-        from: /"(name)": "([\w-]+)",/gm,
-        to: (...args) => {
-          const file = args.pop()
-          const folderName = file?.match(/apps\/([\w-]+)\/package.json$/)?.[1]
-          console.log(file, folderName)
-          return `"name": "${folderName}",`
-        },
-        files: [
-          '../../apps/**/package.json'
-        ],
+        name: 'rename package.json `name`',
+        config: {
+          from: /"(name)": "([\w-]+)",/gm,
+          to: (...args) => {
+            const file = args.pop()
+            const folderName = file?.match(/apps\/([\w-]+)\/package.json$/)?.[1]
+            // console.log(file, folderName)
+            return `"name": "${folderName}",`
+          },
+          files: [
+            '../../apps/**/package.json'
+          ],
+        }
       },
       {
-        // remove `vite.config.mts` from 'tsconfig.json'
-        from: [
-          ',\n    "vite.config.mts"',
-          '\n    "*.config.mts",',
-          '\n    "*.config.ts",',
-          '\n    "*.config.js",',
-          '\n    "*.config.cjs",',
-        ],
-        to: '',
-        files: [
-          '../../apps/**/tsconfig.json',
-          '../../packages/**/tsconfig.json'
-        ],
+        name: 'remove `vite.config.*` from "tsconfig.json"',
+        config: {
+          from: [
+            ',\n    "vite.config.mts"',
+            '\n    "*.config.mts",',
+            '\n    "*.config.ts",',
+            '\n    "*.config.js",',
+            '\n    "*.config.cjs",',
+          ],
+          to: '',
+          files: [
+            '../../apps/**/tsconfig.json',
+            '../../packages/**/tsconfig.json'
+          ],
+        }
+      },
+      {
+        name: 'use `app-elements` from "workspace:*"',
+        config: {
+          from: /"@commercelayer\/app-elements": "([\w-\.\^\~]+)"/gm,
+          to: '"@commercelayer/app-elements": "workspace:*"',
+          files: [
+            '../../apps/**/package.json'
+          ],
+        }
       }
     ]
 
-    const results = tasks.flatMap(task => replaceInFileSync({
-      dry,
-      ignore,
-      ...task
-    }))
-
-    const filteredResults = results.filter(r => r.hasChanged).map(r => r.file)
-    let uniqueFilteredResults = [...new Set(filteredResults)]
-
-    if (uniqueFilteredResults.length > 0) {
-      console.group('\nUpdating source code:',)
-      uniqueFilteredResults.forEach(r => {
-        console.info('→', r)
+    tasks.forEach((task) => {
+      const results = replaceInFileSync({
+        dry,
+        ignore,
+        ...task.config
       })
-      console.groupEnd()
-    }
+
+      const filteredResults = results.filter(r => r.hasChanged).map(r => r.file)
+
+      let uniqueFilteredResults = [...new Set(filteredResults)]
+
+      if (uniqueFilteredResults.length > 0) {
+        console.group(`\n${task.name}:`,)
+        uniqueFilteredResults.forEach(r => {
+          console.info('→', r)
+        })
+        console.groupEnd()
+      }
+    })
+
   })
   .then(() => console.log('\ndone!'))
