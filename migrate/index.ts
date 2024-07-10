@@ -1,10 +1,29 @@
 import degit from 'degit'
 import { replaceInFileSync, type ReplaceInFileConfig } from 'replace-in-file'
-import { apps } from '../index/src/apps'
 
-const appPromises = Object.values(apps)
-  .map(app => {
-    const emitter = degit(`https://github.com/commercelayer/${app.repositoryName}/packages/app`, {
+const repositories = [
+  'app-orders',
+  'app-shipments',
+  'app-customers',
+  'app-returns',
+  'app-stock-transfers',
+  'app-skus',
+  'app-sku-lists',
+  'app-imports',
+  'app-exports',
+  'app-webhooks',
+  'app-tags',
+  'app-bundles',
+  'app-gift-cards',
+  'app-inventory',
+  'app-price-lists',
+  'app-promotions',
+  'app-subscriptions'
+]
+
+const appPromises = repositories
+  .map(repositoryName => {
+    const emitter = degit(`https://github.com/commercelayer/${repositoryName}/packages/app`, {
       cache: false,
       force: true,
       verbose: false
@@ -14,12 +33,14 @@ const appPromises = Object.values(apps)
     //   console.log(info.message)
     // })
 
-    return emitter.clone(`../../apps/${app.packageName}`)
+    const packageName = repositoryName.replace('app-', '')
+
+    return emitter.clone(`../apps/${packageName}`)
       .then(() => {
-        console.log(`${app.packageName}: done`)
+        console.log(`${packageName}: done`)
       }).catch((e) => {
         if (e.code === 'MISSING_REF') {
-          console.error(`${app.packageName}: missing repository`)
+          console.error(`${packageName}: missing repository`)
         } else {
           console.error(e)
         }
@@ -34,7 +55,7 @@ Promise.all(appPromises)
       verbose: false
     })
 
-    return appElements.clone(`../app-elements`)
+    return appElements.clone(`../packages/app-elements`)
       .then(() => {
         console.log(`app-elements: done`)
       }).catch((e) => {
@@ -48,7 +69,7 @@ Promise.all(appPromises)
       verbose: false
     })
 
-    return appElements.clone(`../app-elements-docs`)
+    return appElements.clone(`../packages/app-elements-docs`)
       .then(() => {
         console.log(`app-elements-docs: done`)
       }).catch((e) => {
@@ -60,8 +81,8 @@ Promise.all(appPromises)
     const ignore = [
       './node_modules/**',
       './**/node_modules/**',
-      '../../apps/**/node_modules/**',
-      '../../packages/**/node_modules/**',
+      '../apps/**/node_modules/**',
+      '../packages/**/node_modules/**',
     ]
 
     const tasks: { name: string, config: ReplaceInFileConfig }[] = [
@@ -76,7 +97,7 @@ Promise.all(appPromises)
             return `"name": "${folderName}",`
           },
           files: [
-            '../../apps/**/package.json'
+            '../apps/**/package.json'
           ],
         }
       },
@@ -92,8 +113,8 @@ Promise.all(appPromises)
           ],
           to: '',
           files: [
-            '../../apps/**/tsconfig.json',
-            '../../packages/**/tsconfig.json'
+            '../apps/**/tsconfig.json',
+            '../packages/**/tsconfig.json'
           ],
         }
       },
@@ -103,7 +124,7 @@ Promise.all(appPromises)
           from: /"@commercelayer\/app-elements": "([\w-\.\^\~]+)"/gm,
           to: '"@commercelayer/app-elements": "workspace:*"',
           files: [
-            '../../apps/**/package.json'
+            '../apps/**/package.json'
           ],
         }
       }
