@@ -1,7 +1,7 @@
 # https://docs.netlify.com/configure-builds/file-based-configuration/
 [build]
-command = "pnpm run build"
-publish = "packages/app/dist"
+command = "pnpm build:elements && pnpm build:apps"
+publish = "dist"
 [[redirects]]
 from = "/*"
 to = "/index.html"

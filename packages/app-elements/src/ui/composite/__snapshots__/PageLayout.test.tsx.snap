@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PageLayout > Should be rendered 1`] = `
+<div
+  class="container mx-auto flex flex-col px-4 md:px-0 min-h-screen"
+  data-testid="my-page"
+>
+  <div
+    class="mb-14"
+  >
+    <div
+      class="w-full pt-10 pb-14"
+    >
+      <h1
+        class="font-semibold text-2xl md:text-title leading-title break-words"
+      >
+        Page title
+      </h1>
+      <div
+        class="text-gray-500 leading-6 mt-2"
+      />
+    </div>
+    <div>
+      Content...
+    </div>
+  </div>
+</div>
+`;
