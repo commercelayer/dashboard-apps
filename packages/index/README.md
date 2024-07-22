@@ -44,7 +44,8 @@ You can browse the [official documentation](https://github.com/commercelayer/app
 
 7. Deploy the forked repository to your preferred hosting service. You can deploy with one click below:
 
-[<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="35">](https://app.netlify.com/start/deploy?repository=https://github.com/commercelayer/app-customers#PUBLIC_SELF_HOSTED_SLUG) [<img src="https://vercel.com/button" alt="Deploy to Vercel" height="35">](https://vercel.com/new/clone?repository-url=https://github.com/commercelayer/app-customers&build-command=pnpm%20build&output-directory=packages%2Fapp%2Fdist&env=PUBLIC_SELF_HOSTED_SLUG&envDescription=your%20organization%20slug) 
+[<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="35">](https://app.netlify.com/start/deploy?repository=https://github.com/commercelayer/dashboard-apps#PUBLIC_SELF_HOSTED_SLUG)
+[<img src="https://vercel.com/button" alt="Deploy to Vercel" height="35">](https://vercel.com/new/clone?repository-url=https://github.com/commercelayer/dashboard-apps&build-command=pnpm%20build%3Aelements%20%26%26%20pnpm%20build%3Aapps&output-directory=dist&env=PUBLIC_SELF_HOSTED_SLUG&envDescription=your%20organization%20slug) 
 
 8. Complete the configuration in the Dashboard hub by setting your app URL.
 
@@ -55,7 +56,7 @@ You can browse the [official documentation](https://github.com/commercelayer/app
 
 1. Join [Commerce Layer's Slack community](https://slack.commercelayer.app).
 
-2. Create an [issue](https://github.com/commercelayer/app-customers/issues) in this repository.
+2. Create an [issue](https://github.com/commercelayer/dashboard-apps/issues) in this repository.
 
 3. Ping us on [X](https://x.com/commercelayer).
 

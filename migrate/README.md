@@ -9,9 +9,10 @@ npm --prefix migrate start
 pnpm i
 pnpm update
 
-pnpm build:elements
-pnpm build:apps
+pnpm build:apps-multi
 
-pnpm --filter app-elements exec vite build --watch
+pnpm --filter app-orders --filter app-promotions build
+
+# pnpm --filter app-elements exec vite build --watch
 pnpm dev
 ```

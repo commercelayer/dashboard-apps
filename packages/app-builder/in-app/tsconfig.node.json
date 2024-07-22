@@ -1,0 +1,6 @@
+{
+  "extends": "@commercelayer/app-builder/tsconfig.node.json",
+  "include": [
+    "vite.config.js"
+  ]
+}
