@@ -1,2 +1,6 @@
 *
 !.gitignore
+!orders
+!orders/**
+!promotions
+!promotions/**

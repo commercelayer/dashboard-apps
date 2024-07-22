@@ -1,0 +1,10 @@
+{
+  "buildCommand": "pnpm build:elements && pnpm build:apps-multi",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/:appSlug/(.*)",
+      "destination": "/:appSlug/index.html"
+    }
+  ]
+}

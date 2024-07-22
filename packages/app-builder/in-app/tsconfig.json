@@ -1,0 +1,17 @@
+{
+  "extends": "@commercelayer/app-builder/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+  },
+  "include": [
+    "vite.config.js",
+    "src",
+    ".eslintrc.cjs",
+    "public/*.js",
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
