@@ -1,0 +1,10 @@
+{
+  "buildCommand": "pnpm build:apps",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/:appSlug/(.*)",
+      "destination": "/:appSlug/index.html"
+    }
+  ]
+}
