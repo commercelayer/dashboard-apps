@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./",
+    "paths": {
+      // TODO: we need to keep them in sync with the `app-elements` package.
+      "#dictionaries/*": [
+        "../app-elements/src/dictionaries/*"
+      ],
+      "#helpers/*": [
+        "../app-elements/src/helpers/*"
+      ],
+      "#hooks/*": [
+        "../app-elements/src/hooks/*"
+      ],
+      "#providers/*": [
+        "../app-elements/src/providers/*"
+      ],
+      "#styles/*": [
+        "../app-elements/src/styles/*"
+      ],
+      "#ui/*": [
+        "../app-elements/src/ui/*"
+      ],
+      "#utils/*": [
+        "../app-elements/src/utils/*"
+      ]
+    }
+  },
+  "include": [
+    ".storybook/*.tsx",
+    "src",
+    ".eslintrc.cjs"
+  ]
+}

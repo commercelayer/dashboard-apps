@@ -1,9 +1,9 @@
 version: 2.1
 
-parameters:
-  project-name:
-    type: string
-    default: "tags"
+# parameters:
+#   project-name:
+#     type: string
+#     default: "tags"
 
 orbs:
   aws-cli: circleci/aws-cli@4.1.3
@@ -20,6 +20,7 @@ setup: &setup
       command: |
         sudo npm install -g pnpm
         pnpm install
+        pnpm build:elements
 
 jobs:
   test:
@@ -35,44 +36,49 @@ jobs:
           command: pnpm --if-present lint && pnpm --if-present ts:check && pnpm --if-present test
   build:
     <<: *image
-    environment:
-      PUBLIC_PROJECT_PATH: "<< pipeline.parameters.project-name >>"
+    # environment:
+    #   PUBLIC_PROJECT_PATH: "<< pipeline.parameters.project-name >>"
     steps:
       - checkout
       - <<: *setup
       - run:
           name: Build
-          command: pnpm build
+          command: pnpm build:apps-multi
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY
           aws_secret_access_key: AWS_SECRET_ACCESS_KEY
       - aws-s3/sync:
-          from: packages/app/dist
-          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/<< pipeline.parameters.project-name >>/<< pipeline.git.tag >>"
+          from: dist/orders
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/orders/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/promotions
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/promotions/<< pipeline.git.tag >>"
 
-  preview:
-    <<: *image
-    parameters:
-      preview-env:
-        type: string
-        default: "prd"
-    environment:
-      PUBLIC_PROJECT_PATH: "<< pipeline.parameters.project-name >>/<< pipeline.git.tag >>-<< parameters.preview-env >>"
-    steps:
-      - checkout
-      - <<: *setup
-      - run:
-          name: Build
-          command: pnpm build
-      - run:
-          name: Inject configuration
-          command: "cp packages/app/public/config.preview-<< parameters.preview-env >>.js packages/app/dist/config.local.js"
-      - aws-cli/setup:
-          aws_access_key_id: AWS_ACCESS_KEY
-          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
-      - aws-s3/sync:
-          from: packages/app/dist
-          to: "s3://$S3_ASSETS_DEV_BUCKET/team/fe-static-apps/<< pipeline.parameters.project-name >>/<< pipeline.git.tag >>-<< parameters.preview-env >>"
+  ## TODO: THIS IS NO MORE WORKING
+  # preview:
+  #   <<: *image
+  #   parameters:
+  #     preview-env:
+  #       type: string
+  #       default: "prd"
+  #   environment:
+  #     ## TODO: THIS IS NO MORE WORKING
+  #     PUBLIC_PROJECT_PATH: "<< pipeline.parameters.project-name >>/<< pipeline.git.tag >>-<< parameters.preview-env >>"
+  #   steps:
+  #     - checkout
+  #     - <<: *setup
+  #     - run:
+  #         name: Build
+  #         command: pnpm build
+  #     - run:
+  #         name: Inject configuration
+  #         command: "cp packages/app/public/config.preview-<< parameters.preview-env >>.js packages/app/dist/config.local.js"
+  #     - aws-cli/setup:
+  #         aws_access_key_id: AWS_ACCESS_KEY
+  #         aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+  #     - aws-s3/sync:
+  #         from: packages/app/dist
+  #         to: "s3://$S3_ASSETS_DEV_BUCKET/team/fe-static-apps/<< pipeline.parameters.project-name >>/<< pipeline.git.tag >>-<< parameters.preview-env >>"
 
 workflows:
   run-tests:
@@ -102,34 +108,34 @@ workflows:
             branches:
               ignore: /.*/
 
-  test-and-preview-link:
-    jobs:
-      - test:
-          context: commercelayer
-          filters:
-            tags:
-              only: /^pr-(0|[1-9]\d*).*/
-            branches:
-              ignore: /.*/
-      - preview:
-          name: preview-prd
-          requires:
-            - test
-          preview-env: prd
-          context: commercelayer
-          filters:
-            tags:
-              only: /^pr-(0|[1-9]\d*).*/
-            branches:
-              ignore: /.*/
-      - preview:
-          name: preview-stg
-          requires:
-            - test
-          preview-env: stg
-          context: commercelayer
-          filters:
-            tags:
-              only: /^pr-(0|[1-9]\d*).*/
-            branches:
-              ignore: /.*/
+  # test-and-preview-link:
+  #   jobs:
+  #     - test:
+  #         context: commercelayer
+  #         filters:
+  #           tags:
+  #             only: /^pr-(0|[1-9]\d*).*/
+  #           branches:
+  #             ignore: /.*/
+  #     - preview:
+  #         name: preview-prd
+  #         requires:
+  #           - test
+  #         preview-env: prd
+  #         context: commercelayer
+  #         filters:
+  #           tags:
+  #             only: /^pr-(0|[1-9]\d*).*/
+  #           branches:
+  #             ignore: /.*/
+  #     - preview:
+  #         name: preview-stg
+  #         requires:
+  #           - test
+  #         preview-env: stg
+  #         context: commercelayer
+  #         filters:
+  #           tags:
+  #             only: /^pr-(0|[1-9]\d*).*/
+  #           branches:
+  #             ignore: /.*/

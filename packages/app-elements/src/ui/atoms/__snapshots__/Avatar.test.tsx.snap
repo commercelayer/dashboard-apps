@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Avatar > Should be rendered with a placeholder image when src is not defined 1`] = `
+<img
+  alt="Undefined source"
+  class="border object-contain object-center min-w-[58px] min-h-[58px] w-[58px] h-[58px] rounded border-gray-100 p-1"
+  data-testid="avatar"
+  src="https://data.commercelayer.app/assets/images/icons/items/placeholder.svg"
+/>
+`;
+
+exports[`Avatar > Should be rendered with src pointing to a preset 1`] = `
+<img
+  alt="Stripe"
+  class="border object-contain object-center min-w-[58px] min-h-[58px] w-[58px] h-[58px] rounded border-gray-100 border-transparent"
+  data-testid="avatar"
+  src="https://data.commercelayer.app/assets/images/icons/payment-gateways/stripe.svg"
+/>
+`;
+
+exports[`Avatar > Should be rendered with src pointing to an https url 1`] = `
+<img
+  alt="Commerce Layer logo"
+  class="border object-contain object-center min-w-[58px] min-h-[58px] w-[58px] h-[58px] rounded border-gray-100"
+  data-testid="avatar"
+  src="https://i2.wp.com/ui-avatars.com/api/Commerce+Layer/160/FF656B/FFFFFF/2/0.33/true/true/true?ssl=1"
+/>
+`;

@@ -9,7 +9,8 @@ import {
 import { jwtDecode } from '@commercelayer/js-auth'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
-import { appPromiseImports, humanReadable, type AllowedAppSlug } from '../apps'
+import { type AllowedAppSlug } from '../appList'
+import { appPromiseImports, humanReadable } from '../apps'
 
 export function HomePage(): JSX.Element {
   const [visibility, setVisibility] = useState<
