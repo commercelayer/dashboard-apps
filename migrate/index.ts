@@ -1,28 +1,9 @@
 import degit from 'degit'
 import { replaceInFileSync, type ReplaceInFileConfig } from 'replace-in-file'
+import { apps } from '../packages/index/src/appList'
 
-const repositories = [
-  'app-orders',
-  'app-shipments',
-  'app-customers',
-  'app-returns',
-  'app-stock-transfers',
-  'app-skus',
-  'app-sku-lists',
-  'app-imports',
-  'app-exports',
-  'app-webhooks',
-  'app-tags',
-  'app-bundles',
-  'app-gift-cards',
-  'app-inventory',
-  'app-price-lists',
-  'app-promotions',
-  'app-subscriptions'
-]
-
-const appPromises = repositories
-  .map(repositoryName => {
+const appPromises = Object.entries(apps)
+  .map(([_key, { repositoryName, slug }]) => {
     const emitter = degit(`https://github.com/commercelayer/${repositoryName}/packages/app`, {
       cache: false,
       force: true,
@@ -33,14 +14,12 @@ const appPromises = repositories
     //   console.log(info.message)
     // })
 
-    const packageName = repositoryName.replace('app-', '')
-
-    return emitter.clone(`../apps/${packageName}`)
+    return emitter.clone(`../apps/${slug}`)
       .then(() => {
-        console.log(`${packageName}: done`)
+        console.log(`${repositoryName}: done`)
       }).catch((e) => {
         if (e.code === 'MISSING_REF') {
-          console.error(`${packageName}: missing repository`)
+          console.error(`${repositoryName}: missing repository`)
         } else {
           console.error(e)
         }
@@ -92,9 +71,9 @@ Promise.all(appPromises)
           from: /"(name)": "([\w-]+)",/gm,
           to: (...args) => {
             const file = args.pop()
-            const folderName = file?.match(/apps\/([\w-]+)\/package.json$/)?.[1]
+            const folderName = file?.match(/apps\/([\w-]+)\/.*$/)?.[1]
             // console.log(file, folderName)
-            return `"name": "${folderName}",`
+            return `"name": "app-${folderName}",`
           },
           files: [
             '../apps/**/package.json'
@@ -125,6 +104,21 @@ Promise.all(appPromises)
           to: '"@commercelayer/app-elements": "workspace:*"',
           files: [
             '../apps/**/package.json'
+          ],
+        }
+      },
+      {
+        name: 'replace vite `basePath`',
+        config: {
+          from: `: '/'`,
+          to: (...args) => {
+            const file = args.pop()
+            const folderName = file?.match(/apps\/([\w-]+)\/.*$/)?.[1]
+            // console.log(file, folderName)
+            return `: '/${folderName}'`
+          },
+          files: [
+            '../apps/**/vite.config.*'
           ],
         }
       }

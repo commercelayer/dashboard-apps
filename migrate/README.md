@@ -7,16 +7,11 @@ npm --prefix migrate start
 # --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 pnpm i
+pnpm update
 
-pnpm --filter app-elements build
+pnpm build:elements
+pnpm build:apps
 
 pnpm --filter app-elements exec vite build --watch
 pnpm dev
 ```
-
-## TODO
-
-- update all deps to latest
-- circleci deploy
-- netlify deploy
-- vercel deploy

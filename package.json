@@ -3,7 +3,10 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "pnpm --filter index dev",
-    "build": "pnpm --filter \\!index build",
+    "build:elements": "pnpm --filter app-elements build",
+    "build:docs": "pnpm --filter docs build",
+    "build:apps": "pnpm --filter \"app-*\" build",
+    "build:apps-new": "pnpm --filter build-apps start",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
     "test": "pnpm -r test",
@@ -16,7 +19,7 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/commercelayer/app-tags"
+    "url": "https://github.com/commercelayer/dashboard-apps"
   },
   "license": "MIT",
   "engines": {
@@ -28,10 +31,9 @@
     "apps/*"
   ],
   "devDependencies": {
-    "husky": "^9.0.11",
-    "lerna": "^8.1.5",
-    "lint-staged": "^15.2.7",
-    "npm-check-updates": "^16.14.20"
+    "husky": "^9.1.1",
+    "lerna": "^8.1.7",
+    "lint-staged": "^15.2.7"
   },
   "resolutions": {
     "tar": "^6.2.1"
