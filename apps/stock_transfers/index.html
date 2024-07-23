@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Commerce Layer</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://data.commercelayer.app/assets/images/favicons/favicon-32x32.png"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root-app"></div>
+
+    <script src="/config.local.js"></script>
+    <script src="/config.js"></script>
+
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        window.clApp_stock_transfers.init(document.getElementById('root-app'), {
+            organizationSlug: '%PUBLIC_SELF_HOSTED_SLUG%',
+            routerBase: '%PUBLIC_PROJECT_PATH%'
+          })
+      })
+    </script>
+  </body>
+</html>

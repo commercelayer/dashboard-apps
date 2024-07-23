@@ -47,11 +47,47 @@ jobs:
           aws_access_key_id: AWS_ACCESS_KEY
           aws_secret_access_key: AWS_SECRET_ACCESS_KEY
       - aws-s3/sync:
+          from: dist/customers
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/customers/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/exports
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/exports/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/imports
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/imports/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/inventory
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/inventory/<< pipeline.git.tag >>"
+      - aws-s3/sync:
           from: dist/orders
           to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/orders/<< pipeline.git.tag >>"
       - aws-s3/sync:
+          from: dist/price_lists
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/price_lists/<< pipeline.git.tag >>"
+      - aws-s3/sync:
           from: dist/promotions
           to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/promotions/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/returns
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/returns/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/shipments
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/shipments/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/sku_lists
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/sku_lists/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/skus
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/skus/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/stock_transfers
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/stock_transfers/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/tags
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/tags/<< pipeline.git.tag >>"
+      - aws-s3/sync:
+          from: dist/webhooks
+          to: "s3://$S3_ASSETS_BUCKET/team/fe-static-apps/webhooks/<< pipeline.git.tag >>"
 
   ## TODO: THIS IS NO MORE WORKING
   # preview:
