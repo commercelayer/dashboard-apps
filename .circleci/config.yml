@@ -32,6 +32,20 @@ jobs:
       - run:
           name: Test
           command: pnpm --if-present lint && pnpm --if-present ts:check && pnpm --if-present test
+  build-test:
+    <<: *image
+    steps:
+      - checkout
+      - <<: *setup
+      - run:
+          name: Audit
+          command: pnpm audit || exit 0
+      - run:
+          name: Test
+          command: |
+            eval "pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) lint"
+            eval "pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) ts:check"
+            eval "pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) test"
   build:
     <<: *image
     # environment:
@@ -97,7 +111,7 @@ workflows:
 
   test-build-and-push:
     jobs:
-      - test:
+      - build-test:
           context: commercelayer
           filters:
             tags:
@@ -106,7 +120,7 @@ workflows:
               ignore: /.*/
       - build:
           requires:
-            - test
+            - build-test
           context: commercelayer
           filters:
             tags:
