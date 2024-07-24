@@ -43,9 +43,9 @@ jobs:
       - run:
           name: Test
           command: |
-            eval "pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) lint"
-            eval "pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) ts:check"
-            eval "pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) test"
+            pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) lint
+            pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) ts:check
+            pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) test
   build:
     <<: *image
     # environment:
@@ -55,7 +55,7 @@ jobs:
       - <<: *setup
       - run:
           name: Build
-          command: eval "pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) build"
+          command: pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) build
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY
           aws_secret_access_key: AWS_SECRET_ACCESS_KEY
