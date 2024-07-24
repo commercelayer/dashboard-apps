@@ -22,7 +22,7 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "ts:check": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest",
+    "test:watch": "vitest --passWithNoTests",
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {

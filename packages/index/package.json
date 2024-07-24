@@ -10,7 +10,6 @@
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "ts:check": "tsc --noEmit",
-    "test:watch": "vitest",
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {

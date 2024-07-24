@@ -39,7 +39,6 @@ export const defineConfig = (appSlug) => vitestDefineConfig(({ mode }) => {
     ? `/${env.PUBLIC_PROJECT_PATH}/`
     : `/${appSlug}`
 
-  console.log(path.resolve(__dirname, '..', '..', 'dist', appSlug))
   return {
     plugins: [
       react(),

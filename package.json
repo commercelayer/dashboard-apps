@@ -3,13 +3,12 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "pnpm --filter index dev",
-    "build:apps": "pnpm --filter \"app-*\" build",
-    "build:apps-single": "pnpm --filter app-builder start",
+    "build:apps": "pnpm --parallel --aggregate-output --color --filter \"app-*\" build",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
     "test": "pnpm -r test --stream",
     "ts:check": "pnpm -r ts:check",
-    "test:watch": "pnpm -r test:watch",
+    "test:watch": "pnpm -r --parallel --aggregate-output --color test:watch",
     "dep:major": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u",
     "dep:minor": "pnpm dep:major -t minor",
     "prepare": "husky install"
