@@ -7,7 +7,6 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@4.1.3
-  aws-s3: circleci/aws-s3@4.0.0
 
 image: &image
   docker:
@@ -42,7 +41,7 @@ jobs:
       - <<: *setup
       - run:
           name: Build
-          command: node latest-pnpm-filters.cjs | { filter=($(< /dev/stdin)); pnpm --parallel --aggregate-output --color $filter build; }
+          command: eval "pnpm --parallel --aggregate-output --color $(node latest-pnpm-filters.cjs) build"
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY
           aws_secret_access_key: AWS_SECRET_ACCESS_KEY

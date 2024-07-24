@@ -1,6 +1,6 @@
 // @ts-check
 
-const { readFileSync, readdir, readdirSync, existsSync } = require('fs')
+const { readFileSync, readdirSync, existsSync } = require('fs')
 const { resolve } = require('path')
 
 const { version: lernaVersion } = JSON.parse(readFileSync(resolve(__dirname, 'lerna.json'), 'utf-8'))
@@ -23,4 +23,4 @@ const filters = apps
     return app !== null && app.version === lernaVersion
   })
 
-console.log(`--filter ${filters.map(filter => filter?.name).join('--filter')}`)
+console.log(`--filter ${filters.map(filter => filter?.name).join(' --filter ')}`)
