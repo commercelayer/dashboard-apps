@@ -158,6 +158,16 @@ async function runTasks() {
       }
     },
     {
+      name: 'make vitest:watch pass with no tests',
+      config: {
+        from: 'vitest",',
+        to: 'vitest --passWithNoTests",',
+        files: [
+          '../apps/**/package.json'
+        ],
+      }
+    },
+    {
       name: 'set',
       config: {
         from: `: '/'`,
