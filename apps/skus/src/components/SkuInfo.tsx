@@ -15,15 +15,17 @@ interface Props {
 export const SkuInfo: FC<Props> = ({ sku = makeSku() }) => {
   return (
     <Section title='Info'>
-      <ListDetailsItem
-        label='Shipping category'
-        childrenAlign='right'
-        gutter='none'
-      >
-        <Text tag='div' weight='semibold'>
-          {sku.shipping_category?.name}
-        </Text>
-      </ListDetailsItem>
+      {sku.shipping_category != null && (
+        <ListDetailsItem
+          label='Shipping category'
+          childrenAlign='right'
+          gutter='none'
+        >
+          <Text tag='div' weight='semibold'>
+            {sku.shipping_category?.name}
+          </Text>
+        </ListDetailsItem>
+      )}
       {sku.weight != null && sku.weight > 0 ? (
         <ListDetailsItem label='Weight' childrenAlign='right' gutter='none'>
           <Text tag='div' weight='semibold'>
