@@ -5,7 +5,8 @@
   "npmClient": "pnpm",
   "command": {
     "version": {
-      "preid": "stg"
+      "preid": "stg",
+      "includeMergedTags": true
     }
   }
 }
