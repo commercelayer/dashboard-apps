@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "app-sku_lists",
-  "version": "1.43.0-stg.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
