@@ -1,3 +1,4 @@
+import { useShippingCategoriesList } from '#hooks/useShippingCategoriesList'
 import {
   Avatar,
   Button,
@@ -19,10 +20,9 @@ import {
   type UnitOfWeight
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
+import isEmpty from 'lodash/isEmpty'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'
-
-import { useShippingCategoriesList } from '#hooks/useShippingCategoriesList'
 import { ShippingCategorySelect } from './ShippingCategorySelect'
 
 const unitsOfWeightForSelect = getUnitsOfWeightForSelect()
@@ -35,20 +35,30 @@ export function isValidUnitOfWeight(value: string): value is UnitOfWeight {
   )
 }
 
-const skuFormSchema = z.object({
-  id: z.string().optional(),
-  code: z.string().min(1),
-  name: z.string().min(1),
-  description: z.string().optional(),
-  imageUrl: z.string().optional(),
-  shippingCategory: z.string().min(1),
-  piecesPerPack: z.string().optional(),
-  hsTariffNumber: z.string().optional(),
-  doNotShip: z.boolean().optional(),
-  doNotTrack: z.boolean().optional(),
-  weight: z.string().length(0).or(z.undefined()).or(z.string().min(1)),
-  unitOfWeight: z.string()
-})
+const skuFormSchema = z
+  .object({
+    id: z.string().optional(),
+    code: z.string().min(1),
+    name: z.string().min(1),
+    description: z.string().optional(),
+    imageUrl: z.string().optional(),
+    shippingCategory: z.string().optional().nullable(),
+    piecesPerPack: z.string().optional(),
+    hsTariffNumber: z.string().optional(),
+    doNotShip: z.boolean().optional(),
+    doNotTrack: z.boolean().optional(),
+    weight: z.string().length(0).or(z.undefined()).or(z.string().min(1)),
+    unitOfWeight: z.string()
+  })
+  .superRefine((values, ctx) => {
+    if (values.doNotShip !== true && isEmpty(values.shippingCategory)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['shippingCategory'],
+        message: 'Please select a shipping category'
+      })
+    }
+  })
 
 export type SkuFormValues = z.infer<typeof skuFormSchema>
 
