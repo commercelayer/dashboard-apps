@@ -108,3 +108,4 @@ dist
 
 # App
 packages/*/public/config.local.js
+apps/*/public/config.local.js
