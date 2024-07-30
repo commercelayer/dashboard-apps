@@ -1,10 +1,6 @@
 import {
   Button,
-  Dropdown,
-  DropdownDivider,
-  DropdownItem,
   EmptyState,
-  Icon,
   InputReadonly,
   PageLayout,
   Section,
@@ -13,7 +9,8 @@ import {
   goBack,
   useCoreSdkProvider,
   useOverlay,
-  useTokenProvider
+  useTokenProvider,
+  type PageHeadingProps
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 
@@ -70,43 +67,31 @@ export const SkuListDetails = (
 
   const pageTitle = skuList?.name
 
-  const contextMenuEdit = canUser('update', 'sku_lists') && (
-    <DropdownItem
-      label='Edit'
-      onClick={() => {
+  const pageToolbar: PageHeadingProps['toolbar'] = {
+    buttons: [],
+    dropdownItems: []
+  }
+
+  if (canUser('update', 'sku_lists')) {
+    pageToolbar.buttons?.push({
+      label: 'Edit',
+      size: 'small',
+      onClick: () => {
         setLocation(appRoutes.edit.makePath({ skuListId }))
-      }}
-    />
-  )
-
-  const contextMenuDivider = canUser('update', 'sku_lists') &&
-    canUser('destroy', 'sku_lists') && <DropdownDivider />
-
-  const contextMenuDelete = canUser('destroy', 'sku_lists') && (
-    <DropdownItem
-      label='Delete'
-      onClick={() => {
-        open()
-      }}
-    />
-  )
-
-  const contextMenu = (
-    <Dropdown
-      dropdownLabel={
-        <Button variant='secondary' size='small'>
-          <Icon name='dotsThree' size={16} weight='bold' />
-        </Button>
       }
-      dropdownItems={
-        <>
-          {contextMenuEdit}
-          {contextMenuDivider}
-          {contextMenuDelete}
-        </>
+    })
+  }
+
+  if (canUser('destroy', 'sku_lists')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Delete',
+        onClick: () => {
+          open()
+        }
       }
-    />
-  )
+    ])
+  }
 
   return (
     <PageLayout
@@ -124,7 +109,7 @@ export const SkuListDetails = (
         label: 'SKU Lists',
         icon: 'arrowLeft'
       }}
-      actionButton={contextMenu}
+      toolbar={pageToolbar}
       scrollToTop
       gap='only-top'
     >

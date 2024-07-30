@@ -1,4 +1,4 @@
-import type { Resource } from '@commercelayer/sdk/lib/cjs/resource'
+import type { Resource } from '@commercelayer/sdk'
 
 export * from './resources/skuListItems'
 export * from './resources/skuLists'
