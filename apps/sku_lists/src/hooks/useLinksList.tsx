@@ -23,7 +23,7 @@ interface Props {
  * @returns a list of resolved `Links`.
  */
 
-export function useLinksList({ skuListId, settings }: Props): {
+export function useLinksList({ /* skuListId, */ settings }: Props): {
   links?: ListResponse<Link>
   isLoading: boolean
   error: any
@@ -31,6 +31,8 @@ export function useLinksList({ skuListId, settings }: Props): {
 } {
   const pageNumber = settings?.pageNumber ?? 1
   const pageSize = settings?.pageSize ?? 25
+
+  // TODO: Move this list request to the correct resource relationship to get the wanted set of links
 
   const {
     data: links,

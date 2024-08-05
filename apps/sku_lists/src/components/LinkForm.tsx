@@ -91,6 +91,7 @@ export function LinkForm({
           <Spacer top='6' bottom='4'>
             <HookedInputSelect
               name='clientId'
+              label='Sales channel *'
               initialValues={
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 salesChannels?.map(({ client_id, name }) => ({
@@ -109,6 +110,7 @@ export function LinkForm({
           {!isLoading && (
             <HookedInputSelect
               name='market'
+              label='Market *'
               initialValues={markets?.map(({ id, name }) => ({
                 value: id,
                 label: name

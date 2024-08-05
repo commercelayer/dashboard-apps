@@ -73,7 +73,7 @@ export function LinkNew(
       toolbar={{
         buttons: [
           {
-            label: 'Archive',
+            label: 'View archive',
             icon: 'archive',
             size: 'small',
             variant: 'secondary',
