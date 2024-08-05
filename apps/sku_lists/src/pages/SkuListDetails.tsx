@@ -24,7 +24,7 @@ export const SkuListDetails = (
   props: PageProps<typeof appRoutes.details>
 ): JSX.Element => {
   const {
-    settings: { mode },
+    settings: { mode, extras },
     canUser
   } = useTokenProvider()
 
@@ -80,6 +80,17 @@ export const SkuListDetails = (
         setLocation(appRoutes.edit.makePath({ skuListId }))
       }
     })
+    if (extras?.salesChannels != null && extras?.salesChannels.length > 0) {
+      pageToolbar.buttons?.push({
+        label: 'Shop link',
+        icon: 'shoppingBagOpen',
+        size: 'small',
+        variant: 'secondary',
+        onClick: () => {
+          setLocation(appRoutes.linksNew.makePath({ skuListId }))
+        }
+      })
+    }
   }
 
   if (canUser('destroy', 'sku_lists')) {
