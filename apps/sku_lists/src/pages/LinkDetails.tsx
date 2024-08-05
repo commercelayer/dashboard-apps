@@ -90,7 +90,7 @@ export const LinkDetails = (
               value={link.url ?? ''}
               size={300}
               // TODO: Find a way to host locally the logo in order to avoid canvas CORS related issues
-              // logoImage='https://data.commercelayer.app/assets/logos/glyph/black/commercelayer_glyph_black.svg'
+              logoImage='https://data.commercelayer.app/assets/commercelayer_glyph_black.svg'
               logoWidth={50}
               logoHeight={50}
               logoPadding={20}
@@ -110,7 +110,7 @@ export const LinkDetails = (
               }}
             >
               <Icon name='archive' size={16} />
-              View Archive
+              View archive
             </Button>
             <Button
               variant='primary'
