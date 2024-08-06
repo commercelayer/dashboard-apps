@@ -783,8 +783,8 @@ importers:
   apps/sku_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.2.2
-        version: 2.2.2(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
+        specifier: 2.2.4
+        version: 2.2.4(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.11.0
         version: 6.11.0
@@ -1479,8 +1479,8 @@ packages:
       react-hook-form: ^7.50.x
       wouter: ^3.x
 
-  '@commercelayer/app-elements@2.2.2':
-    resolution: {integrity: sha512-npqgZo8WCa/OfPbQGSZ9FP0feDnlQ8J/TTQV/kSWEXA2eJWywcfflw2t/zDbtwtVYES9YPcJB65zlYtHFwSfLQ==}
+  '@commercelayer/app-elements@2.2.4':
+    resolution: {integrity: sha512-uokN6uXAhcAV67BpwX0zNceomZmlhZFcD+GMqpQ9wadm5K7ErR5hNWQ5wpVU11xQkdRAtmNerfSrLZxglugWRA==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^6.x
@@ -6388,7 +6388,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@commercelayer/app-elements@2.2.2(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
+  '@commercelayer/app-elements@2.2.4(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
     dependencies:
       '@commercelayer/sdk': 6.11.0
       '@types/lodash': 4.17.7

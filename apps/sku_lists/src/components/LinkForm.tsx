@@ -57,12 +57,13 @@ export function LinkForm({
   // Set creation form defaults
   useEffect(() => {
     if (!isLoading && defaultValues == null) {
-      if (salesChannels != null && salesChannels.length === 1) {
+      if (salesChannels != null && salesChannels.length > 0) {
         linkFormMethods.setValue('clientId', salesChannels[0]?.client_id ?? '')
       }
       if (markets != null && markets.length === 1) {
         linkFormMethods.setValue('market', markets[0]?.id ?? '')
       }
+      linkFormMethods.setValue('startsAt', new Date())
     }
   }, [isLoading, defaultValues, salesChannels, markets, linkFormMethods])
 

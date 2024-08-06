@@ -33,7 +33,6 @@ export const LinkList = (
     error,
     mutate: mutateList
   } = useLinksList({ skuListId })
-  console.log(links)
 
   const pageTitle = 'Archive'
 

@@ -82,7 +82,7 @@ export const SkuListDetails = (
     })
     if (extras?.salesChannels != null && extras?.salesChannels.length > 0) {
       pageToolbar.buttons?.push({
-        label: 'Shop link',
+        label: 'Create link',
         icon: 'shoppingBagOpen',
         size: 'small',
         variant: 'secondary',

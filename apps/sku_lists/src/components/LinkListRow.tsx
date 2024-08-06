@@ -38,6 +38,8 @@ export const LinkListRow = ({
     return <></>
   }
 
+  const linkStatus = getLinkStatus(link)
+
   return (
     <Tr>
       <Td>
@@ -80,7 +82,7 @@ export const LinkListRow = ({
         })}
       </Td>
       <Td>
-        <Badge variant={getBadgeVariant(link)}>{link.status}</Badge>
+        <Badge variant={getBadgeVariant(link)}>{getLinkStatus(link)}</Badge>
       </Td>
       <Td align='right'>
         <Dropdown
@@ -111,35 +113,20 @@ export const LinkListRow = ({
                       )
                     }}
                   />
-                  {link.status === 'disabled' ? (
-                    <DropdownItem
-                      label='Enable'
-                      onClick={() => {
-                        void sdkClient.links
-                          .update({
-                            id: link.id,
-                            _enable: true
-                          })
-                          .then(() => {
-                            void mutateList()
-                          })
-                      }}
-                    />
-                  ) : (
-                    <DropdownItem
-                      label='Disable'
-                      onClick={() => {
-                        void sdkClient.links
-                          .update({
-                            id: link.id,
-                            _disable: true
-                          })
-                          .then(() => {
-                            void mutateList()
-                          })
-                      }}
-                    />
-                  )}
+                  <DropdownItem
+                    label={linkStatus === 'disabled' ? 'Enable' : 'Disable'}
+                    onClick={() => {
+                      void sdkClient.links
+                        .update({
+                          id: link.id,
+                          _enable: linkStatus === 'disabled',
+                          _disable: linkStatus !== 'disabled'
+                        })
+                        .then(() => {
+                          void mutateList()
+                        })
+                    }}
+                  />
                 </>
               )}
               {/* TODO: Add removal modal */}
@@ -158,7 +145,8 @@ export const LinkListRow = ({
 }
 
 function getBadgeVariant(link: Link): BadgeProps['variant'] {
-  switch (link.status) {
+  const status = getLinkStatus(link)
+  switch (status) {
     case 'expired':
       return 'danger'
 
@@ -170,5 +158,13 @@ function getBadgeVariant(link: Link): BadgeProps['variant'] {
 
     default:
       return 'secondary'
+  }
+}
+
+function getLinkStatus(link: Link): Link['status'] {
+  if (link.disabled_at != null) {
+    return 'disabled'
+  } else {
+    return link.status
   }
 }
