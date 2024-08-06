@@ -89,11 +89,11 @@ export const LinkDetails = (
               ref={linkQrRef as MutableRefObject<QRCode>}
               value={link.url ?? ''}
               size={300}
-              // TODO: Find a way to host locally the logo in order to avoid canvas CORS related issues
               logoImage='https://data.commercelayer.app/assets/logos/glyph/black/commercelayer_glyph_black.svg'
               logoWidth={50}
               logoHeight={50}
               logoPadding={20}
+              enableCORS
             />
           </div>
           <Spacer top='12' bottom='4'>
