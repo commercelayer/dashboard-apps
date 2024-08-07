@@ -15,6 +15,7 @@ import { Link, useLocation } from 'wouter'
 
 import { appRoutes, type PageProps } from '#data/routes'
 import { useLinkDetails } from '#hooks/useLinkDetails'
+import { slugify } from '#utils/slugify'
 import { useRef, type MutableRefObject } from 'react'
 
 export const LinkDetails = (
@@ -29,11 +30,14 @@ export const LinkDetails = (
   const linkId = props.params?.linkId ?? ''
 
   const linkQrRef = useRef<QRCode>(null)
-  const handleLinkQrDownload = (): void => {
-    linkQrRef.current?.download()
-  }
-
   const { link, isLoading, error } = useLinkDetails(linkId)
+
+  const handleLinkQrDownload = (): void => {
+    linkQrRef.current?.download(
+      'jpg',
+      `${new Date().toISOString().split('T')[0]}_${slugify(link.name)}`
+    )
+  }
 
   if (error != null) {
     return (
