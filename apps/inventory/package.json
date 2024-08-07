@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "app-inventory",
-  "version": "2.0.2-stg.2",
+  "version": "2.0.2-stg.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
