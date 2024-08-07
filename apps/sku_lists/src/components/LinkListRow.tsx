@@ -8,14 +8,17 @@ import {
   DropdownItem,
   formatDateRange,
   Icon,
+  PageLayout,
   Td,
   Text,
   Tr,
   useCoreSdkProvider,
+  useOverlay,
   useTokenProvider,
   type BadgeProps
 } from '@commercelayer/app-elements'
 import type { Link, ListResponse, SkuList } from '@commercelayer/sdk'
+import { useState } from 'react'
 import type { KeyedMutator } from 'swr'
 import { useLocation } from 'wouter'
 
@@ -33,6 +36,8 @@ export const LinkListRow = ({
   const { user, canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
+  const { Overlay, open, close } = useOverlay()
+  const [isDeleteting, setIsDeleting] = useState(false)
 
   if (link == null) {
     return <></>
@@ -129,8 +134,14 @@ export const LinkListRow = ({
                   />
                 </>
               )}
-              {/* TODO: Add removal modal */}
-              {/* {canUser('destroy', 'links') && <DropdownItem label='Delete' />} */}
+              {canUser('destroy', 'links') && (
+                <DropdownItem
+                  label='Delete'
+                  onClick={() => {
+                    open()
+                  }}
+                />
+              )}
             </>
           }
           dropdownLabel={
@@ -140,6 +151,39 @@ export const LinkListRow = ({
           }
         />
       </Td>
+      {canUser('destroy', 'links') && (
+        <Overlay>
+          <PageLayout
+            title={`Confirm that you want to delete ${link.name}.`}
+            description='This action cannot be undone, proceed with caution.'
+            minHeight={false}
+            navigationButton={{
+              label: 'Cancel',
+              icon: 'x',
+              onClick: () => {
+                close()
+              }
+            }}
+          >
+            <Button
+              variant='danger'
+              size='small'
+              disabled={isDeleteting}
+              onClick={(e) => {
+                setIsDeleting(true)
+                e.stopPropagation()
+                void sdkClient.links.delete(link.id).then(() => {
+                  void mutateList().then(() => {
+                    close()
+                  })
+                })
+              }}
+            >
+              Delete link
+            </Button>
+          </PageLayout>
+        </Overlay>
+      )}
     </Tr>
   )
 }
