@@ -17,6 +17,7 @@ export const shipmentIncludeAttribute = [
   'parcels',
   'parcels.package',
   'parcels.parcel_line_items',
+  'parcels.attachments',
 
   'carrier_accounts'
 ]
