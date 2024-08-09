@@ -1,10 +1,6 @@
 import {
   Button,
-  Dropdown,
-  DropdownDivider,
-  DropdownItem,
   EmptyState,
-  Icon,
   PageLayout,
   ResourceMetadata,
   ResourceTags,
@@ -14,7 +10,8 @@ import {
   useCoreSdkProvider,
   useEditMetadataOverlay,
   useOverlay,
-  useTokenProvider
+  useTokenProvider,
+  type PageHeadingProps
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
@@ -74,51 +71,40 @@ export const SkuDetails: FC = () => {
 
   const pageTitle = sku.name
 
-  const contextMenuEdit = canUser('update', 'skus') && (
-    <>
-      <DropdownItem
-        label='Edit'
-        onClick={() => {
-          setLocation(appRoutes.edit.makePath({ skuId }))
-        }}
-      />
-      <DropdownItem
-        label='Set metadata'
-        onClick={() => {
+  const pageToolbar: PageHeadingProps['toolbar'] = {
+    buttons: [],
+    dropdownItems: []
+  }
+
+  if (canUser('update', 'skus')) {
+    pageToolbar.buttons?.push({
+      label: 'Edit',
+      size: 'small',
+      onClick: () => {
+        setLocation(appRoutes.edit.makePath({ skuId }))
+      }
+    })
+
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Set metadata',
+        onClick: () => {
           showEditMetadataOverlay()
-        }}
-      />
-    </>
-  )
-
-  const contextMenuDivider = canUser('update', 'skus') &&
-    canUser('destroy', 'skus') && <DropdownDivider />
-
-  const contextMenuDelete = canUser('destroy', 'skus') && (
-    <DropdownItem
-      label='Delete'
-      onClick={() => {
-        open()
-      }}
-    />
-  )
-
-  const contextMenu = (
-    <Dropdown
-      dropdownLabel={
-        <Button variant='secondary' size='small'>
-          <Icon name='dotsThree' size={16} weight='bold' />
-        </Button>
+        }
       }
-      dropdownItems={
-        <>
-          {contextMenuEdit}
-          {contextMenuDivider}
-          {contextMenuDelete}
-        </>
+    ])
+  }
+
+  if (canUser('destroy', 'skus')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Delete',
+        onClick: () => {
+          open()
+        }
       }
-    />
-  )
+    ])
+  }
 
   return (
     <PageLayout
@@ -139,7 +125,7 @@ export const SkuDetails: FC = () => {
         label: 'SKUs',
         icon: 'arrowLeft'
       }}
-      actionButton={contextMenu}
+      toolbar={pageToolbar}
       scrollToTop
       gap='only-top'
     >
