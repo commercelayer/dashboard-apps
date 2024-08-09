@@ -1,10 +1,13 @@
 import { useCoreApi } from '@commercelayer/app-elements'
-import type { ShippingCategory } from '@commercelayer/sdk'
-import type { ListResponse } from '@commercelayer/sdk/lib/cjs/resource'
+import type {
+  ListResponse,
+  QueryPageSize,
+  ShippingCategory
+} from '@commercelayer/sdk'
 
 interface UseShippingCategoriesListSettings {
   pageNumber?: number
-  pageSize?: number
+  pageSize?: QueryPageSize
 }
 
 interface Props {

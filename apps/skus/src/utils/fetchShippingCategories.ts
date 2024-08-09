@@ -1,5 +1,8 @@
-import type { CommerceLayerClient, ShippingCategory } from '@commercelayer/sdk'
-import type { ListResponse } from '@commercelayer/sdk/lib/cjs/resource'
+import type {
+  CommerceLayerClient,
+  ListResponse,
+  ShippingCategory
+} from '@commercelayer/sdk'
 
 interface FetchShippingCategoriesConfig {
   sdkClient: CommerceLayerClient

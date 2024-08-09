@@ -1,4 +1,4 @@
-import type { ResourceTypeLock } from '@commercelayer/sdk/lib/cjs/api'
+import type { ResourceTypeLock } from '@commercelayer/sdk'
 
 interface GenericResource<T> {
   readonly type: T
