@@ -1,3 +1,4 @@
+import { isMockedId } from '#mocks'
 import { useCoreApi } from '@commercelayer/app-elements'
 import type { Link, ListResponse, QueryPageSize, Sku } from '@commercelayer/sdk'
 import type { KeyedMutator } from 'swr'
@@ -18,7 +19,7 @@ interface Props {
  * @returns a list of resolved `Links`.
  */
 
-export function useLinksList({ /* skuId, */ settings }: Props): {
+export function useLinksList({ skuId, settings }: Props): {
   links?: ListResponse<Link>
   isLoading: boolean
   error: any
@@ -35,15 +36,18 @@ export function useLinksList({ /* skuId, */ settings }: Props): {
     error,
     mutate
   } = useCoreApi(
+    'skus',
     'links',
-    'list',
-    [
-      {
-        sort: ['created_at'],
-        pageNumber,
-        pageSize
-      }
-    ],
+    isMockedId(skuId)
+      ? null
+      : [
+          skuId,
+          {
+            sort: ['created_at'],
+            pageNumber,
+            pageSize
+          }
+        ],
     {}
   )
 

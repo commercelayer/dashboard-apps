@@ -128,15 +128,25 @@ export function LinkForm({
             <HookedInputDate
               name='startsAt'
               label='Start date *'
+              showTimeSelect
               hint={{
-                text: <Text variant='info'>The date the link will start.</Text>
+                text: (
+                  <Text variant='info'>
+                    The date the link will start working.
+                  </Text>
+                )
               }}
             />
             <HookedInputDate
               name='expiresAt'
               label='Expiration date *'
+              showTimeSelect
               hint={{
-                text: <Text variant='info'>The date the link will end.</Text>
+                text: (
+                  <Text variant='info'>
+                    The date the link will stop working.
+                  </Text>
+                )
               }}
             />
           </Grid>

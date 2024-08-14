@@ -59,7 +59,7 @@ export function LinkNew(
       title={<>Create link</>}
       description={
         <>
-          Create a link to a microstore to directly sell the SKUs from{' '}
+          Create a link to a microstore to directly sell{' '}
           <strong>{sku.name}</strong>.
         </>
       }
@@ -127,7 +127,6 @@ function adaptFormValuesToLink(
     starts_at: formValues.startsAt.toJSON(),
     expires_at: formValues.expiresAt.toJSON(),
     item: {
-      // @ts-expect-error Relationship type mismatch
       type: 'skus',
       id: skuId
     }
