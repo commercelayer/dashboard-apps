@@ -103,7 +103,7 @@ export const LinkList = (
             <Tr>
               <Th>Code</Th>
               <Th> </Th>
-              <Th>Date</Th>
+              <Th>Active in</Th>
               <Th>Status</Th>
               <Th> </Th>
             </Tr>

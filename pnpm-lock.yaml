@@ -784,10 +784,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 2.2.4
-        version: 2.2.4(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
+        version: 2.2.4(@commercelayer/sdk@6.12.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.11.0
-        version: 6.11.0
+        specifier: 6.12.0
+        version: 6.12.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.52.1(react@18.3.1))
@@ -1215,7 +1215,7 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: ^2.1.1
-        version: 2.1.1(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
+        version: 2.1.1(@commercelayer/sdk@6.12.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1520,8 +1520,8 @@ packages:
     resolution: {integrity: sha512-p+QybRKRkpmhWwXxEohPWElpJ3SgvsAVLTYZ/tMWqEsZ7JkOqgyzarVZLBfPFN+xElDzHiXiYSfKhK8Vq/7EPA==}
     engines: {node: '>=20'}
 
-  '@commercelayer/sdk@6.11.0':
-    resolution: {integrity: sha512-ITCq17o+ndf+rCcUVlzT+32OaSClVeBg9F4FlM6WjIKcsJ5bLWNq5gTdxMWPBFHrqknC1SlPVN/dG+42DYyV+w==}
+  '@commercelayer/sdk@6.12.0':
+    resolution: {integrity: sha512-4hxAMnJ3CH6c8BFhT5D97HEC425WL8KZlbYMYBj2ZBtH8NAOGX5qTF2r3TGl/pN5GgIwTxhhD5QRqTl9jTxpEQ==}
     engines: {node: '>=20'}
 
   '@commercelayer/sdk@6.6.0':
@@ -6214,7 +6214,7 @@ snapshots:
       react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
-      type-fest: 4.22.1
+      type-fest: 4.23.0
       wouter: 3.3.1(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:
@@ -6304,9 +6304,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@commercelayer/app-elements@2.1.1(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
+  '@commercelayer/app-elements@2.1.1(@commercelayer/sdk@6.12.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
     dependencies:
-      '@commercelayer/sdk': 6.11.0
+      '@commercelayer/sdk': 6.12.0
       '@types/lodash': 4.17.7
       '@types/react': 18.3.3
       '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6382,15 +6382,15 @@ snapshots:
       react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
-      type-fest: 4.22.1
+      type-fest: 4.23.0
       wouter: 3.3.1(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:
       - supports-color
 
-  '@commercelayer/app-elements@2.2.4(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
+  '@commercelayer/app-elements@2.2.4(@commercelayer/sdk@6.12.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
     dependencies:
-      '@commercelayer/sdk': 6.11.0
+      '@commercelayer/sdk': 6.12.0
       '@types/lodash': 4.17.7
       '@types/react': 18.3.3
       '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6502,7 +6502,7 @@ snapshots:
 
   '@commercelayer/sdk@6.10.0': {}
 
-  '@commercelayer/sdk@6.11.0': {}
+  '@commercelayer/sdk@6.12.0': {}
 
   '@commercelayer/sdk@6.6.0': {}
 

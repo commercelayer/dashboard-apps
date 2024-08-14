@@ -1,3 +1,4 @@
+import { isMockedId } from '#mocks'
 import { useCoreApi } from '@commercelayer/app-elements'
 import type {
   Link,
@@ -23,7 +24,7 @@ interface Props {
  * @returns a list of resolved `Links`.
  */
 
-export function useLinksList({ /* skuListId, */ settings }: Props): {
+export function useLinksList({ skuListId, settings }: Props): {
   links?: ListResponse<Link>
   isLoading: boolean
   error: any
@@ -32,24 +33,24 @@ export function useLinksList({ /* skuListId, */ settings }: Props): {
   const pageNumber = settings?.pageNumber ?? 1
   const pageSize = settings?.pageSize ?? 25
 
-  // TODO: Move this list request to the correct resource relationship to get the wanted set of links
-
   const {
     data: links,
     isLoading,
     error,
     mutate
   } = useCoreApi(
+    'sku_lists',
     'links',
-    'list',
-    [
-      {
-        // filters: { item_id_eq: skuListId },
-        sort: ['created_at'],
-        pageNumber,
-        pageSize
-      }
-    ],
+    isMockedId(skuListId)
+      ? null
+      : [
+          skuListId,
+          {
+            sort: ['created_at'],
+            pageNumber,
+            pageSize
+          }
+        ],
     {}
   )
 

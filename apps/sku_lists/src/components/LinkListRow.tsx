@@ -6,11 +6,13 @@ import {
   Dropdown,
   DropdownDivider,
   DropdownItem,
+  formatDate,
   formatDateRange,
   Icon,
   PageLayout,
   Td,
   Text,
+  Tooltip,
   Tr,
   useCoreSdkProvider,
   useOverlay,
@@ -48,12 +50,12 @@ export const LinkListRow = ({
   return (
     <Tr>
       <Td>
-        <Text weight='semibold' size='regular' tag='div'>
+        <Text weight='semibold' size='small' tag='div'>
           {link.name}
         </Text>
         <div
           style={{
-            width: '154px',
+            width: '210px',
             overflow: 'hidden',
             position: 'relative'
           }}
@@ -80,11 +82,37 @@ export const LinkListRow = ({
         <CopyToClipboard showValue={false} value={link?.url ?? ''} />
       </Td>
       <Td>
-        {formatDateRange({
-          rangeFrom: link?.starts_at,
-          rangeTo: link?.expires_at,
-          timezone: user?.timezone
-        })}
+        <Tooltip
+          label={
+            <Text size='small' weight='regular'>
+              {formatDateRange({
+                rangeFrom: link?.starts_at,
+                rangeTo: link?.expires_at,
+                timezone: user?.timezone
+              })}
+            </Text>
+          }
+          content={
+            <>
+              <Text tag='div' size='small'>
+                From:{' '}
+                {formatDate({
+                  isoDate: link.starts_at,
+                  timezone: user?.timezone,
+                  format: 'full'
+                })}
+              </Text>
+              <Text tag='div' size='small'>
+                To:{' '}
+                {formatDate({
+                  isoDate: link?.expires_at,
+                  timezone: user?.timezone,
+                  format: 'full'
+                })}
+              </Text>
+            </>
+          }
+        />
       </Td>
       <Td>
         <Badge variant={getBadgeVariant(link)}>{getLinkStatus(link)}</Badge>
