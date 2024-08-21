@@ -947,88 +947,6 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(terser@5.31.3)
 
-  apps/skus-old:
-    dependencies:
-      '@commercelayer/app-elements':
-        specifier: 2.2.5
-        version: 2.2.5(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
-      '@commercelayer/sdk':
-        specifier: 6.11.0
-        version: 6.11.0
-      '@hookform/resolvers':
-        specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      react-hook-form:
-        specifier: 7.52.2
-        version: 7.52.2(react@18.3.1)
-      swr:
-        specifier: ^2.2.5
-        version: 2.2.5(react@18.3.1)
-      type-fest:
-        specifier: ^4.24.0
-        version: 4.24.0
-      wouter:
-        specifier: ^3.3.1
-        version: 3.3.1(react@18.3.1)
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
-    devDependencies:
-      '@commercelayer/app-builder':
-        specifier: workspace:*
-        version: link:../../packages/app-builder
-      '@commercelayer/eslint-config-ts-react':
-        specifier: ^1.4.5
-        version: 1.4.5(@types/eslint@8.56.10)(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4)
-      '@testing-library/react':
-        specifier: ^16.0.0
-        version: 16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/lodash':
-        specifier: ^4.17.7
-        version: 4.17.7
-      '@types/node':
-        specifier: 22.1.0
-        version: 22.1.0
-      '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.3
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.0
-      '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.0(@types/node@22.1.0)(terser@5.31.3))
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.0
-      jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
-      rollup-plugin-external-globals:
-        specifier: ^0.11.0
-        version: 0.11.0(rollup@4.18.1)
-      typescript:
-        specifier: ^5.5.4
-        version: 5.5.4
-      vite:
-        specifier: ^5.4.0
-        version: 5.4.0(@types/node@22.1.0)(terser@5.31.3)
-      vite-tsconfig-paths:
-        specifier: ^5.0.1
-        version: 5.0.1(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0)(terser@5.31.3))
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(terser@5.31.3)
-
   apps/stock_transfers:
     dependencies:
       '@commercelayer/app-elements':
@@ -1608,17 +1526,15 @@ packages:
   '@commercelayer/sdk@5.36.0':
     resolution: {integrity: sha512-6FQtKMv+mLAbBTnqM2XG8kjJPk23JXXXX4Ikqm8pg4FWa5pLg+GudI6YuafUEbblzx749MNU7+swmnNx458URg==}
     engines: {node: '>=16 || ^14.17'}
+    deprecated: 5.x is no longer supported
 
   '@commercelayer/sdk@5.37.0':
     resolution: {integrity: sha512-fx3KUKlb34f1U4OvxlaYaI/R64Jm+Ruh5NpuKqRvu/HE5C967q4jqII36ZXst3YfYz8wrxK2rFl6UZc8jX4W1A==}
     engines: {node: '>=16 || ^14.17'}
+    deprecated: 5.x is no longer supported
 
   '@commercelayer/sdk@6.10.0':
     resolution: {integrity: sha512-p+QybRKRkpmhWwXxEohPWElpJ3SgvsAVLTYZ/tMWqEsZ7JkOqgyzarVZLBfPFN+xElDzHiXiYSfKhK8Vq/7EPA==}
-    engines: {node: '>=20'}
-
-  '@commercelayer/sdk@6.11.0':
-    resolution: {integrity: sha512-ITCq17o+ndf+rCcUVlzT+32OaSClVeBg9F4FlM6WjIKcsJ5bLWNq5gTdxMWPBFHrqknC1SlPVN/dG+42DYyV+w==}
     engines: {node: '>=20'}
 
   '@commercelayer/sdk@6.12.0':
@@ -1872,6 +1788,7 @@ packages:
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -1879,6 +1796,7 @@ packages:
 
   '@humanwhocodes/object-schema@2.0.2':
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
+    deprecated: Use @eslint/object-schema instead
 
   '@hutson/parse-repository-url@3.0.2':
     resolution: {integrity: sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==}
@@ -3703,6 +3621,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   glob@9.3.5:
     resolution: {integrity: sha512-e1LleDykUz2Iu+MTYdkSsuWX8lvAjAcs0Xef0lNIu0S2wOAzuTxCJtcd9S3cijlwYF18EsU3rzb8jPVobxDh9Q==}
@@ -3866,6 +3785,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -5163,6 +5083,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   rimraf@4.4.1:
@@ -6628,34 +6549,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@commercelayer/app-elements@2.2.5(@commercelayer/sdk@6.11.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
-    dependencies:
-      '@commercelayer/sdk': 6.11.0
-      '@types/lodash': 4.17.7
-      '@types/react': 18.3.3
-      '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/react-dom': 18.3.0
-      classnames: 2.5.1
-      jwt-decode: 4.0.0
-      lodash: 4.17.21
-      pluralize: 8.0.0
-      query-string: 9.0.0
-      react: 18.3.1
-      react-currency-input-field: 3.8.0(react@18.3.1)
-      react-datepicker: 7.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-dom: 18.3.1(react@18.3.1)
-      react-gtm-module: 2.0.11
-      react-hook-form: 7.52.2(react@18.3.1)
-      react-select: 5.8.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      swr: 2.2.5(react@18.3.1)
-      ts-invariant: 0.10.3
-      type-fest: 4.24.0
-      wouter: 3.3.1(react@18.3.1)
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - supports-color
-
   '@commercelayer/app-elements@2.2.5(@commercelayer/sdk@6.12.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
     dependencies:
       '@commercelayer/sdk': 6.12.0
@@ -6825,8 +6718,6 @@ snapshots:
       - debug
 
   '@commercelayer/sdk@6.10.0': {}
-
-  '@commercelayer/sdk@6.11.0': {}
 
   '@commercelayer/sdk@6.12.0': {}
 
@@ -9497,7 +9388,7 @@ snapshots:
   git-semver-tags@5.0.1:
     dependencies:
       meow: 8.1.2
-      semver: 7.6.3
+      semver: 6.3.1
 
   git-up@7.0.0:
     dependencies:
