@@ -2,6 +2,7 @@ import type { Resource } from '@commercelayer/sdk'
 
 export * from './resources/customers'
 export * from './resources/line_items'
+export * from './resources/links'
 export * from './resources/markets'
 export * from './resources/orders'
 export * from './resources/shipments'
