@@ -1,4 +1,8 @@
 import { ErrorNotFound } from '#pages/ErrorNotFound'
+import { LinkDetails } from '#pages/LinkDetails'
+import { LinkEdit } from '#pages/LinkEdit'
+import { LinkList } from '#pages/LinkList'
+import { LinkNew } from '#pages/LinkNew'
 import { SkuListDetails } from '#pages/SkuListDetails'
 import { SkuListEdit } from '#pages/SkuListEdit'
 import { SkuListNew } from '#pages/SkuListNew'
@@ -22,6 +26,10 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         <Route path={appRoutes.details.path} component={SkuListDetails} />
         <Route path={appRoutes.edit.path} component={SkuListEdit} />
         <Route path={appRoutes.new.path} component={SkuListNew} />
+        <Route path={appRoutes.linksList.path} component={LinkList} />
+        <Route path={appRoutes.linksNew.path} component={LinkNew} />
+        <Route path={appRoutes.linksDetails.path} component={LinkDetails} />
+        <Route path={appRoutes.linksEdit.path} component={LinkEdit} />
         <Route>
           <ErrorNotFound />
         </Route>
