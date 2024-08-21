@@ -30,6 +30,12 @@ export const App: FC<AppProps> = ({ routerBase }) => {
           },
           return: {
             component: async () => await import('#pages/CreateReturn')
+          },
+          linkDetails: {
+            component: async () => await import('#pages/LinkDetails')
+          },
+          linkEdit: {
+            component: async () => await import('#pages/LinkEdit')
           }
         }}
       />

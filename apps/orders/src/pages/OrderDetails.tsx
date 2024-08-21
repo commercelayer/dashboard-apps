@@ -26,12 +26,13 @@ import {
   useTokenProvider,
   type DropdownItemProps
 } from '@commercelayer/app-elements'
+import type { ToolbarItem } from '@commercelayer/app-elements/dist/ui/composite/Toolbar'
 import { useLocation, useRoute } from 'wouter'
 
 function OrderDetails(): JSX.Element {
   const {
     canUser,
-    settings: { mode },
+    settings: { mode, extras },
     user
   } = useTokenProvider()
   const [, setLocation] = useLocation()
@@ -44,19 +45,57 @@ function OrderDetails(): JSX.Element {
   const toolbar = useOrderToolbar({ order })
   const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
     useEditMetadataOverlay()
+
   if (canUser('update', 'orders')) {
+    if (
+      order.status === 'pending' &&
+      extras?.salesChannels != null &&
+      extras?.salesChannels.length > 0
+    ) {
+      const checkoutLinkButton: ToolbarItem = {
+        label: 'Checkout',
+        size: 'small',
+        variant: 'primary',
+        onClick: () => {
+          setLocation(appRoutes.linkDetails.makePath({ orderId }))
+        }
+      }
+
+      if (toolbar.buttons != null) {
+        toolbar.buttons.push(checkoutLinkButton)
+      } else {
+        toolbar.buttons = [checkoutLinkButton]
+      }
+    }
+
     const setMetadataDropDownItem: DropdownItemProps = {
       label: 'Set metadata',
       onClick: () => {
         showEditMetadataOverlay()
       }
     }
+
     if (toolbar.dropdownItems != null) {
       toolbar.dropdownItems[toolbar.dropdownItems.length - 1]?.push(
         setMetadataDropDownItem
       )
     } else {
       toolbar.dropdownItems = [[setMetadataDropDownItem]]
+    }
+
+    const checkoutLinkDropDownItem: DropdownItemProps = {
+      label: 'Checkout link',
+      onClick: () => {
+        setLocation(appRoutes.linkDetails.makePath({ orderId }))
+      }
+    }
+
+    if (
+      order.status === 'pending' &&
+      extras?.salesChannels != null &&
+      extras?.salesChannels.length > 0
+    ) {
+      toolbar.dropdownItems.push([checkoutLinkDropDownItem])
     }
   }
 
