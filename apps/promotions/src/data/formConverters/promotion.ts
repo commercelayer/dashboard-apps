@@ -18,7 +18,17 @@ export function promotionToFormValues(promotion?: Promotion) {
     reference:
       promotion.reference != null && promotion.reference !== ''
         ? promotion.reference
-        : null
+        : null,
+    rules:
+      // @ts-expect-error TODO: flex_promotions
+      promotion.rules != null
+        ? JSON.stringify(
+            // @ts-expect-error TODO: flex_promotions
+            promotion.rules,
+            undefined,
+            2
+          )
+        : undefined
   }
 }
 
@@ -44,6 +54,10 @@ export function formValuesToPromotion(
       formValues.reference !== ''
         ? formValues.reference
         : null,
+    rules:
+      'rules' in formValues && formValues.rules != null
+        ? JSON.parse(formValues.rules as string)
+        : undefined,
     priority:
       'priority' in formValues && formValues.priority != null
         ? formValues.priority
