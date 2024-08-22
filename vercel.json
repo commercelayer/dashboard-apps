@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm build:apps",
+  "buildCommand": "pnpm build:apps && node packages/app-builder/preview-link-stg.js",
   "outputDirectory": "dist",
   "rewrites": [
     {
