@@ -20,6 +20,7 @@ import {
   Dropdown,
   DropdownItem,
   Icon,
+  Input,
   ListDetailsItem,
   ListItem,
   PageLayout,
@@ -39,7 +40,7 @@ import {
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useLocation } from 'wouter'
 
 function Page(
@@ -61,6 +62,9 @@ function Page(
 
   const displayStatus = useDisplayStatus(promotion.id)
   const { sdkClient } = useCoreSdkProvider()
+  const {
+    settings: { accessToken, domain, organizationSlug }
+  } = useTokenProvider()
 
   const { show: showDeleteOverlay, Overlay: DeleteOverlay } =
     useDeletePromotionOverlay()
@@ -83,15 +87,43 @@ function Page(
             label: displayStatus.isEnabled ? 'Disable' : 'Enable',
             size: 'small',
             onClick: () => {
-              void sdkClient[promotion.type]
-                .update({
-                  id: promotion.id,
-                  _disable: displayStatus.isEnabled,
-                  _enable: !displayStatus.isEnabled
-                })
-                .then(() => {
+              // @ts-expect-error TODO: flex_promotions
+              if (promotion.type === 'flex_promotions') {
+                void fetch(
+                  // @ts-expect-error TODO: flex_promotions
+                  `https://${organizationSlug}.${domain}/api/flex_promotions/${promotion.id}`,
+                  {
+                    method: 'PATCH',
+                    headers: {
+                      authorization: `Bearer ${accessToken}`,
+                      'content-type': 'application/vnd.api+json'
+                    },
+                    body: JSON.stringify({
+                      data: {
+                        type: 'flex_promotions',
+                        // @ts-expect-error TODO: flex_promotions
+                        id: promotion.id,
+                        attributes: {
+                          _disable: displayStatus.isEnabled,
+                          _enable: !displayStatus.isEnabled
+                        }
+                      }
+                    })
+                  }
+                ).then(() => {
                   void mutatePromotion()
                 })
+              } else {
+                void sdkClient[promotion.type]
+                  .update({
+                    id: promotion.id,
+                    _disable: displayStatus.isEnabled,
+                    _enable: !displayStatus.isEnabled
+                  })
+                  .then(() => {
+                    void mutatePromotion()
+                  })
+              }
             }
           }
         ],
@@ -134,12 +166,16 @@ function Page(
         <DeleteOverlay promotion={promotion} />
 
         <Spacer top='14'>
-          {!isLoadingRules && !hasRules && !viaApi && (
-            <Alert status='warning'>
-              Define activation rules below to prevent application to all
-              orders.
-            </Alert>
-          )}
+          {!isLoadingRules &&
+            !hasRules &&
+            !viaApi &&
+            // @ts-expect-error TODO: flex_promotions
+            promotion.type !== 'flex_promotions' && (
+              <Alert status='warning'>
+                Define activation rules below to prevent application to all
+                orders.
+              </Alert>
+            )}
 
           {viaApi && (
             <Alert status='info'>
@@ -157,9 +193,38 @@ function Page(
           <SectionInfo promotion={promotion} />
         </Spacer>
 
-        <Spacer top='14'>
-          <SectionActivationRules promotionId={props.params.promotionId} />
-        </Spacer>
+        {
+          // @ts-expect-error TODO: flex_promotions
+          promotion.type === 'flex_promotions' && (
+            <Spacer top='14'>
+              <Section title='Rules' border='none'>
+                <Text size='small'>
+                  <Card overflow='visible' gap='4'>
+                    <pre style={{ overflowX: 'auto' }}>
+                      {
+                        // @ts-expect-error TODO: flex_promotions
+                        JSON.stringify(promotion.rules, undefined, 2)
+                      }
+                    </pre>
+                  </Card>
+                </Text>
+              </Section>
+            </Spacer>
+          )
+        }
+
+        {
+          // @ts-expect-error TODO: flex_promotions
+          promotion.type !== 'flex_promotions' && (
+            <>
+              <Spacer top='14'>
+                <SectionActivationRules
+                  promotionId={props.params.promotionId}
+                />
+              </Spacer>
+            </>
+          )
+        }
 
         <Spacer top='14'>
           <SectionCoupon promotion={promotion} />
@@ -196,8 +261,75 @@ function Page(
             </Spacer>
           </>
         )}
+
+        <Spacer top='14'>
+          <SectionCheck promotion={promotion} />
+        </Spacer>
       </SkeletonTemplate>
     </PageLayout>
+  )
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function SectionCheck({ promotion }: { promotion: Promotion }) {
+  const {
+    settings: { accessToken, domain, organizationSlug }
+  } = useTokenProvider()
+
+  const [results, setResults] = useState<any>()
+
+  const matches = results?.data?.filter((d: { match: boolean }) => d.match)
+
+  return (
+    <Section title='Check'>
+      <Spacer top='4'>
+        <form
+          className='flex gap-2'
+          onSubmit={(event) => {
+            event.preventDefault()
+            const orderId = new FormData(event.currentTarget).get('orderId')
+
+            void fetch(
+              `https://${organizationSlug}.${domain}/api/flex_promotions/${promotion.id}/check/${orderId?.toString()}`,
+              {
+                method: 'GET',
+                headers: {
+                  authorization: `Bearer ${accessToken}`,
+                  'content-type': 'application/vnd.api+json'
+                }
+              }
+            )
+              .then(async (response) => await response.json())
+              .then(async (json) => {
+                setResults(json)
+              })
+          }}
+        >
+          <Input name='orderId' placeholder='Order id' />
+          <Button type='submit' style={{ border: 'none' }}>
+            Check
+          </Button>
+        </form>
+        {results != null && (
+          <Spacer top='4'>
+            <Text size='small'>
+              <Spacer bottom='1'>
+                {matches == null
+                  ? 'Oops, something went wrong 😱'
+                  : matches.length > 0
+                    ? 'Hurray! It matches 🎉'
+                    : "So sad, it doesn't match 😢"}
+              </Spacer>
+              <Card overflow='visible' gap='4'>
+                <pre style={{ overflowX: 'auto' }}>
+                  {JSON.stringify(results, undefined, 2)}
+                </pre>
+              </Card>
+            </Text>
+          </Spacer>
+        )}
+      </Spacer>
+    </Section>
   )
 }
 
