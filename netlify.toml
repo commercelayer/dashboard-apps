@@ -1,6 +1,6 @@
 # https://docs.netlify.com/configure-builds/file-based-configuration/
 [build]
-command = "pnpm build:apps"
+command = "pnpm build:apps && node packages/app-builder/preview-link-stg.js"
 publish = "dist"
 [[redirects]]
 from = "/:appSlug/*"
