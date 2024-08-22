@@ -1,17 +1,14 @@
 import {
   Button,
-  Dropdown,
-  DropdownDivider,
-  DropdownItem,
   EmptyState,
-  Icon,
   PageLayout,
   SkeletonTemplate,
   Spacer,
   goBack,
   useCoreSdkProvider,
   useOverlay,
-  useTokenProvider
+  useTokenProvider,
+  type PageHeadingProps
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
@@ -71,43 +68,32 @@ export function PriceDetails(): JSX.Element {
 
   const pageTitle = price?.sku?.name
 
-  const contextMenuEdit = canUser('update', 'prices') && (
-    <DropdownItem
-      label='Edit'
-      onClick={() => {
-        setLocation(appRoutes.priceEdit.makePath({ priceListId, priceId }))
-      }}
-    />
-  )
+  const pageToolbar: PageHeadingProps['toolbar'] = {
+    buttons: [],
+    dropdownItems: []
+  }
 
-  const contextMenuDivider = canUser('update', 'prices') &&
-    canUser('destroy', 'prices') && <DropdownDivider />
-
-  const contextMenuDelete = canUser('destroy', 'prices') && (
-    <DropdownItem
-      label='Delete'
-      onClick={() => {
-        open()
-      }}
-    />
-  )
-
-  const contextMenu = (
-    <Dropdown
-      dropdownLabel={
-        <Button variant='secondary' size='small'>
-          <Icon name='dotsThree' size={16} weight='bold' />
-        </Button>
+  if (canUser('update', 'prices')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Edit',
+        onClick: () => {
+          setLocation(appRoutes.priceEdit.makePath({ priceListId, priceId }))
+        }
       }
-      dropdownItems={
-        <>
-          {contextMenuEdit}
-          {contextMenuDivider}
-          {contextMenuDelete}
-        </>
+    ])
+  }
+
+  if (canUser('destroy', 'prices')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Delete',
+        onClick: () => {
+          open()
+        }
       }
-    />
-  )
+    ])
+  }
 
   return (
     <PageLayout
@@ -130,7 +116,7 @@ export function PriceDetails(): JSX.Element {
         label: 'Prices',
         icon: 'arrowLeft'
       }}
-      actionButton={contextMenu}
+      toolbar={pageToolbar}
       scrollToTop
       gap='only-top'
     >

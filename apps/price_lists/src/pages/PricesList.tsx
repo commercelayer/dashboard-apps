@@ -5,9 +5,6 @@ import { appRoutes } from '#data/routes'
 import { usePriceListDetails } from '#hooks/usePriceListDetails'
 import {
   Button,
-  Dropdown,
-  DropdownDivider,
-  DropdownItem,
   EmptyState,
   Icon,
   PageLayout,
@@ -15,7 +12,8 @@ import {
   useCoreSdkProvider,
   useOverlay,
   useResourceFilters,
-  useTokenProvider
+  useTokenProvider,
+  type PageHeadingProps
 } from '@commercelayer/app-elements'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
@@ -71,45 +69,34 @@ export function PricesList(): JSX.Element {
     )
   }
 
-  const contextMenuEdit = canUser('update', 'price_lists') && (
-    <DropdownItem
-      label='Edit'
-      onClick={() => {
-        setLocation(
-          appRoutes.priceListEdit.makePath({ priceListId: priceList.id })
-        )
-      }}
-    />
-  )
+  const pageToolbar: PageHeadingProps['toolbar'] = {
+    buttons: [],
+    dropdownItems: []
+  }
 
-  const contextMenuDivider = canUser('update', 'price_lists') &&
-    canUser('destroy', 'price_lists') && <DropdownDivider />
-
-  const contextMenuDelete = canUser('destroy', 'price_lists') && (
-    <DropdownItem
-      label='Delete'
-      onClick={() => {
-        open()
-      }}
-    />
-  )
-
-  const contextMenu = (
-    <Dropdown
-      dropdownLabel={
-        <Button variant='secondary' size='small'>
-          <Icon name='dotsThree' size={16} weight='bold' />
-        </Button>
+  if (canUser('update', 'price_lists')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Edit',
+        onClick: () => {
+          setLocation(
+            appRoutes.priceListEdit.makePath({ priceListId: priceList.id })
+          )
+        }
       }
-      dropdownItems={
-        <>
-          {contextMenuEdit}
-          {contextMenuDivider}
-          {contextMenuDelete}
-        </>
+    ])
+  }
+
+  if (canUser('destroy', 'price_lists')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Delete',
+        onClick: () => {
+          open()
+        }
       }
-    />
-  )
+    ])
+  }
 
   const pageTitle = priceList.name
 
@@ -135,7 +122,7 @@ export function PricesList(): JSX.Element {
         label: 'Price lists',
         icon: 'arrowLeft'
       }}
-      actionButton={contextMenu}
+      toolbar={pageToolbar}
       scrollToTop
     >
       <SearchWithNav

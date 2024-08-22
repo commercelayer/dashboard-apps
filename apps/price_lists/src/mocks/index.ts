@@ -1,8 +1,8 @@
-import type { Resource } from '@commercelayer/sdk/lib/cjs/resource'
+import type { Resource } from '@commercelayer/sdk'
 
 export * from './resources/priceLists'
-export * from './resources/priceTiers'
 export * from './resources/prices'
+export * from './resources/priceTiers'
 export * from './resources/skus'
 
 export const isMockedId = (id: string): boolean => {
