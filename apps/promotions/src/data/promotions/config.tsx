@@ -7,6 +7,7 @@ import buy_x_pay_y_promotions from './configs/buy_x_pay_y_promotions'
 import external_promotions from './configs/external_promotions'
 import fixed_amount_promotions from './configs/fixed_amount_promotions'
 import fixed_price_promotions from './configs/fixed_price_promotions'
+import flex_promotions from './configs/flex_promotions'
 import free_gift_promotions from './configs/free_gift_promotions'
 import free_shipping_promotions from './configs/free_shipping_promotions'
 import percentage_discount_promotions from './configs/percentage_discount_promotions'
@@ -22,7 +23,8 @@ export const promotionConfig: PromotionConfig = {
   ...free_gift_promotions,
   ...fixed_price_promotions,
   ...buy_x_pay_y_promotions,
-  ...external_promotions
+  ...external_promotions,
+  ...flex_promotions
 }
 
 type Sanitize<PT extends PromotionType> = Replace<
@@ -32,7 +34,9 @@ type Sanitize<PT extends PromotionType> = Replace<
   { all: true }
 >
 
-export type PromotionType = Extract<ResourceTypeLock, `${string}_promotions`>
+export type PromotionType =
+  | Extract<ResourceTypeLock, `${string}_promotions`>
+  | 'flex_promotions'
 
 export type PromotionConfig = {
   [type in PromotionType]: {

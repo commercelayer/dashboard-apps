@@ -47,8 +47,9 @@ function Page(props: PageProps<typeof appRoutes.newSelectType>): JSX.Element {
       </Spacer>
       <Spacer top='10'>
         <Section titleSize='small' title='More' border='none'>
-          <Grid columns='1'>
+          <Grid columns='2'>
             <LinkTo promotionType='external_promotions' />
+            <LinkTo promotionType='flex_promotions' />
           </Grid>
         </Section>
       </Spacer>
@@ -64,7 +65,10 @@ function LinkTo({
   const { canUser } = useTokenProvider()
   const config = promotionConfig[promotionType]
 
-  if (!canUser('create', promotionType)) {
+  if (
+    promotionType !== 'flex_promotions' &&
+    !canUser('create', promotionType)
+  ) {
     return null
   }
 

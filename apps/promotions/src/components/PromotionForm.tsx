@@ -17,7 +17,8 @@ import {
   Section,
   Spacer,
   Text,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
@@ -39,6 +40,9 @@ export function PromotionForm({
   promotionId
 }: Props): React.ReactNode {
   const { sdkClient } = useCoreSdkProvider()
+  const {
+    settings: { accessToken, organizationSlug, domain }
+  } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { promotion } = usePromotion(promotionId)
   const methods = useForm<z.infer<typeof promotionConfig.formType>>({
@@ -61,8 +65,78 @@ export function PromotionForm({
     <HookedForm
       {...methods}
       onSubmit={async (formValues): Promise<void> => {
-        const resource = sdkClient[promotionConfig.type]
         let promotion: Promotion
+
+        if (promotionConfig.type === 'flex_promotions') {
+          if (isCreatingNewPromotion) {
+            const response = await fetch(
+              `https://${organizationSlug}.${domain}/api/flex_promotions`,
+              {
+                method: 'POST',
+                headers: {
+                  authorization: `Bearer ${accessToken}`,
+                  'content-type': 'application/vnd.api+json'
+                },
+                body: JSON.stringify({
+                  data: {
+                    type: 'flex_promotions',
+                    attributes: {
+                      ...formValuesToPromotion(formValues),
+                      sku_list: undefined,
+                      _disable: true,
+                      reference_origin: appPromotionsReferenceOrigin
+                    }
+                  }
+                })
+              }
+            )
+
+            const {
+              data: { id }
+            } = await response.json()
+
+            setLocation(
+              appRoutes.promotionDetails.makePath({
+                promotionId: id
+              })
+            )
+          } else {
+            const updateResponse = await fetch(
+              `https://${organizationSlug}.${domain}/api/flex_promotions/${promotionId}`,
+              {
+                method: 'PATCH',
+                headers: {
+                  authorization: `Bearer ${accessToken}`,
+                  'content-type': 'application/vnd.api+json'
+                },
+                body: JSON.stringify({
+                  data: {
+                    type: 'flex_promotions',
+                    id: promotionId,
+                    attributes: {
+                      ...formValuesToPromotion(formValues),
+                      sku_list: undefined
+                    }
+                  }
+                })
+              }
+            )
+
+            const {
+              data: { id }
+            } = await updateResponse.json()
+
+            setLocation(
+              appRoutes.promotionDetails.makePath({
+                promotionId: id
+              })
+            )
+          }
+
+          return
+        }
+
+        const resource = sdkClient[promotionConfig.type]
 
         if (isCreatingNewPromotion) {
           // @ts-expect-error // TODO: I need to fix this
