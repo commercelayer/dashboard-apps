@@ -95,7 +95,10 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
       )
 
     return renderTotalRow({
-      label: 'Shipping method',
+      label:
+        order.shipments?.length === 1
+          ? (order.shipments[0]?.shipping_method?.name ?? 'Shipping')
+          : 'Shipping',
       value:
         canEditShipments && !hasInvalidShipments ? (
           <>
