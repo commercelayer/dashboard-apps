@@ -19,6 +19,7 @@ function getReturnStatusBadgeVariant(
 ): BadgeProps['variant'] {
   switch (status) {
     case 'received':
+    case 'refunded':
       return 'success-solid'
     case 'draft':
     case 'cancelled':
