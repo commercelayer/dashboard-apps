@@ -370,8 +370,8 @@ importers:
   apps/orders:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.1.1
-        version: 2.1.1(@commercelayer/sdk@6.10.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
+        specifier: ^2.2.8
+        version: 2.2.8(@commercelayer/sdk@6.10.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
       '@commercelayer/sdk':
         specifier: ^6.10.0
         version: 6.10.0
@@ -6359,34 +6359,6 @@ snapshots:
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
       type-fest: 4.23.0
-      wouter: 3.3.1(react@18.3.1)
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - supports-color
-
-  '@commercelayer/app-elements@2.1.1(@commercelayer/sdk@6.10.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
-    dependencies:
-      '@commercelayer/sdk': 6.10.0
-      '@types/lodash': 4.17.7
-      '@types/react': 18.3.3
-      '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/react-dom': 18.3.0
-      classnames: 2.5.1
-      jwt-decode: 4.0.0
-      lodash: 4.17.21
-      pluralize: 8.0.0
-      query-string: 9.0.0
-      react: 18.3.1
-      react-currency-input-field: 3.8.0(react@18.3.1)
-      react-datepicker: 6.9.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-dom: 18.3.1(react@18.3.1)
-      react-gtm-module: 2.0.11
-      react-hook-form: 7.52.1(react@18.3.1)
-      react-select: 5.8.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      swr: 2.2.5(react@18.3.1)
-      ts-invariant: 0.10.3
-      type-fest: 4.22.1
       wouter: 3.3.1(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:
