@@ -28,7 +28,7 @@
   "dependencies": {
     "@commercelayer/app-elements": "^2.2.8",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
-    "@commercelayer/sdk": "6.13.0",
+    "@commercelayer/sdk": "6.14.0",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "@vitejs/plugin-react": "^4.3.1",
