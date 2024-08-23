@@ -33,7 +33,6 @@ function getPaymentMethodName(
 
 export function PaymentMethod({ customerPaymentSource }: Props): JSX.Element {
   const paymentInstrument = paymentInstrumentType.safeParse(
-    // @ts-expect-error At the moment 'payment_instrument' does not exist on type 'SatispayPayment'.
     customerPaymentSource.payment_source?.payment_instrument
   )
 

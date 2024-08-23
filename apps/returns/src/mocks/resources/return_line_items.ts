@@ -9,6 +9,7 @@ export const makeReturnLineItem = (): ReturnLineItem => {
       'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
     name: 'I do not know the name of the product',
     quantity: 1,
-    return_reason: ['The product received does not match what I ordered.']
+    return_reason: ['The product received does not match what I ordered.'],
+    total_amount_float: 10
   }
 }

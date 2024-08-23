@@ -1,17 +1,14 @@
 import {
   Button,
-  Dropdown,
-  DropdownDivider,
-  DropdownItem,
   EmptyState,
-  Icon,
   PageLayout,
   SkeletonTemplate,
   Spacer,
   goBack,
   useCoreSdkProvider,
   useOverlay,
-  useTokenProvider
+  useTokenProvider,
+  type PageHeadingProps
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
@@ -70,45 +67,34 @@ export const StockItemDetails: FC = () => {
 
   const pageTitle = stockItem?.sku?.name
 
-  const contextMenuEdit = canUser('update', 'stock_items') && (
-    <DropdownItem
-      label='Edit'
-      onClick={() => {
-        setLocation(
-          appRoutes.editStockItem.makePath(stockLocationId, stockItemId)
-        )
-      }}
-    />
-  )
+  const pageToolbar: PageHeadingProps['toolbar'] = {
+    buttons: [],
+    dropdownItems: []
+  }
 
-  const contextMenuDivider = canUser('update', 'stock_items') &&
-    canUser('destroy', 'stock_items') && <DropdownDivider />
-
-  const contextMenuDelete = canUser('destroy', 'stock_items') && (
-    <DropdownItem
-      label='Delete'
-      onClick={() => {
-        open()
-      }}
-    />
-  )
-
-  const contextMenu = (
-    <Dropdown
-      dropdownLabel={
-        <Button variant='secondary' size='small'>
-          <Icon name='dotsThree' size={16} weight='bold' />
-        </Button>
+  if (canUser('update', 'stock_items')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Edit',
+        onClick: () => {
+          setLocation(
+            appRoutes.editStockItem.makePath(stockLocationId, stockItemId)
+          )
+        }
       }
-      dropdownItems={
-        <>
-          {contextMenuEdit}
-          {contextMenuDivider}
-          {contextMenuDelete}
-        </>
+    ])
+  }
+
+  if (canUser('destroy', 'stock_items')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Delete',
+        onClick: () => {
+          open()
+        }
       }
-    />
-  )
+    ])
+  }
 
   return (
     <PageLayout
@@ -132,7 +118,7 @@ export const StockItemDetails: FC = () => {
         label: 'Stock location',
         icon: 'arrowLeft'
       }}
-      actionButton={contextMenu}
+      toolbar={pageToolbar}
       scrollToTop
       gap='only-top'
     >

@@ -6,15 +6,12 @@ import { appRoutes } from '#data/routes'
 import { useWebhookDetails } from '#hooks/useWebhookDetails'
 import {
   Button,
-  Dropdown,
-  DropdownDivider,
-  DropdownItem,
   EmptyState,
-  Icon,
   PageLayout,
   SkeletonTemplate,
   Spacer,
-  useTokenProvider
+  useTokenProvider,
+  type PageHeadingProps
 } from '@commercelayer/app-elements'
 import type { FC } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
@@ -52,43 +49,32 @@ export const WebhookDetails: FC = () => {
     )
   }
 
-  const contextMenuEdit = canUser('update', 'webhooks') && (
-    <DropdownItem
-      label='Edit'
-      onClick={() => {
-        setLocation(appRoutes.editWebhook.makePath({ webhookId }))
-      }}
-    />
-  )
+  const pageToolbar: PageHeadingProps['toolbar'] = {
+    buttons: [],
+    dropdownItems: []
+  }
 
-  const contextMenuDivider = canUser('update', 'webhooks') &&
-    canUser('destroy', 'webhooks') && <DropdownDivider />
-
-  const contextMenuDelete = canUser('destroy', 'webhooks') && (
-    <DropdownItem
-      label='Delete'
-      onClick={() => {
-        setLocation(appRoutes.deleteWebhook.makePath({ webhookId }))
-      }}
-    />
-  )
-
-  const contextMenu = (
-    <Dropdown
-      dropdownLabel={
-        <Button variant='secondary' size='small'>
-          <Icon name='dotsThree' size={16} weight='bold' />
-        </Button>
+  if (canUser('update', 'webhooks')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Edit',
+        onClick: () => {
+          setLocation(appRoutes.editWebhook.makePath({ webhookId }))
+        }
       }
-      dropdownItems={
-        <>
-          {contextMenuEdit}
-          {contextMenuDivider}
-          {contextMenuDelete}
-        </>
+    ])
+  }
+
+  if (canUser('destroy', 'webhooks')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Delete',
+        onClick: () => {
+          setLocation(appRoutes.deleteWebhook.makePath({ webhookId }))
+        }
       }
-    />
-  )
+    ])
+  }
 
   return webhook == null ? (
     <ErrorNotFound />
@@ -104,7 +90,7 @@ export const WebhookDetails: FC = () => {
           label: `Webhooks`,
           icon: 'arrowLeft'
         }}
-        actionButton={contextMenu}
+        toolbar={pageToolbar}
       >
         <Spacer bottom='12'>
           <WebhookTopCard />

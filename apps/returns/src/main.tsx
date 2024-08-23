@@ -26,7 +26,6 @@ const Main: React.FC<ClAppProps> = (props) => (
           kind='returns'
           appSlug='returns'
           devMode={isDev}
-          reauthenticateOnInvalidAuth={!isDev && props?.onInvalidAuth == null}
           loadingElement={<PageSkeleton />}
           {...props}
         >

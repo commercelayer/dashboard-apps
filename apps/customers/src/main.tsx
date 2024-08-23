@@ -25,7 +25,6 @@ const Main: React.FC<ClAppProps> = (props) => (
           kind='customers'
           appSlug='customers'
           devMode={isDev}
-          reauthenticateOnInvalidAuth={!isDev && props?.onInvalidAuth == null}
           loadingElement={<div />}
           {...props}
         >
