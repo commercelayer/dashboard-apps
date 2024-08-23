@@ -15,32 +15,32 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "2.2.0",
-    "@commercelayer/sdk": "6.11.0",
+    "@commercelayer/app-elements": "2.2.8",
+    "@commercelayer/sdk": "6.14.0",
     "@hookform/resolvers": "^3.9.0",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.52.1",
+    "react-hook-form": "^7.52.2",
     "swr": "^2.2.5",
-    "type-fest": "^4.23.0",
-    "wouter": "^3.3.1",
+    "type-fest": "^4.25.0",
+    "wouter": "^3.3.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@commercelayer/app-builder": "workspace:*",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@types/lodash": "^4.17.7",
-    "@types/node": "20.12.11",
-    "@types/react": "^18.3.3",
+    "@types/node": "22.5.0",
+    "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.57.0",
     "jsdom": "^24.1.1",
-    "rollup-plugin-external-globals": "^0.11.0",
+    "rollup-plugin-external-globals": "^0.12.0",
     "typescript": "^5.5.4",
-    "vite": "^5.3.5",
-    "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^2.0.4"
+    "vite": "^5.4.2",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.0.5"
   }
 }
