@@ -944,20 +944,20 @@ importers:
   apps/stock_transfers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^1.24.3
-        version: 1.24.3(@commercelayer/sdk@5.36.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))
+        specifier: ^2.2.8
+        version: 2.2.8(@commercelayer/sdk@6.13.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 5.36.0
-        version: 5.36.0
+        specifier: 6.13.0
+        version: 6.13.0
       '@hookform/resolvers':
-        specifier: ^3.3.4
-        version: 3.9.0(react-hook-form@7.52.1(react@18.3.1))
+        specifier: ^3.9.0
+        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
       query-string:
-        specifier: ^9.0.0
-        version: 9.0.0
+        specifier: ^9.1.0
+        version: 9.1.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -965,17 +965,17 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.51.4
-        version: 7.52.1(react@18.3.1)
+        specifier: ^7.52.2
+        version: 7.52.2(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
       type-fest:
-        specifier: ^4.18.2
-        version: 4.22.1
+        specifier: ^4.25.0
+        version: 4.25.0
       wouter:
-        specifier: ^3.1.2
-        version: 3.3.1(react@18.3.1)
+        specifier: ^3.3.3
+        version: 3.3.3(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -985,43 +985,43 @@ importers:
         version: link:../../packages/app-builder
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
-        version: 1.4.5(@types/eslint@8.56.10)(eslint@8.57.0)(react@18.3.1)(typescript@5.5.3)
+        version: 1.4.5(@types/eslint@8.56.10)(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4)
       '@types/lodash':
-        specifier: ^4.17.1
+        specifier: ^4.17.7
         version: 4.17.7
       '@types/node':
-        specifier: ^20.12.11
-        version: 20.14.11
+        specifier: ^22.5.0
+        version: 22.5.0
       '@types/react':
-        specifier: ^18.3.1
-        version: 18.3.3
+        specifier: ^18.3.4
+        version: 18.3.4
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.2.1
-        version: 4.3.1(vite@5.3.4(@types/node@20.14.11)(terser@5.31.3))
+        specifier: ^4.3.1
+        version: 4.3.1(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.0.0
-        version: 24.1.0
+        specifier: ^24.1.1
+        version: 24.1.1
       rollup-plugin-external-globals:
-        specifier: ^0.10.0
-        version: 0.10.0(rollup@4.21.0)
+        specifier: ^0.12.0
+        version: 0.12.0(rollup@4.21.0)
       typescript:
-        specifier: ^5.4.5
-        version: 5.5.3
+        specifier: ^5.5.4
+        version: 5.5.4
       vite:
-        specifier: ^5.2.11
-        version: 5.3.4(@types/node@20.14.11)(terser@5.31.3)
+        specifier: ^5.4.2
+        version: 5.4.2(@types/node@22.5.0)(terser@5.31.3)
       vite-tsconfig-paths:
-        specifier: ^4.3.2
-        version: 4.3.2(typescript@5.5.3)(vite@5.3.4(@types/node@20.14.11)(terser@5.31.3))
+        specifier: ^5.0.1
+        version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
-        specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.11)(jsdom@24.1.0)(terser@5.31.3)
+        specifier: ^2.0.5
+        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
 
   apps/tags:
     dependencies:
@@ -1416,18 +1416,6 @@ packages:
     resolution: {integrity: sha512-xm8XrMKz0IlUdocVbYJe0Z9xEgidU7msskG8BbhnTPK/HZ2z/7FP7ykqPgrUH+C+r414mNfNWam1f2vqOjqjYQ==}
     engines: {node: '>=6.9.0'}
 
-  '@commercelayer/app-elements@1.24.3':
-    resolution: {integrity: sha512-r/qSZHT0D8qK2YtZqA7rUiXC40wcssoBb6p/6YNFNMiGUCwxB4TeU+V4oE9O4cCuRcHYk9chFnaLOfd21t6Fsg==}
-    engines: {node: '>=18', pnpm: '>=7'}
-    peerDependencies:
-      '@commercelayer/sdk': ^5.x
-      query-string: ^8.2.x
-      react: ^18.2.x
-      react-dom: ^18.2.x
-      react-gtm-module: ^2.x
-      react-hook-form: ^7.50.x
-      wouter: ^3.x
-
   '@commercelayer/app-elements@2.2.0':
     resolution: {integrity: sha512-egkZPERdMw9N8mDlUbbgrYb4euTuca0xYkGXrvwBr/z8vhZTfaJ+nLgzU51kJ5X/Q/Z1mTFNGvlo5Ouqllz3hw==}
     engines: {node: '>=18', pnpm: '>=7'}
@@ -1480,10 +1468,6 @@ packages:
   '@commercelayer/js-auth@6.3.1':
     resolution: {integrity: sha512-f+SrlerLE+fUtyGeSe90y1BIuekF962aDPA6JCsBFm34S7nfWp8VW0IUvPAiZJGNVtlDFuWrW0VB5qN9z49bKQ==}
     engines: {node: '>=18.0.0'}
-
-  '@commercelayer/sdk@5.36.0':
-    resolution: {integrity: sha512-6FQtKMv+mLAbBTnqM2XG8kjJPk23JXXXX4Ikqm8pg4FWa5pLg+GudI6YuafUEbblzx749MNU7+swmnNx458URg==}
-    engines: {node: '>=16 || ^14.17'}
 
   '@commercelayer/sdk@6.10.0':
     resolution: {integrity: sha512-p+QybRKRkpmhWwXxEohPWElpJ3SgvsAVLTYZ/tMWqEsZ7JkOqgyzarVZLBfPFN+xElDzHiXiYSfKhK8Vq/7EPA==}
@@ -2635,9 +2619,6 @@ packages:
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
-
-  axios@1.6.7:
-    resolution: {integrity: sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==}
 
   axios@1.7.2:
     resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
@@ -4813,10 +4794,6 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
-  query-string@9.0.0:
-    resolution: {integrity: sha512-4EWwcRGsO2H+yzq6ddHcVqkCQ2EFUSfDMEjF8ryp8ReymyZhIuaFRGLomeOQLkrzacMHoyky2HW0Qe30UbzkKw==}
-    engines: {node: '>=18'}
-
   query-string@9.1.0:
     resolution: {integrity: sha512-t6dqMECpCkqfyv2FfwVS1xcB6lgXW/0XZSaKdsCNGYkqMO76AFiJEg4vINzoDKcZa6MS7JX+OHIjwh06K5vczw==}
     engines: {node: '>=18'}
@@ -4835,12 +4812,6 @@ packages:
     resolution: {integrity: sha512-DKSIjacrvgUDOpuB16b+OVDvp5pbCt+s+RHJgpRZCHNhzg1yBpRUoy4fbnXpeOj0kdbwf5BaXCr2mAtxEujfhg==}
     peerDependencies:
       react: ^16.9.0 || ^17.0.0 || ^18.0.0
-
-  react-datepicker@6.9.0:
-    resolution: {integrity: sha512-QTxuzeem7BUfVFWv+g5WuvzT0c5BPo+XTCNbMTZKSZQLU+cMMwSUHwspaxuIcDlwNcOH0tiJ+bh1fJ2yxOGYWA==}
-    peerDependencies:
-      react: ^16.9.0 || ^17 || ^18
-      react-dom: ^16.9.0 || ^17 || ^18
 
   react-datepicker@7.3.0:
     resolution: {integrity: sha512-EqRKLAtLZUTztiq6a+tjSjQX9ES0Xd229JPckAtyZZ4GoY3rtvNWAzkYZnQUf6zTWT50Ki0+t+W9VRQIkSJLfg==}
@@ -5020,11 +4991,6 @@ packages:
     resolution: {integrity: sha512-Gk8NlF062+T9CqNGn6h4tls3k6T1+/nXdOcSZVikNVtlRdYpA7wRJJMoXmuvOnLW844rPjdQ7JgXCYM6PPC/og==}
     engines: {node: '>=14'}
     hasBin: true
-
-  rollup-plugin-external-globals@0.10.0:
-    resolution: {integrity: sha512-RXlupZrmn97AaaS5dWnktkjM+Iy+od0E+8L0mUkMIs3iuoUXNJebueQocQKV7Ircd54fSGGmkBaXwNzY05J1yQ==}
-    peerDependencies:
-      rollup: ^2.25.0 || ^3.3.0 || ^4.1.4
 
   rollup-plugin-external-globals@0.11.0:
     resolution: {integrity: sha512-LR+sH2WkgWMPxsA5o5rT7uW7BeWXSeygLe60QQi9qoN/ufaCuHDaVOIbndIkqDPnZt/wZugJh5DCzkZFdSWlLQ==}
@@ -6220,34 +6186,6 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@commercelayer/app-elements@1.24.3(@commercelayer/sdk@5.36.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
-    dependencies:
-      '@commercelayer/sdk': 5.36.0
-      '@types/lodash': 4.17.7
-      '@types/react': 18.3.4
-      '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/react-dom': 18.3.0
-      classnames: 2.5.1
-      jwt-decode: 4.0.0
-      lodash: 4.17.21
-      pluralize: 8.0.0
-      query-string: 9.0.0
-      react: 18.3.1
-      react-currency-input-field: 3.8.0(react@18.3.1)
-      react-datepicker: 6.9.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-dom: 18.3.1(react@18.3.1)
-      react-gtm-module: 2.0.11
-      react-hook-form: 7.52.1(react@18.3.1)
-      react-select: 5.8.0(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      swr: 2.2.5(react@18.3.1)
-      ts-invariant: 0.10.3
-      type-fest: 4.25.0
-      wouter: 3.3.1(react@18.3.1)
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - supports-color
-
   '@commercelayer/app-elements@2.2.0(@commercelayer/sdk@6.11.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.1(react@18.3.1))(react@18.3.1)(wouter@3.3.1(react@18.3.1))':
     dependencies:
       '@commercelayer/sdk': 6.11.0
@@ -6459,12 +6397,6 @@ snapshots:
       - supports-color
 
   '@commercelayer/js-auth@6.3.1': {}
-
-  '@commercelayer/sdk@5.36.0':
-    dependencies:
-      axios: 1.6.7
-    transitivePeerDependencies:
-      - debug
 
   '@commercelayer/sdk@6.10.0': {}
 
@@ -7960,14 +7892,6 @@ snapshots:
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
-
-  axios@1.6.7:
-    dependencies:
-      follow-redirects: 1.15.6
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
 
   axios@1.7.2:
     dependencies:
@@ -10545,12 +10469,6 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  query-string@9.0.0:
-    dependencies:
-      decode-uri-component: 0.4.1
-      filter-obj: 5.1.0
-      split-on-first: 3.0.0
-
   query-string@9.1.0:
     dependencies:
       decode-uri-component: 0.4.1
@@ -10566,16 +10484,6 @@ snapshots:
   react-currency-input-field@3.8.0(react@18.3.1):
     dependencies:
       react: 18.3.1
-
-  react-datepicker@6.9.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@floating-ui/react': 0.26.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      clsx: 2.1.0
-      date-fns: 3.6.0
-      prop-types: 15.8.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-onclickoutside: 6.13.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   react-datepicker@7.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -10779,14 +10687,6 @@ snapshots:
   rimraf@4.4.1:
     dependencies:
       glob: 9.3.5
-
-  rollup-plugin-external-globals@0.10.0(rollup@4.21.0):
-    dependencies:
-      '@rollup/pluginutils': 5.1.0(rollup@4.21.0)
-      estree-walker: 3.0.3
-      is-reference: 3.0.2
-      magic-string: 0.30.10
-      rollup: 4.21.0
 
   rollup-plugin-external-globals@0.11.0(rollup@4.21.0):
     dependencies:

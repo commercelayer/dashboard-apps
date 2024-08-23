@@ -1,11 +1,16 @@
-import { DetailsContextMenu } from '#components/DetailsContextMenu'
 import { StockTransferAddresses } from '#components/StockTransferAddresses'
 import { StockTransferInfo } from '#components/StockTransferInfo'
 import { StockTransferSteps } from '#components/StockTransferSteps'
 import { StockTransferSummary } from '#components/StockTransferSummary'
 import { Timeline } from '#components/Timeline'
+import {
+  getStockTransferTriggerActions,
+  getStockTransferTriggerAttributeName
+} from '#data/dictionaries'
 import { appRoutes } from '#data/routes'
+import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useStockTransferDetails } from '#hooks/useStockTransferDetails'
+import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   Button,
   EmptyState,
@@ -14,8 +19,11 @@ import {
   Spacer,
   formatDateWithPredicate,
   goBack,
-  useTokenProvider
+  useTokenProvider,
+  type DropdownItemProps,
+  type PageHeadingProps
 } from '@commercelayer/app-elements'
+import { useMemo } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
 export function StockTransferDetails(): JSX.Element {
@@ -58,12 +66,57 @@ export function StockTransferDetails(): JSX.Element {
     )
   }
 
+  const triggerMenuActions = useMemo(() => {
+    return getStockTransferTriggerActions(stockTransfer)
+  }, [stockTransfer])
+
+  const { show: showCancelOverlay, Overlay: CancelOverlay } = useCancelOverlay()
+  const { dispatch } = useTriggerAttribute(stockTransfer.id)
+
+  const triggerDropDownItems: DropdownItemProps[][] = triggerMenuActions
+    .toReversed()
+    .reduce<DropdownItemProps[][]>((acc, triggerAction, idx) => {
+      const dropdownItem = {
+        label: getStockTransferTriggerAttributeName(
+          triggerAction.triggerAttribute
+        ),
+        onClick: () => {
+          // cancel action has its own modal
+          if (triggerAction.triggerAttribute === '_cancel') {
+            showCancelOverlay()
+            return
+          }
+          void dispatch(triggerAction.triggerAttribute)
+        }
+      }
+
+      const isLast = idx === triggerMenuActions.length - 1
+
+      if (isLast) {
+        acc.push([dropdownItem])
+      } else {
+        const [firstGroup] = acc
+        if (firstGroup != null) {
+          firstGroup.push(dropdownItem)
+        } else {
+          acc.push([dropdownItem])
+        }
+      }
+
+      return acc
+    }, [])
+
+  const pageToolbar: PageHeadingProps['toolbar'] = {
+    buttons: [],
+    dropdownItems: triggerDropDownItems
+  }
+
   const pageTitle = `Stock transfer #${stockTransfer.number}`
 
   return (
     <PageLayout
       mode={mode}
-      actionButton={<DetailsContextMenu stockTransfer={stockTransfer} />}
+      toolbar={pageToolbar}
       title={
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }
@@ -104,6 +157,12 @@ export function StockTransferDetails(): JSX.Element {
       scrollToTop
     >
       <SkeletonTemplate isLoading={isLoading}>
+        <CancelOverlay
+          stockTransfer={stockTransfer}
+          onConfirm={() => {
+            void dispatch('_cancel')
+          }}
+        />
         <Spacer bottom='4'>
           <StockTransferSteps stockTransfer={stockTransfer} />
           <Spacer top='14'>
