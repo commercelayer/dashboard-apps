@@ -4,6 +4,12 @@ import type { ResourceWithEvent } from 'App'
 export const webhookEvents: Record<ResourceWithEvent, string[]> = {
   addresses: ['tagged'],
   authorizations: ['create', 'failed', 'succeeded'],
+  avalara_accounts: [
+    'invoice_committed',
+    'invoice_refunded',
+    'invoice_commit_failed',
+    'invoice_refund_failed'
+  ],
   bundles: ['tagged'],
   buy_x_pay_y_promotions: ['create', 'destroy', 'tagged'],
   captures: ['create', 'failed', 'succeeded'],
@@ -22,7 +28,7 @@ export const webhookEvents: Record<ResourceWithEvent, string[]> = {
     'tagged'
   ],
   exports: ['complete', 'create', 'destroy', 'interrupt', 'start'],
-  external_promotions: ['create', 'destroy', 'tagged'],
+  external_promotions: ['create', 'destroy', 'failed', 'tagged'],
   fixed_amount_promotions: ['create', 'destroy', 'tagged'],
   fixed_price_promotions: ['create', 'destroy', 'tagged'],
   free_gift_promotions: ['create', 'destroy', 'tagged'],
@@ -68,6 +74,7 @@ export const webhookEvents: Record<ResourceWithEvent, string[]> = {
     'start_fulfilling',
     'stop_editing',
     'tagged',
+    'tax_calculation_failed',
     'void'
   ],
   order_copies: ['complete', 'create', 'destroy', 'fail', 'start'],
@@ -97,6 +104,7 @@ export const webhookEvents: Record<ResourceWithEvent, string[]> = {
   ],
   percentage_discount_promotions: ['create', 'destroy', 'tagged'],
   price_frequency_tiers: ['create', 'destroy'],
+  price_list_schedulers: ['activated', 'expired'],
   price_volume_tiers: ['create', 'destroy'],
   promotions: ['create', 'destroy', 'tagged'],
   recurring_order_copies: ['complete', 'create', 'destroy', 'fail', 'start'],
@@ -115,6 +123,7 @@ export const webhookEvents: Record<ResourceWithEvent, string[]> = {
   ],
   shipments: [
     'cancel',
+    'deliver',
     'on_hold',
     'packing',
     'picking',
