@@ -13,6 +13,6 @@
   "devDependencies": {
     "degit": "^2.8.4",
     "replace-in-file": "^8.1.0",
-    "tsx": "^4.17.0"
+    "tsx": "^4.18.0"
   }
 }

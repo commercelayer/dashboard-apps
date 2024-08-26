@@ -26,10 +26,10 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "^2.2.8",
+    "@commercelayer/app-elements": "^2.2.9",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@commercelayer/sdk": "6.14.0",
-    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.0",
     "@vitejs/plugin-react": "^4.3.1",
     "date-fns": "^3.6.0",
@@ -37,8 +37,8 @@
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "7.52.2",
-    "wouter": "^3.3.3"
+    "react-hook-form": "7.53.0",
+    "wouter": "^3.3.4"
   },
   "devDependencies": {
     "@commercelayer/app-builder": "workspace:*",
@@ -49,7 +49,7 @@
     "@types/testing-library__jest-dom": "^6.0.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
-    "jsdom": "^24.1.1",
+    "jsdom": "^25.0.0",
     "prettier": "^3.3.3",
     "rollup-plugin-external-globals": "^0.12.0",
     "typescript": "^5.5.4",
