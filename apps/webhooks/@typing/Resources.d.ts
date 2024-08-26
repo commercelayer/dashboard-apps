@@ -41,6 +41,7 @@ declare module 'App' {
   export type ResourceWithEvent =
     | 'addresses'
     | 'authorizations'
+    | 'avalara_accounts'
     | 'bundles'
     | 'buy_x_pay_y_promotions'
     | 'captures'
@@ -67,6 +68,7 @@ declare module 'App' {
     | 'parcels'
     | 'percentage_discount_promotions'
     | 'price_frequency_tiers'
+    | 'price_list_schedulers'
     | 'price_volume_tiers'
     | 'promotions'
     | 'recurring_order_copies'
