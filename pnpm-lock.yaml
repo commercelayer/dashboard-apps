@@ -24,14 +24,14 @@ importers:
   apps/customers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: ^2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -45,8 +45,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -54,8 +54,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -85,8 +85,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -101,13 +101,13 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/exports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: ^2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(@types/eslint@8.56.10)(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4)
@@ -115,8 +115,8 @@ importers:
         specifier: 6.14.0
         version: 6.14.0
       '@testing-library/jest-dom':
-        specifier: ^6.4.8
-        version: 6.4.8
+        specifier: ^6.5.0
+        version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -139,11 +139,11 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: 7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: 7.53.0
+        version: 7.53.0(react@18.3.1)
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
     devDependencies:
       '@commercelayer/app-builder':
         specifier: workspace:*
@@ -170,8 +170,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -189,13 +189,13 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/imports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: ^2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(@types/eslint@8.56.10)(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4)
@@ -221,8 +221,8 @@ importers:
         specifier: ^5.8.0
         version: 5.8.0(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -231,8 +231,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/app-builder
       '@testing-library/jest-dom':
-        specifier: ^6.4.8
-        version: 6.4.8
+        specifier: ^6.5.0
+        version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -264,8 +264,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -283,19 +283,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/inventory:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: 2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -306,8 +306,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: 7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: 7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -315,8 +315,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -349,8 +349,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -365,19 +365,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/orders:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: ^2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: ^6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -388,8 +388,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -397,8 +397,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -428,8 +428,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -444,19 +444,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/price_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: 2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -467,8 +467,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -476,8 +476,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -510,8 +510,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -526,19 +526,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/promotions:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: ^2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -552,8 +552,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -561,8 +561,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -595,8 +595,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -611,19 +611,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/returns:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: 2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -637,8 +637,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -646,8 +646,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -677,8 +677,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -693,19 +693,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/shipments:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: ^2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -719,8 +719,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -728,8 +728,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -762,8 +762,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -778,19 +778,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/sku_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: 2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -801,8 +801,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -810,8 +810,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -841,8 +841,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -857,19 +857,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/skus:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: 2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -880,8 +880,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: 7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: 7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -889,8 +889,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -923,8 +923,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -939,19 +939,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/stock_transfers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: ^2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -965,8 +965,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -974,8 +974,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -1005,8 +1005,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -1021,19 +1021,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/tags:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: ^2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1047,8 +1047,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -1056,8 +1056,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -1087,8 +1087,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -1103,19 +1103,19 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   apps/webhooks:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: 2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.0
         version: 6.14.0
       '@hookform/resolvers':
         specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+        version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1129,8 +1129,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
-        version: 7.52.2(react@18.3.1)
+        specifier: ^7.53.0
+        version: 7.53.0(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -1138,8 +1138,8 @@ importers:
         specifier: ^4.25.0
         version: 4.25.0
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -1169,8 +1169,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -1185,7 +1185,7 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
   packages/app-builder:
     devDependencies:
@@ -1203,7 +1203,7 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
@@ -1211,8 +1211,8 @@ importers:
   packages/index:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.2.8
-        version: 2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+        specifier: ^2.2.9
+        version: 2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1223,8 +1223,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+        specifier: ^3.3.4
+        version: 3.3.4(react@18.3.1)
     devDependencies:
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
@@ -1257,8 +1257,8 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
       jsdom:
-        specifier: ^24.1.1
-        version: 24.1.1
+        specifier: ^25.0.0
+        version: 25.0.0
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.21.0)
@@ -1273,7 +1273,7 @@ importers:
         version: 5.0.1(typescript@5.5.4)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3)
+        version: 2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3)
 
 packages:
 
@@ -1416,8 +1416,8 @@ packages:
     resolution: {integrity: sha512-xm8XrMKz0IlUdocVbYJe0Z9xEgidU7msskG8BbhnTPK/HZ2z/7FP7ykqPgrUH+C+r414mNfNWam1f2vqOjqjYQ==}
     engines: {node: '>=6.9.0'}
 
-  '@commercelayer/app-elements@2.2.8':
-    resolution: {integrity: sha512-CqgHDmBD3gcDFsUR4FBHIapwSwpznutCnVtnIYZungX4psHSeScADkWXEaIcLYiDvno/2S6zxThyDbriu/YXXw==}
+  '@commercelayer/app-elements@2.2.9':
+    resolution: {integrity: sha512-wwLYK3dJGTwSKerXkHgEDoMPbSApE3HofhQ9595PgU+xLWhBnJxKydHtJPhq5MNcf0nXD+jBbxQvD8Op2054sA==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^6.x
@@ -2068,8 +2068,8 @@ packages:
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
     engines: {node: '>=18'}
 
-  '@testing-library/jest-dom@6.4.8':
-    resolution: {integrity: sha512-JD0G+Zc38f5MBHA4NgxQMR5XtO5Jx9g86jqturNTt2WUfRmLDIY7iKkWHDCCTiDuFMre6nxAD5wHw9W5kI4rGw==}
+  '@testing-library/jest-dom@6.5.0':
+    resolution: {integrity: sha512-xGGHpBXYSHUUr6XsKBfs85TWlYKpTc37cSBBVrXcib2MkHLboWlkClhWF37JKlDb9KEq3dHs+f2xR7XJEWGBxA==}
     engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
 
   '@testing-library/react@16.0.0':
@@ -3826,8 +3826,8 @@ packages:
   jsbn@1.1.0:
     resolution: {integrity: sha512-4bYVV3aAMtDTTu4+xsDYa6sy9GyJ69/amsu9sYF2zqjiEoZA5xJi3BrfX3uY+/IekIu7MwdObdbDWpoZdBv3/A==}
 
-  jsdom@24.1.1:
-    resolution: {integrity: sha512-5O1wWV99Jhq4DV7rCLIoZ/UIhyQeDR7wHVyZAHAshbrvZsLs+Xzz7gtwnlJTJDjleiTKh54F4dXrX70vJQTyJQ==}
+  jsdom@25.0.0:
+    resolution: {integrity: sha512-OhoFVT59T7aEq75TVw9xxEfkXgacpqAhQaYgP9y/fDqWQCMB/b1H66RfmPm/MaeaAIU9nDwMOVTlPN51+ao6CQ==}
     engines: {node: '>=18'}
     peerDependencies:
       canvas: ^2.11.2
@@ -4631,8 +4631,8 @@ packages:
   react-gtm-module@2.0.11:
     resolution: {integrity: sha512-8gyj4TTxeP7eEyc2QKawEuQoAZdjKvMY4pgWfycGmqGByhs17fR+zEBs0JUDq4US/l+vbTl+6zvUIx27iDo/Vw==}
 
-  react-hook-form@7.52.2:
-    resolution: {integrity: sha512-pqfPEbERnxxiNMPd0bzmt1tuaPcVccywFDpyk2uV5xCIBphHV5T8SVnX9/o3kplPE1zzKt77+YIoq+EMwJp56A==}
+  react-hook-form@7.53.0:
+    resolution: {integrity: sha512-M1n3HhqCww6S2hxLxciEXy2oISPnAzxY7gvwVPrtlczTM/1dDadXgUxDpHMrMTblDOcm/AXtXxHwZ3jpg1mqKQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -5471,8 +5471,8 @@ packages:
   wordwrap@1.0.0:
     resolution: {integrity: sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==}
 
-  wouter@3.3.3:
-    resolution: {integrity: sha512-dvbRx1K/7tjAvKY8v0D2MRvWMbvrmpQf917cfCHFgJ7+IhXWrYZPhZQRa34ABOr7NUxjHqUYwhlIUd0frrfMVw==}
+  wouter@3.3.4:
+    resolution: {integrity: sha512-xGKUhG4j4qaR7CYTSI0yBDAJzIFixCZvEh/MHCvvxoTsszquWBM8MXJOE4v+3J/MGwS7CTodZt/PhHLP6RfK9g==}
     peerDependencies:
       react: '>=16.8.0'
 
@@ -5769,7 +5769,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@commercelayer/app-elements@2.2.8(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))':
+  '@commercelayer/app-elements@2.2.9(@commercelayer/sdk@6.14.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.4(react@18.3.1))':
     dependencies:
       '@commercelayer/sdk': 6.14.0
       '@types/lodash': 4.17.7
@@ -5786,13 +5786,13 @@ snapshots:
       react-datepicker: 7.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
       react-gtm-module: 2.0.11
-      react-hook-form: 7.52.2(react@18.3.1)
+      react-hook-form: 7.53.0(react@18.3.1)
       react-select: 5.8.0(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
       type-fest: 4.25.0
-      wouter: 3.3.3(react@18.3.1)
+      wouter: 3.3.4(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:
       - supports-color
@@ -6030,9 +6030,9 @@ snapshots:
 
   '@floating-ui/utils@0.2.1': {}
 
-  '@hookform/resolvers@3.9.0(react-hook-form@7.52.2(react@18.3.1))':
+  '@hookform/resolvers@3.9.0(react-hook-form@7.53.0(react@18.3.1))':
     dependencies:
-      react-hook-form: 7.52.2(react@18.3.1)
+      react-hook-form: 7.53.0(react@18.3.1)
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
@@ -6566,10 +6566,9 @@ snapshots:
       lz-string: 1.5.0
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@6.4.8':
+  '@testing-library/jest-dom@6.5.0':
     dependencies:
       '@adobe/css-tools': 4.4.0
-      '@babel/runtime': 7.24.8
       aria-query: 5.3.0
       chalk: 3.0.0
       css.escape: 1.5.1
@@ -6688,7 +6687,7 @@ snapshots:
 
   '@types/testing-library__jest-dom@6.0.0':
     dependencies:
-      '@testing-library/jest-dom': 6.4.8
+      '@testing-library/jest-dom': 6.5.0
 
   '@typescript-eslint/eslint-plugin@7.5.0(@typescript-eslint/parser@7.5.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)':
     dependencies:
@@ -6893,7 +6892,7 @@ snapshots:
 
   agent-base@7.1.1:
     dependencies:
-      debug: 4.3.5
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -8221,14 +8220,14 @@ snapshots:
   http-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.1
-      debug: 4.3.5
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
   https-proxy-agent@7.0.5:
     dependencies:
       agent-base: 7.1.1
-      debug: 4.3.5
+      debug: 4.3.6
     transitivePeerDependencies:
       - supports-color
 
@@ -8531,7 +8530,7 @@ snapshots:
 
   jsbn@1.1.0: {}
 
-  jsdom@24.1.1:
+  jsdom@25.0.0:
     dependencies:
       cssstyle: 4.0.1
       data-urls: 5.0.0
@@ -9516,7 +9515,7 @@ snapshots:
 
   react-gtm-module@2.0.11: {}
 
-  react-hook-form@7.52.2(react@18.3.1):
+  react-hook-form@7.53.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
@@ -9847,7 +9846,7 @@ snapshots:
   socks-proxy-agent@8.0.4:
     dependencies:
       agent-base: 7.1.1
-      debug: 4.3.5
+      debug: 4.3.6
       socks: 2.8.3
     transitivePeerDependencies:
       - supports-color
@@ -10297,7 +10296,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.31.3
 
-  vitest@2.0.5(@types/node@22.5.0)(jsdom@24.1.1)(terser@5.31.3):
+  vitest@2.0.5(@types/node@22.5.0)(jsdom@25.0.0)(terser@5.31.3):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@vitest/expect': 2.0.5
@@ -10320,7 +10319,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.5.0
-      jsdom: 24.1.1
+      jsdom: 25.0.0
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -10418,7 +10417,7 @@ snapshots:
 
   wordwrap@1.0.0: {}
 
-  wouter@3.3.3(react@18.3.1):
+  wouter@3.3.4(react@18.3.1):
     dependencies:
       mitt: 3.0.1
       react: 18.3.1

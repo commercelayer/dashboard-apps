@@ -130,11 +130,12 @@ export const SkuListDetails = (
             ) : (
               <Spacer top='6'>
                 <InputReadonly
-                  value={skuList.sku_code_regex ?? ''}
                   hint={{
                     text: 'Matching SKU codes are automatically included to this list.'
                   }}
-                />
+                >
+                  {skuList.sku_code_regex ?? ''}
+                </InputReadonly>
               </Spacer>
             )}
           </Section>

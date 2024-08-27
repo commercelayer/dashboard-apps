@@ -13,11 +13,11 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "^2.2.8",
+    "@commercelayer/app-elements": "^2.2.9",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "wouter": "^3.3.3"
+    "wouter": "^3.3.4"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
@@ -30,7 +30,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.57.0",
     "js-cookie": "^3.0.5",
-    "jsdom": "^24.1.1",
+    "jsdom": "^25.0.0",
     "rollup-plugin-external-globals": "^0.12.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.2",
