@@ -2,7 +2,7 @@
 
 Any Commerce Layer account comes with the hosted version of a full set of Dashboard applications, automatically enabled for admin users. An admin can then enable one or more apps for other organization members giving each member full or read-only access. For an updated list of the available applications, check the [`apps`](apps) folder of this repository or read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-applications--docs).
 
-It's possible to clone this repository and add one or more apps to your Dashboard hub, in order to customize every part of the code and start using your own and self-hosted version. For more information on how to do it, read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs). 
+It's possible to clone this repository and add one or more apps to your Dashboard, in order to customize every part of the code and start using your own and self-hosted version. For more information on how to do it, read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs). 
 
 ## Table of contents
 
@@ -36,7 +36,7 @@ pnpm dev
 
 5. The app will run in development mode at `http://localhost:5173/`. 
 In order to authenticate the app, you need to add an integration access token as URL query param. Example: `http://localhost:5173/?accessToken=<integration-token-for-local-dev>`.
-That access token is only required (and will work only) for development mode. In production mode, the Commerce Layer Dashboard hub will generate a valid access token, based on the current user.
+That access token is only required (and will work only) for development mode. In production mode, the Commerce Layer Dashboard will generate a valid access token, based on the current user.
 
 6. Modify the app to satisfy your requirements. 
 All our Dashboard apps are built using a shared component library [@commercelayer/app-elements](https://github.com/commercelayer/app-elements).
@@ -54,7 +54,7 @@ pnpm build:apps
 [<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="35">](https://app.netlify.com/start/deploy?repository=https://github.com/commercelayer/dashboard-apps#PUBLIC_SELF_HOSTED_SLUG)
 [<img src="https://vercel.com/button" alt="Deploy to Vercel" height="35">](https://vercel.com/new/clone?repository-url=https://github.com/commercelayer/dashboard-apps&build-command=pnpm%20build%3Aelements%20%26%26%20pnpm%20build%3Aapps&output-directory=dist&env=PUBLIC_SELF_HOSTED_SLUG&envDescription=your%20organization%20slug) 
 
-9. Create a [custom app](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs) in the Commerce Layer Dashboard hub.
+9. Create a [custom app](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs) in the Commerce Layer Dashboard.
 
 ## Running on Windows
 [Read more](https://github.com/commercelayer/.github/blob/main/PNPM_ON_WINDOWS.md)
