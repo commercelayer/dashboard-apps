@@ -13,7 +13,16 @@ export default {
     titleNew: 'flex promotion',
     formType: genericPromotionOptions.merge(
       z.object({
-        rules: z.any()
+        rules: z.any().refine((value) => {
+          try {
+            if (typeof value === 'string') {
+              JSON.parse(value)
+            }
+            return true
+          } catch (error) {
+            return false
+          }
+        }, 'JSON is not valid')
       })
     ),
     Fields: () => (
