@@ -14,11 +14,12 @@ It's possible to clone this repository and add one or more apps  to your Dashboa
 
 
 ## Getting started
-You need a local Node.JS (version 18+) environment and some React.JS knowledge to customize the app code.
 
-1. Fork [this repository](https://github.com/commercelayer/dashboard-apps) (you can learn how to do this [here](https://help.github.com/articles/fork-a-repo)).
+You need a local Node.js (version 20+) environment and some React knowledge to customize the app code.
 
-2. Clone the forked repository like so:
+1. Creating a new repository from [this template](https://github.com/new?template_owner=commercelayer&template_name=dashboard-apps) (if you want to contribute you can start from a fork instead).
+
+2. Clone the newly created repository like so:
 
 ```bash
 git clone https://github.com/<your username>/dashboard-apps.git && cd dashboard-apps
@@ -40,14 +41,21 @@ That access token is only required (and will work only) for development mode. In
 
 6. Modify the app to satisfy your requirements. 
 All our Dashboard apps are built using a shared component library [@commercelayer/app-elements](https://github.com/commercelayer/app-elements).
-You can browse the [official documentation](https://github.com/commercelayer/app-elements) to discover more about this topic.
+You can browse the [official documentation](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-welcome--docs) to discover more about this topic.
 
-7. Deploy the forked repository to your preferred hosting service. You can deploy with one click below:
+7. Build the app into the `/dist` folder:
+
+```
+pnpm build:apps
+```
+
+
+8. Deploy the forked repository to your preferred hosting service. You can deploy with one click below:
 
 [<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="35">](https://app.netlify.com/start/deploy?repository=https://github.com/commercelayer/dashboard-apps#PUBLIC_SELF_HOSTED_SLUG)
 [<img src="https://vercel.com/button" alt="Deploy to Vercel" height="35">](https://vercel.com/new/clone?repository-url=https://github.com/commercelayer/dashboard-apps&build-command=pnpm%20build%3Aelements%20%26%26%20pnpm%20build%3Aapps&output-directory=dist&env=PUBLIC_SELF_HOSTED_SLUG&envDescription=your%20organization%20slug) 
 
-8. Complete the configuration in the Dashboard hub by setting your app URL.
+9. Create a [custom app](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs) in the Commerce Layer Dashboard hub.
 
 ## Running on Windows
 [Read more](https://github.com/commercelayer/.github/blob/main/PNPM_ON_WINDOWS.md)
