@@ -1,9 +1,8 @@
 # Dashboard apps
 
-Any Commerce Layer account comes with a hosted version of these applications, as part of the Dashboard hub, and it is automatically enabled for admin users.
-An admin can then enable one or more apps for other organization members giving each member full or read-only access.
+Any Commerce Layer account comes with the hosted version of a full set of Dashboard applications, automatically enabled for admin users. An admin can then enable one or more apps for other organization members giving each member full or read-only access. For an updated list of the available applications, check the [`apps`](apps) folder of this repository or read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-applications--docs).
 
-It's possible to clone this repository and add one or more apps  to your Dashboard hub, in order to customize every part of the code and start using your own and self-hosted version.
+It's possible to clone this repository and add one or more apps to your Dashboard hub, in order to customize every part of the code and start using your own and self-hosted version. For more information on how to do it, read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs). 
 
 ## Table of contents
 
@@ -17,7 +16,7 @@ It's possible to clone this repository and add one or more apps  to your Dashboa
 
 You need a local Node.js (version 20+) environment and some React knowledge to customize the app code.
 
-1. Creating a new repository from [this template](https://github.com/new?template_owner=commercelayer&template_name=dashboard-apps) (if you want to contribute you can start from a fork instead).
+1. Create a new repository from [this template](https://github.com/new?template_owner=commercelayer&template_name=dashboard-apps) (if you want to contribute you can start from a fork instead).
 
 2. Clone the newly created repository like so:
 
@@ -37,7 +36,7 @@ pnpm dev
 
 5. The app will run in development mode at `http://localhost:5173/`. 
 In order to authenticate the app, you need to add an integration access token as URL query param. Example: `http://localhost:5173/?accessToken=<integration-token-for-local-dev>`.
-That access token is only required (and will work only) for development mode. In production mode the Commerce Layer Dashboard hub will generate a valid access token, based on the current user.
+That access token is only required (and will work only) for development mode. In production mode, the Commerce Layer Dashboard hub will generate a valid access token, based on the current user.
 
 6. Modify the app to satisfy your requirements. 
 All our Dashboard apps are built using a shared component library [@commercelayer/app-elements](https://github.com/commercelayer/app-elements).
