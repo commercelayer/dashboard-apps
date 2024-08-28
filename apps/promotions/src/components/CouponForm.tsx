@@ -11,7 +11,8 @@ import {
   Section,
   Spacer,
   Text,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -39,6 +40,10 @@ export function CouponForm({
 
   const { sdkClient } = useCoreSdkProvider()
 
+  const {
+    settings: { accessToken, organizationSlug, domain }
+  } = useTokenProvider()
+
   return (
     <HookedForm
       {...methods}
@@ -49,19 +54,54 @@ export function CouponForm({
             ...formValuesToCoupon(values)
           })
         } else {
-          let promotionRule = promotion?.coupon_codes_promotion_rule
+          let { id } = promotion?.coupon_codes_promotion_rule ?? {}
 
-          if (promotionRule == null) {
-            promotionRule = await sdkClient.coupon_codes_promotion_rules.create(
-              {
+          if (id == null) {
+            // TODO: this if can be removed when sdk supports flex_promotions
+            // @ts-expect-error TODO: flex_promotions
+            if (promotion.type === 'flex_promotions') {
+              const response = await fetch(
+                `https://${organizationSlug}.${domain}/api/coupon_codes_promotion_rules`,
+                {
+                  method: 'POST',
+                  headers: {
+                    authorization: `Bearer ${accessToken}`,
+                    'content-type': 'application/vnd.api+json'
+                  },
+                  body: JSON.stringify({
+                    data: {
+                      type: 'coupon_codes_promotion_rules',
+                      attributes: {},
+                      relationships: {
+                        promotion: {
+                          data: {
+                            // @ts-expect-error TODO: flex_promotions
+                            id: promotion.id,
+                            type: 'percentage_discount_promotions'
+                          }
+                        }
+                      }
+                    }
+                  })
+                }
+              )
+
+              ;({
+                data: { id }
+              } = (await response.json()) as { data: { id: string } })
+            } else {
+              ;({ id } = await sdkClient.coupon_codes_promotion_rules.create({
                 promotion
-              }
-            )
+              }))
+            }
           }
 
           await sdkClient.coupons.create({
             ...formValuesToCoupon(values),
-            promotion_rule: promotionRule
+            promotion_rule: {
+              type: 'coupon_codes_promotion_rules',
+              id
+            }
           })
         }
 
