@@ -14,6 +14,7 @@ import {
   HookedInput,
   HookedInputCheckbox,
   HookedInputDate,
+  HookedValidationApiError,
   Section,
   Spacer,
   Text,
@@ -21,7 +22,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
 import { type z } from 'zod'
@@ -39,6 +40,7 @@ export function PromotionForm({
   defaultValues,
   promotionId
 }: Props): React.ReactNode {
+  const [apiError, setApiError] = useState<any>()
   const { sdkClient } = useCoreSdkProvider()
   const {
     settings: { accessToken, organizationSlug, domain }
@@ -67,9 +69,10 @@ export function PromotionForm({
       onSubmit={async (formValues): Promise<void> => {
         let promotion: Promotion
 
+        // TODO: remove this when sdk supports flex_promotions (manage errors)
         if (promotionConfig.type === 'flex_promotions') {
           if (isCreatingNewPromotion) {
-            const response = await fetch(
+            const createResponse = await fetch(
               `https://${organizationSlug}.${domain}/api/flex_promotions`,
               {
                 method: 'POST',
@@ -91,9 +94,16 @@ export function PromotionForm({
               }
             )
 
+            if (!createResponse.ok) {
+              const error = await createResponse.json()
+
+              setApiError(error)
+              throw error
+            }
+
             const {
               data: { id }
-            } = await response.json()
+            } = await createResponse.json()
 
             setLocation(
               appRoutes.promotionDetails.makePath({
@@ -121,6 +131,13 @@ export function PromotionForm({
                 })
               }
             )
+
+            if (!updateResponse.ok) {
+              const error = await updateResponse.json()
+
+              setApiError(error)
+              throw error
+            }
 
             const {
               data: { id }
@@ -264,6 +281,10 @@ export function PromotionForm({
           >
             {promotionId != null ? 'Update' : 'Create promotion'}
           </Button>
+
+          <Spacer top='2'>
+            <HookedValidationApiError apiError={apiError} />
+          </Spacer>
         </Spacer>
       </Spacer>
     </HookedForm>
