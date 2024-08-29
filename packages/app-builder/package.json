@@ -9,7 +9,7 @@
   "license": "MIT",
   "engines": {
     "node": ">=20",
-    "pnpm": ">=9"
+    "pnpm": ">=8"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
