@@ -1,12 +1,12 @@
-import { isMockedId } from '#mocks'
 import { useCoreApi } from '@commercelayer/app-elements'
 import type {
   Link,
   ListResponse,
   QueryPageSize,
-  SkuList
+  Resource
 } from '@commercelayer/sdk'
 import type { KeyedMutator } from 'swr'
+import { isMockedId } from '../mocks'
 
 interface UseLinksListSettings {
   pageNumber?: number
@@ -14,17 +14,18 @@ interface UseLinksListSettings {
 }
 
 interface Props {
-  skuListId: SkuList['id']
+  resourceId: Resource['id']
+  resourceType: 'skus' | 'sku_lists'
   settings?: UseLinksListSettings
 }
 
 /**
- * Retrieves organization's markets providing an optional way to filter them by name.
+ * Retrieves links related to a given resource.
  * @param settings - Optional set of SDK request settings.
  * @returns a list of resolved `Links`.
  */
 
-export function useLinksList({ skuListId, settings }: Props): {
+export function useLinksList({ resourceId, resourceType, settings }: Props): {
   links?: ListResponse<Link>
   isLoading: boolean
   error: any
@@ -39,12 +40,12 @@ export function useLinksList({ skuListId, settings }: Props): {
     error,
     mutate
   } = useCoreApi(
-    'sku_lists',
+    resourceType,
     'links',
-    isMockedId(skuListId)
+    isMockedId(resourceId)
       ? null
       : [
-          skuListId,
+          resourceId,
           {
             sort: ['created_at'],
             pageNumber,

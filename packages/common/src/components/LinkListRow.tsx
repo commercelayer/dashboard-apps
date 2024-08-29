@@ -1,4 +1,3 @@
-import { appRoutes } from '#data/routes'
 import {
   Badge,
   Button,
@@ -7,35 +6,37 @@ import {
   DropdownDivider,
   DropdownItem,
   formatDate,
+  formatDateRange,
   Icon,
   PageLayout,
   Td,
   Text,
+  Tooltip,
   Tr,
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
   type BadgeProps
 } from '@commercelayer/app-elements'
-import type { Link, ListResponse, Sku } from '@commercelayer/sdk'
+import type { Link, ListResponse } from '@commercelayer/sdk'
 import { useState } from 'react'
 import type { KeyedMutator } from 'swr'
-import { useLocation } from 'wouter'
 
 interface Props {
   link: Link
-  skuId: Sku['id']
+  onLinkDetailsClick: () => void
+  onLinkEditClick: () => void
   mutateList: KeyedMutator<ListResponse<Link>>
 }
 
 export const LinkListRow = ({
   link,
-  skuId,
+  onLinkDetailsClick,
+  onLinkEditClick,
   mutateList
 }: Props): JSX.Element => {
   const { user, canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
-  const [, setLocation] = useLocation()
   const { Overlay, open, close } = useOverlay()
   const [isDeleteting, setIsDeleting] = useState(false)
 
@@ -80,20 +81,39 @@ export const LinkListRow = ({
         <CopyToClipboard showValue={false} value={link?.url ?? ''} />
       </Td>
       <Td>
-        <Text tag='div' size='small'>
-          {formatDate({
-            isoDate: link.starts_at,
-            timezone: user?.timezone,
-            format: 'full'
-          })}
-        </Text>
-        <Text tag='div' size='small'>
-          {formatDate({
-            isoDate: link?.expires_at,
-            timezone: user?.timezone,
-            format: 'full'
-          })}
-        </Text>
+        <Tooltip
+          label={
+            <Text size='small' weight='regular'>
+              {formatDateRange({
+                rangeFrom: link?.starts_at,
+                rangeTo: link?.expires_at,
+                timezone: user?.timezone
+              })}
+            </Text>
+          }
+          content={
+            <>
+              <Text tag='div' size='small'>
+                From:{' '}
+                {formatDate({
+                  isoDate: link.starts_at,
+                  timezone: user?.timezone,
+                  format: 'full',
+                  showCurrentYear: true
+                })}
+              </Text>
+              <Text tag='div' size='small'>
+                To:{' '}
+                {formatDate({
+                  isoDate: link?.expires_at,
+                  timezone: user?.timezone,
+                  format: 'full',
+                  showCurrentYear: true
+                })}
+              </Text>
+            </>
+          }
+        />
       </Td>
       <Td>
         <Badge variant={getBadgeVariant(link)}>{getLinkStatus(link)}</Badge>
@@ -102,31 +122,11 @@ export const LinkListRow = ({
         <Dropdown
           dropdownItems={
             <>
-              <DropdownItem
-                label='Show QR'
-                onClick={() => {
-                  setLocation(
-                    appRoutes.linksDetails.makePath({
-                      skuId,
-                      linkId: link.id
-                    })
-                  )
-                }}
-              />
+              <DropdownItem label='Show QR' onClick={onLinkDetailsClick} />
               <DropdownDivider />
               {canUser('update', 'links') && (
                 <>
-                  <DropdownItem
-                    label='Edit'
-                    onClick={() => {
-                      setLocation(
-                        appRoutes.linksEdit.makePath({
-                          skuId,
-                          linkId: link.id
-                        })
-                      )
-                    }}
-                  />
+                  <DropdownItem label='Edit' onClick={onLinkEditClick} />
                   <DropdownItem
                     label={linkStatus === 'disabled' ? 'Enable' : 'Disable'}
                     onClick={() => {

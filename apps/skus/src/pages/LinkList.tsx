@@ -3,18 +3,15 @@ import {
   EmptyState,
   PageLayout,
   SkeletonTemplate,
-  Table,
-  Td,
-  Th,
-  Tr,
   goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 
-import { LinkListRow } from '#components/LinkListRow'
 import { appRoutes, type PageProps } from '#data/routes'
-import { useLinksList } from '#hooks/useLinksList'
+import { LinkListRow } from 'dashboard-apps-common/src/components/LinkListRow'
+import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
+import { useLinksList } from 'dashboard-apps-common/src/hooks/useLinksList'
 
 export const LinkList = (
   props: PageProps<typeof appRoutes.linksList>
@@ -26,52 +23,25 @@ export const LinkList = (
 
   const [, setLocation] = useLocation()
   const skuId = props.params?.skuId ?? ''
-
+  const goBackUrl = appRoutes.details.makePath({ skuId })
   const {
     links,
     isLoading,
     error,
     mutate: mutateList
-  } = useLinksList({ skuId })
+  } = useLinksList({ resourceId: skuId, resourceType: 'skus' })
 
   const pageTitle = 'Archive'
-
-  if (error != null) {
-    return (
-      <PageLayout
-        title={pageTitle}
-        navigationButton={{
-          onClick: () => {
-            setLocation(appRoutes.details.makePath({ skuId }))
-          },
-          label: 'Cancel',
-          icon: 'x'
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title='Not authorized'
-          action={
-            <Link href={appRoutes.list.makePath({})}>
-              <Button variant='primary'>Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
-    )
-  }
 
   return (
     <PageLayout
       mode={mode}
-      title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
-      }
+      title={pageTitle}
       navigationButton={{
         onClick: () => {
           goBack({
             setLocation,
-            defaultRelativePath: appRoutes.details.makePath({ skuId })
+            defaultRelativePath: goBackUrl
           })
         },
         label: 'Cancel',
@@ -96,37 +66,45 @@ export const LinkList = (
       scrollToTop
       overlay
     >
-      <SkeletonTemplate isLoading={isLoading}>
-        <Table
-          variant='boxed'
-          thead={
-            <Tr>
-              <Th>Code</Th>
-              <Th> </Th>
-              <Th>Active From / To</Th>
-              <Th>Status</Th>
-              <Th> </Th>
-            </Tr>
-          }
-          tbody={
-            <>
-              {!isLoading && links?.length === 0 && (
-                <Tr>
-                  <Td colSpan={5}>no results</Td>
-                </Tr>
-              )}
-              {links?.map((link) => (
-                <LinkListRow
-                  link={link}
-                  skuId={skuId}
-                  key={link.id}
-                  mutateList={mutateList}
-                />
-              ))}
-            </>
+      {error != null ? (
+        <EmptyState
+          title='Not authorized'
+          action={
+            <Link href={goBackUrl}>
+              <Button variant='primary'>Go back</Button>
+            </Link>
           }
         />
-      </SkeletonTemplate>
+      ) : (
+        <SkeletonTemplate isLoading={isLoading}>
+          <LinkListTable
+            tableRows={links?.map((link) => (
+              <LinkListRow
+                link={link}
+                onLinkDetailsClick={() => {
+                  setLocation(
+                    appRoutes.linksDetails.makePath({
+                      skuId,
+                      linkId: link.id
+                    })
+                  )
+                }}
+                onLinkEditClick={() => {
+                  setLocation(
+                    appRoutes.linksEdit.makePath({
+                      skuId,
+                      linkId: link.id
+                    })
+                  )
+                }}
+                key={link.id}
+                mutateList={mutateList}
+              />
+            ))}
+            isTableEmpty={!isLoading && links?.length === 0}
+          />
+        </SkeletonTemplate>
+      )}
     </PageLayout>
   )
 }

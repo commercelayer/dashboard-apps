@@ -840,6 +840,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@5.4.2(@types/node@22.5.0)(terser@5.31.3))
+      dashboard-apps-common:
+        specifier: workspace:*
+        version: link:../../packages/common
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -873,6 +876,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+      dashboard-apps-common:
+        specifier: workspace:*
+        version: link:../../packages/common
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1214,6 +1220,40 @@ importers:
         specifier: ^17.7.2
         version: 17.7.2
 
+  packages/common:
+    dependencies:
+      '@commercelayer/app-elements':
+        specifier: 2.2.8
+        version: 2.2.8(@commercelayer/sdk@6.13.0)(query-string@9.0.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.52.2(react@18.3.1))(react@18.3.1)(wouter@3.3.3(react@18.3.1))
+      '@commercelayer/sdk':
+        specifier: 6.13.0
+        version: 6.13.0
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-qrcode-logo:
+        specifier: ^3.0.0
+        version: 3.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      swr:
+        specifier: ^2.2.5
+        version: 2.2.5(react@18.3.1)
+      wouter:
+        specifier: ^3.3.3
+        version: 3.3.3(react@18.3.1)
+    devDependencies:
+      '@commercelayer/eslint-config-ts-react':
+        specifier: ^1.4.5
+        version: 1.4.5(@types/eslint@8.56.10)(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4)
+      '@types/react':
+        specifier: ^18.3.4
+        version: 18.3.4
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      typescript:
+        specifier: ^5.5.3
+        version: 5.5.4
+
   packages/index:
     dependencies:
       '@commercelayer/app-elements':
@@ -1232,6 +1272,9 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1(react@18.3.1)
     devDependencies:
+      '@commercelayer/app-builder':
+        specifier: workspace:*
+        version: link:../app-builder
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(@types/eslint@8.56.10)(eslint@8.57.0)(react@18.3.1)(typescript@5.5.3)
@@ -6469,7 +6512,7 @@ snapshots:
       react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
-      type-fest: 4.25.0
+      type-fest: 4.24.0
       wouter: 3.3.1(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:
@@ -6497,7 +6540,7 @@ snapshots:
       react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
-      type-fest: 4.25.0
+      type-fest: 4.24.0
       wouter: 3.3.1(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:
@@ -6525,7 +6568,7 @@ snapshots:
       react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
-      type-fest: 4.25.0
+      type-fest: 4.24.0
       wouter: 3.3.1(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:
@@ -6581,7 +6624,7 @@ snapshots:
       react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
-      type-fest: 4.25.0
+      type-fest: 4.24.0
       wouter: 3.3.1(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:

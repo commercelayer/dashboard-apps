@@ -1,6 +1,7 @@
 import { LinkForm, type LinkFormValues } from '#components/LinkForm'
 import { appRoutes, type PageProps } from '#data/routes'
 import { useSkuDetails } from '#hooks/useSkuDetails'
+import { isMockedId } from '#mocks'
 import {
   Button,
   EmptyState,
@@ -25,44 +26,18 @@ export function LinkNew(
 
   const skuId = props.params?.skuId ?? ''
   const goBackUrl = appRoutes.details.makePath({ skuId })
-  const { sku } = useSkuDetails(skuId)
+  const { sku, isLoading } = useSkuDetails(skuId)
 
-  if (!canUser('create', 'links')) {
-    return (
-      <PageLayout
-        title='New SKU'
-        navigationButton={{
-          onClick: () => {
-            setLocation(goBackUrl)
-          },
-          label: 'Cancel',
-          icon: 'x'
-        }}
-        scrollToTop
-        overlay
-      >
-        <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
-          action={
-            <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
-    )
-  }
+  const pageTitle = 'Create link'
+  const pageDescription =
+    isLoading || isMockedId(sku.id)
+      ? null
+      : `Create a link to a microstore to directly sell ${sku.name}.`
 
   return (
     <PageLayout
-      title={<>Create link</>}
-      description={
-        <>
-          Create a link to a microstore to directly sell{' '}
-          <strong>{sku.name}</strong>.
-        </>
-      }
+      title={pageTitle}
+      description={pageDescription}
       navigationButton={{
         onClick: () => {
           setLocation(goBackUrl)
@@ -86,32 +61,44 @@ export function LinkNew(
       scrollToTop
       overlay
     >
-      <Spacer bottom='14'>
-        <LinkForm
-          apiError={apiError}
-          isSubmitting={isSaving}
-          onSubmit={(formValues) => {
-            setIsSaving(true)
-            const link = adaptFormValuesToLink(formValues, skuId)
-            void sdkClient.links
-              .create(link)
-              .then((createdLink) => {
-                if (createdLink != null) {
-                  setLocation(
-                    appRoutes.linksDetails.makePath({
-                      linkId: createdLink.id,
-                      skuId
-                    })
-                  )
-                }
-              })
-              .catch((error) => {
-                setApiError(error)
-                setIsSaving(false)
-              })
-          }}
+      {!canUser('create', 'links') ? (
+        <EmptyState
+          title='Permission Denied'
+          description='You are not authorized to access this page.'
+          action={
+            <Link href={goBackUrl}>
+              <Button variant='primary'>Go back</Button>
+            </Link>
+          }
         />
-      </Spacer>
+      ) : (
+        <Spacer bottom='14'>
+          <LinkForm
+            apiError={apiError}
+            isSubmitting={isSaving}
+            onSubmit={(formValues) => {
+              setIsSaving(true)
+              const link = adaptFormValuesToLink(formValues, skuId)
+              void sdkClient.links
+                .create(link)
+                .then((createdLink) => {
+                  if (createdLink != null) {
+                    setLocation(
+                      appRoutes.linksDetails.makePath({
+                        linkId: createdLink.id,
+                        skuId
+                      })
+                    )
+                  }
+                })
+                .catch((error) => {
+                  setApiError(error)
+                  setIsSaving(false)
+                })
+            }}
+          />
+        </Spacer>
+      )}
     </PageLayout>
   )
 }

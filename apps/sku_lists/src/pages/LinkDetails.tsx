@@ -1,22 +1,16 @@
 import {
   Button,
-  Card,
   EmptyState,
-  Icon,
-  InputReadonly,
   PageLayout,
   SkeletonTemplate,
-  Spacer,
   goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { QRCode } from 'react-qrcode-logo'
 import { Link, useLocation } from 'wouter'
 
 import { appRoutes, type PageProps } from '#data/routes'
-import { useLinkDetails } from '#hooks/useLinkDetails'
-import { slugify } from '#utils/slugify'
-import { useRef, type MutableRefObject } from 'react'
+import { LinkDetailsCard } from 'dashboard-apps-common/src/components/LinkDetailsCard'
+import { useLinkDetails } from 'dashboard-apps-common/src/hooks/useLinkDetails'
 
 export const LinkDetails = (
   props: PageProps<typeof appRoutes.linksDetails>
@@ -28,43 +22,10 @@ export const LinkDetails = (
   const [, setLocation] = useLocation()
   const skuListId = props.params?.skuListId ?? ''
   const linkId = props.params?.linkId ?? ''
-
-  const linkQrRef = useRef<QRCode>(null)
+  const goBackUrl = appRoutes.linksList.makePath({ skuListId })
   const { link, isLoading, error } = useLinkDetails(linkId)
 
-  const handleLinkQrDownload = (): void => {
-    linkQrRef.current?.download(
-      'jpg',
-      `${new Date().toISOString().split('T')[0]}_${slugify(link.name)}`
-    )
-  }
-
-  if (error != null) {
-    return (
-      <PageLayout
-        title={link?.name}
-        navigationButton={{
-          onClick: () => {
-            setLocation(appRoutes.list.makePath({}))
-          },
-          label: 'SKU Lists',
-          icon: 'arrowLeft'
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title='Not authorized'
-          action={
-            <Link href={appRoutes.list.makePath({})}>
-              <Button variant='primary'>Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
-    )
-  }
-
-  const pageTitle = link?.name
+  const pageTitle = link?.name ?? 'Link'
 
   return (
     <PageLayout
@@ -76,7 +37,7 @@ export const LinkDetails = (
         onClick: () => {
           goBack({
             setLocation,
-            defaultRelativePath: appRoutes.linksList.makePath({ skuListId })
+            defaultRelativePath: goBackUrl
           })
         },
         label: 'Back',
@@ -86,47 +47,29 @@ export const LinkDetails = (
       scrollToTop
       overlay
     >
-      <SkeletonTemplate isLoading={isLoading}>
-        <Card overflow='visible'>
-          <div className='flex justify-center'>
-            <QRCode
-              ref={linkQrRef as MutableRefObject<QRCode>}
-              value={link.url ?? ''}
-              size={300}
-              logoImage='https://data.commercelayer.app/assets/logos/glyph/black/commercelayer_glyph_black.svg'
-              logoWidth={50}
-              logoHeight={50}
-              logoPadding={20}
-              enableCORS
-            />
-          </div>
-          <Spacer top='12' bottom='4'>
-            <InputReadonly value={link?.url ?? ''} showCopyAction />
-          </Spacer>
-          <div className='flex justify-between'>
-            <Button
-              variant='secondary'
-              size='small'
-              alignItems='center'
-              onClick={() => {
-                setLocation(appRoutes.linksList.makePath({ skuListId }))
-              }}
-            >
-              <Icon name='archive' size={16} />
-              View archive
-            </Button>
-            <Button
-              variant='primary'
-              size='small'
-              alignItems='center'
-              onClick={handleLinkQrDownload}
-            >
-              <Icon name='download' size={16} />
-              Download
-            </Button>
-          </div>
-        </Card>
-      </SkeletonTemplate>
+      {error != null ? (
+        <EmptyState
+          title='Not authorized'
+          action={
+            <Link href={goBackUrl}>
+              <Button variant='primary'>Go back</Button>
+            </Link>
+          }
+        />
+      ) : (
+        <SkeletonTemplate isLoading={isLoading}>
+          <LinkDetailsCard
+            link={link}
+            onLinkDetailsClick={() => {
+              goBack({
+                setLocation,
+                defaultRelativePath: goBackUrl
+              })
+            }}
+            showQR
+          />
+        </SkeletonTemplate>
+      )}
     </PageLayout>
   )
 }

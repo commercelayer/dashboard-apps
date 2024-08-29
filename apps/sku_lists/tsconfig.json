@@ -52,7 +52,6 @@
     }
   },
   "include": [
-    "vite.config.js",
     "global.d.ts",
     "src",
     ".eslintrc.cjs",

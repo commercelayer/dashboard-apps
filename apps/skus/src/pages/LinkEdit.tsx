@@ -1,16 +1,17 @@
 import { LinkForm, type LinkFormValues } from '#components/LinkForm'
 import { appRoutes, type PageProps } from '#data/routes'
-import { useLinkDetails } from '#hooks/useLinkDetails'
 import { isMock } from '#mocks'
 import {
   Button,
   EmptyState,
+  goBack,
   PageLayout,
   Spacer,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Link, type LinkUpdate } from '@commercelayer/sdk'
+import { useLinkDetails } from 'dashboard-apps-common/src/hooks/useLinkDetails'
 import { useState } from 'react'
 import { useLocation } from 'wouter'
 
@@ -29,37 +30,7 @@ export function LinkEdit(
   const goBackUrl = appRoutes.linksDetails.makePath({ skuId, linkId })
   const { link, isLoading, mutateLink } = useLinkDetails(linkId)
 
-  if (!canUser('create', 'links')) {
-    return (
-      <PageLayout
-        title='Edit link'
-        navigationButton={{
-          onClick: () => {
-            setLocation(goBackUrl)
-          },
-          label: 'Cancel',
-          icon: 'x'
-        }}
-        scrollToTop
-        overlay
-      >
-        <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
-          action={
-            <Button
-              variant='primary'
-              onClick={() => {
-                setLocation(goBackUrl)
-              }}
-            >
-              Go back
-            </Button>
-          }
-        />
-      </PageLayout>
-    )
-  }
+  const pageTitle = link?.name ?? 'Edit link'
 
   if (link == null || isLoading || isMock(link)) {
     return <></>
@@ -67,40 +38,63 @@ export function LinkEdit(
 
   return (
     <PageLayout
-      title={link?.name}
+      title={pageTitle}
       navigationButton={{
         onClick: () => {
-          setLocation(goBackUrl)
+          goBack({
+            setLocation,
+            defaultRelativePath: goBackUrl
+          })
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: 'Back',
+        icon: 'arrowLeft'
       }}
       scrollToTop
       overlay
     >
-      <Spacer bottom='14'>
-        <LinkForm
-          apiError={apiError}
-          isSubmitting={isSaving}
-          defaultValues={adaptLinkToFormValues(link)}
-          onSubmit={(formValues) => {
-            setIsSaving(true)
-            const link = adaptFormValuesToLink(formValues, skuId)
-            void sdkClient.links
-              .update(link)
-              .then((editedLink) => {
-                if (editedLink != null) {
-                  void mutateLink()
-                  setLocation(goBackUrl)
-                }
-              })
-              .catch((error) => {
-                setApiError(error)
-                setIsSaving(false)
-              })
-          }}
+      {!canUser('update', 'links') ? (
+        <EmptyState
+          title='Permission Denied'
+          description='You are not authorized to access this page.'
+          action={
+            <Button
+              variant='primary'
+              onClick={() => {
+                goBack({
+                  setLocation,
+                  defaultRelativePath: goBackUrl
+                })
+              }}
+            >
+              Go back
+            </Button>
+          }
         />
-      </Spacer>
+      ) : (
+        <Spacer bottom='14'>
+          <LinkForm
+            apiError={apiError}
+            isSubmitting={isSaving}
+            defaultValues={adaptLinkToFormValues(link)}
+            onSubmit={(formValues) => {
+              setIsSaving(true)
+              const link = adaptFormValuesToLink(formValues, skuId)
+              void sdkClient.links
+                .update(link)
+                .then((editedLink) => {
+                  if (editedLink != null) {
+                    void mutateLink()
+                    setLocation(goBackUrl)
+                  }
+                })
+                .catch((error) => {
+                  setApiError(error)
+                  setIsSaving(false)
+                })
+            }}
+          />
+        </Spacer>
+      )}
     </PageLayout>
   )
 }
