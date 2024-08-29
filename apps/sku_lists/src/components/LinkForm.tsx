@@ -1,4 +1,3 @@
-import { useMarketsList } from '#hooks/useMarketsList'
 import {
   Button,
   Grid,
@@ -12,6 +11,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMarketsList } from 'dashboard-apps-common/src/hooks/useMarketsList'
 import { useEffect } from 'react'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'

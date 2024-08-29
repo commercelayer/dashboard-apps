@@ -20,6 +20,7 @@
     "wouter": "^3.3.5"
   },
   "devDependencies": {
+    "@commercelayer/app-builder": "workspace:*",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@commercelayer/js-auth": "^6.3.1",
     "@types/js-cookie": "^3.0.6",

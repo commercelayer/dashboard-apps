@@ -840,6 +840,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@5.4.2(@types/node@22.5.2)(terser@5.31.3))
+      dashboard-apps-common:
+        specifier: workspace:*
+        version: link:../../packages/common
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -873,6 +876,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
+      dashboard-apps-common:
+        specifier: workspace:*
+        version: link:../../packages/common
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1214,6 +1220,37 @@ importers:
         specifier: ^17.7.2
         version: 17.7.2
 
+  packages/common:
+    dependencies:
+      '@commercelayer/app-elements':
+        specifier: 2.2.8
+        version: 2.2.8(@commercelayer/sdk@6.13.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+      '@commercelayer/sdk':
+        specifier: 6.13.0
+        version: 6.13.0
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-qrcode-logo:
+        specifier: ^3.0.0
+        version: 3.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      swr:
+        specifier: ^2.2.5
+        version: 2.2.5(react@18.3.1)
+    devDependencies:
+      '@commercelayer/eslint-config-ts-react':
+        specifier: ^1.4.5
+        version: 1.4.5(@types/eslint@8.56.10)(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4)
+      '@types/react':
+        specifier: ^18.3.4
+        version: 18.3.5
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      typescript:
+        specifier: ^5.5.3
+        version: 5.5.4
+
   packages/index:
     dependencies:
       '@commercelayer/app-elements':
@@ -1232,6 +1269,9 @@ importers:
         specifier: ^3.3.5
         version: 3.3.5(react@18.3.1)
     devDependencies:
+      '@commercelayer/app-builder':
+        specifier: workspace:*
+        version: link:../app-builder
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(@types/eslint@8.56.10)(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4)
@@ -1422,6 +1462,18 @@ packages:
     resolution: {integrity: sha512-xm8XrMKz0IlUdocVbYJe0Z9xEgidU7msskG8BbhnTPK/HZ2z/7FP7ykqPgrUH+C+r414mNfNWam1f2vqOjqjYQ==}
     engines: {node: '>=6.9.0'}
 
+  '@commercelayer/app-elements@2.2.8':
+    resolution: {integrity: sha512-CqgHDmBD3gcDFsUR4FBHIapwSwpznutCnVtnIYZungX4psHSeScADkWXEaIcLYiDvno/2S6zxThyDbriu/YXXw==}
+    engines: {node: '>=18', pnpm: '>=7'}
+    peerDependencies:
+      '@commercelayer/sdk': ^6.x
+      query-string: ^8.2.x
+      react: ^18.2.x
+      react-dom: ^18.2.x
+      react-gtm-module: ^2.x
+      react-hook-form: ^7.50.x
+      wouter: ^3.x
+
   '@commercelayer/app-elements@2.3.0':
     resolution: {integrity: sha512-2zPuLORqNAgpuQjfAfv1R8Qlr0aMDMjR97P3f4Ij7KRMTqCe4gxaW8WoMQRWlt6h6PHADNdx31CCbi0dVGCR6w==}
     engines: {node: '>=18', pnpm: '>=7'}
@@ -1450,6 +1502,10 @@ packages:
   '@commercelayer/js-auth@6.3.1':
     resolution: {integrity: sha512-f+SrlerLE+fUtyGeSe90y1BIuekF962aDPA6JCsBFm34S7nfWp8VW0IUvPAiZJGNVtlDFuWrW0VB5qN9z49bKQ==}
     engines: {node: '>=18.0.0'}
+
+  '@commercelayer/sdk@6.13.0':
+    resolution: {integrity: sha512-RqpvUqgqdgyT1EUPHhPs0Vv2mX9499MrAHxICAi2mv1sWkNIu4XsFkcRi4weKRyCg84EkIlBRzl4bnk5plLDaQ==}
+    engines: {node: '>=20'}
 
   '@commercelayer/sdk@6.14.1':
     resolution: {integrity: sha512-iByH/4fM2++s9urlxQJWk8mtNmLzWUTtpflA+54uTPJgFRRU+UlS5Q4n0QwZEfcEfg00HU0RNUo0s8o/jDEOBA==}
@@ -5811,6 +5867,34 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
+  '@commercelayer/app-elements@2.2.8(@commercelayer/sdk@6.13.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
+    dependencies:
+      '@commercelayer/sdk': 6.13.0
+      '@types/lodash': 4.17.7
+      '@types/react': 18.3.5
+      '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react-dom': 18.3.0
+      classnames: 2.5.1
+      jwt-decode: 4.0.0
+      lodash: 4.17.21
+      pluralize: 8.0.0
+      query-string: 9.1.0
+      react: 18.3.1
+      react-currency-input-field: 3.8.0(react@18.3.1)
+      react-datepicker: 7.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dom: 18.3.1(react@18.3.1)
+      react-gtm-module: 2.0.11
+      react-hook-form: 7.53.0(react@18.3.1)
+      react-select: 5.8.0(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      swr: 2.2.5(react@18.3.1)
+      ts-invariant: 0.10.3
+      type-fest: 4.26.0
+      wouter: 3.3.5(react@18.3.1)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - supports-color
+
   '@commercelayer/app-elements@2.3.0(@commercelayer/sdk@6.14.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
     dependencies:
       '@commercelayer/sdk': 6.14.1
@@ -5875,6 +5959,8 @@ snapshots:
       - supports-color
 
   '@commercelayer/js-auth@6.3.1': {}
+
+  '@commercelayer/sdk@6.13.0': {}
 
   '@commercelayer/sdk@6.14.1': {}
 

@@ -1,7 +1,7 @@
-import { isMockedId, makeLink } from '#mocks'
 import { useCoreApi } from '@commercelayer/app-elements'
 import type { Link } from '@commercelayer/sdk'
 import type { KeyedMutator } from 'swr'
+import { isMockedId, makeLink } from '../mocks'
 
 export function useLinkDetails(id: string): {
   link: Link

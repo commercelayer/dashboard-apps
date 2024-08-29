@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "dashboard-apps-common",
+  "version": "2.1.0-add-links.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "ts:check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@commercelayer/app-elements": "2.2.8",
+    "@commercelayer/sdk": "6.13.0",
+    "react-qrcode-logo": "^3.0.0",
+    "react": "^18.3.1",
+    "swr": "^2.2.5"
+  },
+  "devDependencies": {
+    "@commercelayer/eslint-config-ts-react": "^1.4.5",
+    "@types/react": "^18.3.4",
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.3"
+  }
+}
