@@ -22,6 +22,7 @@ export const appRoutes = {
   home: createRoute('/'),
   list: createRoute('/list/'),
   filters: createRoute('/filters/'),
+  new: createRoute('/new/:orderId?/'),
   details: createRoute('/list/:orderId/'),
   refund: createRoute('/list/:orderId/refund/'),
   return: createRoute('/list/:orderId/return/'),
