@@ -1,6 +1,4 @@
-import { LinkForm, type LinkFormValues } from '#components/LinkForm'
 import { appRoutes, type PageProps } from '#data/routes'
-import { useLinkDetails } from '#hooks/useLinkDetails'
 import { isMock } from '#mocks'
 import {
   Button,
@@ -11,6 +9,11 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Link, type LinkUpdate } from '@commercelayer/sdk'
+import {
+  LinkForm,
+  type LinkFormValues
+} from 'dashboard-apps-common/src/components/LinkForm'
+import { useLinkDetails } from 'dashboard-apps-common/src/hooks/useLinkDetails'
 import { useState } from 'react'
 import { useLocation } from 'wouter'
 
@@ -78,6 +81,7 @@ function LinkEdit(props: PageProps<typeof appRoutes.linkEdit>): JSX.Element {
     >
       <Spacer bottom='14'>
         <LinkForm
+          resourceType='orders'
           apiError={apiError}
           isSubmitting={isSaving}
           defaultValues={adaptLinkToFormValues(link)}

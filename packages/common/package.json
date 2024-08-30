@@ -13,9 +13,12 @@
   "dependencies": {
     "@commercelayer/app-elements": "2.2.8",
     "@commercelayer/sdk": "6.13.0",
+    "@hookform/resolvers": "^3.9.0",
     "react-qrcode-logo": "^3.0.0",
+    "react-hook-form": "7.52.2",
     "react": "^18.3.1",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^1.4.5",

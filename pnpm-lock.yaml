@@ -378,6 +378,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
+      dashboard-apps-common:
+        specifier: workspace:*
+        version: link:../../packages/common
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1228,18 +1231,24 @@ importers:
       '@commercelayer/sdk':
         specifier: 6.13.0
         version: 6.13.0
+      '@hookform/resolvers':
+        specifier: ^3.9.0
+        version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
       react:
         specifier: ^18.3.1
         version: 18.3.1
+      react-hook-form:
+        specifier: 7.52.2
+        version: 7.52.2(react@18.3.1)
       react-qrcode-logo:
         specifier: ^3.0.0
         version: 3.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
-      wouter:
-        specifier: ^3.3.3
-        version: 3.3.3(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
@@ -6578,7 +6587,7 @@ snapshots:
     dependencies:
       '@commercelayer/sdk': 6.9.1
       '@types/lodash': 4.17.7
-      '@types/react': 18.3.3
+      '@types/react': 18.3.4
       '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react-dom': 18.3.0
       classnames: 2.5.1
@@ -6592,7 +6601,7 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-gtm-module: 2.0.11
       react-hook-form: 7.52.1(react@18.3.1)
-      react-select: 5.8.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-select: 5.8.0(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
