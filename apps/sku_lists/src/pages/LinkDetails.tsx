@@ -1,6 +1,7 @@
 import {
   Button,
   EmptyState,
+  Icon,
   PageLayout,
   SkeletonTemplate,
   goBack,
@@ -60,12 +61,22 @@ export const LinkDetails = (
         <SkeletonTemplate isLoading={isLoading}>
           <LinkDetailsCard
             link={link}
-            onLinkDetailsClick={() => {
-              goBack({
-                setLocation,
-                defaultRelativePath: goBackUrl
-              })
-            }}
+            primaryAction={
+              <Button
+                variant='secondary'
+                size='small'
+                alignItems='center'
+                onClick={() => {
+                  goBack({
+                    setLocation,
+                    defaultRelativePath: goBackUrl
+                  })
+                }}
+              >
+                <Icon name='archive' size={16} />
+                View archive
+              </Button>
+            }
             showQR
           />
         </SkeletonTemplate>
