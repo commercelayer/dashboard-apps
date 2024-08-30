@@ -1,4 +1,3 @@
-import { LinkForm, type LinkFormValues } from '#components/LinkForm'
 import { appRoutes, type PageProps } from '#data/routes'
 import { useSkuListDetails } from '#hooks/useSkuListDetails'
 import { isMockedId } from '#mocks'
@@ -11,6 +10,10 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type LinkCreate } from '@commercelayer/sdk'
+import {
+  LinkForm,
+  type LinkFormValues
+} from 'dashboard-apps-common/src/components/LinkForm'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
 
@@ -74,6 +77,7 @@ export function LinkNew(
       ) : (
         <Spacer bottom='14'>
           <LinkForm
+            resourceType='sku_lists'
             apiError={apiError}
             isSubmitting={isSaving}
             onSubmit={(formValues) => {
