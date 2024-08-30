@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "app-sku_lists",
-  "version": "2.1.0-add-links.0",
+  "version": "2.2.0-add-links.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -29,7 +29,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "dashboard-apps-common": "workspace:*",
     "@commercelayer/app-builder": "workspace:*",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@types/lodash": "^4.17.7",
@@ -37,6 +36,7 @@
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "dashboard-apps-common": "workspace:*",
     "eslint": "^8.57.0",
     "jsdom": "^24.1.1",
     "rollup-plugin-external-globals": "^0.12.0",
