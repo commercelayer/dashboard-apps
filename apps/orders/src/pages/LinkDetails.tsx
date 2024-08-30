@@ -1,13 +1,10 @@
 import {
   Button,
-  Card,
   Dropdown,
   DropdownItem,
   Icon,
-  InputReadonly,
   PageLayout,
   SkeletonTemplate,
-  Spacer,
   formatDate,
   goBack,
   useTokenProvider
@@ -17,6 +14,7 @@ import { useLocation } from 'wouter'
 import { appRoutes, type PageProps } from '#data/routes'
 import { useGetCheckoutLink } from '#hooks/useGetCheckoutLink'
 import { useOrderDetails } from '#hooks/useOrderDetails'
+import { LinkDetailsCard } from 'dashboard-apps-common/src/components/LinkDetailsCard'
 import { useMemo } from 'react'
 
 function LinkDetails(
@@ -60,7 +58,7 @@ function LinkDetails(
   })
 
   const shareMail = {
-    subject: `Checkout your order (#${orderId})`,
+    subject: `Checkout your order (#${order.number})`,
     body: `Dear customer,
 please follow this link to checkout your order #${order.number}:
 ${link?.url}
@@ -73,6 +71,10 @@ The ${organization?.name} team`
 
   const shareWhatsapp = {
     body: `Please follow this link to checkout your order *${order.number}*: ${linkUrl}`
+  }
+
+  if (link == null) {
+    return <></>
   }
 
   return (
@@ -96,17 +98,10 @@ The ${organization?.name} team`
       overlay
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Card overflow='visible'>
-          <Spacer bottom='4'>
-            <InputReadonly
-              value={link?.url ?? ''}
-              showCopyAction
-              hint={{
-                text: `Sales channel: ${linkSalesChannel?.name}. Expires ${expiresIn}.`
-              }}
-            />
-          </Spacer>
-          <div className='flex justify-between'>
+        <LinkDetailsCard
+          link={link}
+          linkHint={`Sales channel: ${linkSalesChannel?.name}. Expires ${expiresIn}.`}
+          primaryAction={
             <Button
               variant='secondary'
               size='small'
@@ -123,6 +118,8 @@ The ${organization?.name} team`
               <Icon name='pencilSimple' size={16} />
               Edit
             </Button>
+          }
+          secondaryAction={
             <Dropdown
               dropdownLabel={
                 <Button variant='primary' size='small' alignItems='center'>
@@ -150,8 +147,8 @@ The ${organization?.name} team`
                 </>
               }
             />
-          </div>
-        </Card>
+          }
+        />
       </SkeletonTemplate>
     </PageLayout>
   )

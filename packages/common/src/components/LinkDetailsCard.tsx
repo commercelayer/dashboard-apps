@@ -8,18 +8,22 @@ import {
 import type { Link } from '@commercelayer/sdk'
 import { useRef, type MutableRefObject } from 'react'
 import { QRCode } from 'react-qrcode-logo'
-import { slugify } from 'src/helpers/slugify'
+import { slugify } from '../helpers/slugify'
 
 interface Props {
   link: Link
-  onLinkDetailsClick: () => void
-  showQR: boolean
+  linkHint?: string
+  primaryAction?: React.ReactNode
+  secondaryAction?: React.ReactNode
+  showQR?: boolean
 }
 
 export const LinkDetailsCard = ({
   link,
-  onLinkDetailsClick,
-  showQR
+  linkHint,
+  primaryAction,
+  secondaryAction,
+  showQR = false
 }: Props): JSX.Element => {
   const linkQrRef = useRef<QRCode>(null)
 
@@ -46,30 +50,35 @@ export const LinkDetailsCard = ({
           />
         </div>
       )}
-      <Spacer top='12' bottom='4'>
-        <InputReadonly value={link?.url ?? ''} showCopyAction />
+      <Spacer top={showQR ? '12' : undefined} bottom='4'>
+        <InputReadonly
+          value={link?.url ?? ''}
+          showCopyAction
+          hint={
+            linkHint != null
+              ? {
+                  text: linkHint
+                }
+              : undefined
+          }
+        />
       </Spacer>
       <div className='flex justify-between'>
-        <Button
-          variant='secondary'
-          size='small'
-          alignItems='center'
-          onClick={onLinkDetailsClick}
-        >
-          <Icon name='archive' size={16} />
-          View archive
-        </Button>
-        {showQR && (
-          <Button
-            variant='primary'
-            size='small'
-            alignItems='center'
-            onClick={handleLinkQrDownload}
-          >
-            <Icon name='download' size={16} />
-            Download
-          </Button>
-        )}
+        {primaryAction}
+        <div className='flex'>
+          {secondaryAction}
+          {showQR && (
+            <Button
+              variant='primary'
+              size='small'
+              alignItems='center'
+              onClick={handleLinkQrDownload}
+            >
+              <Icon name='download' size={16} />
+              Download
+            </Button>
+          )}
+        </div>
       </div>
     </Card>
   )
