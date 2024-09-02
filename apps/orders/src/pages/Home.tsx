@@ -26,7 +26,21 @@ function Home(): JSX.Element {
   })
 
   return (
-    <HomePageLayout title='Orders'>
+    <HomePageLayout
+      title='Orders'
+      toolbar={{
+        buttons: [
+          {
+            icon: 'plus',
+            label: 'New order',
+            size: 'small',
+            onClick: () => {
+              setLocation(appRoutes.new.makePath({}))
+            }
+          }
+        ]
+      }}
+    >
       <SearchWithNav
         hideFiltersNav
         onFilterClick={() => {}}
