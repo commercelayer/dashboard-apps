@@ -13,19 +13,19 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "^2.2.9",
+    "@commercelayer/app-elements": "^2.3.0",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "wouter": "^3.3.4"
+    "wouter": "^3.3.5"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@commercelayer/js-auth": "^6.3.1",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.7",
-    "@types/node": "22.5.0",
-    "@types/react": "^18.3.4",
+    "@types/node": "22.5.2",
+    "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.57.0",
