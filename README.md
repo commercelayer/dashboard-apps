@@ -35,11 +35,11 @@ pnpm dev
 In order to authenticate the app, you need to add an integration access token as URL query param. Example: `http://localhost:5173/?accessToken=<integration-token-for-local-dev>`.
 That access token is only required (and will work only) for development mode. In production mode, the Commerce Layer Dashboard will generate a valid access token, based on the current user.
 
-5. Modify any application you need to satisfy your requirements. Applications are stored inside the [`./apps`](apps) folder.\
+5. Modify any application you need to satisfy your requirements. Applications are stored inside the [`./apps`](apps) folder.
 All our Dashboard apps are built using a shared component library [@commercelayer/app-elements](https://github.com/commercelayer/app-elements).
 You can browse the [official documentation](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-welcome--docs) to discover more about this topic.
 
-6. Build all applications into the `./dist` folder:
+7. Build all applications into the `./dist` folder:
 
 ```
 pnpm build:apps
