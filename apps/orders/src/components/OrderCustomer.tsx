@@ -21,7 +21,6 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element | null => {
     const {
       canAccess,
-      canUser,
       settings: { mode }
     } = useTokenProvider()
 
@@ -45,15 +44,13 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
         })
       : {}
 
-    const canUserUpdateCustomers = canUser('update', 'customers')
-
     return (
       <>
         <EditCustomerOverlay />
         <Section
           title='Customer'
           actionButton={
-            canUserUpdateCustomers ? (
+            order.status === 'pending' ? (
               <Button
                 alignItems='center'
                 variant='secondary'

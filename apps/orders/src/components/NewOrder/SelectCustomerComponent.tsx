@@ -5,12 +5,18 @@ import {
   useCoreSdkProvider,
   type InputSelectValue
 } from '@commercelayer/app-elements'
-import type { Customer, QueryParamsList } from '@commercelayer/sdk'
+import type {
+  Customer,
+  ListResponse,
+  QueryParamsList
+} from '@commercelayer/sdk'
+import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 export function SelectCustomerComponent(): JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const { watch } = useFormContext()
+  const [inputOptions, setInputOptions] = useState<ListResponse<Customer>>()
 
   const inputValue = watch('customer_email')
 
@@ -50,14 +56,17 @@ export function SelectCustomerComponent(): JSX.Element {
         hint={{ text: "The customer's email for this order." }}
         isCreatable
         menuFooterText={
-          customers != null && customers.meta.recordCount > 25
-            ? 'Search or add email.'
+          (inputOptions == null &&
+            customers != null &&
+            customers.meta.recordCount > 25) ||
+          (inputOptions?.meta.recordCount ?? 0) > 25
+            ? 'Type to search for more options.'
             : undefined
         }
         initialValues={initialValues}
         loadAsyncValues={async (email) => {
           const customers = await sdkClient.customers.list(getParams({ email }))
-
+          setInputOptions(customers)
           return toInputSelectValues(customers)
         }}
       />
