@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "dashboard-apps-common",
-  "version": "2.1.0-add-links.0",
+  "version": "2.1.2",
   "type": "module",
   "scripts": {
     "lint": "eslint src --ext .ts,.tsx",
@@ -12,9 +12,9 @@
     "@commercelayer/app-elements": "2.2.8",
     "@commercelayer/sdk": "6.13.0",
     "@hookform/resolvers": "^3.9.0",
-    "react-qrcode-logo": "^3.0.0",
-    "react-hook-form": "7.52.2",
     "react": "^18.3.1",
+    "react-hook-form": "7.52.2",
+    "react-qrcode-logo": "^3.0.0",
     "swr": "^2.2.5",
     "zod": "^3.23.8"
   },

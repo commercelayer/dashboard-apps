@@ -794,6 +794,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
+      dashboard-apps-common:
+        specifier: workspace:*
+        version: link:../../packages/common
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -843,9 +846,6 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@5.4.2(@types/node@22.5.2)(terser@5.31.3))
-      dashboard-apps-common:
-        specifier: workspace:*
-        version: link:../../packages/common
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
