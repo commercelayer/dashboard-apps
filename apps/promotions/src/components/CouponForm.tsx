@@ -77,7 +77,7 @@ export function CouponForm({
                           data: {
                             // @ts-expect-error TODO: flex_promotions
                             id: promotion.id,
-                            type: 'percentage_discount_promotions'
+                            type: 'flex_promotions'
                           }
                         }
                       }
