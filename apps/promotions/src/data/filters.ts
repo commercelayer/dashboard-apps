@@ -53,7 +53,8 @@ export const filtersInstructions: FiltersInstructions = [
         'free_gift_promotions',
         'free_shipping_promotions',
         'percentage_discount_promotions',
-        'external_promotions'
+        'external_promotions',
+        'flex_promotions'
       ]
     },
     render: {
@@ -67,7 +68,8 @@ export const filtersInstructions: FiltersInstructions = [
           { value: 'free_gift_promotions', label: 'Free gift' },
           { value: 'free_shipping_promotions', label: 'Free shipping' },
           { value: 'percentage_discount_promotions', label: 'Perc. discount' },
-          { value: 'external_promotions', label: 'External' }
+          { value: 'external_promotions', label: 'External' },
+          { value: 'flex_promotions', label: 'Flex' }
         ] as Array<{ value: PromotionType; label: string }>
       }
     }
