@@ -1246,6 +1246,9 @@ importers:
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
+      wouter:
+        specifier: ^3.3.5
+        version: 3.3.5(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8

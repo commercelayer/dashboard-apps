@@ -28,9 +28,12 @@ export function LinkEdit(
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const skuListId = props.params?.skuListId ?? ''
+  const skuListId = props.params?.resourceId ?? ''
   const linkId = props.params?.linkId ?? ''
-  const goBackUrl = appRoutes.linksDetails.makePath({ skuListId, linkId })
+  const goBackUrl = appRoutes.linksDetails.makePath({
+    resourceId: skuListId,
+    linkId
+  })
   const { link, isLoading, mutateLink } = useLinkDetails(linkId)
 
   const pageTitle = link?.name ?? 'Edit link'

@@ -27,7 +27,7 @@ export function LinkNew(
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const skuId = props.params?.skuId ?? ''
+  const skuId = props.params?.resourceId ?? ''
   const goBackUrl = appRoutes.details.makePath({ skuId })
   const { sku, isLoading } = useSkuDetails(skuId)
 
@@ -56,7 +56,7 @@ export function LinkNew(
             size: 'small',
             variant: 'secondary',
             onClick: () => {
-              setLocation(appRoutes.linksList.makePath({ skuId }))
+              setLocation(appRoutes.linksList.makePath({ resourceId: skuId }))
             }
           }
         ]
@@ -90,7 +90,7 @@ export function LinkNew(
                     setLocation(
                       appRoutes.linksDetails.makePath({
                         linkId: createdLink.id,
-                        skuId
+                        resourceId: skuId
                       })
                     )
                   }

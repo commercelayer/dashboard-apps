@@ -92,7 +92,7 @@ export const SkuDetails: FC = () => {
         size: 'small',
         variant: 'secondary',
         onClick: () => {
-          setLocation(appRoutes.linksNew.makePath({ skuId }))
+          setLocation(appRoutes.linksNew.makePath({ resourceId: skuId }))
         }
       })
     }

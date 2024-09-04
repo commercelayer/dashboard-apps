@@ -87,7 +87,7 @@ export const SkuListDetails = (
         size: 'small',
         variant: 'secondary',
         onClick: () => {
-          setLocation(appRoutes.linksNew.makePath({ skuListId }))
+          setLocation(appRoutes.linksNew.makePath({ resourceId: skuListId }))
         }
       })
     }

@@ -1,9 +1,5 @@
-import {
-  createRoute,
-  createTypedRoute,
-  type GetParams
-} from '@commercelayer/app-elements'
-import type { Link, Sku } from '@commercelayer/sdk'
+import { createRoute, type GetParams } from '@commercelayer/app-elements'
+import { linksRoutes } from 'dashboard-apps-common/src/data/routes'
 import type { RouteComponentProps } from 'wouter'
 
 export type AppRoute = keyof typeof appRoutes
@@ -25,16 +21,5 @@ export const appRoutes = {
   new: createRoute('/new/'),
   details: createRoute('/list/:skuId/'),
   edit: createRoute('/list/:skuId/edit/'),
-  linksList: createTypedRoute<{ skuId: Sku['id'] }>()(
-    '/list/:skuId/links/list/'
-  ),
-  linksNew: createTypedRoute<{ skuId: Sku['id'] }>()('/list/:skuId/links/new/'),
-  linksDetails: createTypedRoute<{
-    skuId: Sku['id']
-    linkId: Link['id']
-  }>()('/list/:skuId/links/:linkId/'),
-  linksEdit: createTypedRoute<{
-    skuId: Sku['id']
-    linkId: Link['id']
-  }>()('/list/:skuId/links/:linkId/edit/')
+  ...linksRoutes
 }
