@@ -15,7 +15,6 @@ import percentage_discount_promotions from './configs/percentage_discount_promot
 /** The attribute `reference_origin: "app-promotions"` identifies a promotion directly created from the App. */
 export const appPromotionsReferenceOrigin = 'app-promotions'
 
-// @ts-expect-error TODO: We need to manage the @flex_promotions
 export const promotionConfig: PromotionConfig = {
   ...percentage_discount_promotions,
   ...free_shipping_promotions,
