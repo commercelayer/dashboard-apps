@@ -2,7 +2,7 @@
 
 Any Commerce Layer account comes with the hosted version of a full set of Dashboard applications, automatically enabled for admin users. An admin can then enable one or more apps for other organization members giving each member full or read-only access. For an updated list of the available applications, check the [`./apps`](apps) folder of this repository or read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-applications--docs).
 
-It's possible to clone this repository and add one or more apps to your Dashboard, in order to customize every part of the code and start using your own and self-hosted version. For more information on how to do it, read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs). 
+It's possible to clone this repository and add one or more apps to your Dashboard, in order to customize every part of the code and start using your own self-hosted version. For more information on how to do it, read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs). 
 
 ## Table of contents
 
