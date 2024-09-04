@@ -1,14 +1,13 @@
 import type { PageProps } from '#components/Routes'
 import { appRoutes } from '#data/routes'
 import {
-  AvatarLetter,
+  Card,
   EmptyState,
   Icon,
   ListItem,
   PageLayout,
   SkeletonTemplate,
   Spacer,
-  StatusIcon,
   Text,
   useCoreSdkProvider,
   useResourceFilters,
@@ -26,6 +25,22 @@ export const SelectMarketStep: React.FC<
 
   const { SearchWithNav, FilteredList } = useResourceFilters({
     instructions: [
+      {
+        hidden: true,
+        label: 'Active',
+        type: 'options',
+        sdk: {
+          predicate: 'disabled_at_null',
+          defaultOptions: ['true']
+        },
+        render: {
+          component: 'inputToggleButton',
+          props: {
+            mode: 'single',
+            options: [{ value: 'true', label: 'True' }]
+          }
+        }
+      },
       {
         label: 'Search',
         type: 'textSearch',
@@ -64,18 +79,21 @@ export const SelectMarketStep: React.FC<
 
       <SkeletonTemplate>
         <Spacer bottom='14'>
-          <FilteredList
-            emptyState={
-              <EmptyState
-                title='No markets found!'
-                icon='shield'
-                description='No markets found for this organization.'
-              />
-            }
-            type='markets'
-            ItemTemplate={MarketItemTemplate}
-            query={{}}
-          />
+          <Card gap='none'>
+            <FilteredList
+              hideTitle
+              emptyState={
+                <EmptyState
+                  title='No markets found!'
+                  icon='shield'
+                  description='No markets found for this organization.'
+                />
+              }
+              type='markets'
+              ItemTemplate={MarketItemTemplate}
+              query={{}}
+            />
+          </Card>
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>
@@ -106,26 +124,11 @@ const MarketItemTemplate = withSkeletonTemplate<{
             setLocation(appRoutes.new.makePath({ orderId: order.id }))
           })
       }}
-      icon={
-        resource.disabled_at != null ? (
-          <StatusIcon name='minus' background='gray' gap='large' />
-        ) : (
-          <AvatarLetter text={resource.name} />
-        )
-      }
     >
-      <div>
-        <Text tag='div' weight='semibold' className='flex gap-2 items-center'>
-          {resource.name}{' '}
-          {resource.private === true && (
-            <Icon name='lockSimple' weight='bold' />
-          )}
-        </Text>
-
-        <Text tag='div' size='small' variant='info'>
-          {resource.disabled_at == null ? 'Active' : 'Disabled'}
-        </Text>
-      </div>
+      <Text tag='div' weight='semibold' className='flex gap-2 items-center'>
+        {resource.name}{' '}
+        {resource.private === true && <Icon name='lockSimple' weight='bold' />}
+      </Text>
       <Icon name='caretRight' />
     </ListItem>
   )
