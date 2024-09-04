@@ -75,7 +75,6 @@ function LinkTo({
   return (
     <Link
       href={appRoutes.newPromotion.makePath({
-        // @ts-expect-error TODO: We need to manage the @flex_promotions
         promotionType: config.type
       })}
       asChild
