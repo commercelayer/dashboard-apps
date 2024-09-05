@@ -18,6 +18,7 @@ import {
 import type { GroupedSelectValues } from '@commercelayer/app-elements/dist/ui/forms/InputSelect/InputSelect'
 import type {
   CustomPromotionRule,
+  FlexPromotion,
   SkuListPromotionRuleUpdate
 } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -29,7 +30,7 @@ export function RuleBuilderForm({
   promotion,
   onSuccess
 }: {
-  promotion: Promotion
+  promotion: Exclude<Promotion, FlexPromotion>
   onSuccess: () => void
 }): JSX.Element {
   const { inputParameter, methods, otherInputs, watchParameter } =
@@ -143,7 +144,9 @@ export function RuleBuilderForm({
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function useRuleBuilderFormFields(promotion: Promotion) {
+function useRuleBuilderFormFields(
+  promotion: Exclude<Promotion, FlexPromotion>
+) {
   const { rules } = usePromotionRules(promotion)
   const currencyCodes = useCurrencyCodes(promotion)
 

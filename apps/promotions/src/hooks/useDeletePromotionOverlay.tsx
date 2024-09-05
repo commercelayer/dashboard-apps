@@ -4,8 +4,7 @@ import {
   Button,
   PageHeading,
   useCoreSdkProvider,
-  useOverlay,
-  useTokenProvider
+  useOverlay
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
@@ -17,9 +16,6 @@ interface OverlayHook {
 export function useDeletePromotionOverlay(): OverlayHook {
   const { Overlay: OverlayElement, open, close } = useOverlay()
   const { sdkClient } = useCoreSdkProvider()
-  const {
-    settings: { accessToken, domain, organizationSlug }
-  } = useTokenProvider()
   const [, setLocation] = useLocation()
 
   return {
@@ -43,27 +39,9 @@ export function useDeletePromotionOverlay(): OverlayHook {
             variant='danger'
             fullWidth
             onClick={() => {
-              // @ts-expect-error TODO: flex_promotions
-              if (promotion.type === 'flex_promotions') {
-                void fetch(
-                  // @ts-expect-error TODO: flex_promotions
-                  `https://${organizationSlug}.${domain}/api/flex_promotions/${promotion.id}`,
-                  {
-                    method: 'DELETE',
-                    headers: {
-                      authorization: `Bearer ${accessToken}`,
-                      'content-type': 'application/vnd.api+json'
-                    },
-                    body: null
-                  }
-                ).then(() => {
-                  setLocation(appRoutes.home.makePath({}))
-                })
-              } else {
-                void sdkClient[promotion.type].delete(promotion.id).then(() => {
-                  setLocation(appRoutes.home.makePath({}))
-                })
-              }
+              void sdkClient[promotion.type].delete(promotion.id).then(() => {
+                setLocation(appRoutes.home.makePath({}))
+              })
             }}
           >
             Delete
