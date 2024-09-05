@@ -8,32 +8,37 @@ export function promotionToFormValues(promotion?: Promotion) {
     return undefined
   }
 
-  return {
+  const standardFormValues = {
     ...promotion,
     starts_at: new Date(promotion.starts_at),
     expires_at: new Date(promotion.expires_at),
-    apply_the_discount_to: promotion.sku_list != null ? 'sku_list' : 'all',
     show_priority: promotion.priority != null,
-    sku_list: promotion.sku_list?.id,
     reference:
       promotion.reference != null && promotion.reference !== ''
         ? promotion.reference
-        : null,
-    rules:
-      // @ts-expect-error TODO: flex_promotions
-      promotion.rules != null
-        ? JSON.stringify(
-            // @ts-expect-error TODO: flex_promotions
-            promotion.rules,
-            undefined,
-            2
-          )
-        : undefined
+        : null
+  }
+
+  if (promotion.type === 'flex_promotions') {
+    return {
+      ...standardFormValues,
+      rules:
+        promotion.rules != null
+          ? JSON.stringify(promotion.rules, undefined, 2)
+          : undefined
+    }
+  }
+
+  return {
+    ...standardFormValues,
+    apply_the_discount_to: promotion.sku_list != null ? 'sku_list' : 'all',
+    sku_list: promotion.sku_list?.id
   }
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function formValuesToPromotion(
+  promotionType: Promotion['type'],
   formValues?: z.infer<
     (typeof promotionConfig)[keyof typeof promotionConfig]['formType']
   >
@@ -62,12 +67,15 @@ export function formValuesToPromotion(
       'priority' in formValues && formValues.priority != null
         ? formValues.priority
         : null,
-    sku_list: {
-      type: 'sku_lists',
-      id:
-        'sku_list' in formValues && formValues.sku_list != null
-          ? formValues.sku_list
-          : null
-    }
+    sku_list:
+      promotionType !== 'flex_promotions'
+        ? {
+            type: 'sku_lists',
+            id:
+              'sku_list' in formValues && formValues.sku_list != null
+                ? formValues.sku_list
+                : null
+          }
+        : undefined
   }
 }
