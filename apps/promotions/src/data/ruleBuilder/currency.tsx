@@ -3,7 +3,7 @@ import { isMockedId } from '#mocks'
 import type { Promotion } from '#types'
 import type { CurrencyCode } from '@commercelayer/app-elements'
 import { currencies, useCoreApi } from '@commercelayer/app-elements'
-import type { CustomPromotionRule } from '@commercelayer/sdk'
+import type { CustomPromotionRule, FlexPromotion } from '@commercelayer/sdk'
 import { useEffect, useMemo, useState } from 'react'
 
 export function useCurrencyCodes(promotion: Promotion): CurrencyCode[] {
@@ -44,7 +44,10 @@ export function useCurrencyCodes(promotion: Promotion): CurrencyCode[] {
       return
     }
 
-    const fromPromotion = extractFromPromotion(promotion)
+    const fromPromotion =
+      promotion.type !== 'flex_promotions'
+        ? extractFromPromotion(promotion)
+        : null
 
     const fromCustomPromotionRule = extractFromCustomPromotionRule(promotion)
 
@@ -68,7 +71,9 @@ export function useCurrencyCodes(promotion: Promotion): CurrencyCode[] {
   return currencyCodes
 }
 
-function extractFromPromotion(promotion: Promotion): CurrencyCode[] | null {
+function extractFromPromotion(
+  promotion: Exclude<Promotion, FlexPromotion>
+): CurrencyCode[] | null {
   const fromPromotion = promotion.currency_code as Nullable<CurrencyCode>
 
   const fromPromotionMarket = promotion.market?.price_list

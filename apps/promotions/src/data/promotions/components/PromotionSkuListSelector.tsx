@@ -8,7 +8,11 @@ import {
   useCoreSdkProvider,
   type InputSelectValue
 } from '@commercelayer/app-elements'
-import type { QueryParamsList, SkuList } from '@commercelayer/sdk'
+import type {
+  FlexPromotion,
+  QueryParamsList,
+  SkuList
+} from '@commercelayer/sdk'
 
 export const PromotionSkuListSelector: React.FC<{
   label?: string
@@ -18,6 +22,10 @@ export const PromotionSkuListSelector: React.FC<{
   placeholder?: string
 }> = ({ hint, label, promotion, placeholder, optional = false }) => {
   const fieldName = 'sku_list'
+
+  if (promotion?.type === 'flex_promotions') {
+    return null
+  }
 
   if (!optional) {
     return (
@@ -70,7 +78,7 @@ export const PromotionSkuListSelector: React.FC<{
 const HookedInternalPromotionSkuListSelector: React.FC<{
   label?: string
   hint: string
-  promotion?: Promotion
+  promotion?: Exclude<Promotion, FlexPromotion>
   placeholder?: string
   name: string
 }> = ({ hint, label, promotion, name, placeholder = 'Search...' }) => {
