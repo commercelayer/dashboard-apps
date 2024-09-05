@@ -6,7 +6,7 @@ import {
   Text,
   type CurrencyCode
 } from '@commercelayer/app-elements'
-import type { ListableResourceType } from '@commercelayer/sdk'
+import type { FlexPromotion, ListableResourceType } from '@commercelayer/sdk'
 import { useFormContext } from 'react-hook-form'
 import { InputCurrencyComponent } from './components/InputCurrencyComponent'
 import { SelectCurrencyComponent } from './components/SelectCurrencyComponent'
@@ -247,7 +247,9 @@ export type RuleBuilderConfig = Record<
     rel: Extract<ListableResourceType, 'markets' | 'tags' | 'sku_lists'> | null
     label: string
     operators: Array<(typeof matchers)[keyof typeof matchers]> | null
-    Component: (props: { promotion: Promotion }) => React.ReactNode
+    Component: (props: {
+      promotion: Exclude<Promotion, FlexPromotion>
+    }) => React.ReactNode
     isAvailable: (config: {
       rules: Rule[]
       currencyCodes: CurrencyCode[]
