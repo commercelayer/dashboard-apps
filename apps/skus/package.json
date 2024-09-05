@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "app-skus",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,10 +15,10 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "dashboard-apps-common": "workspace:*",
     "@commercelayer/app-elements": "2.3.2",
     "@commercelayer/sdk": "6.15.0",
     "@hookform/resolvers": "^3.9.0",
+    "dashboard-apps-common": "workspace:*",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
