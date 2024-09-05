@@ -26,8 +26,8 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "2.3.0",
-    "@commercelayer/sdk": "6.14.1",
+    "@commercelayer/app-elements": "2.3.2",
+    "@commercelayer/sdk": "6.15.0",
     "@hookform/resolvers": "^3.9.0",
     "lodash": "^4.17.21",
     "phosphor-react": "^1.4.1",
@@ -43,7 +43,7 @@
     "@commercelayer/app-builder": "workspace:*",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@types/lodash": "^4.17.7",
-    "@types/node": "22.5.2",
+    "@types/node": "22.5.3",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
@@ -51,11 +51,11 @@
     "jsdom": "^25.0.0",
     "rollup-plugin-external-globals": "^0.12.0",
     "typescript": "^5.5.4",
-    "vite": "^5.4.2",
+    "vite": "^5.4.3",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.0.5"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }

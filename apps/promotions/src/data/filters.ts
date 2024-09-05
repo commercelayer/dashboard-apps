@@ -45,7 +45,16 @@ export const filtersInstructions: FiltersInstructions = [
     label: 'Type',
     type: 'options',
     sdk: {
-      predicate: 'type_in'
+      predicate: 'type_in',
+      defaultOptions: [
+        'buy_x_pay_y_promotions',
+        'fixed_amount_promotions',
+        'fixed_price_promotions',
+        'free_gift_promotions',
+        'free_shipping_promotions',
+        'percentage_discount_promotions',
+        'external_promotions'
+      ]
     },
     render: {
       component: 'inputToggleButton',
