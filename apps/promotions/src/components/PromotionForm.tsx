@@ -18,8 +18,7 @@ import {
   Section,
   Spacer,
   Text,
-  useCoreSdkProvider,
-  useTokenProvider
+  useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
@@ -42,9 +41,6 @@ export function PromotionForm({
 }: Props): React.ReactNode {
   const [apiError, setApiError] = useState<any>()
   const { sdkClient } = useCoreSdkProvider()
-  const {
-    settings: { accessToken, organizationSlug, domain }
-  } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { promotion } = usePromotion(promotionId)
   const methods = useForm<z.infer<typeof promotionConfig.formType>>({
@@ -69,105 +65,31 @@ export function PromotionForm({
       onSubmit={async (formValues): Promise<void> => {
         let promotion: Promotion
 
-        // TODO: remove this when sdk supports flex_promotions (manage errors)
-        if (promotionConfig.type === 'flex_promotions') {
-          if (isCreatingNewPromotion) {
-            const createResponse = await fetch(
-              `https://${organizationSlug}.${domain}/api/flex_promotions`,
-              {
-                method: 'POST',
-                headers: {
-                  authorization: `Bearer ${accessToken}`,
-                  'content-type': 'application/vnd.api+json'
-                },
-                body: JSON.stringify({
-                  data: {
-                    type: 'flex_promotions',
-                    attributes: {
-                      ...formValuesToPromotion(formValues),
-                      sku_list: undefined,
-                      _disable: true,
-                      reference_origin: appPromotionsReferenceOrigin
-                    }
-                  }
-                })
-              }
-            )
-
-            if (!createResponse.ok) {
-              const error = await createResponse.json()
-
-              setApiError(error)
-              throw error
-            }
-
-            const {
-              data: { id }
-            } = await createResponse.json()
-
-            setLocation(
-              appRoutes.promotionDetails.makePath({
-                promotionId: id
-              })
-            )
-          } else {
-            const updateResponse = await fetch(
-              `https://${organizationSlug}.${domain}/api/flex_promotions/${promotionId}`,
-              {
-                method: 'PATCH',
-                headers: {
-                  authorization: `Bearer ${accessToken}`,
-                  'content-type': 'application/vnd.api+json'
-                },
-                body: JSON.stringify({
-                  data: {
-                    type: 'flex_promotions',
-                    id: promotionId,
-                    attributes: {
-                      ...formValuesToPromotion(formValues),
-                      sku_list: undefined
-                    }
-                  }
-                })
-              }
-            )
-
-            if (!updateResponse.ok) {
-              const error = await updateResponse.json()
-
-              setApiError(error)
-              throw error
-            }
-
-            const {
-              data: { id }
-            } = await updateResponse.json()
-
-            setLocation(
-              appRoutes.promotionDetails.makePath({
-                promotionId: id
-              })
-            )
-          }
-
-          return
-        }
-
         const resource = sdkClient[promotionConfig.type]
 
         if (isCreatingNewPromotion) {
           // @ts-expect-error // TODO: I need to fix this
-          promotion = await resource.create({
-            ...formValuesToPromotion(formValues),
-            _disable: true,
-            reference_origin: appPromotionsReferenceOrigin
-          })
+          promotion = await resource
+            // @ts-expect-error // TODO: I need to fix this
+            .create({
+              ...formValuesToPromotion(promotionConfig.type, formValues),
+              _disable: true,
+              reference_origin: appPromotionsReferenceOrigin
+            })
+            .catch((error) => {
+              setApiError(error)
+            })
         } else {
-          // @ts-expect-error // TODO: I need to fix thi
-          promotion = await resource.update({
-            id: promotionId,
-            ...formValuesToPromotion(formValues)
-          })
+          // @ts-expect-error // TODO: I need to fix this
+          promotion = await resource
+            // @ts-expect-error // TODO: I need to fix this
+            .update({
+              id: promotionId,
+              ...formValuesToPromotion(promotionConfig.type, formValues)
+            })
+            .catch((error) => {
+              setApiError(error)
+            })
         }
 
         setLocation(
@@ -203,6 +125,7 @@ export function PromotionForm({
             </Grid>
           </Spacer>
 
+          {/* @ts-expect-error // TODO: I need to fix this */}
           <promotionConfig.Fields promotion={promotion} />
 
           <Spacer top='6'>
@@ -223,6 +146,7 @@ export function PromotionForm({
         </Section>
       </Spacer>
 
+      {/* @ts-expect-error // TODO: I need to fix this */}
       <promotionConfig.Options promotion={promotion} />
 
       <Spacer top='14'>

@@ -40,6 +40,7 @@ import {
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
+import type { FlexPromotion } from '@commercelayer/sdk'
 import { useMemo, useState } from 'react'
 import { Link, useLocation } from 'wouter'
 
@@ -62,9 +63,6 @@ function Page(
 
   const displayStatus = useDisplayStatus(promotion.id)
   const { sdkClient } = useCoreSdkProvider()
-  const {
-    settings: { accessToken, domain, organizationSlug }
-  } = useTokenProvider()
 
   const { show: showDeleteOverlay, Overlay: DeleteOverlay } =
     useDeletePromotionOverlay()
@@ -87,43 +85,15 @@ function Page(
             label: displayStatus.isEnabled ? 'Disable' : 'Enable',
             size: 'small',
             onClick: () => {
-              // @ts-expect-error TODO: flex_promotions
-              if (promotion.type === 'flex_promotions') {
-                void fetch(
-                  // @ts-expect-error TODO: flex_promotions
-                  `https://${organizationSlug}.${domain}/api/flex_promotions/${promotion.id}`,
-                  {
-                    method: 'PATCH',
-                    headers: {
-                      authorization: `Bearer ${accessToken}`,
-                      'content-type': 'application/vnd.api+json'
-                    },
-                    body: JSON.stringify({
-                      data: {
-                        type: 'flex_promotions',
-                        // @ts-expect-error TODO: flex_promotions
-                        id: promotion.id,
-                        attributes: {
-                          _disable: displayStatus.isEnabled,
-                          _enable: !displayStatus.isEnabled
-                        }
-                      }
-                    })
-                  }
-                ).then(() => {
+              void sdkClient[promotion.type]
+                .update({
+                  id: promotion.id,
+                  _disable: displayStatus.isEnabled,
+                  _enable: !displayStatus.isEnabled
+                })
+                .then(() => {
                   void mutatePromotion()
                 })
-              } else {
-                void sdkClient[promotion.type]
-                  .update({
-                    id: promotion.id,
-                    _disable: displayStatus.isEnabled,
-                    _enable: !displayStatus.isEnabled
-                  })
-                  .then(() => {
-                    void mutatePromotion()
-                  })
-              }
             }
           }
         ],
@@ -169,7 +139,6 @@ function Page(
           {!isLoadingRules &&
             !hasRules &&
             !viaApi &&
-            // @ts-expect-error TODO: flex_promotions
             promotion.type !== 'flex_promotions' && (
               <Alert status='warning'>
                 Define activation rules below to prevent application to all
@@ -193,38 +162,27 @@ function Page(
           <SectionInfo promotion={promotion} />
         </Spacer>
 
-        {
-          // @ts-expect-error TODO: flex_promotions
-          promotion.type === 'flex_promotions' && (
-            <Spacer top='14'>
-              <Section title='Rules' border='none'>
-                <Text size='small'>
-                  <Card overflow='visible' gap='4'>
-                    <pre style={{ overflowX: 'auto' }}>
-                      {
-                        // @ts-expect-error TODO: flex_promotions
-                        JSON.stringify(promotion.rules, undefined, 2)
-                      }
-                    </pre>
-                  </Card>
-                </Text>
-              </Section>
-            </Spacer>
-          )
-        }
+        {promotion.type === 'flex_promotions' && (
+          <Spacer top='14'>
+            <Section title='Rules' border='none'>
+              <Text size='small'>
+                <Card overflow='visible' gap='4'>
+                  <pre style={{ overflowX: 'auto' }}>
+                    {JSON.stringify(promotion.rules, undefined, 2)}
+                  </pre>
+                </Card>
+              </Text>
+            </Section>
+          </Spacer>
+        )}
 
-        {
-          // @ts-expect-error TODO: flex_promotions
-          promotion.type !== 'flex_promotions' && (
-            <>
-              <Spacer top='14'>
-                <SectionActivationRules
-                  promotionId={props.params.promotionId}
-                />
-              </Spacer>
-            </>
-          )
-        }
+        {promotion.type !== 'flex_promotions' && (
+          <>
+            <Spacer top='14'>
+              <SectionActivationRules promotionId={props.params.promotionId} />
+            </Spacer>
+          </>
+        )}
 
         <Spacer top='14'>
           <SectionCoupon promotion={promotion} />
@@ -262,16 +220,22 @@ function Page(
           </>
         )}
 
-        <Spacer top='14'>
-          <SectionCheck promotion={promotion} />
-        </Spacer>
+        {promotion.type === 'flex_promotions' && (
+          <Spacer top='14'>
+            <SectionCheck promotion={promotion} />
+          </Spacer>
+        )}
       </SkeletonTemplate>
     </PageLayout>
   )
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function SectionCheck({ promotion }: { promotion: Promotion }) {
+function SectionCheck({
+  promotion
+}: {
+  promotion: Extract<Promotion, FlexPromotion>
+}) {
   const {
     settings: { accessToken, domain, organizationSlug }
   } = useTokenProvider()
@@ -476,7 +440,7 @@ const SectionInfo = withSkeletonTemplate<{
           showCurrentYear: true
         })}
       </ListDetailsItem>
-      {viaApi && (
+      {promotion.type !== 'flex_promotions' && viaApi && (
         <>
           {promotion.market != null && (
             <ListDetailsItem label='Market' gutter='none'>
@@ -490,7 +454,7 @@ const SectionInfo = withSkeletonTemplate<{
           )}
         </>
       )}
-      {promotion.sku_list != null && (
+      {promotion.type !== 'flex_promotions' && promotion.sku_list != null && (
         <ListDetailsItem label='SKU list' gutter='none'>
           {promotion.sku_list.name}
         </ListDetailsItem>

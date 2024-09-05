@@ -5,6 +5,7 @@ import type {
   ExternalPromotion,
   FixedAmountPromotion,
   FixedPricePromotion,
+  FlexPromotion,
   FreeGiftPromotion,
   FreeShippingPromotion,
   OrderAmountPromotionRule,
@@ -18,6 +19,7 @@ export type Promotion = (
   | Omit<ExternalPromotion, 'promotion_rules'>
   | Omit<FixedAmountPromotion, 'promotion_rules'>
   | Omit<FixedPricePromotion, 'promotion_rules'>
+  | Omit<FlexPromotion, 'promotion_rules'>
   | Omit<FreeGiftPromotion, 'promotion_rules'>
   | Omit<FreeShippingPromotion, 'promotion_rules'>
   | Omit<PercentageDiscountPromotion, 'promotion_rules'>
