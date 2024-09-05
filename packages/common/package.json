@@ -9,11 +9,11 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "2.2.8",
-    "@commercelayer/sdk": "6.13.0",
+    "@commercelayer/app-elements": "2.3.2",
+    "@commercelayer/sdk": "^6.15.0",
     "@hookform/resolvers": "^3.9.0",
     "react": "^18.3.1",
-    "react-hook-form": "7.52.2",
+    "react-hook-form": "7.53.0",
     "react-qrcode-logo": "^3.0.0",
     "swr": "^2.2.5",
     "wouter": "^3.3.5",
@@ -21,8 +21,8 @@
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
-    "@types/react": "^18.3.4",
+    "@types/react": "^18.3.5",
     "eslint": "^8.57.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   }
 }
