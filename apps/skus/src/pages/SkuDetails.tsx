@@ -24,7 +24,7 @@ import { useState, type FC } from 'react'
 
 export const SkuDetails: FC = () => {
   const {
-    settings: { mode },
+    settings: { mode, extras },
     canUser
   } = useTokenProvider()
 
@@ -84,6 +84,18 @@ export const SkuDetails: FC = () => {
         setLocation(appRoutes.edit.makePath({ skuId }))
       }
     })
+
+    if (extras?.salesChannels != null && extras?.salesChannels.length > 0) {
+      pageToolbar.buttons?.push({
+        label: 'Create link',
+        icon: 'shoppingBagOpen',
+        size: 'small',
+        variant: 'secondary',
+        onClick: () => {
+          setLocation(appRoutes.linksNew.makePath({ resourceId: skuId }))
+        }
+      })
+    }
 
     pageToolbar.dropdownItems?.push([
       {
@@ -168,7 +180,7 @@ export const SkuDetails: FC = () => {
       {canUser('destroy', 'skus') && (
         <Overlay backgroundColor='light'>
           <PageLayout
-            title={`Confirm that you want to cancel the ${sku.code} (${sku.name}) SKU.`}
+            title={`Confirm that you want to delete the ${sku.code} (${sku.name}) SKU.`}
             description='This action cannot be undone, proceed with caution.'
             minHeight={false}
             navigationButton={{
