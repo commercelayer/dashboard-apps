@@ -24,8 +24,8 @@ importers:
   apps/bundles:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.3.0
-        version: 2.3.0(@commercelayer/sdk@6.14.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.3.3
+        version: 2.3.3(@commercelayer/sdk@6.14.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.1
         version: 6.14.1
@@ -1500,6 +1500,18 @@ packages:
 
   '@commercelayer/app-elements@2.3.0':
     resolution: {integrity: sha512-2zPuLORqNAgpuQjfAfv1R8Qlr0aMDMjR97P3f4Ij7KRMTqCe4gxaW8WoMQRWlt6h6PHADNdx31CCbi0dVGCR6w==}
+    engines: {node: '>=18', pnpm: '>=7'}
+    peerDependencies:
+      '@commercelayer/sdk': ^6.x
+      query-string: ^8.2.x
+      react: ^18.2.x
+      react-dom: ^18.2.x
+      react-gtm-module: ^2.x
+      react-hook-form: ^7.50.x
+      wouter: ^3.x
+
+  '@commercelayer/app-elements@2.3.3':
+    resolution: {integrity: sha512-R29T0wM8pYzw+v7I0nObUfQ/J1i7X8AuwvTlDMP/w8lPyTlXGK3PunGRkco67Ct2tH8cAvKKaEcb4XsXwZvyAw==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^6.x
@@ -4766,6 +4778,12 @@ packages:
       react: '>=16.14.0'
       react-dom: '>=16.14.0'
 
+  react-tooltip@5.28.0:
+    resolution: {integrity: sha512-R5cO3JPPXk6FRbBHMO0rI9nkUG/JKfalBSQfZedZYzmqaZQgq7GLzF8vcCWx6IhUCKg0yPqJhXIzmIO5ff15xg==}
+    peerDependencies:
+      react: '>=16.14.0'
+      react-dom: '>=16.14.0'
+
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
     peerDependencies:
@@ -5291,9 +5309,6 @@ packages:
 
   tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
-
-  tslib@2.6.3:
-    resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
@@ -5890,6 +5905,34 @@ snapshots:
       react-hook-form: 7.53.0(react@18.3.1)
       react-select: 5.8.0(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-tooltip: 5.27.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      swr: 2.2.5(react@18.3.1)
+      ts-invariant: 0.10.3
+      type-fest: 4.26.0
+      wouter: 3.3.5(react@18.3.1)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - supports-color
+
+  '@commercelayer/app-elements@2.3.3(@commercelayer/sdk@6.14.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
+    dependencies:
+      '@commercelayer/sdk': 6.14.1
+      '@types/lodash': 4.17.7
+      '@types/react': 18.3.5
+      '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react-dom': 18.3.0
+      classnames: 2.5.1
+      jwt-decode: 4.0.0
+      lodash: 4.17.21
+      pluralize: 8.0.0
+      query-string: 9.1.0
+      react: 18.3.1
+      react-currency-input-field: 3.8.0(react@18.3.1)
+      react-datepicker: 7.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dom: 18.3.1(react@18.3.1)
+      react-gtm-module: 2.0.11
+      react-hook-form: 7.53.0(react@18.3.1)
+      react-select: 5.8.0(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-tooltip: 5.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
       type-fest: 4.26.0
@@ -9670,6 +9713,13 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  react-tooltip@5.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      '@floating-ui/dom': 1.6.1
+      classnames: 2.5.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   react-transition-group@4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.25.6
@@ -10220,7 +10270,7 @@ snapshots:
 
   ts-invariant@0.10.3:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   tsconfck@3.0.3(typescript@5.5.4):
     optionalDependencies:
@@ -10240,8 +10290,6 @@ snapshots:
       strip-bom: 3.0.0
 
   tslib@2.6.2: {}
-
-  tslib@2.6.3: {}
 
   tslib@2.7.0: {}
 
