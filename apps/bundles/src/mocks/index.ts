@@ -1,6 +1,7 @@
 import type { Resource } from '@commercelayer/sdk'
 
 export * from './resources/bundles'
+export * from './resources/skuListItems'
 
 export const isMockedId = (id: string): boolean => {
   return id.startsWith('fake-')

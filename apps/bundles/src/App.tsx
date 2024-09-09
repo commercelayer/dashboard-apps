@@ -1,3 +1,4 @@
+import { BundleDetails } from '#pages/BundleDetails'
 import { BundlesList } from '#pages/BundlesList'
 import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Filters } from '#pages/Filters'
@@ -21,6 +22,9 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         </Route>
         <Route path={appRoutes.filters.path}>
           <Filters />
+        </Route>
+        <Route path={appRoutes.details.path}>
+          <BundleDetails />
         </Route>
         <Route>
           <ErrorNotFound />
