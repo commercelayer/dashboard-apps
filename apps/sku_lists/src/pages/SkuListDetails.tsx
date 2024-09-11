@@ -1,7 +1,7 @@
 import {
   Button,
+  CodeBlock,
   EmptyState,
-  InputReadonly,
   PageLayout,
   Section,
   SkeletonTemplate,
@@ -140,13 +140,13 @@ export const SkuListDetails = (
               </>
             ) : (
               <Spacer top='6'>
-                <InputReadonly
+                <CodeBlock
                   hint={{
                     text: 'Matching SKU codes are automatically included to this list.'
                   }}
                 >
                   {skuList.sku_code_regex ?? ''}
-                </InputReadonly>
+                </CodeBlock>
               </Spacer>
             )}
           </Section>
