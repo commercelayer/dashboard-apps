@@ -1,8 +1,8 @@
 import {
   Button,
   Card,
+  CodeBlock,
   Icon,
-  InputReadonly,
   Spacer
 } from '@commercelayer/app-elements'
 import type { Link } from '@commercelayer/sdk'
@@ -51,8 +51,7 @@ export const LinkDetailsCard = ({
         </div>
       )}
       <Spacer top={showQR ? '12' : undefined} bottom='4'>
-        <InputReadonly
-          value={link?.url ?? ''}
+        <CodeBlock
           showCopyAction
           hint={
             linkHint != null
@@ -61,7 +60,9 @@ export const LinkDetailsCard = ({
                 }
               : undefined
           }
-        />
+        >
+          {link?.url ?? ''}
+        </CodeBlock>
       </Spacer>
       <div className='flex justify-between'>
         {primaryAction}

@@ -15,8 +15,8 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "^2.3.2",
-    "@commercelayer/sdk": "^6.15.0",
+    "@commercelayer/app-elements": "^2.3.4",
+    "@commercelayer/sdk": "^6.17.0",
     "@hookform/resolvers": "^3.9.0",
     "dashboard-apps-common": "workspace:*",
     "lodash": "^4.17.21",
@@ -24,7 +24,7 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
     "swr": "^2.2.5",
-    "type-fest": "^4.26.0",
+    "type-fest": "^4.26.1",
     "wouter": "^3.3.5",
     "zod": "^3.23.8"
   },
@@ -32,15 +32,15 @@
     "@commercelayer/app-builder": "workspace:*",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@types/lodash": "^4.17.7",
-    "@types/node": "22.5.3",
+    "@types/node": "22.5.4",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.57.0",
     "jsdom": "^25.0.0",
     "rollup-plugin-external-globals": "^0.12.0",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.3",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.4",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.0.5"
   }

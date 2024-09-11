@@ -1,5 +1,5 @@
 import {
-  InputReadonly,
+  CodeBlock,
   Section,
   Spacer,
   withSkeletonTemplate
@@ -15,17 +15,15 @@ export const WebhookCallback = withSkeletonTemplate<WebhookCallbackProps>(
     return (
       <Section title='Callback'>
         <Spacer top='6' bottom='10'>
-          <InputReadonly
-            label='Callback URL'
-            value={webhook.callback_url}
-            showCopyAction
-          />
+          <CodeBlock label='Callback URL' showCopyAction>
+            {webhook.callback_url}
+          </CodeBlock>
         </Spacer>
         <Spacer bottom='12'>
-          <InputReadonly
+          <CodeBlock
             label='Shared secret'
-            value={webhook.shared_secret}
             showCopyAction
+            showSecretAction
             hint={{
               text: (
                 <>
@@ -41,7 +39,9 @@ export const WebhookCallback = withSkeletonTemplate<WebhookCallbackProps>(
                 </>
               )
             }}
-          />
+          >
+            {webhook.shared_secret}
+          </CodeBlock>
         </Spacer>
       </Section>
     )
