@@ -11,6 +11,7 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
+import { availableLanguages } from './NewOrder/availableLanguages'
 import { useEditCustomerOverlay } from './NewOrder/hooks/useEditCustomerOverlay'
 
 interface Props {
@@ -50,7 +51,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
         <Section
           title='Customer'
           actionButton={
-            order.status === 'pending' ? (
+            (order.status === 'draft' || order.status === 'pending') ? (
               <Button
                 alignItems='center'
                 variant='secondary'
@@ -74,7 +75,12 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
                 {order.customer.email}
               </Text>
               <Text size='small' tag='div' variant='info' weight='medium'>
-                {order.customer.total_orders_count} orders
+                {
+                  availableLanguages.find(
+                    ({ value }) => value === order.language_code
+                  )?.label
+                }{' '}
+                · {order.customer.total_orders_count} orders
               </Text>
             </div>
             {canAccess('customers') && <StatusIcon name='caretRight' />}

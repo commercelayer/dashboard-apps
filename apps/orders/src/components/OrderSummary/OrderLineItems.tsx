@@ -44,18 +44,20 @@ export const OrderLineItems = withSkeletonTemplate<Props>(
                 ? itemToSwap.item_type
                 : 'skus',
               (selectedItem) => {
-                void Promise.all([
-                  sdkClient.line_items.create({
+                void sdkClient.line_items
+                  .create({
                     order: sdkClient.orders.relationship(order.id),
                     quantity: 1,
                     ...(selectedItem.type === 'skus'
                       ? { sku_code: selectedItem.code }
                       : { bundle_code: selectedItem.code })
-                  }),
-                  sdkClient.line_items.delete(itemToSwap.id)
-                ]).then(() => {
-                  void mutateOrder()
-                })
+                  })
+                  .then(async () => {
+                    await sdkClient.line_items.delete(itemToSwap.id)
+                  })
+                  .then(() => {
+                    void mutateOrder()
+                  })
               }
             )
           }}
