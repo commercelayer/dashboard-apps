@@ -9,8 +9,6 @@ function Filters(): JSX.Element {
     instructions
   })
 
-  const searchParams = new URLSearchParams(location.search)
-
   return (
     <PageLayout
       overlay
@@ -26,10 +24,7 @@ function Filters(): JSX.Element {
             )
           )
         },
-        label: searchParams.has('viewTitle')
-          ? // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-            (searchParams.get('viewTitle') as string)
-          : 'Gift cards',
+        label: 'Gift cards',
         icon: 'arrowLeft'
       }}
     >
