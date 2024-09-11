@@ -1,18 +1,13 @@
-import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   ActionButtons,
-  ResourceLineItems,
-  Section,
   Spacer,
   Text,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
-import { HeaderActions } from './HeaderActions'
 import { useActionButtons } from './hooks/useActionButtons'
-import { useOrderStatus } from './hooks/useOrderStatus'
-import { useSummaryRows } from './hooks/useSummaryRows'
+import { OrderLineItems } from './OrderLineItems'
 
 interface Props {
   order: Order
@@ -21,8 +16,6 @@ interface Props {
 export const OrderSummary = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
     const { canUser } = useTokenProvider()
-    const { mutateOrder } = useOrderDetails(order.id)
-    const { summaryRows } = useSummaryRows(order)
     const {
       actions,
       errors,
@@ -32,19 +25,8 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       SelectShippingMethodOverlay
     } = useActionButtons({ order })
 
-    const { isEditing } = useOrderStatus(order)
-
     return (
-      <Section title='Summary' actionButton={<HeaderActions order={order} />}>
-        <ResourceLineItems
-          items={order.line_items ?? []}
-          editable={isEditing}
-          onChange={() => {
-            void mutateOrder()
-          }}
-          footer={summaryRows}
-        />
-
+      <OrderLineItems title='Summary' order={order}>
         {canUser('update', 'orders') && <ActionButtons actions={actions} />}
 
         {renderErrorMessages(errors)}
@@ -64,7 +46,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
         />
 
         <SelectShippingMethodOverlay order={order} />
-      </Section>
+      </OrderLineItems>
     )
   }
 )

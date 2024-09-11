@@ -1,6 +1,4 @@
-import { HeaderActions } from '#components/OrderSummary/HeaderActions'
-import { useOrderStatus } from '#components/OrderSummary/hooks/useOrderStatus'
-import { useSummaryRows } from '#components/OrderSummary/hooks/useSummaryRows'
+import { OrderLineItems } from '#components/OrderSummary/OrderLineItems'
 import type { PageProps } from '#components/Routes'
 import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
@@ -12,7 +10,6 @@ import {
   HookedInputSelect,
   HookedValidationApiError,
   PageLayout,
-  ResourceLineItems,
   Section,
   SkeletonTemplate,
   Spacer,
@@ -35,9 +32,7 @@ export const EditOrderStep: React.FC<
   const [apiError, setApiError] = useState<any>()
   const { sdkClient } = useCoreSdkProvider()
 
-  const { order, isLoading, mutateOrder } = useOrderDetails(orderId)
-  const { summaryRows } = useSummaryRows(order)
-  const { isEditing } = useOrderStatus(order)
+  const { order, isLoading } = useOrderDetails(orderId)
 
   const methods = useForm<z.infer<typeof orderSchema>>({
     defaultValues: {
@@ -50,7 +45,8 @@ export const EditOrderStep: React.FC<
   useEffect(() => {
     methods.setValue(
       'at_least_one_sku',
-      order?.skus_count != null && order.skus_count > 0
+      order?.skus_count != null && order.skus_count > 0,
+      { shouldValidate: methods.formState.isSubmitted }
     )
 
     if (order?.customer_email != null) {
@@ -103,22 +99,7 @@ export const EditOrderStep: React.FC<
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer top='14'>
-          <Section title='Cart' actionButton={<HeaderActions order={order} />}>
-            <ResourceLineItems
-              items={order.line_items ?? []}
-              editable={isEditing}
-              onChange={() => {
-                void mutateOrder().then((order) => {
-                  methods.setValue(
-                    'at_least_one_sku',
-                    order?.skus_count != null && order.skus_count > 0,
-                    { shouldValidate: true }
-                  )
-                })
-              }}
-              footer={summaryRows}
-            />
-          </Section>
+          <OrderLineItems title='Cart' order={order} />
         </Spacer>
 
         <HookedForm
