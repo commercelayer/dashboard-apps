@@ -159,7 +159,7 @@ function OrderDetails(): JSX.Element {
             <div>
               {formatDateWithPredicate({
                 predicate: 'Updated',
-                isoDate: order.placed_at ?? '',
+                isoDate: order.updated_at ?? '',
                 timezone: user?.timezone
               })}
             </div>
