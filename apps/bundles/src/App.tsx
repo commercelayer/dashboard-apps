@@ -1,10 +1,12 @@
+import { appRoutes } from '#data/routes'
 import { BundleDetails } from '#pages/BundleDetails'
+import { BundleEdit } from '#pages/BundleEdit'
+import { BundleNew } from '#pages/BundleNew'
 import { BundlesList } from '#pages/BundlesList'
 import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Filters } from '#pages/Filters'
 import type { FC } from 'react'
 import { Redirect, Route, Router, Switch } from 'wouter'
-import { appRoutes } from './data/routes'
 
 interface AppProps {
   routerBase?: string
@@ -25,6 +27,12 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         </Route>
         <Route path={appRoutes.details.path}>
           <BundleDetails />
+        </Route>
+        <Route path={appRoutes.edit.path}>
+          <BundleEdit />
+        </Route>
+        <Route path={appRoutes.new.path}>
+          <BundleNew />
         </Route>
         <Route>
           <ErrorNotFound />

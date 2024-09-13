@@ -24,8 +24,8 @@ importers:
   apps/bundles:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.3.3
-        version: 2.3.3(@commercelayer/sdk@6.14.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.3.5
+        version: 2.3.5(@commercelayer/sdk@6.14.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.14.1
         version: 6.14.1
@@ -1517,18 +1517,6 @@ packages:
   '@babel/types@7.25.6':
     resolution: {integrity: sha512-/l42B1qxpG6RdfYf343Uw1vmDjeNhneUXtzhojE7pDgfpEypmRhI6j1kr17XCVv4Cgl9HdAiQY2x0GwKm7rWCw==}
     engines: {node: '>=6.9.0'}
-
-  '@commercelayer/app-elements@2.3.3':
-    resolution: {integrity: sha512-R29T0wM8pYzw+v7I0nObUfQ/J1i7X8AuwvTlDMP/w8lPyTlXGK3PunGRkco67Ct2tH8cAvKKaEcb4XsXwZvyAw==}
-    engines: {node: '>=18', pnpm: '>=7'}
-    peerDependencies:
-      '@commercelayer/sdk': ^6.x
-      query-string: ^8.2.x
-      react: ^18.2.x
-      react-dom: ^18.2.x
-      react-gtm-module: ^2.x
-      react-hook-form: ^7.50.x
-      wouter: ^3.x
 
   '@commercelayer/app-elements@2.3.5':
     resolution: {integrity: sha512-lV2wizrPDf7DpC/e9+hE5P/D0uZWxhI/G0S5DP58NED1uEGQixE9/FV9uVoufZCPq5L6GHm/C51BPb57HnUfiw==}
@@ -5859,7 +5847,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@commercelayer/app-elements@2.3.3(@commercelayer/sdk@6.14.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
+  '@commercelayer/app-elements@2.3.5(@commercelayer/sdk@6.14.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
     dependencies:
       '@commercelayer/sdk': 6.14.1
       '@types/lodash': 4.17.7
