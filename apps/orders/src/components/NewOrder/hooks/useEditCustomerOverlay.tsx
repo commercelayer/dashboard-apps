@@ -14,7 +14,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { SelectCustomerComponent } from '../SelectCustomerComponent'
-import { availableLanguages } from '../availableLanguages'
+import { groupedLanguageList, languageList } from '../languages'
 
 interface Props {
   order: Order
@@ -45,7 +45,7 @@ const validationSchema = z.object({
   language_code: z
     .string()
     .refine(
-      (value) => availableLanguages.map((l) => l.value).includes(value),
+      (value) => languageList.map((l) => l.value as string).includes(value),
       'Invalid language'
     )
 })
@@ -103,7 +103,7 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
           <HookedInputSelect
             name='language_code'
             label='Language *'
-            initialValues={availableLanguages}
+            initialValues={groupedLanguageList}
             hint={{ text: 'The language used for checkout.' }}
           />
         </Spacer>

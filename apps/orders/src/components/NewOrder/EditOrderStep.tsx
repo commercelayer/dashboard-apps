@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
 import { z } from 'zod'
 import { SelectCustomerComponent } from './SelectCustomerComponent'
-import { availableLanguages } from './availableLanguages'
+import { groupedLanguageList, languageList } from './languages'
 
 export const EditOrderStep: React.FC<
   Pick<PageProps<typeof appRoutes.new>, 'overlay'> & {
@@ -44,11 +44,9 @@ export const EditOrderStep: React.FC<
   })
 
   useEffect(() => {
-    methods.setValue(
-      'at_least_one_sku',
-      orderIsValid(order),
-      { shouldValidate: methods.formState.isSubmitted }
-    )
+    methods.setValue('at_least_one_sku', orderIsValid(order), {
+      shouldValidate: methods.formState.isSubmitted
+    })
 
     if (order?.customer_email != null) {
       methods.resetField('customer_email', {
@@ -151,7 +149,7 @@ export const EditOrderStep: React.FC<
                 <HookedInputSelect
                   name='language_code'
                   label='Language *'
-                  initialValues={availableLanguages}
+                  initialValues={groupedLanguageList}
                   hint={{ text: 'The language used for checkout.' }}
                 />
               </Spacer>
@@ -189,7 +187,7 @@ const orderSchema = z.object({
   language_code: z
     .string()
     .refine(
-      (value) => availableLanguages.map((l) => l.value).includes(value),
+      (value) => languageList.map((l) => l.value as string).includes(value),
       'Invalid language'
     )
 })

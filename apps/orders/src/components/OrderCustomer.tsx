@@ -11,8 +11,8 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
-import { availableLanguages } from './NewOrder/availableLanguages'
 import { useEditCustomerOverlay } from './NewOrder/hooks/useEditCustomerOverlay'
+import { languageList } from './NewOrder/languages'
 
 interface Props {
   order: Order
@@ -76,7 +76,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
               </Text>
               <Text size='small' tag='div' variant='info' weight='medium'>
                 {
-                  availableLanguages.find(
+                  languageList.find(
                     ({ value }) => value === order.language_code
                   )?.label
                 }{' '}
