@@ -37,31 +37,35 @@ function Home(): JSX.Element {
             label: 'New order',
             size: 'small',
             onClick: () => {
-              void sdkClient.markets.list({
-                fields: ['id'],
-                filters: {
-                  disabled_at_null: true
-                },
-                pageSize: 1
-              }).then((markets) => {
-                if (markets.meta.recordCount > 1) {
-                  setLocation(appRoutes.new.makePath({}))
-                } else {
-                  const [resource] = markets
-                  if (resource != null) {
-                    void sdkClient.orders
-                      .create({
-                        market: {
-                          type: 'markets',
-                          id: resource.id
-                        }
-                      })
-                      .then((order) => {
-                        setLocation(appRoutes.new.makePath({ orderId: order.id }))
-                      })
+              void sdkClient.markets
+                .list({
+                  fields: ['id'],
+                  filters: {
+                    disabled_at_null: true
+                  },
+                  pageSize: 1
+                })
+                .then((markets) => {
+                  if (markets.meta.recordCount > 1) {
+                    setLocation(appRoutes.new.makePath({}))
+                  } else {
+                    const [resource] = markets
+                    if (resource != null) {
+                      void sdkClient.orders
+                        .create({
+                          market: {
+                            type: 'markets',
+                            id: resource.id
+                          }
+                        })
+                        .then((order) => {
+                          setLocation(
+                            appRoutes.new.makePath({ orderId: order.id })
+                          )
+                        })
+                    }
                   }
-                }
-              })
+                })
             }
           }
         ]

@@ -15,6 +15,7 @@ import {
   Spacer,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
+import type { Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -37,7 +38,7 @@ export const EditOrderStep: React.FC<
   const methods = useForm<z.infer<typeof orderSchema>>({
     defaultValues: {
       language_code: 'en',
-      at_least_one_sku: order.skus_count != null && order.skus_count > 0
+      at_least_one_sku: orderIsValid(order)
     },
     resolver: zodResolver(orderSchema)
   })
@@ -45,7 +46,7 @@ export const EditOrderStep: React.FC<
   useEffect(() => {
     methods.setValue(
       'at_least_one_sku',
-      order?.skus_count != null && order.skus_count > 0,
+      orderIsValid(order),
       { shouldValidate: methods.formState.isSubmitted }
     )
 
@@ -105,15 +106,15 @@ export const EditOrderStep: React.FC<
         <HookedForm
           {...methods}
           onSubmit={async (formValues) => {
-            if (order.skus_count === 0) {
+            if (!orderIsValid(order)) {
               setApiError({
                 errors: [
                   {
                     code: 42,
                     title:
-                      'Cannot create the order without a valid SKU. Please select one.',
+                      'Cannot create the order without a valid item. Please select one.',
                     detail:
-                      'Cannot create the order without a valid SKU. Please select one.'
+                      'Cannot create the order without a valid item. Please select one.'
                   }
                 ]
               })
@@ -182,7 +183,7 @@ const orderSchema = z.object({
     .boolean()
     .refine(
       (value) => value,
-      'Cannot create the order without a valid SKU. Please select at least one.'
+      'Cannot create the order without a valid item. Please select one.'
     ),
   customer_email: z.string().email(),
   language_code: z
@@ -192,3 +193,17 @@ const orderSchema = z.object({
       'Invalid language'
     )
 })
+
+function orderIsValid(order: Order): boolean {
+  return (
+    (
+      order.line_items?.filter((item) => {
+        return (
+          item.item_type === 'adjustments' ||
+          item.item_type === 'bundles' ||
+          item.item_type === 'skus'
+        )
+      }) ?? []
+    ).length > 0
+  )
+}

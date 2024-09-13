@@ -51,7 +51,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
         <Section
           title='Customer'
           actionButton={
-            (order.status === 'draft' || order.status === 'pending') ? (
+            order.status === 'draft' || order.status === 'pending' ? (
               <Button
                 alignItems='center'
                 variant='secondary'
