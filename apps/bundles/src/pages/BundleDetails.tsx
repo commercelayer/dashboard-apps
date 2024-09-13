@@ -52,6 +52,14 @@ export const BundleDetails: FC = () => {
   }
 
   if (canUser('update', 'bundles')) {
+    pageToolbar.buttons?.push({
+      label: 'Edit',
+      size: 'small',
+      onClick: () => {
+        setLocation(appRoutes.edit.makePath({ bundleId }))
+      }
+    })
+
     pageToolbar.dropdownItems?.push([
       {
         label: 'Set metadata',

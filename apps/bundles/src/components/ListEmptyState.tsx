@@ -1,10 +1,19 @@
-import { A, EmptyState } from '@commercelayer/app-elements'
+import { appRoutes } from '#data/routes'
+import {
+  A,
+  Button,
+  EmptyState,
+  useTokenProvider
+} from '@commercelayer/app-elements'
+import { Link } from 'wouter'
 
 interface Props {
   scope?: 'history' | 'userFiltered'
 }
 
 export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
+  const { canUser } = useTokenProvider()
+
   if (scope === 'userFiltered') {
     return (
       <EmptyState
@@ -13,6 +22,20 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
           <div>
             <p>We didn't find any bundle matching the current search.</p>
           </div>
+        }
+      />
+    )
+  }
+
+  if (canUser('create', 'bundles')) {
+    return (
+      <EmptyState
+        title='No bundles yet!'
+        description='Create your first bundle'
+        action={
+          <Link href={appRoutes.new.makePath({})}>
+            <Button variant='primary'>New bundle</Button>
+          </Link>
         }
       />
     )

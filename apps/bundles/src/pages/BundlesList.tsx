@@ -3,14 +3,16 @@ import { ListItemBundle } from '#components/ListItemBundle'
 import { instructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
+  Button,
   EmptyState,
   HomePageLayout,
+  Icon,
   Spacer,
   useResourceFilters,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { FC } from 'react'
-import { useLocation } from 'wouter'
+import { Link, useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
 export const BundlesList: FC = () => {
@@ -61,6 +63,21 @@ export const BundlesList: FC = () => {
             <ListEmptyState
               scope={hasActiveFilter ? 'userFiltered' : 'history'}
             />
+          }
+          actionButton={
+            canUser('create', 'bundles') ? (
+              <Link href={appRoutes.new.makePath({})} asChild>
+                <Button
+                  variant='secondary'
+                  size='mini'
+                  alignItems='center'
+                  aria-label='Add bundle'
+                >
+                  <Icon name='plus' />
+                  New
+                </Button>
+              </Link>
+            ) : undefined
           }
         />
       </Spacer>

@@ -1,9 +1,9 @@
+import { ListItemSkuListItem } from '#components/ListItemSkuListItem'
 import { useSkuListItems } from '#hooks/useSkuListItems'
 import { makeBundle } from '#mocks'
 import { Section, SkeletonTemplate } from '@commercelayer/app-elements'
 import type { Bundle } from '@commercelayer/sdk'
 import type { FC } from 'react'
-import { ListItemSkuListItem } from './ListItemSkuListItem'
 
 interface Props {
   bundle: Bundle
