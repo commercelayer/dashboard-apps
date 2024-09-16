@@ -39,8 +39,8 @@ export function useGetCheckoutLink({ orderId, clientId, scope }: Props): {
 
   useEffect(() => {
     if (canCreateLink && clientId != null && scope != null) {
-      const tomorrow = new Date()
-      tomorrow.setDate(tomorrow.getDate() + 1)
+      const expiryDate = new Date()
+      expiryDate.setDate(expiryDate.getDate() + 30)
 
       void sdkClient.links
         .create({
@@ -48,7 +48,7 @@ export function useGetCheckoutLink({ orderId, clientId, scope }: Props): {
           client_id: clientId,
           scope,
           starts_at: new Date().toJSON(),
-          expires_at: tomorrow.toJSON(),
+          expires_at: expiryDate.toJSON(),
           item: {
             type: 'orders',
             id: orderId
