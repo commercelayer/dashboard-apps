@@ -4,6 +4,7 @@ import {
   HookedInputSelect,
   useCoreApi,
   useCoreSdkProvider,
+  type HookedInputSelectProps,
   type InputSelectValue
 } from '@commercelayer/app-elements'
 import {
@@ -25,7 +26,8 @@ export const MarketWithCurrencySelector: FC<{
   defaultMarketId: string
   defaultCurrencyCode: string
   hint: string
-}> = ({ defaultMarketId, defaultCurrencyCode, hint }) => {
+  isDisabled?: HookedInputSelectProps['isDisabled']
+}> = ({ defaultMarketId, defaultCurrencyCode, hint, isDisabled = false }) => {
   const { sdkClient } = useCoreSdkProvider()
   const { watch, setValue } = useFormContext()
   const { data, isLoading: isLoadingInitialValues } = useCoreApi(
@@ -96,6 +98,7 @@ export const MarketWithCurrencySelector: FC<{
           isLoading={isLoadingInitialValues || isLoadingDefaultResource}
           isClearable={false}
           isSearchable
+          isDisabled={isDisabled}
           initialValues={initialValues}
           onSelect={(selected) => {
             const relatedCurrencyCode = flatSelectValues(
@@ -148,6 +151,7 @@ export const MarketWithCurrencySelector: FC<{
         <HookedInputSelect
           name='currency_code'
           label='&nbsp;'
+          isDisabled={isDisabled}
           initialValues={currencyInputSelectOptions}
         />
       )}
