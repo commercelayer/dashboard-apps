@@ -1,4 +1,5 @@
 import { ListEmptyState } from '#components/ListEmptyState'
+import { ListItemGiftCard } from '#components/ListItemGiftCard'
 import { instructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
@@ -40,7 +41,7 @@ const GiftCardList: FC = () => {
       <Spacer bottom='14'>
         <FilteredList
           type='gift_cards'
-          ItemTemplate={({ resource }) => <div>{resource?.id}</div>}
+          ItemTemplate={ListItemGiftCard}
           emptyState={
             <ListEmptyState
               scope={hasActiveFilter ? 'userFiltered' : 'history'}

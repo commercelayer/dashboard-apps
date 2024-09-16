@@ -64,7 +64,7 @@ export const instructions: FiltersInstructions = [
     label: 'Search',
     type: 'textSearch',
     sdk: {
-      predicate: 'aggregated_details'
+      predicate: 'code_cont'
     },
     render: {
       component: 'searchBar'
