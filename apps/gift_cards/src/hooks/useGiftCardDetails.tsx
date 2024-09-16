@@ -3,7 +3,7 @@ import { useCoreApi } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
 import { makeGiftCard } from '../mocks/resources/gift_cards'
 
-const giftCardIncludeAttribute = ['market', 'gift_card_recipient']
+export const giftCardIncludeAttribute = ['market', 'gift_card_recipient']
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useGiftCardDetails(id: string) {
