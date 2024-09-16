@@ -211,6 +211,7 @@ export function BundleForm({
               defaultMarketId={defaultValues?.market ?? ''}
               defaultCurrencyCode={defaultValues?.currency_code ?? 'USD'}
               hint='The market where this bundle is available.'
+              isDisabled={defaultValues?.id != null}
             />
           </Spacer>
           <Spacer top='6'>
