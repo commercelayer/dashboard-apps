@@ -1,0 +1,46 @@
+{
+  "private": true,
+  "name": "app-gift_cards",
+  "version": "2.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "ts:check": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest --passWithNoTests",
+    "prepare": "touch ./public/config.local.js"
+  },
+  "dependencies": {
+    "@commercelayer/app-elements": "^2.3.2",
+    "@commercelayer/sdk": "^6.15.0",
+    "@hookform/resolvers": "^3.9.0",
+    "lodash": "^4.17.21",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "swr": "^2.2.5",
+    "type-fest": "^4.26.0",
+    "wouter": "^3.3.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@commercelayer/app-builder": "workspace:*",
+    "@commercelayer/eslint-config-ts-react": "^1.4.5",
+    "@types/lodash": "^4.17.7",
+    "@types/node": "22.5.3",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8.57.0",
+    "jsdom": "^25.0.0",
+    "rollup-plugin-external-globals": "^0.12.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.3",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.0.5"
+  }
+}
