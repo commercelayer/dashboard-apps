@@ -49,7 +49,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
       return []
     }
 
-    if (['draft', 'inactive'].includes(giftCard.status)) {
+    if (['inactive'].includes(giftCard.status)) {
       return [
         {
           label: 'Activate',
@@ -59,6 +59,27 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
             setIsUpdating(true)
             void sdkClient.gift_cards
               ._activate(giftCard.id, {
+                include: giftCardIncludeAttribute
+              })
+              .then(mutateGiftCard)
+              .finally(() => {
+                setIsUpdating(false)
+              })
+          }
+        }
+      ]
+    }
+
+    if (['draft'].includes(giftCard.status)) {
+      return [
+        {
+          label: 'Purchase',
+          size: 'small',
+          disabled: isUpdating,
+          onClick: () => {
+            setIsUpdating(true)
+            void sdkClient.gift_cards
+              ._purchase(giftCard.id, {
                 include: giftCardIncludeAttribute
               })
               .then(mutateGiftCard)
