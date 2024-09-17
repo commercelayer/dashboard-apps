@@ -1,11 +1,12 @@
-import { GenericPageNotFound } from '#components/Routes'
-import { appRoutes, type PageProps } from '#data/routes'
+import { appRoutes } from '#data/routes'
 import { useGiftCardDetails } from '#hooks/useGiftCardDetails'
 import {
+  GenericPageNotFound,
   PageLayout,
   SkeletonTemplate,
   goBack,
-  useTokenProvider
+  useTokenProvider,
+  type PageProps
 } from '@commercelayer/app-elements'
 import type { FC } from 'react'
 import { useLocation } from 'wouter'

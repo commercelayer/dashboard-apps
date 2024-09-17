@@ -1,8 +1,7 @@
 import { DetailsImage } from '#components/DetailsImage'
 import { DetailsInfo } from '#components/DetailsInfo'
 import { DetailsRecap } from '#components/DetailsRecap'
-import { GenericPageNotFound } from '#components/Routes'
-import { appRoutes, type PageProps } from '#data/routes'
+import { appRoutes } from '#data/routes'
 import { useDeleteOverlay } from '#hooks/useDeleteOverlay'
 import {
   giftCardIncludeAttribute,
@@ -10,6 +9,7 @@ import {
 } from '#hooks/useGiftCardDetails'
 import { maskGiftCardCode } from '#utils/code'
 import {
+  GenericPageNotFound,
   PageLayout,
   SkeletonTemplate,
   Spacer,
@@ -17,7 +17,8 @@ import {
   useCoreSdkProvider,
   useEditMetadataOverlay,
   useTokenProvider,
-  type PageLayoutProps
+  type PageLayoutProps,
+  type PageProps
 } from '@commercelayer/app-elements'
 import { useMemo, useState, type FC } from 'react'
 import { useLocation } from 'wouter'
@@ -52,7 +53,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
         {
           label: 'Activate',
           size: 'small',
-          disabled: true,
+          disabled: isUpdating,
           onClick: () => {
             setIsUpdating(true)
             void sdkClient.gift_cards
