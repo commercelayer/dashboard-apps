@@ -1,3 +1,4 @@
+import { Form } from '#components/Form'
 import { appRoutes } from '#data/routes'
 import { useGiftCardDetails } from '#hooks/useGiftCardDetails'
 import {
@@ -5,6 +6,7 @@ import {
   PageLayout,
   SkeletonTemplate,
   goBack,
+  useCoreSdkProvider,
   useTokenProvider,
   type PageProps
 } from '@commercelayer/app-elements'
@@ -16,10 +18,9 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
     settings: { mode }
   } = useTokenProvider()
   const [, setLocation] = useLocation()
-
+  const { sdkClient } = useCoreSdkProvider()
   const giftCardId = params?.giftCardId
-
-  const { giftCard, isLoading, error } = useGiftCardDetails(giftCardId)
+  const { giftCard, isLoading, error } = useGiftCardDetails(params?.giftCardId)
 
   if (error != null) {
     return <GenericPageNotFound />
@@ -28,6 +29,7 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
   return (
     <PageLayout
       mode={mode}
+      overlay
       title={
         <SkeletonTemplate isLoading={isLoading}>Edit card</SkeletonTemplate>
       }
@@ -43,12 +45,26 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
         label: 'Back',
         icon: 'arrowLeft'
       }}
-      gap='only-top'
       scrollToTop
     >
-      <SkeletonTemplate isLoading={isLoading}>
-        <div>Gift card edit page for id {giftCard?.id}</div>
-      </SkeletonTemplate>
+      {giftCard != null && (
+        <Form
+          giftCard={giftCard}
+          onSubmit={async (formValues) =>
+            await sdkClient.gift_cards.update({
+              id: giftCard.id,
+              ...formValues,
+              expires_at: formValues.expires_at?.toJSON(),
+              // @ts-expect-error wrong type from SDK
+              balance_max_cents: formValues.balance_max_cents,
+              market:
+                formValues.market != null
+                  ? sdkClient.markets.relationship(formValues.market)
+                  : null
+            })
+          }
+        />
+      )}
     </PageLayout>
   )
 }
