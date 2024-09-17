@@ -25,6 +25,22 @@ import { z } from 'zod'
 
 const formSchema = z
   .object({
+    code: z.preprocess(
+      (val) => (isEmpty(val) ? null : val),
+      z
+        .string()
+        .optional()
+        .nullable()
+        .refine(
+          (value) => {
+            return value == null ? true : value.length >= 8
+          },
+          {
+            message:
+              'When provided, the code must be at least 8 characters long'
+          }
+        )
+    ),
     market: z.string(),
     currency_code: z.string(),
     balance_cents: z.number().int().min(0),
@@ -55,6 +71,7 @@ type GiftCardFormValues = z.infer<typeof formSchema>
 
 const makeDefaultValue = (giftCart?: GiftCard): GiftCardFormValues => {
   return {
+    code: giftCart?.code ?? '',
     market: giftCart?.market?.id ?? '',
     currency_code: giftCart?.currency_code ?? 'USD',
     balance_cents: giftCart?.balance_cents ?? 0,
@@ -75,13 +92,13 @@ export const Form: FC<{
 }> = ({ giftCard, onSubmit }) => {
   const [apiError, setApiError] = useState<any>()
   const [, setLocation] = useLocation()
+  const isNew = giftCard?.id == null
 
   const methods = useForm({
     defaultValues: makeDefaultValue(giftCard),
     resolver: zodResolver(formSchema)
   })
 
-  const isNew = giftCard?.id == null
   const currencyCode = methods.watch('currency_code') as CurrencyCode
 
   return (
@@ -99,6 +116,18 @@ export const Form: FC<{
       }}
     >
       <Section title='Balance'>
+        {isNew && (
+          <Spacer top='6'>
+            <HookedInput
+              label='Code'
+              name='code'
+              hint={{
+                text: 'Optional unique card code. If not provided, a random code will be generated.'
+              }}
+            />
+          </Spacer>
+        )}
+
         <Spacer top='6'>
           <HookedMarketWithCurrencySelector
             label='Market *'
