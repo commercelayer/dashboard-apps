@@ -12,6 +12,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { addMonths } from 'date-fns/addMonths'
 import { useEffect } from 'react'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'
@@ -57,10 +58,11 @@ export function LinkForm({
   const isLoading = markets == null || isLoadingMarkets
 
   const isAdvancedForm = resourceType !== 'orders'
+  const isCreateForm = defaultValues?.id == null
 
   // Set creation form defaults for advanced forms
   useEffect(() => {
-    if (isAdvancedForm && !isLoading && defaultValues == null) {
+    if (isAdvancedForm && !isLoading && isCreateForm) {
       if (salesChannels != null && salesChannels.length > 0) {
         linkFormMethods.setValue('clientId', salesChannels[0]?.client_id ?? '')
       }
@@ -68,6 +70,7 @@ export function LinkForm({
         linkFormMethods.setValue('market', markets[0]?.id ?? '')
       }
       linkFormMethods.setValue('startsAt', new Date())
+      linkFormMethods.setValue('expiresAt', addMonths(new Date(), 1))
     }
   }, [
     resourceType,

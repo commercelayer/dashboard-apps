@@ -1,4 +1,5 @@
 import {
+  A,
   Button,
   Dropdown,
   DropdownItem,
@@ -16,6 +17,12 @@ import { useGetCheckoutLink } from '#hooks/useGetCheckoutLink'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { LinkDetailsCard } from 'dashboard-apps-common/src/components/LinkDetailsCard'
 import { useMemo } from 'react'
+
+function phoneNumberForWhatsapp(phoneNumber?: string): string {
+  return (phoneNumber ?? '')
+    .replace(/\s+/g, '') // Replace all spaces
+    .replace(/\D+/g, '') // Remove all non-number chars
+}
 
 function LinkDetails(
   props: PageProps<typeof appRoutes.linkDetails>
@@ -54,7 +61,7 @@ function LinkDetails(
   const expiresIn = formatDate({
     isoDate: link?.expires_at,
     timezone: user?.timezone,
-    format: 'distanceToNow'
+    format: 'full'
   })
 
   const shareMail = {
@@ -67,8 +74,28 @@ The ${organization?.name} team`
   }
 
   const shareWhatsapp = {
+    number: phoneNumberForWhatsapp(order.billing_address?.phone),
     body: `Please follow this link to checkout your order *${order.number}*: ${link?.url}`
   }
+
+  const linkHint: React.ReactNode = (
+    <>
+      Sales channel: {linkSalesChannel?.name}. Expiry: {expiresIn}. You can{' '}
+      <a
+        onClick={() => {
+          setLocation(
+            appRoutes.linkEdit.makePath({
+              orderId,
+              linkId: link?.id ?? ''
+            })
+          )
+        }}
+      >
+        <b>edit settings here</b>
+      </a>
+      .
+    </>
+  )
 
   if (link == null) {
     return <></>
@@ -97,24 +124,18 @@ The ${organization?.name} team`
       <SkeletonTemplate isLoading={isLoading}>
         <LinkDetailsCard
           link={link}
-          linkHint={`Sales channel: ${linkSalesChannel?.name}. Expires ${expiresIn}.`}
+          linkHint={linkHint}
           primaryAction={
-            <Button
+            <A
               variant='secondary'
               size='small'
               alignItems='center'
-              onClick={() => {
-                setLocation(
-                  appRoutes.linkEdit.makePath({
-                    orderId,
-                    linkId: link?.id ?? ''
-                  })
-                )
-              }}
+              target='_blank'
+              href={link?.url ?? ''}
             >
-              <Icon name='pencilSimple' size={16} />
-              Edit
-            </Button>
+              <Icon name='arrowSquareOut' size={16} />
+              Open checkout
+            </A>
           }
           secondaryAction={
             <Dropdown
@@ -130,7 +151,7 @@ The ${organization?.name} team`
                     icon='envelopeSimple'
                     label='Email'
                     href={encodeURI(
-                      `mailto:email@example.com?subject=${shareMail.subject}&body=${shareMail.body}`
+                      `mailto:${order.customer_email ?? ''}?subject=${shareMail.subject}&body=${shareMail.body}`
                     )}
                   />
                   <DropdownItem
@@ -138,7 +159,7 @@ The ${organization?.name} team`
                     label='Whatsapp'
                     target='_blank'
                     href={encodeURI(
-                      `https://api.whatsapp.com/send?text=${shareWhatsapp.body}`
+                      `https://api.whatsapp.com/send?phone=${shareWhatsapp.number}&text=${shareWhatsapp.body}`
                     )}
                   />
                 </>

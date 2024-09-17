@@ -3,7 +3,8 @@ import {
   Card,
   CodeBlock,
   Icon,
-  Spacer
+  Spacer,
+  type HintProps
 } from '@commercelayer/app-elements'
 import type { Link } from '@commercelayer/sdk'
 import { useRef, type MutableRefObject } from 'react'
@@ -12,7 +13,7 @@ import { slugify } from '../helpers/slugify'
 
 interface Props {
   link: Link
-  linkHint?: string
+  linkHint?: HintProps['children']
   primaryAction?: React.ReactNode
   secondaryAction?: React.ReactNode
   showQR?: boolean
