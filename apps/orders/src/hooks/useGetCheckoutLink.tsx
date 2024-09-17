@@ -1,5 +1,6 @@
 import { useCoreSdkProvider } from '@commercelayer/app-elements'
 import type { Link, Order } from '@commercelayer/sdk'
+import { addMonths } from 'date-fns/addMonths'
 import { useEffect, useState } from 'react'
 
 interface Props {
@@ -39,16 +40,13 @@ export function useGetCheckoutLink({ orderId, clientId, scope }: Props): {
 
   useEffect(() => {
     if (canCreateLink && clientId != null && scope != null) {
-      const expiryDate = new Date()
-      expiryDate.setDate(expiryDate.getDate() + 30)
-
       void sdkClient.links
         .create({
           name: `Checkout link for ${orderId}`,
           client_id: clientId,
           scope,
           starts_at: new Date().toJSON(),
-          expires_at: expiryDate.toJSON(),
+          expires_at: addMonths(new Date(), 1).toJSON(),
           item: {
             type: 'orders',
             id: orderId

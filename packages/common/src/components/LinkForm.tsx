@@ -12,6 +12,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { addMonths } from 'date-fns/addMonths'
 import { useEffect } from 'react'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'
@@ -69,9 +70,7 @@ export function LinkForm({
         linkFormMethods.setValue('market', markets[0]?.id ?? '')
       }
       linkFormMethods.setValue('startsAt', new Date())
-      const expiryDate = new Date()
-      expiryDate.setDate(expiryDate.getDate() + 30)
-      linkFormMethods.setValue('expiresAt', expiryDate)
+      linkFormMethods.setValue('expiresAt', addMonths(new Date(), 1))
     }
   }, [
     resourceType,
