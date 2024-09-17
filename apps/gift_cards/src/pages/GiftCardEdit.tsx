@@ -10,6 +10,7 @@ import {
   useTokenProvider,
   type PageProps
 } from '@commercelayer/app-elements'
+import isEmpty from 'lodash/isEmpty'
 import type { FC } from 'react'
 import { useLocation } from 'wouter'
 
@@ -54,13 +55,15 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
             await sdkClient.gift_cards.update({
               id: giftCard.id,
               ...formValues,
+              code: undefined, // code is not editable
               expires_at: formValues.expires_at?.toJSON(),
               // @ts-expect-error wrong type from SDK
               balance_max_cents: formValues.balance_max_cents,
-              market:
-                formValues.market != null
-                  ? sdkClient.markets.relationship(formValues.market)
+              market: sdkClient.markets.relationship(
+                formValues.market != null && !isEmpty(formValues.market)
+                  ? formValues.market
                   : null
+              )
             })
           }
         />
