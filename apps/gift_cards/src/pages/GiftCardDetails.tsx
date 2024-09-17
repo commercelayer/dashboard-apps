@@ -7,6 +7,7 @@ import {
   giftCardIncludeAttribute,
   useGiftCardDetails
 } from '#hooks/useGiftCardDetails'
+import { isMockedId } from '#mocks'
 import { maskGiftCardCode } from '#utils/code'
 import {
   GenericPageNotFound,
@@ -160,11 +161,13 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
         </Spacer>
       </SkeletonTemplate>
 
-      <EditMetadataOverlay
-        resourceType='gift_cards'
-        resourceId={giftCard.id}
-        title={`Gift card ${giftCard?.formatted_initial_balance}`}
-      />
+      {!isMockedId(giftCard.id) && (
+        <EditMetadataOverlay
+          resourceType='gift_cards'
+          resourceId={giftCard.id}
+          title={`Gift card ${giftCard?.formatted_initial_balance}`}
+        />
+      )}
 
       <DeleteOverlay
         title={`Confirm that you want to delete the gift card ending with ${maskGiftCardCode(giftCard.code)} with balance ${giftCard?.formatted_balance}?`}
