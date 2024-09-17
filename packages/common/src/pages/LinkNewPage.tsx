@@ -18,13 +18,15 @@ interface Props {
   resourceType: 'skus' | 'sku_lists'
   goBackUrl: string
   pageDescription?: string
+  defaultName?: string
 }
 
 export const LinkNewPage = ({
   resourceId,
   resourceType,
   goBackUrl,
-  pageDescription
+  pageDescription = 'Share the link with your customers and sell your products online directly.',
+  defaultName
 }: Props): JSX.Element => {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
@@ -33,7 +35,7 @@ export const LinkNewPage = ({
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const pageTitle = 'Create link'
+  const pageTitle = 'New shoppable link'
 
   return (
     <PageLayout
@@ -78,6 +80,9 @@ export const LinkNewPage = ({
             resourceType='skus'
             apiError={apiError}
             isSubmitting={isSaving}
+            defaultValues={{
+              name: defaultName
+            }}
             onSubmit={(formValues) => {
               setIsSaving(true)
               const link = adaptFormValuesToLink(

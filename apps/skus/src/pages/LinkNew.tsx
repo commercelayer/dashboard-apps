@@ -10,17 +10,15 @@ export function LinkNew(
   const skuId = props.params?.resourceId ?? ''
   const goBackUrl = appRoutes.details.makePath({ skuId })
   const { sku, isLoading } = useSkuDetails(skuId)
-  const pageDescription =
-    isLoading || isMockedId(sku.id)
-      ? undefined
-      : `Create a link to a microstore to directly sell ${sku.name}.`
+  const defaultName =
+    isLoading || isMockedId(sku.id) ? '' : `Link to ${sku.name}.`
 
   return (
     <LinkNewPage
       resourceId={skuId}
       resourceType='skus'
       goBackUrl={goBackUrl}
-      pageDescription={pageDescription}
+      defaultName={defaultName}
     />
   )
 }
