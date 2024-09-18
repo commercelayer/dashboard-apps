@@ -47,6 +47,11 @@ const GiftCardList: FC = () => {
               scope={hasActiveFilter ? 'userFiltered' : 'history'}
             />
           }
+          query={{
+            sort: {
+              updated_at: 'desc'
+            }
+          }}
           actionButton={
             canUser('create', 'gift_cards') ? (
               <Link href={appRoutes.new.makePath({})} asChild>

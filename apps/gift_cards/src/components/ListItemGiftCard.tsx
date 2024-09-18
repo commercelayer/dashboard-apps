@@ -10,6 +10,7 @@ import {
   type AvatarProps
 } from '@commercelayer/app-elements'
 import type { ResourceListItemTemplateProps } from '@commercelayer/app-elements/dist/ui/resources/ResourceList/ResourceList'
+import isEmpty from 'lodash/isEmpty'
 import { useLocation } from 'wouter'
 
 export const ListItemGiftCard = withSkeletonTemplate<
@@ -18,7 +19,9 @@ export const ListItemGiftCard = withSkeletonTemplate<
   const [, setLocation] = useLocation()
 
   const imageOrPreset =
-    (resource.image_url as AvatarProps['src']) ?? 'gift_card'
+    isEmpty(resource.image_url) || resource.image_url == null
+      ? 'gift_card'
+      : (resource.image_url as AvatarProps['src'])
 
   return (
     <ListItem

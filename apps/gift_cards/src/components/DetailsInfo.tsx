@@ -1,4 +1,3 @@
-import { maskGiftCardCode } from '#utils/code'
 import {
   Badge,
   ListDetails,
@@ -15,9 +14,7 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
 
     return (
       <ListDetails title='Info'>
-        <ListDetailsItem label='Code'>
-          {maskGiftCardCode(giftCard.code)}
-        </ListDetailsItem>
+        <ListDetailsItem label='Code'>{giftCard.code}</ListDetailsItem>
         <ListDetailsItem label='Market'>
           {giftCard.market?.name ?? `All markets in ${giftCard.currency_code}`}
         </ListDetailsItem>

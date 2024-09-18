@@ -26,14 +26,15 @@ export const instructions: FiltersInstructions = [
     label: 'Status',
     type: 'options',
     sdk: {
-      predicate: 'status_in'
+      predicate: 'status_in',
+      defaultOptions: ['inactive', 'active', 'redeemed']
     },
     render: {
       component: 'inputToggleButton',
       props: {
         mode: 'multi',
         options: [
-          { value: 'draft', label: 'Draft' },
+          { value: 'draft', label: 'Draft', isHidden: true },
           { value: 'inactive', label: 'Inactive' },
           { value: 'active', label: 'Active' },
           { value: 'redeemed', label: 'Redeemed' }
