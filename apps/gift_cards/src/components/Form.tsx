@@ -1,3 +1,4 @@
+import { SelectCustomer } from '#components/SelectCustomer'
 import { appRoutes } from '#data/routes'
 import {
   Button,
@@ -29,6 +30,7 @@ const formSchema = z
       (val) => (isEmpty(val) ? null : val),
       z
         .string()
+        .trim()
         .optional()
         .nullable()
         .refine(
@@ -169,18 +171,20 @@ export const Form: FC<{
               name='expires_at'
               label='Expiration date'
               showTimeSelect
+              isClearable
               hint={{
                 text: 'Up to when the card can be used.'
               }}
             />
           </Spacer>
           <Spacer top='6'>
-            <HookedInput
+            <SelectCustomer
               name='recipient_email'
               label='Customer email'
               hint={{
                 text: 'The customer associated with the card'
               }}
+              isClearable
             />
           </Spacer>
           <Spacer top='6'>
