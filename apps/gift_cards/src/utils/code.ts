@@ -1,5 +1,5 @@
 export function maskGiftCardCode(code?: string | null): string {
-  if (code == null) {
+  if (code == null || code === '') {
     return 'N/A'
   }
 
@@ -7,5 +7,5 @@ export function maskGiftCardCode(code?: string | null): string {
     return code
   }
 
-  return `...${code.slice(-8)}`
+  return `··${code.slice(-8)}`
 }
