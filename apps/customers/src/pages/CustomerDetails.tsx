@@ -6,6 +6,7 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
+  formatDateWithPredicate,
   goBack,
   useEditMetadataOverlay,
   useTokenProvider,
@@ -16,7 +17,6 @@ import { Link, useLocation, useRoute } from 'wouter'
 import { CustomerAddresses } from '#components/CustomerAddresses'
 import { CustomerInfo } from '#components/CustomerInfo'
 import { CustomerLastOrders } from '#components/CustomerLastOrders'
-import { CustomerStatus } from '#components/CustomerStatus'
 import { CustomerTimeline } from '#components/CustomerTimeline'
 import { CustomerWallet } from '#components/CustomerWallet'
 import { ScrollToTop } from '#components/ScrollToTop'
@@ -27,6 +27,7 @@ import { isMockedId } from '#mocks'
 export function CustomerDetails(): JSX.Element {
   const {
     settings: { mode },
+    user,
     canUser
   } = useTokenProvider()
   const [, setLocation] = useLocation()
@@ -64,7 +65,6 @@ export function CustomerDetails(): JSX.Element {
     )
   }
 
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   const pageTitle = `${customer.email}`
 
   const pageToolbar: PageHeadingProps['toolbar'] = {
@@ -97,6 +97,17 @@ export function CustomerDetails(): JSX.Element {
       title={
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }
+      description={
+        <SkeletonTemplate isLoading={isLoading}>
+          <div>
+            {formatDateWithPredicate({
+              predicate: 'Updated',
+              isoDate: customer.created_at ?? '',
+              timezone: user?.timezone
+            })}
+          </div>
+        </SkeletonTemplate>
+      }
       navigationButton={{
         label: 'Back',
         icon: 'arrowLeft',
@@ -124,9 +135,6 @@ export function CustomerDetails(): JSX.Element {
               />
             </Spacer>
           )}
-          <Spacer top='14'>
-            <CustomerStatus customer={customer} />
-          </Spacer>
           <Spacer top='14'>
             <CustomerInfo customer={customer} />
           </Spacer>
