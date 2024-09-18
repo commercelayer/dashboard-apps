@@ -51,21 +51,31 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
       {giftCard != null && (
         <Form
           giftCard={giftCard}
-          onSubmit={async (formValues) =>
-            await sdkClient.gift_cards.update({
+          onSubmit={async ({ code, ...formValues }) => {
+            // @ts-expect-error wrong type from SDK - remove this var assignment once fixed
+            // and keep balance_max_cents in the spread formValues
+            const maxBalanceCents: string = formValues.balance_max_cents
+
+            return await sdkClient.gift_cards.update({
               id: giftCard.id,
               ...formValues,
-              code: undefined, // code is not editable
-              expires_at: formValues.expires_at?.toJSON(),
-              // @ts-expect-error wrong type from SDK
-              balance_max_cents: formValues.balance_max_cents,
+              balance_max_cents: maxBalanceCents,
+              expires_at: formValues.expires_at?.toJSON() ?? null,
+
+              // remove recipient relationship if recipient_email if was set and now is empty
+              gift_card_recipient:
+                isEmpty(formValues.recipient_email) &&
+                giftCard.gift_card_recipient != null
+                  ? sdkClient.gift_card_recipients.relationship(null)
+                  : undefined,
+
               market: sdkClient.markets.relationship(
                 formValues.market != null && !isEmpty(formValues.market)
                   ? formValues.market
                   : null
               )
             })
-          }
+          }}
         />
       )}
     </PageLayout>
