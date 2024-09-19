@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   CodeBlock,
   EmptyState,
@@ -66,6 +67,7 @@ export const SkuListDetails = (
   }
 
   const pageTitle = skuList?.name
+  const hasBundles = skuList?.bundles != null && skuList?.bundles.length > 0
 
   const pageToolbar: PageHeadingProps['toolbar'] = {
     buttons: [],
@@ -125,6 +127,13 @@ export const SkuListDetails = (
       gap='only-top'
     >
       <SkeletonTemplate isLoading={isLoadingItems}>
+        {hasBundles && (
+          <Spacer top='12' bottom='4'>
+            <Alert status='info'>
+              Items in a SKU List linked to a Bundle cannot be modified.
+            </Alert>
+          </Spacer>
+        )}
         <Spacer top='12' bottom='4'>
           <Section title='Items'>
             {skuList.manual === true ? (

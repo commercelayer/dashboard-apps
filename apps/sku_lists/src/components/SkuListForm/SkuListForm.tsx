@@ -41,6 +41,7 @@ interface Props {
     setError: UseFormSetError<SkuListFormValues>
   ) => void
   apiError?: any
+  hasBundles?: boolean
 }
 
 export function SkuListForm({
@@ -48,7 +49,8 @@ export function SkuListForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting
+  isSubmitting,
+  hasBundles = false
 }: Props): JSX.Element {
   const { skuListItems } = useSkuListItems(resource?.id ?? '')
   const skuListFormMethods = useForm<SkuListFormValues>({
@@ -118,109 +120,111 @@ export function SkuListForm({
               hint={{ text: 'Pick a name that helps you identify it.' }}
             />
           </Spacer>
-          <Spacer top='12' bottom='4'>
-            <Tabs
-              onTabSwitch={handleOnTabSwitch}
-              keepAlive
-              defaultTab={defaultTab}
-            >
-              <Tab name='Manual'>
-                {watchedFormItems?.map((item) => (
-                  <Spacer top='2' key={item.sku_code}>
-                    <ListItemCardSkuListItem
-                      resource={item}
-                      onQuantityChange={(resource, quantity) => {
-                        const updatedSelectedItems: FormSkuListItem[] = []
-                        watchedFormItems.forEach((item) => {
-                          if (item.sku_code === resource.sku_code) {
-                            item.quantity = quantity
-                          }
-                          updatedSelectedItems.push(item)
-                        })
-                        skuListFormMethods.setValue(
-                          'items',
-                          updatedSelectedItems
-                        )
-                      }}
-                      onRemoveClick={(resource) => {
-                        const updatedSelectedItems: FormSkuListItem[] = []
-                        watchedFormItems.forEach((item) => {
-                          if (item.sku_code !== resource.sku_code) {
+          {!hasBundles && (
+            <Spacer top='12' bottom='4'>
+              <Tabs
+                onTabSwitch={handleOnTabSwitch}
+                keepAlive
+                defaultTab={defaultTab}
+              >
+                <Tab name='Manual'>
+                  {watchedFormItems?.map((item) => (
+                    <Spacer top='2' key={item.sku_code}>
+                      <ListItemCardSkuListItem
+                        resource={item}
+                        onQuantityChange={(resource, quantity) => {
+                          const updatedSelectedItems: FormSkuListItem[] = []
+                          watchedFormItems.forEach((item) => {
+                            if (item.sku_code === resource.sku_code) {
+                              item.quantity = quantity
+                            }
                             updatedSelectedItems.push(item)
-                          }
-                        })
-                        skuListFormMethods.setValue(
-                          'items',
-                          updatedSelectedItems
-                        )
+                          })
+                          skuListFormMethods.setValue(
+                            'items',
+                            updatedSelectedItems
+                          )
+                        }}
+                        onRemoveClick={(resource) => {
+                          const updatedSelectedItems: FormSkuListItem[] = []
+                          watchedFormItems.forEach((item) => {
+                            if (item.sku_code !== resource.sku_code) {
+                              updatedSelectedItems.push(item)
+                            }
+                          })
+                          skuListFormMethods.setValue(
+                            'items',
+                            updatedSelectedItems
+                          )
+                        }}
+                      />
+                    </Spacer>
+                  ))}
+                  <Spacer top='2'>
+                    <Button
+                      type='button'
+                      variant='relationship'
+                      fullWidth
+                      onClick={() => {
+                        showAddItemOverlay(selectedItemsCodes)
                       }}
-                    />
+                    >
+                      Add item
+                    </Button>
                   </Spacer>
-                ))}
-                <Spacer top='2'>
-                  <Button
-                    type='button'
-                    variant='relationship'
-                    fullWidth
-                    onClick={() => {
-                      showAddItemOverlay(selectedItemsCodes)
-                    }}
-                  >
-                    Add item
-                  </Button>
-                </Spacer>
-                <Spacer top='2'>
-                  <HookedValidationError name='items' />
-                </Spacer>
-                <AddItemOverlay
-                  onConfirm={(selectedSku) => {
-                    const selectedItems =
-                      skuListFormMethods.getValues('items') ?? []
-                    if (
-                      selectedItems.find(
-                        (item) => item.sku_code === selectedSku.code
-                      ) == null
-                    ) {
-                      const newSkuListItem = {
-                        id: '',
-                        sku_code: selectedSku.code,
-                        quantity: 1,
-                        position: selectedItems.length + 1,
-                        sku: {
-                          id: selectedSku.id,
-                          code: selectedSku.code,
-                          name: selectedSku.name,
-                          image_url: selectedSku.image_url ?? undefined
+                  <Spacer top='2'>
+                    <HookedValidationError name='items' />
+                  </Spacer>
+                  <AddItemOverlay
+                    onConfirm={(selectedSku) => {
+                      const selectedItems =
+                        skuListFormMethods.getValues('items') ?? []
+                      if (
+                        selectedItems.find(
+                          (item) => item.sku_code === selectedSku.code
+                        ) == null
+                      ) {
+                        const newSkuListItem = {
+                          id: '',
+                          sku_code: selectedSku.code,
+                          quantity: 1,
+                          position: selectedItems.length + 1,
+                          sku: {
+                            id: selectedSku.id,
+                            code: selectedSku.code,
+                            name: selectedSku.name,
+                            image_url: selectedSku.image_url ?? undefined
+                          }
                         }
+                        selectedItems?.push(newSkuListItem)
+                        skuListFormMethods.setValue('items', selectedItems)
                       }
-                      selectedItems?.push(newSkuListItem)
-                      skuListFormMethods.setValue('items', selectedItems)
-                    }
-                  }}
-                />
-              </Tab>
-              <Tab name='Automatic'>
-                <HookedInputTextArea
-                  name='sku_code_regex'
-                  hint={{
-                    text: (
-                      <span>
-                        Use{' '}
-                        <a
-                          href='https://regex101.com/'
-                          target='_blank'
-                          rel='noreferrer'
-                        >
-                          regular expressions
-                        </a>{' '}
-                        for matching SKU codes, such as "AT | BE".
-                      </span>
-                    )
-                  }}
-                />
-              </Tab>
-            </Tabs>
-          </Spacer>
+                    }}
+                  />
+                </Tab>
+                <Tab name='Automatic'>
+                  <HookedInputTextArea
+                    name='sku_code_regex'
+                    hint={{
+                      text: (
+                        <span>
+                          Use{' '}
+                          <a
+                            href='https://regex101.com/'
+                            target='_blank'
+                            rel='noreferrer'
+                          >
+                            regular expressions
+                          </a>{' '}
+                          for matching SKU codes, such as "AT | BE".
+                        </span>
+                      )
+                    }}
+                  />
+                </Tab>
+              </Tabs>
+            </Spacer>
+          )}
         </Section>
         <Spacer top='14'>
           <Button type='submit' disabled={isSubmitting} fullWidth>

@@ -20,6 +20,7 @@ export function SkuListEdit(): JSX.Element {
   const skuListId = params?.skuListId ?? ''
 
   const { skuList, isLoading, mutateSkuList } = useSkuListDetails(skuListId)
+  const hasBundles = skuList?.bundles != null && skuList?.bundles.length > 0
 
   const { updateSkuListError, updateSkuList, isUpdatingSkuList } =
     useUpdateSkuList()
@@ -89,6 +90,7 @@ export function SkuListEdit(): JSX.Element {
                 setLocation(goBackUrl)
               })
             }}
+            hasBundles={hasBundles}
           />
         ) : null}
       </Spacer>
