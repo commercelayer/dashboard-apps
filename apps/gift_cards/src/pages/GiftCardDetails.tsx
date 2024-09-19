@@ -1,3 +1,4 @@
+import { BalanceLog } from '#components/BalanceLog'
 import { DetailsImage } from '#components/DetailsImage'
 import { DetailsInfo } from '#components/DetailsInfo'
 import { DetailsRecap } from '#components/DetailsRecap'
@@ -179,6 +180,9 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
         </Spacer>
         <Spacer top='14'>
           <DetailsImage giftCard={giftCard} />
+        </Spacer>
+        <Spacer top='14'>
+          <BalanceLog giftCard={giftCard} />
         </Spacer>
       </SkeletonTemplate>
 
