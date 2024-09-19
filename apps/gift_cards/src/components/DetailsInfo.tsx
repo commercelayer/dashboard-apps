@@ -3,14 +3,17 @@ import {
   ListDetails,
   ListDetailsItem,
   formatDate,
+  navigateTo,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { GiftCard } from '@commercelayer/sdk'
+import { useLocation } from 'wouter'
 
 export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
   ({ giftCard }) => {
     const { user } = useTokenProvider()
+    const [, setLocation] = useLocation()
 
     return (
       <ListDetails title='Info'>
@@ -25,6 +28,21 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
         )}
         {giftCard.gift_card_recipient != null && (
           <ListDetailsItem label='Customer'>
+            {giftCard.gift_card_recipient.customer?.id != null ? (
+              <a
+                {...navigateTo({
+                  setLocation,
+                  destination: {
+                    app: 'customers',
+                    resourceId: giftCard.gift_card_recipient.customer.id
+                  }
+                })}
+              >
+                {giftCard.gift_card_recipient.customer.email}
+              </a>
+            ) : (
+              giftCard.gift_card_recipient.customer?.email
+            )}
             {giftCard.gift_card_recipient.email}
           </ListDetailsItem>
         )}
