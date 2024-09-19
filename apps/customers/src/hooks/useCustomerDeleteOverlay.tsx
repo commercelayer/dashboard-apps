@@ -6,6 +6,7 @@ import {
   PageLayout,
   useCoreSdkProvider,
   useOverlay,
+  useTokenProvider,
   type PageLayoutProps
 } from '@commercelayer/app-elements'
 import { useMemo, useState } from 'react'
@@ -18,6 +19,7 @@ interface OverlayHook {
 
 export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
   const { sdkClient } = useCoreSdkProvider()
+  const { organization } = useTokenProvider()
   const [, setLocation] = useLocation()
 
   const { Overlay: DeleteOverlay, open, close } = useOverlay()
@@ -27,6 +29,12 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
     id: customerId,
     settings: { isFiltered: false }
   })
+
+  const customerDeletionMail = {
+    recipient: 'support@commercelayer.io',
+    subject: `Anonymize customer ${customer.email}`,
+    body: `Anonymization request for customer ${customer.email} of organization ${organization?.name}`
+  }
 
   const canBeDeleted = useMemo(() => {
     return orders == null || orders.length === 0
@@ -40,7 +48,14 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
     ) : (
       <>
         Please send a request to{' '}
-        <a href='mailto:support@commercelayer.io'>support@commercelayer.io</a>.
+        <a
+          href={encodeURI(
+            `mailto:${customerDeletionMail.recipient}?subject=${customerDeletionMail.subject}&body=${customerDeletionMail.body}`
+          )}
+        >
+          {customerDeletionMail.recipient}
+        </a>{' '}
+        specifying the organization name and the customer's email.
       </>
     )
 
