@@ -5,6 +5,7 @@ import type { ListResponse, Order, QueryPageSize } from '@commercelayer/sdk'
 interface UseCustomerOrdersListSettings {
   pageNumber?: number
   pageSize?: QueryPageSize
+  isFiltered?: boolean
 }
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
 /**
  * Retrieves customer orders via relationship by customer id.
  * @param id - Customer `id` used in SDK relationship request.
- * @param settings - Optional set of SDK request settings.
+ * @param settings - Optional set of settings to customize the SDK request.
  * @returns a list of resolved `Orders` of requested customer.
  */
 
@@ -25,6 +26,7 @@ export function useCustomerOrdersList({ id, settings }: Props): {
 } {
   const pageNumber = settings?.pageNumber ?? 1
   const pageSize = settings?.pageSize ?? 25
+  const isFiltered = settings?.isFiltered ?? true
 
   const { data: orders, isLoading } = useCoreApi(
     'customers',
@@ -34,10 +36,14 @@ export function useCustomerOrdersList({ id, settings }: Props): {
       : [
           id,
           {
-            filters: {
-              status_matches_any: 'placed,approved,editing,cancelled'
-            },
-            include: ['billing_address', 'market'],
+            ...(isFiltered
+              ? {
+                  filters: {
+                    status_matches_any: 'placed,approved,editing,cancelled'
+                  },
+                  include: ['billing_address', 'market']
+                }
+              : undefined),
             sort: ['-created_at'],
             pageNumber,
             pageSize
