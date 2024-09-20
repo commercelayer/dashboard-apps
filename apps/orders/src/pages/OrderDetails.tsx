@@ -82,21 +82,6 @@ function OrderDetails(): JSX.Element {
     } else {
       toolbar.dropdownItems = [[setMetadataDropDownItem]]
     }
-
-    const checkoutLinkDropDownItem: DropdownItemProps = {
-      label: 'Checkout link',
-      onClick: () => {
-        setLocation(appRoutes.linkDetails.makePath({ orderId }))
-      }
-    }
-
-    if (
-      order.status === 'pending' &&
-      extras?.salesChannels != null &&
-      extras?.salesChannels.length > 0
-    ) {
-      toolbar.dropdownItems.push([checkoutLinkDropDownItem])
-    }
   }
 
   if (orderId === undefined || !canUser('read', 'orders') || error != null) {
