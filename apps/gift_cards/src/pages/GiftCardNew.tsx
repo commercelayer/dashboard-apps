@@ -39,7 +39,6 @@ const GiftCardNew: FC = () => {
           const newGiftCard = await sdkClient.gift_cards.create({
             ...formValues,
             expires_at: formValues.expires_at?.toJSON(),
-            // @ts-expect-error wrong type from SDK
             balance_max_cents: formValues.balance_max_cents,
             market: sdkClient.markets.relationship(
               formValues.market != null && !isEmpty(formValues.market)

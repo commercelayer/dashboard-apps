@@ -77,7 +77,6 @@ const makeDefaultValue = (giftCart?: GiftCard): GiftCardFormValues => {
     market: giftCart?.market?.id ?? '',
     currency_code: giftCart?.currency_code ?? 'USD',
     balance_cents: giftCart?.balance_cents ?? 0,
-    // @ts-expect-error wrong type from SDK
     balance_max_cents: giftCart?.balance_max_cents ?? null,
     expires_at:
       giftCart?.expires_at != null ? new Date(giftCart.expires_at) : null,
