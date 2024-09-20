@@ -4,6 +4,7 @@ import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   Button,
+  Card,
   EmptyState,
   HookedForm,
   HookedInputCheckbox,
@@ -98,7 +99,9 @@ export const EditOrderStep: React.FC<
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer top='14'>
-          <OrderLineItems title='Cart' order={order} />
+          <Card overflow='visible'>
+            <OrderLineItems title='Cart' order={order} />
+          </Card>
         </Spacer>
 
         <HookedForm

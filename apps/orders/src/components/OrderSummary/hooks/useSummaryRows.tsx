@@ -29,7 +29,7 @@ export function useSummaryRows(order: Order): {
     summaryRows.push({
       key: 'coupon',
       element: (
-        <Spacer top='4' bottom='4'>
+        <>
           <AddCouponOverlay />
           {renderTotalRow({
             label: 'Coupon',
@@ -57,7 +57,7 @@ export function useSummaryRows(order: Order): {
                 </div>
               )
           })}
-        </Spacer>
+        </>
       )
     })
   }

@@ -3,8 +3,6 @@ import { SelectMarketStep } from '#components/NewOrder/SelectMarketStep'
 import type { PageProps } from '#components/Routes'
 import { type appRoutes } from '#data/routes'
 
-// NbQLhymvel
-
 function NewOrderPage(
   props: PageProps<typeof appRoutes.new>
 ): JSX.Element | null {

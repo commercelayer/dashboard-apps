@@ -1,10 +1,5 @@
 import { useOrderDetails } from '#hooks/useOrderDetails'
-import {
-  Button,
-  Spacer,
-  Text,
-  useTokenProvider
-} from '@commercelayer/app-elements'
+import { Button, Text, useTokenProvider } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { useMemo } from 'react'
 import { useAdjustTotalOverlay } from './hooks/useAdjustTotalOverlay'
@@ -125,7 +120,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
   ])
 
   return (
-    <Spacer top='4' bottom='4'>
+    <>
       {renderTotalRowAmount({
         force: true,
         label: 'Subtotal',
@@ -158,6 +153,6 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
         formattedAmount: order.formatted_total_amount_with_taxes,
         bold: true
       })}
-    </Spacer>
+    </>
   )
 }
