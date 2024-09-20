@@ -46,7 +46,7 @@ export const instructions: FiltersInstructions = [
     label: 'Search',
     type: 'textSearch',
     sdk: {
-      predicate: 'code_cont'
+      predicate: 'gift_card_recipient_email_or_code_cont'
     },
     render: {
       component: 'searchBar'
