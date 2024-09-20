@@ -11,7 +11,7 @@
     "test:watch": "pnpm -r --parallel --aggregate-output --color test:watch",
     "dep:major": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u",
     "dep:minor": "pnpm dep:major -t minor",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "keywords": [],
   "author": {

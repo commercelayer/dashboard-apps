@@ -13,7 +13,7 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "^2.3.10",
+    "@commercelayer/app-elements": "^2.3.11",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -26,7 +26,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.7",
     "@types/node": "22.5.5",
-    "@types/react": "^18.3.7",
+    "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.57.0",
