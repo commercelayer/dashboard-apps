@@ -70,7 +70,7 @@ export function normalizeLogs({
 
   return [...normalizedUsage, ...normalizedBalance]
     .sort((a, b) => {
-      return new Date(a.date).getTime() - new Date(b.date).getTime()
+      return new Date(b.date).getTime() > new Date(a.date).getTime() ? 1 : -1
     })
     .map((item) => ({
       ...item,

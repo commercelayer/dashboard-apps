@@ -27,5 +27,9 @@ function isValidImageURL(
   if (url == null) {
     return false
   }
-  return url.startsWith('https://') || url.startsWith('data:image/')
+  return (
+    url.startsWith('https://') ||
+    url.startsWith('//') ||
+    url.startsWith('data:image/')
+  )
 }

@@ -2,6 +2,13 @@ import { describe, expect, it } from 'vitest'
 import { normalizeLogs } from './normalizeLogs'
 
 describe('normalizeLogs', () => {
+  beforeEach(() => {
+    vi.useFakeTimers().setSystemTime('2024-09-19T14:30:00.000Z')
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
   it('should normalize usage logs correctly', () => {
     const result = normalizeLogs({
       usageLog: {
@@ -51,16 +58,10 @@ describe('normalizeLogs', () => {
 
     expect(result).toEqual([
       {
-        date: 'Sep 18, 16:00',
-        type: 'Purchase',
-        orderId: 'order-1',
-        amount: '€0,00'
-      },
-      {
-        date: 'Sep 18, 16:00',
-        type: 'Change',
-        orderId: undefined,
-        amount: '€100,00'
+        date: 'Sep 22, 16:00',
+        type: 'Redeemed',
+        orderId: 'order-3',
+        amount: '€-50,00'
       },
       {
         date: 'Sep 20, 11:00',
@@ -70,10 +71,16 @@ describe('normalizeLogs', () => {
         amount: '€-50,00'
       },
       {
-        date: 'Sep 22, 16:00',
-        type: 'Redeemed',
-        orderId: 'order-3',
-        amount: '€-50,00'
+        date: 'Sep 18, 16:00',
+        type: 'Change',
+        orderId: undefined,
+        amount: '€100,00'
+      },
+      {
+        date: 'Sep 18, 16:00',
+        type: 'Purchase',
+        orderId: 'order-1',
+        amount: '€0,00'
       }
     ])
   })
