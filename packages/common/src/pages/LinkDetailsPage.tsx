@@ -8,9 +8,9 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { Link as ClayerLink, Sku, SkuList } from '@commercelayer/sdk'
-import { LinkShareButton } from 'src/components/LinkShareButton'
 import { Link, useLocation } from 'wouter'
 import { LinkDetailsCard } from '../components/LinkDetailsCard'
+import { LinkShareButton } from '../components/LinkShareButton'
 import { linksRoutes } from '../data/routes'
 import { useLinkDetails } from '../hooks/useLinkDetails'
 
