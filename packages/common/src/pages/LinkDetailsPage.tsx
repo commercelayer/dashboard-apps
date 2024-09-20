@@ -8,6 +8,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { Link as ClayerLink, Sku, SkuList } from '@commercelayer/sdk'
+import { LinkShareButton } from 'src/components/LinkShareButton'
 import { Link, useLocation } from 'wouter'
 import { LinkDetailsCard } from '../components/LinkDetailsCard'
 import { linksRoutes } from '../data/routes'
@@ -20,7 +21,8 @@ interface Props {
 
 export const LinkDetailsPage = ({ resourceId, linkId }: Props): JSX.Element => {
   const {
-    settings: { mode }
+    settings: { mode },
+    organization
   } = useTokenProvider()
 
   const [, setLocation] = useLocation()
@@ -78,6 +80,21 @@ export const LinkDetailsPage = ({ resourceId, linkId }: Props): JSX.Element => {
                 <Icon name='archive' size={16} />
                 View archive
               </Button>
+            }
+            secondaryAction={
+              <LinkShareButton
+                email={{
+                  subject: `A curated selection for you`,
+                  body: `Dear customer,
+                          please find a curated selection for you:
+                          ${link.url}
+                          Thank you,
+                          The ${organization?.name} team`.replace(/^\s+/gm, '')
+                }}
+                whatsapp={{
+                  text: `Please find a curated selection for you: ${link.url}`
+                }}
+              />
             }
             showQR
           />

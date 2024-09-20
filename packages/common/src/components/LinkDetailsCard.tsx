@@ -70,15 +70,17 @@ export const LinkDetailsCard = ({
         <div className='flex'>
           {secondaryAction}
           {showQR && (
-            <Button
-              variant='primary'
-              size='small'
-              alignItems='center'
-              onClick={handleLinkQrDownload}
-            >
-              <Icon name='download' size={16} />
-              Download
-            </Button>
+            <Spacer left='2'>
+              <Button
+                variant='primary'
+                size='small'
+                alignItems='center'
+                onClick={handleLinkQrDownload}
+              >
+                <Icon name='download' size={16} />
+                Download
+              </Button>
+            </Spacer>
           )}
         </div>
       </div>
