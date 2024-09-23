@@ -13,7 +13,6 @@ import { appRoutes, type PageProps } from '#data/routes'
 import { useGetCheckoutLink } from '#hooks/useGetCheckoutLink'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { LinkDetailsCard } from 'dashboard-apps-common/src/components/LinkDetailsCard'
-import { LinkShareButton } from 'dashboard-apps-common/src/components/LinkShareButton'
 import { useMemo } from 'react'
 
 function phoneNumberForWhatsapp(
@@ -127,23 +126,21 @@ function LinkDetails(
               Open checkout
             </A>
           }
-          secondaryAction={
-            <LinkShareButton
-              email={{
-                to: order.customer_email,
-                subject: `Checkout your order (#${order.number})`,
-                body: `Dear customer,
-                        please follow this link to checkout your order #${order.number}:
-                        ${link.url}
-                        Thank you,
-                        The ${organization?.name} team`.replace(/^\s+/gm, '')
-              }}
-              whatsapp={{
-                number: phoneNumberForWhatsapp(order.billing_address?.phone),
-                text: `Please follow this link to checkout your order *${order.number}*: ${link.url}`
-              }}
-            />
-          }
+          share={{
+            email: {
+              to: order.customer_email,
+              subject: `Checkout your order (#${order.number})`,
+              body: `Dear customer,
+                      please follow this link to checkout your order #${order.number}:
+                      ${link.url}
+                      Thank you,
+                      The ${organization?.name} team`.replace(/^\s+/gm, '')
+            },
+            whatsapp: {
+              number: phoneNumberForWhatsapp(order.billing_address?.phone),
+              text: `Please follow this link to checkout your order *${order.number}*: ${link.url}`
+            }
+          }}
         />
       </SkeletonTemplate>
     </PageLayout>

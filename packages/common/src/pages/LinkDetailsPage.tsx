@@ -10,7 +10,6 @@ import {
 import type { Link as ClayerLink, Sku, SkuList } from '@commercelayer/sdk'
 import { Link, useLocation } from 'wouter'
 import { LinkDetailsCard } from '../components/LinkDetailsCard'
-import { LinkShareButton } from '../components/LinkShareButton'
 import { linksRoutes } from '../data/routes'
 import { useLinkDetails } from '../hooks/useLinkDetails'
 
@@ -81,21 +80,19 @@ export const LinkDetailsPage = ({ resourceId, linkId }: Props): JSX.Element => {
                 View archive
               </Button>
             }
-            secondaryAction={
-              <LinkShareButton
-                email={{
-                  subject: `A curated selection for you`,
-                  body: `Dear customer,
-                          please find a curated selection for you:
-                          ${link.url}
-                          Thank you,
-                          The ${organization?.name} team`.replace(/^\s+/gm, '')
-                }}
-                whatsapp={{
-                  text: `Please find a curated selection for you: ${link.url}`
-                }}
-              />
-            }
+            share={{
+              email: {
+                subject: `A curated selection for you`,
+                body: `Dear customer,
+                        please find a curated selection for you:
+                        ${link.url}
+                        Thank you,
+                        The ${organization?.name} team`.replace(/^\s+/gm, '')
+              },
+              whatsapp: {
+                text: `Please find a curated selection for you: ${link.url}`
+              }
+            }}
             showQR
           />
         </SkeletonTemplate>
