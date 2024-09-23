@@ -49,9 +49,14 @@ export const LinkListRow = ({
   return (
     <Tr>
       <Td>
-        <Text weight='semibold' size='small' tag='div'>
+        <Button
+          variant='link'
+          onClick={onLinkDetailsClick}
+          style={{ textDecoration: 'none' }}
+        >
           {link.name}
-        </Text>
+        </Button>
+
         <div
           style={{
             width: '210px',

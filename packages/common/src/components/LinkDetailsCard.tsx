@@ -67,7 +67,7 @@ export const LinkDetailsCard = ({
           />
         </div>
       )}
-      <Spacer top={showQR ? '12' : undefined} bottom='4'>
+      <Spacer top={showQR ? '12' : undefined} bottom='6'>
         <CodeBlock
           showCopyAction
           hint={
@@ -116,6 +116,7 @@ export const LinkDetailsCard = ({
                   {hasShareOptions && showQR && <DropdownDivider />}
                   {showQR && (
                     <DropdownItem
+                      icon='qrCode'
                       label='Download QR'
                       target='_blank'
                       onClick={handleLinkQrDownload}

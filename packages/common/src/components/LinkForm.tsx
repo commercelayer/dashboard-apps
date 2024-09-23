@@ -118,7 +118,7 @@ export function LinkForm({
               }
               pathToValue='value'
               hint={{
-                text: <Text variant='info'>The sales channel to use</Text>
+                text: <Text variant='info'>The sales channel to use.</Text>
               }}
             />
           </Spacer>

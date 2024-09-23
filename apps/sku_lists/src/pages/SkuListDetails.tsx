@@ -18,6 +18,7 @@ import { ListItemSkuListItem } from '#components/ListItemSkuListItem'
 import { appRoutes, type PageProps } from '#data/routes'
 import { useSkuListDetails } from '#hooks/useSkuListDetails'
 import { useSkuListItems } from '#hooks/useSkuListItems'
+import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
 import { useState } from 'react'
 
 export const SkuListDetails = (
@@ -72,18 +73,14 @@ export const SkuListDetails = (
     dropdownItems: []
   }
 
+  const showLinks =
+    extras?.salesChannels != null && extras?.salesChannels.length > 0
+
   if (canUser('update', 'sku_lists')) {
-    pageToolbar.buttons?.push({
-      label: 'Edit',
-      size: 'small',
-      onClick: () => {
-        setLocation(appRoutes.edit.makePath({ skuListId }))
-      }
-    })
-    if (extras?.salesChannels != null && extras?.salesChannels.length > 0) {
+    if (showLinks) {
       pageToolbar.buttons?.push({
-        label: 'Create link',
-        icon: 'shoppingBagOpen',
+        label: 'New link',
+        icon: 'lightning',
         size: 'small',
         variant: 'secondary',
         onClick: () => {
@@ -91,6 +88,15 @@ export const SkuListDetails = (
         }
       })
     }
+
+    pageToolbar.buttons?.push({
+      label: 'Edit',
+      size: 'small',
+      variant: 'secondary',
+      onClick: () => {
+        setLocation(appRoutes.edit.makePath({ skuListId }))
+      }
+    })
   }
 
   if (canUser('destroy', 'sku_lists')) {
@@ -151,6 +157,13 @@ export const SkuListDetails = (
             )}
           </Section>
         </Spacer>
+        {showLinks && (
+          <Spacer top='12' bottom='4'>
+            <Section title='Links' border='none'>
+              <LinkListTable resourceId={skuListId} resourceType='sku_lists' />
+            </Section>
+          </Spacer>
+        )}
       </SkeletonTemplate>
       {canUser('destroy', 'sku_lists') && (
         <Overlay backgroundColor='light'>

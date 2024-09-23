@@ -25,7 +25,7 @@ export const LinkNewPage = ({
   resourceId,
   resourceType,
   goBackUrl,
-  pageDescription = 'Share the link with your customers and sell your products online directly.',
+  pageDescription = 'Share the link with your customers and sell directly your products online.',
   defaultName
 }: Props): JSX.Element => {
   const { canUser } = useTokenProvider()
@@ -35,7 +35,7 @@ export const LinkNewPage = ({
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const pageTitle = 'New shoppable link'
+  const pageTitle = 'New link'
 
   return (
     <PageLayout
@@ -47,19 +47,6 @@ export const LinkNewPage = ({
         },
         label: 'Cancel',
         icon: 'x'
-      }}
-      toolbar={{
-        buttons: [
-          {
-            label: 'View archive',
-            icon: 'archive',
-            size: 'small',
-            variant: 'secondary',
-            onClick: () => {
-              setLocation(linksRoutes.linksList.makePath({ resourceId }))
-            }
-          }
-        ]
       }}
       scrollToTop
       overlay

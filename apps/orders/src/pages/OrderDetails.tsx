@@ -54,8 +54,9 @@ function OrderDetails(): JSX.Element {
     ) {
       const checkoutLinkButton: ToolbarItem = {
         label: 'Checkout',
+        icon: 'lightning',
         size: 'small',
-        variant: 'primary',
+        variant: 'secondary',
         onClick: () => {
           setLocation(appRoutes.linkDetails.makePath({ orderId }))
         }
