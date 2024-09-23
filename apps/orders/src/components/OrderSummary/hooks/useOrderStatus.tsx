@@ -15,7 +15,11 @@ export function useOrderStatus(order: Order) {
     | null
     | undefined
 
-  const isEditing = order.status === 'editing' && canUser('update', 'orders')
+  const isEditing =
+    (order.status === 'editing' ||
+      order.status === 'draft' ||
+      order.status === 'pending') &&
+    canUser('update', 'orders')
 
   const diffTotalAndPlacedTotal =
     (order.total_amount_with_taxes_cents ?? 0) -

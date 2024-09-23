@@ -63,7 +63,7 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
                   : { bundle_code: code })
               })
               .then(async () => {
-                return await mutateOrder()
+                void mutateOrder()
               })
           }}
         />

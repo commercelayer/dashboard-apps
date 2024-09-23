@@ -11,14 +11,17 @@ import type { Bundle, Order, Sku } from '@commercelayer/sdk'
 import { useRef } from 'react'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
+type OnConfirm = (resource: Sku | Bundle) => void
+
 interface OverlayHook {
-  show: (type: 'skus' | 'bundles') => void
-  Overlay: React.FC<{ onConfirm: (resource: Sku | Bundle) => void }>
+  show: (type: 'skus' | 'bundles', onConfirm?: OnConfirm) => void
+  Overlay: React.FC<{ onConfirm?: OnConfirm }>
 }
 
 export function useAddItemOverlay(order: Order): OverlayHook {
   const { Overlay: OverlayElement, open, close } = useOverlay()
   const filterType = useRef<'skus' | 'bundles'>('skus')
+  const onConfirm = useRef<OnConfirm | undefined>()
 
   const instructions: FiltersInstructions = [
     {
@@ -53,11 +56,12 @@ export function useAddItemOverlay(order: Order): OverlayHook {
   }
 
   return {
-    show: (type) => {
+    show: (type, onConfirmOption) => {
       filterType.current = type
+      onConfirm.current = onConfirmOption
       open()
     },
-    Overlay: ({ onConfirm }) => {
+    Overlay: ({ onConfirm: onConfirmFromOverlay }) => {
       const queryString = useSearch()
       const { SearchWithNav, FilteredList } = useResourceFilters({
         instructions
@@ -107,7 +111,8 @@ export function useAddItemOverlay(order: Order): OverlayHook {
               ItemTemplate={(props) => (
                 <ListItemSkuBundle
                   onSelect={(resource) => {
-                    onConfirm(resource)
+                    onConfirm.current?.(resource)
+                    onConfirmFromOverlay?.(resource)
                     close()
                     navigate(`?`, {
                       replace: true

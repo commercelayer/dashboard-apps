@@ -10,6 +10,7 @@ import {
   Spacer,
   StatusIcon,
   Text,
+  useCoreSdkProvider,
   useResourceFilters
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
@@ -18,6 +19,7 @@ import { useListCounters } from '../metricsApi/useListCounters'
 
 function Home(): JSX.Element {
   const [, setLocation] = useLocation()
+  const { sdkClient } = useCoreSdkProvider()
   const search = useSearch()
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
@@ -26,7 +28,49 @@ function Home(): JSX.Element {
   })
 
   return (
-    <HomePageLayout title='Orders'>
+    <HomePageLayout
+      title='Orders'
+      toolbar={{
+        buttons: [
+          {
+            icon: 'plus',
+            label: 'New order',
+            size: 'small',
+            onClick: () => {
+              void sdkClient.markets
+                .list({
+                  fields: ['id'],
+                  filters: {
+                    disabled_at_null: true
+                  },
+                  pageSize: 1
+                })
+                .then((markets) => {
+                  if (markets.meta.recordCount > 1) {
+                    setLocation(appRoutes.new.makePath({}))
+                  } else {
+                    const [resource] = markets
+                    if (resource != null) {
+                      void sdkClient.orders
+                        .create({
+                          market: {
+                            type: 'markets',
+                            id: resource.id
+                          }
+                        })
+                        .then((order) => {
+                          setLocation(
+                            appRoutes.new.makePath({ orderId: order.id })
+                          )
+                        })
+                    }
+                  }
+                })
+            }
+          }
+        ]
+      }}
+    >
       <SearchWithNav
         hideFiltersNav
         onFilterClick={() => {}}
