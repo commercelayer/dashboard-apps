@@ -156,7 +156,11 @@ export const makeInstructions = ({
     label: 'Search',
     type: 'textSearch',
     sdk: {
-      predicate: 'aggregated_details'
+      predicate: 'aggregated_details',
+      parseFormValue: (value) =>
+        typeof value === 'string' && value.trim()?.length > 0
+          ? `*${value.trim()}*`
+          : undefined
     },
     render: {
       component: 'searchBar'
