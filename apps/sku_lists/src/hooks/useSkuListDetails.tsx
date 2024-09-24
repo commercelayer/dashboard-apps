@@ -14,9 +14,14 @@ export function useSkuListDetails(id: string): {
     isLoading,
     error,
     mutate: mutateSkuList
-  } = useCoreApi('sku_lists', 'retrieve', isMockedId(id) ? null : [id], {
-    fallbackData: makeSkuList()
-  })
+  } = useCoreApi(
+    'sku_lists',
+    'retrieve',
+    isMockedId(id) ? null : [id, { include: ['bundles'] }],
+    {
+      fallbackData: makeSkuList()
+    }
+  )
 
   return { skuList, error, isLoading, mutateSkuList }
 }

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   CodeBlock,
   EmptyState,
@@ -6,6 +7,7 @@ import {
   Section,
   SkeletonTemplate,
   Spacer,
+  Text,
   goBack,
   useCoreSdkProvider,
   useOverlay,
@@ -66,6 +68,11 @@ export const SkuListDetails = (
   }
 
   const pageTitle = skuList?.name
+  const hasBundles = skuList?.bundles != null && skuList?.bundles.length > 0
+  const isManual =
+    skuList?.manual === true && skuListItems != null && skuListItems.length > 0
+  const isAutomatic =
+    skuList?.manual === false && skuList.sku_code_regex != null
 
   const pageToolbar: PageHeadingProps['toolbar'] = {
     buttons: [],
@@ -125,20 +132,20 @@ export const SkuListDetails = (
       gap='only-top'
     >
       <SkeletonTemplate isLoading={isLoadingItems}>
+        {hasBundles && (
+          <Spacer top='12' bottom='4'>
+            <Alert status='info'>
+              Items in a SKU List linked to a Bundle cannot be modified.
+            </Alert>
+          </Spacer>
+        )}
         <Spacer top='12' bottom='4'>
           <Section title='Items'>
-            {skuList.manual === true ? (
-              <>
-                {skuListItems != null
-                  ? skuListItems.map((item) => (
-                      <ListItemSkuListItem
-                        key={item.sku_code}
-                        resource={item}
-                      />
-                    ))
-                  : null}
-              </>
-            ) : (
+            {isManual ? (
+              skuListItems.map((item) => (
+                <ListItemSkuListItem key={item.sku_code} resource={item} />
+              ))
+            ) : isAutomatic ? (
               <Spacer top='6'>
                 <CodeBlock
                   hint={{
@@ -147,6 +154,10 @@ export const SkuListDetails = (
                 >
                   {skuList.sku_code_regex ?? ''}
                 </CodeBlock>
+              </Spacer>
+            ) : (
+              <Spacer top='4'>
+                <Text variant='info'>No items.</Text>
               </Spacer>
             )}
           </Section>
