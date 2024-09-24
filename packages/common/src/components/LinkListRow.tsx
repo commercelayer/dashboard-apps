@@ -49,11 +49,7 @@ export const LinkListRow = ({
   return (
     <Tr>
       <Td>
-        <Button
-          variant='link'
-          onClick={onLinkDetailsClick}
-          style={{ textDecoration: 'none' }}
-        >
+        <Button variant='link' onClick={onLinkDetailsClick}>
           {link.name}
         </Button>
 
@@ -205,15 +201,13 @@ export const LinkListRow = ({
 function getBadgeVariant(link: Link): BadgeProps['variant'] {
   const status = getLinkStatus(link)
   switch (status) {
-    case 'expired':
-      return 'danger'
-
     case 'pending':
       return 'warning'
 
     case 'active':
       return 'success'
 
+    case 'expired':
     default:
       return 'secondary'
   }

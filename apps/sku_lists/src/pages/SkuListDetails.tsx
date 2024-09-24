@@ -6,6 +6,7 @@ import {
   Section,
   SkeletonTemplate,
   Spacer,
+  Text,
   goBack,
   useCoreSdkProvider,
   useOverlay,
@@ -110,6 +111,10 @@ export const SkuListDetails = (
     ])
   }
 
+  const linkListTable = showLinks
+    ? LinkListTable({ resourceId: skuListId, resourceType: 'sku_lists' })
+    : null
+
   return (
     <PageLayout
       mode={mode}
@@ -159,8 +164,15 @@ export const SkuListDetails = (
         </Spacer>
         {showLinks && (
           <Spacer top='12' bottom='4'>
-            <Section title='Links' border='none'>
-              <LinkListTable resourceId={skuListId} resourceType='sku_lists' />
+            <Section
+              title='Links'
+              border={linkListTable != null ? 'none' : undefined}
+            >
+              {linkListTable ?? (
+                <Spacer top='4'>
+                  <Text variant='info'>No items.</Text>
+                </Spacer>
+              )}
             </Section>
           </Spacer>
         )}

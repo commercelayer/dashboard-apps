@@ -7,6 +7,7 @@ import {
   Section,
   SkeletonTemplate,
   Spacer,
+  Text,
   goBack,
   useCoreSdkProvider,
   useEditMetadataOverlay,
@@ -125,6 +126,10 @@ export const SkuDetails: FC = () => {
     ])
   }
 
+  const linkListTable = showLinks
+    ? LinkListTable({ resourceId: skuId, resourceType: 'skus' })
+    : null
+
   return (
     <PageLayout
       mode={mode}
@@ -172,8 +177,15 @@ export const SkuDetails: FC = () => {
           </Spacer>
           {showLinks && (
             <Spacer top='12' bottom='4'>
-              <Section title='Links' border='none'>
-                <LinkListTable resourceId={skuId} resourceType='skus' />
+              <Section
+                title='Links'
+                border={linkListTable != null ? 'none' : undefined}
+              >
+                {linkListTable ?? (
+                  <Spacer top='4'>
+                    <Text variant='info'>No items.</Text>
+                  </Spacer>
+                )}
               </Section>
             </Spacer>
           )}

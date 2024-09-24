@@ -1,4 +1,4 @@
-import { Table, Td, Th, Tr } from '@commercelayer/app-elements'
+import { Table, Th, Tr } from '@commercelayer/app-elements'
 import type { Sku, SkuList } from '@commercelayer/sdk'
 import { useLocation } from 'wouter'
 import { linksRoutes } from '../data/routes'
@@ -13,7 +13,7 @@ interface Props {
 export const LinkListTable = ({
   resourceId,
   resourceType
-}: Props): JSX.Element => {
+}: Props): JSX.Element | null => {
   const [, setLocation] = useLocation()
 
   const {
@@ -22,7 +22,7 @@ export const LinkListTable = ({
     mutate: mutateList
   } = useLinksList({ resourceId, resourceType })
 
-  return (
+  return !isLoading && (links == null || links?.length === 0) ? null : (
     <Table
       variant='boxed'
       thead={
@@ -36,11 +36,6 @@ export const LinkListTable = ({
       }
       tbody={
         <>
-          {!isLoading && (links == null || links?.length === 0) && (
-            <Tr>
-              <Td colSpan={5}>No items.</Td>
-            </Tr>
-          )}
           {links?.map((link) => (
             <LinkListRow
               link={link}
