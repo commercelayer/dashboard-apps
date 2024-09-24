@@ -15,11 +15,13 @@ import {
 } from '@commercelayer/app-elements'
 import type { Market } from '@commercelayer/sdk'
 import { useLocation } from 'wouter'
+import { useSearch } from 'wouter/use-browser-location'
 
 export const SelectMarketStep: React.FC<
   Pick<PageProps<typeof appRoutes.new>, 'overlay'>
 > = ({ overlay }) => {
   const [, setLocation] = useLocation()
+  const search = useSearch()
 
   const { SearchWithNav, FilteredList } = useResourceFilters({
     instructions: [
@@ -71,6 +73,7 @@ export const SelectMarketStep: React.FC<
         onUpdate={(qs) => {
           setLocation(appRoutes.new.makePath({}, qs))
         }}
+        queryString={search}
         searchBarDebounceMs={1000}
       />
 

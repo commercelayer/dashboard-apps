@@ -23,7 +23,7 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
   const [, setLocation] = useLocation()
 
   const { Overlay: DeleteOverlay, open, close } = useOverlay()
-  const [isDeleteting, setIsDeleting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const { customer, isLoading } = useCustomerDetails(customerId)
   const { orders } = useCustomerOrdersList({
     id: customerId,
@@ -83,7 +83,7 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
               <Button
                 variant='danger'
                 size='small'
-                disabled={isDeleteting}
+                disabled={isDeleting}
                 onClick={(e) => {
                   setIsDeleting(true)
                   e.stopPropagation()

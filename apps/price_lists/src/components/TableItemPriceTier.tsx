@@ -46,7 +46,7 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
 
     const { Overlay, open, close } = useOverlay()
 
-    const [isDeleteting, setIsDeleting] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
 
     const sdkResource = getPriceTierSdkResource(type)
     const appRoutesPath =
@@ -118,7 +118,7 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
               <Button
                 variant='danger'
                 size='small'
-                disabled={isDeleteting}
+                disabled={isDeleting}
                 onClick={(e) => {
                   setIsDeleting(true)
                   e.stopPropagation()

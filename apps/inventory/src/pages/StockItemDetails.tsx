@@ -38,7 +38,7 @@ export const StockItemDetails: FC = () => {
 
   const { Overlay, open, close } = useOverlay()
 
-  const [isDeleteting, setIsDeleting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   if (error != null) {
     return (
@@ -151,7 +151,7 @@ export const StockItemDetails: FC = () => {
             <Button
               variant='danger'
               size='small'
-              disabled={isDeleteting}
+              disabled={isDeleting}
               onClick={(e) => {
                 setIsDeleting(true)
                 e.stopPropagation()

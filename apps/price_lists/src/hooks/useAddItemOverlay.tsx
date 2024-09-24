@@ -9,7 +9,7 @@ import {
 import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import type { Sku } from '@commercelayer/sdk'
 import { useState } from 'react'
-import { navigate } from 'wouter/use-browser-location'
+import { navigate, useSearch } from 'wouter/use-browser-location'
 
 interface OverlayHook {
   show: ({
@@ -65,6 +65,7 @@ export function useAddItemOverlay(): OverlayHook {
         })
       }
 
+      const queryString = useSearch()
       const { SearchWithNav, FilteredList } = useResourceFilters({
         instructions
       })
@@ -91,6 +92,7 @@ export function useAddItemOverlay(): OverlayHook {
                       replace: true
                     })
                   }}
+                  queryString={queryString}
                   hideFiltersNav
                   searchBarPlaceholder='search...'
                 />

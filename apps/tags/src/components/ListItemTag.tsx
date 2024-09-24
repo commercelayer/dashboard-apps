@@ -32,7 +32,7 @@ export const ListItemTag = withSkeletonTemplate<
   const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
     useEditMetadataOverlay()
 
-  const [isDeleteting, setIsDeleting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const dropdownItems: JSX.Element[] = []
 
@@ -114,7 +114,7 @@ export const ListItemTag = withSkeletonTemplate<
             <Button
               variant='danger'
               size='small'
-              disabled={isDeleteting}
+              disabled={isDeleting}
               onClick={(e) => {
                 setIsDeleting(true)
                 e.stopPropagation()

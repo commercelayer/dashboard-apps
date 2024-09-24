@@ -17,7 +17,7 @@ import {
 } from '@commercelayer/app-elements'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
-import { navigate } from 'wouter/use-browser-location'
+import { navigate, useSearch } from 'wouter/use-browser-location'
 
 export function PricesList(): JSX.Element {
   const {
@@ -33,6 +33,7 @@ export function PricesList(): JSX.Element {
 
   const { priceList, isLoading, error } = usePriceListDetails(priceListId)
 
+  const queryString = useSearch()
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList } = useResourceFilters({
@@ -125,6 +126,7 @@ export function PricesList(): JSX.Element {
       scrollToTop
     >
       <SearchWithNav
+        queryString={queryString}
         onUpdate={(qs: any) => {
           navigate(`?${qs}`, {
             replace: true
