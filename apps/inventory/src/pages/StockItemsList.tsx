@@ -14,7 +14,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+import { navigate } from 'wouter/use-browser-location'
 
 export function StockItemsList(): JSX.Element {
   const {
@@ -31,7 +31,6 @@ export function StockItemsList(): JSX.Element {
   const { stockLocation, isLoading, error } =
     useStockLocationDetails(stockLocationId)
 
-  const queryString = useSearch()
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
@@ -89,7 +88,6 @@ export function StockItemsList(): JSX.Element {
       }}
     >
       <SearchWithNav
-        queryString={queryString}
         onUpdate={(qs: any) => {
           navigate(`?${qs}`, {
             replace: true

@@ -49,7 +49,6 @@ function OrderList(): JSX.Element {
       }}
     >
       <SearchWithNav
-        queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
             replace: true

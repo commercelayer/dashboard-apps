@@ -12,11 +12,10 @@ import {
 } from '@commercelayer/app-elements'
 import type { FC } from 'react'
 import { Link, useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+import { navigate } from 'wouter/use-browser-location'
 
 const GiftCardList: FC = () => {
   const { canUser } = useTokenProvider()
-  const queryString = useSearch()
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
@@ -26,7 +25,6 @@ const GiftCardList: FC = () => {
   return (
     <HomePageLayout title='Gift cards'>
       <SearchWithNav
-        queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
             replace: true

@@ -14,11 +14,9 @@ import {
 import type { Shipment } from '@commercelayer/sdk'
 import { useCallback } from 'react'
 import { Link, useLocation } from 'wouter'
-import { useSearch } from 'wouter/use-browser-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
 export function Home(): JSX.Element {
-  const search = useSearch()
   const [, setLocation] = useLocation()
 
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
@@ -50,7 +48,6 @@ export function Home(): JSX.Element {
         onUpdate={(qs) => {
           setLocation(appRoutes.list.makePath({}, qs))
         }}
-        queryString={search}
       />
 
       <SkeletonTemplate isLoading={isLoadingCounters}>

@@ -9,7 +9,7 @@ import {
 import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import type { Bundle, Order, Sku } from '@commercelayer/sdk'
 import { useRef } from 'react'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+import { navigate } from 'wouter/use-browser-location'
 
 type OnConfirm = (resource: Sku | Bundle) => void
 
@@ -62,7 +62,6 @@ export function useAddItemOverlay(order: Order): OverlayHook {
       open()
     },
     Overlay: ({ onConfirm: onConfirmFromOverlay }) => {
-      const queryString = useSearch()
       const { SearchWithNav, FilteredList } = useResourceFilters({
         instructions
       })
@@ -88,7 +87,6 @@ export function useAddItemOverlay(order: Order): OverlayHook {
                 replace: true
               })
             }}
-            queryString={queryString}
             hideFiltersNav
             searchBarPlaceholder='search...'
           />
