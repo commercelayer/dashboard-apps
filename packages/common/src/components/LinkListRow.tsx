@@ -1,7 +1,6 @@
 import {
   Badge,
   Button,
-  CopyToClipboard,
   Dropdown,
   DropdownDivider,
   DropdownItem,
@@ -77,9 +76,6 @@ export const LinkListRow = ({
             }}
           />
         </div>
-      </Td>
-      <Td>
-        <CopyToClipboard showValue={false} value={link?.url ?? ''} />
       </Td>
       <Td>
         <Tooltip

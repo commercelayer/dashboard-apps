@@ -28,7 +28,6 @@ export const LinkListTable = ({
       thead={
         <Tr>
           <Th>Code</Th>
-          <Th> </Th>
           <Th>Dates</Th>
           <Th>Status</Th>
           <Th> </Th>
