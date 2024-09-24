@@ -26,7 +26,7 @@ export function useCustomerDetails(id: string): {
           'customer_addresses.address',
           'customer_payment_sources',
           'customer_payment_sources.payment_source',
-
+          'customer_subscriptions',
           // Timeline
           'attachments'
         ]

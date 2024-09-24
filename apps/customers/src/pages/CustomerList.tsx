@@ -64,7 +64,7 @@ export function CustomerList(): JSX.Element {
             include: ['customer_group'],
             pageSize: 25,
             sort: {
-              updated_at: 'desc'
+              created_at: 'desc'
             }
           }}
           emptyState={

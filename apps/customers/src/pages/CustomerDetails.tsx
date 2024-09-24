@@ -6,6 +6,7 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
+  formatDateWithPredicate,
   goBack,
   useEditMetadataOverlay,
   useTokenProvider,
@@ -16,17 +17,17 @@ import { Link, useLocation, useRoute } from 'wouter'
 import { CustomerAddresses } from '#components/CustomerAddresses'
 import { CustomerInfo } from '#components/CustomerInfo'
 import { CustomerLastOrders } from '#components/CustomerLastOrders'
-import { CustomerStatus } from '#components/CustomerStatus'
 import { CustomerTimeline } from '#components/CustomerTimeline'
 import { CustomerWallet } from '#components/CustomerWallet'
-import { ScrollToTop } from '#components/ScrollToTop'
 import { appRoutes } from '#data/routes'
+import { useCustomerDeleteOverlay } from '#hooks/useCustomerDeleteOverlay'
 import { useCustomerDetails } from '#hooks/useCustomerDetails'
 import { isMockedId } from '#mocks'
 
 export function CustomerDetails(): JSX.Element {
   const {
     settings: { mode },
+    user,
     canUser
   } = useTokenProvider()
   const [, setLocation] = useLocation()
@@ -39,32 +40,8 @@ export function CustomerDetails(): JSX.Element {
   const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
     useEditMetadataOverlay()
 
-  if (error != null) {
-    return (
-      <PageLayout
-        title='Customers'
-        navigationButton={{
-          label: 'Back',
-          icon: 'arrowLeft',
-          onClick: () => {
-            setLocation(appRoutes.list.makePath())
-          }
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title='Not authorized'
-          action={
-            <Link href={appRoutes.list.makePath()}>
-              <Button variant='primary'>Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
-    )
-  }
+  const { DeleteOverlay, show } = useCustomerDeleteOverlay(customerId)
 
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   const pageTitle = `${customer.email}`
 
   const pageToolbar: PageHeadingProps['toolbar'] = {
@@ -90,12 +67,34 @@ export function CustomerDetails(): JSX.Element {
     ])
   }
 
+  if (canUser('destroy', 'customers')) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Delete',
+        onClick: () => {
+          show()
+        }
+      }
+    ])
+  }
+
   return (
     <PageLayout
       mode={mode}
       toolbar={pageToolbar}
       title={
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+      }
+      description={
+        <SkeletonTemplate isLoading={isLoading}>
+          <div>
+            {formatDateWithPredicate({
+              predicate: 'Created',
+              isoDate: customer.created_at ?? '',
+              timezone: user?.timezone
+            })}
+          </div>
+        </SkeletonTemplate>
       }
       navigationButton={{
         label: 'Back',
@@ -108,60 +107,69 @@ export function CustomerDetails(): JSX.Element {
         }
       }}
       gap='only-top'
+      scrollToTop
     >
-      <ScrollToTop />
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom='4'>
-          {!isMockedId(customer.id) && (
-            <Spacer top='6'>
-              <ResourceTags
-                resourceType='customers'
-                resourceId={customer.id}
-                overlay={{ title: 'Edit tags', description: pageTitle }}
-                onTagClick={(tagId) => {
-                  setLocation(appRoutes.list.makePath(`tags_id_in=${tagId}`))
-                }}
-              />
-            </Spacer>
-          )}
-          <Spacer top='14'>
-            <CustomerStatus customer={customer} />
-          </Spacer>
-          <Spacer top='14'>
-            <CustomerInfo customer={customer} />
-          </Spacer>
-          <Spacer top='14'>
-            <CustomerLastOrders />
-          </Spacer>
-          <Spacer top='14'>
-            <CustomerWallet customer={customer} />
-          </Spacer>
-          <Spacer top='14'>
-            <CustomerAddresses customer={customer} />
-          </Spacer>
-          {!isMockedId(customer.id) && (
+      {error != null ? (
+        <EmptyState
+          title='Not authorized'
+          action={
+            <Link href={appRoutes.list.makePath()}>
+              <Button variant='primary'>Go back</Button>
+            </Link>
+          }
+        />
+      ) : (
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer bottom='4'>
+            {!isMockedId(customer.id) && (
+              <Spacer top='6'>
+                <ResourceTags
+                  resourceType='customers'
+                  resourceId={customer.id}
+                  overlay={{ title: 'Edit tags', description: pageTitle }}
+                  onTagClick={(tagId) => {
+                    setLocation(appRoutes.list.makePath(`tags_id_in=${tagId}`))
+                  }}
+                />
+              </Spacer>
+            )}
             <Spacer top='14'>
-              <ResourceMetadata
-                resourceType='customers'
-                resourceId={customer.id}
-                overlay={{
-                  title: customer.email
-                }}
-              />
+              <CustomerInfo customer={customer} />
             </Spacer>
-          )}
-          <Spacer top='14'>
-            <CustomerTimeline customer={customer} />
+            <Spacer top='14'>
+              <CustomerLastOrders />
+            </Spacer>
+            <Spacer top='14'>
+              <CustomerWallet customer={customer} />
+            </Spacer>
+            <Spacer top='14'>
+              <CustomerAddresses customer={customer} />
+            </Spacer>
+            {!isMockedId(customer.id) && (
+              <Spacer top='14'>
+                <ResourceMetadata
+                  resourceType='customers'
+                  resourceId={customer.id}
+                  overlay={{
+                    title: customer.email
+                  }}
+                />
+              </Spacer>
+            )}
+            <Spacer top='14'>
+              <CustomerTimeline customer={customer} />
+            </Spacer>
+            {!isMockedId(customer.id) && (
+              <EditMetadataOverlay
+                resourceType={customer.type}
+                resourceId={customer.id}
+                title={customer.email}
+              />
+            )}
           </Spacer>
-          {!isMockedId(customer.id) && (
-            <EditMetadataOverlay
-              resourceType={customer.type}
-              resourceId={customer.id}
-              title={customer.email}
-            />
-          )}
-        </Spacer>
-      </SkeletonTemplate>
+        </SkeletonTemplate>
+      )}
+      {canUser('destroy', 'customers') && <DeleteOverlay />}
     </PageLayout>
   )
 }
