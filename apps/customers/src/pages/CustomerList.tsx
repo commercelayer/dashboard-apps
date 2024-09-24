@@ -12,11 +12,12 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
-import { navigate } from 'wouter/use-browser-location'
+import { navigate, useSearch } from 'wouter/use-browser-location'
 
 export function CustomerList(): JSX.Element {
   const { canUser } = useTokenProvider()
 
+  const queryString = useSearch()
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
@@ -33,6 +34,7 @@ export function CustomerList(): JSX.Element {
   return (
     <HomePageLayout title='Customers'>
       <SearchWithNav
+        queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
             replace: true

@@ -10,13 +10,14 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
-import { navigate } from 'wouter/use-browser-location'
+import { navigate, useSearch } from 'wouter/use-browser-location'
 
 function Page(props: PageProps<typeof appRoutes.promotionList>): JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()
 
+  const queryString = useSearch()
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
@@ -41,6 +42,7 @@ function Page(props: PageProps<typeof appRoutes.promotionList>): JSX.Element {
       gap='only-top'
     >
       <SearchWithNav
+        queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
             replace: true

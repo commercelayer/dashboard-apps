@@ -14,9 +14,11 @@ import {
   useResourceFilters
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
+import { useSearch } from 'wouter/use-browser-location'
 
 export function Home(): JSX.Element {
   const [, setLocation] = useLocation()
+  const search = useSearch()
 
   const { adapters, SearchWithNav } = useResourceFilters({
     instructions
@@ -42,6 +44,7 @@ export function Home(): JSX.Element {
         onUpdate={(qs) => {
           setLocation(appRoutes.list.makePath({}, qs))
         }}
+        queryString={search}
       />
 
       <SkeletonTemplate isLoading={isLoadingCounters}>

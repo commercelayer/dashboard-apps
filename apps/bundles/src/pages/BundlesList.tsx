@@ -13,11 +13,12 @@ import {
 } from '@commercelayer/app-elements'
 import type { FC } from 'react'
 import { Link, useLocation } from 'wouter'
-import { navigate } from 'wouter/use-browser-location'
+import { navigate, useSearch } from 'wouter/use-browser-location'
 
 export const BundlesList: FC = () => {
   const { canUser } = useTokenProvider()
 
+  const queryString = useSearch()
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
@@ -35,6 +36,7 @@ export const BundlesList: FC = () => {
   return (
     <HomePageLayout title='Bundles'>
       <SearchWithNav
+        queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
             replace: true
