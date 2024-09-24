@@ -14,12 +14,11 @@ import {
   Text,
   useResourceFilters
 } from '@commercelayer/app-elements'
-import { Link, useLocation, useSearch } from 'wouter'
+import { Link, useLocation } from 'wouter'
 
 function HomePage(): JSX.Element {
   const { canUserManagePromotions } = usePromotionPermission()
 
-  const search = useSearch()
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, adapters } = useResourceFilters({
@@ -35,7 +34,6 @@ function HomePage(): JSX.Element {
         onUpdate={(qs) => {
           setLocation(appRoutes.promotionList.makePath({}, qs))
         }}
-        queryString={search}
       />
 
       <Spacer top='14'>

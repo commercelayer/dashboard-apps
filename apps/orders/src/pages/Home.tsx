@@ -14,13 +14,11 @@ import {
   useResourceFilters
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
-import { useSearch } from 'wouter/use-browser-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
 function Home(): JSX.Element {
   const [, setLocation] = useLocation()
   const { sdkClient } = useCoreSdkProvider()
-  const search = useSearch()
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
   const { adapters, SearchWithNav } = useResourceFilters({
@@ -77,7 +75,6 @@ function Home(): JSX.Element {
         onUpdate={(qs) => {
           setLocation(appRoutes.list.makePath({}, qs))
         }}
-        queryString={search}
         searchBarDebounceMs={1000}
       />
 

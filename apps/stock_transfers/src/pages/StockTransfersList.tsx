@@ -10,14 +10,13 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+import { navigate } from 'wouter/use-browser-location'
 
 export function StockTransfersList(): JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()
 
-  const queryString = useSearch()
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
@@ -43,7 +42,6 @@ export function StockTransfersList(): JSX.Element {
       }}
     >
       <SearchWithNav
-        queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
             replace: true

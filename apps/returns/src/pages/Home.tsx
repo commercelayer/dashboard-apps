@@ -13,12 +13,10 @@ import {
   useResourceFilters
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
-import { useSearch } from 'wouter/use-browser-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
 export function Home(): JSX.Element {
   const [, setLocation] = useLocation()
-  const search = useSearch()
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
   const { adapters, SearchWithNav } = useResourceFilters({
@@ -33,7 +31,6 @@ export function Home(): JSX.Element {
         onUpdate={(qs) => {
           setLocation(appRoutes.list.makePath(qs))
         }}
-        queryString={search}
       />
 
       <SkeletonTemplate isLoading={isLoadingCounters}>
