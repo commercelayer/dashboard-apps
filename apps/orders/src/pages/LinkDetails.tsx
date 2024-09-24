@@ -1,8 +1,5 @@
 import {
   A,
-  Button,
-  Dropdown,
-  DropdownItem,
   Icon,
   PageLayout,
   SkeletonTemplate,
@@ -18,8 +15,14 @@ import { useOrderDetails } from '#hooks/useOrderDetails'
 import { LinkDetailsCard } from 'dashboard-apps-common/src/components/LinkDetailsCard'
 import { useMemo } from 'react'
 
-function phoneNumberForWhatsapp(phoneNumber?: string): string {
-  return (phoneNumber ?? '')
+function phoneNumberForWhatsapp(
+  phoneNumber?: string | null
+): string | undefined | null {
+  if (phoneNumber == null) {
+    return phoneNumber
+  }
+
+  return phoneNumber
     .replace(/\s+/g, '') // Replace all spaces
     .replace(/\D+/g, '') // Remove all non-number chars
 }
@@ -63,20 +66,6 @@ function LinkDetails(
     timezone: user?.timezone,
     format: 'full'
   })
-
-  const shareMail = {
-    subject: `Checkout your order (#${order.number})`,
-    body: `Dear customer,
-please follow this link to checkout your order #${order.number}:
-${link?.url}
-Thank you,
-The ${organization?.name} team`
-  }
-
-  const shareWhatsapp = {
-    number: phoneNumberForWhatsapp(order.billing_address?.phone),
-    body: `Please follow this link to checkout your order *${order.number}*: ${link?.url}`
-  }
 
   const linkHint: React.ReactNode = (
     <>
@@ -137,35 +126,21 @@ The ${organization?.name} team`
               Open checkout
             </A>
           }
-          secondaryAction={
-            <Dropdown
-              dropdownLabel={
-                <Button variant='primary' size='small' alignItems='center'>
-                  <Icon name='shareFat' size={16} />
-                  Share
-                </Button>
-              }
-              dropdownItems={
-                <>
-                  <DropdownItem
-                    icon='envelopeSimple'
-                    label='Email'
-                    href={encodeURI(
-                      `mailto:${order.customer_email ?? ''}?subject=${shareMail.subject}&body=${shareMail.body}`
-                    )}
-                  />
-                  <DropdownItem
-                    icon='whatsappLogo'
-                    label='Whatsapp'
-                    target='_blank'
-                    href={encodeURI(
-                      `https://api.whatsapp.com/send?phone=${shareWhatsapp.number}&text=${shareWhatsapp.body}`
-                    )}
-                  />
-                </>
-              }
-            />
-          }
+          share={{
+            email: {
+              to: order.customer_email,
+              subject: `Checkout your order (#${order.number})`,
+              body: `Dear customer,
+                      please follow this link to checkout your order #${order.number}:
+                      ${link.url}
+                      Thank you,
+                      The ${organization?.name} team`.replace(/^\s+/gm, '')
+            },
+            whatsapp: {
+              number: phoneNumberForWhatsapp(order.billing_address?.phone),
+              text: `Please follow this link to checkout your order *${order.number}*: ${link.url}`
+            }
+          }}
         />
       </SkeletonTemplate>
     </PageLayout>

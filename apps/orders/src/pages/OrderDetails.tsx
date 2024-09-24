@@ -54,8 +54,9 @@ function OrderDetails(): JSX.Element {
     ) {
       const checkoutLinkButton: ToolbarItem = {
         label: 'Checkout',
+        icon: 'lightning',
         size: 'small',
-        variant: 'primary',
+        variant: 'secondary',
         onClick: () => {
           setLocation(appRoutes.linkDetails.makePath({ orderId }))
         }
@@ -81,21 +82,6 @@ function OrderDetails(): JSX.Element {
       )
     } else {
       toolbar.dropdownItems = [[setMetadataDropDownItem]]
-    }
-
-    const checkoutLinkDropDownItem: DropdownItemProps = {
-      label: 'Checkout link',
-      onClick: () => {
-        setLocation(appRoutes.linkDetails.makePath({ orderId }))
-      }
-    }
-
-    if (
-      order.status === 'pending' &&
-      extras?.salesChannels != null &&
-      extras?.salesChannels.length > 0
-    ) {
-      toolbar.dropdownItems.push([checkoutLinkDropDownItem])
     }
   }
 

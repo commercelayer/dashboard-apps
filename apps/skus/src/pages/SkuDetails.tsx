@@ -4,8 +4,10 @@ import {
   PageLayout,
   ResourceMetadata,
   ResourceTags,
+  Section,
   SkeletonTemplate,
   Spacer,
+  Text,
   goBack,
   useCoreSdkProvider,
   useEditMetadataOverlay,
@@ -14,6 +16,8 @@ import {
   type PageHeadingProps
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
+
+import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
 
 import { SkuDescription } from '#components/SkuDescription'
 import { SkuInfo } from '#components/SkuInfo'
@@ -76,19 +80,14 @@ export const SkuDetails: FC = () => {
     dropdownItems: []
   }
 
-  if (canUser('update', 'skus')) {
-    pageToolbar.buttons?.push({
-      label: 'Edit',
-      size: 'small',
-      onClick: () => {
-        setLocation(appRoutes.edit.makePath({ skuId }))
-      }
-    })
+  const showLinks =
+    extras?.salesChannels != null && extras?.salesChannels.length > 0
 
-    if (extras?.salesChannels != null && extras?.salesChannels.length > 0) {
+  if (canUser('update', 'skus')) {
+    if (showLinks) {
       pageToolbar.buttons?.push({
-        label: 'Create link',
-        icon: 'shoppingBagOpen',
+        label: 'New link',
+        icon: 'lightning',
         size: 'small',
         variant: 'secondary',
         onClick: () => {
@@ -96,6 +95,15 @@ export const SkuDetails: FC = () => {
         }
       })
     }
+
+    pageToolbar.buttons?.push({
+      label: 'Edit',
+      size: 'small',
+      variant: 'secondary',
+      onClick: () => {
+        setLocation(appRoutes.edit.makePath({ skuId }))
+      }
+    })
 
     pageToolbar.dropdownItems?.push([
       {
@@ -117,6 +125,10 @@ export const SkuDetails: FC = () => {
       }
     ])
   }
+
+  const linkListTable = showLinks
+    ? LinkListTable({ resourceId: skuId, resourceType: 'skus' })
+    : null
 
   return (
     <PageLayout
@@ -163,6 +175,20 @@ export const SkuDetails: FC = () => {
           <Spacer top='14'>
             <SkuInfo sku={sku} />
           </Spacer>
+          {showLinks && (
+            <Spacer top='12' bottom='4'>
+              <Section
+                title='Links'
+                border={linkListTable != null ? 'none' : undefined}
+              >
+                {linkListTable ?? (
+                  <Spacer top='4'>
+                    <Text variant='info'>No items.</Text>
+                  </Spacer>
+                )}
+              </Section>
+            </Spacer>
+          )}
           {!isMockedId(sku.id) && (
             <Spacer top='14'>
               <ResourceMetadata

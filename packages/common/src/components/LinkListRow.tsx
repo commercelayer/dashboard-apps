@@ -1,7 +1,6 @@
 import {
   Badge,
   Button,
-  CopyToClipboard,
   Dropdown,
   DropdownDivider,
   DropdownItem,
@@ -49,9 +48,10 @@ export const LinkListRow = ({
   return (
     <Tr>
       <Td>
-        <Text weight='semibold' size='small' tag='div'>
+        <Button variant='link' onClick={onLinkDetailsClick}>
           {link.name}
-        </Text>
+        </Button>
+
         <div
           style={{
             width: '210px',
@@ -76,9 +76,6 @@ export const LinkListRow = ({
             }}
           />
         </div>
-      </Td>
-      <Td>
-        <CopyToClipboard showValue={false} value={link?.url ?? ''} />
       </Td>
       <Td>
         <Tooltip
@@ -200,15 +197,13 @@ export const LinkListRow = ({
 function getBadgeVariant(link: Link): BadgeProps['variant'] {
   const status = getLinkStatus(link)
   switch (status) {
-    case 'expired':
-      return 'danger'
-
     case 'pending':
       return 'warning'
 
     case 'active':
       return 'success'
 
+    case 'expired':
     default:
       return 'secondary'
   }

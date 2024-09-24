@@ -1,4 +1,5 @@
 import {
+  A,
   Button,
   EmptyState,
   Icon,
@@ -7,25 +8,24 @@ import {
   goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import type { Link as ClayerLink, Sku, SkuList } from '@commercelayer/sdk'
+import type { Link as ClayerLink } from '@commercelayer/sdk'
 import { Link, useLocation } from 'wouter'
 import { LinkDetailsCard } from '../components/LinkDetailsCard'
-import { linksRoutes } from '../data/routes'
 import { useLinkDetails } from '../hooks/useLinkDetails'
 
 interface Props {
-  resourceId: Sku['id'] | SkuList['id']
   linkId: ClayerLink['id']
+  goBackUrl: string
 }
 
-export const LinkDetailsPage = ({ resourceId, linkId }: Props): JSX.Element => {
+export const LinkDetailsPage = ({ linkId, goBackUrl }: Props): JSX.Element => {
   const {
-    settings: { mode }
+    settings: { mode },
+    organization
   } = useTokenProvider()
 
   const [, setLocation] = useLocation()
 
-  const goBackUrl = linksRoutes.linksList.makePath({ resourceId })
   const { link, isLoading, error } = useLinkDetails(linkId)
 
   const pageTitle = link?.name ?? 'Link'
@@ -43,8 +43,8 @@ export const LinkDetailsPage = ({ resourceId, linkId }: Props): JSX.Element => {
             defaultRelativePath: goBackUrl
           })
         },
-        label: 'Back',
-        icon: 'arrowLeft'
+        label: 'Close',
+        icon: 'x'
       }}
       isLoading={isLoading}
       scrollToTop
@@ -64,21 +64,30 @@ export const LinkDetailsPage = ({ resourceId, linkId }: Props): JSX.Element => {
           <LinkDetailsCard
             link={link}
             primaryAction={
-              <Button
+              <A
                 variant='secondary'
                 size='small'
                 alignItems='center'
-                onClick={() => {
-                  goBack({
-                    setLocation,
-                    defaultRelativePath: goBackUrl
-                  })
-                }}
+                target='_blank'
+                href={link?.url ?? ''}
               >
-                <Icon name='archive' size={16} />
-                View archive
-              </Button>
+                <Icon name='arrowSquareOut' size={16} />
+                Open link
+              </A>
             }
+            share={{
+              email: {
+                subject: `A curated selection for you`,
+                body: `Dear customer,
+                        please find a curated selection for you:
+                        ${link.url}
+                        Thank you,
+                        The ${organization?.name} team`.replace(/^\s+/gm, '')
+              },
+              whatsapp: {
+                text: `Please find a curated selection for you: ${link.url}`
+              }
+            }}
             showQR
           />
         </SkeletonTemplate>

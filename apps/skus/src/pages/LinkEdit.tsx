@@ -1,4 +1,4 @@
-import { type appRoutes, type PageProps } from '#data/routes'
+import { appRoutes, type PageProps } from '#data/routes'
 
 import { LinkEditPage } from 'dashboard-apps-common/src/pages/LinkEditPage'
 
@@ -8,5 +8,14 @@ export function LinkEdit(
   const skuId = props.params?.resourceId ?? ''
   const linkId = props.params?.linkId ?? ''
 
-  return <LinkEditPage resourceId={skuId} resourceType='skus' linkId={linkId} />
+  const goBackUrl = appRoutes.details.makePath({ skuId })
+
+  return (
+    <LinkEditPage
+      resourceId={skuId}
+      resourceType='skus'
+      linkId={linkId}
+      goBackUrl={goBackUrl}
+    />
+  )
 }

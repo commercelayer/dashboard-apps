@@ -12,7 +12,6 @@ import type { Link, LinkUpdate, Sku, SkuList } from '@commercelayer/sdk'
 import { useState } from 'react'
 import { useLocation } from 'wouter'
 import { LinkForm, type LinkFormValues } from '../components/LinkForm'
-import { linksRoutes } from '../data/routes'
 import { useLinkDetails } from '../hooks/useLinkDetails'
 import { isMock } from '../mocks'
 
@@ -20,21 +19,19 @@ interface Props {
   resourceId: Sku['id'] | SkuList['id']
   resourceType: 'skus' | 'sku_lists'
   linkId: Link['id']
+  goBackUrl: string
 }
 
 export const LinkEditPage = ({
   resourceId,
   resourceType,
-  linkId
+  linkId,
+  goBackUrl
 }: Props): JSX.Element => {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
 
-  const goBackUrl = linksRoutes.linksDetails.makePath({
-    resourceId,
-    linkId
-  })
   const { link, isLoading, mutateLink } = useLinkDetails(linkId)
 
   const [apiError, setApiError] = useState<any>()
@@ -56,8 +53,8 @@ export const LinkEditPage = ({
             defaultRelativePath: goBackUrl
           })
         },
-        label: 'Back',
-        icon: 'arrowLeft'
+        label: 'Close',
+        icon: 'x'
       }}
       scrollToTop
       overlay

@@ -1,4 +1,4 @@
-import { type appRoutes, type PageProps } from '#data/routes'
+import { appRoutes, type PageProps } from '#data/routes'
 import { LinkDetailsPage } from 'dashboard-apps-common/src/pages/LinkDetailsPage'
 
 export const LinkDetails = (
@@ -7,5 +7,7 @@ export const LinkDetails = (
   const skuListId = props.params?.resourceId ?? ''
   const linkId = props.params?.linkId ?? ''
 
-  return <LinkDetailsPage resourceId={skuListId} linkId={linkId} />
+  const goBackUrl = appRoutes.details.makePath({ skuListId })
+
+  return <LinkDetailsPage linkId={linkId} goBackUrl={goBackUrl} />
 }
