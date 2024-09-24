@@ -42,7 +42,7 @@ export function PricesList(): JSX.Element {
 
   const { sdkClient } = useCoreSdkProvider()
   const { Overlay, open, close } = useOverlay()
-  const [isDeleteting, setIsDeleting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   if (error != null) {
     return (
@@ -179,7 +179,7 @@ export function PricesList(): JSX.Element {
             <Button
               variant='danger'
               size='small'
-              disabled={isDeleteting}
+              disabled={isDeleting}
               onClick={(e) => {
                 setIsDeleting(true)
                 e.stopPropagation()

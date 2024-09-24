@@ -39,7 +39,7 @@ export const SkuDetails: FC = () => {
 
   const { Overlay, open, close } = useOverlay()
 
-  const [isDeleteting, setIsDeleting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
     useEditMetadataOverlay()
@@ -194,7 +194,7 @@ export const SkuDetails: FC = () => {
             <Button
               variant='danger'
               size='small'
-              disabled={isDeleteting}
+              disabled={isDeleting}
               onClick={(e) => {
                 setIsDeleting(true)
                 e.stopPropagation()
