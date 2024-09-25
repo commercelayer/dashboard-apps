@@ -13,6 +13,7 @@ export function getStockTransferTriggerActions(
   stockTransfer: StockTransfer
 ): TriggerAction[] {
   switch (stockTransfer.status) {
+    case 'upcoming':
     case 'on_hold':
       return [
         { triggerAttribute: '_cancel', variant: 'secondary' },
