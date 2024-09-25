@@ -1,8 +1,18 @@
 import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 
-export type ListType = 'on_hold' | 'picking' | 'in_transit' | 'history'
+export type ListType =
+  | 'upcoming'
+  | 'on_hold'
+  | 'picking'
+  | 'in_transit'
+  | 'history'
 
 export const presets: Record<ListType, FormFullValues> = {
+  upcoming: {
+    status_in: ['upcoming'],
+    archived_at_null: 'show',
+    viewTitle: 'Upcoming'
+  },
   on_hold: {
     status_in: ['on_hold'],
     archived_at_null: 'show',
