@@ -4,6 +4,7 @@ import { LinkEdit } from '#pages/LinkEdit'
 import { LinkNew } from '#pages/LinkNew'
 import { SkuListDetails } from '#pages/SkuListDetails'
 import { SkuListEdit } from '#pages/SkuListEdit'
+import SkuListItemsList from '#pages/SkuListItemsList'
 import { SkuListNew } from '#pages/SkuListNew'
 import { SkuListsList } from '#pages/SkuListsList'
 import type { FC } from 'react'
@@ -27,6 +28,7 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         <Route path={appRoutes.new.path} component={SkuListNew} />
         <Route path={appRoutes.linksNew.path} component={LinkNew} />
         <Route path={appRoutes.linksDetails.path} component={LinkDetails} />
+        <Route path={appRoutes.itemsList.path} component={SkuListItemsList} />
         <Route path={appRoutes.linksEdit.path} component={LinkEdit} />
         <Route>
           <ErrorNotFound />

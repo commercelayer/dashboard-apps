@@ -4,6 +4,7 @@ import type { SkuListItem } from '@commercelayer/sdk'
 
 export function useSkuListItems(id: string): {
   skuListItems?: SkuListItem[]
+  skuListItemsCount?: number
   isLoadingItems: boolean
 } {
   const pauseRequest = isMockedId(id) || id === ''
@@ -19,10 +20,14 @@ export function useSkuListItems(id: string): {
             sort: {
               position: 'asc'
             },
-            pageSize: 25
+            pageSize: 5
           }
         ]
   )
 
-  return { skuListItems, isLoadingItems }
+  return {
+    skuListItems,
+    skuListItemsCount: skuListItems?.recordCount,
+    isLoadingItems
+  }
 }

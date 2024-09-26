@@ -26,6 +26,9 @@ export const appRoutes = {
   details: createTypedRoute<{ skuListId: SkuList['id'] }>()(
     '/list/:skuListId/'
   ),
+  itemsList: createTypedRoute<{ skuListId: SkuList['id'] }>()(
+    '/list/:skuListId/items/'
+  ),
   edit: createTypedRoute<{ skuListId: SkuList['id'] }>()(
     '/list/:skuListId/edit/'
   ),

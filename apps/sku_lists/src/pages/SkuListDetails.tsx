@@ -3,6 +3,7 @@ import {
   Button,
   CodeBlock,
   EmptyState,
+  Icon,
   PageLayout,
   Section,
   SkeletonTemplate,
@@ -35,7 +36,8 @@ export const SkuListDetails = (
   const skuListId = props.params?.skuListId ?? ''
 
   const { skuList, isLoading, error } = useSkuListDetails(skuListId)
-  const { skuListItems, isLoadingItems } = useSkuListItems(skuListId)
+  const { skuListItems, skuListItemsCount, isLoadingItems } =
+    useSkuListItems(skuListId)
 
   const { sdkClient } = useCoreSdkProvider()
 
@@ -150,11 +152,32 @@ export const SkuListDetails = (
           </Spacer>
         )}
         <Spacer top='12' bottom='4'>
-          <Section title='Items'>
+          <Section
+            title={`Items · ${skuListItemsCount}`}
+            actionButton={
+              isManual &&
+              Number(skuListItemsCount) > 5 && (
+                <Button
+                  variant='secondary'
+                  size='mini'
+                  onClick={() => {
+                    setLocation(appRoutes.itemsList.makePath({ skuListId }))
+                  }}
+                  alignItems='center'
+                >
+                  <Icon name='eye' size={16} />
+                  See all
+                </Button>
+              )
+            }
+          >
             {isManual ? (
-              skuListItems.map((item) => (
-                <ListItemSkuListItem key={item.sku_code} resource={item} />
-              ))
+              <>
+                {skuListItems.map((item) => (
+                  <ListItemSkuListItem key={item.sku_code} resource={item} />
+                ))}
+                {}
+              </>
             ) : isAutomatic ? (
               <Spacer top='6'>
                 <CodeBlock
