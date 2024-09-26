@@ -24,6 +24,9 @@ export function Home(): JSX.Element {
     instructions
   })
 
+  const { data: counterUpcoming, isLoading: isLoadingUpcoming } =
+    useHomeCounter('upcoming')
+
   const { data: counterPicking, isLoading: isLoadingPicking } =
     useHomeCounter('picking')
 
@@ -34,7 +37,10 @@ export function Home(): JSX.Element {
     useHomeCounter('on_hold')
 
   const isLoadingCounters =
-    isLoadingPicking || isLoadingIntransit || isLoadingOnHold
+    isLoadingUpcoming ||
+    isLoadingPicking ||
+    isLoadingIntransit ||
+    isLoadingOnHold
 
   return (
     <HomePageLayout title='Stock transfers'>
@@ -50,6 +56,28 @@ export function Home(): JSX.Element {
       <SkeletonTemplate isLoading={isLoadingCounters}>
         <Spacer bottom='14'>
           <List title='Open'>
+            <Link
+              href={appRoutes.list.makePath(
+                {},
+                adapters.adaptFormValuesToUrlQuery({
+                  formValues: presets.upcoming
+                })
+              )}
+              asChild
+            >
+              <ListItem
+                icon={
+                  <StatusIcon name='check' background='orange' gap='small' />
+                }
+              >
+                <Text weight='semibold'>
+                  {presets.upcoming.viewTitle}{' '}
+                  {formatCounter(counterUpcoming?.meta.recordCount)}
+                </Text>
+                <Icon name='caretRight' />
+              </ListItem>
+            </Link>
+
             <Link
               href={appRoutes.list.makePath(
                 {},
