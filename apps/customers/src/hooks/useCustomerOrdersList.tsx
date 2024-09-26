@@ -44,7 +44,7 @@ export function useCustomerOrdersList({ id, settings }: Props): {
                   include: ['billing_address', 'market']
                 }
               : undefined),
-            sort: ['-created_at'],
+            sort: ['-placed_at'],
             pageNumber,
             pageSize
           },

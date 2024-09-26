@@ -74,7 +74,7 @@ export function CustomerOrders(): JSX.Element {
               status_matches_any: 'placed,approved,editing,cancelled'
             },
             include: ['billing_address'],
-            sort: ['-updated_at']
+            sort: ['-placed_at']
           }}
           emptyState={<ListEmptyState scope='presetView' />}
           ItemTemplate={ListItemOrder}

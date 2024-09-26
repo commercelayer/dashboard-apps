@@ -1,16 +1,18 @@
 import { appRoutes } from '#data/routes'
 import {
+  Button,
+  Icon,
   Section,
-  Spacer,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
-import { Link, useRoute } from 'wouter'
+import { useLocation, useRoute } from 'wouter'
 
 import { ListItemOrder } from '#components/ListItemOrder'
 import { useCustomerOrdersList } from '#hooks/useCustomerOrdersList'
 
 export const CustomerLastOrders = withSkeletonTemplate((): JSX.Element => {
   const [, params] = useRoute<{ customerId: string }>(appRoutes.details.path)
+  const [, setLocation] = useLocation()
   const customerId = params?.customerId ?? ''
   if (customerId.length === 0) return <></>
 
@@ -26,15 +28,25 @@ export const CustomerLastOrders = withSkeletonTemplate((): JSX.Element => {
   })
 
   return (
-    <Section title={`Orders · ${orders?.meta?.recordCount}`}>
+    <Section
+      title={`Orders · ${orders?.meta?.recordCount}`}
+      actionButton={
+        showAll && (
+          <Button
+            variant='secondary'
+            size='mini'
+            onClick={() => {
+              setLocation(appRoutes.orders.makePath(customerId))
+            }}
+            alignItems='center'
+          >
+            <Icon name='eye' size={16} />
+            See all
+          </Button>
+        )
+      }
+    >
       {ordersListItems}
-      {showAll && (
-        <Spacer top='4' bottom='4'>
-          <Link href={appRoutes.orders.makePath(customerId)}>
-            View all orders
-          </Link>
-        </Spacer>
-      )}
     </Section>
   )
 })
