@@ -4,6 +4,7 @@ import {
   HookedInput,
   HookedInputRadioGroup,
   HookedInputSelect,
+  HookedInputTextArea,
   HookedValidationApiError,
   Section,
   Spacer,
@@ -18,7 +19,21 @@ const priceListFormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1),
   currency_code: z.string().min(1),
-  tax_included: z.string().min(1)
+  tax_included: z.string().min(1),
+  rules: z.any().refine((value) => {
+    if (value == null || (typeof value === 'string' && value.trim() === '')) {
+      return true
+    }
+
+    try {
+      if (typeof value === 'string') {
+        JSON.parse(value)
+      }
+      return true
+    } catch (error) {
+      return false
+    }
+  }, 'JSON is not valid')
 })
 
 export type PriceListFormValues = z.infer<typeof priceListFormSchema>
@@ -76,6 +91,9 @@ export function PriceListForm({
                 value: code.toUpperCase()
               }))}
             />
+          </Spacer>
+          <Spacer top='6' bottom='4'>
+            <HookedInputTextArea name='rules' label='Rules' />
           </Spacer>
         </Section>
 
