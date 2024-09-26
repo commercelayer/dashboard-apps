@@ -55,7 +55,6 @@ export const SkusList: FC = () => {
           query={{
             pageSize: 25,
             sort: {
-              // @ts-expect-error Missing sort key
               code: 'asc'
             }
           }}
