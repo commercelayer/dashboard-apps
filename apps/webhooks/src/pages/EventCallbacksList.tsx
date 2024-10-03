@@ -61,7 +61,8 @@ export const EventCallbacksList: FC = () => {
       <ResourceList
         type='event_callbacks'
         query={{
-          filters: { webhook_id_eq: webhookId }
+          filters: { webhook_id_eq: webhookId },
+          sort: ['-updated_at']
         }}
         title='All event callbacks'
         emptyState={<EmptyState title='No event callbacks yet!' />}
