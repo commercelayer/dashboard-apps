@@ -98,7 +98,7 @@ const DetailsPage = (): JSX.Element | null => {
               {!isMockedId(data.id) && (
                 <Spacer top='14'>
                   <ResourceMetadata
-                    resourceType='customers'
+                    resourceType='exports'
                     resourceId={data.id}
                     overlay={{
                       title: 'Back'

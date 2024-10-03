@@ -13,6 +13,7 @@ import {
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
+  ResourceTags,
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
@@ -120,15 +121,26 @@ export function ReturnDetails(): JSX.Element {
             <ResourceDetails resource={returnObj} />
           </Spacer>
           {!isMockedId(returnObj.id) && (
-            <Spacer top='14'>
-              <ResourceMetadata
-                resourceType='stock_transfers'
-                resourceId={returnObj.id}
-                overlay={{
-                  title: pageTitle
-                }}
-              />
-            </Spacer>
+            <>
+              <Spacer top='14'>
+                <ResourceTags
+                  resourceType='returns'
+                  resourceId={returnObj.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
+              </Spacer>
+              <Spacer top='14'>
+                <ResourceMetadata
+                  resourceType='returns'
+                  resourceId={returnObj.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
+              </Spacer>
+            </>
           )}
           <Spacer top='14'>
             <Timeline returnObj={returnObj} />
