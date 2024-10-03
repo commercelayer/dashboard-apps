@@ -24,11 +24,11 @@ importers:
   apps/bundles:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -65,22 +65,22 @@ importers:
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@testing-library/react':
         specifier: ^16.0.1
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -95,22 +95,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/customers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -149,20 +149,20 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -177,40 +177,40 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/exports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@testing-library/jest-dom':
         specifier: ^6.5.0
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.1
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
       date-fns-tz:
-        specifier: ^3.1.3
-        version: 3.1.3(date-fns@4.1.0)
+        specifier: ^3.2.0
+        version: 3.2.0(date-fns@4.1.0)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -231,14 +231,14 @@ importers:
         specifier: workspace:*
         version: link:../../packages/app-builder
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -265,22 +265,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/gift_cards:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -316,20 +316,20 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -344,28 +344,28 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/imports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -380,7 +380,7 @@ importers:
         version: 18.3.1(react@18.3.1)
       react-select:
         specifier: ^5.8.1
-        version: 5.8.1(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 5.8.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       wouter:
         specifier: ^3.3.5
         version: 3.3.5(react@18.3.1)
@@ -396,22 +396,22 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.1
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/papaparse':
         specifier: ^5.3.14
         version: 5.3.14
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -438,22 +438,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/inventory:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -490,22 +490,22 @@ importers:
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@testing-library/react':
         specifier: ^16.0.1
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -520,22 +520,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/orders:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: ^6.19.1
-        version: 6.19.1
+        specifier: ^6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -577,20 +577,20 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -605,22 +605,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/price_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -657,22 +657,22 @@ importers:
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@testing-library/react':
         specifier: ^16.0.1
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -687,22 +687,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/promotions:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -742,22 +742,22 @@ importers:
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@testing-library/react':
         specifier: ^16.0.1
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: ^22.7.2
-        version: 22.7.2
+        specifier: ^22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -772,22 +772,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/returns:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -826,20 +826,20 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: ^22.7.2
-        version: 22.7.2
+        specifier: ^22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -854,22 +854,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/shipments:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -909,22 +909,22 @@ importers:
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@testing-library/react':
         specifier: ^16.0.1
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -939,22 +939,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/sku_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -996,20 +996,20 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -1024,22 +1024,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/skus:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -1082,22 +1082,22 @@ importers:
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@testing-library/react':
         specifier: ^16.0.1
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -1112,22 +1112,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/stock_transfers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -1166,20 +1166,20 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: ^22.7.2
-        version: 22.7.2
+        specifier: ^22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -1194,22 +1194,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/tags:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -1248,20 +1248,20 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -1276,22 +1276,22 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   apps/webhooks:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: 6.19.1
-        version: 6.19.1
+        specifier: 6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -1330,20 +1330,20 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -1358,31 +1358,31 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
   packages/app-builder:
     devDependencies:
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       rollup-plugin-external-globals:
         specifier: ^0.12.0
         version: 0.12.0(rollup@4.22.4)
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
@@ -1390,11 +1390,11 @@ importers:
   packages/common:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
-        specifier: ^6.19.1
-        version: 6.19.1
+        specifier: ^6.21.0
+        version: 6.21.0
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -1424,8 +1424,8 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -1436,8 +1436,8 @@ importers:
   packages/index:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.5.2
-        version: 2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.7.2
+        version: 2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1458,26 +1458,26 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.2)
       '@commercelayer/js-auth':
-        specifier: ^6.5.0
-        version: 6.5.0
+        specifier: ^6.6.0
+        version: 6.6.0
       '@types/js-cookie':
         specifier: ^3.0.6
         version: 3.0.6
       '@types/lodash':
-        specifier: ^4.17.9
-        version: 4.17.9
+        specifier: ^4.17.10
+        version: 4.17.10
       '@types/node':
-        specifier: 22.7.2
-        version: 22.7.2
+        specifier: 22.7.4
+        version: 22.7.4
       '@types/react':
-        specifier: ^18.3.9
-        version: 18.3.9
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.7.2))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -1495,13 +1495,13 @@ importers:
         version: 5.6.2
       vite:
         specifier: ^5.4.8
-        version: 5.4.8(@types/node@22.7.2)
+        version: 5.4.8(@types/node@22.7.4)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))
       vitest:
-        specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.7.2)(jsdom@25.0.1)
+        specifier: ^2.1.2
+        version: 2.1.2(@types/node@22.7.4)(jsdom@25.0.1)
 
 packages:
 
@@ -1603,8 +1603,8 @@ packages:
     resolution: {integrity: sha512-/l42B1qxpG6RdfYf343Uw1vmDjeNhneUXtzhojE7pDgfpEypmRhI6j1kr17XCVv4Cgl9HdAiQY2x0GwKm7rWCw==}
     engines: {node: '>=6.9.0'}
 
-  '@commercelayer/app-elements@2.5.2':
-    resolution: {integrity: sha512-ER70GrJIrsy2phTdYFvuKi87RX0otiiqLRcovC0em1F//Hf/JwehiPuA6kvWBEivQ8aVOgWwl0bVAP0d0yZx6A==}
+  '@commercelayer/app-elements@2.7.2':
+    resolution: {integrity: sha512-i71NW3wEe8gOQtallp4QSl78qFQ8HGK2Lqo2gGHVWbGgUprT2Cj1+lYLiPDoQ/DPRHUx2pSIlMYNmwFttA2dPw==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^6.x
@@ -1628,12 +1628,12 @@ packages:
       eslint: '>=8.0'
       typescript: '>=5.0'
 
-  '@commercelayer/js-auth@6.5.0':
-    resolution: {integrity: sha512-EFWQyS6NRhrCpY/vwweej3iRr4T6X1YjyeGOqoUknEXDHNzwm3+WcC/g2uTrUDSLBQCkm4U4y6AWd67bKAdxCQ==}
+  '@commercelayer/js-auth@6.6.0':
+    resolution: {integrity: sha512-daPrI5Vdc2SyvyvtyJgPagSQntJ4+QhPBrZrftN161A4y3nhUaHBxwRYSU8CM9I/+Qzd/xlQoWi+bpxMBdHwMA==}
     engines: {node: '>=18.0.0'}
 
-  '@commercelayer/sdk@6.19.1':
-    resolution: {integrity: sha512-/OZz6Z0F/djESxwMfxKmjlcGk0ufT1KUs5eR8WJ/TJ4udbbZadvvf0ZRL6l+yTkd84Sn4h9Ba694uxIWcF7xZg==}
+  '@commercelayer/sdk@6.21.0':
+    resolution: {integrity: sha512-aUshIr8anptonqsK3Zc8o4+s13L+ooOmWmKoxUaCmiA71fYZec95kzSnwx8/kZPlW+Rmvo3ltIMIrgbjj81CbA==}
     engines: {node: '>=20'}
 
   '@emnapi/core@1.2.0':
@@ -2311,8 +2311,8 @@ packages:
   '@types/lodash-es@4.17.12':
     resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
 
-  '@types/lodash@4.17.9':
-    resolution: {integrity: sha512-w9iWudx1XWOHW5lQRS9iKpK/XuRhnN+0T7HvdCCd802FYkT1AMTnxndJHGrNJwRoRHkslGr4S29tjm1cT7x/7w==}
+  '@types/lodash@4.17.10':
+    resolution: {integrity: sha512-YpS0zzoduEhuOWjAotS6A5AVCva7X4lVlYLF0FYHAY9sdraBfnatttHItlWeZdGhuEkf+OzMNg2ZYAx8t+52uQ==}
 
   '@types/minimatch@3.0.5':
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
@@ -2320,8 +2320,8 @@ packages:
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
 
-  '@types/node@22.7.2':
-    resolution: {integrity: sha512-866lXSrpGpgyHBZUa2m9YNWqHDjjM0aBTJlNtYaGEw4rqY/dcD7deRVTbBBAJelfA7oaGDbNftXF/TL/A6RgoA==}
+  '@types/node@22.7.4':
+    resolution: {integrity: sha512-y+NPi1rFzDs1NdQHHToqeiX2TIS79SWEAw9GYhkkx8bD0ChpfqC+n2j5OXOCpzfojBEBt6DnEnnG9MY0zk1XLg==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -2344,8 +2344,8 @@ packages:
   '@types/react-transition-group@4.4.11':
     resolution: {integrity: sha512-RM05tAniPZ5DZPzzNFP+DmrcOdD0efDUxMy3145oljWSl3x9ZV5vhme98gTxFrj2lhXvmGNnUiuDyJgY9IKkNA==}
 
-  '@types/react@18.3.9':
-    resolution: {integrity: sha512-+BpAVyTpJkNWWSSnaLBk6ePpHLOGJKnEQNbINNovPWzvEUyAe3e+/d494QdEh71RekM/qV7lw6jzf1HGrJyAtQ==}
+  '@types/react@18.3.11':
+    resolution: {integrity: sha512-r6QZ069rFTjrEYgFdOck1gK7FLVsgJE7tTz0pQBczlBNUhBNk0MQH4UbnFSwjpQLMkLzgqvBBa+qGpLje16eTQ==}
 
   '@types/testing-library__jest-dom@6.0.0':
     resolution: {integrity: sha512-bnreXCgus6IIadyHNlN/oI5FfX4dWgvGhOPvpr7zzCYDGAPIfvyIoAozMBINmhmsVuqV0cncejF2y5KC7ScqOg==}
@@ -2443,19 +2443,19 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  '@vitejs/plugin-react@4.3.1':
-    resolution: {integrity: sha512-m/V2syj5CuVnaxcUJOQRel/Wr31FFXRFlnOoq1TVtkCxsY5veGMTEmpWHndrhB2U8ScHtCQB1e+4hWYExQc6Lg==}
+  '@vitejs/plugin-react@4.3.2':
+    resolution: {integrity: sha512-hieu+o05v4glEBucTcKMK3dlES0OeJlD9YVOAPraVMOInBCwzumaIFiUjr4bHK7NPgnAHgiskUoceKercrN8vg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0
 
-  '@vitest/expect@2.1.1':
-    resolution: {integrity: sha512-YeueunS0HiHiQxk+KEOnq/QMzlUuOzbU1Go+PgAsHvvv3tUkJPm9xWt+6ITNTlzsMXUjmgm5T+U7KBPK2qQV6w==}
+  '@vitest/expect@2.1.2':
+    resolution: {integrity: sha512-FEgtlN8mIUSEAAnlvn7mP8vzaWhEaAEvhSXCqrsijM7K6QqjB11qoRZYEd4AKSCDz8p0/+yH5LzhZ47qt+EyPg==}
 
-  '@vitest/mocker@2.1.1':
-    resolution: {integrity: sha512-LNN5VwOEdJqCmJ/2XJBywB11DLlkbY0ooDJW3uRX5cZyYCrc4PI/ePX0iQhE3BiEGiQmK4GE7Q/PqCkkaiPnrA==}
+  '@vitest/mocker@2.1.2':
+    resolution: {integrity: sha512-ExElkCGMS13JAJy+812fw1aCv2QO/LBK6CyO4WOPAzLTmve50gydOlWhgdBJPx2ztbADUq3JVI0C5U+bShaeEA==}
     peerDependencies:
-      '@vitest/spy': 2.1.1
+      '@vitest/spy': 2.1.2
       msw: ^2.3.5
       vite: ^5.0.0
     peerDependenciesMeta:
@@ -2464,20 +2464,20 @@ packages:
       vite:
         optional: true
 
-  '@vitest/pretty-format@2.1.1':
-    resolution: {integrity: sha512-SjxPFOtuINDUW8/UkElJYQSFtnWX7tMksSGW0vfjxMneFqxVr8YJ979QpMbDW7g+BIiq88RAGDjf7en6rvLPPQ==}
+  '@vitest/pretty-format@2.1.2':
+    resolution: {integrity: sha512-FIoglbHrSUlOJPDGIrh2bjX1sNars5HbxlcsFKCtKzu4+5lpsRhOCVcuzp0fEhAGHkPZRIXVNzPcpSlkoZ3LuA==}
 
-  '@vitest/runner@2.1.1':
-    resolution: {integrity: sha512-uTPuY6PWOYitIkLPidaY5L3t0JJITdGTSwBtwMjKzo5O6RCOEncz9PUN+0pDidX8kTHYjO0EwUIvhlGpnGpxmA==}
+  '@vitest/runner@2.1.2':
+    resolution: {integrity: sha512-UCsPtvluHO3u7jdoONGjOSil+uON5SSvU9buQh3lP7GgUXHp78guN1wRmZDX4wGK6J10f9NUtP6pO+SFquoMlw==}
 
-  '@vitest/snapshot@2.1.1':
-    resolution: {integrity: sha512-BnSku1WFy7r4mm96ha2FzN99AZJgpZOWrAhtQfoxjUU5YMRpq1zmHRq7a5K9/NjqonebO7iVDla+VvZS8BOWMw==}
+  '@vitest/snapshot@2.1.2':
+    resolution: {integrity: sha512-xtAeNsZ++aRIYIUsek7VHzry/9AcxeULlegBvsdLncLmNCR6tR8SRjn8BbDP4naxtccvzTqZ+L1ltZlRCfBZFA==}
 
-  '@vitest/spy@2.1.1':
-    resolution: {integrity: sha512-ZM39BnZ9t/xZ/nF4UwRH5il0Sw93QnZXd9NAZGRpIgj0yvVwPpLd702s/Cx955rGaMlyBQkZJ2Ir7qyY48VZ+g==}
+  '@vitest/spy@2.1.2':
+    resolution: {integrity: sha512-GSUi5zoy+abNRJwmFhBDC0yRuVUn8WMlQscvnbbXdKLXX9dE59YbfwXxuJ/mth6eeqIzofU8BB5XDo/Ns/qK2A==}
 
-  '@vitest/utils@2.1.1':
-    resolution: {integrity: sha512-Y6Q9TsI+qJ2CC0ZKj6VBb+T8UPz593N113nnUykqwANqhgf3QkZeHFlusgKLTqrnVHbj/XDKZcDHol+dxVT+rQ==}
+  '@vitest/utils@2.1.2':
+    resolution: {integrity: sha512-zMO2KdYy6mx56btx9JvAqAZ6EyS3g49krMPPrgOp1yxGZiA93HumGk+bZ5jIZtOg5/VBYl5eBmGRQHqq4FG6uQ==}
 
   '@yarnpkg/lockfile@1.1.0':
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
@@ -2957,10 +2957,10 @@ packages:
     resolution: {integrity: sha512-t/Ygsytq+R995EJ5PZlD4Cu56sWa8InXySaViRzw9apusqsOO2bQP+SbYzAhR0pFKoB+43lYy8rWban9JSuXnA==}
     engines: {node: '>= 0.4'}
 
-  date-fns-tz@3.1.3:
-    resolution: {integrity: sha512-ZfbMu+nbzW0mEzC8VZrLiSWvUIaI3aRHeq33mTe7Y38UctKukgqPR4nTDwcwS4d64Gf8GghnVsroBuMY3eiTeA==}
+  date-fns-tz@3.2.0:
+    resolution: {integrity: sha512-sg8HqoTEulcbbbVXeg84u5UnlsQa8GS5QXMqjjYIhS4abEVVKIUwe0/l/UhrZdKaL/W5eWZNlbTeEIiOXTcsBQ==}
     peerDependencies:
-      date-fns: ^3.0.0
+      date-fns: ^3.0.0 || ^4.0.0
 
   date-fns@3.6.0:
     resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
@@ -5486,8 +5486,8 @@ packages:
     resolution: {integrity: sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
-  vite-node@2.1.1:
-    resolution: {integrity: sha512-N/mGckI1suG/5wQI35XeR9rsMsPqKXzq1CdUndzVstBj/HvyxxGctwnK6WX43NGt5L3Z5tcRf83g4TITKJhPrA==}
+  vite-node@2.1.2:
+    resolution: {integrity: sha512-HPcGNN5g/7I2OtPjLqgOtCRu/qhVvBxTUD3qzitmL0SrG1cWFzxzhMDWussxSbrRYWqnKf8P2jiNhPMSN+ymsQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
@@ -5530,15 +5530,15 @@ packages:
       terser:
         optional: true
 
-  vitest@2.1.1:
-    resolution: {integrity: sha512-97We7/VC0e9X5zBVkvt7SGQMGrRtn3KtySFQG5fpaMlS+l62eeXRQO633AYhSTC3z7IMebnPPNjGXVGNRFlxBA==}
+  vitest@2.1.2:
+    resolution: {integrity: sha512-veNjLizOMkRrJ6xxb+pvxN6/QAWg95mzcRjtmkepXdN87FNfxAss9RKe2far/G9cQpipfgP2taqg0KiWsquj8A==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
       '@edge-runtime/vm': '*'
       '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': 2.1.1
-      '@vitest/ui': 2.1.1
+      '@vitest/browser': 2.1.2
+      '@vitest/ui': 2.1.2
       happy-dom: '*'
       jsdom: '*'
     peerDependenciesMeta:
@@ -5868,11 +5868,11 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@commercelayer/app-elements@2.5.2(@commercelayer/sdk@6.19.1)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
+  '@commercelayer/app-elements@2.7.2(@commercelayer/sdk@6.21.0)(query-string@9.1.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
     dependencies:
-      '@commercelayer/sdk': 6.19.1
-      '@types/lodash': 4.17.9
-      '@types/react': 18.3.9
+      '@commercelayer/sdk': 6.21.0
+      '@types/lodash': 4.17.10
+      '@types/react': 18.3.11
       '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react-dom': 18.3.0
       classnames: 2.5.1
@@ -5886,7 +5886,7 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-gtm-module: 2.0.11
       react-hook-form: 7.53.0(react@18.3.1)
-      react-select: 5.8.1(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-select: 5.8.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-tooltip: 5.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
       ts-invariant: 0.10.3
@@ -5931,9 +5931,9 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  '@commercelayer/js-auth@6.5.0': {}
+  '@commercelayer/js-auth@6.6.0': {}
 
-  '@commercelayer/sdk@6.19.1': {}
+  '@commercelayer/sdk@6.21.0': {}
 
   '@emnapi/core@1.2.0':
     dependencies:
@@ -5976,7 +5976,7 @@ snapshots:
 
   '@emotion/memoize@0.9.0': {}
 
-  '@emotion/react@11.13.3(@types/react@18.3.9)(react@18.3.1)':
+  '@emotion/react@11.13.3(@types/react@18.3.11)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.6
       '@emotion/babel-plugin': 11.12.0
@@ -5988,7 +5988,7 @@ snapshots:
       hoist-non-react-statics: 3.3.2
       react: 18.3.1
     optionalDependencies:
-      '@types/react': 18.3.9
+      '@types/react': 18.3.11
     transitivePeerDependencies:
       - supports-color
 
@@ -6669,14 +6669,14 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
 
-  '@testing-library/react@16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@testing-library/react@16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.6
       '@testing-library/dom': 10.4.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
-      '@types/react': 18.3.9
+      '@types/react': 18.3.11
       '@types/react-dom': 18.3.0
 
   '@tufjs/canonical-json@2.0.0': {}
@@ -6721,15 +6721,15 @@ snapshots:
 
   '@types/lodash-es@4.17.12':
     dependencies:
-      '@types/lodash': 4.17.9
+      '@types/lodash': 4.17.10
 
-  '@types/lodash@4.17.9': {}
+  '@types/lodash@4.17.10': {}
 
   '@types/minimatch@3.0.5': {}
 
   '@types/minimist@1.2.5': {}
 
-  '@types/node@22.7.2':
+  '@types/node@22.7.4':
     dependencies:
       undici-types: 6.19.8
 
@@ -6737,7 +6737,7 @@ snapshots:
 
   '@types/papaparse@5.3.14':
     dependencies:
-      '@types/node': 22.7.2
+      '@types/node': 22.7.4
 
   '@types/parse-json@4.0.2': {}
 
@@ -6746,7 +6746,7 @@ snapshots:
   '@types/react-datepicker@6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react': 0.26.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/react': 18.3.9
+      '@types/react': 18.3.11
       date-fns: 3.6.0
     transitivePeerDependencies:
       - react
@@ -6754,13 +6754,13 @@ snapshots:
 
   '@types/react-dom@18.3.0':
     dependencies:
-      '@types/react': 18.3.9
+      '@types/react': 18.3.11
 
   '@types/react-transition-group@4.4.11':
     dependencies:
-      '@types/react': 18.3.9
+      '@types/react': 18.3.11
 
-  '@types/react@18.3.9':
+  '@types/react@18.3.11':
     dependencies:
       '@types/prop-types': 15.7.12
       csstype: 3.1.3
@@ -6892,54 +6892,54 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vitejs/plugin-react@4.3.1(vite@5.4.8(@types/node@22.7.2))':
+  '@vitejs/plugin-react@4.3.2(vite@5.4.8(@types/node@22.7.4))':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/plugin-transform-react-jsx-self': 7.24.7(@babel/core@7.25.2)
       '@babel/plugin-transform-react-jsx-source': 7.24.7(@babel/core@7.25.2)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
-      vite: 5.4.8(@types/node@22.7.2)
+      vite: 5.4.8(@types/node@22.7.4)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/expect@2.1.1':
+  '@vitest/expect@2.1.2':
     dependencies:
-      '@vitest/spy': 2.1.1
-      '@vitest/utils': 2.1.1
+      '@vitest/spy': 2.1.2
+      '@vitest/utils': 2.1.2
       chai: 5.1.1
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.1(@vitest/spy@2.1.1)(vite@5.4.8(@types/node@22.7.2))':
+  '@vitest/mocker@2.1.2(@vitest/spy@2.1.2)(vite@5.4.8(@types/node@22.7.4))':
     dependencies:
-      '@vitest/spy': 2.1.1
+      '@vitest/spy': 2.1.2
       estree-walker: 3.0.3
       magic-string: 0.30.11
     optionalDependencies:
-      vite: 5.4.8(@types/node@22.7.2)
+      vite: 5.4.8(@types/node@22.7.4)
 
-  '@vitest/pretty-format@2.1.1':
+  '@vitest/pretty-format@2.1.2':
     dependencies:
       tinyrainbow: 1.2.0
 
-  '@vitest/runner@2.1.1':
+  '@vitest/runner@2.1.2':
     dependencies:
-      '@vitest/utils': 2.1.1
+      '@vitest/utils': 2.1.2
       pathe: 1.1.2
 
-  '@vitest/snapshot@2.1.1':
+  '@vitest/snapshot@2.1.2':
     dependencies:
-      '@vitest/pretty-format': 2.1.1
+      '@vitest/pretty-format': 2.1.2
       magic-string: 0.30.11
       pathe: 1.1.2
 
-  '@vitest/spy@2.1.1':
+  '@vitest/spy@2.1.2':
     dependencies:
       tinyspy: 3.0.0
 
-  '@vitest/utils@2.1.1':
+  '@vitest/utils@2.1.2':
     dependencies:
-      '@vitest/pretty-format': 2.1.1
+      '@vitest/pretty-format': 2.1.2
       loupe: 3.1.1
       tinyrainbow: 1.2.0
 
@@ -7466,7 +7466,7 @@ snapshots:
       es-errors: 1.3.0
       is-data-view: 1.0.1
 
-  date-fns-tz@3.1.3(date-fns@4.1.0):
+  date-fns-tz@3.2.0(date-fns@4.1.0):
     dependencies:
       date-fns: 4.1.0
 
@@ -9597,11 +9597,11 @@ snapshots:
 
   react-refresh@0.14.2: {}
 
-  react-select@5.8.1(@types/react@18.3.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-select@5.8.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.25.6
       '@emotion/cache': 11.13.1
-      '@emotion/react': 11.13.3(@types/react@18.3.9)(react@18.3.1)
+      '@emotion/react': 11.13.3(@types/react@18.3.11)(react@18.3.1)
       '@floating-ui/dom': 1.6.10
       '@types/react-transition-group': 4.4.11
       memoize-one: 6.0.0
@@ -9609,7 +9609,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-transition-group: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      use-isomorphic-layout-effect: 1.1.2(@types/react@18.3.9)(react@18.3.1)
+      use-isomorphic-layout-effect: 1.1.2(@types/react@18.3.11)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - supports-color
@@ -10280,11 +10280,11 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-isomorphic-layout-effect@1.1.2(@types/react@18.3.9)(react@18.3.1):
+  use-isomorphic-layout-effect@1.1.2(@types/react@18.3.11)(react@18.3.1):
     dependencies:
       react: 18.3.1
     optionalDependencies:
-      '@types/react': 18.3.9
+      '@types/react': 18.3.11
 
   use-sync-external-store@1.2.2(react@18.3.1):
     dependencies:
@@ -10301,12 +10301,12 @@ snapshots:
 
   validate-npm-package-name@5.0.1: {}
 
-  vite-node@2.1.1(@types/node@22.7.2):
+  vite-node@2.1.2(@types/node@22.7.4):
     dependencies:
       cac: 6.7.14
       debug: 4.3.6
       pathe: 1.1.2
-      vite: 5.4.8(@types/node@22.7.2)
+      vite: 5.4.8(@types/node@22.7.4)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -10318,35 +10318,35 @@ snapshots:
       - supports-color
       - terser
 
-  vite-tsconfig-paths@5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.2)):
+  vite-tsconfig-paths@5.0.1(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4)):
     dependencies:
       debug: 4.3.6
       globrex: 0.1.2
       tsconfck: 3.1.3(typescript@5.6.2)
     optionalDependencies:
-      vite: 5.4.8(@types/node@22.7.2)
+      vite: 5.4.8(@types/node@22.7.4)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@5.4.8(@types/node@22.7.2):
+  vite@5.4.8(@types/node@22.7.4):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.45
       rollup: 4.22.4
     optionalDependencies:
-      '@types/node': 22.7.2
+      '@types/node': 22.7.4
       fsevents: 2.3.3
 
-  vitest@2.1.1(@types/node@22.7.2)(jsdom@25.0.1):
+  vitest@2.1.2(@types/node@22.7.4)(jsdom@25.0.1):
     dependencies:
-      '@vitest/expect': 2.1.1
-      '@vitest/mocker': 2.1.1(@vitest/spy@2.1.1)(vite@5.4.8(@types/node@22.7.2))
-      '@vitest/pretty-format': 2.1.1
-      '@vitest/runner': 2.1.1
-      '@vitest/snapshot': 2.1.1
-      '@vitest/spy': 2.1.1
-      '@vitest/utils': 2.1.1
+      '@vitest/expect': 2.1.2
+      '@vitest/mocker': 2.1.2(@vitest/spy@2.1.2)(vite@5.4.8(@types/node@22.7.4))
+      '@vitest/pretty-format': 2.1.2
+      '@vitest/runner': 2.1.2
+      '@vitest/snapshot': 2.1.2
+      '@vitest/spy': 2.1.2
+      '@vitest/utils': 2.1.2
       chai: 5.1.1
       debug: 4.3.6
       magic-string: 0.30.11
@@ -10356,11 +10356,11 @@ snapshots:
       tinyexec: 0.3.0
       tinypool: 1.0.1
       tinyrainbow: 1.2.0
-      vite: 5.4.8(@types/node@22.7.2)
-      vite-node: 2.1.1(@types/node@22.7.2)
+      vite: 5.4.8(@types/node@22.7.4)
+      vite-node: 2.1.2(@types/node@22.7.4)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 22.7.2
+      '@types/node': 22.7.4
       jsdom: 25.0.1
     transitivePeerDependencies:
       - less
