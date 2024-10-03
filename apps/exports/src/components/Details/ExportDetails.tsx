@@ -1,6 +1,6 @@
 import {
-  ListDetailsItem,
   ListDetails,
+  ListDetailsItem,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { useExportDetailsContext } from './Provider'
@@ -16,25 +16,27 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
   }
 
   return (
-    <ListDetails title='Details' isLoading={isLoading}>
+    <ListDetails title='Info' isLoading={isLoading}>
       {data.status != null ? (
-        <ListDetailsItem label='Status'>
+        <ListDetailsItem label='Status' gutter='none'>
           <StatusBadge job={data} />
         </ListDetailsItem>
       ) : null}
       {data.includes != null && data.includes.length > 0 ? (
-        <ListDetailsItem label='Includes'>
+        <ListDetailsItem label='Includes' gutter='none'>
           {data.includes.join(', ')}
         </ListDetailsItem>
       ) : null}
 
-      <ListDetailsItem label='Filters'>
+      <ListDetailsItem label='Filters' gutter='none'>
         <JsonPreview json={data.filters} />
       </ListDetailsItem>
-      <ListDetailsItem label='Dry Data'>
+      <ListDetailsItem label='Dry Data' gutter='none'>
         {data.dry_data === true ? 'true' : 'false'}
       </ListDetailsItem>
-      <ListDetailsItem label='Format'>{data.format}</ListDetailsItem>
+      <ListDetailsItem label='Format' gutter='none'>
+        {data.format}
+      </ListDetailsItem>
     </ListDetails>
   )
 })

@@ -1,9 +1,9 @@
+import { getParentResourceIfNeeded } from '#data/resources'
 import {
   ListDetailsItem,
   formatResourceName,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
-import { getParentResourceIfNeeded } from '#data/resources'
 import { useEffect, useState } from 'react'
 import { useImportDetailsContext } from './Provider'
 
@@ -57,7 +57,11 @@ export function RowParentResource(): JSX.Element | null {
   return (
     <>
       {data.parent_resource_id != null && data.resource_type != null ? (
-        <ListDetailsItem label='Parent resource' isLoading={isLoading}>
+        <ListDetailsItem
+          label='Parent resource'
+          gutter='none'
+          isLoading={isLoading}
+        >
           <div
             title={formatResourceName({
               resource: parentResourceType,

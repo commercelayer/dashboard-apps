@@ -2,6 +2,8 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   goBack,
@@ -73,16 +75,16 @@ export const StockItemDetails: FC = () => {
   }
 
   if (canUser('update', 'stock_items')) {
-    pageToolbar.dropdownItems?.push([
-      {
-        label: 'Edit',
-        onClick: () => {
-          setLocation(
-            appRoutes.editStockItem.makePath(stockLocationId, stockItemId)
-          )
-        }
+    pageToolbar.buttons?.push({
+      label: 'Edit',
+      size: 'small',
+      variant: 'secondary',
+      onClick: () => {
+        setLocation(
+          appRoutes.editStockItem.makePath(stockLocationId, stockItemId)
+        )
       }
-    ])
+    })
   }
 
   if (canUser('destroy', 'stock_items')) {
@@ -131,6 +133,18 @@ export const StockItemDetails: FC = () => {
           )}
           <Spacer top='14'>
             <StockItemInfo stockItem={stockItem} />
+          </Spacer>
+          <Spacer top='14'>
+            <ResourceDetails resource={stockItem} />
+          </Spacer>
+          <Spacer top='14'>
+            <ResourceMetadata
+              resourceId={stockItem.id}
+              resourceType='stock_items'
+              overlay={{
+                title: pageTitle ?? ''
+              }}
+            />
           </Spacer>
         </Spacer>
       </SkeletonTemplate>

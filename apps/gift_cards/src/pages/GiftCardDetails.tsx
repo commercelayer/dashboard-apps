@@ -13,11 +13,13 @@ import { maskGiftCardCode } from '#utils/code'
 import {
   GenericPageNotFound,
   PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
+  ResourceTags,
   SkeletonTemplate,
   Spacer,
   goBack,
   useCoreSdkProvider,
-  useEditMetadataOverlay,
   useTokenProvider,
   type PageLayoutProps,
   type PageProps
@@ -38,8 +40,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
   const giftCardId = params?.giftCardId
   const { giftCard, isLoading, error, mutateGiftCard } =
     useGiftCardDetails(giftCardId)
-  const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
-    useEditMetadataOverlay()
+
   const { DeleteOverlay, openDeleteOverlay } = useDeleteOverlay()
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -126,12 +127,6 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
           onClick: () => {
             setLocation(appRoutes.edit.makePath({ giftCardId }))
           }
-        },
-        canUser('update', 'gift_cards') && {
-          label: 'Set metadata',
-          onClick: () => {
-            showEditMetadataOverlay()
-          }
         }
       ].filter((o) => o !== false),
       [
@@ -184,15 +179,32 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
         <Spacer top='14'>
           <BalanceLog giftCard={giftCard} />
         </Spacer>
+        <Spacer top='14'>
+          <ResourceDetails resource={giftCard} />
+        </Spacer>
+        {!isMockedId(giftCard.id) && (
+          <>
+            <Spacer top='14'>
+              <ResourceTags
+                resourceType='gift_cards'
+                resourceId={giftCard.id}
+                overlay={{
+                  title: `Gift card ${giftCard?.formatted_initial_balance}`
+                }}
+              />
+            </Spacer>
+            <Spacer top='14'>
+              <ResourceMetadata
+                resourceType='gift_cards'
+                resourceId={giftCard.id}
+                overlay={{
+                  title: `Gift card ${giftCard?.formatted_initial_balance}`
+                }}
+              />
+            </Spacer>
+          </>
+        )}
       </SkeletonTemplate>
-
-      {!isMockedId(giftCard.id) && (
-        <EditMetadataOverlay
-          resourceType='gift_cards'
-          resourceId={giftCard.id}
-          title={`Gift card ${giftCard?.formatted_initial_balance}`}
-        />
-      )}
 
       <DeleteOverlay
         title={`Confirm that you want to delete the gift card ending with ${maskGiftCardCode(giftCard.code)} with balance ${giftCard?.formatted_balance}?`}

@@ -38,7 +38,7 @@ export function StockTransfersList(): JSX.Element {
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
         },
-        label: 'Stock Transfers',
+        label: 'Stock transfers',
         icon: 'arrowLeft'
       }}
     >

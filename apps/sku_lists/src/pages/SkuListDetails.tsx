@@ -4,6 +4,8 @@ import {
   CodeBlock,
   EmptyState,
   PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
   Section,
   SkeletonTemplate,
   Spacer,
@@ -20,6 +22,7 @@ import { ListItemSkuListItem } from '#components/ListItemSkuListItem'
 import { appRoutes, type PageProps } from '#data/routes'
 import { useSkuListDetails } from '#hooks/useSkuListDetails'
 import { useSkuListItems } from '#hooks/useSkuListItems'
+import { isMockedId } from '#mocks'
 import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
 import { useState } from 'react'
 
@@ -184,6 +187,20 @@ export const SkuListDetails = (
                 </Spacer>
               )}
             </Section>
+          </Spacer>
+        )}
+        <Spacer top='14'>
+          <ResourceDetails resource={skuList} />
+        </Spacer>
+        {!isMockedId(skuList.id) && (
+          <Spacer top='14'>
+            <ResourceMetadata
+              resourceType='sku_lists'
+              resourceId={skuList.id}
+              overlay={{
+                title: pageTitle
+              }}
+            />
           </Spacer>
         )}
       </SkeletonTemplate>

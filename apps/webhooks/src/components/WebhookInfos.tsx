@@ -1,5 +1,5 @@
 import {
-  ListItem,
+  ListDetailsItem,
   Section,
   Text,
   withSkeletonTemplate
@@ -15,17 +15,15 @@ export const WebhookInfos = withSkeletonTemplate<WebhookInfosProps>(
     return (
       <Section title='Info'>
         {webhook.topic != null ? (
-          <ListItem padding='y'>
-            <Text variant='info'>Topic</Text>
-            <Text weight='bold'>{webhook.topic}</Text>
-          </ListItem>
+          <ListDetailsItem label='Topic' gutter='none'>
+            <Text>{webhook.topic}</Text>
+          </ListDetailsItem>
         ) : null}
         {webhook.include_resources != null &&
         webhook.include_resources.length > 0 ? (
-          <ListItem padding='y'>
-            <Text variant='info'>Includes</Text>
-            <Text weight='bold'>{webhook.include_resources.join(', ')}</Text>
-          </ListItem>
+          <ListDetailsItem label='Includes' gutter='none'>
+            <Text>{webhook.include_resources.join(', ')}</Text>
+          </ListDetailsItem>
         ) : null}
       </Section>
     )

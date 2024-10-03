@@ -1,19 +1,22 @@
-import { ImportDetailsProvider } from '#components/Details/Provider'
-import { ImportedResourceType } from '#components/Details/ImportedResourceType'
 import { ImportDate } from '#components/Details/ImportDate'
-import { appRoutes } from '#data/routes'
-import { Link, useLocation, useRoute } from 'wouter'
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { ImportReport } from '#components/Details/ImportReport'
 import { ImportDetails } from '#components/Details/ImportDetails'
+import { ImportedResourceType } from '#components/Details/ImportedResourceType'
+import { ImportReport } from '#components/Details/ImportReport'
+import { ImportDetailsProvider } from '#components/Details/Provider'
+import { ErrorNotFound } from '#components/ErrorNotFound'
+import { appRoutes } from '#data/routes'
+import { isMockedId } from '#mocks'
 import {
   Button,
-  useTokenProvider,
-  PageLayout,
-  Spacer,
   EmptyState,
-  SkeletonTemplate
+  PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
+  SkeletonTemplate,
+  Spacer,
+  useTokenProvider
 } from '@commercelayer/app-elements'
+import { Link, useLocation, useRoute } from 'wouter'
 
 const DetailsPage = (): JSX.Element | null => {
   const {
@@ -53,7 +56,7 @@ const DetailsPage = (): JSX.Element | null => {
 
   return (
     <ImportDetailsProvider importId={importId}>
-      {({ state: { isLoading, isNotFound } }) =>
+      {({ state: { data, isLoading, isNotFound } }) =>
         isNotFound ? (
           <ErrorNotFound />
         ) : (
@@ -76,13 +79,29 @@ const DetailsPage = (): JSX.Element | null => {
                 }
               }}
             >
-              <Spacer bottom='12'>
+              <Spacer bottom='14'>
                 <ImportReport />
               </Spacer>
 
-              <Spacer bottom='12'>
+              <Spacer bottom='14'>
                 <ImportDetails />
               </Spacer>
+
+              <Spacer bottom='14'>
+                <ResourceDetails resource={data} />
+              </Spacer>
+
+              {!isMockedId(data.id) && (
+                <Spacer top='14'>
+                  <ResourceMetadata
+                    resourceType='imports'
+                    resourceId={data.id}
+                    overlay={{
+                      title: 'Back'
+                    }}
+                  />
+                </Spacer>
+              )}
             </PageLayout>
           </SkeletonTemplate>
         )

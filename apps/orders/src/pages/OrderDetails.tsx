@@ -16,15 +16,14 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
   ResourceMetadata,
   ResourceTags,
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
   goBack,
-  useEditMetadataOverlay,
-  useTokenProvider,
-  type DropdownItemProps
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import type { ToolbarItem } from '@commercelayer/app-elements/dist/ui/composite/Toolbar'
 import { useLocation, useRoute } from 'wouter'
@@ -43,8 +42,6 @@ function OrderDetails(): JSX.Element {
   const { order, isLoading, error } = useOrderDetails(orderId)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
   const toolbar = useOrderToolbar({ order })
-  const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
-    useEditMetadataOverlay()
 
   if (canUser('update', 'orders')) {
     if (
@@ -67,21 +64,6 @@ function OrderDetails(): JSX.Element {
       } else {
         toolbar.buttons = [checkoutLinkButton]
       }
-    }
-
-    const setMetadataDropDownItem: DropdownItemProps = {
-      label: 'Set metadata',
-      onClick: () => {
-        showEditMetadataOverlay()
-      }
-    }
-
-    if (toolbar.dropdownItems != null) {
-      toolbar.dropdownItems[toolbar.dropdownItems.length - 1]?.push(
-        setMetadataDropDownItem
-      )
-    } else {
-      toolbar.dropdownItems = [[setMetadataDropDownItem]]
     }
   }
 
@@ -168,21 +150,7 @@ function OrderDetails(): JSX.Element {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
-          {!isMockedId(order.id) && (
-            <Spacer top='6'>
-              <ResourceTags
-                resourceType='orders'
-                resourceId={order.id}
-                overlay={{ title: 'Edit tags', description: pageTitle }}
-                onTagClick={(tagId) => {
-                  setLocation(
-                    appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
-                  )
-                }}
-              />
-            </Spacer>
-          )}
-          <Spacer top='14'>
+          <Spacer top='6'>
             <OrderSteps order={order} />
           </Spacer>
           <Spacer top='14'>
@@ -205,29 +173,38 @@ function OrderDetails(): JSX.Element {
               <OrderReturns returns={returns} />
             </Spacer>
           )}
+          <Spacer top='14'>
+            <ResourceDetails resource={order} />
+          </Spacer>
           {!isMockedId(order.id) && (
-            <Spacer top='14'>
-              <ResourceMetadata
-                resourceType='orders'
-                resourceId={order.id}
-                overlay={{
-                  title: pageTitle
-                }}
-                mode='simple'
-              />
-            </Spacer>
+            <>
+              <Spacer top='14'>
+                <ResourceTags
+                  resourceType='orders'
+                  resourceId={order.id}
+                  overlay={{ title: pageTitle }}
+                  onTagClick={(tagId) => {
+                    setLocation(
+                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                    )
+                  }}
+                />
+              </Spacer>
+              <Spacer top='14'>
+                <ResourceMetadata
+                  resourceType='orders'
+                  resourceId={order.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
+              </Spacer>
+            </>
           )}
           {!['pending', 'draft'].includes(order.status) && (
             <Spacer top='14'>
               <Timeline order={order} />
             </Spacer>
-          )}
-          {!isMockedId(order.id) && (
-            <EditMetadataOverlay
-              resourceType={order.type}
-              resourceId={order.id}
-              title={pageTitle}
-            />
           )}
         </Spacer>
       </SkeletonTemplate>

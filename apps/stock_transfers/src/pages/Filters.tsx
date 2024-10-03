@@ -22,7 +22,7 @@ export function Filters(): JSX.Element {
             )
           )
         },
-        label: 'Stock Transfers',
+        label: 'Stock transfers',
         icon: 'arrowLeft'
       }}
       overlay

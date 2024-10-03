@@ -6,10 +6,13 @@ import { ScrollToTop } from '#components/ScrollToTop'
 import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
 import { useReturnDetails } from '#hooks/useReturnDetails'
+import { isMockedId } from '#mocks'
 import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
@@ -113,6 +116,20 @@ export function ReturnDetails(): JSX.Element {
           <Spacer top='14'>
             <ReturnAddresses returnObj={returnObj} />
           </Spacer>
+          <Spacer top='14'>
+            <ResourceDetails resource={returnObj} />
+          </Spacer>
+          {!isMockedId(returnObj.id) && (
+            <Spacer top='14'>
+              <ResourceMetadata
+                resourceType='stock_transfers'
+                resourceId={returnObj.id}
+                overlay={{
+                  title: pageTitle
+                }}
+              />
+            </Spacer>
+          )}
           <Spacer top='14'>
             <Timeline returnObj={returnObj} />
           </Spacer>

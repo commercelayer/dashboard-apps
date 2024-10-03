@@ -2,6 +2,7 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
   ResourceMetadata,
   ResourceTags,
   Section,
@@ -10,7 +11,6 @@ import {
   Text,
   goBack,
   useCoreSdkProvider,
-  useEditMetadataOverlay,
   useOverlay,
   useTokenProvider,
   type PageHeadingProps
@@ -44,9 +44,6 @@ export const SkuDetails: FC = () => {
   const { Overlay, open, close } = useOverlay()
 
   const [isDeleting, setIsDeleting] = useState(false)
-
-  const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
-    useEditMetadataOverlay()
 
   if (error != null) {
     return (
@@ -104,15 +101,6 @@ export const SkuDetails: FC = () => {
         setLocation(appRoutes.edit.makePath({ skuId }))
       }
     })
-
-    pageToolbar.dropdownItems?.push([
-      {
-        label: 'Set metadata',
-        onClick: () => {
-          showEditMetadataOverlay()
-        }
-      }
-    ])
   }
 
   if (canUser('destroy', 'skus')) {
@@ -155,21 +143,7 @@ export const SkuDetails: FC = () => {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
-          {!isMockedId(sku.id) && (
-            <Spacer top='6'>
-              <ResourceTags
-                resourceType='skus'
-                resourceId={sku.id}
-                overlay={{ title: 'Edit tags', description: pageTitle }}
-                onTagClick={(tagId) => {
-                  setLocation(
-                    appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
-                  )
-                }}
-              />
-            </Spacer>
-          )}
-          <Spacer top='14'>
+          <Spacer top='6'>
             <SkuDescription sku={sku} />
           </Spacer>
           <Spacer top='14'>
@@ -189,17 +163,33 @@ export const SkuDetails: FC = () => {
               </Section>
             </Spacer>
           )}
+          <Spacer top='14'>
+            <ResourceDetails resource={sku} />
+          </Spacer>
           {!isMockedId(sku.id) && (
-            <Spacer top='14'>
-              <ResourceMetadata
-                resourceType='skus'
-                resourceId={sku.id}
-                overlay={{
-                  title: sku.name,
-                  description: sku.code
-                }}
-              />
-            </Spacer>
+            <>
+              <Spacer top='14'>
+                <ResourceTags
+                  resourceType='skus'
+                  resourceId={sku.id}
+                  overlay={{ title: pageTitle }}
+                  onTagClick={(tagId) => {
+                    setLocation(
+                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                    )
+                  }}
+                />
+              </Spacer>
+              <Spacer top='14'>
+                <ResourceMetadata
+                  resourceType='skus'
+                  resourceId={sku.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
+              </Spacer>
+            </>
           )}
         </Spacer>
       </SkeletonTemplate>
@@ -237,14 +227,6 @@ export const SkuDetails: FC = () => {
             </Button>
           </PageLayout>
         </Overlay>
-      )}
-      {!isMockedId(sku.id) && (
-        <EditMetadataOverlay
-          resourceType={sku.type}
-          resourceId={sku.id}
-          title={sku.name}
-          description={sku.code}
-        />
       )}
     </PageLayout>
   )

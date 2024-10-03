@@ -8,6 +8,7 @@ import {
   Icon,
   ListItem,
   PageLayout,
+  Spacer,
   Text,
   useCoreSdkProvider,
   useEditMetadataOverlay,
@@ -82,12 +83,12 @@ export const ListItemTag = withSkeletonTemplate<
 
   return (
     <>
-      <ListItem>
-        <div>
+      <ListItem padding='none'>
+        <Spacer top='4' bottom='4'>
           <Text tag='span' weight='semibold'>
             {resource.name}
           </Text>
-        </div>
+        </Spacer>
         {!isMockedId(resource.id) && (
           <EditMetadataOverlay
             resourceType={resource.type}

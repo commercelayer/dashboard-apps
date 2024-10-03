@@ -1,6 +1,6 @@
 import {
   Button,
-  ListItem,
+  ListDetailsItem,
   Section,
   Text,
   navigateTo,
@@ -47,10 +47,7 @@ export const StockTransferInfo = withSkeletonTemplate<Props>(
     return (
       <Section title='Info'>
         {orderNumber !== '#' && (
-          <ListItem>
-            <Text tag='div' variant='info'>
-              Order
-            </Text>
+          <ListDetailsItem label='Order' gutter='none'>
             <Text tag='div' weight='semibold'>
               {canAccess('orders') ? (
                 <Button variant='link' {...navigateToOrder}>
@@ -60,13 +57,10 @@ export const StockTransferInfo = withSkeletonTemplate<Props>(
                 orderNumber
               )}
             </Text>
-          </ListItem>
+          </ListDetailsItem>
         )}
         {shipmentNumber !== '#' && (
-          <ListItem>
-            <Text tag='div' variant='info'>
-              Shipment
-            </Text>
+          <ListDetailsItem label='Shipment' gutter='none'>
             <Text tag='div' weight='semibold'>
               {canAccess('orders') ? (
                 <Button variant='link' {...navigateToShipment}>
@@ -76,7 +70,7 @@ export const StockTransferInfo = withSkeletonTemplate<Props>(
                 shipmentNumber
               )}
             </Text>
-          </ListItem>
+          </ListDetailsItem>
         )}
       </Section>
     )

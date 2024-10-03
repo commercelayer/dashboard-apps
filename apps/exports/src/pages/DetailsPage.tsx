@@ -1,19 +1,22 @@
-import { ExportedResourceType } from '#components/Details/ExportedResourceType'
-import { ExportDetailsProvider } from '#components/Details/Provider'
 import { ExportDate } from '#components/Details/ExportDate'
+import { ExportDetails } from '#components/Details/ExportDetails'
+import { ExportedResourceType } from '#components/Details/ExportedResourceType'
+import { ExportReport } from '#components/Details/ExportReport'
+import { ExportDetailsProvider } from '#components/Details/Provider'
 import { ErrorNotFound } from '#components/ErrorNotFound'
 import { appRoutes } from '#data/routes'
+import { isMockedId } from '#mocks'
 import {
-  useTokenProvider,
-  PageLayout,
-  Spacer,
   Button,
   EmptyState,
-  SkeletonTemplate
+  PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
+  SkeletonTemplate,
+  Spacer,
+  useTokenProvider
 } from '@commercelayer/app-elements'
-import { useLocation, useRoute, Link } from 'wouter'
-import { ExportReport } from '#components/Details/ExportReport'
-import { ExportDetails } from '#components/Details/ExportDetails'
+import { Link, useLocation, useRoute } from 'wouter'
 
 const DetailsPage = (): JSX.Element | null => {
   const {
@@ -81,13 +84,28 @@ const DetailsPage = (): JSX.Element | null => {
                 }
               }}
             >
-              <Spacer bottom='12'>
+              <Spacer bottom='14'>
                 <ExportReport />
               </Spacer>
 
-              <Spacer bottom='12'>
+              <Spacer bottom='14'>
                 <ExportDetails />
               </Spacer>
+
+              <Spacer top='14'>
+                <ResourceDetails resource={data} />
+              </Spacer>
+              {!isMockedId(data.id) && (
+                <Spacer top='14'>
+                  <ResourceMetadata
+                    resourceType='customers'
+                    resourceId={data.id}
+                    overlay={{
+                      title: 'Back'
+                    }}
+                  />
+                </Spacer>
+              )}
             </PageLayout>
           </SkeletonTemplate>
         )

@@ -77,7 +77,8 @@ export function normalizeLogs({
       date: formatDate({
         isoDate: item.date,
         format: 'full',
-        timezone
+        timezone,
+        showCurrentYear: true
       })
     }))
 }

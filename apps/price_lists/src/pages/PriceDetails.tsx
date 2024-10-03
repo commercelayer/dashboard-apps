@@ -2,6 +2,8 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   goBack,
@@ -74,14 +76,14 @@ export function PriceDetails(): JSX.Element {
   }
 
   if (canUser('update', 'prices')) {
-    pageToolbar.dropdownItems?.push([
-      {
-        label: 'Edit',
-        onClick: () => {
-          setLocation(appRoutes.priceEdit.makePath({ priceListId, priceId }))
-        }
+    pageToolbar.buttons?.push({
+      label: 'Edit',
+      size: 'small',
+      variant: 'secondary',
+      onClick: () => {
+        setLocation(appRoutes.priceEdit.makePath({ priceListId, priceId }))
       }
-    ])
+    })
   }
 
   if (canUser('destroy', 'prices')) {
@@ -138,6 +140,18 @@ export function PriceDetails(): JSX.Element {
               price={price}
               mutatePrice={mutatePrice}
               type='frequency'
+            />
+          </Spacer>
+          <Spacer top='14'>
+            <ResourceDetails resource={price} />
+          </Spacer>
+          <Spacer top='14'>
+            <ResourceMetadata
+              resourceId={price.id}
+              resourceType='prices'
+              overlay={{
+                title: pageTitle ?? ''
+              }}
             />
           </Spacer>
         </Spacer>

@@ -56,7 +56,7 @@ export const WebhookEdit: FC = () => {
               mode={settings.mode}
               navigationButton={{
                 onClick: () => {
-                  setLocation(appRoutes.list.makePath({ webhookId }))
+                  setLocation(appRoutes.details.makePath({ webhookId }))
                 },
                 label: 'Cancel',
                 icon: 'x'

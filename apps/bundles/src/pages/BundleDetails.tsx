@@ -2,13 +2,13 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
   ResourceMetadata,
   ResourceTags,
   SkeletonTemplate,
   Spacer,
   goBack,
   useCoreSdkProvider,
-  useEditMetadataOverlay,
   useOverlay,
   useTokenProvider,
   type PageHeadingProps
@@ -41,8 +41,6 @@ export const BundleDetails: FC = () => {
 
   const { Overlay: DeleteOverlay, open, close } = useOverlay()
   const [isDeleting, setIsDeleting] = useState(false)
-  const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
-    useEditMetadataOverlay()
 
   const pageTitle = bundle.name ?? 'Bundles'
 
@@ -55,19 +53,11 @@ export const BundleDetails: FC = () => {
     pageToolbar.buttons?.push({
       label: 'Edit',
       size: 'small',
+      variant: 'secondary',
       onClick: () => {
         setLocation(appRoutes.edit.makePath({ bundleId }))
       }
     })
-
-    pageToolbar.dropdownItems?.push([
-      {
-        label: 'Set metadata',
-        onClick: () => {
-          showEditMetadataOverlay()
-        }
-      }
-    ])
   }
 
   if (canUser('destroy', 'bundles')) {
@@ -117,21 +107,7 @@ export const BundleDetails: FC = () => {
         <>
           <SkeletonTemplate isLoading={isLoading}>
             <Spacer bottom='4'>
-              {!isMockedId(bundle.id) && (
-                <Spacer top='6'>
-                  <ResourceTags
-                    resourceType='bundles'
-                    resourceId={bundle.id}
-                    overlay={{ title: 'Edit tags', description: pageTitle }}
-                    onTagClick={(tagId) => {
-                      setLocation(
-                        appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
-                      )
-                    }}
-                  />
-                </Spacer>
-              )}
-              <Spacer top='14'>
+              <Spacer top='6'>
                 <BundleDescription bundle={bundle} />
               </Spacer>
               <Spacer top='14'>
@@ -140,17 +116,33 @@ export const BundleDetails: FC = () => {
               <Spacer top='14'>
                 <BundleInfo bundle={bundle} />
               </Spacer>
+              <Spacer top='14'>
+                <ResourceDetails resource={bundle} />
+              </Spacer>
               {!isMockedId(bundle.id) && (
-                <Spacer top='14'>
-                  <ResourceMetadata
-                    resourceType='bundles'
-                    resourceId={bundle.id}
-                    overlay={{
-                      title: bundle.name,
-                      description: bundle.code
-                    }}
-                  />
-                </Spacer>
+                <>
+                  <Spacer top='14'>
+                    <ResourceTags
+                      resourceType='bundles'
+                      resourceId={bundle.id}
+                      overlay={{ title: pageTitle }}
+                      onTagClick={(tagId) => {
+                        setLocation(
+                          appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                        )
+                      }}
+                    />
+                  </Spacer>
+                  <Spacer top='14'>
+                    <ResourceMetadata
+                      resourceType='bundles'
+                      resourceId={bundle.id}
+                      overlay={{
+                        title: pageTitle
+                      }}
+                    />
+                  </Spacer>
+                </>
               )}
             </Spacer>
           </SkeletonTemplate>
@@ -188,14 +180,6 @@ export const BundleDetails: FC = () => {
                 </Button>
               </PageLayout>
             </DeleteOverlay>
-          )}
-          {!isMockedId(bundle.id) && (
-            <EditMetadataOverlay
-              resourceType={bundle.type}
-              resourceId={bundle.id}
-              title={bundle.name}
-              description={bundle.code}
-            />
           )}
         </>
       )}
