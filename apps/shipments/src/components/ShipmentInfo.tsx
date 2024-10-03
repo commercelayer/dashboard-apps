@@ -42,21 +42,17 @@ export const ShipmentInfo = withSkeletonTemplate<Props>(
 
     return (
       <Section title='Info'>
-        <ListDetailsItem
-          label='Shipping method'
-          gutter='none'
-          childrenAlign='right'
-        >
+        <ListDetailsItem label='Shipping method' gutter='none'>
           {shipment.shipping_method?.name}
         </ListDetailsItem>
-        <ListDetailsItem label='Order' gutter='none' childrenAlign='right'>
+        <ListDetailsItem label='Order' gutter='none'>
           {canAccess('orders') ? (
             <a {...navigateToOrder}>{`${shipmentOrderNumber}`}</a>
           ) : (
             `${shipmentOrderNumber}`
           )}
         </ListDetailsItem>
-        <ListDetailsItem label='Customer' gutter='none' childrenAlign='right'>
+        <ListDetailsItem label='Customer' gutter='none'>
           {canAccess('customers') ? (
             <a {...navigateToCustomer}>{shipmentCustomerEmail}</a>
           ) : (
