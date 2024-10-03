@@ -1,7 +1,5 @@
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import { useViewStatus } from '#hooks/useViewStatus'
-import { isMockedId } from '#mocks'
-import { useEditMetadataOverlay } from '@commercelayer/app-elements'
 import type { PageHeadingToolbarProps } from '@commercelayer/app-elements/dist/ui/atoms/PageHeading/PageHeadingToolbar'
 import type { Shipment } from '@commercelayer/sdk'
 import type { FC } from 'react'
@@ -13,9 +11,6 @@ export function useShipmentToolbar({ shipment }: { shipment: Shipment }): {
 } {
   const { trigger } = useTriggerAttribute(shipment.id)
   const viewStatus = useViewStatus(shipment)
-
-  const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
-    useEditMetadataOverlay()
 
   const dropdownItems =
     viewStatus.contextActions?.map((action) => ({
@@ -29,26 +24,8 @@ export function useShipmentToolbar({ shipment }: { shipment: Shipment }): {
       }
     })) ?? []
 
-  dropdownItems.push({
-    label: 'Set metadata',
-    onClick: () => {
-      showEditMetadataOverlay()
-    }
-  })
-
   return {
-    Components: () => (
-      <>
-        {!isMockedId(shipment.id) && (
-          <EditMetadataOverlay
-            resourceType={shipment.type}
-            resourceId={shipment.id}
-            title='Edit metadata'
-            description={`Shipment #${shipment.number}`}
-          />
-        )}
-      </>
-    ),
+    Components: () => <></>,
     props: {
       dropdownItems: [dropdownItems]
     }

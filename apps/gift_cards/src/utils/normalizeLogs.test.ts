@@ -58,26 +58,26 @@ describe('normalizeLogs', () => {
 
     expect(result).toEqual([
       {
-        date: 'Sep 22, 16:00',
+        date: 'Sep 22, 2024, 16:00',
         type: 'Redeemed',
         orderId: 'order-3',
         amount: '€-50,00'
       },
       {
-        date: 'Sep 20, 11:00',
+        date: 'Sep 20, 2024, 11:00',
         type: 'Use',
         orderId: 'order-2',
         orderNumber: '123456789',
         amount: '€-50,00'
       },
       {
-        date: 'Sep 18, 16:00',
+        date: 'Sep 18, 2024, 16:00',
         type: 'Change',
         orderId: undefined,
         amount: '€100,00'
       },
       {
-        date: 'Sep 18, 16:00',
+        date: 'Sep 18, 2024, 16:00',
         type: 'Purchase',
         orderId: 'order-1',
         amount: '€0,00'

@@ -1,6 +1,6 @@
 import {
-  ListDetailsItem,
   ListDetails,
+  ListDetailsItem,
   formatDate,
   useTokenProvider,
   withSkeletonTemplate
@@ -21,28 +21,30 @@ export const ImportDetails = withSkeletonTemplate(({ isLoading }) => {
   }
 
   return (
-    <ListDetails title='Details' isLoading={isLoading}>
+    <ListDetails title='Info' isLoading={isLoading}>
       <RowParentResource />
       {data.status != null ? (
-        <ListDetailsItem label='Status'>
+        <ListDetailsItem label='Status' gutter='none'>
           <StatusBadge job={data} />
         </ListDetailsItem>
       ) : null}
       {data.completed_at != null ? (
-        <ListDetailsItem label='Completed at'>
+        <ListDetailsItem label='Completed at' gutter='none'>
           {formatDate({
             isoDate: data.completed_at,
             format: 'fullWithSeconds',
-            timezone: user?.timezone
+            timezone: user?.timezone,
+            showCurrentYear: true
           })}
         </ListDetailsItem>
       ) : null}
       {data.updated_at != null && data.completed_at == null ? (
-        <ListDetailsItem label='Last update'>
+        <ListDetailsItem label='Last update' gutter='none'>
           {formatDate({
             isoDate: data.updated_at,
             format: 'fullWithSeconds',
-            timezone: user?.timezone
+            timezone: user?.timezone,
+            showCurrentYear: true
           })}
         </ListDetailsItem>
       ) : null}

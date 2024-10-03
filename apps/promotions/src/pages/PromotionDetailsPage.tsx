@@ -23,6 +23,7 @@ import {
   ListDetailsItem,
   ListItem,
   PageLayout,
+  ResourceDetails,
   ResourceMetadata,
   Section,
   SkeletonTemplate,
@@ -34,7 +35,6 @@ import {
   getPromotionDisplayStatus,
   goBack,
   useCoreSdkProvider,
-  useEditMetadataOverlay,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -63,8 +63,6 @@ function Page(
 
   const { show: showDeleteOverlay, Overlay: DeleteOverlay } =
     useDeletePromotionOverlay()
-  const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
-    useEditMetadataOverlay()
 
   if (error != null) {
     return <GenericPageNotFound />
@@ -107,12 +105,6 @@ function Page(
                   })
                 )
               }
-            },
-            {
-              label: 'Set metadata',
-              onClick: () => {
-                showEditMetadataOverlay()
-              }
             }
           ],
           [
@@ -139,14 +131,6 @@ function Page(
     >
       <SkeletonTemplate isLoading={isLoading}>
         <DeleteOverlay promotion={promotion} />
-        {!isMockedId(promotion.id) && (
-          <EditMetadataOverlay
-            resourceType={promotion.type}
-            resourceId={promotion.id}
-            title='Edit metadata'
-            description={promotion.name}
-          />
-        )}
 
         <Spacer top='14'>
           {!isLoadingRules && !hasRules && !viaApi && (
@@ -180,10 +164,16 @@ function Page(
           <SectionCoupon promotion={promotion} />
         </Spacer>
 
+        <Spacer top='14'>
+          <ResourceDetails resource={promotion} />
+        </Spacer>
+
         {!isMockedId(promotion.id) && (
           <Spacer top='14'>
             <ResourceMetadata
-              overlay={{ title: 'Edit metadata', description: promotion.name }}
+              overlay={{
+                title: promotion.name
+              }}
               resourceType={promotion.type}
               resourceId={promotion.id}
             />
@@ -326,14 +316,16 @@ const SectionInfo = withSkeletonTemplate<{
         {formatDate({
           isoDate: promotion.starts_at,
           format: 'full',
-          timezone: user?.timezone
+          timezone: user?.timezone,
+          showCurrentYear: true
         })}
       </ListDetailsItem>
       <ListDetailsItem label='Expiration date' gutter='none'>
         {formatDate({
           isoDate: promotion.expires_at,
           format: 'full',
-          timezone: user?.timezone
+          timezone: user?.timezone,
+          showCurrentYear: true
         })}
       </ListDetailsItem>
       {viaApi && (

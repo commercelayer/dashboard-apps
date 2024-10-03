@@ -1,11 +1,5 @@
 import { makeBundle } from '#mocks'
-import {
-  formatDate,
-  ListDetailsItem,
-  Section,
-  Text,
-  useTokenProvider
-} from '@commercelayer/app-elements'
+import { ListDetailsItem, Section, Text } from '@commercelayer/app-elements'
 import type { Bundle } from '@commercelayer/sdk'
 import type { FC } from 'react'
 
@@ -14,8 +8,6 @@ interface Props {
 }
 
 export const BundleInfo: FC<Props> = ({ bundle = makeBundle() }) => {
-  const { user } = useTokenProvider()
-
   return (
     <Section title='Info'>
       {bundle.market != null && (
@@ -34,24 +26,6 @@ export const BundleInfo: FC<Props> = ({ bundle = makeBundle() }) => {
             </Text>
           </ListDetailsItem>
         )}
-      <ListDetailsItem label='Created' gutter='none'>
-        <Text tag='div'>
-          {formatDate({
-            isoDate: bundle.created_at,
-            timezone: user?.timezone,
-            format: 'full'
-          })}
-        </Text>
-      </ListDetailsItem>
-      <ListDetailsItem label='Updated' gutter='none'>
-        <Text tag='div'>
-          {formatDate({
-            isoDate: bundle.updated_at,
-            timezone: user?.timezone,
-            format: 'full'
-          })}
-        </Text>
-      </ListDetailsItem>
     </Section>
   )
 }

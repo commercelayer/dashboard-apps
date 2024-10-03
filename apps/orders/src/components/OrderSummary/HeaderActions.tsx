@@ -37,6 +37,7 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
       <Button
         variant='secondary'
         size='mini'
+        alignItems='center'
         onClick={(e) => {
           e.preventDefault()
           void dispatch('_start_editing').catch(() => {
@@ -44,6 +45,7 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
           })
         }}
       >
+        <Icon name='pencilSimple' size={16} />
         Edit
       </Button>
     )

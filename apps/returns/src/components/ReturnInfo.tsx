@@ -1,6 +1,6 @@
 import {
   Button,
-  ListItem,
+  ListDetailsItem,
   Section,
   Text,
   navigateTo,
@@ -45,10 +45,7 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
 
     return (
       <Section title='Info'>
-        <ListItem padding='y'>
-          <Text tag='div' variant='info'>
-            Order
-          </Text>
+        <ListDetailsItem label='Order' gutter='none'>
           <Text tag='div' weight='semibold'>
             {canAccess('orders') ? (
               <Button variant='link' {...navigateToOrder}>
@@ -58,11 +55,8 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
               `${returnOrderMarket} ${returnOrderNumber}`
             )}
           </Text>
-        </ListItem>
-        <ListItem padding='y'>
-          <Text tag='div' variant='info'>
-            Customer
-          </Text>
+        </ListDetailsItem>
+        <ListDetailsItem label='Customer' gutter='none'>
           <Text tag='div' weight='semibold'>
             {canAccess('customers') ? (
               <Button variant='link' {...navigateToCustomer}>
@@ -72,7 +66,7 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
               returnCustomerEmail
             )}
           </Text>
-        </ListItem>
+        </ListDetailsItem>
       </Section>
     )
   }

@@ -11,10 +11,13 @@ import { appRoutes } from '#data/routes'
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useStockTransferDetails } from '#hooks/useStockTransferDetails'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
+import { isMockedId } from '#mocks'
 import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
@@ -49,7 +52,7 @@ export function StockTransferDetails(): JSX.Element {
           onClick: () => {
             setLocation(appRoutes.home.makePath({}))
           },
-          label: 'Stock Transfers',
+          label: 'Stock transfers',
           icon: 'arrowLeft'
         }}
         mode={mode}
@@ -151,7 +154,7 @@ export function StockTransferDetails(): JSX.Element {
             defaultRelativePath: appRoutes.home.makePath({})
           })
         },
-        label: 'Stock Transfers',
+        label: 'Stock transfers',
         icon: 'arrowLeft'
       }}
       scrollToTop
@@ -174,6 +177,20 @@ export function StockTransferDetails(): JSX.Element {
           <Spacer top='14'>
             <StockTransferAddresses stockTransfer={stockTransfer} />
           </Spacer>
+          <Spacer top='14'>
+            <ResourceDetails resource={stockTransfer} />
+          </Spacer>
+          {!isMockedId(stockTransfer.id) && (
+            <Spacer top='14'>
+              <ResourceMetadata
+                resourceType='stock_transfers'
+                resourceId={stockTransfer.id}
+                overlay={{
+                  title: pageTitle
+                }}
+              />
+            </Spacer>
+          )}
           <Spacer top='14'>
             <Timeline stockTransfer={stockTransfer} />
           </Spacer>

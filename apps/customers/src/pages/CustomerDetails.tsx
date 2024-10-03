@@ -2,13 +2,13 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
   ResourceMetadata,
   ResourceTags,
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
   goBack,
-  useEditMetadataOverlay,
   useTokenProvider,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
@@ -37,9 +37,6 @@ export function CustomerDetails(): JSX.Element {
 
   const { customer, isLoading, error } = useCustomerDetails(customerId)
 
-  const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
-    useEditMetadataOverlay()
-
   const { DeleteOverlay, show } = useCustomerDeleteOverlay(customerId)
 
   const pageTitle = `${customer.email}`
@@ -53,18 +50,11 @@ export function CustomerDetails(): JSX.Element {
     pageToolbar.buttons?.push({
       label: 'Edit',
       size: 'small',
+      variant: 'secondary',
       onClick: () => {
         setLocation(appRoutes.edit.makePath(customerId))
       }
     })
-    pageToolbar.dropdownItems?.push([
-      {
-        label: 'Set metadata',
-        onClick: () => {
-          showEditMetadataOverlay()
-        }
-      }
-    ])
   }
 
   if (canUser('destroy', 'customers')) {
@@ -121,18 +111,6 @@ export function CustomerDetails(): JSX.Element {
       ) : (
         <SkeletonTemplate isLoading={isLoading}>
           <Spacer bottom='4'>
-            {!isMockedId(customer.id) && (
-              <Spacer top='6'>
-                <ResourceTags
-                  resourceType='customers'
-                  resourceId={customer.id}
-                  overlay={{ title: 'Edit tags', description: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(appRoutes.list.makePath(`tags_id_in=${tagId}`))
-                  }}
-                />
-              </Spacer>
-            )}
             <Spacer top='14'>
               <CustomerInfo customer={customer} />
             </Spacer>
@@ -145,27 +123,37 @@ export function CustomerDetails(): JSX.Element {
             <Spacer top='14'>
               <CustomerAddresses customer={customer} />
             </Spacer>
+            <Spacer top='14'>
+              <ResourceDetails resource={customer} />
+            </Spacer>
             {!isMockedId(customer.id) && (
-              <Spacer top='14'>
-                <ResourceMetadata
-                  resourceType='customers'
-                  resourceId={customer.id}
-                  overlay={{
-                    title: customer.email
-                  }}
-                />
-              </Spacer>
+              <>
+                <Spacer top='14'>
+                  <ResourceTags
+                    resourceType='customers'
+                    resourceId={customer.id}
+                    overlay={{ title: pageTitle }}
+                    onTagClick={(tagId) => {
+                      setLocation(
+                        appRoutes.list.makePath(`tags_id_in=${tagId}`)
+                      )
+                    }}
+                  />
+                </Spacer>
+                <Spacer top='14'>
+                  <ResourceMetadata
+                    resourceType='customers'
+                    resourceId={customer.id}
+                    overlay={{
+                      title: pageTitle
+                    }}
+                  />
+                </Spacer>
+              </>
             )}
             <Spacer top='14'>
               <CustomerTimeline customer={customer} />
             </Spacer>
-            {!isMockedId(customer.id) && (
-              <EditMetadataOverlay
-                resourceType={customer.type}
-                resourceId={customer.id}
-                title={customer.email}
-              />
-            )}
           </Spacer>
         </SkeletonTemplate>
       )}

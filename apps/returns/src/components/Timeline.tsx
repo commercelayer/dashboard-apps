@@ -1,6 +1,6 @@
 import { useReturnDetails } from '#hooks/useReturnDetails'
 import {
-  Legend,
+  Section,
   Spacer,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -15,8 +15,7 @@ export const Timeline = withSkeletonTemplate<Props>(({ returnObj }) => {
   const { isValidating } = useReturnDetails(returnObj.id)
 
   return (
-    <>
-      <Legend title='Timeline' />
+    <Section title='Timeline'>
       <Spacer top='8'>
         <ReturnTimeline
           returnId={returnObj.id}
@@ -26,6 +25,6 @@ export const Timeline = withSkeletonTemplate<Props>(({ returnObj }) => {
           }}
         />
       </Spacer>
-    </>
+    </Section>
   )
 })

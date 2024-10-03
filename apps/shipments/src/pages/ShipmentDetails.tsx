@@ -11,6 +11,7 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
   ResourceMetadata,
   ResourceTags,
   SkeletonTemplate,
@@ -112,21 +113,7 @@ export function ShipmentDetails(): JSX.Element {
       <SkeletonTemplate isLoading={isLoading}>
         <pageToolbar.Components />
         <Spacer bottom='4'>
-          {!isMockedId(shipment.id) && (
-            <Spacer top='6'>
-              <ResourceTags
-                resourceType='shipments'
-                resourceId={shipment.id}
-                overlay={{ title: 'Edit tags', description: pageTitle }}
-                onTagClick={(tagId) => {
-                  setLocation(
-                    appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
-                  )
-                }}
-              />
-            </Spacer>
-          )}
-          <Spacer top='14'>
+          <Spacer top='6'>
             <ShipmentSteps shipment={shipment} />
           </Spacer>
           <Spacer top='14'>
@@ -138,17 +125,30 @@ export function ShipmentDetails(): JSX.Element {
           <Spacer top='14'>
             <ShipmentAddresses shipment={shipment} />
           </Spacer>
+          <Spacer top='14'>
+            <ResourceDetails resource={shipment} />
+          </Spacer>
           {!isMockedId(shipment.id) && (
-            <Spacer top='14'>
-              <ResourceMetadata
-                resourceType='shipments'
-                resourceId={shipment.id}
-                overlay={{
-                  title: pageTitle
-                }}
-                mode='simple'
-              />
-            </Spacer>
+            <>
+              <Spacer top='14'>
+                <ResourceTags
+                  resourceType='shipments'
+                  resourceId={shipment.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
+              </Spacer>
+              <Spacer top='14'>
+                <ResourceMetadata
+                  resourceType='shipments'
+                  resourceId={shipment.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
+              </Spacer>
+            </>
           )}
           <Spacer top='14'>
             <ShipmentTimeline shipment={shipment} />

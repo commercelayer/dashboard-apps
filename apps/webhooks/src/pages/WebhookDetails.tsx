@@ -8,6 +8,8 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   useTokenProvider,
@@ -49,20 +51,21 @@ export const WebhookDetails: FC = () => {
     )
   }
 
+  const pageTitle = webhook.name
   const pageToolbar: PageHeadingProps['toolbar'] = {
     buttons: [],
     dropdownItems: []
   }
 
   if (canUser('update', 'webhooks')) {
-    pageToolbar.dropdownItems?.push([
-      {
-        label: 'Edit',
-        onClick: () => {
-          setLocation(appRoutes.editWebhook.makePath({ webhookId }))
-        }
+    pageToolbar.buttons?.push({
+      label: 'Edit',
+      size: 'small',
+      variant: 'secondary',
+      onClick: () => {
+        setLocation(appRoutes.editWebhook.makePath({ webhookId }))
       }
-    ])
+    })
   }
 
   if (canUser('destroy', 'webhooks')) {
@@ -81,7 +84,7 @@ export const WebhookDetails: FC = () => {
   ) : (
     <SkeletonTemplate isLoading={isLoading}>
       <PageLayout
-        title={webhook.name}
+        title={pageTitle}
         mode={settings.mode}
         navigationButton={{
           onClick: () => {
@@ -92,13 +95,25 @@ export const WebhookDetails: FC = () => {
         }}
         toolbar={pageToolbar}
       >
-        <Spacer bottom='12'>
+        <Spacer bottom='14'>
           <WebhookTopCard />
         </Spacer>
-        <Spacer bottom='12'>
+        <Spacer bottom='14'>
           <WebhookInfos webhook={webhook} />
         </Spacer>
         <WebhookCallback webhook={webhook} />
+        <Spacer top='14'>
+          <ResourceDetails resource={webhook} />
+        </Spacer>
+        <Spacer top='14'>
+          <ResourceMetadata
+            resourceType='webhooks'
+            resourceId={webhook.id}
+            overlay={{
+              title: pageTitle ?? ''
+            }}
+          />
+        </Spacer>
       </PageLayout>
     </SkeletonTemplate>
   )

@@ -17,17 +17,19 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
 
     return (
       <ListDetails title='Info'>
-        <ListDetailsItem label='Code'>{giftCard.code}</ListDetailsItem>
-        <ListDetailsItem label='Market'>
+        <ListDetailsItem label='Code' gutter='none'>
+          {giftCard.code}
+        </ListDetailsItem>
+        <ListDetailsItem label='Market' gutter='none'>
           {giftCard.market?.name ?? `All markets in ${giftCard.currency_code}`}
         </ListDetailsItem>
         {giftCard.balance_max_cents != null && (
-          <ListDetailsItem label='Max balance'>
+          <ListDetailsItem label='Max balance' gutter='none'>
             {giftCard.formatted_balance_max}
           </ListDetailsItem>
         )}
         {giftCard.gift_card_recipient != null && (
-          <ListDetailsItem label='Customer'>
+          <ListDetailsItem label='Customer' gutter='none'>
             {giftCard.gift_card_recipient.customer?.id != null ? (
               <a
                 {...navigateTo({
@@ -47,17 +49,18 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
           </ListDetailsItem>
         )}
         {giftCard.expires_at != null && (
-          <ListDetailsItem label='Expiration date'>
+          <ListDetailsItem label='Expiration date' gutter='none'>
             {formatDate({
               isoDate: giftCard.expires_at,
               format: 'fullWithSeconds',
-              timezone: user?.timezone
+              timezone: user?.timezone,
+              showCurrentYear: true
             })}
           </ListDetailsItem>
         )}
 
         {giftCard.rechargeable === true || giftCard.single_use === true ? (
-          <ListDetailsItem label='Options'>
+          <ListDetailsItem label='Options' gutter='none'>
             {giftCard.rechargeable === true && (
               <Badge variant='teal'>Rechargeable</Badge>
             )}
