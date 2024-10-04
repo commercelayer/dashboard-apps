@@ -127,24 +127,26 @@ export const SkuListDetails = (
       scrollToTop
       gap='only-top'
     >
-      {hasBundles && (
-        <Spacer top='12' bottom='4'>
-          <Alert status='info'>
-            Items in a SKU List linked to a Bundle cannot be modified.
-          </Alert>
-        </Spacer>
-      )}
-      <Spacer top='12' bottom='4'>
+      <Spacer top='10' bottom='4'>
         <Tabs keepAlive>
           <Tab name='Items'>
             {isManual && (
-              <SkuListManualItems
-                skuListId={skuListId}
-                hasBundles={hasBundles}
-              />
+              <>
+                {hasBundles && (
+                  <Spacer top='10' bottom='14'>
+                    <Alert status='info'>
+                      Items in a SKU List linked to a Bundle cannot be modified.
+                    </Alert>
+                  </Spacer>
+                )}
+                <SkuListManualItems
+                  skuListId={skuListId}
+                  hasBundles={hasBundles}
+                />
+              </>
             )}
             {isAutomatic && (
-              <Spacer top='14'>
+              <Spacer top='10'>
                 <CodeBlock
                   hint={{
                     text: 'Matching SKU codes are automatically included to this list.'
@@ -157,7 +159,7 @@ export const SkuListDetails = (
           </Tab>
           {showLinks ? (
             <Tab name='Links'>
-              <Spacer top='14'>
+              <Spacer top='10'>
                 <Section
                   title='Links'
                   border={linkListTable != null ? 'none' : undefined}
@@ -191,7 +193,7 @@ export const SkuListDetails = (
             </Tab>
           ) : null}
           <Tab name='Info'>
-            <Spacer top='14'>
+            <Spacer top='10'>
               <ResourceDetails resource={skuList} />
             </Spacer>
             {!isMockedId(skuList.id) && (
