@@ -105,7 +105,10 @@ export const StockTransferTimeline = withSkeletonTemplate<{
                     reference_origin: attachmentOption.referenceOrigin,
                     name: user.displayName,
                     description: event.currentTarget.value,
-                    attachable: { type: 'returns', id: stockTransfer.id }
+                    attachable: {
+                      type: 'stock_transfers',
+                      id: stockTransfer.id
+                    }
                   })
                   .then((attachment) => {
                     void mutateStockTransfer()
