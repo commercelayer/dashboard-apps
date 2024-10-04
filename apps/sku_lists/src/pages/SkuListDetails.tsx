@@ -3,7 +3,11 @@ import {
   Button,
   CodeBlock,
   EmptyState,
+  Icon,
   PageLayout,
+  ResourceDetails,
+  ResourceMetadata,
+  Section,
   SkeletonTemplate,
   Spacer,
   Tab,
@@ -19,6 +23,7 @@ import { SkuListManualItems } from '#components/SkuListManualItems'
 import { appRoutes, type PageProps } from '#data/routes'
 import { useSkuListDeleteOverlay } from '#hooks/useSkuListDeleteOverlay'
 import { useSkuListDetails } from '#hooks/useSkuListDetails'
+import { isMockedId } from '#mocks'
 import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
 
 export const SkuListDetails = (
@@ -77,18 +82,6 @@ export const SkuListDetails = (
     extras?.salesChannels != null && extras?.salesChannels.length > 0
 
   if (canUser('update', 'sku_lists')) {
-    if (showLinks) {
-      pageToolbar.buttons?.push({
-        label: 'New link',
-        icon: 'lightning',
-        size: 'small',
-        variant: 'secondary',
-        onClick: () => {
-          setLocation(appRoutes.linksNew.makePath({ resourceId: skuListId }))
-        }
-      })
-    }
-
     pageToolbar.buttons?.push({
       label: 'Edit',
       size: 'small',
@@ -144,34 +137,77 @@ export const SkuListDetails = (
       <Spacer top='12' bottom='4'>
         <Tabs keepAlive>
           <Tab name='Items'>
-            {isManual && (
-              <SkuListManualItems
-                skuListId={skuListId}
-                hasBundles={hasBundles}
-              />
-            )}
-            {isAutomatic && (
-              <Spacer top='6'>
-                <CodeBlock
-                  hint={{
-                    text: 'Matching SKU codes are automatically included to this list.'
-                  }}
+            <Spacer top='14'>
+              {isManual && (
+                <SkuListManualItems
+                  skuListId={skuListId}
+                  hasBundles={hasBundles}
+                />
+              )}
+              {isAutomatic && (
+                <Spacer top='6'>
+                  <CodeBlock
+                    hint={{
+                      text: 'Matching SKU codes are automatically included to this list.'
+                    }}
+                  >
+                    {skuList.sku_code_regex ?? ''}
+                  </CodeBlock>
+                </Spacer>
+              )}
+            </Spacer>
+          </Tab>
+          {showLinks ? (
+            <Tab name='Links'>
+              <Spacer top='14'>
+                <Section
+                  title='Links'
+                  border={linkListTable != null ? 'none' : undefined}
+                  actionButton={
+                    showLinks && (
+                      <Button
+                        size='mini'
+                        variant='secondary'
+                        alignItems='center'
+                        onClick={() => {
+                          setLocation(
+                            appRoutes.linksNew.makePath({
+                              resourceId: skuListId
+                            })
+                          )
+                        }}
+                      >
+                        <Icon name='lightning' size='16' />
+                        New link
+                      </Button>
+                    )
+                  }
                 >
-                  {skuList.sku_code_regex ?? ''}
-                </CodeBlock>
+                  {linkListTable ?? (
+                    <Spacer top='4'>
+                      <Text variant='info'>No items.</Text>
+                    </Spacer>
+                  )}
+                </Section>
+              </Spacer>
+            </Tab>
+          ) : null}
+          <Tab name='Info'>
+            <Spacer top='14'>
+              <ResourceDetails resource={skuList} />
+            </Spacer>
+            {!isMockedId(skuList.id) && (
+              <Spacer top='14'>
+                <ResourceMetadata
+                  resourceType='sku_lists'
+                  resourceId={skuList.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
               </Spacer>
             )}
           </Tab>
-          {showLinks ? (
-            <>
-              {linkListTable ?? (
-                <Spacer top='4'>
-                  <Text variant='info'>No items.</Text>
-                </Spacer>
-              )}
-            </>
-          ) : null}
-          <Tab name='Info'>INFO</Tab>
         </Tabs>
       </Spacer>
       {canUser('destroy', 'sku_lists') && <DeleteOverlay />}
