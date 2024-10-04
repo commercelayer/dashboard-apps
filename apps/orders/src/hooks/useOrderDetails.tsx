@@ -14,6 +14,9 @@ export const orderIncludeAttribute = [
   'payment_method',
   'payment_source',
 
+  // refund
+  'captures',
+
   // order editing
   'line_items.sku',
   'shipments.shipping_method',

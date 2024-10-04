@@ -1,11 +1,11 @@
 import { RefundForm } from '#components/RefundForm'
 import { refundNoteReferenceOrigin } from '#data/attachments'
 import { appRoutes } from '#data/routes'
+import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   Button,
   EmptyState,
   PageLayout,
-  useCoreApi,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
@@ -23,16 +23,7 @@ function Refund(): JSX.Element {
   const [saveApiError, setSaveApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const {
-    data: order,
-    isLoading,
-    error
-  } = useCoreApi('orders', 'retrieve', [
-    orderId,
-    {
-      include: ['captures', 'payment_method', 'payment_source']
-    }
-  ])
+  const { error, isLoading, order } = useOrderDetails(orderId)
 
   const capture = order?.captures?.find((c) => c.succeeded)
   const isRefundable =
