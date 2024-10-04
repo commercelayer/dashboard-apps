@@ -1,4 +1,4 @@
-import { referenceOrigins } from '#data/attachments'
+import { isAttachmentValidNote, referenceOrigins } from '#data/attachments'
 import { isMockedId } from '#mocks'
 import {
   Section,
@@ -14,7 +14,13 @@ import {
 
 import type { Attachment, StockTransfer } from '@commercelayer/sdk'
 import isEmpty from 'lodash/isEmpty'
-import { useEffect, useReducer, useState, type Reducer } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useReducer,
+  useState,
+  type Reducer
+} from 'react'
 
 export const StockTransferTimeline = withSkeletonTemplate<{
   stockTransferId?: string
@@ -42,7 +48,12 @@ export const StockTransferTimeline = withSkeletonTemplate<{
         isEmpty(stockTransferId) ||
         isMockedId(stockTransferId)
         ? null
-        : [stockTransferId],
+        : [
+            stockTransferId,
+            {
+              include: ['attachments']
+            }
+          ],
       {
         fallbackData: {
           type: 'stock_transfers',
@@ -105,7 +116,10 @@ export const StockTransferTimeline = withSkeletonTemplate<{
                     reference_origin: attachmentOption.referenceOrigin,
                     name: user.displayName,
                     description: event.currentTarget.value,
-                    attachable: { type: 'returns', id: stockTransfer.id }
+                    attachable: {
+                      type: 'stock_transfers',
+                      id: stockTransfer.id
+                    }
                   })
                   .then((attachment) => {
                     void mutateStockTransfer()
@@ -219,6 +233,38 @@ const useTimelineReducer = (stockTransfer: StockTransfer) => {
       }
     },
     [stockTransfer.cancelled_at]
+  )
+
+  const dispatchAttachments = useCallback(
+    (attachments?: Attachment[] | null | undefined) => {
+      if (attachments != null) {
+        attachments.forEach((attachment) => {
+          if (
+            isAttachmentValidNote(attachment, [
+              referenceOrigins.appStockTransfersNote
+            ])
+          ) {
+            dispatch({
+              type: 'add',
+              payload: {
+                date: attachment.updated_at,
+                author: attachment.name,
+                message: <span>left a note</span>,
+                note: attachment.description
+              }
+            })
+          }
+        })
+      }
+    },
+    []
+  )
+
+  useEffect(
+    function addAttachments() {
+      dispatchAttachments(stockTransfer.attachments)
+    },
+    [stockTransfer.attachments]
   )
 
   return [events, dispatch] as const
