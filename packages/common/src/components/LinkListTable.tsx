@@ -24,7 +24,6 @@ export const LinkListTable = ({
 
   return !isLoading && (links == null || links?.length === 0) ? null : (
     <Table
-      variant='boxed'
       thead={
         <Tr>
           <Th>Code</Th>
