@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
 import { z } from 'zod'
+import { RefundEstimator } from './RefundEstimator'
 
 interface Props {
   defaultValues: Partial<RefundFormValues>
@@ -75,6 +76,7 @@ export function RefundForm({
         icon: 'arrowLeft'
       }}
     >
+      <RefundEstimator order={order} />
       <HookedForm {...methods} onSubmit={onSubmit}>
         {step === 'fields' ? (
           <>
