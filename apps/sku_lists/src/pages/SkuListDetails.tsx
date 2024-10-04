@@ -137,29 +137,27 @@ export const SkuListDetails = (
       <Spacer top='12' bottom='4'>
         <Tabs keepAlive>
           <Tab name='Items'>
-            <Spacer top='14'>
-              {isManual && (
-                <SkuListManualItems
-                  skuListId={skuListId}
-                  hasBundles={hasBundles}
-                />
-              )}
-              {isAutomatic && (
-                <Spacer top='6'>
-                  <CodeBlock
-                    hint={{
-                      text: 'Matching SKU codes are automatically included to this list.'
-                    }}
-                  >
-                    {skuList.sku_code_regex ?? ''}
-                  </CodeBlock>
-                </Spacer>
-              )}
-            </Spacer>
+            {isManual && (
+              <SkuListManualItems
+                skuListId={skuListId}
+                hasBundles={hasBundles}
+              />
+            )}
+            {isAutomatic && (
+              <Spacer top='8'>
+                <CodeBlock
+                  hint={{
+                    text: 'Matching SKU codes are automatically included to this list.'
+                  }}
+                >
+                  {skuList.sku_code_regex ?? ''}
+                </CodeBlock>
+              </Spacer>
+            )}
           </Tab>
           {showLinks ? (
             <Tab name='Links'>
-              <Spacer top='14'>
+              <Spacer top='8'>
                 <Section
                   title='Links'
                   border={linkListTable != null ? 'none' : undefined}
@@ -193,11 +191,11 @@ export const SkuListDetails = (
             </Tab>
           ) : null}
           <Tab name='Info'>
-            <Spacer top='14'>
+            <Spacer top='8'>
               <ResourceDetails resource={skuList} />
             </Spacer>
             {!isMockedId(skuList.id) && (
-              <Spacer top='14'>
+              <Spacer top='8'>
                 <ResourceMetadata
                   resourceType='sku_lists'
                   resourceId={skuList.id}
