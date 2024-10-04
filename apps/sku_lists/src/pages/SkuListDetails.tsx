@@ -144,7 +144,7 @@ export const SkuListDetails = (
               />
             )}
             {isAutomatic && (
-              <Spacer top='8'>
+              <Spacer top='14'>
                 <CodeBlock
                   hint={{
                     text: 'Matching SKU codes are automatically included to this list.'
@@ -157,7 +157,7 @@ export const SkuListDetails = (
           </Tab>
           {showLinks ? (
             <Tab name='Links'>
-              <Spacer top='8'>
+              <Spacer top='14'>
                 <Section
                   title='Links'
                   border={linkListTable != null ? 'none' : undefined}
@@ -191,11 +191,11 @@ export const SkuListDetails = (
             </Tab>
           ) : null}
           <Tab name='Info'>
-            <Spacer top='8'>
+            <Spacer top='14'>
               <ResourceDetails resource={skuList} />
             </Spacer>
             {!isMockedId(skuList.id) && (
-              <Spacer top='8'>
+              <Spacer top='14'>
                 <ResourceMetadata
                   resourceType='sku_lists'
                   resourceId={skuList.id}
