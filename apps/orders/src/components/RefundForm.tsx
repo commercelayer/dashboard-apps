@@ -77,7 +77,7 @@ export function RefundForm({
         icon: 'arrowLeft'
       }}
     >
-      <RefundEstimator order={order} capture={capture} />
+      {step === 'fields' && <RefundEstimator order={order} capture={capture} />}
       <HookedForm {...methods} onSubmit={onSubmit}>
         {step === 'fields' ? (
           <>
@@ -86,11 +86,11 @@ export function RefundForm({
                 <HookedInputCurrency
                   currencyCode={order.currency_code as Uppercase<CurrencyCode>}
                   name='amountCents'
-                  label='Amount'
+                  label='Amount to refund'
                   hint={{
                     text: `You can refund up to ${
                       capture.formatted_refund_balance ?? '0'
-                    }`
+                    }. A full refund will cancel the order.`
                   }}
                 />
               ) : (
@@ -100,13 +100,16 @@ export function RefundForm({
             <Spacer bottom='8'>
               <HookedInput
                 name='note'
-                label='Note'
-                placeholder='Leave a note'
+                label='Reason'
+                hint={{
+                  text: `Only you and other staff can see this reason.`
+                }}
               />
             </Spacer>
 
             <Spacer top='14'>
               <Button
+                fullWidth
                 type='button'
                 disabled={
                   methods.watch('amountCents') == null ||
@@ -143,7 +146,7 @@ export function RefundForm({
                     order.currency_code as Uppercase<CurrencyCode>
                   )}
               </ListDetailsItem>
-              <ListDetailsItem label='Note'>
+              <ListDetailsItem label='Reason'>
                 {methods.getValues('note')}
               </ListDetailsItem>
               <ListDetailsItem label='Refund to'>
@@ -157,7 +160,7 @@ export function RefundForm({
             </ListDetails>
             <Spacer top='14'>
               {/* Real form submit */}
-              <Button type='submit' disabled={isSubmitting}>
+              <Button fullWidth type='submit' disabled={isSubmitting}>
                 Refund{' '}
                 {order.currency_code != null &&
                   formatCentsToCurrency(
