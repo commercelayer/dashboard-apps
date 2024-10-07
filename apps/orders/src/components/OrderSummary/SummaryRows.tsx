@@ -134,7 +134,14 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
         formattedAmount: order.formatted_payment_method_amount
       })}
       {renderTotalRowAmount({
-        label: 'Taxes',
+        label: (
+          <>
+            Taxes
+            <Text variant='info'>
+              {order.tax_included === true ? ' (included)' : ''}
+            </Text>
+          </>
+        ),
         amountCents: order.total_tax_amount_cents,
         formattedAmount: order.formatted_total_tax_amount
       })}
