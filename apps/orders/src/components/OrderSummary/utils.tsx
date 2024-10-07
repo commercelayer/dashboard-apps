@@ -4,7 +4,7 @@ import { Fragment } from 'react'
 
 interface TotalRowProps {
   /** Displayed label */
-  label: string
+  label: React.ReactNode
   /** Amount cents */
   amountCents: number | undefined | null
   /** Formatted amount */
@@ -24,7 +24,7 @@ export function renderTotalRow({
   value,
   bold = false
 }: {
-  label: string
+  label: React.ReactNode
   value: React.ReactNode
   bold?: boolean
 }): JSX.Element {
