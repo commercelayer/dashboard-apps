@@ -18,12 +18,12 @@ import {
   type CurrencyCode,
   type TextProps
 } from '@commercelayer/app-elements'
-import type { Capture, LineItem, Order } from '@commercelayer/sdk'
+import type { Capture, LineItem, Order, Refund } from '@commercelayer/sdk'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import type { SetFieldType } from 'type-fest'
 
-interface FieldValues {
+type FieldValues = {
   shippingMethod: boolean
   paymentMethod: boolean
   taxes: boolean
@@ -31,7 +31,8 @@ interface FieldValues {
   adjustments: boolean
   manualAdjustments: boolean
   giftCard: boolean
-}
+} & Record<`refund-${string}`, boolean>
+
 export function RefundEstimator({
   capture,
   order
@@ -48,7 +49,11 @@ export function RefundEstimator({
       discounts: true,
       adjustments: true,
       manualAdjustments: true,
-      giftCard: true
+      giftCard: true,
+      ...order.refunds?.reduce(
+        (acc, cv) => ({ ...acc, [getRefundName(cv)]: true }),
+        {}
+      )
     }
   })
 
@@ -74,7 +79,11 @@ export function RefundEstimator({
     discounts: 0,
     adjustments: 0,
     manualAdjustments: 0,
-    giftCard: 0
+    giftCard: 0,
+    ...order.refunds?.reduce(
+      (acc, cv) => ({ ...acc, [getRefundName(cv)]: 0 }),
+      {}
+    )
   })
 
   function sumAmount(
@@ -96,7 +105,11 @@ export function RefundEstimator({
       giftCard: 0, // order.gift_card_amount_cents ?? 0,
       manualAdjustments: 0,
       paymentMethod: order.payment_method_amount_cents ?? 0,
-      taxes: order.tax_included !== true ? sumAmount('tax') : 0
+      taxes: order.tax_included !== true ? sumAmount('tax') : 0,
+      ...order.refunds?.reduce(
+        (acc, cv) => ({ ...acc, [getRefundName(cv)]: cv.amount_cents * -1 }),
+        {}
+      )
     })
   }, [lineItemsAmounts, order])
 
@@ -119,14 +132,6 @@ export function RefundEstimator({
       }, 0)
     )
   }, [refundEstimate, formMethods.formState])
-
-  // if (
-  //   order.gift_card_amount_cents != null &&
-  //   order.gift_card_amount_cents !== 0
-  // ) {
-  //   // TODO: gift card is not supported
-  //   return null
-  // }
 
   return (
     <Spacer bottom='10'>
@@ -224,6 +229,17 @@ export function RefundEstimator({
               />
             </Spacer>
 
+            {order.refunds?.map((refund) => (
+              <Spacer key={refund.id} top='4' bottom='4'>
+                <SummaryRow
+                  name={getRefundName(refund)}
+                  label={`Refunded on ${formatDate({ format: 'full', isoDate: refund.created_at, timezone: user?.timezone })}`}
+                  amountCents={refundEstimate[getRefundName(refund)]}
+                  currencyCode={order.currency_code}
+                />
+              </Spacer>
+            ))}
+
             <Spacer top='10'>
               <ListItem padding='x' borderStyle='none'>
                 <Text weight='bold'>Refund estimate</Text>
@@ -247,6 +263,10 @@ export function RefundEstimator({
       </Card>
     </Spacer>
   )
+}
+
+function getRefundName(refund: Refund): `refund-${string}` {
+  return `refund-${refund.id}`
 }
 
 function LineItemRow({
