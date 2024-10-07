@@ -3,6 +3,7 @@ import {
   Card,
   CopyToClipboard,
   formatCentsToCurrency,
+  formatDate,
   HookedForm,
   HookedInputCheckbox,
   InputCheckbox,
@@ -13,10 +14,11 @@ import {
   Td,
   Text,
   Tr,
+  useTokenProvider,
   type CurrencyCode,
   type TextProps
 } from '@commercelayer/app-elements'
-import type { LineItem, Order } from '@commercelayer/sdk'
+import type { Capture, LineItem, Order } from '@commercelayer/sdk'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import type { SetFieldType } from 'type-fest'
@@ -30,7 +32,14 @@ interface FieldValues {
   manualAdjustments: boolean
   giftCard: boolean
 }
-export function RefundEstimator({ order }: { order: Order }): React.ReactNode {
+export function RefundEstimator({
+  capture,
+  order
+}: {
+  capture: Capture
+  order: Order
+}): React.ReactNode {
+  const { user } = useTokenProvider()
   const formMethods = useForm<FieldValues>({
     defaultValues: {
       shippingMethod: true,
@@ -125,7 +134,18 @@ export function RefundEstimator({ order }: { order: Order }): React.ReactNode {
         gap='none'
         footer={
           <ListItem padding='x' borderStyle='none'>
-            <Text size='small'>Paid on ...</Text>
+            <Text size='small'>
+              Paid on{' '}
+              {formatDate({
+                format: 'full',
+                isoDate: capture.created_at,
+                timezone: user?.timezone
+              })}{' '}
+              {order.payment_method?.name != null
+                ? `via ${order.payment_method.name}`
+                : ''}
+            </Text>
+            <Text size='small'>{capture.formatted_amount}</Text>
           </ListItem>
         }
       >

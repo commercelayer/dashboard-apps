@@ -77,7 +77,7 @@ export function RefundForm({
         icon: 'arrowLeft'
       }}
     >
-      <RefundEstimator order={order} />
+      <RefundEstimator order={order} capture={capture} />
       <HookedForm {...methods} onSubmit={onSubmit}>
         {step === 'fields' ? (
           <>
