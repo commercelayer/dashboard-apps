@@ -74,7 +74,9 @@ export function RefundEstimator({ order }: { order: Order }): React.ReactNode {
     return lineItemsAmounts.reduce<number>((acc, cv) => acc + cv[property], 0)
   }
 
-  console.log('sumAmount', refundEstimate)
+  console.log('lineItemsAmounts', lineItemsAmounts)
+  console.log('refundEstimate', refundEstimate)
+  console.log('totalRefundEstimate', totalRefundEstimate)
 
   useEffect(() => {
     setRefundEstimate({
@@ -82,10 +84,10 @@ export function RefundEstimator({ order }: { order: Order }): React.ReactNode {
       shippingMethod: order.shipping_amount_cents ?? 0,
       adjustments: order.adjustment_amount_cents ?? 0,
       discounts: sumAmount('discount'),
-      giftCard: order.gift_card_amount_cents ?? 0,
+      giftCard: 0, // order.gift_card_amount_cents ?? 0,
       manualAdjustments: 0,
       paymentMethod: order.payment_method_amount_cents ?? 0,
-      taxes: sumAmount('tax')
+      taxes: order.tax_included !== true ? sumAmount('tax') : 0
     })
   }, [lineItemsAmounts, order])
 
@@ -109,13 +111,13 @@ export function RefundEstimator({ order }: { order: Order }): React.ReactNode {
     )
   }, [refundEstimate, formMethods.formState])
 
-  if (
-    order.gift_card_amount_cents != null &&
-    order.gift_card_amount_cents !== 0
-  ) {
-    // TODO: gift card is not supported
-    return null
-  }
+  // if (
+  //   order.gift_card_amount_cents != null &&
+  //   order.gift_card_amount_cents !== 0
+  // ) {
+  //   // TODO: gift card is not supported
+  //   return null
+  // }
 
   return (
     <Spacer bottom='10'>
