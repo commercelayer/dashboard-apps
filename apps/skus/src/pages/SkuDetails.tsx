@@ -143,7 +143,7 @@ export const SkuDetails: FC = () => {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
-          <Spacer top='6'>
+          <Spacer top='14'>
             <SkuDescription sku={sku} />
           </Spacer>
           <Spacer top='14'>

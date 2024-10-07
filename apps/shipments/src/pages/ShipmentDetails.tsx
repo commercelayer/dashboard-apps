@@ -113,7 +113,7 @@ export function ShipmentDetails(): JSX.Element {
       <SkeletonTemplate isLoading={isLoading}>
         <pageToolbar.Components />
         <Spacer bottom='4'>
-          <Spacer top='6'>
+          <Spacer top='14'>
             <ShipmentSteps shipment={shipment} />
           </Spacer>
           <Spacer top='14'>
