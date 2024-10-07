@@ -150,7 +150,7 @@ function OrderDetails(): JSX.Element {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
-          <Spacer top='6'>
+          <Spacer top='14'>
             <OrderSteps order={order} />
           </Spacer>
           <Spacer top='14'>

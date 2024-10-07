@@ -107,7 +107,7 @@ export const BundleDetails: FC = () => {
         <>
           <SkeletonTemplate isLoading={isLoading}>
             <Spacer bottom='4'>
-              <Spacer top='6'>
+              <Spacer top='14'>
                 <BundleDescription bundle={bundle} />
               </Spacer>
               <Spacer top='14'>
