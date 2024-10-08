@@ -30,14 +30,16 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <SearchBar
-          initialValue={searchValue}
-          onSearch={setSearchValue}
-          placeholder='Search...'
-          onClear={() => {
-            setSearchValue('')
-          }}
-        />
+        <Spacer top='10'>
+          <SearchBar
+            initialValue={searchValue}
+            onSearch={setSearchValue}
+            placeholder='Search...'
+            onClear={() => {
+              setSearchValue('')
+            }}
+          />
+        </Spacer>
         <Spacer top='14'>
           <ResourceList
             key={reRenderListKey}
