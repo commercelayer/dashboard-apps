@@ -25,6 +25,7 @@ import { useSkuListDeleteOverlay } from '#hooks/useSkuListDeleteOverlay'
 import { useSkuListDetails } from '#hooks/useSkuListDetails'
 import { isMockedId } from '#mocks'
 import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
+import { useSearch } from 'wouter/use-browser-location'
 
 export const SkuListDetails = (
   props: PageProps<typeof appRoutes.details>
@@ -81,6 +82,14 @@ export const SkuListDetails = (
   const showLinks =
     extras?.salesChannels != null && extras?.salesChannels.length > 0
 
+  const tabs = ['items', ...(showLinks ? ['links'] : []), 'info']
+  const queryString = useSearch()
+  const urlParams = new URLSearchParams(queryString)
+  const defaultTab =
+    urlParams.get('tab') != null
+      ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
+      : 0
+
   if (canUser('update', 'sku_lists')) {
     pageToolbar.buttons?.push({
       label: 'Edit',
@@ -128,7 +137,7 @@ export const SkuListDetails = (
       gap='only-top'
     >
       <Spacer top='10' bottom='4'>
-        <Tabs keepAlive>
+        <Tabs keepAlive defaultTab={defaultTab}>
           <Tab name='Items'>
             {isManual && (
               <>
