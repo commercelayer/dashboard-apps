@@ -30,7 +30,14 @@ function Refund(): JSX.Element {
   } = useCoreApi('orders', 'retrieve', [
     orderId,
     {
-      include: ['captures', 'payment_method', 'payment_source']
+      include: [
+        'captures',
+        'line_items',
+        'line_items.line_item_options',
+        'payment_method',
+        'payment_source',
+        'refunds'
+      ]
     }
   ])
 
