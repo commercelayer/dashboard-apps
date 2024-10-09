@@ -28,6 +28,7 @@ import { appRoutes } from '#data/routes'
 import { useSkuDetails } from '#hooks/useSkuDetails'
 import { isMockedId } from '#mocks'
 import { useState, type FC } from 'react'
+import { useSearch } from 'wouter/use-browser-location'
 
 export const SkuDetails: FC = () => {
   const {
@@ -82,6 +83,14 @@ export const SkuDetails: FC = () => {
 
   const showLinks =
     extras?.salesChannels != null && extras?.salesChannels.length > 0
+
+  const tabs = ['info', ...(showLinks ? ['links'] : [])]
+  const queryString = useSearch()
+  const urlParams = new URLSearchParams(queryString)
+  const defaultTab =
+    urlParams.get('tab') != null
+      ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
+      : 0
 
   if (canUser('update', 'skus')) {
     pageToolbar.buttons?.push({
@@ -138,7 +147,7 @@ export const SkuDetails: FC = () => {
             <SkuDescription sku={sku} />
           </Spacer>
           <Spacer top='14'>
-            <Tabs keepAlive>
+            <Tabs keepAlive defaultTab={defaultTab}>
               <Tab name='Info'>
                 <Spacer top='10'>
                   <SkuInfo sku={sku} />
