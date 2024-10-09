@@ -139,6 +139,39 @@ export const SkuDetails: FC = () => {
           </Spacer>
           <Spacer top='14'>
             <Tabs keepAlive>
+              <Tab name='Info'>
+                <Spacer top='10'>
+                  <SkuInfo sku={sku} />
+                </Spacer>
+                <Spacer top='14'>
+                  <ResourceDetails resource={sku} />
+                </Spacer>
+                {!isMockedId(sku.id) && (
+                  <>
+                    <Spacer top='14'>
+                      <ResourceTags
+                        resourceType='skus'
+                        resourceId={sku.id}
+                        overlay={{ title: pageTitle }}
+                        onTagClick={(tagId) => {
+                          setLocation(
+                            appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                          )
+                        }}
+                      />
+                    </Spacer>
+                    <Spacer top='14'>
+                      <ResourceMetadata
+                        resourceType='skus'
+                        resourceId={sku.id}
+                        overlay={{
+                          title: pageTitle
+                        }}
+                      />
+                    </Spacer>
+                  </>
+                )}
+              </Tab>
               {showLinks ? (
                 <Tab name='Links'>
                   <Spacer top='10'>
@@ -175,39 +208,6 @@ export const SkuDetails: FC = () => {
                   </Spacer>
                 </Tab>
               ) : null}
-              <Tab name='Info'>
-                <Spacer top='10'>
-                  <SkuInfo sku={sku} />
-                </Spacer>
-                <Spacer top='14'>
-                  <ResourceDetails resource={sku} />
-                </Spacer>
-                {!isMockedId(sku.id) && (
-                  <>
-                    <Spacer top='14'>
-                      <ResourceTags
-                        resourceType='skus'
-                        resourceId={sku.id}
-                        overlay={{ title: pageTitle }}
-                        onTagClick={(tagId) => {
-                          setLocation(
-                            appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
-                          )
-                        }}
-                      />
-                    </Spacer>
-                    <Spacer top='14'>
-                      <ResourceMetadata
-                        resourceType='skus'
-                        resourceId={sku.id}
-                        overlay={{
-                          title: pageTitle
-                        }}
-                      />
-                    </Spacer>
-                  </>
-                )}
-              </Tab>
             </Tabs>
           </Spacer>
         </Spacer>
