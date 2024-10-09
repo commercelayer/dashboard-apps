@@ -1,4 +1,3 @@
-import { hasPaymentMethod, PaymentMethod } from '#components/PaymentMethod'
 import { appRoutes } from '#data/routes'
 import { getOrderTitle } from '#utils/getOrderTitle'
 import {
@@ -8,15 +7,12 @@ import {
   HookedInput,
   HookedInputCurrency,
   HookedValidationApiError,
-  ListDetails,
-  ListDetailsItem,
   PageLayout,
   Spacer,
   type CurrencyCode
 } from '@commercelayer/app-elements'
 import type { Capture, Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
 import { z } from 'zod'
@@ -49,16 +45,6 @@ export function RefundForm({
       )
     )
   })
-  const [step, setStep] = useState<'fields' | 'confirm'>('fields')
-
-  useEffect(
-    function showFieldsOnApiError() {
-      if (apiError != null) {
-        setStep('fields')
-      }
-    },
-    [apiError]
-  )
 
   return (
     <PageLayout
@@ -66,110 +52,70 @@ export function RefundForm({
       title='Make refund'
       navigationButton={{
         onClick: () => {
-          if (step === 'confirm') {
-            setStep('fields')
-          } else {
-            setLocation(appRoutes.details.makePath({ orderId: order.id }))
-          }
+          setLocation(appRoutes.details.makePath({ orderId: order.id }))
         },
-        label: step === 'confirm' ? 'Back' : getOrderTitle(order),
+        label: getOrderTitle(order),
         icon: 'arrowLeft'
       }}
     >
-      {step === 'fields' && <RefundEstimator order={order} capture={capture} />}
+      <RefundEstimator order={order} capture={capture} />
       <HookedForm {...methods} onSubmit={onSubmit}>
-        {step === 'fields' ? (
-          <>
-            <Spacer bottom='8'>
-              {order.currency_code != null ? (
-                <HookedInputCurrency
-                  currencyCode={order.currency_code as Uppercase<CurrencyCode>}
-                  name='amountCents'
-                  label='Amount to refund'
-                  hint={{
-                    text: `You can refund up to ${
-                      capture.formatted_refund_balance ?? '0'
-                    }. A full refund will cancel the order.`
-                  }}
-                />
-              ) : (
-                <div>missing currency code</div>
-              )}
-            </Spacer>
-            <Spacer bottom='8'>
-              <HookedInput
-                name='note'
-                label='Reason'
+        <>
+          <Spacer bottom='8'>
+            {order.currency_code != null ? (
+              <HookedInputCurrency
+                currencyCode={order.currency_code as Uppercase<CurrencyCode>}
+                name='amountCents'
+                label='Amount to refund'
                 hint={{
-                  text: `Only you and other staff can see this reason.`
+                  text: `You can refund up to ${
+                    capture.formatted_refund_balance ?? '0'
+                  }. A full refund will cancel the order.`
+                }}
+              />
+            ) : (
+              <div>missing currency code</div>
+            )}
+          </Spacer>
+
+          <Spacer bottom='8'>
+            <HookedInput
+              name='note'
+              label='Reason'
+              hint={{
+                text: `Only you and other staff can see this reason.`
+              }}
+            />
+          </Spacer>
+
+          <Spacer top='14'>
+            <Button
+              fullWidth
+              type='submit'
+              disabled={
+                methods.watch('amountCents') == null ||
+                methods.watch('amountCents') === 0 ||
+                isSubmitting
+              }
+            >
+              Refund{' '}
+              {order.currency_code != null &&
+                !isNaN(methods.getValues('amountCents')) &&
+                formatCentsToCurrency(
+                  methods.getValues('amountCents'),
+                  order.currency_code as Uppercase<CurrencyCode>
+                )}
+            </Button>
+            <Spacer top='2'>
+              <HookedValidationApiError
+                apiError={apiError}
+                fieldMap={{
+                  _refund_amount_cents: 'amountCents'
                 }}
               />
             </Spacer>
-
-            <Spacer top='14'>
-              <Button
-                fullWidth
-                type='button'
-                disabled={
-                  methods.watch('amountCents') == null ||
-                  methods.watch('amountCents') === 0
-                }
-                onClick={() => {
-                  // triggering form validation before proceeding to step `confirm`
-                  void methods.trigger().then((isValid) => {
-                    if (isValid) {
-                      setStep('confirm')
-                    }
-                  })
-                }}
-              >
-                Proceed with refund
-              </Button>
-              <Spacer top='2'>
-                <HookedValidationApiError
-                  apiError={apiError}
-                  fieldMap={{
-                    _refund_amount_cents: 'amountCents'
-                  }}
-                />
-              </Spacer>
-            </Spacer>
-          </>
-        ) : step === 'confirm' ? (
-          <>
-            <ListDetails>
-              <ListDetailsItem label='Amount'>
-                {order.currency_code != null &&
-                  formatCentsToCurrency(
-                    methods.getValues('amountCents'),
-                    order.currency_code as Uppercase<CurrencyCode>
-                  )}
-              </ListDetailsItem>
-              <ListDetailsItem label='Reason'>
-                {methods.getValues('note')}
-              </ListDetailsItem>
-              <ListDetailsItem label='Refund to'>
-                {hasPaymentMethod(order) ? (
-                  <PaymentMethod order={order} />
-                ) : (
-                  '-'
-                )}
-              </ListDetailsItem>
-              <ListDetailsItem label='Order'>#{order.number}</ListDetailsItem>
-            </ListDetails>
-            <Spacer top='14'>
-              {/* Real form submit */}
-              <Button fullWidth type='submit' disabled={isSubmitting}>
-                Refund{' '}
-                {order.currency_code != null &&
-                  formatCentsToCurrency(
-                    methods.getValues('amountCents'),
-                    order.currency_code as Uppercase<CurrencyCode>
-                  )}
-              </Button>
-            </Spacer>
-          </>
-        ) : null}
+          </Spacer>
+        </>
       </HookedForm>
     </PageLayout>
   )
