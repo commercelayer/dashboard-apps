@@ -48,10 +48,6 @@ export const LinkListRow = ({
   return (
     <Tr>
       <Td>
-        <Button variant='link' onClick={onLinkDetailsClick}>
-          {link.name}
-        </Button>
-
         <div
           style={{
             width: '210px',
@@ -59,6 +55,9 @@ export const LinkListRow = ({
             position: 'relative'
           }}
         >
+          <Button variant='link' onClick={onLinkDetailsClick}>
+            {link.name}
+          </Button>
           <span
             className='text-gray-500 font-semibold'
             style={{ fontSize: '11px' }}
