@@ -6,8 +6,8 @@ import {
   HomePageLayout,
   Icon,
   PageLayout,
-  ResourceList,
   Spacer,
+  useResourceList,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { FC } from 'react'
@@ -16,6 +16,15 @@ import { Link, useLocation } from 'wouter'
 export const WebhooksList: FC = () => {
   const { settings, canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { ResourceList } = useResourceList({
+    type: 'webhooks',
+    query: {
+      include: ['last_event_callbacks'],
+      sort: {
+        created_at: 'desc'
+      }
+    }
+  })
 
   if (!canUser('read', 'webhooks')) {
     return (
@@ -40,13 +49,6 @@ export const WebhooksList: FC = () => {
       <Spacer top='14'>
         <ResourceList
           title='All webhooks'
-          type='webhooks'
-          query={{
-            include: ['last_event_callbacks'],
-            sort: {
-              created_at: 'desc'
-            }
-          }}
           actionButton={
             canUser('create', 'webhooks') ? (
               <Link href={appRoutes.newWebhook.makePath({})}>

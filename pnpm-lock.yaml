@@ -24,8 +24,8 @@ importers:
   apps/bundles:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -106,8 +106,8 @@ importers:
   apps/customers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -117,9 +117,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      query-string:
-        specifier: ^9.1.1
-        version: 9.1.1
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -188,8 +185,8 @@ importers:
   apps/exports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.3)
@@ -276,8 +273,8 @@ importers:
   apps/gift_cards:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -355,8 +352,8 @@ importers:
   apps/imports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.0)(react@18.3.1)(typescript@5.6.3)
@@ -449,8 +446,8 @@ importers:
   apps/inventory:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -531,8 +528,8 @@ importers:
   apps/orders:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: ^6.22.0
         version: 6.22.0
@@ -616,8 +613,8 @@ importers:
   apps/price_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -698,8 +695,8 @@ importers:
   apps/promotions:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -783,8 +780,8 @@ importers:
   apps/returns:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -794,9 +791,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      query-string:
-        specifier: ^9.1.1
-        version: 9.1.1
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -865,8 +859,8 @@ importers:
   apps/shipments:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -876,9 +870,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      query-string:
-        specifier: ^9.1.1
-        version: 9.1.1
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -950,8 +941,8 @@ importers:
   apps/sku_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -1035,8 +1026,8 @@ importers:
   apps/skus:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -1123,8 +1114,8 @@ importers:
   apps/stock_transfers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -1134,9 +1125,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      query-string:
-        specifier: ^9.1.1
-        version: 9.1.1
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -1205,8 +1193,8 @@ importers:
   apps/tags:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -1216,9 +1204,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      query-string:
-        specifier: ^9.1.1
-        version: 9.1.1
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -1287,8 +1272,8 @@ importers:
   apps/webhooks:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.22.0
         version: 6.22.0
@@ -1390,8 +1375,8 @@ importers:
   packages/common:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: ^6.22.0
         version: 6.22.0
@@ -1436,8 +1421,8 @@ importers:
   packages/index:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: ^2.8.3
-        version: 2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: ^2.9.0
+        version: 2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1603,8 +1588,8 @@ packages:
     resolution: {integrity: sha512-/l42B1qxpG6RdfYf343Uw1vmDjeNhneUXtzhojE7pDgfpEypmRhI6j1kr17XCVv4Cgl9HdAiQY2x0GwKm7rWCw==}
     engines: {node: '>=6.9.0'}
 
-  '@commercelayer/app-elements@2.8.3':
-    resolution: {integrity: sha512-bJJANduwUdPQ3Gzokt/toCj0AURE/rMRITfbZM2DC/5ZtGLSHRIS+5mfVoCGznt9Y03GBN7PIXJCsGh3VPfk6w==}
+  '@commercelayer/app-elements@2.9.0':
+    resolution: {integrity: sha512-TQn3i98qF2XNyU2h4GlLlnOo7W2hj95tPM7sdYeu8zrjKx9j4AeOueaedj3gAvC8u6MrmBIBqsP32uVc9YR22Q==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^6.x
@@ -2335,8 +2320,9 @@ packages:
   '@types/prop-types@15.7.12':
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
 
-  '@types/react-datepicker@6.2.0':
-    resolution: {integrity: sha512-+JtO4Fm97WLkJTH8j8/v3Ldh7JCNRwjMYjRaKh4KHH0M3jJoXtwiD3JBCsdlg3tsFIw9eQSqyAPeVDN2H2oM9Q==}
+  '@types/react-datepicker@7.0.0':
+    resolution: {integrity: sha512-4tWwOUq589tozyQPBVEqGNng5DaZkomx5IVNuur868yYdgjH6RaL373/HKiVt1IDoNNXYiTGspm1F7kjrarM8Q==}
+    deprecated: This is a stub types definition. react-datepicker provides its own type definitions, so you do not need this installed.
 
   '@types/react-dom@18.3.0':
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
@@ -4777,8 +4763,8 @@ packages:
     peerDependencies:
       react: ^16.9.0 || ^17.0.0 || ^18.0.0
 
-  react-datepicker@7.3.0:
-    resolution: {integrity: sha512-EqRKLAtLZUTztiq6a+tjSjQX9ES0Xd229JPckAtyZZ4GoY3rtvNWAzkYZnQUf6zTWT50Ki0+t+W9VRQIkSJLfg==}
+  react-datepicker@7.4.0:
+    resolution: {integrity: sha512-vSSok4DTZ9/Os8O4HjZLxh4SZVFU6dQvoCX6mfbNdBqMsBBdzftrvMz0Nb4UUVVbgj9o8PfX84K3/31oPrTqmg==}
     peerDependencies:
       react: ^16.9.0 || ^17 || ^18
       react-dom: ^16.9.0 || ^17 || ^18
@@ -4805,12 +4791,6 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
-
-  react-onclickoutside@6.13.1:
-    resolution: {integrity: sha512-LdrrxK/Yh9zbBQdFbMTXPp3dTSN9B+9YJQucdDu3JNKRrbdU+H+/TVONJoWtOwy4II8Sqf1y/DTI6w/vGPYW0w==}
-    peerDependencies:
-      react: ^15.5.x || ^16.x || ^17.x || ^18.x
-      react-dom: ^15.5.x || ^16.x || ^17.x || ^18.x
 
   react-qrcode-logo@3.0.0:
     resolution: {integrity: sha512-2+vZ3GNBdUpYxIKyt6SFZsDGXa0xniyUQ0wPI4O0hJTzRjttPIx1pPnH9IWQmp/4nDMoN47IBhi3Breu1KudYw==}
@@ -5868,12 +5848,12 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@commercelayer/app-elements@2.8.3(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
+  '@commercelayer/app-elements@2.9.0(@commercelayer/sdk@6.22.0)(query-string@9.1.1)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
     dependencies:
       '@commercelayer/sdk': 6.22.0
       '@types/lodash': 4.17.10
       '@types/react': 18.3.11
-      '@types/react-datepicker': 6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react-datepicker': 7.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react-dom': 18.3.0
       classnames: 2.5.1
       jwt-decode: 4.0.0
@@ -5882,7 +5862,7 @@ snapshots:
       query-string: 9.1.1
       react: 18.3.1
       react-currency-input-field: 3.8.0(react@18.3.1)
-      react-datepicker: 7.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-datepicker: 7.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
       react-gtm-module: 2.0.11
       react-hook-form: 7.53.0(react@18.3.1)
@@ -6743,11 +6723,9 @@ snapshots:
 
   '@types/prop-types@15.7.12': {}
 
-  '@types/react-datepicker@6.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@types/react-datepicker@7.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@floating-ui/react': 0.26.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/react': 18.3.11
-      date-fns: 3.6.0
+      react-datepicker: 7.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - react
       - react-dom
@@ -9555,7 +9533,7 @@ snapshots:
     dependencies:
       react: 18.3.1
 
-  react-datepicker@7.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-datepicker@7.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@floating-ui/react': 0.26.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       clsx: 2.1.1
@@ -9563,7 +9541,6 @@ snapshots:
       prop-types: 15.8.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-onclickoutside: 6.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   react-dom@18.3.1(react@18.3.1):
     dependencies:
@@ -9582,11 +9559,6 @@ snapshots:
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
-
-  react-onclickoutside@6.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
 
   react-qrcode-logo@3.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

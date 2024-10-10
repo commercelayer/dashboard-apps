@@ -16,7 +16,7 @@ interface Options {
 }
 interface OverlayHook {
   show: (options: Options) => void
-  Overlay: React.FC<{ onClose: () => void }>
+  Overlay: React.FC<{ onDelete: (couponId: string) => void }>
 }
 
 export function useDeleteCouponOverlay(): OverlayHook {
@@ -32,7 +32,7 @@ export function useDeleteCouponOverlay(): OverlayHook {
       setOptions(options)
       open()
     },
-    Overlay: ({ onClose }) => {
+    Overlay: ({ onDelete }) => {
       return (
         <OverlayElement backgroundColor='light'>
           <SkeletonTemplate isLoading={isMockedId(options.coupon.id)}>
@@ -66,7 +66,7 @@ export function useDeleteCouponOverlay(): OverlayHook {
                     }
                   })
                   .then(() => {
-                    onClose()
+                    onDelete(options.coupon.id)
                     close()
                   })
               }}

@@ -3,9 +3,9 @@ import type { PageProps } from '#components/Routes'
 import { appRoutes } from '#data/routes'
 import {
   PageLayout,
-  ResourceList,
   SearchBar,
   Spacer,
+  useResourceList,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { useState } from 'react'
@@ -17,7 +17,19 @@ function Page(props: PageProps<typeof appRoutes.couponList>): JSX.Element {
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [searchValue, setSearchValue] = useState<string>()
-  const [hardRefresh, setHardRefresh] = useState<number>()
+
+  const { list, isLoading, removeItem } = useResourceList({
+    type: 'coupons',
+    query: {
+      filters: {
+        promotion_rule_promotion_id_eq: props.params.promotionId,
+        ...(searchValue != null
+          ? { code_or_coupon_recipient_email_cont: searchValue }
+          : {})
+      },
+      sort: ['-updated_at']
+    }
+  })
 
   return (
     <PageLayout
@@ -65,41 +77,15 @@ function Page(props: PageProps<typeof appRoutes.couponList>): JSX.Element {
       </Spacer>
 
       <Spacer top='10'>
-        <ResourceList
-          key={hardRefresh}
-          type='coupons'
-          query={{
-            filters: {
-              promotion_rule_promotion_id_eq: props.params.promotionId,
-              ...(searchValue != null
-                ? { code_or_coupon_recipient_email_cont: searchValue }
-                : {})
-            },
-            sort: ['-updated_at']
+        <CouponTable
+          isLoading={isLoading}
+          boxed
+          promotionId={props.params.promotionId}
+          coupons={list ?? []}
+          onDelete={(couponId) => {
+            removeItem(couponId)
           }}
-          emptyState={
-            <CouponTable
-              boxed
-              promotionId={props.params.promotionId}
-              coupons={[]}
-              onDelete={() => {}}
-            />
-          }
-          ItemTemplate={() => <></>}
-        >
-          {({ isLoading, data }) => (
-            <CouponTable
-              isLoading={isLoading}
-              boxed
-              promotionId={props.params.promotionId}
-              coupons={data?.list ?? []}
-              onDelete={() => {
-                console.log('deleted')
-                setHardRefresh(Math.random())
-              }}
-            />
-          )}
-        </ResourceList>
+        />
       </Spacer>
     </PageLayout>
   )

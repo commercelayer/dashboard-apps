@@ -9,10 +9,10 @@ import {
   RadialProgress,
   StatusIcon,
   Text,
-  useTokenProvider
+  useTokenProvider,
+  withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Webhook } from '@commercelayer/sdk'
-import type { FC } from 'react'
 import { useLocation } from 'wouter'
 
 /**
@@ -44,28 +44,31 @@ interface ListItemWebhookProps {
   delayMs?: number
 }
 
-export const ListItemWebhook: FC<ListItemWebhookProps> = ({
-  resource = makeWebhook()
-}) => {
-  const [, setLocation] = useLocation()
-  const { user } = useTokenProvider()
-  const webhookPredicate = getWebhookPredicateByStatus(resource, user?.timezone)
+export const ListItemWebhook = withSkeletonTemplate<ListItemWebhookProps>(
+  ({ resource = makeWebhook() }) => {
+    const [, setLocation] = useLocation()
+    const { user } = useTokenProvider()
+    const webhookPredicate = getWebhookPredicateByStatus(
+      resource,
+      user?.timezone
+    )
 
-  return (
-    <ListItem
-      alignItems='center'
-      icon={getListUiIcon(resource)}
-      onClick={() => {
-        setLocation(appRoutes.details.makePath({ webhookId: resource.id }))
-      }}
-    >
-      <div>
-        <Text weight='bold'>{resource.name}</Text>
-        <Hint>
-          {resource.topic} · {webhookPredicate}
-        </Hint>
-      </div>
-      <Icon name='caretRight' />
-    </ListItem>
-  )
-}
+    return (
+      <ListItem
+        alignItems='center'
+        icon={getListUiIcon(resource)}
+        onClick={() => {
+          setLocation(appRoutes.details.makePath({ webhookId: resource.id }))
+        }}
+      >
+        <div>
+          <Text weight='bold'>{resource.name}</Text>
+          <Hint>
+            {resource.topic} · {webhookPredicate}
+          </Hint>
+        </div>
+        <Icon name='caretRight' />
+      </ListItem>
+    )
+  }
+)

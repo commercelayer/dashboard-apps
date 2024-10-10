@@ -22,7 +22,7 @@ import { useLocation } from 'wouter'
 interface Props {
   coupons: Coupon[]
   promotionId: string
-  onDelete: () => void
+  onDelete: (couponId: string) => void
   boxed?: boolean
   isLoading?: boolean
 }
@@ -43,11 +43,7 @@ export const CouponTable = ({
 
   return (
     <>
-      <CouponOverlay
-        onClose={() => {
-          onDelete()
-        }}
-      />
+      <CouponOverlay onDelete={onDelete} />
       <Table
         variant={boxed ? 'boxed' : undefined}
         thead={

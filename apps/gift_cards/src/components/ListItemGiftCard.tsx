@@ -7,9 +7,9 @@ import {
   navigateTo,
   Text,
   withSkeletonTemplate,
-  type AvatarProps
+  type AvatarProps,
+  type ResourceListItemTemplateProps
 } from '@commercelayer/app-elements'
-import type { ResourceListItemTemplateProps } from '@commercelayer/app-elements/dist/ui/resources/ResourceList/ResourceList'
 import isEmpty from 'lodash/isEmpty'
 import { useLocation } from 'wouter'
 

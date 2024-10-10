@@ -2,11 +2,11 @@ import { useAddItemOverlay } from '#hooks/useAddItemOverlay'
 import {
   Button,
   Icon,
-  ResourceList,
   SearchBar,
   Spacer,
   Text,
   useCoreSdkProvider,
+  useResourceList,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -25,8 +25,20 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
       useAddItemOverlay()
     const { canUser } = useTokenProvider()
     const { sdkClient } = useCoreSdkProvider()
-    const [reRenderListKey, setReRenderListKey] = useState<string>()
     const [excludedSkusFromAdd, setExcludedSkusFromAdd] = useState<string[]>([])
+    const { ResourceList, refresh } = useResourceList({
+      type: 'sku_list_items',
+      query: {
+        filters: {
+          sku_list_id_eq: skuListId,
+          ...(searchValue != null
+            ? { sku_code_or_sku_name_cont: searchValue }
+            : {})
+        },
+        include: ['sku'],
+        sort: ['position']
+      }
+    })
 
     return (
       <>
@@ -42,24 +54,12 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
         </Spacer>
         <Spacer top='14'>
           <ResourceList
-            key={reRenderListKey}
             title='Results'
-            type='sku_list_items'
             emptyState={
               <Spacer top='4'>
                 <Text variant='info'>No items.</Text>
               </Spacer>
             }
-            query={{
-              filters: {
-                sku_list_id_eq: skuListId,
-                ...(searchValue != null
-                  ? { sku_code_or_sku_name_cont: searchValue }
-                  : {})
-              },
-              include: ['sku'],
-              sort: ['position']
-            }}
             actionButton={
               canUser('create', 'sku_list_items') &&
               !hasBundles && (
@@ -104,8 +104,8 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
                   sku_list: sdkClient.sku_lists.relationship(skuListId),
                   sku: sdkClient.skus.relationship(resource.id)
                 })
-                .then((newItem) => {
-                  setReRenderListKey(newItem.id)
+                .then(() => {
+                  refresh()
                 })
             }}
           />
