@@ -69,6 +69,7 @@ const EventList: FC<{ webhookId: string }> = ({ webhookId }) => {
     type: 'event_callbacks',
     query: {
       filters: { webhook_id_eq: webhookId },
+      pageSize: 25,
       sort: ['-updated_at']
     }
   })
