@@ -3,28 +3,29 @@ import {
   Button,
   CodeBlock,
   EmptyState,
+  Icon,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
   Section,
   SkeletonTemplate,
   Spacer,
+  Tab,
+  Tabs,
   Text,
   goBack,
-  useCoreSdkProvider,
-  useOverlay,
   useTokenProvider,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 
-import { ListItemSkuListItem } from '#components/ListItemSkuListItem'
+import { SkuListManualItems } from '#components/SkuListManualItems'
 import { appRoutes, type PageProps } from '#data/routes'
+import { useSkuListDeleteOverlay } from '#hooks/useSkuListDeleteOverlay'
 import { useSkuListDetails } from '#hooks/useSkuListDetails'
-import { useSkuListItems } from '#hooks/useSkuListItems'
 import { isMockedId } from '#mocks'
 import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
-import { useState } from 'react'
+import { useSearch } from 'wouter/use-browser-location'
 
 export const SkuListDetails = (
   props: PageProps<typeof appRoutes.details>
@@ -38,13 +39,9 @@ export const SkuListDetails = (
   const skuListId = props.params?.skuListId ?? ''
 
   const { skuList, isLoading, error } = useSkuListDetails(skuListId)
-  const { skuListItems, isLoadingItems } = useSkuListItems(skuListId)
 
-  const { sdkClient } = useCoreSdkProvider()
-
-  const { Overlay, open, close } = useOverlay()
-
-  const [isDeleting, setIsDeleting] = useState(false)
+  const { Overlay: DeleteOverlay, show: showDeleteOverlay } =
+    useSkuListDeleteOverlay(skuList)
 
   if (error != null) {
     return (
@@ -73,8 +70,7 @@ export const SkuListDetails = (
 
   const pageTitle = skuList?.name
   const hasBundles = skuList?.bundles != null && skuList?.bundles.length > 0
-  const isManual =
-    skuList?.manual === true && skuListItems != null && skuListItems.length > 0
+  const isManual = skuList?.manual === true
   const isAutomatic =
     skuList?.manual === false && skuList.sku_code_regex != null
 
@@ -86,19 +82,15 @@ export const SkuListDetails = (
   const showLinks =
     extras?.salesChannels != null && extras?.salesChannels.length > 0
 
-  if (canUser('update', 'sku_lists')) {
-    if (showLinks) {
-      pageToolbar.buttons?.push({
-        label: 'New link',
-        icon: 'lightning',
-        size: 'small',
-        variant: 'secondary',
-        onClick: () => {
-          setLocation(appRoutes.linksNew.makePath({ resourceId: skuListId }))
-        }
-      })
-    }
+  const tabs = ['items', ...(showLinks ? ['links'] : []), 'info']
+  const queryString = useSearch()
+  const urlParams = new URLSearchParams(queryString)
+  const defaultTab =
+    urlParams.get('tab') != null
+      ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
+      : 0
 
+  if (canUser('update', 'sku_lists')) {
     pageToolbar.buttons?.push({
       label: 'Edit',
       size: 'small',
@@ -114,7 +106,7 @@ export const SkuListDetails = (
       {
         label: 'Delete',
         onClick: () => {
-          open()
+          showDeleteOverlay()
         }
       }
     ])
@@ -144,22 +136,26 @@ export const SkuListDetails = (
       scrollToTop
       gap='only-top'
     >
-      <SkeletonTemplate isLoading={isLoadingItems}>
-        {hasBundles && (
-          <Spacer top='12' bottom='4'>
-            <Alert status='info'>
-              Items in a SKU List linked to a Bundle cannot be modified.
-            </Alert>
-          </Spacer>
-        )}
-        <Spacer top='12' bottom='4'>
-          <Section title='Items'>
-            {isManual ? (
-              skuListItems.map((item) => (
-                <ListItemSkuListItem key={item.sku_code} resource={item} />
-              ))
-            ) : isAutomatic ? (
-              <Spacer top='6'>
+      <Spacer top='10' bottom='4'>
+        <Tabs keepAlive defaultTab={defaultTab}>
+          <Tab name='Items'>
+            {isManual && (
+              <>
+                {hasBundles && (
+                  <Spacer top='10' bottom='14'>
+                    <Alert status='info'>
+                      Items in a SKU List linked to a Bundle cannot be modified.
+                    </Alert>
+                  </Spacer>
+                )}
+                <SkuListManualItems
+                  skuListId={skuListId}
+                  hasBundles={hasBundles}
+                />
+              </>
+            )}
+            {isAutomatic && (
+              <Spacer top='10'>
                 <CodeBlock
                   hint={{
                     text: 'Matching SKU codes are automatically included to this list.'
@@ -168,77 +164,62 @@ export const SkuListDetails = (
                   {skuList.sku_code_regex ?? ''}
                 </CodeBlock>
               </Spacer>
-            ) : (
-              <Spacer top='4'>
-                <Text variant='info'>No items.</Text>
+            )}
+          </Tab>
+          {showLinks ? (
+            <Tab name='Links'>
+              <Spacer top='10'>
+                <Section
+                  title='Links'
+                  border={linkListTable != null ? 'none' : undefined}
+                  actionButton={
+                    showLinks && (
+                      <Button
+                        size='mini'
+                        variant='secondary'
+                        alignItems='center'
+                        onClick={() => {
+                          setLocation(
+                            appRoutes.linksNew.makePath({
+                              resourceId: skuListId
+                            })
+                          )
+                        }}
+                      >
+                        <Icon name='lightning' size='16' />
+                        New link
+                      </Button>
+                    )
+                  }
+                >
+                  {linkListTable ?? (
+                    <Spacer top='4'>
+                      <Text variant='info'>No items.</Text>
+                    </Spacer>
+                  )}
+                </Section>
+              </Spacer>
+            </Tab>
+          ) : null}
+          <Tab name='Info'>
+            <Spacer top='10'>
+              <ResourceDetails resource={skuList} />
+            </Spacer>
+            {!isMockedId(skuList.id) && (
+              <Spacer top='14'>
+                <ResourceMetadata
+                  resourceType='sku_lists'
+                  resourceId={skuList.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
               </Spacer>
             )}
-          </Section>
-        </Spacer>
-        {showLinks && (
-          <Spacer top='12' bottom='4'>
-            <Section
-              title='Links'
-              border={linkListTable != null ? 'none' : undefined}
-            >
-              {linkListTable ?? (
-                <Spacer top='4'>
-                  <Text variant='info'>No items.</Text>
-                </Spacer>
-              )}
-            </Section>
-          </Spacer>
-        )}
-        <Spacer top='14'>
-          <ResourceDetails resource={skuList} />
-        </Spacer>
-        {!isMockedId(skuList.id) && (
-          <Spacer top='14'>
-            <ResourceMetadata
-              resourceType='sku_lists'
-              resourceId={skuList.id}
-              overlay={{
-                title: pageTitle
-              }}
-            />
-          </Spacer>
-        )}
-      </SkeletonTemplate>
-      {canUser('destroy', 'sku_lists') && (
-        <Overlay backgroundColor='light'>
-          <PageLayout
-            title={`Confirm that you want to cancel the SKU list (${skuList?.name}).`}
-            description='This action cannot be undone, proceed with caution.'
-            minHeight={false}
-            navigationButton={{
-              onClick: () => {
-                close()
-              },
-              label: `Cancel`,
-              icon: 'x'
-            }}
-          >
-            <Button
-              variant='danger'
-              size='small'
-              disabled={isDeleting}
-              onClick={(e) => {
-                setIsDeleting(true)
-                e.stopPropagation()
-                void sdkClient.sku_lists
-                  .delete(skuList.id)
-                  .then(() => {
-                    setLocation(appRoutes.list.makePath({}))
-                  })
-                  .catch(() => {})
-              }}
-              fullWidth
-            >
-              Delete SKU list
-            </Button>
-          </PageLayout>
-        </Overlay>
-      )}
+          </Tab>
+        </Tabs>
+      </Spacer>
+      {canUser('destroy', 'sku_lists') && <DeleteOverlay />}
     </PageLayout>
   )
 }

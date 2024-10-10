@@ -33,6 +33,7 @@ export function useMarketsList({ settings }: Props): {
     'list',
     [
       {
+        filters: { customer_group_null: true, private_true: false },
         fields: ['id', 'name'],
         sort: ['name'],
         pageNumber,

@@ -8,10 +8,10 @@ export function LinkNew(
   props: PageProps<typeof appRoutes.linksNew>
 ): JSX.Element {
   const skuListId = props.params?.resourceId ?? ''
-  const goBackUrl = appRoutes.details.makePath({ skuListId })
+  const goBackUrl = `${appRoutes.details.makePath({ skuListId })}?tab=links`
+
   const { skuList, isLoading } = useSkuListDetails(skuListId)
-  const defaultName =
-    isLoading || isMockedId(skuList.id) ? '' : `Link to ${skuList.name}.`
+  const defaultName = isLoading || isMockedId(skuList.id) ? '' : skuList.name
 
   return (
     <LinkNewPage

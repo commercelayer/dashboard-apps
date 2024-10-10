@@ -8,7 +8,7 @@ export function LinkEdit(
   const skuListId = props.params?.resourceId ?? ''
   const linkId = props.params?.linkId ?? ''
 
-  const goBackUrl = appRoutes.details.makePath({ skuListId })
+  const goBackUrl = `${appRoutes.details.makePath({ skuListId })}?tab=links`
 
   return (
     <LinkEditPage

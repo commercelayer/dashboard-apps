@@ -28,8 +28,6 @@ export function useAddItemOverlay(): OverlayHook {
       open()
     },
     Overlay: ({ onConfirm }) => {
-      // filters: { code_not_in: excludedCodes }
-
       const instructions: FiltersInstructions = [
         {
           label: 'Already selected items',
