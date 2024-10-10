@@ -17,9 +17,8 @@ function Page(props: PageProps<typeof appRoutes.couponList>): JSX.Element {
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [searchValue, setSearchValue] = useState<string>()
-  const [hardRefresh, setHardRefresh] = useState<number>()
 
-  const { list, isLoading } = useResourceList({
+  const { list, isLoading, removeItem } = useResourceList({
     type: 'coupons',
     query: {
       filters: {
@@ -79,14 +78,12 @@ function Page(props: PageProps<typeof appRoutes.couponList>): JSX.Element {
 
       <Spacer top='10'>
         <CouponTable
-          key={hardRefresh}
           isLoading={isLoading}
           boxed
           promotionId={props.params.promotionId}
           coupons={list ?? []}
-          onDelete={() => {
-            console.log('deleted')
-            setHardRefresh(Math.random())
+          onDelete={(couponId) => {
+            removeItem(couponId)
           }}
         />
       </Spacer>
