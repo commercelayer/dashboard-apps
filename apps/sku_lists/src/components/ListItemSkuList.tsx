@@ -26,7 +26,7 @@ export const ListItemSkuList = withSkeletonTemplate<Props>(
         }}
       >
         <div>
-          <Text weight='bold'>{resource.name}</Text>
+          <Text weight='semibold'>{resource.name}</Text>
         </div>
         <Icon name='caretRight' />
       </ListItem>
