@@ -4,7 +4,7 @@ import {
   Button,
   EmptyState,
   PageLayout,
-  ResourceList,
+  useResourceList,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { FC } from 'react'
@@ -58,17 +58,26 @@ export const EventCallbacksList: FC = () => {
         icon: 'x'
       }}
     >
-      <ResourceList
-        type='event_callbacks'
-        query={{
-          filters: { webhook_id_eq: webhookId },
-          sort: ['-updated_at']
-        }}
-        title='All event callbacks'
-        emptyState={<EmptyState title='No event callbacks yet!' />}
-        ItemTemplate={ListItemEvenCallback}
-      />
+      <EventList webhookId={webhookId} />
       {/* <EventCallbacksListItems eventCallbacks={list} /> */}
     </PageLayout>
+  )
+}
+
+const EventList: FC<{ webhookId: string }> = ({ webhookId }) => {
+  const { ResourceList } = useResourceList({
+    type: 'event_callbacks',
+    query: {
+      filters: { webhook_id_eq: webhookId },
+      sort: ['-updated_at']
+    }
+  })
+
+  return (
+    <ResourceList
+      title='All event callbacks'
+      emptyState={<EmptyState title='No event callbacks yet!' />}
+      ItemTemplate={ListItemEvenCallback}
+    />
   )
 }
