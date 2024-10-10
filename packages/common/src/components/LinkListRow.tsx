@@ -43,39 +43,15 @@ export const LinkListRow = ({
     return <></>
   }
 
+  const linkName = `${link.name.substring(0, 30)}${link.name.length > 30 ? `...` : ''}`
   const linkStatus = getLinkStatus(link)
 
   return (
     <Tr>
       <Td>
         <Button variant='link' onClick={onLinkDetailsClick}>
-          {link.name}
+          {linkName}
         </Button>
-
-        <div
-          style={{
-            width: '210px',
-            overflow: 'hidden',
-            position: 'relative'
-          }}
-        >
-          <span
-            className='text-gray-500 font-semibold'
-            style={{ fontSize: '11px' }}
-          >
-            {link.url}
-          </span>
-          <span
-            style={{
-              position: 'absolute',
-              right: '0',
-              top: '0',
-              width: '26px',
-              height: '100%',
-              background: 'linear-gradient(to right, transparent 12px, white)'
-            }}
-          />
-        </div>
       </Td>
       <Td>
         <Tooltip

@@ -7,7 +7,7 @@ export const LinkDetails = (
   const skuId = props.params?.resourceId ?? ''
   const linkId = props.params?.linkId ?? ''
 
-  const goBackUrl = appRoutes.details.makePath({ skuId })
+  const goBackUrl = `${appRoutes.details.makePath({ skuId })}?tab=links`
 
   return <LinkDetailsPage linkId={linkId} goBackUrl={goBackUrl} />
 }

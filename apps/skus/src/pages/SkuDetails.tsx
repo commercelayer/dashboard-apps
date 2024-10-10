@@ -1,6 +1,7 @@
 import {
   Button,
   EmptyState,
+  Icon,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
@@ -8,6 +9,8 @@ import {
   Section,
   SkeletonTemplate,
   Spacer,
+  Tab,
+  Tabs,
   Text,
   goBack,
   useCoreSdkProvider,
@@ -25,6 +28,7 @@ import { appRoutes } from '#data/routes'
 import { useSkuDetails } from '#hooks/useSkuDetails'
 import { isMockedId } from '#mocks'
 import { useState, type FC } from 'react'
+import { useSearch } from 'wouter/use-browser-location'
 
 export const SkuDetails: FC = () => {
   const {
@@ -80,19 +84,15 @@ export const SkuDetails: FC = () => {
   const showLinks =
     extras?.salesChannels != null && extras?.salesChannels.length > 0
 
-  if (canUser('update', 'skus')) {
-    if (showLinks) {
-      pageToolbar.buttons?.push({
-        label: 'New link',
-        icon: 'lightning',
-        size: 'small',
-        variant: 'secondary',
-        onClick: () => {
-          setLocation(appRoutes.linksNew.makePath({ resourceId: skuId }))
-        }
-      })
-    }
+  const tabs = ['info', ...(showLinks ? ['links'] : [])]
+  const queryString = useSearch()
+  const urlParams = new URLSearchParams(queryString)
+  const defaultTab =
+    urlParams.get('tab') != null
+      ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
+      : 0
 
+  if (canUser('update', 'skus')) {
     pageToolbar.buttons?.push({
       label: 'Edit',
       size: 'small',
@@ -147,50 +147,78 @@ export const SkuDetails: FC = () => {
             <SkuDescription sku={sku} />
           </Spacer>
           <Spacer top='14'>
-            <SkuInfo sku={sku} />
-          </Spacer>
-          {showLinks && (
-            <Spacer top='12' bottom='4'>
-              <Section
-                title='Links'
-                border={linkListTable != null ? 'none' : undefined}
-              >
-                {linkListTable ?? (
-                  <Spacer top='4'>
-                    <Text variant='info'>No items.</Text>
-                  </Spacer>
+            <Tabs keepAlive defaultTab={defaultTab}>
+              <Tab name='Info'>
+                <Spacer top='10'>
+                  <SkuInfo sku={sku} />
+                </Spacer>
+                <Spacer top='14'>
+                  <ResourceDetails resource={sku} />
+                </Spacer>
+                {!isMockedId(sku.id) && (
+                  <>
+                    <Spacer top='14'>
+                      <ResourceTags
+                        resourceType='skus'
+                        resourceId={sku.id}
+                        overlay={{ title: pageTitle }}
+                        onTagClick={(tagId) => {
+                          setLocation(
+                            appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                          )
+                        }}
+                      />
+                    </Spacer>
+                    <Spacer top='14'>
+                      <ResourceMetadata
+                        resourceType='skus'
+                        resourceId={sku.id}
+                        overlay={{
+                          title: pageTitle
+                        }}
+                      />
+                    </Spacer>
+                  </>
                 )}
-              </Section>
-            </Spacer>
-          )}
-          <Spacer top='14'>
-            <ResourceDetails resource={sku} />
+              </Tab>
+              {showLinks ? (
+                <Tab name='Links'>
+                  <Spacer top='10'>
+                    <Section
+                      title='Links'
+                      border={linkListTable != null ? 'none' : undefined}
+                      actionButton={
+                        canUser('update', 'skus') &&
+                        showLinks && (
+                          <Button
+                            size='mini'
+                            variant='secondary'
+                            alignItems='center'
+                            onClick={() => {
+                              setLocation(
+                                appRoutes.linksNew.makePath({
+                                  resourceId: skuId
+                                })
+                              )
+                            }}
+                          >
+                            <Icon name='lightning' size={16} />
+                            New link
+                          </Button>
+                        )
+                      }
+                    >
+                      {linkListTable ?? (
+                        <Spacer top='4'>
+                          <Text variant='info'>No items.</Text>
+                        </Spacer>
+                      )}
+                    </Section>
+                  </Spacer>
+                </Tab>
+              ) : null}
+            </Tabs>
           </Spacer>
-          {!isMockedId(sku.id) && (
-            <>
-              <Spacer top='14'>
-                <ResourceTags
-                  resourceType='skus'
-                  resourceId={sku.id}
-                  overlay={{ title: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(
-                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
-                    )
-                  }}
-                />
-              </Spacer>
-              <Spacer top='14'>
-                <ResourceMetadata
-                  resourceType='skus'
-                  resourceId={sku.id}
-                  overlay={{
-                    title: pageTitle
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
         </Spacer>
       </SkeletonTemplate>
       {canUser('destroy', 'skus') && (
