@@ -22,6 +22,9 @@ export function getReturnTriggerAttributes(
     case 'cancelled':
       return [archiveTriggerAttribute]
 
+    case 'received':
+      return ['_refund']
+
     default:
       return []
   }
@@ -37,6 +40,7 @@ type UITriggerAttributes = Extract<
   | '_restock'
   | '_archive'
   | '_unarchive'
+  | '_refund'
 >
 
 export function getReturnTriggerAttributeName(
@@ -45,12 +49,13 @@ export function getReturnTriggerAttributeName(
   const dictionary: Record<typeof triggerAttribute, string> = {
     _approve: 'Approve',
     _reject: 'Reject',
-    _cancel: 'Cancel',
+    _cancel: 'Cancel return',
     _ship: 'Mark shipped',
     _receive: 'Receive',
     _restock: 'Restock',
     _archive: 'Archive',
-    _unarchive: 'Unarchive'
+    _unarchive: 'Unarchive',
+    _refund: 'Issue a refund'
   }
 
   return dictionary[triggerAttribute]

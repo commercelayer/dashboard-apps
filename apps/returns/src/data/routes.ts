@@ -26,6 +26,10 @@ export const appRoutes = {
   restock: {
     path: '/list/:returnId/restock',
     makePath: (returnId: string) => `/list/${returnId}/restock`
+  },
+  refund: {
+    path: '/list/:returnId/refund',
+    makePath: (returnId: string) => `/list/${returnId}/refund`
   }
 }
 

@@ -1,5 +1,3 @@
-import { appRoutes } from '#data/routes'
-import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
   formatCentsToCurrency,
@@ -9,10 +7,21 @@ import {
   HookedValidationApiError,
   PageLayout,
   Spacer,
+  useCoreSdkProvider,
+  useTokenProvider,
   type CurrencyCode
 } from '@commercelayer/app-elements'
-import type { Capture, Order } from '@commercelayer/sdk'
+import type {
+  AttachmentCreate,
+  Capture,
+  LineItem,
+  Order,
+  Return,
+  ReturnLineItem
+} from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
+import isEmpty from 'lodash/isEmpty'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
 import { z } from 'zod'
@@ -22,20 +31,30 @@ interface Props {
   defaultValues: Partial<RefundFormValues>
   order: Order
   capture: Capture
-  isSubmitting?: boolean
-  onSubmit: (formValues: RefundFormValues) => void
-  apiError?: any
+  lineItems: LineItem[] | ReturnLineItem[]
+  refundable: Capture | Return
+  note: {
+    referenceOrigin: string
+    attachable: AttachmentCreate['attachable']
+  }
+  goBackUrl: string
 }
 
 export function RefundForm({
   defaultValues,
   order,
   capture,
-  onSubmit,
-  apiError,
-  isSubmitting
+  note,
+  refundable,
+  goBackUrl,
+  lineItems
 }: Props): JSX.Element {
   const [, setLocation] = useLocation()
+  const { user } = useTokenProvider()
+  const { sdkClient } = useCoreSdkProvider()
+
+  const [apiError, setApiError] = useState<any>()
+
   const methods = useForm<RefundFormValues>({
     defaultValues,
     resolver: zodResolver(
@@ -46,20 +65,65 @@ export function RefundForm({
     )
   })
 
+  const processRefund = async (amountCent: number): Promise<void> => {
+    try {
+      await sdkClient[refundable.type].update({
+        id: refundable.id,
+        _refund: true,
+        _refund_amount_cents: amountCent
+      })
+    } catch (error) {
+      setApiError(error)
+      throw error
+    }
+  }
+
+  const saveReason = async (text?: string): Promise<void> => {
+    if (
+      user?.displayName != null &&
+      !isEmpty(user.displayName) &&
+      !isEmpty(text?.trim())
+    ) {
+      try {
+        await sdkClient.attachments.create({
+          reference_origin: note.referenceOrigin,
+          name: user.displayName,
+          description: text,
+          attachable: note.attachable
+        })
+      } catch (error) {
+        // do nothing, silently fail
+        // when the attachments is not created, the process continues since the refund is already done
+      }
+    }
+  }
+
   return (
     <PageLayout
       overlay
       title='Make refund'
       navigationButton={{
         onClick: () => {
-          setLocation(appRoutes.details.makePath({ orderId: order.id }))
+          setLocation(goBackUrl)
         },
-        label: getOrderTitle(order),
+        label: 'Back',
         icon: 'arrowLeft'
       }}
     >
-      <RefundEstimator order={order} capture={capture} />
-      <HookedForm {...methods} onSubmit={onSubmit}>
+      <RefundEstimator
+        capture={capture}
+        currencyCode={order.currency_code}
+        lineItems={lineItems}
+        order={order}
+      />
+      <HookedForm
+        {...methods}
+        onSubmit={async () => {
+          await processRefund(methods.getValues('amountCents'))
+          await saveReason(methods.getValues('note'))
+          setLocation(goBackUrl)
+        }}
+      >
         <>
           <Spacer bottom='8'>
             {order.currency_code != null ? (
@@ -95,7 +159,7 @@ export function RefundForm({
               disabled={
                 methods.watch('amountCents') == null ||
                 methods.watch('amountCents') === 0 ||
-                isSubmitting
+                methods.formState.isSubmitting
               }
             >
               Refund{' '}
