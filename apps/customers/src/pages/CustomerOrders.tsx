@@ -2,8 +2,8 @@ import {
   Button,
   EmptyState,
   PageLayout,
-  ResourceList,
   Spacer,
+  useResourceList,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
@@ -21,6 +21,17 @@ export function CustomerOrders(): JSX.Element {
   const customerId = params?.customerId ?? ''
 
   const { customer } = useCustomerDetails(customerId)
+  const { ResourceList } = useResourceList({
+    type: 'orders',
+    query: {
+      filters: {
+        customer_id_eq: customerId,
+        status_matches_any: 'placed,approved,editing,cancelled'
+      },
+      include: ['billing_address'],
+      sort: ['-placed_at']
+    }
+  })
 
   const goBackUrl =
     customerId != null
@@ -66,16 +77,7 @@ export function CustomerOrders(): JSX.Element {
       <ScrollToTop />
       <Spacer bottom='14'>
         <ResourceList
-          type='orders'
           title='All orders'
-          query={{
-            filters: {
-              customer_id_eq: customerId,
-              status_matches_any: 'placed,approved,editing,cancelled'
-            },
-            include: ['billing_address'],
-            sort: ['-placed_at']
-          }}
           emptyState={<ListEmptyState scope='presetView' />}
           ItemTemplate={ListItemOrder}
         />
