@@ -75,6 +75,7 @@ export function SkuListEdit(): JSX.Element {
               id: skuList.id,
               name: skuList.name,
               manual: Boolean(skuList.manual),
+              manualString: skuList.manual === true ? 'manual' : 'auto',
               sku_code_regex:
                 skuList.manual === false
                   ? (skuList.sku_code_regex ?? '')
