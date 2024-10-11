@@ -29,7 +29,8 @@ export const getSkuFromFormValues = (
     description: formValues.description,
     image_url: formValues.imageUrl,
     shipping_category: {
-      id: formValues.shippingCategory ?? '',
+      // @ts-expect-error shipping_category.id must be nullable to support relation deletion
+      id: formValues.shippingCategory ?? null,
       type: 'shipping_categories',
       name: '',
       created_at: '',
