@@ -36,6 +36,12 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
     const [, setLocation] = useLocation()
     const restockableList = useRestockableList(returnObj)
 
+    const capture = returnObj.order?.captures?.find(
+      (capture) => capture.succeeded
+    )
+    const isRefundable =
+      capture?.refund_balance_cents != null && capture.refund_balance_cents > 0
+
     if (returnObj.return_line_items?.length === 0) return <></>
 
     return (
@@ -63,25 +69,37 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
         />
         {canUser('update', 'returns') && (
           <ActionButtons
-            actions={triggerAttributes.map((triggerAttribute) => {
-              return {
-                label: getReturnTriggerAttributeName(triggerAttribute),
-                variant:
-                  triggerAttribute === '_cancel' ||
-                  triggerAttribute === '_reject'
-                    ? 'secondary'
-                    : 'primary',
-                disabled: isLoading,
-                onClick: () => {
-                  if (triggerAttribute === '_cancel') {
-                    showCancelOverlay()
-                    return
-                  }
+            actions={triggerAttributes
+              .filter((triggerAttributes) => {
+                return (
+                  triggerAttributes !== '_refund' ||
+                  (isRefundable && canUser('update', 'transactions'))
+                )
+              })
+              .map((triggerAttribute) => {
+                return {
+                  label: getReturnTriggerAttributeName(triggerAttribute),
+                  variant:
+                    triggerAttribute === '_cancel' ||
+                    triggerAttribute === '_reject'
+                      ? 'secondary'
+                      : 'primary',
+                  disabled: isLoading,
+                  onClick: () => {
+                    if (triggerAttribute === '_cancel') {
+                      showCancelOverlay()
+                      return
+                    }
 
-                  void dispatch(triggerAttribute)
+                    if (triggerAttribute === '_refund') {
+                      setLocation(appRoutes.refund.makePath(returnObj.id))
+                      return
+                    }
+
+                    void dispatch(triggerAttribute)
+                  }
                 }
-              }
-            })}
+              })}
           />
         )}
         {renderErrorMessages(errors)}
