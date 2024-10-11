@@ -3,6 +3,7 @@ import {
   Button,
   Icon,
   SearchBar,
+  Section,
   Spacer,
   Text,
   useCoreSdkProvider,
@@ -53,13 +54,8 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
           />
         </Spacer>
         <Spacer top='14'>
-          <ResourceList
-            title='Results'
-            emptyState={
-              <Spacer top='4'>
-                <Text variant='info'>No items.</Text>
-              </Spacer>
-            }
+          <Section
+            title='Items'
             actionButton={
               canUser('create', 'sku_list_items') &&
               !hasBundles && (
@@ -77,25 +73,33 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
                 </Button>
               )
             }
-            ItemTemplate={({ resource, remove }) => {
-              const excludedItems = excludedSkusFromAdd
-              if (
-                resource?.sku?.id != null &&
-                !excludedItems.includes(resource?.sku?.id)
-              ) {
-                excludedItems.push(resource?.sku?.id)
-                setExcludedSkusFromAdd(excludedItems)
+          >
+            <ResourceList
+              emptyState={
+                <Spacer top='4'>
+                  <Text variant='info'>No items.</Text>
+                </Spacer>
               }
-              return (
-                <ListItemSkuListItem
-                  resource={resource}
-                  remove={remove}
-                  hasBundles={hasBundles}
-                  key={resource?.id}
-                />
-              )
-            }}
-          />
+              ItemTemplate={({ resource, remove }) => {
+                const excludedItems = excludedSkusFromAdd
+                if (
+                  resource?.sku?.id != null &&
+                  !excludedItems.includes(resource?.sku?.id)
+                ) {
+                  excludedItems.push(resource?.sku?.id)
+                  setExcludedSkusFromAdd(excludedItems)
+                }
+                return (
+                  <ListItemSkuListItem
+                    resource={resource}
+                    remove={remove}
+                    hasBundles={hasBundles}
+                    key={resource?.id}
+                  />
+                )
+              }}
+            />
+          </Section>
           <AddItemOverlay
             onConfirm={(resource) => {
               void sdkClient.sku_list_items

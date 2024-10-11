@@ -61,7 +61,7 @@ export function SkuListNew(): JSX.Element {
     >
       <Spacer bottom='14'>
         <SkuListForm
-          defaultValues={{ manual: true }}
+          defaultValues={{ manualString: 'manual' }}
           apiError={createSkuListError}
           isSubmitting={isCreatingSkuList}
           onSubmit={(formValues) => {

@@ -1,27 +1,13 @@
 import { z } from 'zod'
-import type { FormSkuListItem } from './SkuListForm'
-
-const formSkuListItemSchema: z.ZodType<FormSkuListItem> = z.object({
-  id: z.string(),
-  sku_code: z.string().min(1),
-  quantity: z.number().min(1),
-  position: z.number().min(1),
-  sku: z.object({
-    id: z.string().min(1),
-    code: z.string().min(1),
-    name: z.string().min(1),
-    image_url: z.string().optional()
-  })
-})
 
 const formBaseSchema = z.object({
   id: z.string().optional(),
-  name: z.string().min(1)
+  name: z.string().min(1),
+  manualString: z.string().nullable()
 })
 
 const formWithManualItemsSchema = formBaseSchema.extend({
-  manual: z.literal(true),
-  items: z.array(formSkuListItemSchema)
+  manual: z.literal(true)
 })
 
 const formWithAutoItemsSchema = formBaseSchema.extend({

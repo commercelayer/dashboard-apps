@@ -2,25 +2,20 @@ import {
   Button,
   HookedForm,
   HookedInput,
+  HookedInputRadioGroup,
   HookedInputTextArea,
   HookedValidationApiError,
   Section,
-  Spacer
+  Spacer,
+  Text
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect } from 'react'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { type z } from 'zod'
 import { skuListFormSchema } from './schema'
 
 export type SkuListFormValues = z.infer<typeof skuListFormSchema>
-
-export interface FormSkuListItem {
-  id: string
-  sku_code: string
-  quantity: number
-  position: number
-  sku: { id: string; code: string; name: string; image_url?: string }
-}
 
 interface Props {
   defaultValues?: Partial<SkuListFormValues>
@@ -43,7 +38,14 @@ export function SkuListForm({
     resolver: zodResolver(skuListFormSchema)
   })
 
-  const watchedFormManual = skuListFormMethods.watch('manual')
+  const watchedFormManual = skuListFormMethods.watch('manualString')
+  useEffect(() => {
+    if (watchedFormManual === 'manual') {
+      skuListFormMethods.setValue('manual', true)
+    } else {
+      skuListFormMethods.setValue('manual', false)
+    }
+  }, [watchedFormManual])
 
   return (
     <>
@@ -54,6 +56,43 @@ export function SkuListForm({
         }}
       >
         <Section>
+          {defaultValues?.id == null && (
+            <Spacer top='12' bottom='4'>
+              <HookedInputRadioGroup
+                name='manualString'
+                viewMode='grid'
+                showInput={false}
+                options={[
+                  {
+                    value: 'manual',
+                    content: (
+                      <>
+                        <Spacer bottom='2'>
+                          <Text weight='bold' tag='div'>
+                            Manual
+                          </Text>
+                        </Spacer>
+                        <Text variant='info'>Add items after creation.</Text>
+                      </>
+                    )
+                  },
+                  {
+                    value: 'auto',
+                    content: (
+                      <>
+                        <Spacer bottom='2'>
+                          <Text weight='bold' tag='div'>
+                            Automatic
+                          </Text>
+                        </Spacer>
+                        <Text variant='info'>Select items using regex.</Text>
+                      </>
+                    )
+                  }
+                ]}
+              />
+            </Spacer>
+          )}
           <Spacer top='12' bottom='4'>
             <HookedInput
               name='name'
@@ -62,10 +101,11 @@ export function SkuListForm({
               hint={{ text: 'Pick a name that helps you identify it.' }}
             />
           </Spacer>
-          {!watchedFormManual && (
+          {watchedFormManual === 'auto' && (
             <Spacer top='12' bottom='4'>
               <HookedInputTextArea
                 name='sku_code_regex'
+                label='Items'
                 hint={{
                   text: (
                     <span>
