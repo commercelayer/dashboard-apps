@@ -35,11 +35,11 @@ export function ShippingCategorySelect({
           <Text variant='info'>
             Used to manage different{' '}
             <a
-              href='https://docs.commercelayer.io/core/v/api-reference/shipping_skuFormMethods'
+              href='https://docs.commercelayer.io/core/v/api-reference/shipping_methods'
               target='_blank'
               rel='noreferrer'
             >
-              shipping skuFormMethods
+              shipping methods
             </a>
             . Optional for 'Do not ship'.
           </Text>
