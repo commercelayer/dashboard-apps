@@ -26,8 +26,7 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
       useAddItemOverlay()
     const { canUser } = useTokenProvider()
     const { sdkClient } = useCoreSdkProvider()
-    const [excludedSkusFromAdd, setExcludedSkusFromAdd] = useState<string[]>([])
-    const { ResourceList, refresh } = useResourceList({
+    const { ResourceList, refresh, list } = useResourceList({
       type: 'sku_list_items',
       query: {
         filters: {
@@ -40,6 +39,10 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
         sort: ['position']
       }
     })
+
+    const excludedSkusFromAdd = list
+      ?.map((item) => item?.sku?.code ?? '')
+      .filter((item) => item !== '')
 
     return (
       <>
@@ -80,24 +83,12 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
                   <Text variant='info'>No items.</Text>
                 </Spacer>
               }
-              ItemTemplate={({ resource, remove }) => {
-                const excludedItems = excludedSkusFromAdd
-                if (
-                  resource?.sku?.id != null &&
-                  !excludedItems.includes(resource?.sku?.id)
-                ) {
-                  excludedItems.push(resource?.sku?.id)
-                  setExcludedSkusFromAdd(excludedItems)
-                }
-                return (
-                  <ListItemSkuListItem
-                    resource={resource}
-                    remove={remove}
-                    hasBundles={hasBundles}
-                    key={resource?.id}
-                  />
-                )
-              }}
+              ItemTemplate={(itemTemplateProps) => (
+                <ListItemSkuListItem
+                  hasBundles={hasBundles}
+                  {...itemTemplateProps}
+                />
+              )}
             />
           </Section>
           <AddItemOverlay
