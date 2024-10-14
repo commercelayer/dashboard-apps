@@ -15,12 +15,12 @@ import {
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
-import { BundleDescription } from '#components/BundleDescription'
 import { BundleInfo } from '#components/BundleInfo'
 import { BundleSkuList } from '#components/BundleSkuList'
 import { appRoutes } from '#data/routes'
 import { useBundleDetails } from '#hooks/useBundleDetails'
 import { isMockedId } from '#mocks'
+import { SkuDescription } from 'dashboard-apps-common/src/components/SkuDescription'
 import { useState, type FC } from 'react'
 
 export const BundleDetails: FC = () => {
@@ -108,7 +108,7 @@ export const BundleDetails: FC = () => {
           <SkeletonTemplate isLoading={isLoading}>
             <Spacer bottom='4'>
               <Spacer top='14'>
-                <BundleDescription bundle={bundle} />
+                <SkuDescription resource={bundle} />
               </Spacer>
               <Spacer top='14'>
                 <BundleSkuList bundle={bundle} />
