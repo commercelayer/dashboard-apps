@@ -143,7 +143,12 @@ export function PriceDetails(): JSX.Element {
             />
           </Spacer>
           <Spacer top='14'>
-            <ResourceDetails resource={price} />
+            <ResourceDetails
+              resource={price}
+              onUpdated={async () => {
+                void mutatePrice()
+              }}
+            />
           </Spacer>
           <Spacer top='14'>
             <ResourceMetadata

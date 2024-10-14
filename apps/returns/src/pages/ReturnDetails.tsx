@@ -34,7 +34,7 @@ export function ReturnDetails(): JSX.Element {
 
   const returnId = params?.returnId ?? ''
 
-  const { returnObj, isLoading } = useReturnDetails(returnId)
+  const { returnObj, isLoading, mutateReturn } = useReturnDetails(returnId)
 
   if (returnId === undefined || !canUser('read', 'returns')) {
     return (
@@ -118,7 +118,12 @@ export function ReturnDetails(): JSX.Element {
             <ReturnAddresses returnObj={returnObj} />
           </Spacer>
           <Spacer top='14'>
-            <ResourceDetails resource={returnObj} />
+            <ResourceDetails
+              resource={returnObj}
+              onUpdated={async () => {
+                void mutateReturn()
+              }}
+            />
           </Spacer>
           {!isMockedId(returnObj.id) && (
             <>

@@ -40,7 +40,7 @@ export const SkuDetails: FC = () => {
 
   const skuId = params?.skuId ?? ''
 
-  const { sku, isLoading, error } = useSkuDetails(skuId)
+  const { sku, isLoading, error, mutateSku } = useSkuDetails(skuId)
 
   const { Overlay: SkuDeleteOverlay, show } = useSkuDeleteOverlay(sku)
 
@@ -119,7 +119,12 @@ export const SkuDetails: FC = () => {
         <SkuInfo sku={sku} />
       </Spacer>
       <Spacer top='14'>
-        <ResourceDetails resource={sku} />
+        <ResourceDetails
+          resource={sku}
+          onUpdated={async () => {
+            void mutateSku()
+          }}
+        />
       </Spacer>
       {!isMockedId(sku.id) && (
         <>

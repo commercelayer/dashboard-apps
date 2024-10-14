@@ -165,7 +165,12 @@ function Page(
         </Spacer>
 
         <Spacer top='14'>
-          <ResourceDetails resource={promotion} />
+          <ResourceDetails
+            resource={promotion}
+            onUpdated={async () => {
+              void mutatePromotion()
+            }}
+          />
         </Spacer>
 
         {!isMockedId(promotion.id) && (

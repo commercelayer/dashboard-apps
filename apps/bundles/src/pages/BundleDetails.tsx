@@ -35,7 +35,7 @@ export const BundleDetails: FC = () => {
   const bundleId = params?.bundleId ?? ''
   const goBackUrl = appRoutes.list.makePath({})
 
-  const { bundle, isLoading, error } = useBundleDetails(bundleId)
+  const { bundle, isLoading, error, mutateBundle } = useBundleDetails(bundleId)
 
   const { sdkClient } = useCoreSdkProvider()
 
@@ -117,7 +117,12 @@ export const BundleDetails: FC = () => {
                 <BundleInfo bundle={bundle} />
               </Spacer>
               <Spacer top='14'>
-                <ResourceDetails resource={bundle} />
+                <ResourceDetails
+                  resource={bundle}
+                  onUpdated={async () => {
+                    void mutateBundle()
+                  }}
+                />
               </Spacer>
               {!isMockedId(bundle.id) && (
                 <>

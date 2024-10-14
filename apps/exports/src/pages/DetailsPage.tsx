@@ -57,7 +57,7 @@ const DetailsPage = (): JSX.Element | null => {
 
   return (
     <ExportDetailsProvider exportId={exportId}>
-      {({ state: { isLoading, data, isNotFound } }) =>
+      {({ state: { isLoading, data, isNotFound }, refetch }) =>
         isNotFound ? (
           <ErrorNotFound />
         ) : (
@@ -93,7 +93,12 @@ const DetailsPage = (): JSX.Element | null => {
               </Spacer>
 
               <Spacer top='14'>
-                <ResourceDetails resource={data} />
+                <ResourceDetails
+                  resource={data}
+                  onUpdated={async () => {
+                    void refetch()
+                  }}
+                />
               </Spacer>
               {!isMockedId(data.id) && (
                 <Spacer top='14'>

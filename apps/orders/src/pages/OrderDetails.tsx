@@ -39,7 +39,7 @@ function OrderDetails(): JSX.Element {
 
   const orderId = params?.orderId ?? ''
 
-  const { order, isLoading, error } = useOrderDetails(orderId)
+  const { order, isLoading, error, mutateOrder } = useOrderDetails(orderId)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
   const toolbar = useOrderToolbar({ order })
 
@@ -174,7 +174,12 @@ function OrderDetails(): JSX.Element {
             </Spacer>
           )}
           <Spacer top='14'>
-            <ResourceDetails resource={order} />
+            <ResourceDetails
+              resource={order}
+              onUpdated={async () => {
+                void mutateOrder()
+              }}
+            />
           </Spacer>
           {!isMockedId(order.id) && (
             <>

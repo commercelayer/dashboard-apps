@@ -34,7 +34,8 @@ export const StockItemDetails: FC = () => {
   const stockLocationId = params?.stockLocationId ?? ''
   const stockItemId = params?.stockItemId ?? ''
 
-  const { stockItem, isLoading, error } = useStockItemDetails(stockItemId)
+  const { stockItem, isLoading, error, mutateStockItem } =
+    useStockItemDetails(stockItemId)
 
   const { sdkClient } = useCoreSdkProvider()
 
@@ -135,7 +136,12 @@ export const StockItemDetails: FC = () => {
             <StockItemInfo stockItem={stockItem} />
           </Spacer>
           <Spacer top='14'>
-            <ResourceDetails resource={stockItem} />
+            <ResourceDetails
+              resource={stockItem}
+              onUpdated={async () => {
+                void mutateStockItem()
+              }}
+            />
           </Spacer>
           <Spacer top='14'>
             <ResourceMetadata

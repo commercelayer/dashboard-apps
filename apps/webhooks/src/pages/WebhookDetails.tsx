@@ -24,7 +24,7 @@ export const WebhookDetails: FC = () => {
   const [, setLocation] = useLocation()
 
   const webhookId = params?.webhookId ?? ''
-  const { webhook, isLoading } = useWebhookDetails(webhookId)
+  const { webhook, isLoading, mutateWebhook } = useWebhookDetails(webhookId)
 
   if (webhookId == null || !canUser('read', 'webhooks')) {
     return (
@@ -103,7 +103,12 @@ export const WebhookDetails: FC = () => {
         </Spacer>
         <WebhookCallback webhook={webhook} />
         <Spacer top='14'>
-          <ResourceDetails resource={webhook} />
+          <ResourceDetails
+            resource={webhook}
+            onUpdated={async () => {
+              void mutateWebhook()
+            }}
+          />
         </Spacer>
         <Spacer top='14'>
           <ResourceMetadata

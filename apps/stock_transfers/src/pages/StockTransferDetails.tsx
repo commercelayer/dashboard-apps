@@ -42,7 +42,8 @@ export function StockTransferDetails(): JSX.Element {
 
   const stockTransferId = params?.stockTransferId ?? ''
 
-  const { stockTransfer, isLoading } = useStockTransferDetails(stockTransferId)
+  const { stockTransfer, isLoading, mutateStockTransfer } =
+    useStockTransferDetails(stockTransferId)
 
   if (stockTransferId === '' || !canUser('read', 'stock_transfers')) {
     return (
@@ -178,7 +179,12 @@ export function StockTransferDetails(): JSX.Element {
             <StockTransferAddresses stockTransfer={stockTransfer} />
           </Spacer>
           <Spacer top='14'>
-            <ResourceDetails resource={stockTransfer} />
+            <ResourceDetails
+              resource={stockTransfer}
+              onUpdated={async () => {
+                void mutateStockTransfer()
+              }}
+            />
           </Spacer>
           {!isMockedId(stockTransfer.id) && (
             <Spacer top='14'>

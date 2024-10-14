@@ -15,8 +15,8 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "^2.9.0",
-    "@commercelayer/sdk": "6.22.0",
+    "@commercelayer/app-elements": "^2.10.0",
+    "@commercelayer/sdk": "6.23.0",
     "@hookform/resolvers": "^3.9.0",
     "lodash": "^4.17.21",
     "p-memoize": "^7.1.1",
@@ -35,7 +35,7 @@
     "@types/lodash": "^4.17.10",
     "@types/node": "^22.7.5",
     "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.0",
+    "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.2",
     "eslint": "^8.57.0",
     "jsdom": "^25.0.1",

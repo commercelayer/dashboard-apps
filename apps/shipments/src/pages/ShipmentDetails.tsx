@@ -35,7 +35,7 @@ export function ShipmentDetails(): JSX.Element {
 
   const shipmentId = params?.shipmentId ?? ''
 
-  const { shipment, isLoading } = useShipmentDetails(shipmentId)
+  const { shipment, isLoading, mutateShipment } = useShipmentDetails(shipmentId)
   const pageToolbar = useShipmentToolbar({ shipment })
 
   if (shipmentId === undefined || !canUser('read', 'orders')) {
@@ -126,7 +126,12 @@ export function ShipmentDetails(): JSX.Element {
             <ShipmentAddresses shipment={shipment} />
           </Spacer>
           <Spacer top='14'>
-            <ResourceDetails resource={shipment} />
+            <ResourceDetails
+              resource={shipment}
+              onUpdated={async () => {
+                void mutateShipment()
+              }}
+            />
           </Spacer>
           {!isMockedId(shipment.id) && (
             <>
