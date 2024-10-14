@@ -38,7 +38,8 @@ export const SkuListDetails = (
   const [, setLocation] = useLocation()
   const skuListId = props.params?.skuListId ?? ''
 
-  const { skuList, isLoading, error } = useSkuListDetails(skuListId)
+  const { skuList, isLoading, error, mutateSkuList } =
+    useSkuListDetails(skuListId)
 
   const { Overlay: DeleteOverlay, show: showDeleteOverlay } =
     useSkuListDeleteOverlay(skuList)
@@ -203,7 +204,12 @@ export const SkuListDetails = (
           ) : null}
           <Tab name='Info'>
             <Spacer top='10'>
-              <ResourceDetails resource={skuList} />
+              <ResourceDetails
+                resource={skuList}
+                onUpdated={async () => {
+                  void mutateSkuList()
+                }}
+              />
             </Spacer>
             {!isMockedId(skuList.id) && (
               <Spacer top='14'>

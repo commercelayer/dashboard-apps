@@ -35,7 +35,8 @@ export function CustomerDetails(): JSX.Element {
 
   const customerId = params?.customerId ?? ''
 
-  const { customer, isLoading, error } = useCustomerDetails(customerId)
+  const { customer, isLoading, error, mutateCustomer } =
+    useCustomerDetails(customerId)
 
   const { DeleteOverlay, show } = useCustomerDeleteOverlay(customerId)
 
@@ -124,7 +125,12 @@ export function CustomerDetails(): JSX.Element {
               <CustomerAddresses customer={customer} />
             </Spacer>
             <Spacer top='14'>
-              <ResourceDetails resource={customer} />
+              <ResourceDetails
+                resource={customer}
+                onUpdated={async () => {
+                  void mutateCustomer()
+                }}
+              />
             </Spacer>
             {!isMockedId(customer.id) && (
               <>

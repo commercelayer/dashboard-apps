@@ -180,7 +180,12 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
           <BalanceLog giftCard={giftCard} />
         </Spacer>
         <Spacer top='14'>
-          <ResourceDetails resource={giftCard} />
+          <ResourceDetails
+            resource={giftCard}
+            onUpdated={async () => {
+              void mutateGiftCard()
+            }}
+          />
         </Spacer>
         {!isMockedId(giftCard.id) && (
           <>
