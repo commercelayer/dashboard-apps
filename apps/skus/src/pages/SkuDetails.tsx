@@ -13,8 +13,6 @@ import {
   Tabs,
   Text,
   goBack,
-  useCoreSdkProvider,
-  useOverlay,
   useTokenProvider,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
@@ -25,9 +23,10 @@ import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTabl
 import { SkuDescription } from '#components/SkuDescription'
 import { SkuInfo } from '#components/SkuInfo'
 import { appRoutes } from '#data/routes'
+import { useSkuDeleteOverlay } from '#hooks/useSkuDeleteOverlay'
 import { useSkuDetails } from '#hooks/useSkuDetails'
 import { isMockedId } from '#mocks'
-import { useState, type FC } from 'react'
+import { type FC } from 'react'
 import { useSearch } from 'wouter/use-browser-location'
 
 export const SkuDetails: FC = () => {
@@ -43,11 +42,7 @@ export const SkuDetails: FC = () => {
 
   const { sku, isLoading, error } = useSkuDetails(skuId)
 
-  const { sdkClient } = useCoreSdkProvider()
-
-  const { Overlay, open, close } = useOverlay()
-
-  const [isDeleting, setIsDeleting] = useState(false)
+  const { Overlay: SkuDeleteOverlay, show } = useSkuDeleteOverlay(sku)
 
   if (error != null) {
     return (
@@ -84,14 +79,6 @@ export const SkuDetails: FC = () => {
   const showLinks =
     extras?.salesChannels != null && extras?.salesChannels.length > 0
 
-  const tabs = ['info', ...(showLinks ? ['links'] : [])]
-  const queryString = useSearch()
-  const urlParams = new URLSearchParams(queryString)
-  const defaultTab =
-    urlParams.get('tab') != null
-      ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
-      : 0
-
   if (canUser('update', 'skus')) {
     pageToolbar.buttons?.push({
       label: 'Edit',
@@ -108,15 +95,101 @@ export const SkuDetails: FC = () => {
       {
         label: 'Delete',
         onClick: () => {
-          open()
+          show()
         }
       }
     ])
   }
 
+  const tabs = ['info', ...(showLinks ? ['links'] : [])]
+  const queryString = useSearch()
+  const urlParams = new URLSearchParams(queryString)
+  const defaultTab =
+    urlParams.get('tab') != null
+      ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
+      : 0
+
   const linkListTable = showLinks
     ? LinkListTable({ resourceId: skuId, resourceType: 'skus' })
     : null
+
+  const SkuInfos = (
+    <>
+      <Spacer top='10'>
+        <SkuInfo sku={sku} />
+      </Spacer>
+      <Spacer top='14'>
+        <ResourceDetails resource={sku} />
+      </Spacer>
+      {!isMockedId(sku.id) && (
+        <>
+          <Spacer top='14'>
+            <ResourceTags
+              resourceType='skus'
+              resourceId={sku.id}
+              overlay={{ title: pageTitle }}
+              onTagClick={(tagId) => {
+                setLocation(appRoutes.list.makePath({}, `tags_id_in=${tagId}`))
+              }}
+            />
+          </Spacer>
+          <Spacer top='14'>
+            <ResourceMetadata
+              resourceType='skus'
+              resourceId={sku.id}
+              overlay={{
+                title: pageTitle
+              }}
+            />
+          </Spacer>
+        </>
+      )}
+    </>
+  )
+
+  const SkuTabs = showLinks ? (
+    <Tabs keepAlive defaultTab={defaultTab}>
+      <Tab name='Info'>{SkuInfos}</Tab>
+      {showLinks ? (
+        <Tab name='Links'>
+          <Spacer top='10'>
+            <Section
+              title='Links'
+              border={linkListTable != null ? 'none' : undefined}
+              actionButton={
+                canUser('update', 'skus') &&
+                showLinks && (
+                  <Button
+                    size='mini'
+                    variant='secondary'
+                    alignItems='center'
+                    onClick={() => {
+                      setLocation(
+                        appRoutes.linksNew.makePath({
+                          resourceId: skuId
+                        })
+                      )
+                    }}
+                  >
+                    <Icon name='lightning' size={16} />
+                    New link
+                  </Button>
+                )
+              }
+            >
+              {linkListTable ?? (
+                <Spacer top='4'>
+                  <Text variant='info'>No items.</Text>
+                </Spacer>
+              )}
+            </Section>
+          </Spacer>
+        </Tab>
+      ) : null}
+    </Tabs>
+  ) : (
+    SkuInfos
+  )
 
   return (
     <PageLayout
@@ -146,116 +219,10 @@ export const SkuDetails: FC = () => {
           <Spacer top='14'>
             <SkuDescription sku={sku} />
           </Spacer>
-          <Spacer top='14'>
-            <Tabs keepAlive defaultTab={defaultTab}>
-              <Tab name='Info'>
-                <Spacer top='10'>
-                  <SkuInfo sku={sku} />
-                </Spacer>
-                <Spacer top='14'>
-                  <ResourceDetails resource={sku} />
-                </Spacer>
-                {!isMockedId(sku.id) && (
-                  <>
-                    <Spacer top='14'>
-                      <ResourceTags
-                        resourceType='skus'
-                        resourceId={sku.id}
-                        overlay={{ title: pageTitle }}
-                        onTagClick={(tagId) => {
-                          setLocation(
-                            appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
-                          )
-                        }}
-                      />
-                    </Spacer>
-                    <Spacer top='14'>
-                      <ResourceMetadata
-                        resourceType='skus'
-                        resourceId={sku.id}
-                        overlay={{
-                          title: pageTitle
-                        }}
-                      />
-                    </Spacer>
-                  </>
-                )}
-              </Tab>
-              {showLinks ? (
-                <Tab name='Links'>
-                  <Spacer top='10'>
-                    <Section
-                      title='Links'
-                      border={linkListTable != null ? 'none' : undefined}
-                      actionButton={
-                        canUser('update', 'skus') &&
-                        showLinks && (
-                          <Button
-                            size='mini'
-                            variant='secondary'
-                            alignItems='center'
-                            onClick={() => {
-                              setLocation(
-                                appRoutes.linksNew.makePath({
-                                  resourceId: skuId
-                                })
-                              )
-                            }}
-                          >
-                            <Icon name='lightning' size={16} />
-                            New link
-                          </Button>
-                        )
-                      }
-                    >
-                      {linkListTable ?? (
-                        <Spacer top='4'>
-                          <Text variant='info'>No items.</Text>
-                        </Spacer>
-                      )}
-                    </Section>
-                  </Spacer>
-                </Tab>
-              ) : null}
-            </Tabs>
-          </Spacer>
+          <Spacer top='14'>{SkuTabs}</Spacer>
         </Spacer>
       </SkeletonTemplate>
-      {canUser('destroy', 'skus') && (
-        <Overlay backgroundColor='light'>
-          <PageLayout
-            title={`Confirm that you want to delete the ${sku.code} (${sku.name}) SKU.`}
-            description='This action cannot be undone, proceed with caution.'
-            minHeight={false}
-            navigationButton={{
-              onClick: () => {
-                close()
-              },
-              label: `Cancel`,
-              icon: 'x'
-            }}
-          >
-            <Button
-              variant='danger'
-              size='small'
-              disabled={isDeleting}
-              onClick={(e) => {
-                setIsDeleting(true)
-                e.stopPropagation()
-                void sdkClient.skus
-                  .delete(sku.id)
-                  .then(() => {
-                    setLocation(appRoutes.list.makePath({}))
-                  })
-                  .catch(() => {})
-              }}
-              fullWidth
-            >
-              Delete SKU
-            </Button>
-          </PageLayout>
-        </Overlay>
-      )}
+      <SkuDeleteOverlay />
     </PageLayout>
   )
 }
