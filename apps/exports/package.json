@@ -2,7 +2,7 @@
   "private": true,
   "name": "app-exports",
   "description": "A Commerce Layer Single Page Application to export resources with a nice GUI.",
-  "version": "2.5.6",
+  "version": "2.5.7",
   "type": "module",
   "license": "MIT",
   "keywords": [
