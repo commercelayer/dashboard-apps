@@ -38,7 +38,6 @@ function RefundPage({
 
               // refund estimator
               'line_items',
-              'line_items.line_item_options',
               'payment_method',
               'refunds'
             ]
@@ -46,7 +45,7 @@ function RefundPage({
               'order.captures',
 
               // refund estimator
-              'return_line_items.line_item.line_item_options',
+              'return_line_items.line_item',
               'order.payment_method',
               'order.refunds'
             ]
