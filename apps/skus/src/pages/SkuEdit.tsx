@@ -106,7 +106,7 @@ function adaptSkuToFormValues(sku?: Sku): SkuFormValues {
     code: sku?.code ?? '',
     name: sku?.name ?? '',
     description: sku?.description ?? '',
-    shippingCategory: sku?.shipping_category?.id ?? '',
+    shippingCategory: sku?.shipping_category?.id ?? null,
     weight: sku?.weight?.toString() ?? '',
     unitOfWeight: sku?.unit_of_weight ?? '',
     piecesPerPack: sku?.pieces_per_pack?.toString() ?? '',
