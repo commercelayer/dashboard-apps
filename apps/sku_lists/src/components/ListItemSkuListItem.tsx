@@ -7,13 +7,11 @@ import {
   Text,
   useCoreSdkProvider,
   useTokenProvider,
-  withSkeletonTemplate
+  withSkeletonTemplate,
+  type ResourceListItemTemplateProps
 } from '@commercelayer/app-elements'
-import type { SkuListItem } from '@commercelayer/sdk'
 
-interface Props {
-  resource?: SkuListItem
-  remove?: () => void
+interface Props extends ResourceListItemTemplateProps<'sku_list_items'> {
   hasBundles: boolean
 }
 
@@ -21,7 +19,8 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
   ({
     resource = makeSkuListItem(),
     remove,
-    hasBundles
+    hasBundles,
+    isLoading
   }): JSX.Element | null => {
     const { sdkClient } = useCoreSdkProvider()
     const { canUser } = useTokenProvider()
@@ -46,42 +45,46 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
             {resource.sku?.name}
           </Text>
         </div>
-        <div className='flex items-center gap-4'>
-          {canUser('update', 'sku_list_items') && !hasBundles ? (
-            <InputSpinner
-              defaultValue={resource?.quantity ?? 1}
-              min={1}
-              disableKeyboard
-              onChange={(newQuantity) => {
-                if (resource != null) {
-                  void sdkClient.sku_list_items.update({
-                    id: resource.id,
-                    quantity: newQuantity
-                  })
-                }
-              }}
-            />
-          ) : (
-            <Text weight='semibold' wrap='nowrap'>
-              x {resource.quantity}
-            </Text>
-          )}
-          {canUser('destroy', 'sku_list_items') && !hasBundles && (
-            <button
-              className='rounded'
-              type='button'
-              onClick={() => {
-                if (resource != null) {
-                  void sdkClient.sku_list_items.delete(resource.id).then(() => {
-                    remove?.()
-                  })
-                }
-              }}
-            >
-              <Icon name='trash' size='18' className='text-primary' />
-            </button>
-          )}
-        </div>
+        {isLoading !== true && (
+          <div className='flex items-center gap-4'>
+            {canUser('update', 'sku_list_items') && !hasBundles ? (
+              <InputSpinner
+                defaultValue={resource?.quantity ?? 1}
+                min={1}
+                disableKeyboard
+                onChange={(newQuantity) => {
+                  if (resource != null) {
+                    void sdkClient.sku_list_items.update({
+                      id: resource.id,
+                      quantity: newQuantity
+                    })
+                  }
+                }}
+              />
+            ) : (
+              <Text weight='semibold' wrap='nowrap'>
+                x {resource.quantity}
+              </Text>
+            )}
+            {canUser('destroy', 'sku_list_items') && !hasBundles && (
+              <button
+                className='rounded'
+                type='button'
+                onClick={() => {
+                  if (resource != null) {
+                    void sdkClient.sku_list_items
+                      .delete(resource.id)
+                      .then(() => {
+                        remove?.()
+                      })
+                  }
+                }}
+              >
+                <Icon name='trash' size='18' className='text-primary' />
+              </button>
+            )}
+          </div>
+        )}
       </ListItem>
     )
   }
