@@ -17,7 +17,6 @@ import { Link, useLocation, useRoute } from 'wouter'
 import { StockItemInfo } from '#components/StockItemInfo'
 import { appRoutes } from '#data/routes'
 import { useStockItemDetails } from '#hooks/useStockItemDetails'
-import { SkuDescription } from 'dashboard-apps-common/src/components/SkuDescription'
 import { useState, type FC } from 'react'
 
 export const StockItemDetails: FC = () => {
@@ -126,11 +125,6 @@ export const StockItemDetails: FC = () => {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
-          {stockItem.sku != null && (
-            <Spacer top='14'>
-              <SkuDescription resource={stockItem.sku} />
-            </Spacer>
-          )}
           <Spacer top='14'>
             <StockItemInfo stockItem={stockItem} />
           </Spacer>
