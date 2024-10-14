@@ -49,13 +49,14 @@ export const ListItemStockItem = withSkeletonTemplate<Props>(
           <Text tag='div' weight='semibold'>
             {resource.sku?.name}
           </Text>
-          {resource.reserved_stock != null && (
-            <Spacer top='1'>
-              <Badge variant='warning' icon='lockSimple'>
-                {resource.reserved_stock?.quantity} reserved
-              </Badge>
-            </Spacer>
-          )}
+          {resource.reserved_stock != null &&
+            resource.reserved_stock.quantity > 0 && (
+              <Spacer top='1'>
+                <Badge variant='warning' icon='lockSimple'>
+                  {resource.reserved_stock?.quantity} reserved
+                </Badge>
+              </Spacer>
+            )}
         </div>
         <Text weight='semibold' wrap='nowrap'>
           x {resource.quantity}
