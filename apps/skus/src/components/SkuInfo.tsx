@@ -6,6 +6,7 @@ import {
   getUnitOfWeightName
 } from '@commercelayer/app-elements'
 import type { Sku } from '@commercelayer/sdk'
+import isEmpty from 'lodash/isEmpty'
 import type { FC } from 'react'
 
 interface Props {
@@ -13,6 +14,11 @@ interface Props {
 }
 
 export const SkuInfo: FC<Props> = ({ sku = makeSku() }) => {
+  const unitOfWeight =
+    !isEmpty(sku.unit_of_weight) && sku.unit_of_weight != null
+      ? getUnitOfWeightName(sku.unit_of_weight)
+      : ''
+
   return (
     <Section title='Info'>
       {sku.shipping_category != null && (
@@ -25,10 +31,7 @@ export const SkuInfo: FC<Props> = ({ sku = makeSku() }) => {
       {sku.weight != null && sku.weight > 0 ? (
         <ListDetailsItem label='Weight' gutter='none'>
           <Text tag='div' weight='semibold'>
-            {sku.weight}{' '}
-            {sku.unit_of_weight != null
-              ? getUnitOfWeightName(sku.unit_of_weight).toLowerCase()
-              : ''}
+            {sku.weight} {unitOfWeight.toLowerCase()}
           </Text>
         </ListDetailsItem>
       ) : null}

@@ -16,7 +16,6 @@ import { Link, useLocation, useRoute } from 'wouter'
 
 import { PriceInfo } from '#components/PriceInfo'
 import { PriceTiers } from '#components/PriceTiers'
-import { SkuDescription } from '#components/SkuDescription'
 import { appRoutes } from '#data/routes'
 import { usePriceDetails } from '#hooks/usePriceDetails'
 import { useState } from 'react'
@@ -124,11 +123,6 @@ export function PriceDetails(): JSX.Element {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
-          {price.sku != null && (
-            <Spacer top='14'>
-              <SkuDescription sku={price.sku} />
-            </Spacer>
-          )}
           <Spacer top='14'>
             <PriceInfo price={price} />
           </Spacer>
