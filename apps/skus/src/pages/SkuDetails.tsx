@@ -18,14 +18,13 @@ import {
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
-import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
-
-import { SkuDescription } from '#components/SkuDescription'
 import { SkuInfo } from '#components/SkuInfo'
 import { appRoutes } from '#data/routes'
 import { useSkuDeleteOverlay } from '#hooks/useSkuDeleteOverlay'
 import { useSkuDetails } from '#hooks/useSkuDetails'
 import { isMockedId } from '#mocks'
+import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
+import { SkuDescription } from 'dashboard-apps-common/src/components/SkuDescription'
 import { type FC } from 'react'
 import { useSearch } from 'wouter/use-browser-location'
 
@@ -217,7 +216,7 @@ export const SkuDetails: FC = () => {
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom='4'>
           <Spacer top='14'>
-            <SkuDescription sku={sku} />
+            <SkuDescription resource={sku} />
           </Spacer>
           <Spacer top='14'>{SkuTabs}</Spacer>
         </Spacer>
