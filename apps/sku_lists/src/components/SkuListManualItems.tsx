@@ -26,7 +26,7 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
       useAddItemOverlay()
     const { canUser } = useTokenProvider()
     const { sdkClient } = useCoreSdkProvider()
-    const { ResourceList, refresh, list } = useResourceList({
+    const { ResourceList, refresh, list, meta } = useResourceList({
       type: 'sku_list_items',
       query: {
         filters: {
@@ -43,6 +43,7 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
     const excludedSkusFromAdd = list
       ?.map((item) => item?.sku?.code ?? '')
       .filter((item) => item !== '')
+    const itemsCount = meta?.recordCount ?? 0
 
     return (
       <>
@@ -58,7 +59,7 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
         </Spacer>
         <Spacer top='14'>
           <Section
-            title='Items'
+            title={`Items${itemsCount > 0 ? ` · ${itemsCount}` : ''}`}
             actionButton={
               canUser('create', 'sku_list_items') &&
               !hasBundles && (
