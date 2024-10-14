@@ -84,6 +84,7 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
                   <Text variant='info'>No items.</Text>
                 </Spacer>
               }
+              titleSize='normal'
               ItemTemplate={(itemTemplateProps) => (
                 <ListItemSkuListItem
                   hasBundles={hasBundles}
