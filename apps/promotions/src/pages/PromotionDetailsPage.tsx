@@ -25,6 +25,7 @@ import {
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
+  ResourceTags,
   Section,
   SkeletonTemplate,
   Spacer,
@@ -64,6 +65,8 @@ function Page(
   const { show: showDeleteOverlay, Overlay: DeleteOverlay } =
     useDeletePromotionOverlay()
 
+  const pageTitle = promotion.name
+
   if (error != null) {
     return <GenericPageNotFound />
   }
@@ -71,9 +74,7 @@ function Page(
   return (
     <PageLayout
       title={
-        <SkeletonTemplate isLoading={isLoading}>
-          {promotion.name}
-        </SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }
       overlay={props.overlay}
       toolbar={{
@@ -174,15 +175,26 @@ function Page(
         </Spacer>
 
         {!isMockedId(promotion.id) && (
-          <Spacer top='14'>
-            <ResourceMetadata
-              overlay={{
-                title: promotion.name
-              }}
-              resourceType={promotion.type}
-              resourceId={promotion.id}
-            />
-          </Spacer>
+          <>
+            <Spacer top='14'>
+              <ResourceTags
+                overlay={{
+                  title: pageTitle
+                }}
+                resourceType={promotion.type}
+                resourceId={promotion.id}
+              />
+            </Spacer>
+            <Spacer top='14'>
+              <ResourceMetadata
+                overlay={{
+                  title: pageTitle
+                }}
+                resourceType={promotion.type}
+                resourceId={promotion.id}
+              />
+            </Spacer>
+          </>
         )}
       </SkeletonTemplate>
     </PageLayout>
