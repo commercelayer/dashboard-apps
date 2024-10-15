@@ -83,7 +83,7 @@ export function SkuEdit(): JSX.Element {
             onSubmit={(formValues) => {
               setIsSaving(true)
               void sdkClient.skus
-                .update(getSkuFromFormValues(formValues) as Sku)
+                .update(getSkuFromFormValues(formValues, sdkClient))
                 .then((updatedSku) => {
                   setLocation(goBackUrl)
                   void mutateSku({ ...updatedSku })
