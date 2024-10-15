@@ -16,18 +16,15 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
-  formatDateWithPredicate,
   goBack,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import isEmpty from 'lodash/isEmpty'
 import { Link, useLocation, useRoute } from 'wouter'
 
 export function ReturnDetails(): JSX.Element {
   const {
     canUser,
-    settings: { mode },
-    user
+    settings: { mode }
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ returnId: string }>(appRoutes.details.path)
@@ -68,30 +65,6 @@ export function ReturnDetails(): JSX.Element {
       mode={mode}
       title={
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
-      }
-      description={
-        <SkeletonTemplate isLoading={isLoading}>
-          {returnObj.updated_at != null ? (
-            <div>
-              {formatDateWithPredicate({
-                predicate: 'Updated',
-                isoDate: returnObj.updated_at,
-                timezone: user?.timezone
-              })}
-            </div>
-          ) : returnObj.created_at != null ? (
-            <div>
-              {formatDateWithPredicate({
-                predicate: 'Created',
-                isoDate: returnObj.updated_at,
-                timezone: user?.timezone
-              })}
-            </div>
-          ) : null}
-          {!isEmpty(returnObj.reference) && (
-            <div>Ref. {returnObj.reference}</div>
-          )}
-        </SkeletonTemplate>
       }
       navigationButton={{
         label: 'Returns',
