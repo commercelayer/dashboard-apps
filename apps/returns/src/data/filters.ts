@@ -33,7 +33,8 @@ export const instructions: FiltersInstructions = [
         'shipped',
         'received',
         'cancelled',
-        'rejected'
+        'rejected',
+        'refunded'
       ]
     },
 
@@ -47,7 +48,8 @@ export const instructions: FiltersInstructions = [
           { value: 'shipped', label: 'Shipped' },
           { value: 'received', label: 'Received' },
           { value: 'cancelled', label: 'Cancelled' },
-          { value: 'rejected', label: 'Rejected' }
+          { value: 'rejected', label: 'Rejected' },
+          { value: 'refunded', label: 'Refunded' }
         ]
       }
     }
