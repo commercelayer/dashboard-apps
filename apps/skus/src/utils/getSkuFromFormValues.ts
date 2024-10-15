@@ -1,5 +1,5 @@
 import { isValidUnitOfWeight, type SkuFormValues } from '#components/SkuForm'
-import type { Sku } from '@commercelayer/sdk'
+import type { CommerceLayerClient, SkuUpdate } from '@commercelayer/sdk'
 
 /**
  * Generates a SKU object from form values object.
@@ -8,8 +8,9 @@ import type { Sku } from '@commercelayer/sdk'
  */
 
 export const getSkuFromFormValues = (
-  formValues: SkuFormValues
-): Partial<Sku> => {
+  formValues: SkuFormValues,
+  sdkClient: CommerceLayerClient
+): SkuUpdate => {
   /*
    * Note: `unit of weight` field will be sent as `undefined` if the `weight` field is not a positive number
    */
@@ -23,19 +24,13 @@ export const getSkuFromFormValues = (
 
   return {
     id: formValues.id ?? '',
-    type: 'skus',
     code: formValues.code ?? '',
     name: formValues.name,
     description: formValues.description,
     image_url: formValues.imageUrl,
-    shipping_category: {
-      // @ts-expect-error shipping_category.id must be nullable to support relation deletion
-      id: formValues.shippingCategory ?? null,
-      type: 'shipping_categories',
-      name: '',
-      created_at: '',
-      updated_at: ''
-    },
+    shipping_category: sdkClient.shipping_categories.relationship(
+      formValues.shippingCategory ?? null
+    ),
     weight: parseInt(formValues.weight ?? ''),
     unit_of_weight: refinedUnitOfWeight,
     pieces_per_pack: parseInt(formValues.piecesPerPack ?? ''),
