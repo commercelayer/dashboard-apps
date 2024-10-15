@@ -1,4 +1,5 @@
 import type { FiltersInstructions } from '@commercelayer/app-elements'
+import isEmpty from 'lodash/isEmpty'
 
 export const makeInstructions = ({
   sortByAttribute = 'placed_at'
@@ -157,13 +158,53 @@ export const makeInstructions = ({
     type: 'textSearch',
     sdk: {
       predicate: 'aggregated_details',
-      parseFormValue: (value) =>
-        typeof value === 'string' && value.trim()?.length > 0
-          ? `*${value.trim()}*`
-          : undefined
+      parseFormValue: parseTextSearchValue
     },
     render: {
       component: 'searchBar'
     }
   }
 ]
+
+export function parseTextSearchValue(value: unknown): string | undefined {
+  if (typeof value !== 'string' || value == null || isEmpty(value.trim())) {
+    return undefined
+  }
+  const searchText = value.trim()
+
+  if (searchText.includes('*') || searchText.includes('"')) {
+    return searchText
+  }
+
+  // It's not a full or partial email, but text contains a dot, needs to wrap it in double quotes so API won't escape the dot
+  if (searchText.includes('.') && !searchText.includes('@')) {
+    return `*"${searchText}"*`
+  }
+
+  // Could be a partial email, needs to wrap it in double quotes so API won't escape the dot but final @ needs to be removed
+  if (searchText.includes('.') && searchText.at(-1) === '@') {
+    return `*"${searchText.replace('@', '')}"*`
+  }
+
+  // Search for full or partial email wrapping text in double quotes
+  if (isFullOrPartialEmail(searchText)) {
+    return `*"${searchText}"*`
+  }
+
+  return `*${searchText}*`
+}
+
+function isFullOrPartialEmail(input: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]*$/
+  if (emailRegex.test(input)) {
+    const domain = input.split('@')[1]
+    const domainHasExtension =
+      domain?.includes('.') === true &&
+      domain?.at(-1) !== '.' &&
+      domain.split('.').length > 1
+
+    return domainHasExtension
+  }
+
+  return false
+}
