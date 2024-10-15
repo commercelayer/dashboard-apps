@@ -81,7 +81,6 @@ export function ReturnsList(): JSX.Element {
               scope={hasActiveFilter ? 'userFiltered' : 'history'}
             />
           }
-          hideTitle
         />
       </Spacer>
     </PageLayout>
