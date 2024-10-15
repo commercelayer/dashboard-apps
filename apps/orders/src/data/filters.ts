@@ -186,25 +186,19 @@ export function parseTextSearchValue(value: unknown): string | undefined {
     return `*"${searchText.replace('@', '')}"*`
   }
 
-  // Search for full or partial email wrapping text in double quotes
-  if (isFullOrPartialEmail(searchText)) {
-    return `*"${searchText}"*`
-  }
-
-  return `*${searchText}*`
+  return `*${wrapEmailInQuotes(searchText)}*`
 }
 
-function isFullOrPartialEmail(input: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]*$/
-  if (emailRegex.test(input)) {
-    const domain = input.split('@')[1]
-    const domainHasExtension =
-      domain?.includes('.') === true &&
-      domain?.at(-1) !== '.' &&
-      domain.split('.').length > 1
+// If an email is found in a sentence, wrap it in double quotes
+function wrapEmailInQuotes(sentence: string): string {
+  const sentenceHasWordsWithMultipleAtSymbols = sentence
+    .split(' ')
+    .some((word) => (word.match(/@/g) ?? []).length > 1)
 
-    return domainHasExtension
+  if (sentenceHasWordsWithMultipleAtSymbols) {
+    return sentence
   }
 
-  return false
+  const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g
+  return sentence.replace(emailRegex, '"$1"')
 }

@@ -27,6 +27,28 @@ describe('parseTextSearchValue', () => {
     )
   })
 
+  test('Should only wrap email in double quotes and the entire sentence in asterisks', () => {
+    expect(parseTextSearchValue('elyssa85@yahoo.com text')).toBe(
+      '*"elyssa85@yahoo.com" text*'
+    )
+    expect(parseTextSearchValue('text elyssa85@yahoo.com text')).toBe(
+      '*text "elyssa85@yahoo.com" text*'
+    )
+    expect(parseTextSearchValue('text elyssa85@yahoo.com ')).toBe(
+      '*text "elyssa85@yahoo.com"*'
+    )
+  })
+
+  test('Should wrap multiple email addresses in a sentence', () => {
+    expect(
+      parseTextSearchValue(
+        'hello world elyssa85@yahoo.com lorem ipsum elyssa85@yahoo.com'
+      )
+    ).toBe(
+      '*hello world "elyssa85@yahoo.com" lorem ipsum "elyssa85@yahoo.com"*'
+    )
+  })
+
   test('Should not wrap in double quote broken email addresses', () => {
     expect(parseTextSearchValue('elyssa85@gmail@yahoo.com')).toBe(
       '*elyssa85@gmail@yahoo.com*'
@@ -36,6 +58,14 @@ describe('parseTextSearchValue', () => {
   test('Should wrap full email with dots in double quotes', () => {
     expect(parseTextSearchValue('elyssa.85@yahoo.com')).toBe(
       '*"elyssa.85@yahoo.com"*'
+    )
+
+    expect(parseTextSearchValue('elyssa.85@yahoo.co.uk')).toBe(
+      '*"elyssa.85@yahoo.co.uk"*'
+    )
+
+    expect(parseTextSearchValue('elyssa.85@yahoo.it')).toBe(
+      '*"elyssa.85@yahoo.it"*'
     )
   })
 
