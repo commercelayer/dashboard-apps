@@ -3,6 +3,7 @@ import { appRoutes } from '#data/routes'
 import { RuleBuilderForm } from '#data/ruleBuilder/form/RuleBuilderForm'
 import { usePromotion } from '#hooks/usePromotion'
 import {
+  EmptyState,
   PageLayout,
   SkeletonTemplate,
   Spacer,
@@ -40,16 +41,23 @@ function Page(
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer top='10'>
-          <RuleBuilderForm
-            promotion={promotion}
-            onSuccess={() => {
-              setLocation(
-                appRoutes.promotionDetails.makePath({
-                  promotionId: props.params.promotionId
-                })
-              )
-            }}
-          />
+          {promotion.type !== 'flex_promotions' ? (
+            <RuleBuilderForm
+              promotion={promotion}
+              onSuccess={() => {
+                setLocation(
+                  appRoutes.promotionDetails.makePath({
+                    promotionId: props.params.promotionId
+                  })
+                )
+              }}
+            />
+          ) : (
+            <EmptyState
+              title='Action denied!'
+              description='Activation rules cannot be defined for a Flex promotion.'
+            />
+          )}
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>
