@@ -99,6 +99,13 @@ function adaptFormValuesToPriceList(
   return {
     name: formValues.name,
     currency_code: formValues.currency_code,
-    tax_included: formValues.tax_included === 'true'
+    tax_included: formValues.tax_included === 'true',
+    rules:
+      'rules' in formValues &&
+      formValues.rules != null &&
+      typeof formValues.rules === 'string' &&
+      formValues.rules.trim() !== ''
+        ? JSON.parse(formValues.rules)
+        : undefined
   }
 }
