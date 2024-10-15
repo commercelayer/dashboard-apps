@@ -6,6 +6,7 @@ import {
   formatDate,
   HookedForm,
   HookedInputCheckbox,
+  Icon,
   InputCheckbox,
   InputSpinner,
   ListItem,
@@ -13,6 +14,7 @@ import {
   Table,
   Td,
   Text,
+  Tooltip,
   Tr,
   useTokenProvider,
   type CurrencyCode,
@@ -258,7 +260,30 @@ export function RefundEstimator({
 
             <Spacer top='10'>
               <ListItem padding='x' borderStyle='none'>
-                <Text weight='bold'>Refund estimate</Text>
+                <Text weight='bold'>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '8px',
+                      alignItems: 'center'
+                    }}
+                  >
+                    Refund estimate{' '}
+                    <Tooltip
+                      direction='bottom-start'
+                      label={<Icon name='info' />}
+                      content={
+                        <div>
+                          The refund estimate is an
+                          <br />
+                          approximate value and may differ
+                          <br />
+                          from the original payment.
+                        </div>
+                      }
+                    />
+                  </div>
+                </Text>
                 <Text weight='bold' style={{ display: 'flex', gap: '.5rem' }}>
                   <CopyToClipboard
                     showValue={false}
