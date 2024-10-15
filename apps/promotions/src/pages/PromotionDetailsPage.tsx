@@ -547,7 +547,7 @@ const SectionCoupon = withSkeletonTemplate<{
   return (
     <SkeletonTemplate isLoading={isLoadingCoupons}>
       <Section
-        title='Coupons'
+        title={hasCoupons ? `Coupons · ${coupons.meta.recordCount}` : 'Coupons'}
         border='none'
         actionButton={
           hasCoupons ? (
