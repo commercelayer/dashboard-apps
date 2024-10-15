@@ -48,6 +48,13 @@ export function formValuesToCoupon(formValues: z.infer<typeof couponForm>) {
     recipient_email:
       'recipient_email' in formValues && formValues.recipient_email != null
         ? formValues.recipient_email
-        : null
+        : null,
+    coupon_recipient:
+      'recipient_email' in formValues && formValues.recipient_email != null
+        ? undefined
+        : {
+            type: 'coupon_recipients',
+            id: null
+          }
   } satisfies Omit<CouponCreate, 'id'> | Omit<CouponUpdate, 'id'>
 }
