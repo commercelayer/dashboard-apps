@@ -7,7 +7,7 @@ export const referenceOrigins = {
   appOrdersRefundNote: 'app-orders--refund-note',
   appShipmentsNote: 'app-shipments--note',
   appReturnsNote: 'app-returns--note',
-  appReturnsRefundNote: 'app-orders--refund-note'
+  appReturnsRefundNote: 'app-returns--refund-note'
 } as const
 
 type ReferenceOrigin = (typeof referenceOrigins)[keyof typeof referenceOrigins]
