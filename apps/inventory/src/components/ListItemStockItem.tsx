@@ -27,6 +27,9 @@ export const ListItemStockItem = withSkeletonTemplate<Props>(
 
     const stockLocationId = params?.stockLocationId ?? ''
 
+    const hasReservedStock =
+      resource.reserved_stock != null && resource.reserved_stock.quantity > 0
+
     return (
       <ListItem
         icon={
@@ -57,20 +60,19 @@ export const ListItemStockItem = withSkeletonTemplate<Props>(
             </Text>
           </div>
           {stockLocationId === '' && (
-            <Spacer bottom='2'>
+            <Spacer bottom={hasReservedStock ? '2' : undefined}>
               <Text tag='div' weight='medium' variant='info' size='small'>
                 {resource.stock_location?.name}
               </Text>
             </Spacer>
           )}
-          {resource.reserved_stock != null &&
-            resource.reserved_stock.quantity > 0 && (
-              <Spacer top='1'>
-                <Badge variant='warning' icon='lockSimple'>
-                  {resource.reserved_stock?.quantity} reserved
-                </Badge>
-              </Spacer>
-            )}
+          {hasReservedStock && (
+            <Spacer top='1'>
+              <Badge variant='warning' icon='lockSimple'>
+                {resource.reserved_stock?.quantity} reserved
+              </Badge>
+            </Spacer>
+          )}
         </div>
       </ListItem>
     )
