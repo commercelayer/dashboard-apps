@@ -57,9 +57,11 @@ export const ListItemStockItem = withSkeletonTemplate<Props>(
             </Text>
           </div>
           {stockLocationId === '' && (
-            <Text tag='div' weight='medium' variant='info' size='small'>
-              {resource.stock_location?.name}
-            </Text>
+            <Spacer bottom='2'>
+              <Text tag='div' weight='medium' variant='info' size='small'>
+                {resource.stock_location?.name}
+              </Text>
+            </Spacer>
           )}
           {resource.reserved_stock != null &&
             resource.reserved_stock.quantity > 0 && (
