@@ -61,7 +61,7 @@ export const ListItemPrice = withSkeletonTemplate<Props>(
             {resource.sku?.name}
           </Text>
           {priceListId === '' && (
-            <Spacer bottom='2'>
+            <Spacer bottom={hasPriceTiers ? '2' : undefined}>
               <Text tag='div' weight='medium' variant='info' size='small'>
                 {resource.price_list?.name}
               </Text>
