@@ -20,7 +20,7 @@ import { StockLocationSelector } from './StockLocationSelector'
 
 const stockItemFormSchema = z.object({
   id: z.string().optional(),
-  stockLocation: z.string().optional(),
+  stockLocation: z.string().min(1),
   item: z.string().min(1),
   quantity: z.string().min(0)
 })
