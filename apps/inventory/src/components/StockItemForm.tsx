@@ -3,9 +3,8 @@ import {
   Button,
   HookedForm,
   HookedInput,
+  HookedInputSelect,
   HookedValidationApiError,
-  HookedValidationError,
-  InputSelect,
   Section,
   Spacer,
   Text
@@ -83,7 +82,8 @@ export function StockItemForm({
                     showAddItemOverlay({ type: 'skus' })
                   }}
                 >
-                  <InputSelect
+                  <HookedInputSelect
+                    name='item'
                     initialValues={[]}
                     placeholder='Select an SKU'
                     onSelect={() => {}}
@@ -101,9 +101,6 @@ export function StockItemForm({
                   }}
                 />
               )}
-              <Spacer top='2'>
-                <HookedValidationError name='item' />
-              </Spacer>
               <AddItemOverlay
                 onConfirm={(resource) => {
                   setSelectedItemResource(resource)
