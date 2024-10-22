@@ -19,6 +19,9 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         <Route path={appRoutes.home.path}>
           <Home />
         </Route>
+        <Route path={appRoutes.list.path}>
+          <StockItemsList />
+        </Route>
         <Route path={appRoutes.stockLocation.path}>
           <StockItemsList />
         </Route>

@@ -43,12 +43,24 @@ export const ListItemStockItem = withSkeletonTemplate<Props>(
         }}
       >
         <div>
-          <Text tag='div' weight='medium' variant='info' size='small'>
-            {resource.sku?.code}
-          </Text>
-          <Text tag='div' weight='semibold'>
-            {resource.sku?.name}
-          </Text>
+          <div className='flex justify-between items-end'>
+            <div>
+              <Text tag='div' weight='medium' variant='info' size='small'>
+                {resource.sku?.code}
+              </Text>
+              <Text tag='div' weight='semibold'>
+                {resource.sku?.name}
+              </Text>
+            </div>
+            <Text weight='semibold' wrap='nowrap'>
+              {resource.quantity}
+            </Text>
+          </div>
+          {stockLocationId === '' && (
+            <Text tag='div' weight='medium' variant='info' size='small'>
+              {resource.stock_location?.name}
+            </Text>
+          )}
           {resource.reserved_stock != null &&
             resource.reserved_stock.quantity > 0 && (
               <Spacer top='1'>
@@ -58,9 +70,6 @@ export const ListItemStockItem = withSkeletonTemplate<Props>(
               </Spacer>
             )}
         </div>
-        <Text weight='semibold' wrap='nowrap'>
-          x {resource.quantity}
-        </Text>
       </ListItem>
     )
   }

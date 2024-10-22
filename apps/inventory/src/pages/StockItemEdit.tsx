@@ -87,16 +87,14 @@ export function StockItemEdit(): JSX.Element {
             defaultValues={{
               id: stockItem.id,
               quantity: stockItem.quantity.toString(),
-              item: stockItem.sku?.id
+              item: stockItem.sku?.id,
+              stockLocation: stockItem.stock_location?.id
             }}
             apiError={apiError}
             isSubmitting={isSaving}
             onSubmit={(formValues) => {
               setIsSaving(true)
-              const stockItem = adaptFormValuesToStockItem(
-                formValues,
-                stockLocationId
-              )
+              const stockItem = adaptFormValuesToStockItem(formValues)
               void sdkClient.stock_items
                 .update(stockItem)
                 .then((updatedStockItem) => {
@@ -116,8 +114,7 @@ export function StockItemEdit(): JSX.Element {
 }
 
 function adaptFormValuesToStockItem(
-  formValues: StockItemFormValues,
-  stockLocationId: string
+  formValues: StockItemFormValues
 ): StockItemUpdate {
   return {
     id: formValues.id ?? '',
@@ -125,10 +122,6 @@ function adaptFormValuesToStockItem(
       id: formValues.item ?? null,
       type: 'skus'
     },
-    quantity: parseInt(formValues.quantity),
-    stock_location: {
-      id: stockLocationId,
-      type: 'stock_locations'
-    }
+    quantity: parseInt(formValues.quantity)
   }
 }

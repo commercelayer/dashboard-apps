@@ -29,7 +29,10 @@ export function StockItemNew(): JSX.Element {
 
   const stockLocationId = params?.stockLocationId ?? ''
 
-  const goBackUrl = appRoutes.stockLocation.makePath(stockLocationId)
+  const goBackUrl =
+    stockLocationId !== ''
+      ? appRoutes.stockLocation.makePath(stockLocationId)
+      : appRoutes.list.makePath()
 
   if (!canUser('create', 'stock_items')) {
     return (
@@ -75,6 +78,9 @@ export function StockItemNew(): JSX.Element {
       <Spacer bottom='14'>
         <StockItemForm
           defaultValues={{
+            ...(stockLocationId !== ''
+              ? { stockLocation: stockLocationId }
+              : {}),
             quantity: '1'
           }}
           apiError={apiError}
@@ -112,7 +118,10 @@ function adaptFormValuesToStockItem(
     },
     quantity: parseInt(formValues.quantity),
     stock_location: {
-      id: stockLocationId,
+      id:
+        stockLocationId !== ''
+          ? stockLocationId
+          : (formValues.stockLocation ?? ''),
       type: 'stock_locations'
     }
   }

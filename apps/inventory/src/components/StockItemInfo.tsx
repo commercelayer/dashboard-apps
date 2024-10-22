@@ -10,7 +10,7 @@ interface Props {
 export const StockItemInfo: FC<Props> = ({ stockItem = makeStockItem() }) => {
   return (
     <Section title='Info'>
-      <ListDetailsItem label='Stock Location' gutter='none'>
+      <ListDetailsItem label='Stock location' gutter='none'>
         <Text tag='div' weight='semibold'>
           {stockItem.stock_location?.name}
         </Text>
