@@ -7,6 +7,7 @@ import buy_x_pay_y_promotions from './configs/buy_x_pay_y_promotions'
 import external_promotions from './configs/external_promotions'
 import fixed_amount_promotions from './configs/fixed_amount_promotions'
 import fixed_price_promotions from './configs/fixed_price_promotions'
+import flex_promotions from './configs/flex_promotions'
 import free_gift_promotions from './configs/free_gift_promotions'
 import free_shipping_promotions from './configs/free_shipping_promotions'
 import percentage_discount_promotions from './configs/percentage_discount_promotions'
@@ -14,7 +15,6 @@ import percentage_discount_promotions from './configs/percentage_discount_promot
 /** The attribute `reference_origin: "app-promotions"` identifies a promotion directly created from the App. */
 export const appPromotionsReferenceOrigin = 'app-promotions'
 
-// @ts-expect-error TODO: We need to manage the @flex_promotions
 export const promotionConfig: PromotionConfig = {
   ...percentage_discount_promotions,
   ...free_shipping_promotions,
@@ -22,7 +22,8 @@ export const promotionConfig: PromotionConfig = {
   ...free_gift_promotions,
   ...fixed_price_promotions,
   ...buy_x_pay_y_promotions,
-  ...external_promotions
+  ...external_promotions,
+  ...flex_promotions
 }
 
 type Sanitize<PT extends PromotionType> = Replace<
@@ -32,7 +33,9 @@ type Sanitize<PT extends PromotionType> = Replace<
   { all: true }
 >
 
-export type PromotionType = Extract<ResourceTypeLock, `${string}_promotions`>
+export type PromotionType =
+  | Extract<ResourceTypeLock, `${string}_promotions`>
+  | 'flex_promotions'
 
 export type PromotionConfig = {
   [type in PromotionType]: {
@@ -47,8 +50,8 @@ export type PromotionConfig = {
       promotion: Extract<Promotion, { type: type }>
     }>
     formType: z.ZodObject<z.ZodRawShape, 'strip', z.ZodTypeAny>
-    Fields: React.FC<{ promotion?: Promotion }>
-    Options: React.FC<{ promotion?: Promotion }>
+    Fields: React.FC<{ promotion?: Extract<Promotion, { type: type }> }>
+    Options: React.FC<{ promotion?: Extract<Promotion, { type: type }> }>
     DetailsSectionInfo: React.FC<{
       promotion: Extract<Promotion, { type: type }>
     }>
