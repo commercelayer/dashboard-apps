@@ -74,7 +74,7 @@ export function PricesList(): JSX.Element {
     dropdownItems: []
   }
 
-  if (canUser('update', 'price_lists')) {
+  if (canUser('update', 'price_lists') && priceListId !== '') {
     pageToolbar.dropdownItems?.push([
       {
         label: 'Edit',
@@ -87,7 +87,7 @@ export function PricesList(): JSX.Element {
     ])
   }
 
-  if (canUser('destroy', 'price_lists')) {
+  if (canUser('destroy', 'price_lists') && priceListId !== '') {
     pageToolbar.dropdownItems?.push([
       {
         label: 'Delete',
@@ -98,7 +98,7 @@ export function PricesList(): JSX.Element {
     ])
   }
 
-  const pageTitle = priceList.name
+  const pageTitle = priceListId !== '' ? priceList.name : 'All prices'
 
   if (!canUser('read', 'price_lists') || !canUser('read', 'prices')) {
     return (
@@ -139,7 +139,12 @@ export function PricesList(): JSX.Element {
       <FilteredList
         type='prices'
         query={{
-          include: ['sku', 'price_volume_tiers', 'price_frequency_tiers'],
+          include: [
+            'sku',
+            'price_volume_tiers',
+            'price_frequency_tiers',
+            'price_list'
+          ],
           sort: {
             created_at: 'desc'
           }

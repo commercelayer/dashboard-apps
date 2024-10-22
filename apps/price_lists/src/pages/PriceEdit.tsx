@@ -84,7 +84,8 @@ export function PriceEdit(): JSX.Element {
               currency_code: price.currency_code?.toString(),
               price: price.amount_cents,
               original_price: price.compare_at_amount_cents ?? 0,
-              item: price.sku?.id
+              item: price.sku?.id,
+              price_list: price.price_list?.id
             }}
             apiError={apiError}
             isSubmitting={isSaving}

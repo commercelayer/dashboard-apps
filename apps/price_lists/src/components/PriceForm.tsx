@@ -1,10 +1,12 @@
 import { useAddItemOverlay } from '#hooks/useAddItemOverlay'
+import { usePriceListDetails } from '#hooks/usePriceListDetails'
 import {
   Button,
   HookedForm,
   HookedInputCurrency,
   HookedValidationApiError,
   HookedValidationError,
+  InputSelect,
   Section,
   Spacer,
   Text,
@@ -12,14 +14,16 @@ import {
 } from '@commercelayer/app-elements'
 import type { Price, Sku } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'
 import { ListItemSku } from './ListItemSku'
+import { PriceListSelector } from './PriceListSelector'
 
 const priceFormSchema = z.object({
   id: z.string().optional(),
   item: z.string().min(1),
+  price_list: z.string().min(1),
   currency_code: z.string().min(1),
   price: z.number(),
   original_price: z.number()
@@ -57,6 +61,14 @@ export function PriceForm({
   const sku = resource?.sku != null ? resource?.sku : selectedItemResource
   const priceFormWatchedItem = priceFormMethods.watch('item')
 
+  const priceFormWatchedPriceList = priceFormMethods.watch('price_list')
+  const { priceList } = usePriceListDetails(priceFormWatchedPriceList ?? '')
+  useEffect(() => {
+    if (priceList != null) {
+      priceFormMethods.setValue('currency_code', priceList.currency_code)
+    }
+  }, [priceList])
+
   return (
     <>
       <HookedForm
@@ -66,20 +78,29 @@ export function PriceForm({
         }}
       >
         <Section>
-          <Spacer top='12' bottom='4'>
+          {defaultValues?.price_list == null && (
+            <Spacer top='12' bottom='4'>
+              <PriceListSelector />
+            </Spacer>
+          )}
+          <Spacer
+            top={defaultValues?.price_list != null ? '12' : '6'}
+            bottom='4'
+          >
             <Text weight='semibold'>SKU</Text>
             <Spacer top='2'>
               {priceFormWatchedItem == null ? (
-                <Button
-                  type='button'
-                  variant='relationship'
-                  fullWidth
+                <div
                   onClick={() => {
                     showAddItemOverlay({ type: 'skus' })
                   }}
                 >
-                  Add item
-                </Button>
+                  <InputSelect
+                    initialValues={[]}
+                    placeholder='Select an SKU'
+                    onSelect={() => {}}
+                  />
+                </div>
               ) : (
                 <ListItemSku
                   resource={sku}
@@ -103,24 +124,30 @@ export function PriceForm({
               />
             </Spacer>
           </Spacer>
-          <Spacer top='6' bottom='4'>
-            <HookedInputCurrency
-              name='price'
-              label='Price'
-              currencyCode={
-                defaultValues?.currency_code as InputCurrencyProps['currencyCode']
-              }
-            />
-          </Spacer>
-          <Spacer top='6' bottom='4'>
-            <HookedInputCurrency
-              name='original_price'
-              label='Original price'
-              currencyCode={
-                defaultValues?.currency_code as InputCurrencyProps['currencyCode']
-              }
-            />
-          </Spacer>
+          {priceList != null && (
+            <>
+              <Spacer top='6' bottom='4'>
+                <HookedInputCurrency
+                  name='price'
+                  label='Price'
+                  currencyCode={
+                    (priceList?.currency_code ??
+                      'USD') as InputCurrencyProps['currencyCode']
+                  }
+                />
+              </Spacer>
+              <Spacer top='6' bottom='4'>
+                <HookedInputCurrency
+                  name='original_price'
+                  label='Original price'
+                  currencyCode={
+                    (priceList?.currency_code ??
+                      'USD') as InputCurrencyProps['currencyCode']
+                  }
+                />
+              </Spacer>
+            </>
+          )}
         </Section>
         <Spacer top='14'>
           <Button type='submit' disabled={isSubmitting} fullWidth>

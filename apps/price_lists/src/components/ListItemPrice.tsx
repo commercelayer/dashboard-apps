@@ -4,6 +4,7 @@ import {
   Avatar,
   Badge,
   ListItem,
+  Spacer,
   Text,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -59,6 +60,13 @@ export const ListItemPrice = withSkeletonTemplate<Props>(
           <Text tag='div' weight='semibold'>
             {resource.sku?.name}
           </Text>
+          {priceListId === '' && (
+            <Spacer bottom='2'>
+              <Text tag='div' weight='medium' variant='info' size='small'>
+                {resource.price_list?.name}
+              </Text>
+            </Spacer>
+          )}
           {hasPriceTiers && (
             <div className='flex items-center gap-2 mt-1'>
               {hasFrequencyPriceTiers && (

@@ -1,6 +1,5 @@
 import { PriceForm, type PriceFormValues } from '#components/PriceForm'
 import { appRoutes } from '#data/routes'
-import { usePriceListDetails } from '#hooks/usePriceListDetails'
 import {
   Button,
   EmptyState,
@@ -14,10 +13,7 @@ import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
 export function PriceNew(): JSX.Element {
-  const {
-    canUser,
-    settings: { mode }
-  } = useTokenProvider()
+  const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
 
@@ -27,33 +23,7 @@ export function PriceNew(): JSX.Element {
   const [, params] = useRoute<{ priceListId: string }>(appRoutes.priceNew.path)
   const priceListId = params?.priceListId ?? ''
 
-  const { priceList, error } = usePriceListDetails(priceListId)
   const pageTitle = 'New price'
-
-  if (error != null) {
-    return (
-      <PageLayout
-        title={pageTitle}
-        navigationButton={{
-          onClick: () => {
-            setLocation(appRoutes.home.makePath({}))
-          },
-          label: pageTitle,
-          icon: 'arrowLeft'
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title='Not authorized'
-          action={
-            <Link href={appRoutes.home.makePath({})}>
-              <Button variant='primary'>Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
-    )
-  }
 
   const goBackUrl = appRoutes.pricesList.makePath({ priceListId })
 
@@ -101,7 +71,11 @@ export function PriceNew(): JSX.Element {
       <Spacer bottom='14'>
         <PriceForm
           defaultValues={{
-            currency_code: priceList.currency_code
+            ...(priceListId !== ''
+              ? {
+                  price_list: priceListId
+                }
+              : {})
           }}
           apiError={apiError}
           isSubmitting={isSaving}
@@ -141,7 +115,7 @@ function adaptFormValuesToPrice(
       type: 'skus'
     },
     price_list: {
-      id: priceListId,
+      id: formValues.price_list ?? priceListId,
       type: 'price_lists'
     }
   }

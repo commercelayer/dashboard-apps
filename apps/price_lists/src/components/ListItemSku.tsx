@@ -50,7 +50,7 @@ export const ListItemSku = withSkeletonTemplate<Props>(
         {variant === 'boxed' && !disabled && (
           <Icon
             name='pencilSimple'
-            size='18'
+            size='16'
             weight='bold'
             className='text-primary'
           />

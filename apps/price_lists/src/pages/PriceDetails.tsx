@@ -18,6 +18,7 @@ import { PriceInfo } from '#components/PriceInfo'
 import { PriceTiers } from '#components/PriceTiers'
 import { appRoutes } from '#data/routes'
 import { usePriceDetails } from '#hooks/usePriceDetails'
+import { usePriceListDetails } from '#hooks/usePriceListDetails'
 import { useState } from 'react'
 
 export function PriceDetails(): JSX.Element {
@@ -35,6 +36,7 @@ export function PriceDetails(): JSX.Element {
   const priceId = params?.priceId ?? ''
 
   const { price, isLoading, error, mutatePrice } = usePriceDetails(priceId)
+  const { priceList } = usePriceListDetails(priceListId)
 
   const { sdkClient } = useCoreSdkProvider()
 
@@ -114,7 +116,7 @@ export function PriceDetails(): JSX.Element {
             defaultRelativePath: appRoutes.pricesList.makePath({ priceListId })
           })
         },
-        label: 'Prices',
+        label: priceListId !== '' ? priceList.name : 'Prices',
         icon: 'arrowLeft'
       }}
       toolbar={pageToolbar}
