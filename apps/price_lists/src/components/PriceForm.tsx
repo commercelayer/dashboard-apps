@@ -24,8 +24,14 @@ const priceFormSchema = z.object({
   item: z.string().min(1),
   price_list: z.string().min(1),
   currency_code: z.string().min(1),
-  price: z.number(),
-  original_price: z.number()
+  price: z.number({
+    required_error: 'Required',
+    invalid_type_error: 'Expected number'
+  }),
+  original_price: z.number({
+    required_error: 'Required',
+    invalid_type_error: 'Expected number'
+  })
 })
 
 export type PriceFormValues = z.infer<typeof priceFormSchema>
