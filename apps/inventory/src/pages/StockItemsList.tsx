@@ -22,14 +22,14 @@ export function StockItemsList(): JSX.Element {
     settings: { mode }
   } = useTokenProvider()
 
-  const [, params] = useRoute<{ stockLocationId: string }>(
+  const [, params] = useRoute<{ stockLocationId?: string }>(
     appRoutes.stockLocation.path
   )
 
   const stockLocationId = params?.stockLocationId ?? ''
 
-  const { stockLocation, isLoading, error } =
-    useStockLocationDetails(stockLocationId)
+  const stockLocationDetails = useStockLocationDetails(stockLocationId)
+  const { stockLocation, isLoading, error } = stockLocationDetails ?? null
 
   const queryString = useSearch()
   const [, setLocation] = useLocation()
@@ -63,7 +63,8 @@ export function StockItemsList(): JSX.Element {
     )
   }
 
-  const pageTitle = stockLocation.name
+  const pageTitle =
+    stockLocationId !== '' ? stockLocation.name : 'All inventory'
 
   if (!canUser('read', 'stock_locations')) {
     return (
@@ -102,7 +103,7 @@ export function StockItemsList(): JSX.Element {
       <FilteredList
         type='stock_items'
         query={{
-          include: ['sku', 'reserved_stock'],
+          include: ['sku', 'reserved_stock', 'stock_location'],
           sort: {
             created_at: 'desc'
           }

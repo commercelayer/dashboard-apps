@@ -1,21 +1,33 @@
-import { ListEmptyStateStockLocations } from '#components/ListEmptyStateStockLocations'
 import { ListItemStockLocation } from '#components/ListItemStockLocation'
-import { stockLocationsInstructions } from '#data/filters'
+import { appRoutes } from '#data/routes'
 import {
   EmptyState,
   HomePageLayout,
-  useResourceFilters,
+  ListItem,
+  SearchBar,
+  Section,
+  Spacer,
+  StatusIcon,
+  Text,
+  useResourceList,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+import { useState } from 'react'
+import { Link } from 'wouter'
 
 export function Home(): JSX.Element {
   const { canUser } = useTokenProvider()
 
-  const queryString = useSearch()
+  const [searchValue, setSearchValue] = useState<string>()
 
-  const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions: stockLocationsInstructions
+  const { list } = useResourceList({
+    type: 'stock_locations',
+    query: {
+      filters: {
+        ...(searchValue != null ? { name_cont: searchValue } : {})
+      },
+      sort: ['-updated_at']
+    }
   })
 
   if (!canUser('read', 'stock_locations')) {
@@ -28,30 +40,34 @@ export function Home(): JSX.Element {
 
   return (
     <HomePageLayout title='Inventory'>
-      <SearchWithNav
-        queryString={queryString}
-        onUpdate={(qs) => {
-          navigate(`?${qs}`, {
-            replace: true
-          })
-        }}
-        onFilterClick={() => {}}
-        hideFiltersNav
-      />
-      <FilteredList
-        type='stock_locations'
-        query={{
-          sort: {
-            created_at: 'desc'
-          }
-        }}
-        ItemTemplate={ListItemStockLocation}
-        emptyState={
-          <ListEmptyStateStockLocations
-            scope={hasActiveFilter ? 'userFiltered' : 'history'}
-          />
-        }
-      />
+      <Spacer top='4'>
+        <SearchBar
+          initialValue={searchValue}
+          onSearch={setSearchValue}
+          placeholder='Search stock locations...'
+          onClear={() => {
+            setSearchValue('')
+          }}
+        />
+      </Spacer>
+      <Spacer top='14'>
+        <Section title='Browse' titleSize='small'>
+          {(searchValue == null || searchValue?.length === 0) && (
+            <Link href={appRoutes.list.makePath()} asChild>
+              <ListItem>
+                <Text weight='semibold'>All inventory</Text>
+                <StatusIcon name='caretRight' />
+              </ListItem>
+            </Link>
+          )}
+          {list?.map((stockLocation) => (
+            <ListItemStockLocation
+              resource={stockLocation}
+              key={stockLocation.id}
+            />
+          ))}
+        </Section>
+      </Spacer>
     </HomePageLayout>
   )
 }

@@ -3,8 +3,8 @@ import {
   Button,
   HookedForm,
   HookedInput,
+  HookedInputSelect,
   HookedValidationApiError,
-  HookedValidationError,
   Section,
   Spacer,
   Text
@@ -15,9 +15,11 @@ import { useState } from 'react'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'
 import { ListItemSku } from './ListItemSku'
+import { StockLocationSelector } from './StockLocationSelector'
 
 const stockItemFormSchema = z.object({
   id: z.string().optional(),
+  stockLocation: z.string().min(1),
   item: z.string().min(1),
   quantity: z.string().min(0)
 })
@@ -63,20 +65,30 @@ export function StockItemForm({
         }}
       >
         <Section>
-          <Spacer top='12' bottom='4'>
+          {defaultValues?.stockLocation == null && (
+            <Spacer top='12' bottom='4'>
+              <StockLocationSelector />
+            </Spacer>
+          )}
+          <Spacer
+            top={defaultValues?.stockLocation == null ? '6' : '12'}
+            bottom='4'
+          >
             <Text weight='semibold'>SKU</Text>
             <Spacer top='2'>
               {stockItemFormWatchedItem == null ? (
-                <Button
-                  type='button'
-                  variant='relationship'
-                  fullWidth
+                <div
                   onClick={() => {
                     showAddItemOverlay({ type: 'skus' })
                   }}
                 >
-                  Add item
-                </Button>
+                  <HookedInputSelect
+                    name='item'
+                    initialValues={[]}
+                    placeholder='Select an SKU'
+                    onSelect={() => {}}
+                  />
+                </div>
               ) : (
                 <ListItemSku
                   resource={sku}
@@ -89,9 +101,6 @@ export function StockItemForm({
                   }}
                 />
               )}
-              <Spacer top='2'>
-                <HookedValidationError name='item' />
-              </Spacer>
               <AddItemOverlay
                 onConfirm={(resource) => {
                   setSelectedItemResource(resource)

@@ -42,13 +42,18 @@ export const StockItemDetails: FC = () => {
 
   const [isDeleting, setIsDeleting] = useState(false)
 
+  const backLink =
+    stockLocationId !== ''
+      ? appRoutes.stockLocation.makePath(stockLocationId)
+      : appRoutes.list.makePath()
+
   if (error != null) {
     return (
       <PageLayout
         title='Stock items'
         navigationButton={{
           onClick: () => {
-            setLocation(appRoutes.stockLocation.makePath(stockLocationId))
+            setLocation(backLink)
           },
           label: 'Stock location',
           icon: 'arrowLeft'
@@ -58,7 +63,7 @@ export const StockItemDetails: FC = () => {
         <EmptyState
           title='Not authorized'
           action={
-            <Link href={appRoutes.stockLocation.makePath(stockLocationId)}>
+            <Link href={backLink}>
               <Button variant='primary'>Go back</Button>
             </Link>
           }
@@ -113,11 +118,10 @@ export const StockItemDetails: FC = () => {
         onClick: () => {
           goBack({
             setLocation,
-            defaultRelativePath:
-              appRoutes.stockLocation.makePath(stockLocationId)
+            defaultRelativePath: backLink
           })
         },
-        label: 'Stock location',
+        label: stockLocationId !== '' ? 'Stock location' : 'All inventory',
         icon: 'arrowLeft'
       }}
       toolbar={pageToolbar}
@@ -172,9 +176,7 @@ export const StockItemDetails: FC = () => {
                 void sdkClient.stock_items
                   .delete(stockItem.id)
                   .then(() => {
-                    setLocation(
-                      appRoutes.stockLocation.makePath(stockLocationId)
-                    )
+                    setLocation(backLink)
                   })
                   .catch(() => {})
               }}

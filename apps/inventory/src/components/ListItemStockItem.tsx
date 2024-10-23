@@ -27,6 +27,9 @@ export const ListItemStockItem = withSkeletonTemplate<Props>(
 
     const stockLocationId = params?.stockLocationId ?? ''
 
+    const hasReservedStock =
+      resource.reserved_stock != null && resource.reserved_stock.quantity > 0
+
     return (
       <ListItem
         icon={
@@ -43,24 +46,34 @@ export const ListItemStockItem = withSkeletonTemplate<Props>(
         }}
       >
         <div>
-          <Text tag='div' weight='medium' variant='info' size='small'>
-            {resource.sku?.code}
-          </Text>
-          <Text tag='div' weight='semibold'>
-            {resource.sku?.name}
-          </Text>
-          {resource.reserved_stock != null &&
-            resource.reserved_stock.quantity > 0 && (
-              <Spacer top='1'>
-                <Badge variant='warning' icon='lockSimple'>
-                  {resource.reserved_stock?.quantity} reserved
-                </Badge>
-              </Spacer>
-            )}
+          <div className='flex justify-between items-end'>
+            <div>
+              <Text tag='div' weight='medium' variant='info' size='small'>
+                {resource.sku?.code}
+              </Text>
+              <Text tag='div' weight='semibold'>
+                {resource.sku?.name}
+              </Text>
+            </div>
+            <Text weight='semibold' wrap='nowrap'>
+              {resource.quantity}
+            </Text>
+          </div>
+          {stockLocationId === '' && (
+            <Spacer bottom={hasReservedStock ? '2' : undefined}>
+              <Text tag='div' weight='medium' variant='info' size='small'>
+                {resource.stock_location?.name}
+              </Text>
+            </Spacer>
+          )}
+          {hasReservedStock && (
+            <Spacer top='1'>
+              <Badge variant='warning' icon='lockSimple'>
+                {resource.reserved_stock?.quantity} reserved
+              </Badge>
+            </Spacer>
+          )}
         </div>
-        <Text weight='semibold' wrap='nowrap'>
-          x {resource.quantity}
-        </Text>
       </ListItem>
     )
   }
