@@ -21,7 +21,12 @@ export function usePriceDetails(id: string): {
       ? [
           id,
           {
-            include: ['sku', 'price_volume_tiers', 'price_frequency_tiers']
+            include: [
+              'sku',
+              'price_volume_tiers',
+              'price_frequency_tiers',
+              'price_list'
+            ]
           }
         ]
       : null,
