@@ -791,6 +791,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.1(react@18.3.1))
+      dashboard-apps-common:
+        specifier: workspace:*
+        version: link:../../packages/common
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1404,6 +1407,9 @@ importers:
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
+      type-fest:
+        specifier: ^4.26.1
+        version: 4.26.1
       wouter:
         specifier: ^3.3.5
         version: 3.3.5(react@18.3.1)
