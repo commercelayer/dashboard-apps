@@ -45,7 +45,7 @@ export function Home(): JSX.Element {
         <SearchBar
           initialValue={searchValue}
           onSearch={setSearchValue}
-          placeholder='Search stock locations...'
+          placeholder='Search price lists...'
           onClear={() => {
             setSearchValue('')
           }}
