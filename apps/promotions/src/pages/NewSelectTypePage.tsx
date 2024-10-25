@@ -15,9 +15,13 @@ import { Link, useLocation } from 'wouter'
 
 function Page(props: PageProps<typeof appRoutes.newSelectType>): JSX.Element {
   const {
+    organization,
     settings: { mode }
   } = useTokenProvider()
+
   const [, setLocation] = useLocation()
+
+  const hasRuleEngine = organization?.api_rules_engine === true
 
   return (
     <PageLayout
@@ -47,9 +51,9 @@ function Page(props: PageProps<typeof appRoutes.newSelectType>): JSX.Element {
       </Spacer>
       <Spacer top='10'>
         <Section titleSize='small' title='More' border='none'>
-          <Grid columns='2'>
+          <Grid columns={hasRuleEngine ? '2' : '1'}>
             <LinkTo promotionType='external_promotions' />
-            <LinkTo promotionType='flex_promotions' />
+            {hasRuleEngine && <LinkTo promotionType='flex_promotions' />}
           </Grid>
         </Section>
       </Spacer>
