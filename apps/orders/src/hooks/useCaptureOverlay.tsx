@@ -1,9 +1,10 @@
-import { PaymentMethod, hasPaymentMethod } from '#components/PaymentMethod'
+import { hasPaymentMethod } from '#utils/order'
 import {
   Button,
   ListDetails,
   ListDetailsItem,
   PageHeading,
+  ResourcePaymentMethod,
   Spacer,
   useOverlay
 } from '@commercelayer/app-elements'
@@ -20,7 +21,7 @@ export function useCaptureOverlay(): OverlayHook {
   return {
     show: open,
     Overlay: ({ order, onConfirm }) => (
-      <Overlay>
+      <Overlay backgroundColor='light'>
         <PageHeading
           title='Confirm capture'
           navigationButton={{
@@ -40,7 +41,15 @@ export function useCaptureOverlay(): OverlayHook {
               {order.customer_email}
             </ListDetailsItem>
             <ListDetailsItem label='Payment method'>
-              {hasPaymentMethod(order) ? <PaymentMethod order={order} /> : '-'}
+              {hasPaymentMethod(order) ? (
+                <ResourcePaymentMethod
+                  resource={order}
+                  variant='plain'
+                  showPaymentResponse
+                />
+              ) : (
+                '-'
+              )}
             </ListDetailsItem>
             <ListDetailsItem label='Amount'>
               {order.formatted_total_amount}
