@@ -1,70 +1,41 @@
-import { PaymentMethod } from '#components/PaymentMethod'
 import {
-  Avatar,
-  ListItem,
+  ResourcePaymentMethod,
   Section,
-  StatusIcon,
-  withSkeletonTemplate,
-  type AvatarProps
+  Spacer,
+  withSkeletonTemplate
 } from '@commercelayer/app-elements'
-import type { Customer } from '@commercelayer/sdk'
+import type { Customer, CustomerPaymentSource } from '@commercelayer/sdk'
+import type { SetNonNullable, SetRequired } from 'type-fest'
 
 interface Props {
   customer: Customer
 }
 
-function getAvatarSrc(
-  paymentType: string | null | undefined
-): AvatarProps['src'] | undefined {
-  switch (paymentType) {
-    case 'adyen_payments':
-      return 'payments:adyen'
-    case 'axerve_payments':
-      return 'payments:axerve'
-    case 'braintree_payments':
-      return 'payments:braintree'
-    case 'checkout_com_payments':
-      return 'payments:checkout'
-    case 'klarna_payments':
-      return 'payments:klarna'
-    case 'paypal_payments':
-      return 'payments:paypal'
-    case 'satispay_payments':
-      return 'payments:satispay'
-    case 'stripe_payments':
-      return 'payments:stripe'
-    default:
-      return undefined
-  }
-}
-
 export const CustomerWallet = withSkeletonTemplate<Props>(({ customer }) => {
   const customerPaymentSources = customer?.customer_payment_sources?.map(
     (customerPaymentSource, idx) => {
-      const paymentSource = customerPaymentSource.payment_source
-      // console.log(paymentSource)
-      const avatarSrc = getAvatarSrc(paymentSource?.type)
-      const icon =
-        avatarSrc != null ? (
-          <Avatar
-            src={avatarSrc}
-            alt={paymentSource?.order?.payment_method?.name ?? ''}
-            shape='circle'
-            size='small'
-          />
-        ) : (
-          <StatusIcon name='creditCard' background='teal' gap='large' />
-        )
-
-      return (
-        <ListItem icon={icon} key={idx}>
-          <PaymentMethod customerPaymentSource={customerPaymentSource} />
-        </ListItem>
-      )
+      return hasPaymentSource(customerPaymentSource) ? (
+        <Spacer key={idx} bottom='4'>
+          <ResourcePaymentMethod resource={customerPaymentSource} />
+        </Spacer>
+      ) : null
     }
   )
 
   if (customerPaymentSources?.length === 0) return <></>
 
-  return <Section title='Wallet'>{customerPaymentSources}</Section>
+  return (
+    <Section title='Wallet' border='none'>
+      {customerPaymentSources}
+    </Section>
+  )
 })
+
+export function hasPaymentSource(
+  customerPaymentSource: CustomerPaymentSource
+): customerPaymentSource is SetRequired<
+  SetNonNullable<CustomerPaymentSource, 'payment_source'>,
+  'payment_source'
+> {
+  return customerPaymentSource.payment_source != null
+}
