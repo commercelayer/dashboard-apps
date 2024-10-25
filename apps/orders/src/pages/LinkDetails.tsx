@@ -62,7 +62,7 @@ function LinkDetails(
   const pageTitle = `Checkout link is ${link?.status}!`
 
   const expiresIn = formatDate({
-    isoDate: link?.expires_at,
+    isoDate: link?.expires_at ?? undefined,
     timezone: user?.timezone,
     format: 'full'
   })

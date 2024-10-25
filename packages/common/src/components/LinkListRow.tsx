@@ -58,8 +58,8 @@ export const LinkListRow = ({
           label={
             <Text size='small' weight='regular'>
               {formatDateRange({
-                rangeFrom: link?.starts_at,
-                rangeTo: link?.expires_at,
+                rangeFrom: link?.starts_at ?? '',
+                rangeTo: link?.expires_at ?? '',
                 timezone: user?.timezone
               })}
             </Text>
@@ -69,7 +69,7 @@ export const LinkListRow = ({
               <Text tag='div' size='small'>
                 From:{' '}
                 {formatDate({
-                  isoDate: link.starts_at,
+                  isoDate: link.starts_at ?? undefined,
                   timezone: user?.timezone,
                   format: 'full',
                   showCurrentYear: true
@@ -78,7 +78,7 @@ export const LinkListRow = ({
               <Text tag='div' size='small'>
                 To:{' '}
                 {formatDate({
-                  isoDate: link?.expires_at,
+                  isoDate: link?.expires_at ?? undefined,
                   timezone: user?.timezone,
                   format: 'full',
                   showCurrentYear: true

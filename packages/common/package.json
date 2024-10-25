@@ -9,8 +9,8 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "2.11.0",
-    "@commercelayer/sdk": "^6.23.0",
+    "@commercelayer/app-elements": "2.12.0",
+    "@commercelayer/sdk": "^6.24.0",
     "@hookform/resolvers": "^3.9.0",
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@types/lodash": "^4.17.12",
-    "@types/react": "^18.3.11",
+    "@types/react": "^18.3.12",
     "eslint": "^8.57.0",
     "typescript": "^5.6.3"
   }
