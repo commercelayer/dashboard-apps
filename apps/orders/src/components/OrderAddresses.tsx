@@ -2,6 +2,7 @@ import {
   ResourceAddress,
   Section,
   Stack,
+  useCoreSdkProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
@@ -12,28 +13,41 @@ interface Props {
 
 export const OrderAddresses = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element | null => {
-    if (order.shipping_address == null && order.billing_address == null) {
-      return null
-    }
+    const { sdkClient } = useCoreSdkProvider()
 
     return (
       <Section border='none' title='Addresses'>
         <Stack>
-          {order.billing_address != null && (
-            <ResourceAddress
-              title='Billing address'
-              address={order.billing_address}
-              showBillingInfo
-              editable
-            />
-          )}
-          {order.shipping_address != null && (
-            <ResourceAddress
-              title='Shipping address'
-              address={order.shipping_address}
-              editable
-            />
-          )}
+          <ResourceAddress
+            title='Billing address'
+            address={order.billing_address}
+            editable
+            onCreate={(address) => {
+              void sdkClient.orders.update({
+                id: order.id,
+                billing_address: {
+                  type: 'addresses',
+                  id: address.id
+                }
+              })
+            }}
+            showBillingInfo
+            requiresBillingInfo={order.requires_billing_info ?? undefined}
+          />
+          <ResourceAddress
+            title='Shipping address'
+            address={order.shipping_address}
+            editable
+            onCreate={(address) => {
+              void sdkClient.orders.update({
+                id: order.id,
+                shipping_address: {
+                  type: 'addresses',
+                  id: address.id
+                }
+              })
+            }}
+          />
         </Stack>
       </Section>
     )
