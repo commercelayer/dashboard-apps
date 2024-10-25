@@ -1,6 +1,6 @@
-import { hasPaymentMethod, PaymentMethod } from '#components/PaymentMethod'
 import { appRoutes } from '#data/routes'
 import { getOrderTitle } from '#utils/getOrderTitle'
+import { hasPaymentMethod } from '#utils/order'
 import {
   Button,
   formatCentsToCurrency,
@@ -11,6 +11,7 @@ import {
   ListDetails,
   ListDetailsItem,
   PageLayout,
+  ResourcePaymentMethod,
   Spacer,
   type CurrencyCode
 } from '@commercelayer/app-elements'
@@ -145,7 +146,7 @@ export function RefundForm({
               </ListDetailsItem>
               <ListDetailsItem label='Refund to'>
                 {hasPaymentMethod(order) ? (
-                  <PaymentMethod order={order} />
+                  <ResourcePaymentMethod resource={order} variant='plain' />
                 ) : (
                   '-'
                 )}
