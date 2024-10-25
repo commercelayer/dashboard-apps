@@ -9,7 +9,8 @@ import {
   Section,
   Spacer,
   Text,
-  currencies
+  currencies,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, type UseFormSetError } from 'react-hook-form'
@@ -54,10 +55,14 @@ export function PriceListForm({
   apiError,
   isSubmitting
 }: Props): JSX.Element {
+  const { organization } = useTokenProvider()
+
   const priceListFormMethods = useForm<PriceListFormValues>({
     defaultValues,
     resolver: zodResolver(priceListFormSchema)
   })
+
+  const hasRuleEngine = organization?.api_rules_engine === true
 
   return (
     <>
@@ -92,9 +97,11 @@ export function PriceListForm({
               }))}
             />
           </Spacer>
-          <Spacer top='6' bottom='4'>
-            <HookedInputTextArea name='rules' label='Rules' />
-          </Spacer>
+          {hasRuleEngine && (
+            <Spacer top='6' bottom='4'>
+              <HookedInputTextArea name='rules' label='Rules' />
+            </Spacer>
+          )}
         </Section>
 
         <Section title='Taxes'>
