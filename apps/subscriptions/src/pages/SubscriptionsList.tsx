@@ -1,28 +1,26 @@
+import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemSubscription } from '#components/ListItemSubscription'
+import { instructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
   EmptyState,
   HomePageLayout,
   PageLayout,
   Spacer,
-  useResourceList,
+  useResourceFilters,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { FC } from 'react'
 import { useLocation } from 'wouter'
+import { navigate, useSearch } from 'wouter/use-browser-location'
 
 export const SubscriptionsList: FC = () => {
   const { settings, canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
-  const { ResourceList } = useResourceList({
-    type: 'order_subscriptions',
-    query: {
-      include: ['market'],
-      sort: {
-        updated_at: 'desc'
-      },
-      pageSize: 25
-    }
+  const queryString = useSearch()
+
+  const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
+    instructions
   })
 
   if (!canUser('read', 'order_subscriptions')) {
@@ -45,11 +43,35 @@ export const SubscriptionsList: FC = () => {
 
   return (
     <HomePageLayout title='Subscriptions'>
+      <SearchWithNav
+        queryString={queryString}
+        onUpdate={(qs) => {
+          navigate(`?${qs}`, {
+            replace: true
+          })
+        }}
+        onFilterClick={(queryString) => {
+          setLocation(appRoutes.filters.makePath({}, queryString))
+        }}
+        hideFiltersNav={false}
+      />
+
       <Spacer top='14'>
-        <ResourceList
-          title='All'
+        <FilteredList
+          type='order_subscriptions'
           ItemTemplate={ListItemSubscription}
-          emptyState={<EmptyState title='No subscriptions yet!' />}
+          query={{
+            include: ['market'],
+            sort: {
+              updated_at: 'desc'
+            },
+            pageSize: 25
+          }}
+          emptyState={
+            <ListEmptyState
+              scope={hasActiveFilter ? 'userFiltered' : 'history'}
+            />
+          }
         />
       </Spacer>
     </HomePageLayout>
