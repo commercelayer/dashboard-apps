@@ -41,8 +41,25 @@ export function useAddItemOverlay(order: Order): OverlayHook {
       label: 'Markets',
       type: 'options',
       sdk: {
-        predicate: 'market_id_eq',
+        predicate: 'market_id_eq_or_null',
         defaultOptions: order.market?.id != null ? [order.market?.id] : []
+      },
+      hidden: true,
+      render: {
+        component: 'inputToggleButton',
+        props: {
+          mode: 'multi',
+          options: []
+        }
+      }
+    })
+
+    instructions.push({
+      label: 'Currency code',
+      type: 'options',
+      sdk: {
+        predicate: 'currency_code_eq',
+        defaultOptions: order.currency_code != null ? [order.currency_code] : []
       },
       hidden: true,
       render: {
