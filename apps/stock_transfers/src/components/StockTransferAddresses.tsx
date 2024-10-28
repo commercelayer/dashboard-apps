@@ -24,11 +24,11 @@ export const StockTransferAddresses = withSkeletonTemplate<Props>(
         <Section title='Addresses' border='none'>
           <Stack>
             <ResourceAddress
-              resource={stockTransfer.origin_stock_location?.address}
+              address={stockTransfer.origin_stock_location?.address}
               title='Origin'
             />
             <ResourceAddress
-              resource={stockTransfer.destination_stock_location?.address}
+              address={stockTransfer.destination_stock_location?.address}
               title='Destination'
             />
           </Stack>

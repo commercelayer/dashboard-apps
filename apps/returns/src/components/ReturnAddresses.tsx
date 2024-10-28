@@ -24,11 +24,11 @@ export const ReturnAddresses = withSkeletonTemplate<Props>(
         <Section title='Addresses' border='none'>
           <Stack>
             <ResourceAddress
-              resource={returnObj.origin_address}
+              address={returnObj.origin_address}
               title='Origin'
             />
             <ResourceAddress
-              resource={returnObj.destination_address}
+              address={returnObj.destination_address}
               title='Destination'
             />
           </Stack>

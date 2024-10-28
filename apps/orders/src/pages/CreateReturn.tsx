@@ -201,12 +201,12 @@ function CreateReturn(): JSX.Element {
                   <Stack>
                     <ResourceAddress
                       title='Origin'
-                      resource={returnObj.origin_address}
+                      address={returnObj.origin_address}
                       editable
                     />
                     <ResourceAddress
                       title='Destination'
-                      resource={destinationAddress}
+                      address={destinationAddress}
                     />
                   </Stack>
                 </Section>

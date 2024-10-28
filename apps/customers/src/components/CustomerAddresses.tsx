@@ -20,7 +20,7 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
         customerAddress?.address != null ? (
           <ListItem key={idx}>
             <ResourceAddress
-              resource={customerAddress?.address}
+              address={customerAddress?.address}
               editable={canUser('update', 'addresses')}
               showBillingInfo
             />
