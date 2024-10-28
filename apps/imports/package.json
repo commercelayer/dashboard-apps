@@ -25,7 +25,7 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "^3.0.0",
+    "@commercelayer/app-elements": "^3.0.1",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@commercelayer/sdk": "6.24.0",
     "@vitejs/plugin-react": "^4.3.3",
