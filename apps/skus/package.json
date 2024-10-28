@@ -11,8 +11,7 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "ts:check": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest --passWithNoTests",
-    "prepare": "touch ./public/config.local.js"
+    "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
     "@commercelayer/app-elements": "3.0.0",

@@ -9,8 +9,7 @@
     "preview": "vite preview",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "ts:check": "tsc --noEmit",
-    "prepare": "touch ./public/config.local.js"
+    "ts:check": "tsc --noEmit"
   },
   "dependencies": {
     "@commercelayer/app-elements": "^3.0.0",
