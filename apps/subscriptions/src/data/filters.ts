@@ -1,4 +1,5 @@
 import type { FiltersInstructions } from '@commercelayer/app-elements'
+import { frequencies } from './frequencies'
 
 export const instructions: FiltersInstructions = [
   {
@@ -51,44 +52,7 @@ export const instructions: FiltersInstructions = [
       component: 'inputToggleButton',
       props: {
         mode: 'multi',
-        options: [
-          {
-            value: 'hourly',
-            label: 'Hourly'
-          },
-          {
-            value: 'daily',
-            label: 'Daily'
-          },
-          {
-            value: 'weekly',
-            label: 'Weekly'
-          },
-          {
-            value: 'monthly',
-            label: 'Monthly'
-          },
-          {
-            value: 'two-month',
-            label: '2-Month'
-          },
-          {
-            value: 'three-month',
-            label: '3-Month'
-          },
-          {
-            value: 'four-month',
-            label: '4-Month'
-          },
-          {
-            value: 'six-month',
-            label: '6-Month'
-          },
-          {
-            value: 'yearly',
-            label: 'Yearly'
-          }
-        ]
+        options: frequencies
       }
     }
   },
