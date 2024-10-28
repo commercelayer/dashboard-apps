@@ -2,6 +2,7 @@ import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemSubscription } from '#components/ListItemSubscription'
 import { instructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
+import { useSubscriptionModelsFrequencies } from '#hooks/useSubscriptionModelsFrequencies'
 import {
   EmptyState,
   HomePageLayout,
@@ -10,7 +11,7 @@ import {
   useResourceFilters,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import type { FC } from 'react'
+import { useCallback, type FC } from 'react'
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
@@ -19,9 +20,15 @@ export const SubscriptionsList: FC = () => {
   const [, setLocation] = useLocation()
   const queryString = useSearch()
 
-  const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions
-  })
+  const subscriptionModelsFrequencies = useSubscriptionModelsFrequencies()
+
+  const filters = useCallback(() => {
+    return useResourceFilters({
+      instructions: instructions(subscriptionModelsFrequencies)
+    })
+  }, [subscriptionModelsFrequencies])
+
+  const { SearchWithNav, FilteredList, hasActiveFilter } = filters()
 
   if (!canUser('read', 'order_subscriptions')) {
     return (
