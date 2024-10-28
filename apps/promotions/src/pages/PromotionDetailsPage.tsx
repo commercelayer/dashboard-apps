@@ -262,7 +262,6 @@ const useDisplayStatus = (promotionId: string) => {
   const { promotion } = usePromotion(promotionId)
 
   const displayStatus = useMemo(() => {
-    // @ts-expect-error // TODO: we should fix this error type
     const displayStatus = getPromotionDisplayStatus(promotion)
 
     let statusDescription = ''

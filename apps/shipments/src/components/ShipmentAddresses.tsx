@@ -21,13 +21,13 @@ export const ShipmentAddresses = withSkeletonTemplate<Props>(
         <Stack>
           {shipment.origin_address != null && (
             <ResourceAddress
-              resource={shipment.origin_address}
+              address={shipment.origin_address}
               title='Ship from'
             />
           )}
           {shipment.shipping_address != null && (
             <ResourceAddress
-              resource={shipment.shipping_address}
+              address={shipment.shipping_address}
               title='Ship to'
             />
           )}

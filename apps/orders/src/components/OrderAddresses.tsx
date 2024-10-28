@@ -22,7 +22,7 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
           {order.billing_address != null && (
             <ResourceAddress
               title='Billing address'
-              resource={order.billing_address}
+              address={order.billing_address}
               showBillingInfo
               editable
             />
@@ -30,7 +30,7 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
           {order.shipping_address != null && (
             <ResourceAddress
               title='Shipping address'
-              resource={order.shipping_address}
+              address={order.shipping_address}
               editable
             />
           )}
