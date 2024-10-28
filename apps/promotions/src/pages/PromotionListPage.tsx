@@ -57,6 +57,7 @@ function Page(props: PageProps<typeof appRoutes.promotionList>): JSX.Element {
       <Spacer bottom='14'>
         <FilteredList
           type='promotions'
+          // @ts-expect-error // TODO: fix Promotion type in the sdk
           ItemTemplate={ListItemPromotion}
           query={{
             fields: {

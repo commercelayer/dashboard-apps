@@ -68,9 +68,9 @@ export function PromotionForm({
         const resource = sdkClient[promotionConfig.type]
 
         if (isCreatingNewPromotion) {
-          // @ts-expect-error // TODO: I need to fix this
+          // @ts-expect-error // TODO: fix Promotion type in the sdk
           promotion = await resource
-            // @ts-expect-error // TODO: I need to fix this
+            // @ts-expect-error // TODO: fix Promotion type in the sdk
             .create({
               ...formValuesToPromotion(promotionConfig.type, formValues),
               _disable: true,
@@ -80,9 +80,9 @@ export function PromotionForm({
               setApiError(error)
             })
         } else {
-          // @ts-expect-error // TODO: I need to fix this
+          // @ts-expect-error // TODO: fix Promotion type in the sdk
           promotion = await resource
-            // @ts-expect-error // TODO: I need to fix this
+            // @ts-expect-error // TODO: fix Promotion type in the sdk
             .update({
               id: promotionId,
               ...formValuesToPromotion(promotionConfig.type, formValues)
