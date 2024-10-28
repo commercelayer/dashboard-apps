@@ -21,12 +21,6 @@ distContent.forEach((appSlug) => {
   const source = path.resolve(distPath, appSlug)
   const destination = path.resolve(distPath, `${appSlug}-stg`)
   fs.cpSync(source, destination, { force: true, recursive: true })
-  
-  const configLocalJsPath = path.resolve(distPath, `${appSlug}-stg`, 'config.local.js')
-  fs.writeFileSync(configLocalJsPath, `window.clAppConfig = {
-  domain: 'commercelayer.co'
-}
-`)
 
   const indexPath = path.resolve(distPath, `${appSlug}-stg`, 'index.html')
   const indexContent = fs.readFileSync(indexPath, { encoding: 'utf8' })
