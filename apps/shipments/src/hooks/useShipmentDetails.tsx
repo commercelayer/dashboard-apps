@@ -51,11 +51,29 @@ export function useShipmentDetails(
     }
   )
 
+  const isPurchasing =
+    shipment.purchase_started_at != null &&
+    shipment.purchase_completed_at == null
+  const isPurchased =
+    shipment.purchase_started_at != null &&
+    shipment.purchase_completed_at != null
+
+  // Purchase error state cannot be reproduces in easypost sandbox. A real case example would be:
+  //  purchase_error_code: 'SHIPMENT.POSTAGE.FAILURE',
+  //  purchase_error_message: 'The system could not verify your shipping account number. Please correct this number and resubmit.For assistance call DHL customer services',
+  const purchaseError =
+    shipment.purchase_failed_at != null
+      ? `${shipment.purchase_error_code} ${shipment.purchase_error_message ?? 'Could not purchase shipping label, please contact your carrier.'}`
+      : null
+
   return {
     shipment,
     isLoading,
     mutateShipment,
-    isValidating
+    isValidating,
+    isPurchasing,
+    isPurchased,
+    purchaseError
   }
 }
 
