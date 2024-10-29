@@ -14,13 +14,14 @@ import {
   HookedInput,
   HookedInputCheckbox,
   HookedInputDate,
+  HookedValidationApiError,
   Section,
   Spacer,
   Text,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
 import { type z } from 'zod'
@@ -38,6 +39,7 @@ export function PromotionForm({
   defaultValues,
   promotionId
 }: Props): React.ReactNode {
+  const [apiError, setApiError] = useState<any>()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
   const { promotion } = usePromotion(promotionId)
@@ -61,22 +63,33 @@ export function PromotionForm({
     <HookedForm
       {...methods}
       onSubmit={async (formValues): Promise<void> => {
-        const resource = sdkClient[promotionConfig.type]
         let promotion: Promotion
 
+        const resource = sdkClient[promotionConfig.type]
+
         if (isCreatingNewPromotion) {
-          // @ts-expect-error // TODO: I need to fix this
-          promotion = await resource.create({
-            ...formValuesToPromotion(formValues),
-            _disable: true,
-            reference_origin: appPromotionsReferenceOrigin
-          })
+          // @ts-expect-error // TODO: fix Promotion type in the sdk
+          promotion = await resource
+            // @ts-expect-error // TODO: fix Promotion type in the sdk
+            .create({
+              ...formValuesToPromotion(promotionConfig.type, formValues),
+              _disable: true,
+              reference_origin: appPromotionsReferenceOrigin
+            })
+            .catch((error) => {
+              setApiError(error)
+            })
         } else {
-          // @ts-expect-error // TODO: I need to fix thi
-          promotion = await resource.update({
-            id: promotionId,
-            ...formValuesToPromotion(formValues)
-          })
+          // @ts-expect-error // TODO: fix Promotion type in the sdk
+          promotion = await resource
+            // @ts-expect-error // TODO: fix Promotion type in the sdk
+            .update({
+              id: promotionId,
+              ...formValuesToPromotion(promotionConfig.type, formValues)
+            })
+            .catch((error) => {
+              setApiError(error)
+            })
         }
 
         setLocation(
@@ -112,6 +125,7 @@ export function PromotionForm({
             </Grid>
           </Spacer>
 
+          {/* @ts-expect-error // TODO: I need to fix this */}
           <promotionConfig.Fields promotion={promotion} />
 
           <Spacer top='6'>
@@ -132,6 +146,7 @@ export function PromotionForm({
         </Section>
       </Spacer>
 
+      {/* @ts-expect-error // TODO: I need to fix this */}
       <promotionConfig.Options promotion={promotion} />
 
       <Spacer top='14'>
@@ -190,6 +205,10 @@ export function PromotionForm({
           >
             {promotionId != null ? 'Update' : 'Create promotion'}
           </Button>
+
+          <Spacer top='2'>
+            <HookedValidationApiError apiError={apiError} />
+          </Spacer>
         </Spacer>
       </Spacer>
     </HookedForm>

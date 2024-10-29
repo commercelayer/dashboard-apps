@@ -49,19 +49,23 @@ export function CouponForm({
             ...formValuesToCoupon(values)
           })
         } else {
-          let promotionRule = promotion?.coupon_codes_promotion_rule
+          let { id } = promotion?.coupon_codes_promotion_rule ?? {}
 
-          if (promotionRule == null) {
-            promotionRule = await sdkClient.coupon_codes_promotion_rules.create(
-              {
-                promotion
+          if (id == null) {
+            ;({ id } = await sdkClient.coupon_codes_promotion_rules.create({
+              promotion: {
+                id: promotion.id,
+                type: promotion.type
               }
-            )
+            }))
           }
 
           await sdkClient.coupons.create({
             ...formValuesToCoupon(values),
-            promotion_rule: promotionRule
+            promotion_rule: {
+              type: 'coupon_codes_promotion_rules',
+              id
+            }
           })
         }
 

@@ -1,6 +1,6 @@
 import { makePercentageDiscountPromotion } from '#mocks'
+import type { Promotion } from '#types'
 import { ResourceListItem, navigateTo } from '@commercelayer/app-elements'
-import type { Promotion } from '@commercelayer/sdk'
 import { useLocation } from 'wouter'
 
 interface Props {
@@ -18,7 +18,7 @@ export function ListItemPromotion({
 
   return (
     <ResourceListItem
-      // @ts-expect-error // TODO: I need to fix this
+      // @ts-expect-error // TODO: fix Promotion type in the sdk
       resource={resource}
       isLoading={isLoading}
       delayMs={delayMs}

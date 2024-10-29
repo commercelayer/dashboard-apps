@@ -20,6 +20,7 @@ import {
   Dropdown,
   DropdownItem,
   Icon,
+  Input,
   ListDetailsItem,
   ListItem,
   PageLayout,
@@ -39,7 +40,8 @@ import {
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
-import { useMemo } from 'react'
+import type { FlexPromotion } from '@commercelayer/sdk'
+import { useMemo, useState } from 'react'
 import { Link, useLocation } from 'wouter'
 
 function Page(
@@ -134,12 +136,15 @@ function Page(
         <DeleteOverlay promotion={promotion} />
 
         <Spacer top='14'>
-          {!isLoadingRules && !hasRules && !viaApi && (
-            <Alert status='warning'>
-              Define activation rules below to prevent application to all
-              orders.
-            </Alert>
-          )}
+          {!isLoadingRules &&
+            !hasRules &&
+            !viaApi &&
+            promotion.type !== 'flex_promotions' && (
+              <Alert status='warning'>
+                Define activation rules below to prevent application to all
+                orders.
+              </Alert>
+            )}
 
           {viaApi && (
             <Alert status='info'>
@@ -157,9 +162,27 @@ function Page(
           <SectionInfo promotion={promotion} />
         </Spacer>
 
-        <Spacer top='14'>
-          <SectionActivationRules promotionId={props.params.promotionId} />
-        </Spacer>
+        {promotion.type === 'flex_promotions' && (
+          <Spacer top='14'>
+            <Section title='Rules' border='none'>
+              <Text size='small'>
+                <Card overflow='visible' gap='4'>
+                  <pre style={{ overflowX: 'auto' }}>
+                    {JSON.stringify(promotion.rules, undefined, 2)}
+                  </pre>
+                </Card>
+              </Text>
+            </Section>
+          </Spacer>
+        )}
+
+        {promotion.type !== 'flex_promotions' && (
+          <>
+            <Spacer top='14'>
+              <SectionActivationRules promotionId={props.params.promotionId} />
+            </Spacer>
+          </>
+        )}
 
         <Spacer top='14'>
           <SectionCoupon promotion={promotion} />
@@ -196,8 +219,81 @@ function Page(
             </Spacer>
           </>
         )}
+
+        {promotion.type === 'flex_promotions' && (
+          <Spacer top='14'>
+            <SectionCheck promotion={promotion} />
+          </Spacer>
+        )}
       </SkeletonTemplate>
     </PageLayout>
+  )
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function SectionCheck({
+  promotion
+}: {
+  promotion: Extract<Promotion, FlexPromotion>
+}) {
+  const {
+    settings: { accessToken, domain, organizationSlug }
+  } = useTokenProvider()
+
+  const [results, setResults] = useState<any>()
+
+  const matches = results?.data?.filter((d: { match: boolean }) => d.match)
+
+  return (
+    <Section title='Check'>
+      <Spacer top='4'>
+        <form
+          className='flex gap-2'
+          onSubmit={(event) => {
+            event.preventDefault()
+            const orderId = new FormData(event.currentTarget).get('orderId')
+
+            void fetch(
+              `https://${organizationSlug}.${domain}/api/flex_promotions/${promotion.id}/check/${orderId?.toString()}`,
+              {
+                method: 'GET',
+                headers: {
+                  authorization: `Bearer ${accessToken}`,
+                  'content-type': 'application/vnd.api+json'
+                }
+              }
+            )
+              .then(async (response) => await response.json())
+              .then(async (json) => {
+                setResults(json)
+              })
+          }}
+        >
+          <Input name='orderId' placeholder='Order id' />
+          <Button type='submit' style={{ border: 'none' }}>
+            Check
+          </Button>
+        </form>
+        {results != null && (
+          <Spacer top='4'>
+            <Text size='small'>
+              <Spacer bottom='1'>
+                {matches == null
+                  ? 'Oops, something went wrong 😱'
+                  : matches.length > 0
+                    ? 'Hurray! It matches 🎉'
+                    : "So sad, it doesn't match 😢"}
+              </Spacer>
+              <Card overflow='visible' gap='4'>
+                <pre style={{ overflowX: 'auto' }}>
+                  {JSON.stringify(results, undefined, 2)}
+                </pre>
+              </Card>
+            </Text>
+          </Spacer>
+        )}
+      </Spacer>
+    </Section>
   )
 }
 
@@ -344,7 +440,7 @@ const SectionInfo = withSkeletonTemplate<{
           showCurrentYear: true
         })}
       </ListDetailsItem>
-      {viaApi && (
+      {promotion.type !== 'flex_promotions' && viaApi && (
         <>
           {promotion.market != null && (
             <ListDetailsItem label='Market' gutter='none'>
@@ -358,7 +454,7 @@ const SectionInfo = withSkeletonTemplate<{
           )}
         </>
       )}
-      {promotion.sku_list != null && (
+      {promotion.type !== 'flex_promotions' && promotion.sku_list != null && (
         <ListDetailsItem label='SKU list' gutter='none'>
           {promotion.sku_list.name}
         </ListDetailsItem>
