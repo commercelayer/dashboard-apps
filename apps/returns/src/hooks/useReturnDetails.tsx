@@ -5,6 +5,7 @@ export const returnIncludeAttribute = [
   'stock_location',
   'order',
   'order.market',
+  'order.captures',
   'customer',
   'return_line_items',
   'origin_address',

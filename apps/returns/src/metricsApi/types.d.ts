@@ -8,6 +8,7 @@ type MetricsApiReturnsSearchData = Array<{
     | 'received'
     | 'cancelled'
     | 'rejected'
+    | 'refunded'
   market?: {
     name: string
     id: string

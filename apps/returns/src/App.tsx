@@ -1,6 +1,7 @@
 import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Filters } from '#pages/Filters'
 import { Home } from '#pages/Home'
+import Refund from '#pages/Refund'
 import { RestockReturn } from '#pages/RestockReturn'
 import { ReturnDetails } from '#pages/ReturnDetails'
 import { ReturnsList } from '#pages/ReturnsList'
@@ -30,6 +31,9 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         </Route>
         <Route path={appRoutes.restock.path}>
           <RestockReturn />
+        </Route>
+        <Route path={appRoutes.refund.path}>
+          <Refund />
         </Route>
         <Route>
           <ErrorNotFound />

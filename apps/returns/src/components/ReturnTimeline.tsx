@@ -1,6 +1,7 @@
 import { isAttachmentValidNote, referenceOrigins } from '#data/attachments'
 import { isMockedId } from '#mocks'
 import {
+  getOrderTransactionName,
   Text,
   Timeline,
   useCoreApi,
@@ -41,7 +42,13 @@ export const ReturnTimeline = withSkeletonTemplate<{
       : [
           returnId,
           {
-            include: ['order', 'customer', 'return_line_items', 'attachments']
+            include: [
+              'order',
+              'reference_refund',
+              'customer',
+              'return_line_items',
+              'attachments'
+            ]
           }
         ],
     {
@@ -271,6 +278,33 @@ const useTimelineReducer = (returnObj: Return) => {
     [returnObj.approved_at]
   )
 
+  useEffect(
+    function addRefunds() {
+      if (returnObj.reference_refund != null) {
+        const name = getOrderTransactionName('refunds')
+        dispatch({
+          type: 'add',
+          payload: {
+            date: returnObj.reference_refund.created_at,
+            message: returnObj.reference_refund.succeeded ? (
+              <>
+                Payment of {returnObj.reference_refund.formatted_amount} was{' '}
+                <Text weight='bold'>{name.pastTense}</Text>
+              </>
+            ) : (
+              <>
+                {/* `Payment capture of xxxx failed` or `Authorization of xxxx failed`, etc... */}
+                {name.singular} of {returnObj.reference_refund.formatted_amount}{' '}
+                <Text weight='bold'>failed</Text>
+              </>
+            )
+          }
+        })
+      }
+    },
+    [returnObj.reference_refund]
+  )
+
   const dispatchRestockedReturnLineItems = useCallback(
     (returnLineItems?: ReturnLineItem[] | null | undefined) => {
       if (returnLineItems != null) {
@@ -300,14 +334,24 @@ const useTimelineReducer = (returnObj: Return) => {
       if (attachments != null) {
         attachments.forEach((attachment) => {
           if (
-            isAttachmentValidNote(attachment, [referenceOrigins.appReturnsNote])
+            isAttachmentValidNote(attachment, [
+              referenceOrigins.appReturnsNote,
+              referenceOrigins.appReturnsRefundNote
+            ])
           ) {
             dispatch({
               type: 'add',
               payload: {
                 date: attachment.updated_at,
                 author: attachment.name,
-                message: <span>left a note</span>,
+                message: (
+                  <span>
+                    {attachment.reference_origin ===
+                    referenceOrigins.appReturnsRefundNote
+                      ? 'left a refund note'
+                      : 'left a note'}
+                  </span>
+                ),
                 note: attachment.description
               }
             })
