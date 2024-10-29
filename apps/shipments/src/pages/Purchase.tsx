@@ -1,11 +1,9 @@
 import { appRoutes } from '#data/routes'
-import {
-  shipmentIncludeAttribute,
-  useShipmentDetails,
-  useShipmentRates
-} from '#hooks/useShipmentDetails'
+import { useAsyncPurchase } from '#hooks/useAsyncPurchase'
+import { useShipmentDetails, useShipmentRates } from '#hooks/useShipmentDetails'
 import { makeShipment } from '#mocks'
 import {
+  Alert,
   Avatar,
   Button,
   EmptyState,
@@ -17,7 +15,6 @@ import {
   Text,
   getAvatarSrcFromRate,
   getShipmentRates,
-  useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { useEffect, useMemo, useState } from 'react'
@@ -28,14 +25,19 @@ export function Purchase(): JSX.Element | null {
   const shipmentId = params?.shipmentId ?? ''
 
   const { shipment, isLoading } = useShipmentDetails(shipmentId)
-  const hasBeenPurchased = shipment.purchase_started_at != null
+  const hasBeenPurchased = shipment.purchase_completed_at != null
 
   if (isLoading) {
     return null
   }
 
   if (hasBeenPurchased) {
-    return <NotAuthorized shipmentId={shipmentId} />
+    return (
+      <NotAuthorized
+        shipmentId={shipmentId}
+        title='Shipping label already purchased'
+      />
+    )
   }
 
   return <PurchaseShipment shipmentId={shipmentId} />
@@ -46,7 +48,6 @@ function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
     canUser,
     settings: { mode }
   } = useTokenProvider()
-  const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
   const [selectedRateId, setSelectedRateId] = useState<string | undefined>()
 
@@ -57,8 +58,10 @@ function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
     shipment: fetchedShipment,
     mutateShipment,
     isLoading,
-    isValidating
+    isValidating,
+    purchaseError
   } = useShipmentDetails(shipmentId, isRefreshing, false)
+  const { handlePurchase, isPurchasing } = useAsyncPurchase(shipmentId)
 
   const shipment = useMemo(
     () => (isReady ? fetchedShipment : makeShipment()),
@@ -91,6 +94,12 @@ function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
       }
     },
     [isRefreshing]
+  )
+
+  const rateErrors = shipment.get_rates_errors?.map((error) =>
+    isGetRatesError(error)
+      ? `${error.carrier}: ${error.message ?? 'Unable to get rates'}`
+      : 'Unable to get rates'
   )
 
   const options = useMemo(() => {
@@ -149,41 +158,45 @@ function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
       }}
     >
       <SkeletonTemplate isLoading={!isReady}>
-        <Spacer bottom='4'>
-          <InputRadioGroup
-            name='carrier'
-            options={options}
-            onChange={(rateId) => {
-              setSelectedRateId(rateId)
-            }}
-          />
-        </Spacer>
-        <Spacer bottom='4'>
+        <InputRadioGroup
+          name='carrier'
+          options={options}
+          onChange={(rateId) => {
+            setSelectedRateId(rateId)
+          }}
+        />
+
+        {rateErrors != null && rateErrors.length > 0 ? (
+          <Spacer top='12'>
+            <Alert status='error'>
+              {rateErrors.map((error, index) => (
+                <p key={index}>{error}</p>
+              ))}
+            </Alert>
+          </Spacer>
+        ) : null}
+        {purchaseError != null ? (
+          <Spacer top='12'>
+            <Alert status='error'>{purchaseError}</Alert>
+          </Spacer>
+        ) : null}
+
+        <Spacer top='12'>
           <SkeletonTemplate isLoading={false}>
             <Button
               fullWidth
-              disabled={selectedRate == null}
+              disabled={selectedRate == null || isPurchasing}
               onClick={() => {
                 if (selectedRate != null) {
-                  void sdkClient.shipments
-                    .update(
-                      {
-                        id: shipment.id,
-                        _purchase: true,
-                        selected_rate_id: selectedRate.id
-                      },
-                      { include: shipmentIncludeAttribute }
-                    )
-                    .then(async () => {
-                      return await mutateShipment()
-                    })
-                    .then(async () => {
-                      setLocation(appRoutes.details.makePath({ shipmentId }))
-                    })
+                  void handlePurchase(selectedRate.id)
                 }
               }}
             >
-              Purchase label
+              {!isReady
+                ? 'Getting rates...'
+                : isPurchasing
+                  ? 'Purchasing...'
+                  : 'Purchase label'}
             </Button>
           </SkeletonTemplate>
         </Spacer>
@@ -192,7 +205,13 @@ function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
   )
 }
 
-function NotAuthorized({ shipmentId }: { shipmentId: string }): JSX.Element {
+function NotAuthorized({
+  shipmentId,
+  title
+}: {
+  shipmentId: string
+  title?: string
+}): JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()
@@ -210,7 +229,7 @@ function NotAuthorized({ shipmentId }: { shipmentId: string }): JSX.Element {
       mode={mode}
     >
       <EmptyState
-        title='Not authorized'
+        title={title ?? 'Not authorized'}
         action={
           <Link href={appRoutes.details.makePath({ shipmentId })}>
             <Button variant='primary'>Go back</Button>
@@ -219,4 +238,13 @@ function NotAuthorized({ shipmentId }: { shipmentId: string }): JSX.Element {
       />
     </PageLayout>
   )
+}
+
+interface GetRatesError {
+  type: 'rate_error'
+  carrier: string // eg:  "DHLExpress",
+  message?: string // eg: "to_address: Invalid zip. Must be in the format: \\d\\d\\d\\d\\d"
+}
+function isGetRatesError(error: any): error is GetRatesError {
+  return error.type === 'rate_error'
 }

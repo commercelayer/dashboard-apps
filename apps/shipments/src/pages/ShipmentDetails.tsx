@@ -8,6 +8,7 @@ import { useShipmentDetails } from '#hooks/useShipmentDetails'
 import { useShipmentToolbar } from '#hooks/useShipmentToolbar'
 import { isMockedId } from '#mocks'
 import {
+  Alert,
   Button,
   EmptyState,
   PageLayout,
@@ -35,7 +36,8 @@ export function ShipmentDetails(): JSX.Element {
 
   const shipmentId = params?.shipmentId ?? ''
 
-  const { shipment, isLoading, mutateShipment } = useShipmentDetails(shipmentId)
+  const { shipment, isLoading, mutateShipment, purchaseError } =
+    useShipmentDetails(shipmentId)
   const pageToolbar = useShipmentToolbar({ shipment })
 
   if (shipmentId === undefined || !canUser('read', 'orders')) {
@@ -74,7 +76,6 @@ export function ShipmentDetails(): JSX.Element {
     )
   }
 
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   const pageTitle = `Shipment #${shipment.number}`
 
   return (
@@ -119,6 +120,11 @@ export function ShipmentDetails(): JSX.Element {
           <Spacer top='14'>
             <ShipmentInfo shipment={shipment} />
           </Spacer>
+          {purchaseError != null && (
+            <Spacer top='14'>
+              <Alert status='error'>{purchaseError}</Alert>
+            </Spacer>
+          )}
           <Spacer top='14'>
             <ShipmentPackingList shipment={shipment} />
           </Spacer>
