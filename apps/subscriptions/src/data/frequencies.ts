@@ -1,3 +1,6 @@
+import cronstrue from 'cronstrue'
+import 'cronstrue/locales/en'
+
 interface SelectableFrequency {
   label: string
   value: string
@@ -83,4 +86,5 @@ export const frequenciesForFilters = (): SelectableFrequency[] => {
  * @returns a string containing either the calculated label or the value itself if the label is not found.
  */
 export const getFrequencyLabelByValue = (value: string): string =>
-  frequenciesTranslations.find((f) => f.value === value)?.label ?? value
+  frequenciesTranslations.find((f) => f.value === value)?.label ??
+  cronstrue.toString(value)
