@@ -15,7 +15,7 @@ interface Props {
 export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
   const { canUser } = useTokenProvider()
 
-  if (scope === 'presetView') {
+  if (scope === 'history') {
     return (
       <EmptyState
         title='No customers yet!'
