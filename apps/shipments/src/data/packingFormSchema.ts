@@ -10,9 +10,11 @@ import { z } from 'zod'
 
 export const packingFormSchema = z
   .object({
-    packageId: z.string().min(1, {
-      message: 'Please select a package'
-    }),
+    packageId: z
+      .string()
+      .optional()
+      // allow to start with an empty value
+      .refine((val) => !isEmpty(val), 'Please select a package'),
     weight: z.string().min(1, {
       message: 'Please enter a weight'
     }),

@@ -34,7 +34,9 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
           parcel = await sdkClient.parcels.create({
             weight: parseInt(formValues.weight, 10),
             unit_of_weight: formValues.unitOfWeight,
-            package: sdkClient.packages.relationship(formValues.packageId),
+            package: sdkClient.packages.relationship(
+              formValues.packageId ?? null
+            ),
             shipment: sdkClient.shipments.relationship(shipmentId),
 
             // more options

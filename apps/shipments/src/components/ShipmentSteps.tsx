@@ -61,6 +61,7 @@ export const ShipmentSteps = withSkeletonTemplate<Props>(
 function getBadgeVariant(shipment: Shipment): BadgeProps['variant'] {
   switch (shipment.status) {
     case 'picking':
+    case 'packing':
     case 'ready_to_ship':
     case 'on_hold':
       return 'warning-solid'

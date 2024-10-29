@@ -105,7 +105,7 @@ export function Packing(): JSX.Element {
               quantity: item.quantity,
               value: item.id
             })),
-            packageId: '',
+            packageId: undefined,
             weight: '',
             unitOfWeight: undefined
           }}
