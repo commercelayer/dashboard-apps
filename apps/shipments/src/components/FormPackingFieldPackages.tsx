@@ -108,6 +108,7 @@ function InputSelectPackages({
   return (
     <HookedInputSelect
       name='packageId'
+      label='Package'
       placeholder='Select a package'
       isLoading={isLoading}
       isSearchable

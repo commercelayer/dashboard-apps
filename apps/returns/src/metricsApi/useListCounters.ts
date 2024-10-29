@@ -4,6 +4,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 
+import type { ParsedScopes } from '@commercelayer/app-elements/dist/providers/TokenProvider/getInfoFromJwt'
 import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import castArray from 'lodash/castArray'
 import useSWR, { type SWRResponse } from 'swr'
@@ -29,17 +30,7 @@ const fetchReturnStats = async ({
         field: 'return.id',
         operator: 'value_count'
       },
-      filter: {
-        return: {
-          ...makeDateYearsRange({
-            now: new Date(),
-            showMilliseconds: false,
-            yearsAgo: 1
-          }),
-          date_field: 'updated_at',
-          ...filters
-        }
-      }
+      filter: filters
     },
     domain
   })
@@ -47,11 +38,13 @@ const fetchReturnStats = async ({
 const fetchAllCounters = async ({
   slug,
   accessToken,
-  domain
+  domain,
+  scopes
 }: {
   slug: string
   accessToken: string
   domain: string
+  scopes: ParsedScopes
 }): Promise<{
   requested: number
   approved: number
@@ -69,7 +62,7 @@ const fetchAllCounters = async ({
       return await fetchReturnStats({
         slug,
         accessToken,
-        filters: fromFormValuesToMetricsApi(presets[listType]),
+        filters: fromFormValuesToMetricsApi(presets[listType], scopes),
         domain
       }).then((r) => r.data.value)
     })
@@ -88,14 +81,15 @@ export function useListCounters(): SWRResponse<{
   shipped: number
 }> {
   const {
-    settings: { accessToken, organizationSlug, domain }
+    settings: { accessToken, organizationSlug, domain, scopes }
   } = useTokenProvider()
 
   const swrResponse = useSWR(
     {
       slug: organizationSlug,
       domain,
-      accessToken
+      accessToken,
+      scopes
     },
     fetchAllCounters,
     {
@@ -110,13 +104,42 @@ export function useListCounters(): SWRResponse<{
  * Covert FilterFormValues in Metrics API filter object.
  * Partial implementation: it only supports status, payment_status and fulfillment_status
  */
-function fromFormValuesToMetricsApi(formValues: FormFullValues): object {
-  return {
+function fromFormValuesToMetricsApi(
+  formValues: FormFullValues,
+  scopes?: ParsedScopes
+): object {
+  const filterStatuses = {
     statuses:
       formValues.status_in != null && castArray(formValues.status_in).length > 0
         ? {
             in: formValues.status_in
           }
         : undefined
+  }
+
+  // if there are stock locations in the access token scopes we to restrict the results
+  const filterStockLocations =
+    scopes?.stock_location?.ids != null &&
+    scopes?.stock_location?.ids.length > 0
+      ? {
+          stock_location: {
+            ids: {
+              in: scopes.stock_location.ids
+            }
+          }
+        }
+      : {}
+
+  return {
+    return: {
+      ...makeDateYearsRange({
+        now: new Date(),
+        showMilliseconds: false,
+        yearsAgo: 5
+      }),
+      date_field: 'updated_at',
+      ...filterStatuses
+    },
+    ...filterStockLocations
   }
 }
