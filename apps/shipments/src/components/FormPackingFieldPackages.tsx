@@ -1,4 +1,5 @@
-import { repeat } from '#mocks'
+import { type PackingFormValues } from '#data/packingFormSchema'
+import { isMock, repeat } from '#mocks'
 import {
   HookedInputRadioGroup,
   HookedInputSelect,
@@ -11,7 +12,8 @@ import {
 } from '@commercelayer/app-elements'
 import type { ListResponse, Package, QueryParamsList } from '@commercelayer/sdk'
 import isEmpty from 'lodash/isEmpty'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useFormContext } from 'react-hook-form'
 import { makePackage } from 'src/mocks/resources/packages'
 
 interface Props {
@@ -24,6 +26,7 @@ interface Props {
 export function FormPackingFieldPackages({
   stockLocationId
 }: Props): JSX.Element {
+  const { setValue, watch } = useFormContext<PackingFormValues>()
   const { data: packages, isLoading } = useCoreApi(
     'packages',
     'list',
@@ -33,11 +36,28 @@ export function FormPackingFieldPackages({
     }
   )
 
+  useEffect(() => {
+    // automatically select the first package when there is only one package
+    const isMockedData = packages.every(isMock)
+    const isSinglePackage = packages.length === 1
+    const firstPackageId = packages[0]?.id
+    if (
+      !isLoading &&
+      !isMockedData &&
+      isSinglePackage &&
+      firstPackageId != null
+    ) {
+      setValue('packageId', firstPackageId)
+    }
+  }, [packages, isLoading])
+
   if (packages.length === 0) {
     return (
       <InputFeedback message='No packages found for current stock location' />
     )
   }
+
+  const selectedPackageId = watch('packageId')
 
   // render a select when too many packages are found, since radio buttons will take too much space
   if (packages.length > 4) {
@@ -56,6 +76,7 @@ export function FormPackingFieldPackages({
       name='packageId'
       viewMode='grid'
       showInput={false}
+      key={selectedPackageId}
       options={packages.map((item) => ({
         value: item.id,
         content: (
