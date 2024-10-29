@@ -1,4 +1,4 @@
-import { HookedInputTextArea, Spacer } from '@commercelayer/app-elements'
+import { HookedCodeEditor, Spacer } from '@commercelayer/app-elements'
 import { z } from 'zod'
 import type { PromotionConfig } from '../config'
 import { genericPromotionOptions } from './promotions'
@@ -28,18 +28,12 @@ export default {
     Fields: () => (
       <>
         <Spacer top='6'>
-          <HookedInputTextArea
-            rows={25}
-            style={{
-              fontFamily: 'monospace',
-              fontSize: '12px',
-              lineHeight: '1.3rem'
-            }}
+          <HookedCodeEditor
             name='rules'
             label='Rules'
-            placeholder='{
-  "rules": []
-}'
+            language='json'
+            jsonSchema='order-rules'
+            height='600px'
           />
         </Spacer>
       </>
