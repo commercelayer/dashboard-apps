@@ -10,8 +10,7 @@ import {
   useCoreSdkProvider,
   type InputSelectValue
 } from '@commercelayer/app-elements'
-import type { ListResponse, Package, QueryParamsList } from '@commercelayer/sdk'
-import isEmpty from 'lodash/isEmpty'
+import type { ListResponse, Package } from '@commercelayer/sdk'
 import { useCallback, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { makePackage } from 'src/mocks/resources/packages'
@@ -27,14 +26,7 @@ export function FormPackingFieldPackages({
   stockLocationId
 }: Props): JSX.Element {
   const { setValue, watch } = useFormContext<PackingFormValues>()
-  const { data: packages, isLoading } = useCoreApi(
-    'packages',
-    'list',
-    [makePackageQuery(stockLocationId)],
-    {
-      fallbackData: repeat(2, () => makePackage()) as ListResponse<Package>
-    }
-  )
+  const { packages, isLoading } = usePackages(stockLocationId)
 
   useEffect(() => {
     // automatically select the first package when there is only one package
@@ -61,12 +53,7 @@ export function FormPackingFieldPackages({
 
   // render a select when too many packages are found, since radio buttons will take too much space
   if (packages.length > 4) {
-    return (
-      <InputSelectPackages
-        packages={packages}
-        stockLocationId={stockLocationId}
-      />
-    )
+    return <InputSelectPackages stockLocationId={stockLocationId} />
   }
 
   // radio buttons for majority of the cases
@@ -98,13 +85,16 @@ export function FormPackingFieldPackages({
  * InputSelect component to be used when multiple packages are found
  */
 function InputSelectPackages({
-  packages,
   stockLocationId
 }: {
-  packages: Package[]
   stockLocationId: string
 }): JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
+
+  const { packages, isLoading } = usePackages(stockLocationId)
+
+  const hasMorePages =
+    (packages?.meta?.pageCount != null && packages.meta.pageCount > 1) ?? false
 
   const packagesToSelectOptions = useCallback(
     (packages: Package[]): InputSelectValue[] =>
@@ -119,30 +109,67 @@ function InputSelectPackages({
     <HookedInputSelect
       name='packageId'
       placeholder='Select a package'
-      loadAsyncValues={async (hint) => {
-        return await sdkClient.packages
-          .list(makePackageQuery(stockLocationId, hint))
-          .then(packagesToSelectOptions)
-      }}
+      isLoading={isLoading}
+      isSearchable
+      menuFooterText={
+        hasMorePages
+          ? 'Showing 25 results. Type to search for more options.'
+          : undefined
+      }
+      loadAsyncValues={
+        hasMorePages
+          ? async (hint) => {
+              return await sdkClient.packages
+                .list({
+                  pageSize: 25,
+                  filters: {
+                    stock_location_id_eq: stockLocationId,
+                    name_cont: hint
+                  }
+                })
+                .then(packagesToSelectOptions)
+            }
+          : undefined
+      }
       initialValues={packagesToSelectOptions(packages)}
     />
   )
 }
 
-/**
- * Generate a valid SDK query object to retrieve the available packages with optional hint to filter by name
- */
-function makePackageQuery(
-  stockLocationId: string,
-  hint?: string
-): QueryParamsList<Package> {
+/** Fetch first 25 packages */
+function usePackages(stockLocationId?: string): {
+  packages: ListResponse<Package>
+  isLoading: boolean
+} {
+  const { data: packages, isLoading } = useCoreApi(
+    'packages',
+    'list',
+    stockLocationId == null
+      ? null
+      : [
+          {
+            fields: [
+              'id',
+              'name',
+              'width',
+              'length',
+              'height',
+              'unit_of_length'
+            ],
+            filters: {
+              stock_location_id_eq: stockLocationId
+            },
+            pageSize: 25
+          }
+        ],
+    {
+      fallbackData: repeat(2, () => makePackage()) as ListResponse<Package>
+    }
+  )
+
   return {
-    fields: ['id', 'name', 'width', 'length', 'height', 'unit_of_length'],
-    filters: {
-      stock_location_id_eq: stockLocationId,
-      ...(!isEmpty(hint) && { name_cont: hint })
-    },
-    pageSize: 25
+    packages,
+    isLoading
   }
 }
 
