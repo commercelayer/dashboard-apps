@@ -1,8 +1,8 @@
 import type { getOrderSubscriptionTriggerActionName } from '#data/dictionaries'
 import {
   orderSubscriptionIncludeAttribute,
-  useOrderSubscriptionDetails
-} from '#hooks/useOrderSubscriptionDetails'
+  useSubscriptionDetails
+} from '#hooks/useSubscriptionDetails'
 import { useCoreSdkProvider } from '@commercelayer/app-elements'
 import { CommerceLayerStatic } from '@commercelayer/sdk'
 import { useCallback, useState } from 'react'
@@ -20,8 +20,7 @@ interface TriggerAttributeHook {
 export function useTriggerAttribute(
   orderSubscriptionId: string
 ): TriggerAttributeHook {
-  const { mutateOrderSubscription } =
-    useOrderSubscriptionDetails(orderSubscriptionId)
+  const { mutateSubscription } = useSubscriptionDetails(orderSubscriptionId)
   const { sdkClient } = useCoreSdkProvider()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -42,7 +41,7 @@ export function useTriggerAttribute(
               include: orderSubscriptionIncludeAttribute
             }
           )
-        void mutateOrderSubscription(updatedOrderSubscription)
+        void mutateSubscription(updatedOrderSubscription)
       } catch (error) {
         setErrors(
           CommerceLayerStatic.isApiError(error)
