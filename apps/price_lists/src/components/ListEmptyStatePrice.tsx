@@ -3,12 +3,17 @@ import {
   A,
   Button,
   EmptyState,
+  Text,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { FC } from 'react'
 import { useLocation, useRoute } from 'wouter'
 
-export const ListEmptyStatePrice: FC = () => {
+interface Props {
+  scope?: 'history' | 'userFiltered'
+}
+
+export const ListEmptyStatePrice: FC<Props> = ({ scope }) => {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
 
@@ -17,7 +22,7 @@ export const ListEmptyStatePrice: FC = () => {
   )
   const priceListId = params?.priceListId ?? ''
 
-  if (canUser('create', 'prices')) {
+  if (scope === 'history' && canUser('create', 'prices')) {
     return (
       <EmptyState
         title='No Prices yet!'
@@ -34,6 +39,10 @@ export const ListEmptyStatePrice: FC = () => {
         }
       />
     )
+  }
+
+  if (scope === 'userFiltered') {
+    return <Text weight='semibold'>No results found. Try a new search</Text>
   }
 
   return (
