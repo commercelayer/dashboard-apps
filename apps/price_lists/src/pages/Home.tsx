@@ -57,10 +57,15 @@ export function Home(): JSX.Element {
         }
       />
     ) : (
-      <EmptyState
-        title='No price lists found!'
-        description='If you were looking for an SKU instead of a Price list, search again within "All Prices".'
-      />
+      <>
+        <Text weight='semibold'>
+          No results found. Try a new search.
+          <br />
+          If you were looking for an SKU instead of a Price list, search again
+          within{' '}
+          <Link href={appRoutes.pricesList.makePath({})}>All Prices</Link>.
+        </Text>
+      </>
     )
 
   return (

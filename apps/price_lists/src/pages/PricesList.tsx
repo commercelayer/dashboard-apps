@@ -36,7 +36,7 @@ export function PricesList(): JSX.Element {
   const queryString = useSearch()
   const [, setLocation] = useLocation()
 
-  const { SearchWithNav, FilteredList } = useResourceFilters({
+  const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
     instructions: pricesFilterInstructions({ priceListId })
   })
 
@@ -165,7 +165,11 @@ export function PricesList(): JSX.Element {
           )
         }
         ItemTemplate={ListItemPrice}
-        emptyState={<ListEmptyStatePrice />}
+        emptyState={
+          <ListEmptyStatePrice
+            scope={hasActiveFilter ? 'userFiltered' : 'history'}
+          />
+        }
       />
       {canUser('destroy', 'price_lists') && (
         <Overlay backgroundColor='light'>
