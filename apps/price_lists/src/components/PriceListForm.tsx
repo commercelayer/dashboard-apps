@@ -4,11 +4,13 @@ import {
   HookedInput,
   HookedInputRadioGroup,
   HookedInputSelect,
+  HookedInputTextArea,
   HookedValidationApiError,
   Section,
   Spacer,
   Text,
-  currencies
+  currencies,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, type UseFormSetError } from 'react-hook-form'
@@ -18,7 +20,21 @@ const priceListFormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1),
   currency_code: z.string().min(1),
-  tax_included: z.string().min(1)
+  tax_included: z.string().min(1),
+  rules: z.any().refine((value) => {
+    if (value == null || (typeof value === 'string' && value.trim() === '')) {
+      return true
+    }
+
+    try {
+      if (typeof value === 'string') {
+        JSON.parse(value)
+      }
+      return true
+    } catch (error) {
+      return false
+    }
+  }, 'JSON is not valid')
 })
 
 export type PriceListFormValues = z.infer<typeof priceListFormSchema>
@@ -39,10 +55,14 @@ export function PriceListForm({
   apiError,
   isSubmitting
 }: Props): JSX.Element {
+  const { organization } = useTokenProvider()
+
   const priceListFormMethods = useForm<PriceListFormValues>({
     defaultValues,
     resolver: zodResolver(priceListFormSchema)
   })
+
+  const hasRuleEngine = organization?.api_rules_engine === true
 
   return (
     <>
@@ -77,6 +97,11 @@ export function PriceListForm({
               }))}
             />
           </Spacer>
+          {hasRuleEngine && (
+            <Spacer top='6' bottom='4'>
+              <HookedInputTextArea name='rules' label='Rules' />
+            </Spacer>
+          )}
         </Section>
 
         <Section title='Taxes'>
