@@ -12,30 +12,6 @@ interface TriggerAction {
   hidden?: true
 }
 
-type OrderSubscriptionAppStatus =
-  | Omit<OrderSubscription['status'], 'draft'>
-  | 'failed'
-  | undefined
-
-/**
- * Determine the app level order subscription status based on values of some its attributes
- * @param orderSubscription a given orderSubscription object
- * @returns a status string that can be inactive or active or cancelled or failed
- */
-export function getOrderSubscriptionStatus(
-  orderSubscription: OrderSubscription
-): OrderSubscriptionAppStatus {
-  if (
-    orderSubscription.succeeded_on_last_run === false &&
-    orderSubscription.last_run_at != null
-  ) {
-    return 'failed'
-  }
-  if (orderSubscription.status !== 'draft') {
-    return orderSubscription.status
-  }
-}
-
 export function getOrderSubscriptionTriggerAction(
   orderSubscription: OrderSubscription
 ): TriggerAction | undefined {

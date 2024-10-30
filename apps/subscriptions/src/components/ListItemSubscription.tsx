@@ -1,8 +1,10 @@
-import { getOrderSubscriptionStatus } from '#data/dictionaries'
+import { appRoutes } from '#data/routes'
 import { makeOrderSubscription } from '#mocks'
+import { getSubscriptionStatus } from '#utils/getSubscriptionStatus'
 import {
   formatDate,
   Hint,
+  Icon,
   ListItem,
   StatusIcon,
   Text,
@@ -10,16 +12,17 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { OrderSubscription } from '@commercelayer/sdk'
+import { Link } from 'wouter'
 
 /**
- * Get the relative status based on orderSubscriptions's circuit state {@link https://docs.commercelayer.io/core/v/api-reference/order_subscriptions/object}
- * @param orderSubscriptions - The orderSubscriptions object.
+ * Get the relative status based on subscription's circuit state {@link https://docs.commercelayer.io/core/v/api-reference/order_subscriptions/object}
+ * @param subscription - The subscription object.
  * @returns a valid StatusUI to be used in the StatusIcon component.
  */
 function getListUiIcon(
-  orderSubscriptions: OrderSubscription
+  subscription: OrderSubscription
 ): JSX.Element | undefined {
-  const status = getOrderSubscriptionStatus(orderSubscriptions)
+  const status = getSubscriptionStatus(subscription)
   switch (status) {
     case 'active':
       return <StatusIcon name='pulse' gap='large' background='green' />
@@ -55,17 +58,24 @@ export const ListItemSubscription =
       })
 
       return (
-        <ListItem alignItems='center' icon={getListUiIcon(resource)}>
-          <div>
-            <Text weight='bold'>
-              {resource?.market?.name} #{resource.number}
-            </Text>
-            <Hint>
-              {date} · {resource.customer_email} ·{' '}
-              <Text variant={lastRunFailed ? 'danger' : 'info'}>{status}</Text>
-            </Hint>
-          </div>
-        </ListItem>
+        <Link
+          href={appRoutes.details.makePath({ subscriptionId: resource.id })}
+        >
+          <ListItem alignItems='center' icon={getListUiIcon(resource)}>
+            <div>
+              <Text weight='bold'>
+                {resource?.market?.name} #{resource.number}
+              </Text>
+              <Hint>
+                {date} · {resource.customer_email} ·{' '}
+                <Text variant={lastRunFailed ? 'danger' : 'info'}>
+                  {status}
+                </Text>
+              </Hint>
+            </div>
+            <Icon name='caretRight' />
+          </ListItem>
+        </Link>
       )
     }
   )
