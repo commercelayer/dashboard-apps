@@ -22,7 +22,7 @@ export function Home(): JSX.Element {
 
   const [searchValue, setSearchValue] = useState<string>()
 
-  const { list, meta, isLoading, isFirstLoading } = useResourceList({
+  const { meta, isLoading, isFirstLoading, ResourceList } = useResourceList({
     type: 'stock_locations',
     query: {
       filters: {
@@ -74,12 +74,7 @@ export function Home(): JSX.Element {
                   </ListItem>
                 </Link>
               )}
-              {list?.map((stockLocation) => (
-                <ListItemStockLocation
-                  resource={stockLocation}
-                  key={stockLocation.id}
-                />
-              ))}
+              <ResourceList ItemTemplate={ListItemStockLocation} />
             </Section>
           </SkeletonTemplate>
         )}
