@@ -22,7 +22,7 @@ export function Home(): JSX.Element {
   const { canUser } = useTokenProvider()
   const [searchValue, setSearchValue] = useState<string>()
 
-  const { list, meta, isLoading, isFirstLoading } = useResourceList({
+  const { meta, isLoading, isFirstLoading, ResourceList } = useResourceList({
     type: 'price_lists',
     query: {
       filters: {
@@ -109,9 +109,7 @@ export function Home(): JSX.Element {
                   </ListItem>
                 </Link>
               )}
-              {list?.map((priceList) => (
-                <ListItemPriceList resource={priceList} key={priceList.id} />
-              ))}
+              <ResourceList ItemTemplate={ListItemPriceList} />
             </Section>
           </SkeletonTemplate>
         )}
