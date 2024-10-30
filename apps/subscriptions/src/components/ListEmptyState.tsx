@@ -2,6 +2,7 @@ import {
   A,
   Button,
   EmptyState,
+  Text,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link } from 'wouter'
@@ -14,16 +15,7 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
   const { canUser } = useTokenProvider()
 
   if (scope === 'userFiltered') {
-    return (
-      <EmptyState
-        title='No subscriptions found!'
-        description={
-          <div>
-            <p>We didn't find any subscription matching the current search.</p>
-          </div>
-        }
-      />
-    )
+    return <Text weight='semibold'>No results found. Try a new search.</Text>
   }
 
   if (canUser('create', 'order_subscriptions')) {
