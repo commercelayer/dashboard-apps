@@ -1,5 +1,6 @@
 import type { Resource } from '@commercelayer/sdk'
 
+export * from './resources/orderSubscriptionItems'
 export * from './resources/orderSubscriptions'
 
 export const isMockedId = (id: string): boolean => {
