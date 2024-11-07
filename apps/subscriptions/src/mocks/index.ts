@@ -1,5 +1,6 @@
 import type { Resource } from '@commercelayer/sdk'
 
+export * from './resources/orders'
 export * from './resources/orderSubscriptionItems'
 export * from './resources/orderSubscriptions'
 

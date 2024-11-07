@@ -1,6 +1,7 @@
 import { SubscriptionAddresses } from '#components/SubscriptionAddresses'
 import { SubscriptionInfo } from '#components/SubscriptionInfo'
 import { SubscriptionItems } from '#components/SubscriptionItems'
+import { SubscriptionOrders } from '#components/SubscriptionOrders'
 import { SubscriptionPayment } from '#components/SubscriptionPayment'
 import { SubscriptionSteps } from '#components/SubscriptionSteps'
 import { appRoutes } from '#data/routes'
@@ -130,12 +131,9 @@ function SubscriptionDetails(): JSX.Element {
           <Spacer top='14'>
             <SubscriptionPayment subscription={subscription} />
           </Spacer>
-          {/* <Spacer top='14'>
-            <OrderPayment order={order} />
-          </Spacer>
           <Spacer top='14'>
-            <OrderAddresses order={order} />
-          </Spacer> */}
+            <SubscriptionOrders subscription={subscription} />
+          </Spacer>
           <Spacer top='14'>
             <ResourceDetails
               resource={subscription}
