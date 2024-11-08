@@ -1,10 +1,18 @@
 import type { TriggerAttribute } from '@commercelayer/app-elements'
 import type { Order, OrderUpdate } from '@commercelayer/sdk'
 
-type UITriggerAttributes = Extract<
-  TriggerAttribute<OrderUpdate>,
-  '_approve' | '_cancel' | '_capture' | '_refund' | '_archive' | '_unarchive'
->
+export type UITriggerAttributes =
+  | Extract<
+      TriggerAttribute<OrderUpdate>,
+      | '_approve'
+      | '_cancel'
+      | '_capture'
+      | '_refund'
+      | '_archive'
+      | '_unarchive'
+      | '_place'
+    >
+  | '__cancel_transactions'
 
 export function getTriggerAttributes(order: Order): UITriggerAttributes[] {
   const archiveTriggerAttribute: Extract<
@@ -17,6 +25,10 @@ export function getTriggerAttributes(order: Order): UITriggerAttributes[] {
 
   if (order.status === 'editing') {
     return []
+  }
+
+  if (order.status === 'pending' && order.payment_status !== 'unpaid') {
+    return ['_place', '__cancel_transactions']
   }
 
   switch (combinedStatus) {
@@ -76,7 +88,9 @@ export function getTriggerAttributeName(
     _cancel: 'Cancel order',
     _capture: 'Capture payment',
     _refund: 'Refund',
-    _unarchive: 'Unarchive'
+    _unarchive: 'Unarchive',
+    _place: 'Place order',
+    __cancel_transactions: 'Cancel payment'
   }
 
   return dictionary[triggerAttribute]

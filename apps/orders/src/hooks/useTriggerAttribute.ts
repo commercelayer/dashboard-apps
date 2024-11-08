@@ -1,3 +1,4 @@
+import type { UITriggerAttributes } from '#components/OrderSummary/orderDictionary'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   useCoreSdkProvider,
@@ -10,21 +11,43 @@ import { orderIncludeAttribute } from './useOrderDetails'
 interface TriggerAttributeHook {
   isLoading: boolean
   errors?: string[]
-  dispatch: (triggerAttribute: TriggerAttribute<OrderUpdate>) => Promise<void>
+  dispatch: (
+    triggerAttribute:
+      | TriggerAttribute<OrderUpdate>
+      | Exclude<UITriggerAttributes, TriggerAttribute<OrderUpdate>>
+  ) => Promise<void>
 }
 
 export function useTriggerAttribute(orderId: string): TriggerAttributeHook {
-  const { mutateOrder } = useOrderDetails(orderId)
+  const { order, mutateOrder } = useOrderDetails(orderId)
   const { sdkClient } = useCoreSdkProvider()
 
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<string[] | undefined>()
 
-  const dispatch = useCallback(
-    async (triggerAttribute: string): Promise<void> => {
+  const dispatch = useCallback<TriggerAttributeHook['dispatch']>(
+    async (triggerAttribute) => {
       setIsLoading(true)
       setErrors(undefined)
       try {
+        if (triggerAttribute === '__cancel_transactions') {
+          for (const transaction of order.transactions ?? []) {
+            if (
+              transaction.type === 'authorizations' ||
+              transaction.type === 'captures'
+            ) {
+              await sdkClient[transaction.type].update({
+                id: transaction.id,
+                _cancel: true
+              })
+
+              void mutateOrder()
+            }
+          }
+
+          return
+        }
+
         const updatedOrder = await sdkClient.orders.update(
           {
             id: orderId,

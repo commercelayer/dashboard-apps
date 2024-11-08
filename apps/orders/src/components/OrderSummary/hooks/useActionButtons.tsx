@@ -46,7 +46,11 @@ export const useActionButtons = ({ order }: { order: Order }) => {
       .map((triggerAttribute) => {
         return {
           label: getTriggerAttributeName(triggerAttribute),
-          variant: triggerAttribute === '_cancel' ? 'secondary' : 'primary',
+          variant:
+            triggerAttribute === '_cancel' ||
+            triggerAttribute === '__cancel_transactions'
+              ? 'secondary'
+              : 'primary',
           disabled: isLoading,
           onClick: () => {
             if (triggerAttribute === '_capture') {

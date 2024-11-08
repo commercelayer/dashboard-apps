@@ -5,6 +5,7 @@ import { OrderReturns } from '#components/OrderReturns'
 import { OrderShipments } from '#components/OrderShipments'
 import { OrderSteps } from '#components/OrderSteps'
 import { OrderSummary } from '#components/OrderSummary'
+import { useOrderStatus } from '#components/OrderSummary/hooks/useOrderStatus'
 import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
@@ -40,12 +41,14 @@ function OrderDetails(): JSX.Element {
   const orderId = params?.orderId ?? ''
 
   const { order, isLoading, error, mutateOrder } = useOrderDetails(orderId)
+  const { isPendingWithTransactions } = useOrderStatus(order)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
   const toolbar = useOrderToolbar({ order })
 
   if (canUser('update', 'orders')) {
     if (
       order.status === 'pending' &&
+      !isPendingWithTransactions &&
       extras?.salesChannels != null &&
       extras?.salesChannels.length > 0
     ) {
@@ -206,7 +209,7 @@ function OrderDetails(): JSX.Element {
               </Spacer>
             </>
           )}
-          {!['pending', 'draft'].includes(order.status) && (
+          {!['draft'].includes(order.status) && (
             <Spacer top='14'>
               <Timeline order={order} />
             </Spacer>

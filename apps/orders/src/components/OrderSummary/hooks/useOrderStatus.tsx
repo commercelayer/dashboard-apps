@@ -15,11 +15,15 @@ export function useOrderStatus(order: Order) {
     | null
     | undefined
 
+  const isPendingWithTransactions =
+    order.payment_status !== 'unpaid' && order.status === 'pending'
+
   const isEditing =
     (order.status === 'editing' ||
       order.status === 'draft' ||
       order.status === 'pending') &&
-    canUser('update', 'orders')
+    canUser('update', 'orders') &&
+    !isPendingWithTransactions
 
   const diffTotalAndPlacedTotal =
     (order.total_amount_with_taxes_cents ?? 0) -
@@ -71,6 +75,8 @@ export function useOrderStatus(order: Order) {
     hasInvalidShipments,
     /** `true` when there's at least one shippable (do_not_ship = `false`) item. */
     hasShippableLineItems,
+    /** `true` when the order has transactions, but the status is still `pending`. This is a kind of error status. */
+    isPendingWithTransactions,
     /** Difference between the current `total_amount` and the `place_total_amount`. */
     diffTotalAndPlacedTotal:
       isOriginalOrderAmountExceeded && currencyCode != null

@@ -13,6 +13,7 @@ export const orderIncludeAttribute = [
   'shipments.stock_transfers',
   'payment_method',
   'payment_source',
+  'transactions',
 
   // order editing
   'line_items.sku',
