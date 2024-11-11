@@ -1,4 +1,7 @@
+import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
+  Button,
+  Icon,
   ResourceAddress,
   Section,
   Stack,
@@ -6,6 +9,7 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
+import { useCustomerAddressOverlay } from './NewOrder/hooks/useCustomerAddressOverlay'
 import { useOrderStatus } from './OrderSummary/hooks/useOrderStatus'
 
 interface Props {
@@ -17,45 +21,74 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
     const { sdkClient } = useCoreSdkProvider()
 
     const { isEditing } = useOrderStatus(order)
-
+    const { mutateOrder } = useOrderDetails(order.id)
     const isEditable =
       isEditing || (order.status !== 'draft' && order.status !== 'pending')
+    const { Overlay: AssignAddressOverlay, open: openAssignAddressOverlay } =
+      useCustomerAddressOverlay(order, () => {
+        void mutateOrder()
+      })
+
+    if (order.customer == null) {
+      return null
+    }
 
     return (
-      <Section border='none' title='Addresses'>
-        <Stack>
-          <ResourceAddress
-            title='Billing address'
-            address={order.billing_address}
-            editable={isEditable}
-            onCreate={(address) => {
-              void sdkClient.orders.update({
-                id: order.id,
-                billing_address: {
-                  type: 'addresses',
-                  id: address.id
-                }
-              })
-            }}
-            showBillingInfo
-            requiresBillingInfo={order.requires_billing_info ?? undefined}
-          />
-          <ResourceAddress
-            title='Shipping address'
-            address={order.shipping_address}
-            editable={isEditable}
-            onCreate={(address) => {
-              void sdkClient.orders.update({
-                id: order.id,
-                shipping_address: {
-                  type: 'addresses',
-                  id: address.id
-                }
-              })
-            }}
-          />
-        </Stack>
-      </Section>
+      <>
+        <AssignAddressOverlay />
+        <Section
+          title='Addresses'
+          actionButton={
+            (order.status === 'draft' || order.status === 'pending') &&
+            isEditing ? (
+              <Button
+                alignItems='center'
+                variant='secondary'
+                size='mini'
+                onClick={() => {
+                  openAssignAddressOverlay()
+                }}
+              >
+                <Icon name='plus' />
+                Assign Address
+              </Button>
+            ) : null
+          }
+        >
+          <Stack>
+            <ResourceAddress
+              title='Billing address'
+              address={order.billing_address}
+              editable={isEditable}
+              onCreate={(address) => {
+                void sdkClient.orders.update({
+                  id: order.id,
+                  billing_address: {
+                    type: 'addresses',
+                    id: address.id
+                  }
+                })
+              }}
+              showBillingInfo
+              requiresBillingInfo={order.requires_billing_info ?? undefined}
+            />
+            <ResourceAddress
+              title='Shipping address'
+              address={order.shipping_address}
+              editable={isEditable}
+              onCreate={(address) => {
+                void sdkClient.orders.update({
+                  id: order.id,
+                  shipping_address: {
+                    type: 'addresses',
+                    id: address.id
+                  }
+                })
+              }}
+            />
+          </Stack>
+        </Section>
+      </>
     )
   }
 )
