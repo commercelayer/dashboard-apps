@@ -13,6 +13,7 @@ import {
 import type { Order } from '@commercelayer/sdk'
 import { useEditCustomerOverlay } from './NewOrder/hooks/useEditCustomerOverlay'
 import { languageList } from './NewOrder/languages'
+import { useOrderStatus } from './OrderSummary/hooks/useOrderStatus'
 
 interface Props {
   order: Order
@@ -26,6 +27,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
     } = useTokenProvider()
 
     const { mutateOrder } = useOrderDetails(order.id)
+    const { isEditing } = useOrderStatus(order)
     const { Overlay: EditCustomerOverlay, open: openEditCustomerOverlay } =
       useEditCustomerOverlay(order, () => {
         void mutateOrder()
@@ -51,7 +53,8 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
         <Section
           title='Customer'
           actionButton={
-            order.status === 'draft' || order.status === 'pending' ? (
+            (order.status === 'draft' || order.status === 'pending') &&
+            isEditing ? (
               <Button
                 alignItems='center'
                 variant='secondary'
