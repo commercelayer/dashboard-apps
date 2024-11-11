@@ -6,6 +6,7 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
+import { useOrderStatus } from './OrderSummary/hooks/useOrderStatus'
 
 interface Props {
   order: Order
@@ -15,13 +16,18 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element | null => {
     const { sdkClient } = useCoreSdkProvider()
 
+    const { isEditing } = useOrderStatus(order)
+
+    const isEditable =
+      isEditing || (order.status !== 'draft' && order.status !== 'pending')
+
     return (
       <Section border='none' title='Addresses'>
         <Stack>
           <ResourceAddress
             title='Billing address'
             address={order.billing_address}
-            editable
+            editable={isEditable}
             onCreate={(address) => {
               void sdkClient.orders.update({
                 id: order.id,
@@ -37,7 +43,7 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
           <ResourceAddress
             title='Shipping address'
             address={order.shipping_address}
-            editable
+            editable={isEditable}
             onCreate={(address) => {
               void sdkClient.orders.update({
                 id: order.id,
