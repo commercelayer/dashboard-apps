@@ -88,11 +88,17 @@ export const SubscriptionSteps = withSkeletonTemplate<Props>(
             </Text>
           </Spacer>
           <Text>
-            {formatDate({
-              isoDate: subscription.next_run_at ?? '',
-              format: 'full',
-              timezone: user?.timezone
-            })}
+            {subscription.status !== 'cancelled' ? (
+              formatDate({
+                isoDate: subscription.next_run_at ?? '',
+                format: 'full',
+                timezone: user?.timezone
+              })
+            ) : (
+              <Text data-testid='empty-string' variant='disabled'>
+                &#8212;
+              </Text>
+            )}
           </Text>
         </div>
       </Stack>
