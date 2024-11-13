@@ -80,6 +80,17 @@ export const frequenciesForFilters = (): SelectableFrequency[] => {
   return frequencies
 }
 
+export const getFrequencyByValue = (
+  frequencyValue: string
+): SelectableFrequency => {
+  return (
+    frequenciesTranslations.find((f) => f.value === frequencyValue) ?? {
+      label: frequencyValue,
+      value: frequencyValue
+    }
+  )
+}
+
 /**
  * Extract, if available, a frequency label of a given value.
  * @param value - A given value to search for a label.

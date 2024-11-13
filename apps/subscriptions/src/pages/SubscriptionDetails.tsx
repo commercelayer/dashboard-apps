@@ -4,8 +4,13 @@ import { SubscriptionItems } from '#components/SubscriptionItems'
 import { SubscriptionOrders } from '#components/SubscriptionOrders'
 import { SubscriptionPayment } from '#components/SubscriptionPayment'
 import { SubscriptionSteps } from '#components/SubscriptionSteps'
+import {
+  getOrderSubscriptionTriggerAction,
+  getOrderSubscriptionTriggerActionName
+} from '#data/dictionaries'
 import { appRoutes } from '#data/routes'
 import { useSubscriptionDetails } from '#hooks/useSubscriptionDetails'
+import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import { isMockedId } from '#mocks'
 import { getSubscriptionTitle } from '#utils/getSubscriptionTitle'
 import {
@@ -19,7 +24,8 @@ import {
   Spacer,
   formatDateWithPredicate,
   goBack,
-  useTokenProvider
+  useTokenProvider,
+  type PageHeadingProps
 } from '@commercelayer/app-elements'
 import { useLocation, useRoute } from 'wouter'
 
@@ -35,10 +41,10 @@ function SubscriptionDetails(): JSX.Element {
   )
 
   const subscriptionId = params?.subscriptionId ?? ''
+  const { dispatch } = useTriggerAttribute(subscriptionId)
 
   const { subscription, isLoading, error, mutateSubscription } =
     useSubscriptionDetails(subscriptionId)
-  const toolbar = undefined // TODO: Setup toolbar
 
   if (
     subscriptionId === undefined ||
@@ -83,10 +89,63 @@ function SubscriptionDetails(): JSX.Element {
 
   const pageTitle = getSubscriptionTitle(subscription)
 
+  const pageToolbar: PageHeadingProps['toolbar'] = canUser(
+    'update',
+    'order_subscriptions'
+  )
+    ? {
+        buttons: [],
+        dropdownItems: []
+      }
+    : undefined
+
+  if (
+    canUser('update', 'order_subscriptions') &&
+    subscription.status !== 'cancelled'
+  ) {
+    const triggerAction = getOrderSubscriptionTriggerAction(subscription)
+    const showMainAction =
+      subscription.status === 'active' || subscription.status === 'inactive'
+
+    if (showMainAction) {
+      pageToolbar?.buttons?.push({
+        label:
+          triggerAction?.triggerAttribute != null
+            ? getOrderSubscriptionTriggerActionName(
+                triggerAction?.triggerAttribute
+              )
+            : '',
+        size: 'small',
+        variant: 'primary',
+        onClick: () => {
+          if (triggerAction != null) {
+            void dispatch(triggerAction.triggerAttribute)
+          }
+        }
+      })
+    }
+    pageToolbar?.dropdownItems?.push([
+      {
+        label: 'Edit',
+        onClick: () => {
+          setLocation(appRoutes.edit.makePath({ subscriptionId }))
+        }
+      }
+    ])
+    pageToolbar?.dropdownItems?.push([
+      {
+        label: 'Cancel subscription',
+        onClick: () => {
+          void dispatch('_cancel')
+        }
+      }
+    ])
+  }
+
   return (
     <PageLayout
       mode={mode}
-      toolbar={toolbar}
+      toolbar={pageToolbar}
       title={
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }

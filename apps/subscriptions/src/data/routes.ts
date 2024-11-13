@@ -12,5 +12,5 @@ export const appRoutes = {
   filters: createRoute('/filters/'),
   details: createRoute('/list/:subscriptionId/'),
   orders: createRoute('/list/:subscriptionId/orders/'),
-  editSubscription: createRoute('/list/:subscriptionId/edit/')
+  edit: createRoute('/list/:subscriptionId/edit/')
 }
