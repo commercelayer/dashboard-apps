@@ -37,10 +37,11 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
       <>
         <AssignAddressOverlay />
         <Section
+          border='none'
           title='Addresses'
           actionButton={
-            (order.status === 'draft' || order.status === 'pending') &&
-            isEditing ? (
+            isEditable &&
+            (order.customer?.customer_addresses ?? []).length > 0 && (
               <Button
                 alignItems='center'
                 variant='secondary'
@@ -50,9 +51,9 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
                 }}
               >
                 <Icon name='plus' />
-                Assign Address
+                Select address
               </Button>
-            ) : null
+            )
           }
         >
           <Stack>

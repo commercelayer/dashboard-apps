@@ -3,31 +3,31 @@ To Do:
 1. How to handle error in handler? We have setApiError(error), but how to use this on front end?
 */
 
-import { useCustomerDetails } from '#hooks/useCustomerDetails'
 import {
-    Alert,
-    Button,
-    Icon,
-    ListItem,
-    PageLayout,
-    ResourceAddress,
-    Section,
-    Spacer,
-    useCoreSdkProvider,
-    useOverlay,
-    withSkeletonTemplate
+  Button,
+  HookedForm,
+  HookedInputRadioGroup,
+  HookedValidationApiError,
+  PageLayout,
+  ResourceAddress,
+  Spacer,
+  useCoreSdkProvider,
+  useOverlay,
+  withSkeletonTemplate
 } from '@commercelayer/app-elements'
-import type { Customer, Order } from '@commercelayer/sdk'
+import type { Order } from '@commercelayer/sdk'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 interface Props {
   order: Order
-  onChange?: () => void
   close: () => void
+  onChange?: () => void
 }
 interface PropsAddresses {
-  customer: Customer
-  orderId: string
+  order: Order
   close: () => void
   onChange?: () => void
 }
@@ -38,17 +38,14 @@ export function useCustomerAddressOverlay(
   onChange?: Props['onChange']
 ) {
   const { Overlay, open, close } = useOverlay()
-  const customerId = order?.customer?.id ?? ''
-  // console.log('customer', customerId)
-  const { customer } = useCustomerDetails(customerId)
-  // console.log('customer', customer)
+
   return {
     close,
     open,
     Overlay: () => (
       <Overlay>
         <PageLayout
-          title='Assign Address'
+          title='Select address'
           navigationButton={{
             onClick: () => {
               close()
@@ -57,12 +54,7 @@ export function useCustomerAddressOverlay(
             icon: 'x'
           }}
         >
-          <CustomerAddresses
-            customer={customer}
-            orderId={order?.id}
-            close={close}
-            onChange={onChange}
-          />
+          <CustomerAddresses order={order} close={close} onChange={onChange} />
         </PageLayout>
       </Overlay>
     )
@@ -70,107 +62,74 @@ export function useCustomerAddressOverlay(
 }
 
 const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
-  ({ customer, orderId, close, onChange }): JSX.Element | null => {
+  ({ order, close, onChange }): JSX.Element | null => {
     const { sdkClient } = useCoreSdkProvider()
-    const [apiError, setApiError] = useState<string>()
-    const handleSubmitAddress = async (
-      id: string | null,
-      billing: boolean
-    ): Promise<void> => {
-      if (id === null) {
-        close()
-      }
-      // if billing is true, update billing, if false, update shipping
-      billing
-        ? await sdkClient.orders
-            .update({
-              id: orderId,
-              billing_address: sdkClient.addresses.relationship(id)
-            })
-            .then(() => {
-              onChange?.()
-              close()
-            })
-            .catch((error) => {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-              setApiError(error)
-            })
-        : await sdkClient.orders
-            .update({
-              id: orderId,
-              shipping_address: sdkClient.addresses.relationship(id)
-            })
-            .then(() => {
-              onChange?.()
-              close()
-            })
-            .catch((error) => {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-              setApiError(error)
-            })
-    }
+    const [apiError, setApiError] = useState<any>()
 
-    const addresses = customer.customer_addresses?.map(
-      (customerAddress, idx) =>
-        customerAddress?.address != null ? (
-          <ListItem key={idx}>
-            <div className='flex flex-col'>
-              {' '}
-              <Button
-                alignItems='center'
-                variant='secondary'
-                size='mini'
-                onClick={() => {
-                  void (async () => {
-                    await handleSubmitAddress(
-                      customerAddress?.address?.id ?? null,
-                      true
-                    )
-                  })()
-                }}
-                style={{ width: '12rem' }} // Inline style for custom width
-              >
-                <Icon name='bank' />
-                Use for Billing
-              </Button>
-              <Spacer bottom='10' />
-              <Button
-                alignItems='center'
-                variant='secondary'
-                size='mini'
-                onClick={() => {
-                  void (async () => {
-                    await handleSubmitAddress(
-                      customerAddress?.address?.id ?? null,
-                      false
-                    )
-                  })()
-                }}
-                style={{ width: '12rem' }} // Inline style for custom width
-              >
-                <Icon name='buildings' />
-                Use for Shipping
-              </Button>
-            </div>
-            <ResourceAddress
-              address={customerAddress?.address}
-              // editable={canUser('update', 'addresses')}
-              showBillingInfo
-            />
-          </ListItem>
-        ) : null
-    )
-
-    if (addresses?.length === 0)
-      return (
-        <>
-          <Alert status='warning'>
-            This customer does not have any addresses yet. Please go to the
-            customer app to create an address.
-          </Alert>
-        </>
+    const methods = useForm<{ addressId: string; useForBilling: boolean }>({
+      resolver: zodResolver(
+        z.object({ addressId: z.string(), useForBilling: z.boolean() })
       )
+    })
 
-    return <Section title='Addresses'>{addresses}</Section>
+    return (
+      <HookedForm
+        {...methods}
+        onSubmit={async (formValues) => {
+          await sdkClient.orders
+            .update({
+              id: order.id,
+              [formValues.useForBilling
+                ? 'billing_address'
+                : 'shipping_address']: sdkClient.addresses.relationship(
+                formValues.addressId
+              )
+            })
+            .then(() => {
+              onChange?.()
+              close()
+            })
+            .catch((error) => {
+              setApiError(error)
+            })
+        }}
+      >
+        <HookedInputRadioGroup
+          name='addressId'
+          showInput={false}
+          options={
+            order.customer?.customer_addresses?.map((address) => ({
+              content: <ResourceAddress address={address.address} />,
+              value: address?.address?.id ?? ''
+            })) ?? []
+          }
+        />
+        <Spacer top='10'>
+          <div className='flex flex-row gap-6 md:gap-8'>
+            <Button
+              variant='secondary'
+              fullWidth
+              onClick={() => {
+                methods.setValue('useForBilling', true)
+              }}
+            >
+              Use for billing
+            </Button>
+            <Button
+              variant='secondary'
+              fullWidth
+              onClick={() => {
+                methods.setValue('useForBilling', false)
+              }}
+            >
+              Use for shipping
+            </Button>
+          </div>
+        </Spacer>
+        <Spacer top='2'>
+          <HookedValidationApiError apiError={apiError} />
+        </Spacer>
+      </HookedForm>
+    )
   }
 )
