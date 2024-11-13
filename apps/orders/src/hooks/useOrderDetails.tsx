@@ -5,6 +5,8 @@ import isEmpty from 'lodash/isEmpty'
 export const orderIncludeAttribute = [
   'market',
   'customer',
+  'customer.customer_addresses',
+  'customer.customer_addresses.address',
   'line_items',
   'line_items.line_item_options',
   'shipping_address',
