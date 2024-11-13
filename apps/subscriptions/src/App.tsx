@@ -2,6 +2,7 @@ import { ErrorNotFound } from '#components/ErrorNotFound'
 import { appRoutes } from '#data/routes'
 import { Filters } from '#pages/Filters'
 import SubscriptionDetails from '#pages/SubscriptionDetails'
+import { SubscriptionEdit } from '#pages/SubscriptionEdit'
 import { SubscriptionOrders } from '#pages/SubscriptionOrders'
 import { SubscriptionsList } from '#pages/SubscriptionsList'
 import type { FC } from 'react'
@@ -29,6 +30,9 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         </Route>
         <Route path={appRoutes.orders.path}>
           <SubscriptionOrders />
+        </Route>
+        <Route path={appRoutes.edit.path}>
+          <SubscriptionEdit />
         </Route>
         <Route>
           <ErrorNotFound />
