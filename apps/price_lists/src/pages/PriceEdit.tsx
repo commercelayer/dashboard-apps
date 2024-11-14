@@ -94,9 +94,10 @@ export function PriceEdit(): JSX.Element {
               const price = adaptFormValuesToPrice(formValues, priceListId)
               void sdkClient.prices
                 .update(price)
-                .then((updatedPrice) => {
-                  void mutatePrice({ ...updatedPrice })
-                  setLocation(goBackUrl)
+                .then(() => {
+                  void mutatePrice().then(() => {
+                    setLocation(goBackUrl)
+                  })
                 })
                 .catch((error) => {
                   setApiError(error)
