@@ -1,8 +1,4 @@
-/*
-To Do:
-1. How to handle error in handler? We have setApiError(error), but how to use this on front end?
-*/
-
+import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
   HookedForm,
@@ -50,8 +46,8 @@ export function useCustomerAddressOverlay(
             onClick: () => {
               close()
             },
-            label: 'Cancel',
-            icon: 'x'
+            label: getOrderTitle(order),
+            icon: 'arrowLeft'
           }}
         >
           <CustomerAddresses order={order} close={close} onChange={onChange} />
