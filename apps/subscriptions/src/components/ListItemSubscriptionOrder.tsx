@@ -20,9 +20,10 @@ export const ListItemSubscriptionOrder = withSkeletonTemplate<
   const { user, settings, canAccess } = useTokenProvider()
 
   const orderDate = formatDate({
-    isoDate: resource.placed_at ?? '',
-    format: 'date',
-    timezone: user?.timezone
+    isoDate: resource.updated_at ?? '',
+    format: 'full',
+    timezone: user?.timezone,
+    showCurrentYear: true
   })
 
   const orderNumber = `#${resource?.number}`

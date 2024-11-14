@@ -29,10 +29,10 @@ export function SubscriptionOrders(): JSX.Element {
     query: {
       filters: {
         order_subscription_id_eq: subscriptionId,
-        status_eq: 'placed'
+        status_in: ['placed', 'pending']
       },
-      sort: ['-placed_at'],
-      pageSize: 5
+      sort: ['-updated_at'],
+      pageSize: 25
     }
   })
 
