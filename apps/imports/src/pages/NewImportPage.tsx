@@ -136,6 +136,8 @@ function NewImportPage(): JSX.Element {
 
     const shippingCategoryId = list?.[0]?.id ?? null
 
+    console.info('list', list, userDomain, shippingCategoryId)
+
     if (shippingCategoryId === null || shippingCategoryId === undefined) {
       throw new Error(
         'No cuenta con los permisos necesarios para realizar la importación, por favor comuníquese con el administrador.'
