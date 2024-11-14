@@ -69,9 +69,7 @@ export const SubscriptionSteps = withSkeletonTemplate<Props>(
               Last run
             </Text>
           </Spacer>
-          {subscriptionFailedOnLastRun(subscription) ? (
-            <Badge variant='danger'>Failed</Badge>
-          ) : (
+          <div className='flex items-center gap-2'>
             <Text>
               {formatDate({
                 isoDate: subscription.last_run_at ?? '',
@@ -79,7 +77,10 @@ export const SubscriptionSteps = withSkeletonTemplate<Props>(
                 timezone: user?.timezone
               })}
             </Text>
-          )}
+            {subscriptionFailedOnLastRun(subscription) && (
+              <Badge variant='danger'>Failed</Badge>
+            )}
+          </div>
         </div>
         <div>
           <Spacer bottom='2'>

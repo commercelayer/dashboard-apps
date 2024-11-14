@@ -25,9 +25,9 @@ export const SubscriptionOrders = withSkeletonTemplate<Props>(
       query: {
         filters: {
           order_subscription_id_eq: subscription.id,
-          status_eq: 'placed'
+          status_in: ['placed', 'pending']
         },
-        sort: ['-placed_at'],
+        sort: ['-updated_at'],
         pageSize: 5
       }
     })
