@@ -100,8 +100,6 @@ function NewImportPage(): JSX.Element {
         ? 'haceb'
         : user?.email?.split('@')?.[1]
 
-    console.info('user', user, userDomain)
-
     if (importCreateValue == null) {
       throw new Error(`No hay valores por importar`)
     }
@@ -127,8 +125,6 @@ function NewImportPage(): JSX.Element {
       accessToken: auth.accessToken
     })
 
-    console.info('integrationClient', integrationClient)
-
     const list = await integrationClient.shipping_categories.list({
       sort: { created_at: 'desc' },
       filters: {
@@ -139,8 +135,6 @@ function NewImportPage(): JSX.Element {
     })
 
     const shippingCategoryId = list?.[0]?.id ?? null
-
-    console.info('list', list, shippingCategoryId)
 
     if (shippingCategoryId === null || shippingCategoryId === undefined) {
       throw new Error(
@@ -228,7 +222,7 @@ function NewImportPage(): JSX.Element {
     } catch (e) {
       const errorMessage = CommerceLayerStatic.isApiError(e)
         ? e.errors.map(({ detail }) => detail).join(', ')
-        : 'Could not create import'
+        : e?.toString()
       setApiError(errorMessage)
       setIsLoading(false)
     }
