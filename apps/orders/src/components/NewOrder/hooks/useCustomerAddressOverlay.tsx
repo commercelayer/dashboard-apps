@@ -62,7 +62,15 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
     const { sdkClient } = useCoreSdkProvider()
     const [apiError, setApiError] = useState<any>()
 
+    const customerAddresses = order.customer?.customer_addresses ?? []
+
     const methods = useForm<{ addressId: string; useForBilling: boolean }>({
+      defaultValues: {
+        addressId:
+          customerAddresses.length === 1
+            ? customerAddresses[0]?.address?.id
+            : undefined
+      },
       resolver: zodResolver(
         z.object({ addressId: z.string(), useForBilling: z.boolean() })
       )
@@ -93,12 +101,10 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
         <HookedInputRadioGroup
           name='addressId'
           showInput={false}
-          options={
-            order.customer?.customer_addresses?.map((address) => ({
-              content: <ResourceAddress address={address.address} />,
-              value: address?.address?.id ?? ''
-            })) ?? []
-          }
+          options={customerAddresses.map((address) => ({
+            content: <ResourceAddress address={address.address} />,
+            value: address?.address?.id ?? ''
+          }))}
         />
         <Spacer top='10'>
           <div className='flex flex-row gap-6 md:gap-8'>
