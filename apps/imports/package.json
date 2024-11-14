@@ -27,6 +27,7 @@
   "dependencies": {
     "@commercelayer/app-elements": "^3.2.0",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
+    "@commercelayer/js-auth": "^6.7.0",
     "@commercelayer/sdk": "6.25.0",
     "@vitejs/plugin-react": "^4.3.3",
     "lodash": "^4.17.21",
