@@ -1,6 +1,6 @@
 import {
-  type AllowedResourceType,
   type AllowedParentResource,
+  type AllowedResourceType,
   type ResourceWithParent
 } from 'App'
 
@@ -10,24 +10,24 @@ type VisibleInUI = boolean
  * To control if a resource should not be visible int the app UI
  */
 const resources: Record<AllowedResourceType, VisibleInUI> = {
-  addresses: true,
-  bundles: true,
+  addresses: false,
+  bundles: false,
   skus: true,
   prices: true,
-  coupons: true,
-  customer_payment_sources: true,
-  sku_lists: true,
-  sku_options: true,
-  customer_subscriptions: true,
-  customers: true,
-  gift_cards: true,
+  coupons: false,
+  customer_payment_sources: false,
+  sku_lists: false,
+  sku_options: false,
+  customer_subscriptions: false,
+  customers: false,
+  gift_cards: false,
   stock_items: true,
-  tax_categories: true,
-  shipping_categories: true,
-  orders: true,
-  line_items: true,
-  tags: true,
-  sku_list_items: true
+  tax_categories: false,
+  shipping_categories: false,
+  orders: false,
+  line_items: false,
+  tags: false,
+  sku_list_items: false
 }
 
 /**

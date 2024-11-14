@@ -27,7 +27,8 @@ import { Link, useLocation, useRoute } from 'wouter'
 function NewImportPage(): JSX.Element {
   const {
     canUser,
-    settings: { mode }
+    settings: { mode },
+    user
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 
@@ -113,7 +114,8 @@ function NewImportPage(): JSX.Element {
           format === 'csv'
             ? // This forced cast need to be removed once sdk updates input type to accept string values
               (unparse(importCreateValue) as unknown as object[])
-            : importCreateValue
+            : importCreateValue,
+        metadata: { email: user?.email ?? '' }
       })
       setLocation(appRoutes.list.makePath())
     } catch (e) {
