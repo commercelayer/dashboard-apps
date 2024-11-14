@@ -24,10 +24,10 @@ export function PriceEdit(): JSX.Element {
   const [, params] = useRoute<{ priceListId: string; priceId: string }>(
     appRoutes.priceEdit.path
   )
-  const priceListId = params?.priceListId ?? ''
   const priceId = params?.priceId ?? ''
 
   const { price, isLoading, mutatePrice } = usePriceDetails(priceId)
+  const priceListId = price?.price_list?.id ?? ''
   const pageTitle = 'Edit price'
 
   const goBackUrl = appRoutes.priceDetails.makePath({ priceListId, priceId })
