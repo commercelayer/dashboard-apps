@@ -27,7 +27,7 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
     'order_subscription_items'
   ],
   payment_methods: ['order'],
-  prices: ['sku', 'price_tiers'],
+  prices: ['sku' /* , 'price_tiers' */],
   shipments: [
     'order',
     'shipping_category',
@@ -39,12 +39,12 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
   shipping_categories: ['skus'],
   shipping_methods: ['shipments'],
   skus: [
-    'shipping_category',
-    'prices',
-    'prices.price_tiers',
+    /* 'shipping_category', */
+    'prices'
+    /* 'prices.price_tiers',
     'stock_items',
     'tax_categories',
-    'tags'
+    'tags' */
   ],
   sku_lists: ['sku_list_items', 'bundles'],
   sku_list_items: ['sku'],

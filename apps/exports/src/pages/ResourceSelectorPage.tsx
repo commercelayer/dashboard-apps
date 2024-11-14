@@ -16,6 +16,7 @@ export function ResourceSelectorPage(): JSX.Element {
     settings: { mode }
   } = useTokenProvider()
   const [_, setLocation] = useLocation()
+  console.info(availableResources)
 
   return (
     <PageLayout

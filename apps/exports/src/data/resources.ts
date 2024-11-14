@@ -7,27 +7,27 @@ type VisibleInUI = boolean
  * To control if a resource should not be visible int the app UI
  */
 const resources: Record<AllowedResourceType, VisibleInUI> = {
-  addresses: true,
-  bundles: true,
-  coupons: true,
-  customer_subscriptions: true,
-  customers: true,
-  gift_cards: true,
-  line_items: true,
-  orders: true,
-  order_subscriptions: true,
-  payment_methods: true,
+  addresses: false,
+  bundles: false,
+  coupons: false,
+  customer_subscriptions: false,
+  customers: false,
+  gift_cards: false,
+  line_items: false,
+  orders: false,
+  order_subscriptions: false,
+  payment_methods: false,
   prices: true,
-  shipments: true,
-  shipping_categories: true,
-  shipping_methods: true,
-  sku_lists: true,
-  sku_list_items: true,
-  sku_options: true,
+  shipments: false,
+  shipping_categories: false,
+  shipping_methods: false,
+  sku_lists: false,
+  sku_list_items: false,
+  sku_options: false,
   skus: true,
   stock_items: true,
-  tax_categories: true,
-  transactions: true
+  tax_categories: false,
+  transactions: false
 }
 
 /**

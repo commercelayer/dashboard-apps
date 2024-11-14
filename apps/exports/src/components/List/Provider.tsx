@@ -1,21 +1,23 @@
 import {
-  type QueryParamsList,
   type CommerceLayerClient,
   type Export,
-  type ListResponse
+  type ListResponse,
+  type QueryParamsList
 } from '@commercelayer/sdk'
-import { type ListExportContextValue, type ListExportContextState } from 'App'
+import { type ListExportContextState, type ListExportContextValue } from 'App'
 import {
   createContext,
   type ReactNode,
   useCallback,
+  useContext,
   useEffect,
   useReducer,
-  useContext,
   useRef
 } from 'react'
 
-import { initialValues, initialState } from './data'
+import { useTokenProvider } from '@commercelayer/app-elements'
+import { type TokenProviderAuthUser } from '@commercelayer/app-elements/dist/providers/TokenProvider/types'
+import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
 
 interface ListExportProviderProps {
@@ -43,6 +45,7 @@ export function ListExportProvider({
   pageSize,
   sdkClient
 }: ListExportProviderProps): JSX.Element {
+  const { user } = useTokenProvider()
   const [state, dispatch] = useReducer(reducer, initialState)
   const intervalId = useRef<number | null>(null)
 
@@ -54,7 +57,8 @@ export function ListExportProvider({
     const list = await getAllExports({
       cl: sdkClient,
       state,
-      pageSize
+      pageSize,
+      user
     })
     dispatch({ type: 'loadData', payload: list })
   }, [state.currentPage])
@@ -113,15 +117,20 @@ export function ListExportProvider({
 const getAllExports = async ({
   cl,
   state,
-  pageSize
+  pageSize,
+  user
 }: {
   cl: CommerceLayerClient
   state: ListExportContextState
   pageSize: number
+  user: TokenProviderAuthUser | null
 }): Promise<ListResponse<Export>> => {
   return await cl.exports.list({
     pageNumber: state.currentPage,
     pageSize: pageSize as QueryParamsList<Export>['pageSize'],
-    sort: { created_at: 'desc' }
+    sort: { created_at: 'desc' },
+    filters: {
+      metadata_jcont: { email: user?.email ?? '' }
+    }
   })
 }

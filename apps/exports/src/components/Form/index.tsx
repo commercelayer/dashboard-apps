@@ -1,22 +1,20 @@
-import { type AllowedResourceType } from 'App'
-import { type ExportFormValues } from 'AppForm'
-import { showResourceNiceName } from '#data/resources'
-import {
-  Spacer,
-  Button,
-  Tabs,
-  Tab,
-  ListItem,
-  HookedInputSimpleSelect,
-  HookedInputSwitch,
-  Section,
-  HookedForm
-} from '@commercelayer/app-elements'
-import { RelationshipSelector } from './RelationshipSelector'
 import { Filters } from '#components/Form/Filters'
 import { resourcesWithFilters } from '#components/Form/Filters/index'
-import { InputCode } from '#components/Form/Filters/InputCode'
+import { showResourceNiceName } from '#data/resources'
+import {
+  Button,
+  HookedForm,
+  HookedInputSimpleSelect,
+  HookedInputSwitch,
+  ListItem,
+  Section,
+  Spacer,
+  Tab
+} from '@commercelayer/app-elements'
+import { type AllowedResourceType } from 'App'
+import { type ExportFormValues } from 'AppForm'
 import { Controller, useForm } from 'react-hook-form'
+import { RelationshipSelector } from './RelationshipSelector'
 
 interface Props {
   resourceType: AllowedResourceType
@@ -38,7 +36,18 @@ export function Form({
   return (
     <HookedForm {...methods} onSubmit={onSubmit}>
       <Spacer bottom='6'>
-        <Tabs keepAlive>
+        {resourcesWithFilters.includes(resourceType) ? (
+          <Tab name='Filters'>
+            <Controller
+              name='filters'
+              control={methods.control}
+              render={({ field: { onChange } }) => (
+                <Filters resourceType={resourceType} onChange={onChange} />
+              )}
+            />
+          </Tab>
+        ) : null}
+        {/* <Tabs keepAlive>
           {resourcesWithFilters.includes(resourceType) ? (
             <Tab name='Filters'>
               <Controller
@@ -64,7 +73,7 @@ export function Form({
               )}
             />
           </Tab>
-        </Tabs>
+        </Tabs> */}
       </Spacer>
       <Spacer bottom='14'>
         <RelationshipSelector resourceType={resourceType} />
