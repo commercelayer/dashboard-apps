@@ -56,6 +56,13 @@ export const SkuInfo: FC<Props> = ({ sku = makeSku() }) => {
           </Text>
         </ListDetailsItem>
       ) : null}
+      {sku.hs_tariff_number != null ? (
+        <ListDetailsItem label='HS Code' gutter='none'>
+          <Text tag='div' weight='semibold'>
+            {sku.hs_tariff_number}
+          </Text>
+        </ListDetailsItem>
+      ) : null}
     </Section>
   )
 }

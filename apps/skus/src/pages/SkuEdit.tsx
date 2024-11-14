@@ -84,9 +84,10 @@ export function SkuEdit(): JSX.Element {
               setIsSaving(true)
               void sdkClient.skus
                 .update(getSkuFromFormValues(formValues, sdkClient))
-                .then((updatedSku) => {
-                  setLocation(goBackUrl)
-                  void mutateSku({ ...updatedSku })
+                .then(() => {
+                  void mutateSku().then(() => {
+                    setLocation(goBackUrl)
+                  })
                 })
                 .catch((error) => {
                   setApiError(error)

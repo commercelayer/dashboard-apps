@@ -1,5 +1,6 @@
 import { useShippingCategoriesList } from '#hooks/useShippingCategoriesList'
 import {
+  A,
   Avatar,
   Button,
   ButtonImageSelect,
@@ -146,7 +147,7 @@ export function SkuForm({
                       target='_blank'
                       rel='noreferrer'
                     >
-                      Learn more.
+                      Learn more
                     </a>
                   </Text>
                 )
@@ -236,7 +237,14 @@ export function SkuForm({
               hint={{
                 text: (
                   <Text variant='info'>
-                    Used by customs authorities to identify products.
+                    Used by customs authorities to identify products.{' '}
+                    <A
+                      href='https://www.trade.gov/harmonized-system-hs-codes'
+                      target='_blank'
+                      rel='noreferrer'
+                    >
+                      Learn more
+                    </A>
                   </Text>
                 )
               }}
