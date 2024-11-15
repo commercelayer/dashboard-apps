@@ -15,8 +15,8 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type ApiError } from 'App'
-import { type ExportFormValues } from 'AppForm'
-import { useState } from 'react'
+import { type AllFilters, type ExportFormValues } from 'AppForm'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
 const NewExportPage = (): JSX.Element | null => {
@@ -34,11 +34,63 @@ const NewExportPage = (): JSX.Element | null => {
 
   const [apiError, setApiError] = useState<ApiError[] | undefined>()
   const [isLoading, setIsLoading] = useState(false)
+  const [shippingCategoryId, setShippingCategoryId] = useState<string>()
+  const defaultValues: ExportFormValues = {
+    dryData: true,
+    format: 'csv',
+    includes: []
+  }
 
   const resourceType = params?.resourceType
   if (!isAvailableResource(resourceType)) {
     return <PageError errorName='Invalid resource' errorDescription='' />
   }
+
+  useEffect(() => {
+    const shipingCategoryProcess = async (): Promise<void> => {
+      const list = await sdkClient.shipping_categories.list({
+        sort: { created_at: 'desc' },
+        filters: {
+          metadata_jcont: {
+            domain: user?.email?.split('@')?.[1] ?? ''
+          }
+        }
+      })
+      setShippingCategoryId(list?.[0]?.id ?? null)
+    }
+
+    void shipingCategoryProcess()
+  }, [])
+
+  const getDefaultValues = useCallback((): ExportFormValues => {
+    if (shippingCategoryId !== null && shippingCategoryId !== undefined) {
+      let categoryfilter: AllFilters | null = null
+
+      if (resourceType === 'skus') {
+        categoryfilter = {
+          shipping_category_id_eq: shippingCategoryId
+        }
+      }
+
+      if (resourceType === 'prices') {
+        categoryfilter = {
+          sku_shipping_category_id_eq: shippingCategoryId
+        }
+      }
+
+      if (resourceType === 'stock_items') {
+        categoryfilter = {
+          sku_shipping_category_id_eq: shippingCategoryId
+        }
+      }
+
+      if (categoryfilter != null) {
+        return { ...defaultValues, filters: categoryfilter }
+      }
+    }
+    return defaultValues
+  }, [shippingCategoryId])
+
   if (!canUser('create', 'exports')) {
     return (
       <PageLayout
@@ -109,11 +161,7 @@ const NewExportPage = (): JSX.Element | null => {
         <Form
           resourceType={resourceType}
           isLoading={isLoading}
-          defaultValues={{
-            dryData: true,
-            format: 'csv',
-            includes: []
-          }}
+          defaultValues={getDefaultValues()}
           onSubmit={(values) => {
             void createExportTask(values)
           }}

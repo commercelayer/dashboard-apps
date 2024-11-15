@@ -32,14 +32,18 @@ declare module 'AppForm' {
     | 'created_at_lteq'
     | 'do_not_ship_false' // is shippable
     | 'shipping_category_id_in'
+    | 'shipping_category_id_eq'
 
   // prices
   type PricesFilters = Filters<PricesField>
-  type PricesField = 'sku_code_in' | 'price_list_id_eq'
+  type PricesField =
+    | 'sku_code_in'
+    | 'price_list_id_eq'
+    | 'shipping_category_id_eq'
 
   // stock_items
   type StockItemsFilters = Filters<StockItemsField>
-  type StockItemsField = 'stock_location_id_in'
+  type StockItemsField = 'stock_location_id_in' | 'sku_shipping_category_id_eq'
 
   type AllFilters = OrdersFilters &
     SkusFilters &
