@@ -16,9 +16,9 @@ import {
 } from '@commercelayer/app-elements'
 import { type ApiError } from 'App'
 import { type AllFilters, type ExportFormValues } from 'AppForm'
+import { getUserDomain } from 'dashboard-apps-common/src/utils/userUtils'
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
-import { getUserDomain } from '../../../../packages/common/src/helpers/userUtils'
 
 const NewExportPage = (): JSX.Element | null => {
   const {

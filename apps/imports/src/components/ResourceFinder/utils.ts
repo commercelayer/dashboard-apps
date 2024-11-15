@@ -5,7 +5,7 @@ import type {
   Resource
 } from '@commercelayer/sdk'
 import { type AllowedParentResource, type AllowedResourceType } from 'App'
-import { getExcludedPriceList } from '../../../../../packages/common/src/helpers/getExcludedPriceList'
+import { getExcludedPriceList } from 'dashboard-apps-common/src/utils/getExcludedPriceList'
 
 /**
  * Retrieve a list of resources from api filtered by hint if provided.

@@ -28,6 +28,7 @@
     "@commercelayer/app-elements": "^3.2.0",
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@commercelayer/sdk": "6.25.0",
+    "dashboard-apps-common": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@vitejs/plugin-react": "^4.3.3",

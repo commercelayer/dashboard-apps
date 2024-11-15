@@ -29,6 +29,7 @@
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@commercelayer/js-auth": "^6.7.0",
     "@commercelayer/sdk": "6.25.0",
+    "dashboard-apps-common": "workspace:*",
     "@vitejs/plugin-react": "^4.3.3",
     "lodash": "^4.17.21",
     "papaparse": "^5.4.1",

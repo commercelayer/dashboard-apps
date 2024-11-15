@@ -7,6 +7,7 @@ import {
   type QueryParamsList
 } from '@commercelayer/sdk'
 import { type ListImportContextState, type ListImportContextValue } from 'App'
+import { isAdmin } from 'dashboard-apps-common/src/utils/userUtils'
 import {
   createContext,
   type ReactNode,
@@ -16,7 +17,6 @@ import {
   useReducer,
   useRef
 } from 'react'
-import { isAdmin } from '../../../../../packages/common/src/helpers/userUtils'
 import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
 

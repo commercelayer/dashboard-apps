@@ -9,8 +9,8 @@ import {
 } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
 import { type CommerceLayerClient } from '@commercelayer/sdk'
 import { type AllowedParentResource, type AllowedResourceType } from 'App'
+import { isDomainDefined } from 'dashboard-apps-common/src/utils/userUtils'
 import { useEffect, useRef, useState } from 'react'
-import { isDomainDefined } from '../../../../../packages/common/src/helpers/userUtils'
 import { fetchResources } from './utils'
 
 interface Props extends Pick<InputSelectProps, 'feedback' | 'hint'> {

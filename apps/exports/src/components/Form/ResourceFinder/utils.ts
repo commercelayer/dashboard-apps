@@ -5,7 +5,7 @@ import type {
   QueryArrayFields,
   Resource
 } from '@commercelayer/sdk'
-import { getExcludedPriceList } from '../../../../../../packages/common/src/helpers/getExcludedPriceList'
+import { getExcludedPriceList } from 'dashboard-apps-common/src/utils/getExcludedPriceList'
 
 export type SearchableResource =
   | 'markets'

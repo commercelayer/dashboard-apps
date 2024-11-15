@@ -23,13 +23,13 @@ import CommerceLayer, {
   type ImportCreate
 } from '@commercelayer/sdk'
 import { type AllowedResourceType } from 'App'
-import { unparse } from 'papaparse'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
 import {
   getUserDomain,
   isAdmin
-} from '../../../../packages/common/src/helpers/userUtils'
+} from 'dashboard-apps-common/src/utils/userUtils'
+import { unparse } from 'papaparse'
+import { useState } from 'react'
+import { Link, useLocation, useRoute } from 'wouter'
 
 function NewImportPage(): JSX.Element {
   const {
