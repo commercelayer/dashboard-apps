@@ -2,11 +2,15 @@ import {
   type SearchParams,
   type SearchableResource
 } from '#components/Form/ResourceFinder/utils'
-import { InputSelect, Label } from '@commercelayer/app-elements'
+import {
+  InputSelect,
+  Label,
+  useTokenProvider
+} from '@commercelayer/app-elements'
 import { type InputSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
+import { type PossibleSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect/InputSelect'
 import { useEffect, useState } from 'react'
 import { fetchInitialResources, fetchResourcesByHint } from './utils'
-import { type PossibleSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect/InputSelect'
 
 interface Props extends SearchParams<SearchableResource> {
   /**
@@ -40,6 +44,7 @@ export function ResourceFinder({
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true)
   const [initialValues, setInitialValues] = useState<InputSelectValue[]>([])
+  const { user } = useTokenProvider()
   useEffect(() => {
     if (resourceType == null) {
       return
@@ -50,7 +55,8 @@ export function ResourceFinder({
       resourceType,
       fields,
       fieldForValue,
-      fieldForLabel
+      fieldForLabel,
+      user
     })
       .then(setInitialValues)
       .finally(() => {

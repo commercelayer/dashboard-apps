@@ -11,7 +11,7 @@ export const getUserDomain = (
   user: TokenProviderAuthUser | null
 ): string | undefined => {
   if (isTestUser(user)) {
-    return 'haceb'
+    return 'haceb.com'
   }
   return user?.email?.split('@')?.[1]
 }
