@@ -1,7 +1,7 @@
 import { ImportDate } from '#components/Details/ImportDate'
 import { ImportDetails } from '#components/Details/ImportDetails'
 import { ImportedResourceType } from '#components/Details/ImportedResourceType'
-import { ImportReport } from '#components/Details/ImportReport'
+import { ImportErrors } from '#components/Details/ImportErrors'
 import { ImportDetailsProvider } from '#components/Details/Provider'
 import { ErrorNotFound } from '#components/ErrorNotFound'
 import { appRoutes } from '#data/routes'
@@ -79,9 +79,13 @@ const DetailsPage = (): JSX.Element | null => {
                 }
               }}
             >
-              <Spacer bottom='14'>
-                <ImportReport />
-              </Spacer>
+              {data?.errors_count !== null &&
+                data?.errors_count !== undefined &&
+                data?.errors_count > 0 && (
+                  <Spacer bottom='12'>
+                    <ImportErrors />
+                  </Spacer>
+                )}
 
               <Spacer bottom='14'>
                 <ImportDetails />

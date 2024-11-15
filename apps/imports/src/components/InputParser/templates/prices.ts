@@ -10,12 +10,12 @@ export const csvPricesTemplate: Array<
 > = [
   'amount_cents',
   'compare_at_amount_cents',
-  'sku_code',
-  'reference',
-  'reference_origin',
+  'sku_code'
+  /* 'reference',
+  'reference_origin', */
   // price_tiers relationship
-  'price_tiers.type',
+  /* 'price_tiers.type',
   'price_tiers.name',
   'price_tiers.up_to',
-  'price_tiers.price_amount_cents'
+  'price_tiers.price_amount_cents' */
 ]
