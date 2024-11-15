@@ -1,4 +1,4 @@
-import { useTokenProvider } from '@commercelayer/app-elements'
+import { type TokenProviderAuthUser } from '@commercelayer/app-elements/dist/providers/TokenProvider/types'
 import { type InputSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
 import type {
   CommerceLayerClient,
@@ -18,15 +18,16 @@ import { getExcludedPriceList } from 'dashboard-apps-common/src/utils/getExclude
 export const fetchResources = async ({
   sdkClient,
   resourceType,
+  user,
   hint
 }: {
   sdkClient: CommerceLayerClient
   resourceType: AllowedResourceType | AllowedParentResource
+  user: TokenProviderAuthUser | null
   hint?: string
 }): Promise<InputSelectValue[]> => {
-  const { user } = useTokenProvider()
   const filters: Record<string, string> = {
-    id_not_in: getExcludedPriceList(user).join(',')
+    id_not_in: getExcludedPriceList(user)
   }
 
   if (hint != null) {

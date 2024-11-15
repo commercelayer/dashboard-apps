@@ -56,7 +56,7 @@ export function ResourceFinder({
       return
     }
     setIsLoading(true)
-    void fetchResources({ sdkClient, resourceType })
+    void fetchResources({ sdkClient, resourceType, user })
       .then((values) => {
         /* if (!isAdmin()) {
           values = values.filter((value: any) => {
@@ -103,7 +103,7 @@ export function ResourceFinder({
           }
         }}
         loadAsyncValues={async (hint) => {
-          return await fetchResources({ sdkClient, resourceType, hint })
+          return await fetchResources({ sdkClient, resourceType, user, hint })
         }}
       />
     </div>

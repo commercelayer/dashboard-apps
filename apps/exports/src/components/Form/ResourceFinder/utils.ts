@@ -75,7 +75,7 @@ export const fetchInitialResources = async ({
 }: SearchParams<SearchableResource>): Promise<InputSelectValue[]> => {
   const { user } = useTokenProvider()
   const filters = {
-    id_not_in: getExcludedPriceList(user).join(',')
+    id_not_in: getExcludedPriceList(user)
   }
   const fetchedResources = await sdkClient[resourceType].list({
     fields,
