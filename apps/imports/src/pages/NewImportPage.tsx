@@ -101,7 +101,7 @@ function NewImportPage(): JSX.Element {
         : user?.email?.split('@')?.[1]
 
     if (importCreateValue == null) {
-      throw new Error(`No hay valores por importar`)
+      throw new Error(`No values to import`)
     }
 
     // Allow the Vanti and Aplyca users to import SKUs with any shipping category
@@ -140,7 +140,7 @@ function NewImportPage(): JSX.Element {
 
     if (shippingCategoryId === null || shippingCategoryId === undefined) {
       throw new Error(
-        'No cuenta con los permisos necesarios para realizar la importación, por favor comuníquese con el administrador.'
+        'You do not have the necessary permissions to perform the import. Please contact the administrator.'
       )
     }
 
@@ -153,7 +153,7 @@ function NewImportPage(): JSX.Element {
         ).length > 0
       ) {
         throw new Error(
-          `Unicamente puede importar SKUS con el shipping category: ${shippingCategoryName}`
+          `You can only import SKUs with the shipping category: ${shippingCategoryName}`
         )
       }
     } else if (resourceType === 'prices' || resourceType === 'stock_items') {
@@ -180,11 +180,11 @@ function NewImportPage(): JSX.Element {
           ).length > 0
         ) {
           throw new Error(
-            `Unicamente puede importar ${formatResourceName({
+            `You can only import ${formatResourceName({
               resource: resourceType,
               count: 'plural',
               format: 'lower'
-            })} de SKUS con el shipping category: ${shippingCategoryName}`
+            })} of SKUs with the shipping category: ${shippingCategoryName}`
           )
         }
       }
