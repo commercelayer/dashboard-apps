@@ -1,3 +1,4 @@
+import { useTokenProvider } from '@commercelayer/app-elements'
 import { type InputSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
 import type {
   CommerceLayerClient,
@@ -23,8 +24,9 @@ export const fetchResources = async ({
   resourceType: AllowedResourceType | AllowedParentResource
   hint?: string
 }): Promise<InputSelectValue[]> => {
+  const { user } = useTokenProvider()
   const filters: Record<string, string> = {
-    id_not_in: getExcludedPriceList().join(',')
+    id_not_in: getExcludedPriceList(user).join(',')
   }
 
   if (hint != null) {

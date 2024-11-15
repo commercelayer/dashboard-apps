@@ -1,7 +1,8 @@
 import {
   InputSelect,
   Label,
-  isSingleValueSelected
+  isSingleValueSelected,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import {
   type InputSelectProps,
@@ -45,12 +46,13 @@ export function ResourceFinder({
   hint,
   onSelect
 }: Props): JSX.Element {
+  const { user } = useTokenProvider()
   const [isLoading, setIsLoading] = useState(true)
   const [initialValues, setInitialValues] = useState<InputSelectValue[]>([])
   const element = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (resourceType == null || !isDomainDefined()) {
+    if (resourceType == null || !isDomainDefined(user)) {
       return
     }
     setIsLoading(true)
@@ -58,7 +60,7 @@ export function ResourceFinder({
       .then((values) => {
         /* if (!isAdmin()) {
           values = values.filter((value: any) => {
-            return !getExcludedPriceList().includes(value.value)
+            return !getExcludedPriceList(user).includes(value.value)
           })
         }
          */ setInitialValues(values)

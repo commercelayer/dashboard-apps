@@ -1,3 +1,4 @@
+import { useTokenProvider } from '@commercelayer/app-elements'
 import { type InputSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
 import type {
   CommerceLayerClient,
@@ -72,8 +73,9 @@ export const fetchInitialResources = async ({
   fieldForValue,
   fieldForLabel
 }: SearchParams<SearchableResource>): Promise<InputSelectValue[]> => {
+  const { user } = useTokenProvider()
   const filters = {
-    id_not_in: getExcludedPriceList().join(',')
+    id_not_in: getExcludedPriceList(user).join(',')
   }
   const fetchedResources = await sdkClient[resourceType].list({
     fields,

@@ -53,7 +53,7 @@ const NewExportPage = (): JSX.Element | null => {
         sort: { created_at: 'desc' },
         filters: {
           metadata_jcont: {
-            domain: getUserDomain() ?? ''
+            domain: getUserDomain(user) ?? ''
           }
         }
       })

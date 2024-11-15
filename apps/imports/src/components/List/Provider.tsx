@@ -127,7 +127,7 @@ const getAllImports = async ({
     pageNumber: state.currentPage,
     pageSize: pageSize as QueryParamsList<Import>['pageSize'],
     sort: { created_at: 'desc' },
-    filters: isAdmin()
+    filters: isAdmin(user)
       ? {}
       : {
           metadata_jcont: { email: user?.email ?? '' }
