@@ -27,7 +27,7 @@ export const fetchResources = async ({
   hint?: string
 }): Promise<InputSelectValue[]> => {
   const filters: Record<string, string> = {
-    id_not_in: getExcludedPriceList(user)
+    id_not_in: getExcludedPriceList(user).join(',')
   }
 
   if (hint != null) {

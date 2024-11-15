@@ -14,11 +14,10 @@ import {
 import { Link } from 'wouter'
 
 function ListPage(): JSX.Element {
-  const { canAccess, canUser, user } = useTokenProvider()
+  const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 
   if (!canUser('read', 'exports')) {
-    console.info(user, canUser('read', 'exports'), canAccess('exports'))
     return (
       <HomePageLayout title='Exports'>
         <EmptyState title='You are not authorized' />

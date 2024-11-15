@@ -5,10 +5,10 @@ import { isAdmin } from './userUtils'
 
 export const getExcludedPriceList = (
   user: TokenProviderAuthUser | null
-): string => {
+): string[] => {
   if (isAdmin(user)) {
-    return ''
+    return []
   }
 
-  return 'AlnOyCKnXL, YkXQaCbmxl'
+  return ['AlnOyCKnXL', 'YkXQaCbmxl']
 }
