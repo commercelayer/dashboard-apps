@@ -18,6 +18,7 @@ import { type ApiError } from 'App'
 import { type AllFilters, type ExportFormValues } from 'AppForm'
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
+import { getUserDomain } from '../../../../packages/common/src/helpers/userUtils'
 
 const NewExportPage = (): JSX.Element | null => {
   const {
@@ -52,7 +53,7 @@ const NewExportPage = (): JSX.Element | null => {
         sort: { created_at: 'desc' },
         filters: {
           metadata_jcont: {
-            domain: user?.email?.split('@')?.[1] ?? ''
+            domain: getUserDomain() ?? ''
           }
         }
       })

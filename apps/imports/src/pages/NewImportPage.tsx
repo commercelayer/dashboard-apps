@@ -26,6 +26,10 @@ import { type AllowedResourceType } from 'App'
 import { unparse } from 'papaparse'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
+import {
+  getUserDomain,
+  isAdmin
+} from '../../../../packages/common/src/helpers/userUtils'
 
 function NewImportPage(): JSX.Element {
   const {
@@ -94,18 +98,12 @@ function NewImportPage(): JSX.Element {
   }
 
   async function validateShippingCategory(): Promise<void> {
-    const userName = user?.email?.split('@')?.[0]
-    const userDomain =
-      (userName?.includes('haceb') ?? false)
-        ? 'haceb'
-        : user?.email?.split('@')?.[1]
-
     if (importCreateValue == null) {
       throw new Error(`No values to import`)
     }
 
     // Allow the Vanti and Aplyca users to import SKUs with any shipping category
-    if (userDomain === 'grupovanti.com' || userDomain === 'aplyca.com') {
+    if (isAdmin()) {
       return
     }
 
@@ -129,7 +127,7 @@ function NewImportPage(): JSX.Element {
       sort: { created_at: 'desc' },
       filters: {
         metadata_jcont: {
-          domain: userDomain ?? ''
+          domain: getUserDomain() ?? ''
         }
       }
     })

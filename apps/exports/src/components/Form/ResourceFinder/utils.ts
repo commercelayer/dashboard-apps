@@ -5,6 +5,7 @@ import type {
   QueryArrayFields,
   Resource
 } from '@commercelayer/sdk'
+import { getExcludedPriceList } from '../../../../../../packages/common/src/helpers/getExcludedPriceList'
 
 export type SearchableResource =
   | 'markets'
@@ -71,9 +72,13 @@ export const fetchInitialResources = async ({
   fieldForValue,
   fieldForLabel
 }: SearchParams<SearchableResource>): Promise<InputSelectValue[]> => {
+  const filters = {
+    id_not_in: getExcludedPriceList().join(',')
+  }
   const fetchedResources = await sdkClient[resourceType].list({
     fields,
-    pageSize: 25
+    pageSize: 25,
+    filters
   })
   return adaptApiToSuggestions({
     fetchedResources,

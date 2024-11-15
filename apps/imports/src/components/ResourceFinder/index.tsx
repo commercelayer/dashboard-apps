@@ -1,8 +1,7 @@
 import {
   InputSelect,
   Label,
-  isSingleValueSelected,
-  useTokenProvider
+  isSingleValueSelected
 } from '@commercelayer/app-elements'
 import {
   type InputSelectProps,
@@ -11,6 +10,7 @@ import {
 import { type CommerceLayerClient } from '@commercelayer/sdk'
 import { type AllowedParentResource, type AllowedResourceType } from 'App'
 import { useEffect, useRef, useState } from 'react'
+import { isDomainDefined } from '../../../../../packages/common/src/helpers/userUtils'
 import { fetchResources } from './utils'
 
 interface Props extends Pick<InputSelectProps, 'feedback' | 'hint'> {
@@ -48,22 +48,20 @@ export function ResourceFinder({
   const [isLoading, setIsLoading] = useState(true)
   const [initialValues, setInitialValues] = useState<InputSelectValue[]>([])
   const element = useRef<HTMLDivElement>(null)
-  const { user } = useTokenProvider()
 
   useEffect(() => {
-    const userDomain = user?.email?.split('@')?.[1]
-    if (resourceType == null || userDomain == null) {
+    if (resourceType == null || !isDomainDefined()) {
       return
     }
     setIsLoading(true)
     void fetchResources({ sdkClient, resourceType })
       .then((values) => {
-        if (userDomain !== 'aplyca.com' && userDomain !== 'grupovanti.com') {
+        /* if (!isAdmin()) {
           values = values.filter((value: any) => {
-            return value.value !== 'AlnOyCKnXL' && value.value !== 'YkXQaCbmxl'
+            return !getExcludedPriceList().includes(value.value)
           })
         }
-        setInitialValues(values)
+         */ setInitialValues(values)
       })
       .finally(() => {
         setIsLoading(false)

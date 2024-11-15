@@ -1,3 +1,5 @@
+import { useTokenProvider } from '@commercelayer/app-elements'
+import { type TokenProviderAuthUser } from '@commercelayer/app-elements/dist/providers/TokenProvider/types'
 import {
   type CommerceLayerClient,
   type Import,
@@ -14,9 +16,7 @@ import {
   useReducer,
   useRef
 } from 'react'
-
-import { useTokenProvider } from '@commercelayer/app-elements'
-import { type TokenProviderAuthUser } from '@commercelayer/app-elements/dist/providers/TokenProvider/types'
+import { isAdmin } from '../../../../../packages/common/src/helpers/userUtils'
 import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
 
@@ -123,13 +123,11 @@ const getAllImports = async ({
   pageSize: number
   user: TokenProviderAuthUser | null
 }): Promise<ListResponse<Import>> => {
-  const userDomain = user?.email?.split('@')?.[1]
-  const isAdmin = userDomain === 'aplyca.com' || userDomain === 'grupovanti.com'
   return await cl.imports.list({
     pageNumber: state.currentPage,
     pageSize: pageSize as QueryParamsList<Import>['pageSize'],
     sort: { created_at: 'desc' },
-    filters: isAdmin
+    filters: isAdmin()
       ? {}
       : {
           metadata_jcont: { email: user?.email ?? '' }

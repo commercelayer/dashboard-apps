@@ -5,6 +5,7 @@ import type {
   Resource
 } from '@commercelayer/sdk'
 import { type AllowedParentResource, type AllowedResourceType } from 'App'
+import { getExcludedPriceList } from '../../../../../packages/common/src/helpers/getExcludedPriceList'
 
 /**
  * Retrieve a list of resources from api filtered by hint if provided.
@@ -22,14 +23,17 @@ export const fetchResources = async ({
   resourceType: AllowedResourceType | AllowedParentResource
   hint?: string
 }): Promise<InputSelectValue[]> => {
+  const filters: Record<string, string> = {
+    id_not_in: getExcludedPriceList().join(',')
+  }
+
+  if (hint != null) {
+    filters.name_cont = hint
+  }
+
   // @ts-expect-error Expression produces a union type that is too complex to represent
   const fetchedResources = await sdkClient[resourceType].list({
-    filters:
-      hint != null
-        ? {
-            name_cont: hint
-          }
-        : undefined,
+    filters,
     pageSize: 25,
     // @ts-expect-error Expression produces a union type that is too complex to represent
     sort: {

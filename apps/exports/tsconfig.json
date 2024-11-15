@@ -46,7 +46,9 @@
     "src",
     ".eslintrc.cjs",
     "@typing/**/*.d.ts",
-    "public/config*.js"
+    "public/config*.js",
+    "../../packages/common/src/helpers/getExcludedPriceList.ts",
+    "../../packages/common/src/helpers/userUtils.ts"
   ],
   "references": [
     {
