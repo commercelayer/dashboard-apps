@@ -75,7 +75,7 @@ const getShippingCategoryId = async (
     sort: { created_at: 'desc' },
     filters: {
       metadata_jcont: {
-        domain: getUserDomain(user) ?? ''
+        domain: getUserDomain(user, import.meta.env.PUBLIC_TEST_USERS) ?? ''
       }
     }
   })
@@ -104,7 +104,13 @@ export const fetchInitialResources = async ({
 
     if (resourceType === 'price_lists') {
       filters = {
-        id_not_in: user != null ? getExcludedPriceList(user).join(',') : ''
+        id_not_in:
+          user != null
+            ? getExcludedPriceList(
+                user,
+                import.meta.env.PUBLIC_TEST_USERS
+              ).join(',')
+            : ''
       }
     }
 

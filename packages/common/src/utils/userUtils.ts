@@ -8,38 +8,31 @@ export const getUserName = (
 }
 
 export const getUserDomain = (
-  user: TokenProviderAuthUser | null
+  user: TokenProviderAuthUser | null,
+  testUsers: string | undefined
 ): string | undefined => {
-  if (isTestUser(user)) {
+  if (user === null) {
+    return ''
+  }
+  if (testUsers?.split(',').includes(user?.email) ?? false) {
     return 'haceb.com'
   }
   return user?.email?.split('@')?.[1]
 }
 
-export const isDomainDefined = (
-  user: TokenProviderAuthUser | null
+export const isAdmin = (
+  user: TokenProviderAuthUser | null,
+  testUsers: string | undefined
 ): boolean => {
-  const userDomain = getUserDomain(user)
-  if (userDomain != null) {
-    return true
-  }
-  return false
-}
-
-export const isTestUser = (user: TokenProviderAuthUser | null): boolean => {
-  const userName = getUserName(user)
-  if (userName?.includes('haceb') === true) {
-    return true
-  }
-  return false
-}
-
-export const isAdmin = (user: TokenProviderAuthUser | null): boolean => {
-  if (isTestUser(user)) {
+  const userDomain = getUserDomain(user, testUsers)
+  if (user === null) {
     return false
   }
-  const userDomain = getUserDomain(user)
-  if (userDomain !== 'aplyca.com' && userDomain !== 'grupovanti.com') {
+
+  if (
+    (testUsers?.split(',').includes(user?.email) ?? false) ||
+    (userDomain !== 'aplyca.com' && userDomain !== 'grupovanti.com')
+  ) {
     return false
   }
   return true

@@ -10,7 +10,7 @@ import {
 } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
 import { type CommerceLayerClient } from '@commercelayer/sdk'
 import { type AllowedParentResource, type AllowedResourceType } from 'App'
-import { isDomainDefined } from 'dashboard-apps-common/src/utils/userUtils'
+import { getUserDomain } from 'dashboard-apps-common/src/utils/userUtils'
 import { useEffect, useRef, useState } from 'react'
 import { fetchResources } from './utils'
 
@@ -52,15 +52,18 @@ export function ResourceFinder({
   const element = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (resourceType == null || !isDomainDefined(user)) {
+    if (
+      resourceType == null ||
+      getUserDomain(user, import.meta.env.PUBLIC_TEST_USERS) == null
+    ) {
       return
     }
     setIsLoading(true)
     void fetchResources({ sdkClient, resourceType, user })
       .then((values) => {
-        /* if (!isAdmin()) {
+        /* if (!isAdmin(user, import.meta.env.PUBLIC_TEST_USERS)) {
           values = values.filter((value: any) => {
-            return !getExcludedPriceList(user).includes(value.value)
+            return !getExcludedPriceList(user, import.meta.env.PUBLIC_TEST_USERS).includes(value.value)
           })
         }
          */ setInitialValues(values)

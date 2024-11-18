@@ -5,5 +5,6 @@ interface ImportMeta {
     DEV: boolean
     PUBLIC_ENABLE_MOCKS?: string
     PUBLIC_SELF_HOSTED_SLUG?: string
+    PUBLIC_TEST_USERS?: string
   }
 }

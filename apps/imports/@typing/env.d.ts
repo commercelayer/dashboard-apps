@@ -9,5 +9,6 @@ interface ImportMeta {
     PUBLIC_LIVE_READ_CLIENT_SECRET?: string
     PUBLIC_TEST_READ_CLIENT_ID?: string
     PUBLIC_TEST_READ_CLIENT_SECRET?: string
+    PUBLIC_TEST_USERS?: string
   }
 }

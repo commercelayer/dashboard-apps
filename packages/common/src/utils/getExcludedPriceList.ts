@@ -4,9 +4,10 @@ import type { TokenProviderAuthUser } from '@commercelayer/app-elements/dist/pro
 import { isAdmin } from './userUtils'
 
 export const getExcludedPriceList = (
-  user: TokenProviderAuthUser | null
+  user: TokenProviderAuthUser | null,
+  testUsers: string | undefined
 ): string[] => {
-  if (isAdmin(user)) {
+  if (isAdmin(user, testUsers)) {
     return []
   }
 

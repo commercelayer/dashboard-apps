@@ -103,7 +103,7 @@ function NewImportPage(): JSX.Element {
     }
 
     // Allow the Vanti and Aplyca users to import SKUs with any shipping category
-    if (isAdmin(user)) {
+    if (isAdmin(user, import.meta.env.PUBLIC_TEST_USERS)) {
       return
     }
 
@@ -127,7 +127,7 @@ function NewImportPage(): JSX.Element {
       sort: { created_at: 'desc' },
       filters: {
         metadata_jcont: {
-          domain: getUserDomain(user) ?? ''
+          domain: getUserDomain(user, import.meta.env.PUBLIC_TEST_USERS) ?? ''
         }
       }
     })
