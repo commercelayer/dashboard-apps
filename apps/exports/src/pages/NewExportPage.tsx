@@ -111,8 +111,8 @@ const NewExportPage = (): JSX.Element | null => {
           resourceType={resourceType}
           isLoading={isLoading}
           defaultValues={{
-            dryData: false,
-            format: 'json',
+            dryData: true,
+            format: 'csv',
             includes: []
           }}
           onSubmit={(values) => {
