@@ -86,7 +86,7 @@ export function StockItemEdit(): JSX.Element {
             resource={stockItem}
             defaultValues={{
               id: stockItem.id,
-              quantity: stockItem.quantity.toString(),
+              quantity: stockItem.quantity,
               item: stockItem.sku?.id,
               stockLocation: stockItem.stock_location?.id
             }}
@@ -122,6 +122,6 @@ function adaptFormValuesToStockItem(
       id: formValues.item ?? null,
       type: 'skus'
     },
-    quantity: parseInt(formValues.quantity)
+    quantity: formValues.quantity
   }
 }

@@ -21,13 +21,7 @@ export default {
     formType: genericPromotionOptions.merge(
       z.object({
         sku_list: z.string(),
-        max_quantity: z
-          .number()
-          .min(1)
-          .or(z.string().regex(/^[1-9][0-9]+$|^[1-9]$/))
-          .transform((p) =>
-            p != null && p !== '' ? parseInt(p.toString()) : undefined
-          )
+        max_quantity: z.number().min(1)
       })
     ),
     Fields: ({ promotion }) => {

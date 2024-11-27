@@ -24,20 +24,8 @@ export default {
     formType: genericPromotionOptions.merge(
       z.object({
         sku_list: z.string(),
-        x: z
-          .number()
-          .min(1)
-          .or(z.string().regex(/^[1-9][0-9]+$|^[1-9]$/))
-          .transform((p) =>
-            p != null && p !== '' ? parseInt(p.toString()) : undefined
-          ),
-        y: z
-          .number()
-          .min(1)
-          .or(z.string().regex(/^[1-9][0-9]+$|^[1-9]$/))
-          .transform((p) =>
-            p != null && p !== '' ? parseInt(p.toString()) : undefined
-          ),
+        x: z.number().min(1),
+        y: z.number().min(1),
         cheapest_free: z.boolean().default(false)
       })
     ),

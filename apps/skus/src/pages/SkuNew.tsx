@@ -114,7 +114,7 @@ function adaptFormValuesToSku(formValues: SkuFormValues): SkuCreate {
     },
     weight: parseInt(formValues.weight ?? ''),
     unit_of_weight: refinedUnitOfWeight,
-    pieces_per_pack: parseInt(formValues.piecesPerPack ?? ''),
+    pieces_per_pack: formValues.piecesPerPack ?? null,
     hs_tariff_number: formValues.hsTariffNumber,
     do_not_ship: formValues.doNotShip,
     do_not_track: formValues.doNotTrack

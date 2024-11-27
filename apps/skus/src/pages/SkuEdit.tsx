@@ -110,7 +110,7 @@ function adaptSkuToFormValues(sku?: Sku): SkuFormValues {
     shippingCategory: sku?.shipping_category?.id ?? null,
     weight: sku?.weight?.toString() ?? '',
     unitOfWeight: sku?.unit_of_weight ?? '',
-    piecesPerPack: sku?.pieces_per_pack?.toString() ?? '',
+    piecesPerPack: sku?.pieces_per_pack ?? null,
     hsTariffNumber: sku?.hs_tariff_number?.toString() ?? '',
     doNotShip: sku?.do_not_ship ?? false,
     doNotTrack: sku?.do_not_track ?? false,

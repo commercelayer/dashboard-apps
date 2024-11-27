@@ -44,7 +44,9 @@ const skuFormSchema = z
     description: z.string().optional(),
     imageUrl: z.string().optional(),
     shippingCategory: z.string().optional().nullable(),
-    piecesPerPack: z.string().optional(),
+    piecesPerPack: z.preprocess((value) => {
+      return Number.isNaN(value) ? null : value
+    }, z.number().min(1).nullish()),
     hsTariffNumber: z.string().optional(),
     doNotShip: z.boolean().optional(),
     doNotTrack: z.boolean().optional(),

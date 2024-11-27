@@ -15,14 +15,7 @@ export default {
     titleNew: 'percentage discount',
     formType: genericPromotionOptions.merge(
       z.object({
-        percentage: z
-          .string()
-          .refine(
-            (value) => /^[1-9][0-9]?$|^100$/.test(value),
-            'Enter a valid number between 1 and 100'
-          )
-          .or(z.number().min(1).max(100))
-          .transform((p) => parseInt(p.toString())),
+        percentage: z.number().min(1).max(100),
         sku_list: z.string().nullish()
       })
     ),
