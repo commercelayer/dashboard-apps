@@ -60,7 +60,7 @@ pnpm build:apps
 
 - Join [Commerce Layer's Discord community](https://discord.gg/commercelayer).
 - Ping us on [Bluesky](https://bsky.app/profile/commercelayer.io), [X (formerly Twitter)](https://x.com/commercelayer), or [LinkedIn](https://www.linkedin.com/company/commerce-layer).
-- Create an [issue](https://github.com/commercelayer/dashboard-apps/issues) in this repository.
+- Is there a bug? Create an [issue](https://github.com/commercelayer/dashboard-apps/issues) on this repository.
 
 ## License
 
