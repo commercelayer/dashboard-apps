@@ -25,10 +25,7 @@ export default {
     formType: genericPromotionOptions.merge(
       z.object({
         sku_list: z.string(),
-        fixed_amount_cents: z
-          .string()
-          .or(z.number())
-          .transform((p) => parseInt(p.toString())),
+        fixed_amount_cents: z.number(),
         currency_code: z.string()
       })
     ),

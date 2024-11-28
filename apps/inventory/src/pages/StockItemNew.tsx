@@ -81,7 +81,7 @@ export function StockItemNew(): JSX.Element {
             ...(stockLocationId !== ''
               ? { stockLocation: stockLocationId }
               : {}),
-            quantity: '1'
+            quantity: 1
           }}
           apiError={apiError}
           isSubmitting={isSaving}
@@ -116,7 +116,7 @@ function adaptFormValuesToStockItem(
       id: formValues.item ?? null,
       type: 'skus'
     },
-    quantity: parseInt(formValues.quantity),
+    quantity: formValues.quantity,
     stock_location: {
       id:
         stockLocationId !== ''
