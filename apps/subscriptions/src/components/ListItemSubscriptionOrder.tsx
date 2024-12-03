@@ -2,10 +2,10 @@ import { makeOrder } from '#mocks'
 import {
   Badge,
   formatDate,
-  navigateTo,
   Td,
   Text,
   Tr,
+  useAppLinking,
   useTokenProvider,
   withSkeletonTemplate,
   type BadgeProps,
@@ -17,7 +17,8 @@ import capitalize from 'lodash/capitalize'
 export const ListItemSubscriptionOrder = withSkeletonTemplate<
   ResourceListItemTemplateProps<'orders'>
 >(({ resource = makeOrder() }): JSX.Element | null => {
-  const { user, settings, canAccess } = useTokenProvider()
+  const { user, canAccess } = useTokenProvider()
+  const { navigateTo } = useAppLinking()
 
   const orderDate = formatDate({
     isoDate: resource.updated_at ?? '',
@@ -29,11 +30,8 @@ export const ListItemSubscriptionOrder = withSkeletonTemplate<
   const orderNumber = `#${resource?.number}`
   const navigateToOrder = canAccess('orders')
     ? navigateTo({
-        destination: {
-          app: 'orders',
-          resourceId: resource?.id,
-          mode: settings.mode
-        }
+        app: 'orders',
+        resourceId: resource?.id
       })
     : {}
 

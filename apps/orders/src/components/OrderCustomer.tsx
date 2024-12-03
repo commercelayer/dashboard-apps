@@ -6,7 +6,7 @@ import {
   Section,
   StatusIcon,
   Text,
-  navigateTo,
+  useAppLinking,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -21,10 +21,7 @@ interface Props {
 
 export const OrderCustomer = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element | null => {
-    const {
-      canAccess,
-      settings: { mode }
-    } = useTokenProvider()
+    const { canAccess } = useTokenProvider()
 
     const { mutateOrder } = useOrderDetails(order.id)
     const { isEditing } = useOrderStatus(order)
@@ -32,6 +29,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
       useEditCustomerOverlay(order, () => {
         void mutateOrder()
       })
+    const { navigateTo } = useAppLinking()
 
     if (order.customer == null) {
       return null
@@ -39,11 +37,8 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
 
     const navigateToCustomer = canAccess('customers')
       ? navigateTo({
-          destination: {
-            app: 'customers',
-            resourceId: order.customer.id,
-            mode
-          }
+          app: 'customers',
+          resourceId: order.customer.id
         })
       : {}
 

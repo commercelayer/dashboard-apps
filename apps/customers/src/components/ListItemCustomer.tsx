@@ -1,11 +1,10 @@
 import { makeCustomer } from '#mocks'
 import {
   ResourceListItem,
-  navigateTo,
+  useAppLinking,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Customer } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
 
 interface Props {
   resource?: Customer
@@ -14,17 +13,14 @@ interface Props {
 function ListItemCustomerComponent({
   resource = makeCustomer()
 }: Props): JSX.Element {
-  const [, setLocation] = useLocation()
+  const { navigateTo } = useAppLinking()
 
   return (
     <ResourceListItem
       resource={resource}
       {...navigateTo({
-        setLocation,
-        destination: {
-          app: 'customers',
-          resourceId: resource.id
-        }
+        app: 'customers',
+        resourceId: resource.id
       })}
     />
   )

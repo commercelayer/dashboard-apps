@@ -6,7 +6,7 @@ import {
   ResourceMetadata,
   SkeletonTemplate,
   Spacer,
-  goBack,
+  useAppLinking,
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
@@ -26,6 +26,7 @@ export function PriceDetails(): JSX.Element {
     settings: { mode },
     canUser
   } = useTokenProvider()
+  const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ priceListId: string; priceId: string }>(
@@ -112,7 +113,7 @@ export function PriceDetails(): JSX.Element {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: priceListId,
             defaultRelativePath: appRoutes.pricesList.makePath({ priceListId })
           })
         },

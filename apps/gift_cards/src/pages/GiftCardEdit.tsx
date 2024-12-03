@@ -5,23 +5,22 @@ import {
   GenericPageNotFound,
   PageLayout,
   SkeletonTemplate,
-  goBack,
+  useAppLinking,
   useCoreSdkProvider,
   useTokenProvider,
   type PageProps
 } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
 import type { FC } from 'react'
-import { useLocation } from 'wouter'
 
 const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
   const {
     settings: { mode }
   } = useTokenProvider()
-  const [, setLocation] = useLocation()
   const { sdkClient } = useCoreSdkProvider()
   const giftCardId = params?.giftCardId
   const { giftCard, isLoading, error } = useGiftCardDetails(params?.giftCardId)
+  const { goBack } = useAppLinking()
 
   if (error != null) {
     return <GenericPageNotFound />
@@ -37,7 +36,7 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: giftCardId,
             defaultRelativePath: appRoutes.details.makePath({
               giftCardId
             })

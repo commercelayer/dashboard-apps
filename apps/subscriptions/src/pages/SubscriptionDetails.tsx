@@ -23,7 +23,7 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
-  goBack,
+  useAppLinking,
   useTokenProvider,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
@@ -36,6 +36,8 @@ function SubscriptionDetails(): JSX.Element {
     user
   } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { goBack } = useAppLinking()
+
   const [, params] = useRoute<{ subscriptionId: string }>(
     appRoutes.details.path
   )
@@ -53,11 +55,11 @@ function SubscriptionDetails(): JSX.Element {
   ) {
     return (
       <PageLayout
-        title='Subriptions'
+        title='Subscriptions'
         navigationButton={{
           onClick: () => {
             goBack({
-              setLocation,
+              currentResourceId: subscriptionId,
               defaultRelativePath: appRoutes.list.makePath({})
             })
           },
@@ -74,7 +76,7 @@ function SubscriptionDetails(): JSX.Element {
               variant='primary'
               onClick={() => {
                 goBack({
-                  setLocation,
+                  currentResourceId: subscriptionId,
                   defaultRelativePath: appRoutes.list.makePath({})
                 })
               }}
@@ -163,7 +165,7 @@ function SubscriptionDetails(): JSX.Element {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: subscription.id,
             defaultRelativePath: appRoutes.list.makePath({})
           })
         },

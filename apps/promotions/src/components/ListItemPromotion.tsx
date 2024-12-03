@@ -1,7 +1,6 @@
 import { makePercentageDiscountPromotion } from '#mocks'
 import type { Promotion } from '#types'
-import { ResourceListItem, navigateTo } from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
+import { ResourceListItem, useAppLinking } from '@commercelayer/app-elements'
 
 interface Props {
   resource?: Promotion
@@ -14,7 +13,7 @@ export function ListItemPromotion({
   isLoading,
   delayMs
 }: Props): JSX.Element {
-  const [, setLocation] = useLocation()
+  const { navigateTo } = useAppLinking()
 
   return (
     <ResourceListItem
@@ -24,11 +23,8 @@ export function ListItemPromotion({
       delayMs={delayMs}
       tag='a'
       {...navigateTo({
-        setLocation,
-        destination: {
-          app: 'promotions',
-          resourceId: resource.id
-        }
+        app: 'promotions',
+        resourceId: resource.id
       })}
     />
   )

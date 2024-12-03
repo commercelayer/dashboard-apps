@@ -3,7 +3,7 @@ import {
   ListDetailsItem,
   Section,
   Text,
-  navigateTo,
+  useAppLinking,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -15,31 +15,23 @@ interface Props {
 
 export const ReturnInfo = withSkeletonTemplate<Props>(
   ({ returnObj }): JSX.Element => {
-    const {
-      canAccess,
-      settings: { mode }
-    } = useTokenProvider()
+    const { canAccess } = useTokenProvider()
+    const { navigateTo } = useAppLinking()
 
     const returnOrderMarket = returnObj.order?.market?.name
     const returnOrderNumber = `#${returnObj.order?.number}`
     const navigateToOrder = canAccess('orders')
       ? navigateTo({
-          destination: {
-            app: 'orders',
-            resourceId: returnObj?.order?.id,
-            mode
-          }
+          app: 'orders',
+          resourceId: returnObj?.order?.id
         })
       : {}
 
     const returnCustomerEmail = returnObj?.customer?.email
     const navigateToCustomer = canAccess('customers')
       ? navigateTo({
-          destination: {
-            app: 'customers',
-            resourceId: returnObj?.customer?.id,
-            mode
-          }
+          app: 'customers',
+          resourceId: returnObj?.customer?.id
         })
       : {}
 

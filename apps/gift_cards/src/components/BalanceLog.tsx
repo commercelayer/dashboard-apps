@@ -1,22 +1,21 @@
 import { normalizeLogs } from '#utils/normalizeLogs'
 import {
-  navigateTo,
   Section,
   Table,
   Td,
   Th,
   Tr,
+  useAppLinking,
   useTokenProvider,
   withSkeletonTemplate,
   type CurrencyCode
 } from '@commercelayer/app-elements'
 import type { GiftCard } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
 
 export const BalanceLog = withSkeletonTemplate<{ giftCard: GiftCard }>(
   ({ giftCard }) => {
     const { user } = useTokenProvider()
-    const [, setLocation] = useLocation()
+    const { navigateTo } = useAppLinking()
 
     const balanceLog = giftCard.balance_log as Parameters<
       typeof normalizeLogs
@@ -52,11 +51,8 @@ export const BalanceLog = withSkeletonTemplate<{ giftCard: GiftCard }>(
                 {item.orderId != null ? (
                   <a
                     {...navigateTo({
-                      setLocation,
-                      destination: {
-                        app: 'orders',
-                        resourceId: item.orderId
-                      }
+                      app: 'orders',
+                      resourceId: item.orderId
                     })}
                   >
                     {item.orderNumber ?? item.orderId}

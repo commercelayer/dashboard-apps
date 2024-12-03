@@ -1,7 +1,7 @@
 import {
   ResourceListItem,
   Section,
-  navigateTo,
+  useAppLinking,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -21,18 +21,13 @@ const returnStatuses = [
 ]
 
 const renderReturn: React.FC<Return> = (returnObj) => {
-  const {
-    canAccess,
-    settings: { mode }
-  } = useTokenProvider()
+  const { canAccess } = useTokenProvider()
+  const { navigateTo } = useAppLinking()
 
   const navigateToReturn = canAccess('customers')
     ? navigateTo({
-        destination: {
-          app: 'returns',
-          resourceId: returnObj.id,
-          mode
-        }
+        app: 'returns',
+        resourceId: returnObj.id
       })
     : {}
 

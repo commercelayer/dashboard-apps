@@ -7,7 +7,7 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
-  goBack,
+  useAppLinking,
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
@@ -28,6 +28,7 @@ export const BundleDetails: FC = () => {
     settings: { mode },
     canUser
   } = useTokenProvider()
+  const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ bundleId: string }>(appRoutes.details.path)
@@ -83,7 +84,7 @@ export const BundleDetails: FC = () => {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: bundleId,
             defaultRelativePath: appRoutes.list.makePath({})
           })
         },

@@ -4,7 +4,7 @@ import {
   PageLayout,
   SkeletonTemplate,
   formatDate,
-  goBack,
+  useAppLinking,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
@@ -35,6 +35,7 @@ function LinkDetails(
     user,
     organization
   } = useTokenProvider()
+  const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const orderId = props.params?.orderId ?? ''
@@ -99,7 +100,7 @@ function LinkDetails(
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: orderId,
             defaultRelativePath: appRoutes.details.makePath({ orderId })
           })
         },
