@@ -8,7 +8,7 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
-  goBack,
+  useAppLinking,
   useTokenProvider,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
@@ -32,6 +32,7 @@ export function CustomerDetails(): JSX.Element {
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ customerId: string }>(appRoutes.details.path)
+  const { goBack } = useAppLinking()
 
   const customerId = params?.customerId ?? ''
 
@@ -92,7 +93,7 @@ export function CustomerDetails(): JSX.Element {
         icon: 'arrowLeft',
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: customerId,
             defaultRelativePath: appRoutes.list.makePath()
           })
         }

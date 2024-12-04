@@ -19,11 +19,11 @@ import {
   Spacer,
   Text,
   formatDate,
-  goBack,
+  useAppLinking,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
-import { useLocation, useRoute } from 'wouter'
+import { useRoute } from 'wouter'
 
 export function ShipmentDetails(): JSX.Element {
   const {
@@ -31,8 +31,8 @@ export function ShipmentDetails(): JSX.Element {
     settings: { mode },
     user
   } = useTokenProvider()
-  const [, setLocation] = useLocation()
   const [, params] = useRoute<{ shipmentId: string }>(appRoutes.details.path)
+  const { goBack } = useAppLinking()
 
   const shipmentId = params?.shipmentId ?? ''
 
@@ -47,7 +47,6 @@ export function ShipmentDetails(): JSX.Element {
         navigationButton={{
           onClick: () => {
             goBack({
-              setLocation,
               defaultRelativePath: appRoutes.home.makePath({})
             })
           },
@@ -63,7 +62,6 @@ export function ShipmentDetails(): JSX.Element {
               variant='primary'
               onClick={() => {
                 goBack({
-                  setLocation,
                   defaultRelativePath: appRoutes.home.makePath({})
                 })
               }}
@@ -102,7 +100,7 @@ export function ShipmentDetails(): JSX.Element {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: shipmentId,
             defaultRelativePath: appRoutes.home.makePath({})
           })
         },

@@ -6,7 +6,7 @@ import {
   ResourceMetadata,
   SkeletonTemplate,
   Spacer,
-  goBack,
+  useAppLinking,
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
@@ -24,6 +24,7 @@ export const StockItemDetails: FC = () => {
     settings: { mode },
     canUser
   } = useTokenProvider()
+  const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ stockLocationId: string; stockItemId: string }>(
@@ -117,7 +118,7 @@ export const StockItemDetails: FC = () => {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: stockItemId,
             defaultRelativePath: backLink
           })
         },

@@ -2,11 +2,10 @@ import { makeOrder } from '#mocks'
 import {
   ResourceListItem,
   formatCentsToCurrency,
-  navigateTo,
+  useAppLinking,
   type CurrencyCode
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
 
 interface Props {
   resource?: Order
@@ -19,7 +18,7 @@ export function ListItemOrder({
   isLoading,
   delayMs
 }: Props): JSX.Element {
-  const [, setLocation] = useLocation()
+  const { navigateTo } = useAppLinking()
 
   return (
     <ResourceListItem
@@ -30,11 +29,8 @@ export function ListItemOrder({
       isLoading={isLoading}
       delayMs={delayMs}
       {...navigateTo({
-        setLocation,
-        destination: {
-          app: 'orders',
-          resourceId: resource.id
-        }
+        app: 'orders',
+        resourceId: resource.id
       })}
     />
   )

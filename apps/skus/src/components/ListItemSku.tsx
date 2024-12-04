@@ -4,11 +4,10 @@ import {
   ListItem,
   StatusIcon,
   Text,
-  navigateTo,
+  useAppLinking,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Sku } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
 
 interface Props {
   resource?: Sku
@@ -18,7 +17,7 @@ interface Props {
 
 export const ListItemSku = withSkeletonTemplate<Props>(
   ({ resource = makeSku() }): JSX.Element | null => {
-    const [, setLocation] = useLocation()
+    const { navigateTo } = useAppLinking()
 
     return (
       <ListItem
@@ -30,11 +29,8 @@ export const ListItemSku = withSkeletonTemplate<Props>(
         }
         alignItems='center'
         {...navigateTo({
-          setLocation,
-          destination: {
-            app: 'skus',
-            resourceId: resource.id
-          }
+          app: 'skus',
+          resourceId: resource.id
         })}
       >
         <div>

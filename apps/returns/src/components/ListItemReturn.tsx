@@ -1,7 +1,6 @@
 import { makeReturn } from '#mocks'
-import { ResourceListItem, navigateTo } from '@commercelayer/app-elements'
+import { ResourceListItem, useAppLinking } from '@commercelayer/app-elements'
 import type { Return } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
 
 interface Props {
   resource?: Return
@@ -14,7 +13,7 @@ export function ListItemReturn({
   isLoading,
   delayMs
 }: Props): JSX.Element {
-  const [, setLocation] = useLocation()
+  const { navigateTo } = useAppLinking()
 
   return (
     <ResourceListItem
@@ -22,11 +21,8 @@ export function ListItemReturn({
       isLoading={isLoading}
       delayMs={delayMs}
       {...navigateTo({
-        setLocation,
-        destination: {
-          app: 'returns',
-          resourceId: resource.id
-        }
+        app: 'returns',
+        resourceId: resource.id
       })}
     />
   )

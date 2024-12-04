@@ -16,7 +16,7 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
-  goBack,
+  useAppLinking,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
@@ -28,6 +28,7 @@ export function ReturnDetails(): JSX.Element {
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ returnId: string }>(appRoutes.details.path)
+  const { goBack } = useAppLinking()
 
   const returnId = params?.returnId ?? ''
 
@@ -71,7 +72,7 @@ export function ReturnDetails(): JSX.Element {
         icon: 'arrowLeft',
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: returnId,
             defaultRelativePath: appRoutes.home.makePath()
           })
         }

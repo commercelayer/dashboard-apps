@@ -3,11 +3,10 @@ import {
   Avatar,
   ListItem,
   Text,
-  navigateTo,
+  useAppLinking,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Bundle } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
 
 interface Props {
   resource?: Bundle
@@ -17,7 +16,7 @@ interface Props {
 
 export const ListItemBundle = withSkeletonTemplate<Props>(
   ({ resource = makeBundle() }): JSX.Element | null => {
-    const [, setLocation] = useLocation()
+    const { navigateTo } = useAppLinking()
 
     return (
       <ListItem
@@ -29,11 +28,8 @@ export const ListItemBundle = withSkeletonTemplate<Props>(
         }
         alignItems='center'
         {...navigateTo({
-          setLocation,
-          destination: {
-            app: 'bundles',
-            resourceId: resource.id
-          }
+          app: 'bundles',
+          resourceId: resource.id
         })}
       >
         <div>

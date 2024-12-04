@@ -6,6 +6,7 @@ import { appRoutes } from '#data/routes'
 import {
   PageLayout,
   Spacer,
+  useAppLinking,
   useResourceFilters,
   useTokenProvider
 } from '@commercelayer/app-elements'
@@ -19,6 +20,7 @@ export function ReturnsList(): JSX.Element {
 
   const queryString = useSearch()
   const [, setLocation] = useLocation()
+  const { goBack } = useAppLinking()
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
     useResourceFilters({
@@ -38,7 +40,9 @@ export function ReturnsList(): JSX.Element {
         label: 'Back',
         icon: 'arrowLeft',
         onClick: () => {
-          setLocation(appRoutes.home.makePath())
+          goBack({
+            defaultRelativePath: appRoutes.home.makePath()
+          })
         }
       }}
     >

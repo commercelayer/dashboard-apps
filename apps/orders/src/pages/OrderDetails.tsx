@@ -23,7 +23,7 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
-  goBack,
+  useAppLinking,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { ToolbarItem } from '@commercelayer/app-elements/dist/ui/composite/Toolbar'
@@ -44,6 +44,8 @@ function OrderDetails(): JSX.Element {
   const { isPendingWithTransactions } = useOrderStatus(order)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
   const toolbar = useOrderToolbar({ order })
+
+  const { goBack } = useAppLinking()
 
   if (canUser('update', 'orders')) {
     if (
@@ -76,10 +78,7 @@ function OrderDetails(): JSX.Element {
         title='Orders'
         navigationButton={{
           onClick: () => {
-            goBack({
-              setLocation,
-              defaultRelativePath: appRoutes.home.makePath({})
-            })
+            setLocation(appRoutes.home.makePath({}))
           },
           label: 'Back',
           icon: 'arrowLeft'
@@ -93,10 +92,7 @@ function OrderDetails(): JSX.Element {
             <Button
               variant='primary'
               onClick={() => {
-                goBack({
-                  setLocation,
-                  defaultRelativePath: appRoutes.home.makePath({})
-                })
+                setLocation(appRoutes.home.makePath({}))
               }}
             >
               Go back
@@ -141,8 +137,8 @@ function OrderDetails(): JSX.Element {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
-            defaultRelativePath: appRoutes.home.makePath({})
+            defaultRelativePath: appRoutes.list.makePath({}),
+            currentResourceId: orderId
           })
         },
         label: 'Back',

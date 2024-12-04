@@ -4,19 +4,18 @@ import { maskGiftCardCode } from '#utils/code'
 import {
   Avatar,
   ListItem,
-  navigateTo,
   Text,
+  useAppLinking,
   withSkeletonTemplate,
   type AvatarProps,
   type ResourceListItemTemplateProps
 } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
-import { useLocation } from 'wouter'
 
 export const ListItemGiftCard = withSkeletonTemplate<
   ResourceListItemTemplateProps<'gift_cards'>
 >(({ resource = makeGiftCard() }) => {
-  const [, setLocation] = useLocation()
+  const { navigateTo } = useAppLinking()
 
   const imageOrPreset =
     isEmpty(resource.image_url) || resource.image_url == null
@@ -27,11 +26,8 @@ export const ListItemGiftCard = withSkeletonTemplate<
     <ListItem
       icon={<Avatar src={imageOrPreset} alt='Gift card' shape='rounded' />}
       {...navigateTo({
-        setLocation,
-        destination: {
-          app: 'gift_cards',
-          resourceId: resource.id
-        }
+        app: 'gift_cards',
+        resourceId: resource.id
       })}
     >
       <div>

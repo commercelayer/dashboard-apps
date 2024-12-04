@@ -13,7 +13,7 @@ import {
   Tab,
   Tabs,
   Text,
-  goBack,
+  useAppLinking,
   useTokenProvider,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
@@ -34,6 +34,7 @@ export const SkuListDetails = (
     settings: { mode, extras },
     canUser
   } = useTokenProvider()
+  const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const skuListId = props.params?.skuListId ?? ''
@@ -126,7 +127,7 @@ export const SkuListDetails = (
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: skuListId,
             defaultRelativePath: appRoutes.list.makePath({})
           })
         },

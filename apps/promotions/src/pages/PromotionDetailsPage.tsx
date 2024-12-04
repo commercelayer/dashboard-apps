@@ -35,7 +35,7 @@ import {
   formatDate,
   formatDateWithPredicate,
   getPromotionDisplayStatus,
-  goBack,
+  useAppLinking,
   useCoreSdkProvider,
   useTokenProvider,
   withSkeletonTemplate
@@ -50,6 +50,7 @@ function Page(
   const {
     settings: { mode }
   } = useTokenProvider()
+  const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
 
@@ -126,7 +127,7 @@ function Page(
         label: 'Back',
         onClick() {
           goBack({
-            setLocation,
+            currentResourceId: promotion.id,
             defaultRelativePath: appRoutes.home.makePath({})
           })
         }

@@ -1,7 +1,7 @@
 import {
   ResourceListItem,
   Section,
-  navigateTo,
+  useAppLinking,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -13,18 +13,13 @@ interface Props {
 }
 
 const renderShipment = (shipment: Shipment): JSX.Element => {
-  const {
-    canAccess,
-    settings: { mode }
-  } = useTokenProvider()
+  const { canAccess } = useTokenProvider()
+  const { navigateTo } = useAppLinking()
 
   const navigateToShipment = canAccess('shipments')
     ? navigateTo({
-        destination: {
-          app: 'shipments',
-          resourceId: shipment.id,
-          mode
-        }
+        app: 'shipments',
+        resourceId: shipment.id
       })
     : {}
 

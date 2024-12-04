@@ -1,16 +1,15 @@
 import { makeShipment } from '#mocks'
 import {
   ResourceListItem,
-  navigateTo,
+  useAppLinking,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { type Shipment } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
 
 export const ListItemShipment = withSkeletonTemplate<{
   resource?: Shipment
 }>(({ resource = makeShipment(), delayMs, isLoading }) => {
-  const [, setLocation] = useLocation()
+  const { navigateTo } = useAppLinking()
 
   return (
     <ResourceListItem
@@ -18,11 +17,8 @@ export const ListItemShipment = withSkeletonTemplate<{
       isLoading={isLoading}
       delayMs={delayMs}
       {...navigateTo({
-        setLocation,
-        destination: {
-          app: 'shipments',
-          resourceId: resource.id
-        }
+        app: 'shipments',
+        resourceId: resource.id
       })}
     />
   )
