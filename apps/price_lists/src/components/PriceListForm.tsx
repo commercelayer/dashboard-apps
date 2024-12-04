@@ -1,10 +1,10 @@
 import {
   Button,
+  HookedCodeEditor,
   HookedForm,
   HookedInput,
   HookedInputRadioGroup,
   HookedInputSelect,
-  HookedInputTextArea,
   HookedValidationApiError,
   Section,
   Spacer,
@@ -99,7 +99,13 @@ export function PriceListForm({
           </Spacer>
           {hasRuleEngine && (
             <Spacer top='6' bottom='4'>
-              <HookedInputTextArea name='rules' label='Rules' />
+              <HookedCodeEditor
+                name='rules'
+                label='Rules'
+                language='json'
+                jsonSchema='price-rules'
+                height='600px'
+              />
             </Spacer>
           )}
         </Section>
