@@ -36,7 +36,14 @@ function Page(props: PageProps<typeof appRoutes.newPromotion>): JSX.Element {
         defaultValues={{
           currency_code: 'USD',
           max_quantity: 1,
-          apply_the_discount_to: 'all'
+          apply_the_discount_to: 'all',
+          rules: JSON.stringify(
+            {
+              rules: []
+            },
+            undefined,
+            2
+          ).concat('\n')
         }}
       />
     </PageLayout>
