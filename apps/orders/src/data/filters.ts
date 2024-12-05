@@ -63,6 +63,7 @@ export const makeInstructions = ({
           { value: 'paid', label: 'Paid' },
           { value: 'voided', label: 'Voided' },
           { value: 'refunded', label: 'Refunded' },
+          { value: 'partially_authorized', label: 'Partially authorized' },
           { value: 'partially_refunded', label: 'Partially refunded' },
           { value: 'free', label: 'Free' },
           { value: 'unpaid', label: 'Unpaid' }
