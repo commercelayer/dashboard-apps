@@ -63,6 +63,7 @@ export const makeInstructions = ({
           { value: 'paid', label: 'Paid' },
           { value: 'voided', label: 'Voided' },
           { value: 'refunded', label: 'Refunded' },
+          { value: 'partially_authorized', label: 'Partially authorized' },
           { value: 'partially_refunded', label: 'Partially refunded' },
           { value: 'free', label: 'Free' },
           { value: 'unpaid', label: 'Unpaid' }
@@ -153,6 +154,72 @@ export const makeInstructions = ({
     }
   },
 
+  {
+    label: 'Search',
+    type: 'textSearch',
+    sdk: {
+      predicate: 'aggregated_details',
+      parseFormValue: parseTextSearchValue
+    },
+    render: {
+      component: 'searchBar'
+    }
+  }
+]
+
+export const makeCartsInstructions = (): FiltersInstructions => [
+  {
+    label: 'Order status',
+    type: 'options',
+    sdk: {
+      predicate: 'status_in',
+      defaultOptions: ['pending']
+    },
+    render: {
+      component: 'inputToggleButton',
+      props: {
+        mode: 'multi',
+        options: [{ value: 'pending', label: 'Pending', isHidden: true }]
+      }
+    },
+    hidden: true
+  },
+  {
+    label: 'Payment Status',
+    type: 'options',
+    sdk: {
+      predicate: 'payment_status_in'
+    },
+    render: {
+      component: 'inputToggleButton',
+      props: {
+        mode: 'multi',
+        options: [
+          { value: 'authorized', label: 'Authorized' },
+          { value: 'paid', label: 'Paid' },
+          { value: 'voided', label: 'Voided' },
+          { value: 'refunded', label: 'Refunded' },
+          { value: 'partially_authorized', label: 'Partially authorized' },
+          { value: 'partially_refunded', label: 'Partially refunded' },
+          { value: 'free', label: 'Free' },
+          { value: 'unpaid', label: 'Unpaid' }
+        ]
+      }
+    }
+  },
+  {
+    label: 'Amount',
+    type: 'currencyRange',
+    sdk: {
+      predicate: 'total_amount_cents'
+    },
+    render: {
+      component: 'inputCurrencyRange',
+      props: {
+        label: 'Amount'
+      }
+    }
+  },
   {
     label: 'Search',
     type: 'textSearch',
