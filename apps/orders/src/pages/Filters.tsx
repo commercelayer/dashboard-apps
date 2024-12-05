@@ -1,12 +1,22 @@
-import { makeInstructions } from '#data/filters'
+import { makeCartsInstructions, makeInstructions } from '#data/filters'
+import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
+import { useSearch } from 'wouter/use-browser-location'
 
 function Filters(): JSX.Element {
   const [, setLocation] = useLocation()
+
+  const queryString = useSearch()
+  const isPendingOrdersList =
+    new URLSearchParams(queryString).get('viewTitle') ===
+    presets.pending.viewTitle
+
   const { FiltersForm, adapters } = useResourceFilters({
-    instructions: makeInstructions({})
+    instructions: isPendingOrdersList
+      ? makeCartsInstructions()
+      : makeInstructions({})
   })
 
   const searchParams = new URLSearchParams(location.search)
