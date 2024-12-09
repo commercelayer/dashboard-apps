@@ -17,6 +17,7 @@ import {
   Badge,
   Button,
   Card,
+  CodeEditor,
   Dropdown,
   DropdownItem,
   Icon,
@@ -166,13 +167,13 @@ function Page(
         {promotion.type === 'flex_promotions' && (
           <Spacer top='14'>
             <Section title='Rules' border='none'>
-              <Text size='small'>
-                <Card overflow='visible' gap='4'>
-                  <pre style={{ overflowX: 'auto' }}>
-                    {JSON.stringify(promotion.rules, undefined, 2)}
-                  </pre>
-                </Card>
-              </Text>
+              <CodeEditor
+                readOnly
+                value={JSON.stringify(promotion.rules, undefined, 2)}
+                language='json'
+                jsonSchema='order-rules'
+                height='600px'
+              />
             </Section>
           </Spacer>
         )}
