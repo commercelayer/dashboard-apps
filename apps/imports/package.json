@@ -1,7 +1,7 @@
 {
   "name": "app-imports",
   "description": "A Commerce Layer Single Page Application to import resources with a nice GUI.",
-  "version": "2.9.1",
+  "version": "2.10.0",
   "type": "module",
   "private": true,
   "license": "MIT",
