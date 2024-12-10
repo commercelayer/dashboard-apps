@@ -1542,6 +1542,9 @@ importers:
       '@types/js-cookie':
         specifier: ^3.0.6
         version: 3.0.6
+      '@types/js-yaml':
+        specifier: ^4.0.9
+        version: 4.0.9
       '@types/lodash':
         specifier: ^4.17.13
         version: 4.17.13
@@ -1563,6 +1566,9 @@ importers:
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.0
       jsdom:
         specifier: ^25.0.1
         version: 25.0.1
@@ -2396,6 +2402,9 @@ packages:
 
   '@types/js-cookie@3.0.6':
     resolution: {integrity: sha512-wkw9yd1kEXOPnvEeEV1Go1MmxtBJL0RR79aOTAApecWFVu7w0NNXNqhcWgvw2YgZDYadliXkl14pa3WXw5jlCQ==}
+
+  '@types/js-yaml@4.0.9':
+    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
@@ -6802,6 +6811,8 @@ snapshots:
   '@types/estree@1.0.6': {}
 
   '@types/js-cookie@3.0.6': {}
+
+  '@types/js-yaml@4.0.9': {}
 
   '@types/json5@0.0.29': {}
 

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "test": "vitest run --passWithNoTests",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "ts:check": "tsc --noEmit"
@@ -23,6 +24,7 @@
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@commercelayer/js-auth": "^6.7.0",
     "@types/js-cookie": "^3.0.6",
+    "@types/js-yaml": "^4.0.9",
     "@types/lodash": "^4.17.13",
     "@types/node": "22.10.1",
     "@types/react": "^18.3.12",
@@ -30,6 +32,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^8.57.0",
     "js-cookie": "^3.0.5",
+    "js-yaml": "^4.1.0",
     "jsdom": "^25.0.1",
     "rollup-plugin-external-globals": "^0.13.0",
     "typescript": "^5.7.2",
