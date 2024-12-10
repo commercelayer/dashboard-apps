@@ -23,6 +23,7 @@ function RefundPage({
   goBackUrl
 }: Props): JSX.Element {
   const { canUser } = useTokenProvider()
+  console.log({ resourceType })
 
   const {
     data: resource,

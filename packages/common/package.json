@@ -9,7 +9,7 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@e83bb4a",
+    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@f889fcb",
     "@commercelayer/sdk": "^6.25.1",
     "@hookform/resolvers": "^3.9.1",
     "date-fns": "^4.1.0",
