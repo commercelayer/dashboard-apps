@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "app-sku_lists",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
