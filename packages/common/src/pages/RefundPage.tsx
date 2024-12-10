@@ -79,6 +79,17 @@ function RefundPage({
     }
   }
 
+  console.log(canUser('update', 'transactions'))
+
+  console.log({
+    isRefundable,
+    order,
+    resource,
+    capture,
+    lineItems,
+    error
+  })
+
   if (
     !canUser('update', 'transactions') ||
     !isRefundable ||
@@ -94,7 +105,7 @@ function RefundPage({
           title='Not found'
           description={
             !canUser('update', 'transactions')
-              ? 'You are not authorized to access this page.'
+              ? 'You are not allowed to access this page.'
               : 'Cannot make refund.'
           }
           action={
