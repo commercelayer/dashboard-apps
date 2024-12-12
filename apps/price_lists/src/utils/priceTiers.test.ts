@@ -3,9 +3,9 @@ import {
   getPriceTierSdkResource,
   getUpToForFrequencyForm,
   getUpToForFrequencyTable,
-  getUpToForVolumeForm,
   getUpToFromForm,
-  isUpToForFrequencyFormCustom
+  isUpToForFrequencyFormCustom,
+  parseUpAsSafeString
 } from './priceTiers'
 
 test('Check getPriceTierSdkResource', () => {
@@ -17,7 +17,7 @@ test('Check getUpToFromForm', () => {
   const volumeFormValues: PriceTierFormValues = {
     name: 'Unlimited',
     currency_code: 'EUR',
-    up_to: '',
+    up_to: null,
     price: 9.0,
     type: 'volume'
   }
@@ -27,7 +27,7 @@ test('Check getUpToFromForm', () => {
     name: 'Every 6 days',
     currency_code: 'EUR',
     up_to: 'custom',
-    up_to_days: '6',
+    up_to_days: 6,
     price: 9.0,
     type: 'frequency'
   }
@@ -47,10 +47,10 @@ test('Check getUpToForFrequencyForm', () => {
   expect(getUpToForFrequencyForm(7)).toBe('7')
 })
 
-test('Check getUpToForVolumeForm', () => {
-  expect(getUpToForVolumeForm(null)).toBe('')
-  expect(getUpToForVolumeForm(1.0)).toBe('1')
-  expect(getUpToForVolumeForm(7.0)).toBe('7')
+test('Check parseUpAsSafeString', () => {
+  expect(parseUpAsSafeString(null)).toBe('')
+  expect(parseUpAsSafeString(1.0)).toBe('1')
+  expect(parseUpAsSafeString(7.0)).toBe('7')
 })
 
 test('Check getUpToForFrequencyTable', () => {

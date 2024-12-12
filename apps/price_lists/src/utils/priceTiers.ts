@@ -23,16 +23,17 @@ export const getPriceTierSdkResource = (
  * @returns a valid price tiers `up_to` attribute value
  */
 export const getUpToFromForm = (formValues: PriceTierFormValues): UpTo => {
+  if (formValues.up_to == null) {
+    return null
+  }
   if (formValues.type === 'volume') {
-    return !isNaN(parseInt(formValues.up_to))
-      ? parseInt(formValues.up_to)
-      : null
+    return typeof formValues.up_to === 'number' ? formValues.up_to : null
   }
   const frequency = formValues.up_to
   if (frequency === 'unlimited') {
     return null
   } else if (frequency === 'custom') {
-    return parseInt(formValues.up_to_days ?? '')
+    return formValues.up_to_days
   } else {
     return parseInt(formValues.up_to)
   }
@@ -45,7 +46,7 @@ export const getUpToFromForm = (formValues: PriceTierFormValues): UpTo => {
  */
 export const isUpToForFrequencyFormCustom = (upTo: UpTo): boolean => {
   const frequenciesForSelect = getFrequenciesForSelect()
-  const upToString = getUpToForVolumeForm(upTo)
+  const upToString = parseUpAsSafeString(upTo)
   return (
     upTo != null &&
     frequenciesForSelect.find((freq) => freq.value === upToString) == null
@@ -59,7 +60,7 @@ export const isUpToForFrequencyFormCustom = (upTo: UpTo): boolean => {
  */
 export const getUpToForFrequencyForm = (upTo: UpTo): string => {
   const frequenciesForSelect = getFrequenciesForSelect()
-  const upToString = getUpToForVolumeForm(upTo)
+  const upToString = parseUpAsSafeString(upTo)
   const upToInFrequencies = frequenciesForSelect.find(
     (freq) => freq.value === upToString
   )
@@ -77,25 +78,12 @@ export const getUpToForFrequencyForm = (upTo: UpTo): string => {
  * @param upTo a given `up_to` attribute value of price tiers resources
  * @returns the `up_to` value in string
  */
-export const getUpToForVolumeForm = (upTo: UpTo): string => {
+export const parseUpAsSafeString = (upTo: UpTo): string => {
   return (
     !isNaN(parseInt(upTo?.toString() ?? ''))
       ? parseInt(upTo?.toString() ?? '')
       : ''
   ).toString()
-}
-
-/**
- * Calculates an `up_to` attribute value suitable for price tiers form based on a given price tier type.
- * @param upTo a given `up_to` attribute value of `price_tiers` resources
- * @returns the `up_to` value in string
- */
-export const getUpToForForm = (upTo: UpTo, type: PriceTierType): string => {
-  if (type === 'frequency') {
-    return getUpToForFrequencyForm(upTo)
-  } else {
-    return getUpToForVolumeForm(upTo)
-  }
 }
 
 /**
@@ -124,7 +112,7 @@ export const getUpToForFrequencyTable = (upTo: UpTo): string => {
  * @returns the `up_to` value in string
  */
 export const getUpToForVolumeTable = (upTo: UpTo): string => {
-  return upTo == null ? `♾️` : getUpToForVolumeForm(upTo)
+  return upTo == null ? `♾️` : parseUpAsSafeString(upTo)
 }
 
 /**

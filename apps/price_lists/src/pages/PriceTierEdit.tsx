@@ -8,9 +8,9 @@ import { usePriceTierDetails } from '#hooks/usePriceTierDetails'
 import type { PriceTierType } from '#types'
 import {
   getPriceTierSdkResource,
-  getUpToForForm,
   getUpToFromForm,
-  isUpToForFrequencyFormCustom
+  isUpToForFrequencyFormCustom,
+  parseUpAsSafeString
 } from '#utils/priceTiers'
 import {
   Button,
@@ -185,24 +185,29 @@ function adaptPriceTierToFormValues(
   type: PriceTierType
 ): PriceTierFormValues {
   const isFrequencyCustom = isUpToForFrequencyFormCustom(tier.up_to)
-  const frequencyForForm = getUpToForForm(tier.up_to, 'frequency')
-  const defaultValues = {
+
+  const defaultValuesVolume: PriceTierFormValues = {
     id: tier.id,
     name: tier.name ?? '',
-    up_to: '',
-    up_to_days: '',
+    up_to: tier.up_to != null ? parseInt(`${tier.up_to}`) : null,
     currency_code: priceList.currency_code ?? '',
     price: tier.price_amount_cents,
-    type
+    type: 'volume'
+  }
+  const defaultValuesFrequency: PriceTierFormValues = {
+    id: tier.id,
+    name: tier.name ?? '',
+    up_to: isFrequencyCustom ? 'custom' : parseUpAsSafeString(tier.up_to),
+    up_to_days:
+      isFrequencyCustom && tier.up_to != null
+        ? parseInt(`${tier.up_to}`)
+        : null,
+    currency_code: priceList.currency_code ?? '',
+    price: tier.price_amount_cents,
+    type: 'frequency'
   }
 
-  if (type === 'frequency') {
-    defaultValues.up_to = isFrequencyCustom ? 'custom' : frequencyForForm
-    defaultValues.up_to_days = isFrequencyCustom ? frequencyForForm : ''
-  } else {
-    defaultValues.up_to = getUpToForForm(tier.up_to, 'volume')
-  }
-  return defaultValues
+  return type === 'volume' ? defaultValuesVolume : defaultValuesFrequency
 }
 
 function adaptFormValuesToPriceTier(
