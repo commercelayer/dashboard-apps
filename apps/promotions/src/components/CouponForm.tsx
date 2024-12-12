@@ -8,12 +8,14 @@ import {
   HookedInput,
   HookedInputCheckbox,
   HookedInputDate,
+  HookedValidationApiError,
   Section,
   Spacer,
   Text,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
 import { type z } from 'zod'
@@ -30,6 +32,7 @@ export function CouponForm({
   defaultValues
 }: Props): JSX.Element {
   const [, setLocation] = useLocation()
+  const [apiError, setApiError] = useState<any>()
   const { promotion } = usePromotion(promotionId)
   const { mutateCoupon } = useCoupon(couponId)
   const methods = useForm<z.infer<typeof couponForm>>({
@@ -43,11 +46,17 @@ export function CouponForm({
     <HookedForm
       {...methods}
       onSubmit={async (values): Promise<void> => {
+        let hasError = false
         if (couponId != null) {
-          await sdkClient.coupons.update({
-            id: couponId,
-            ...formValuesToCoupon(values)
-          })
+          await sdkClient.coupons
+            .update({
+              id: couponId,
+              ...formValuesToCoupon(values)
+            })
+            .catch((error) => {
+              hasError = true
+              setApiError(error)
+            })
         } else {
           let { id } = promotion?.coupon_codes_promotion_rule ?? {}
 
@@ -60,13 +69,21 @@ export function CouponForm({
             }))
           }
 
-          await sdkClient.coupons.create({
-            ...formValuesToCoupon(values),
-            promotion_rule: {
-              type: 'coupon_codes_promotion_rules',
-              id
-            }
-          })
+          await sdkClient.coupons
+            .create({
+              ...formValuesToCoupon(values),
+              promotion_rule: {
+                type: 'coupon_codes_promotion_rules',
+                id
+              }
+            })
+            .catch((error) => {
+              hasError = true
+              setApiError(error)
+            })
+        }
+        if (hasError) {
+          return
         }
 
         await mutateCoupon()
@@ -152,6 +169,9 @@ export function CouponForm({
         >
           {couponId != null ? 'Update' : 'Create coupon'}
         </Button>
+        <Spacer top='2'>
+          <HookedValidationApiError apiError={apiError} />
+        </Spacer>
       </Spacer>
     </HookedForm>
   )
