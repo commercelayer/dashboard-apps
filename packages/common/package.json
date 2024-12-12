@@ -9,18 +9,18 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "3.5.0",
-    "@commercelayer/sdk": "^6.25.1",
+    "@commercelayer/app-elements": "3.5.1",
+    "@commercelayer/sdk": "^6.26.0",
     "@hookform/resolvers": "^3.9.1",
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
-    "react-hook-form": "7.53.2",
+    "react-hook-form": "7.54.0",
     "react-qrcode-logo": "^3.0.0",
     "swr": "^2.2.5",
-    "type-fest": "^4.29.0",
+    "type-fest": "^4.30.0",
     "wouter": "^3.3.5",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
