@@ -13,6 +13,18 @@ import { PromotionSkuListSelector } from '../components/PromotionSkuListSelector
 import type { PromotionConfig } from '../config'
 import { genericPromotionOptions } from './promotions'
 
+const zodRequiredNumber = z.preprocess(
+  (value) => {
+    return Number.isNaN(value) ? null : value
+  },
+  z
+    .number({
+      message: 'Please enter a valid number',
+      invalid_type_error: 'Please enter a valid number'
+    })
+    .positive()
+)
+
 export default {
   buy_x_pay_y_promotions: {
     type: 'buy_x_pay_y_promotions',
@@ -24,8 +36,8 @@ export default {
     formType: genericPromotionOptions.merge(
       z.object({
         sku_list: z.string(),
-        x: z.number().min(1),
-        y: z.number().min(1),
+        x: zodRequiredNumber,
+        y: zodRequiredNumber,
         cheapest_free: z.boolean().default(false)
       })
     ),

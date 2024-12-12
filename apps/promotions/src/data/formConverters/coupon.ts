@@ -4,14 +4,9 @@ import { z } from 'zod'
 export const couponForm = z.object({
   code: z.string().min(8).max(40),
   expires_at: z.date().nullish(),
-  usage_limit: z
-    .number()
-    .min(1)
-    .or(z.string().regex(/^[1-9][0-9]+$|^[1-9]$|^$/))
-    .nullish()
-    .transform((p) =>
-      p != null && p !== '' ? parseInt(p.toString()) : undefined
-    ),
+  usage_limit: z.preprocess((value) => {
+    return Number.isNaN(value) ? null : value
+  }, z.number().positive().nullish()),
   recipient_email: z.string().nullish(),
   customer_single_use: z.boolean().default(false)
 })
