@@ -78,8 +78,10 @@ export function SkuNew(): JSX.Element {
             const sku = adaptFormValuesToSku(formValues)
             void sdkClient.skus
               .create(sku)
-              .then(() => {
-                setLocation(goBackUrl)
+              .then((createdSku) => {
+                setLocation(
+                  appRoutes.details.makePath({ skuId: createdSku.id })
+                )
               })
               .catch((error) => {
                 setApiError(error)
@@ -108,6 +110,7 @@ function adaptFormValuesToSku(formValues: SkuFormValues): SkuCreate {
     code: formValues.code,
     name: formValues.name,
     description: formValues.description,
+    image_url: formValues.imageUrl,
     shipping_category: {
       id: formValues.shippingCategory ?? null,
       type: 'shipping_categories'
