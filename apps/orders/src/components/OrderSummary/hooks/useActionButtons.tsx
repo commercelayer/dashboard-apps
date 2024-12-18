@@ -1,6 +1,9 @@
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
-import { type ActionButtonsProps } from '@commercelayer/app-elements'
+import {
+  useTranslation,
+  type ActionButtonsProps
+} from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { useMemo } from 'react'
 import { useCaptureOverlay } from '../../../hooks/useCaptureOverlay'
@@ -14,6 +17,7 @@ import { useSelectShippingMethodOverlay } from './useSelectShippingMethodOverlay
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const useActionButtons = ({ order }: { order: Order }) => {
   const triggerAttributes = getTriggerAttributes(order)
+  const { t } = useTranslation()
 
   const { isLoading, errors, dispatch } = useTriggerAttribute(order.id)
   const { hasInvalidShipments, hasLineItems } = useOrderStatus(order)
@@ -89,7 +93,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     }
 
     const continueAction: ActionButtonsProps['actions'][number] = {
-      label: 'Continue editing',
+      label: t('apps.orders.actions.continue_editing'),
       disabled: isLoading || !hasLineItems,
       onClick: () => {
         showSelectShippingMethodOverlay()
@@ -97,7 +101,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     }
 
     const finishAction: ActionButtonsProps['actions'][number] = {
-      label: 'Finish',
+      label: t('apps.orders.actions.finish_editing'),
       disabled: isLoading || isOriginalOrderAmountExceeded || !hasLineItems,
       onClick: () => {
         void dispatch('_stop_editing')

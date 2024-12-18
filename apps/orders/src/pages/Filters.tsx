@@ -1,12 +1,17 @@
 import { makeCartsInstructions, makeInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
-import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
+import {
+  PageLayout,
+  useResourceFilters,
+  useTranslation
+} from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 
 function Filters(): JSX.Element {
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
 
   const queryString = useSearch()
   const isPendingOrdersList =
@@ -24,7 +29,7 @@ function Filters(): JSX.Element {
   return (
     <PageLayout
       overlay
-      title='Filters'
+      title={t('common.filters')}
       navigationButton={{
         onClick: () => {
           setLocation(
@@ -39,7 +44,7 @@ function Filters(): JSX.Element {
         label: searchParams.has('viewTitle')
           ? // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
             (searchParams.get('viewTitle') as string)
-          : 'Orders',
+          : t('resources.orders.name_other'),
         icon: 'arrowLeft'
       }}
     >

@@ -1,4 +1,4 @@
-import type { FiltersInstructions } from '@commercelayer/app-elements'
+import { t, type FiltersInstructions } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
 
 export const makeInstructions = ({
@@ -7,7 +7,7 @@ export const makeInstructions = ({
   sortByAttribute?: 'placed_at' | 'created_at'
 }): FiltersInstructions => [
   {
-    label: 'Markets',
+    label: t('resources.markets.name_other'),
     type: 'options',
     sdk: {
       predicate: 'market_id_in'
@@ -28,7 +28,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Order status',
+    label: t('apps.orders.attributes.status'),
     type: 'options',
     sdk: {
       predicate: 'status_in',
@@ -49,7 +49,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Payment Status',
+    label: t('apps.orders.attributes.payment_status'),
     type: 'options',
     sdk: {
       predicate: 'payment_status_in'
@@ -72,7 +72,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Fulfillment Status',
+    label: t('apps.orders.attributes.fulfillment_status'),
     type: 'options',
     sdk: {
       predicate: 'fulfillment_status_in'
@@ -91,7 +91,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Archived',
+    label: t('apps.orders.task.archived'),
     type: 'options',
     sdk: {
       predicate: 'archived',
@@ -112,7 +112,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Time Range',
+    label: t('common.time_range'),
     type: 'timeRange',
     sdk: {
       predicate: sortByAttribute
@@ -122,7 +122,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Amount',
+    label: t('common.amount'),
     type: 'currencyRange',
     sdk: {
       predicate: 'total_amount_cents'
@@ -135,7 +135,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Tags',
+    label: t('resources.tags.name_other'),
     type: 'options',
     sdk: {
       predicate: 'tags_id_in'
@@ -155,7 +155,7 @@ export const makeInstructions = ({
   },
 
   {
-    label: 'Search',
+    label: t('common.search'),
     type: 'textSearch',
     sdk: {
       predicate: 'aggregated_details',
@@ -169,7 +169,7 @@ export const makeInstructions = ({
 
 export const makeCartsInstructions = (): FiltersInstructions => [
   {
-    label: 'Order status',
+    label: t('apps.orders.attributes.status'),
     type: 'options',
     sdk: {
       predicate: 'status_in',
@@ -185,7 +185,7 @@ export const makeCartsInstructions = (): FiltersInstructions => [
     hidden: true
   },
   {
-    label: 'Payment Status',
+    label: t('apps.orders.attributes.payment_status'),
     type: 'options',
     sdk: {
       predicate: 'payment_status_in'
@@ -208,7 +208,7 @@ export const makeCartsInstructions = (): FiltersInstructions => [
     }
   },
   {
-    label: 'Amount',
+    label: t('common.amount'),
     type: 'currencyRange',
     sdk: {
       predicate: 'total_amount_cents'
@@ -221,7 +221,7 @@ export const makeCartsInstructions = (): FiltersInstructions => [
     }
   },
   {
-    label: 'Search',
+    label: t('common.search'),
     type: 'textSearch',
     sdk: {
       predicate: 'aggregated_details',

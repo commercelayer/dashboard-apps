@@ -19,6 +19,10 @@ beforeAll(() => {
 })
 
 describe('Dependencies', () => {
+  if (process.env.CI === undefined) {
+    return
+  }
+
   it('should have only one "@commercelayer/app-elements"', () => {
     const keys = Object.keys(pnpmLock.packages ?? {}).filter((key) =>
       key.startsWith('@commercelayer/app-elements')

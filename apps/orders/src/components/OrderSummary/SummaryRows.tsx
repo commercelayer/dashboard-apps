@@ -1,5 +1,10 @@
 import { useOrderDetails } from '#hooks/useOrderDetails'
-import { Button, Text, useTokenProvider } from '@commercelayer/app-elements'
+import {
+  Button,
+  Text,
+  useTokenProvider,
+  useTranslation
+} from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { useMemo } from 'react'
 import { useAdjustTotalOverlay } from './hooks/useAdjustTotalOverlay'
@@ -19,6 +24,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
 }) => {
   const { canUser } = useTokenProvider()
   const { mutateOrder } = useOrderDetails(order.id)
+  const { t } = useTranslation()
   const { hasInvalidShipments, hasShippableLineItems } = useOrderStatus(order)
 
   const { Overlay: AdjustTotalOverlay, open: openAdjustTotalOverlay } =
@@ -44,7 +50,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
     const adjustmentHasValue =
       manualAdjustment != null && manualAdjustment.total_amount_cents !== 0
     return renderTotalRow({
-      label: 'Adjustment',
+      label: t('resources.adjustments.name_other'),
       value: (
         <>
           <AdjustTotalOverlay />
@@ -56,7 +62,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
           >
             {adjustmentHasValue
               ? manualAdjustment.formatted_total_amount
-              : 'Adjust total'}
+              : t('apps.orders.actions.adjust_total')}
           </Button>
         </>
       )
@@ -69,7 +75,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
     }
 
     return renderTotalRowAmount({
-      label: 'Adjustment',
+      label: t('resources.adjustments.name'),
       amountCents: manualAdjustment.total_amount_cents,
       formattedAmount: manualAdjustment.formatted_total_amount
     })
@@ -84,7 +90,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
       order.shipping_amount_cents !== 0 ? (
         order.formatted_shipping_amount
       ) : hasInvalidShipments ? (
-        <Text variant='info'>To be calculated</Text>
+        <Text variant='info'>{t('apps.orders.details.to_be_calculated')}</Text>
       ) : (
         'free'
       )
@@ -92,8 +98,9 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
     return renderTotalRow({
       label:
         order.shipments?.length === 1
-          ? (order.shipments[0]?.shipping_method?.name ?? 'Shipping')
-          : 'Shipping',
+          ? (order.shipments[0]?.shipping_method?.name ??
+            t('apps.orders.details.shipping'))
+          : t('apps.orders.details.shipping'),
       value:
         canEditShipments && !hasInvalidShipments ? (
           <>
@@ -123,23 +130,24 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
     <>
       {renderTotalRowAmount({
         force: true,
-        label: 'Subtotal',
+        label: t('apps.orders.details.subtotal'),
         amountCents: order.subtotal_amount_cents,
         formattedAmount: order.formatted_subtotal_amount
       })}
       {shippingMethodRow}
       {renderTotalRowAmount({
-        label: order.payment_method?.name ?? 'Payment method',
+        label:
+          order.payment_method?.name ?? t('apps.orders.details.payment_method'),
         amountCents: order.payment_method_amount_cents,
         formattedAmount: order.formatted_payment_method_amount
       })}
       {renderTotalRowAmount({
         label: (
           <>
-            Taxes
-            <Text variant='info'>
-              {order.tax_included === true ? ' (included)' : ''}
-            </Text>
+            {t('apps.orders.details.taxes')}
+            {order.tax_included === true ? (
+              <Text variant='info'> ({t('apps.orders.details.included')})</Text>
+            ) : null}
           </>
         ),
         amountCents: order.total_tax_amount_cents,
@@ -149,13 +157,13 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
       {renderAdjustments(order)}
       {canEditManualAdjustment ? adjustmentButton : adjustmentText}
       {renderTotalRowAmount({
-        label: 'Gift card',
+        label: t('resources.gift_cards.name'),
         amountCents: order.gift_card_amount_cents,
         formattedAmount: order.formatted_gift_card_amount
       })}
       {renderTotalRowAmount({
         force: true,
-        label: 'Total',
+        label: t('apps.orders.details.total'),
         amountCents: order.total_amount_with_taxes_cents,
         formattedAmount: order.formatted_total_amount_with_taxes,
         bold: true

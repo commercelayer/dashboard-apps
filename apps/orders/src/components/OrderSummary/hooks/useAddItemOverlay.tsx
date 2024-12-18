@@ -4,7 +4,8 @@ import {
   PageHeading,
   Spacer,
   useOverlay,
-  useResourceFilters
+  useResourceFilters,
+  useTranslation
 } from '@commercelayer/app-elements'
 import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import type { Bundle, Order, Sku } from '@commercelayer/sdk'
@@ -22,10 +23,11 @@ export function useAddItemOverlay(order: Order): OverlayHook {
   const { Overlay: OverlayElement, open, close } = useOverlay()
   const filterType = useRef<'skus' | 'bundles'>('skus')
   const onConfirm = useRef<OnConfirm | undefined>()
+  const { t } = useTranslation()
 
   const instructions: FiltersInstructions = [
     {
-      label: 'Search',
+      label: t('common.search'),
       type: 'textSearch',
       sdk: {
         predicate: ['name', 'code'].join('_or_') + '_cont'
@@ -38,7 +40,7 @@ export function useAddItemOverlay(order: Order): OverlayHook {
 
   if (filterType.current === 'bundles') {
     instructions.push({
-      label: 'Markets',
+      label: t('resources.markets.name_other'),
       type: 'options',
       sdk: {
         predicate: 'market_id_eq_or_null',
@@ -55,7 +57,7 @@ export function useAddItemOverlay(order: Order): OverlayHook {
     })
 
     instructions.push({
-      label: 'Currency code',
+      label: t('resources.bundles.attributes.currency_code'),
       type: 'options',
       sdk: {
         predicate: 'currency_code_eq',
@@ -88,12 +90,17 @@ export function useAddItemOverlay(order: Order): OverlayHook {
         <OverlayElement>
           <PageHeading
             gap='only-top'
-            title={filterType.current === 'skus' ? 'Add a SKU' : 'Add a bundle'}
+            title={t('common.add_resource', {
+              resource:
+                filterType.current === 'skus'
+                  ? t('resources.skus.name')
+                  : t('resources.bundles.name')
+            })}
             navigationButton={{
               onClick: () => {
                 close()
               },
-              label: 'Cancel',
+              label: t('common.cancel'),
               icon: 'x'
             }}
           />
@@ -107,7 +114,7 @@ export function useAddItemOverlay(order: Order): OverlayHook {
             }}
             queryString={queryString}
             hideFiltersNav
-            searchBarPlaceholder='search...'
+            searchBarPlaceholder={t('common.search')}
           />
 
           <Spacer top='14'>

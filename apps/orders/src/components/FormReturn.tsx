@@ -1,6 +1,7 @@
 import {
   HookedValidationApiError,
   Spacer,
+  t,
   useIsChanged
 } from '@commercelayer/app-elements'
 import { type LineItem } from '@commercelayer/sdk'
@@ -25,7 +26,7 @@ const returnFormSchema = z.object({
           minimum: 1,
           type: 'array',
           inclusive: true,
-          message: 'Please select at least one item'
+          message: t('validation.select_one_item')
         })
       }
     })

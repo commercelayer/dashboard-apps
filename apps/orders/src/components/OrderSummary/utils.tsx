@@ -1,4 +1,4 @@
-import { ListItem, Text } from '@commercelayer/app-elements'
+import { ListItem, Text, t } from '@commercelayer/app-elements'
 import type { LineItem, Order } from '@commercelayer/sdk'
 import { Fragment } from 'react'
 
@@ -84,7 +84,7 @@ export function renderDiscounts(order: Order): JSX.Element | null {
             label:
               promotionLineItem.name ??
               promotionLineItem.item_type ??
-              'Discount',
+              t('apps.orders.details.discount'),
             amountCents: promotionLineItem.total_amount_cents,
             formattedAmount: promotionLineItem.formatted_total_amount
           })}
@@ -123,7 +123,7 @@ export function renderAdjustments(order: Order): JSX.Element | null {
             label:
               adjustmentLineItem.name ??
               adjustmentLineItem.item_type ??
-              'Adjustment',
+              t('resources.adjustments.name'),
             amountCents: adjustmentLineItem.total_amount_cents,
             formattedAmount: adjustmentLineItem.formatted_total_amount
           })}

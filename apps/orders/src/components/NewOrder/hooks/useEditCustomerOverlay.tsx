@@ -6,7 +6,8 @@ import {
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useOverlay
+  useOverlay,
+  useTranslation
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -53,6 +54,7 @@ const validationSchema = z.object({
 const Form: React.FC<Props> = ({ order, onChange, close }) => {
   const { sdkClient } = useCoreSdkProvider()
   const [apiError, setApiError] = useState<string>()
+  const { t } = useTranslation()
 
   const formMethods = useForm({
     defaultValues: {
@@ -88,12 +90,14 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
       }}
     >
       <PageLayout
-        title='Edit customer'
+        title={t('common.edit_resource', {
+          resource: t('resources.customers.name').toLowerCase()
+        })}
         navigationButton={{
           onClick: () => {
             close()
           },
-          label: 'Cancel',
+          label: t('common.cancel'),
           icon: 'x'
         }}
       >
@@ -102,16 +106,16 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
         <Spacer top='6'>
           <HookedInputSelect
             name='language_code'
-            label='Language *'
+            label={`${t('apps.orders.form.language')} *`}
             initialValues={groupedLanguageList}
-            hint={{ text: 'The language used for checkout.' }}
+            hint={{ text: t('apps.orders.form.language_hint') }}
           />
         </Spacer>
 
         <Spacer top='14'>
           <Spacer top='8'>
             <Button type='submit' fullWidth disabled={isSubmitting}>
-              Apply
+              {t('common.apply')}
             </Button>
             <Spacer top='2'>
               <HookedValidationApiError apiError={apiError} />

@@ -3,6 +3,7 @@ import {
   SkeletonTemplate,
   useCoreApi,
   useCoreSdkProvider,
+  useTranslation,
   type InputSelectValue
 } from '@commercelayer/app-elements'
 import type {
@@ -17,6 +18,7 @@ export function SelectCustomerComponent(): JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const { watch } = useFormContext()
   const [inputOptions, setInputOptions] = useState<ListResponse<Customer>>()
+  const { t } = useTranslation()
 
   const inputValue = watch('customer_email')
 
@@ -51,16 +53,16 @@ export function SelectCustomerComponent(): JSX.Element {
     <SkeletonTemplate isLoading={isLoading} delayMs={0}>
       <HookedInputSelect
         name='customer_email'
-        label='Email *'
-        placeholder='Search or add email'
-        hint={{ text: "The customer's email for this order." }}
+        label={`${t('apps.orders.form.email')} *`}
+        placeholder={t('apps.orders.form.email_placeholder')}
+        hint={{ text: t('apps.orders.form.email_hint') }}
         isCreatable
         menuFooterText={
           (inputOptions == null &&
             customers != null &&
             customers.meta.recordCount > 25) ||
           (inputOptions?.meta.recordCount ?? 0) > 25
-            ? 'Type to search for more options.'
+            ? t('common.generic_select_autocomplete_hint')
             : undefined
         }
         initialValues={initialValues}

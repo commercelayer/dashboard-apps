@@ -1,4 +1,9 @@
-import { Button, PageHeading, useOverlay } from '@commercelayer/app-elements'
+import {
+  Button,
+  PageHeading,
+  useOverlay,
+  useTranslation
+} from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
 
 interface OverlayHook {
@@ -8,6 +13,7 @@ interface OverlayHook {
 
 export function useCancelOverlay(): OverlayHook {
   const { Overlay: OverlayElement, open, close } = useOverlay()
+  const { t } = useTranslation()
 
   return {
     show: open,
@@ -15,17 +21,17 @@ export function useCancelOverlay(): OverlayHook {
       return (
         <OverlayElement>
           <PageHeading
-            title={`Confirm that you want to cancel order ${
-              order.market?.name ?? ''
-            } #${order.number ?? ''}`}
+            title={t('apps.orders.details.confirm_order_cancellation', {
+              number: order.number
+            })}
             navigationButton={{
               onClick: () => {
                 close()
               },
-              label: 'Cancel',
+              label: t('common.cancel'),
               icon: 'x'
             }}
-            description='This action cannot be undone, proceed with caution.'
+            description={t('apps.orders.details.irreversible_action')}
           />
 
           <Button
@@ -36,7 +42,7 @@ export function useCancelOverlay(): OverlayHook {
               close()
             }}
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
         </OverlayElement>
       )

@@ -4,6 +4,7 @@ import {
   ListItem,
   StatusIcon,
   Text,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Bundle, Sku } from '@commercelayer/sdk'
@@ -16,6 +17,7 @@ interface Props {
 
 export const ListItemSkuBundle = withSkeletonTemplate<Props>(
   ({ resource = makeSku(), onSelect }) => {
+    const { t } = useTranslation()
     return (
       <ListItem
         onClick={(e) => {
@@ -36,7 +38,7 @@ export const ListItemSkuBundle = withSkeletonTemplate<Props>(
           <Text tag='div' weight='bold'>
             {resource.name}{' '}
             {resource.type === 'bundles' && (
-              <Badge variant='teal'>Bundle</Badge>
+              <Badge variant='teal'>{t('resources.bundles.name')}</Badge>
             )}
           </Text>
         </div>

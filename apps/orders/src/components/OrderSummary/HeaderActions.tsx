@@ -6,7 +6,8 @@ import {
   DropdownItem,
   Icon,
   useCoreSdkProvider,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
 import { useAddItemOverlay } from './hooks/useAddItemOverlay'
@@ -21,6 +22,7 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
   const { isEditing } = useOrderStatus(order)
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
     useAddItemOverlay(order)
+  const { t } = useTranslation()
 
   const canEdit =
     order.status === 'placed' &&
@@ -46,7 +48,7 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
         }}
       >
         <Icon name='pencilSimple' size={16} />
-        Edit
+        {t('common.edit')}
       </Button>
     )
   }
@@ -72,20 +74,24 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
         <Dropdown
           dropdownLabel={
             <Button variant='secondary' size='mini' alignItems='center'>
-              Add item
+              {t('apps.orders.actions.add_item')}
               <Icon name='caretDown' />
             </Button>
           }
           dropdownItems={
             <>
               <DropdownItem
-                label='Add a SKU'
+                label={t('common.add_resource', {
+                  resource: t('resources.skus.name')
+                })}
                 onClick={() => {
                   showAddItemOverlay('skus')
                 }}
               />
               <DropdownItem
-                label='Add a bundle'
+                label={t('common.add_resource', {
+                  resource: t('resources.bundles.name').toLowerCase()
+                })}
                 onClick={() => {
                   showAddItemOverlay('bundles')
                 }}

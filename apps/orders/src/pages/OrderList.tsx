@@ -7,7 +7,8 @@ import {
   PageLayout,
   Spacer,
   useResourceFilters,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
@@ -16,7 +17,7 @@ function OrderList(): JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()
-
+  const { t } = useTranslation()
   const queryString = useSearch()
   const [, setLocation] = useLocation()
 
@@ -48,7 +49,7 @@ function OrderList(): JSX.Element {
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
         },
-        label: 'Orders',
+        label: t('resources.orders.name_other'),
         icon: 'arrowLeft'
       }}
     >

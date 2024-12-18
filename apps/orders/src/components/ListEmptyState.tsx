@@ -1,10 +1,18 @@
-import { A, EmptyState } from '@commercelayer/app-elements'
+import {
+  A,
+  EmptyState,
+  useTokenProvider,
+  useTranslation
+} from '@commercelayer/app-elements'
 
 interface Props {
   scope?: 'history' | 'userFiltered' | 'presetView' | 'noSKUs' | 'noBundles'
 }
 
 export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
+  const { t } = useTranslation()
+  const { canUser } = useTokenProvider()
+
   if (scope === 'presetView') {
     return (
       <EmptyState
@@ -21,11 +29,15 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
   if (scope === 'userFiltered') {
     return (
       <EmptyState
-        title='No orders found!'
+        title={t('common.empty_states.no_resource_found', {
+          resource: t('resources.orders.name')
+        })}
         description={
           <div>
             <p>
-              We didn't find any orders matching the current filters selection.
+              {t('common.empty_states.no_resource_found_for_filters', {
+                resources: t('resources.orders.name')
+              })}
             </p>
           </div>
         }
@@ -36,11 +48,15 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
   if (scope === 'noSKUs') {
     return (
       <EmptyState
-        title='No SKUs found!'
+        title={t('common.empty_states.no_resource_found', {
+          resource: t('resources.skus.name')
+        })}
         description={
           <div>
             <p>
-              We didn't find any SKU matching the current filters selection.
+              {t('common.empty_states.no_resource_found_for_filters', {
+                resources: t('resources.skus.name')
+              })}
             </p>
           </div>
         }
@@ -51,11 +67,15 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
   if (scope === 'noBundles') {
     return (
       <EmptyState
-        title='No bundles found!'
+        title={t('common.empty_states.no_resource_found', {
+          resource: t('resources.bundles.name')
+        })}
         description={
           <div>
             <p>
-              We didn't find any bundle matching the current filters selection.
+              {t('common.empty_states.no_resource_found_for_filters', {
+                resources: t('resources.bundles.name')
+              })}
             </p>
           </div>
         }
@@ -65,18 +85,26 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
 
   return (
     <EmptyState
-      title='No orders yet!'
+      title={t('common.empty_states.no_resource_yet', {
+        resource: t('resources.orders.name').toLowerCase()
+      })}
       description={
-        <div>
-          <p>Add an order with the API, or use the CLI.</p>
-          <A
-            target='_blank'
-            href='https://docs.commercelayer.io/core/v/api-reference/orders'
-            rel='noreferrer'
-          >
-            View API reference.
-          </A>
-        </div>
+        canUser('create', 'orders') ? (
+          <div>
+            <p>
+              {t('common.empty_states.create_the_first_resource', {
+                resource: t('resources.orders.name').toLowerCase()
+              })}
+            </p>
+            <A
+              target='_blank'
+              href='https://docs.commercelayer.io/core/v/api-reference/orders'
+              rel='noreferrer'
+            >
+              {t('common.view_api_docs')}
+            </A>
+          </div>
+        ) : null
       }
     />
   )

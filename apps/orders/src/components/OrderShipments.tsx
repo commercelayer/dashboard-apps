@@ -3,6 +3,7 @@ import {
   Section,
   useAppLinking,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order, Shipment } from '@commercelayer/sdk'
@@ -45,12 +46,18 @@ function hasShipments(
 }
 
 export const OrderShipments = withSkeletonTemplate<Props>(({ order }) => {
+  const { t } = useTranslation()
+
   if (!hasShipments(order)) {
     return null
   }
 
   return (
-    <Section title='Shipments'>
+    <Section
+      title={t('resources.shipments.name', {
+        count: order.shipments.length
+      })}
+    >
       {order.shipments.map((shipment) => renderShipment(shipment))}
     </Section>
   )

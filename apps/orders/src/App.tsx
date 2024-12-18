@@ -1,4 +1,4 @@
-import { Routes } from '#components/Routes'
+import { Routes } from '@commercelayer/app-elements'
 import { type FC } from 'react'
 import { Router } from 'wouter'
 import { appRoutes } from './data/routes'

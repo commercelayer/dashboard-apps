@@ -9,9 +9,11 @@ import {
   ResourceLineItems,
   Section,
   Spacer,
+  t,
   Text,
   useCoreSdkProvider,
-  useOverlay
+  useOverlay,
+  useTranslation
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -27,7 +29,7 @@ interface OverlayHook {
 }
 
 const zodString = z.string({
-  required_error: 'Required field'
+  required_error: t('validation.required_field')
 })
 
 export function useSelectShippingMethodOverlay(): OverlayHook {
@@ -50,6 +52,7 @@ interface Props {
 }
 
 const Form: React.FC<Props> = ({ order, close }) => {
+  const { t } = useTranslation()
   const formMethods = useForm<Record<string, string>>({
     defaultValues:
       order.shipments?.reduce(
@@ -97,12 +100,14 @@ const Form: React.FC<Props> = ({ order, close }) => {
       }}
     >
       <PageLayout
-        title='Select a shipping method'
+        title={t('common.select_resource', {
+          resource: t('resources.shipping_methods.name').toLowerCase()
+        })}
         navigationButton={{
           onClick: () => {
             close()
           },
-          label: 'Cancel',
+          label: t('common.cancel'),
           icon: 'x'
         }}
       >
@@ -113,10 +118,15 @@ const Form: React.FC<Props> = ({ order, close }) => {
 
           return (
             <Spacer key={shipment.id} top='14'>
-              <Section title={`Shipment #${shipment.number}`} border='none'>
+              <Section
+                title={`${t('resources.shipments.name')} #${shipment.number}`}
+                border='none'
+              >
                 <Card overflow='visible'>
                   <Spacer bottom='4'>
-                    <Text variant='info'>Shipping method:</Text>
+                    <Text variant='info'>
+                      {t('resources.shipping_methods.name')}:
+                    </Text>
                   </Spacer>
                   <HookedInputRadioGroup
                     name={shipment.id}
@@ -152,7 +162,7 @@ const Form: React.FC<Props> = ({ order, close }) => {
         })}
         <Spacer top='14'>
           <Button type='submit' fullWidth disabled={isSubmitting}>
-            Continue
+            {t('common.continue')}
           </Button>
         </Spacer>
       </PageLayout>
