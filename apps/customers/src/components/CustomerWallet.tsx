@@ -2,6 +2,7 @@ import {
   ResourcePaymentMethod,
   Section,
   Spacer,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Customer, CustomerPaymentSource } from '@commercelayer/sdk'
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export const CustomerWallet = withSkeletonTemplate<Props>(({ customer }) => {
+  const { t } = useTranslation()
   const customerPaymentSources = customer?.customer_payment_sources?.map(
     (customerPaymentSource, idx) => {
       return hasPaymentSource(customerPaymentSource) ? (
@@ -25,7 +27,7 @@ export const CustomerWallet = withSkeletonTemplate<Props>(({ customer }) => {
   if (customerPaymentSources?.length === 0) return <></>
 
   return (
-    <Section title='Wallet' border='none'>
+    <Section title={t('apps.customers.details.wallet')} border='none'>
       {customerPaymentSources}
     </Section>
   )

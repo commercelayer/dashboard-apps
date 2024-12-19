@@ -6,7 +6,8 @@ import {
   HookedValidationApiError,
   Spacer,
   Text,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, type UseFormSetError } from 'react-hook-form'
@@ -40,6 +41,7 @@ export function CustomerForm({
   apiError,
   isSubmitting
 }: Props): JSX.Element {
+  const { t } = useTranslation()
   const methods = useForm({
     defaultValues,
     resolver: zodResolver(customerFormSchema)
@@ -62,9 +64,11 @@ export function CustomerForm({
       <Spacer bottom='8'>
         <HookedInput
           name='email'
-          label='Email'
+          label={t('resources.customers.attributes.email')}
           hint={{
-            text: <Text variant='info'>The customer's email address</Text>
+            text: (
+              <Text variant='info'>{t('apps.customers.form.email_hint')}</Text>
+            )
           }}
           autoComplete='off'
         />
@@ -82,7 +86,13 @@ export function CustomerForm({
           disabled={isSubmitting || isLoadingCustomerGroups}
           className='w-full'
         >
-          {defaultValues.email.length === 0 ? 'Create' : 'Update'} customer
+          {defaultValues.email.length === 0
+            ? t('common.create_resource', {
+                resource: t('resources.customers.name').toLowerCase()
+              })
+            : t('common.update_resource', {
+                resource: t('resources.customers.name').toLowerCase()
+              })}
         </Button>
         <Spacer top='2'>
           <HookedValidationApiError apiError={apiError} />
@@ -94,10 +104,11 @@ export function CustomerForm({
 
 function Select({ options }: { options: CustomerGroup[] }): JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
+  const { t } = useTranslation()
 
   return (
     <HookedInputSelect
-      label='Group'
+      label={t('apps.customers.form.customer_group_label')}
       name='customerGroup'
       initialValues={options.map(({ id, name }) => ({
         value: id,
@@ -114,7 +125,9 @@ function Select({ options }: { options: CustomerGroup[] }): JSX.Element | null {
       }}
       hint={{
         text: (
-          <Text variant='info'>The group to which this customer belongs</Text>
+          <Text variant='info'>
+            {t('apps.customers.form.customer_group_hint')}
+          </Text>
         )
       }}
     />

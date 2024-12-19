@@ -3,6 +3,7 @@ import {
   Button,
   Icon,
   Section,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { useLocation, useRoute } from 'wouter'
@@ -13,6 +14,7 @@ import { useCustomerOrdersList } from '#hooks/useCustomerOrdersList'
 export const CustomerLastOrders = withSkeletonTemplate((): JSX.Element => {
   const [, params] = useRoute<{ customerId: string }>(appRoutes.details.path)
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const customerId = params?.customerId ?? ''
   if (customerId.length === 0) return <></>
 
@@ -29,7 +31,7 @@ export const CustomerLastOrders = withSkeletonTemplate((): JSX.Element => {
 
   return (
     <Section
-      title={`Orders · ${orders?.meta?.recordCount}`}
+      title={`${t('resources.orders.name_other')} · ${orders?.meta?.recordCount}`}
       actionButton={
         showAll && (
           <Button
@@ -41,7 +43,7 @@ export const CustomerLastOrders = withSkeletonTemplate((): JSX.Element => {
             alignItems='center'
           >
             <Icon name='eye' size={16} />
-            See all
+            {t('common.see_all')}
           </Button>
         )
       }

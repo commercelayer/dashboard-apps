@@ -10,7 +10,8 @@ import {
   SkeletonTemplate,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { type Customer, type CustomerUpdate } from '@commercelayer/sdk'
 import { useState } from 'react'
@@ -22,6 +23,7 @@ export function CustomerEdit(): JSX.Element {
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ customerId: string }>(appRoutes.edit.path)
   const customerId = params?.customerId ?? ''
+  const { t } = useTranslation()
 
   const { customer, isLoading, mutateCustomer } = useCustomerDetails(customerId)
   const [apiError, setApiError] = useState<any>()
@@ -35,9 +37,11 @@ export function CustomerEdit(): JSX.Element {
   if (!canUser('update', 'customers')) {
     return (
       <PageLayout
-        title='Edit customer'
+        title={t('common.edit_resource', {
+          resource: t('resources.customers.name').toLowerCase()
+        })}
         navigationButton={{
-          label: 'Back',
+          label: t('common.back'),
           icon: 'arrowLeft',
           onClick: () => {
             setLocation(goBackUrl)
@@ -45,11 +49,11 @@ export function CustomerEdit(): JSX.Element {
         }}
       >
         <EmptyState
-          title='Not found'
-          description='Customer is invalid or you are not authorized to access this page.'
+          title={t('common.empty_states.not_found')}
+          description={t('common.routes.invalid_resource_or_not_authorized')}
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant='primary'>{t('common.go_back')}</Button>
             </Link>
           }
         />
@@ -60,10 +64,14 @@ export function CustomerEdit(): JSX.Element {
   return (
     <PageLayout
       title={
-        <SkeletonTemplate isLoading={isLoading}>Edit customer</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {t('common.edit_resource', {
+            resource: t('resources.customers.name').toLowerCase()
+          })}
+        </SkeletonTemplate>
       }
       navigationButton={{
-        label: 'Back',
+        label: t('common.back'),
         icon: 'arrowLeft',
         onClick: () => {
           setLocation(goBackUrl)
@@ -118,3 +126,5 @@ function adaptFormValuesToCustomer(
     }
   }
 }
+
+export default CustomerEdit

@@ -7,6 +7,7 @@ import {
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
+  useTranslation,
   type PageLayoutProps
 } from '@commercelayer/app-elements'
 import { useMemo, useState } from 'react'
@@ -21,6 +22,7 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
   const { sdkClient } = useCoreSdkProvider()
   const { organization } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
 
   const { Overlay: DeleteOverlay, open, close } = useOverlay()
   const [isDeleting, setIsDeleting] = useState(false)
@@ -40,11 +42,13 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
     return orders == null || orders.length === 0
   }, [orders])
   const deleteOverlayTitle: PageLayoutProps['title'] = canBeDeleted
-    ? `Confirm that you want to delete ${customer?.email}.`
-    : `Customer cannot be deleted from our dashboard.`
+    ? t('apps.customers.details.confirm_customer_delete', {
+        email: customer?.email ?? ''
+      })
+    : t('apps.customers.details.customer_cannot_be_deleted')
   const deleteOverlayDescription: PageLayoutProps['description'] =
     canBeDeleted ? (
-      'This action cannot be undone, proceed with caution.'
+      t('apps.orders.details.irreversible_action')
     ) : (
       <>
         Please send a request to{' '}
@@ -96,7 +100,9 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
                 }}
                 fullWidth
               >
-                Delete customer
+                {t('common.delete_resource', {
+                  resource: t('resources.customers.name').toLowerCase()
+                })}
               </Button>
             )}
           </PageLayout>

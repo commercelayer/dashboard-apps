@@ -9,13 +9,15 @@ import {
   Icon,
   Spacer,
   useResourceFilters,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
 export function CustomerList(): JSX.Element {
   const { canUser } = useTokenProvider()
+  const { t } = useTranslation()
 
   const queryString = useSearch()
   const [, setLocation] = useLocation()
@@ -32,7 +34,7 @@ export function CustomerList(): JSX.Element {
   )
 
   return (
-    <HomePageLayout title='Customers'>
+    <HomePageLayout title={t('resources.customers.name_other')}>
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
@@ -88,7 +90,7 @@ export function CustomerList(): JSX.Element {
                   aria-label='Add customer'
                 >
                   <Icon name='plus' />
-                  New
+                  {t('common.new')}
                 </Button>
               </Link>
             ) : undefined
@@ -98,3 +100,5 @@ export function CustomerList(): JSX.Element {
     </HomePageLayout>
   )
 }
+
+export default CustomerList

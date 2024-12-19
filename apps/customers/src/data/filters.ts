@@ -1,8 +1,8 @@
-import type { FiltersInstructions } from '@commercelayer/app-elements'
+import { t, type FiltersInstructions } from '@commercelayer/app-elements'
 
 export const instructions: FiltersInstructions = [
   {
-    label: 'Status',
+    label: t('apps.customers.attributes.status'),
     type: 'options',
     sdk: {
       predicate: 'status_in',
@@ -21,7 +21,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Type',
+    label: t('apps.customers.details.type'),
     type: 'options',
     sdk: {
       predicate: 'password_present',
@@ -42,7 +42,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Groups',
+    label: t('apps.customers.details.groups'),
     type: 'options',
     sdk: {
       predicate: 'customer_group_id_in'
@@ -60,7 +60,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Tags',
+    label: t('resources.tags.name_other'),
     type: 'options',
     sdk: {
       predicate: 'tags_id_in'
@@ -79,7 +79,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Search',
+    label: t('common.search'),
     type: 'textSearch',
     sdk: {
       predicate: ['email', 'customer_group_name'].join('_or_') + '_cont'
