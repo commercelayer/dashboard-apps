@@ -91,7 +91,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: t('apps.orders.task.archived'),
+    label: t('apps.orders.tasks.archived'),
     type: 'options',
     sdk: {
       predicate: 'archived',

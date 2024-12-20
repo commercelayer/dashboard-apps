@@ -104,7 +104,7 @@ export const EditOrderStep: React.FC<
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer top='14'>
           <Card overflow='visible'>
-            <OrderLineItems title={t('apps.orders.task.cart')} order={order} />
+            <OrderLineItems title={t('apps.orders.tasks.cart')} order={order} />
           </Card>
         </Spacer>
 

@@ -119,7 +119,7 @@ const useTimelineReducer = (
                     <Text weight='bold' className='text-gray-500'>
                       {attachment.name}
                     </Text>{' '}
-                    {t('common.timeline.left_a_nome')}
+                    {t('common.timeline.left_a_note')}
                   </span>
                 ),
                 note: attachment.description
