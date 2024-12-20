@@ -84,9 +84,13 @@ function ShipmentList(): JSX.Element {
           }}
           emptyState={
             <EmptyState
-              title={t('common.empty_states.no_resource_found', {
-                resource: t('resources.shipments.name').toLowerCase()
-              })}
+              title={
+                isInViewPreset
+                  ? t('common.empty_states.all_good_here')
+                  : t('common.empty_states.no_resource_found', {
+                      resource: t('resources.shipments.name').toLowerCase()
+                    })
+              }
               description={
                 <div>
                   {isInViewPreset ? (
@@ -96,7 +100,6 @@ function ShipmentList(): JSX.Element {
                           'resources.shipments.name_other'
                         ).toLowerCase()
                       })}
-                      .
                     </p>
                   ) : (
                     <p>

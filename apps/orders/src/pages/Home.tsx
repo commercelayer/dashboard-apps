@@ -2,17 +2,17 @@ import { makeInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
-    HomePageLayout,
-    List,
-    ListItem,
-    RadialProgress,
-    SkeletonTemplate,
-    Spacer,
-    StatusIcon,
-    Text,
-    useCoreSdkProvider,
-    useResourceFilters,
-    useTranslation
+  HomePageLayout,
+  List,
+  ListItem,
+  RadialProgress,
+  SkeletonTemplate,
+  Spacer,
+  StatusIcon,
+  Text,
+  useCoreSdkProvider,
+  useResourceFilters,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'

@@ -1,15 +1,15 @@
 import {
-    getTriggerAttributeName,
-    getTriggerAttributes
+  getTriggerAttributeName,
+  getTriggerAttributes
 } from '#components/OrderSummary/orderDictionary'
 import { appRoutes } from '#data/routes'
 import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
 import { useReturnableList } from '#hooks/useReturnableList'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
-    useTokenProvider,
-    useTranslation,
-    type DropdownItemProps
+  useTokenProvider,
+  useTranslation,
+  type DropdownItemProps
 } from '@commercelayer/app-elements'
 import type { PageHeadingToolbarProps } from '@commercelayer/app-elements/dist/ui/atoms/PageHeading/PageHeadingToolbar'
 import { type Order } from '@commercelayer/sdk'

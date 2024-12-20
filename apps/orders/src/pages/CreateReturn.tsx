@@ -8,19 +8,19 @@ import { useReturnableList } from '#hooks/useReturnableList'
 import { isMock } from '#mocks'
 import { getOrderTitle } from '#utils/getOrderTitle'
 import {
-    Button,
-    EmptyState,
-    InputSelect,
-    PageLayout,
-    ResourceAddress,
-    Section,
-    SkeletonTemplate,
-    Spacer,
-    Stack,
-    isSingleValueSelected,
-    useTokenProvider,
-    useTranslation,
-    type InputSelectValue
+  Button,
+  EmptyState,
+  InputSelect,
+  PageLayout,
+  ResourceAddress,
+  Section,
+  SkeletonTemplate,
+  Spacer,
+  Stack,
+  isSingleValueSelected,
+  useTokenProvider,
+  useTranslation,
+  type InputSelectValue
 } from '@commercelayer/app-elements'
 import type { Address, StockLocation } from '@commercelayer/sdk'
 import { useCallback, useEffect, useState } from 'react'

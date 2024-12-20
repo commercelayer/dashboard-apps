@@ -25,7 +25,7 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@c3ee0dd",
+    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@0bb1d28",
     "@commercelayer/sdk": "6.26.0",
     "@hookform/resolvers": "^3.9.1",
     "lodash": "^4.17.21",

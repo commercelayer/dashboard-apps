@@ -4,9 +4,11 @@ import {
   getOrderTransactionName,
   Text,
   Timeline,
+  Trans,
   useCoreApi,
   useCoreSdkProvider,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate,
   type TimelineEvent
 } from '@commercelayer/app-elements'
@@ -126,6 +128,7 @@ export const ReturnTimeline = withSkeletonTemplate<{
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const useTimelineReducer = (returnObj: Return) => {
   const [returnId, setReturnId] = useState<string>(returnObj.id)
+  const { t } = useTranslation()
 
   const [events, dispatch] = useReducer<
     Reducer<
@@ -170,12 +173,10 @@ const useTimelineReducer = (returnObj: Return) => {
           type: 'add',
           payload: {
             date: returnObj.created_at,
-            message: (
-              <>
-                {returnObj.customer?.email} requested the return of{' '}
-                {returnObj.return_line_items?.length} items
-              </>
-            )
+            message: t('apps.returns.details.timeline_requested_return', {
+              email: returnObj.customer?.email,
+              count: returnObj.return_line_items?.length ?? 0
+            })
           }
         })
       }
@@ -191,9 +192,10 @@ const useTimelineReducer = (returnObj: Return) => {
           payload: {
             date: returnObj.shipped_at,
             message: (
-              <>
-                Return was <Text weight='bold'>shipped</Text>
-              </>
+              <Trans
+                i18nKey='apps.returns.details.timeline_shipped'
+                components={{ strong: <Text weight='bold' /> }}
+              />
             )
           }
         })
@@ -210,9 +212,10 @@ const useTimelineReducer = (returnObj: Return) => {
           payload: {
             date: returnObj.received_at,
             message: (
-              <>
-                Return was <Text weight='bold'>received</Text>
-              </>
+              <Trans
+                i18nKey='apps.returns.details.timeline_received'
+                components={{ strong: <Text weight='bold' /> }}
+              />
             )
           }
         })
@@ -229,9 +232,10 @@ const useTimelineReducer = (returnObj: Return) => {
           payload: {
             date: returnObj.cancelled_at,
             message: (
-              <>
-                Return was <Text weight='bold'>cancelled</Text>
-              </>
+              <Trans
+                i18nKey='apps.returns.details.timeline_cancelled'
+                components={{ strong: <Text weight='bold' /> }}
+              />
             )
           }
         })
@@ -248,9 +252,10 @@ const useTimelineReducer = (returnObj: Return) => {
           payload: {
             date: returnObj.archived_at,
             message: (
-              <>
-                Return was <Text weight='bold'>archived</Text>
-              </>
+              <Trans
+                i18nKey='apps.returns.details.timeline_archived'
+                components={{ strong: <Text weight='bold' /> }}
+              />
             )
           }
         })
@@ -266,10 +271,12 @@ const useTimelineReducer = (returnObj: Return) => {
           type: 'add',
           payload: {
             date: returnObj.approved_at,
+
             message: (
-              <>
-                Return was <Text weight='bold'>approved</Text>
-              </>
+              <Trans
+                i18nKey='apps.returns.details.timeline_approved'
+                components={{ strong: <Text weight='bold' /> }}
+              />
             )
           }
         })
@@ -287,16 +294,24 @@ const useTimelineReducer = (returnObj: Return) => {
           payload: {
             date: returnObj.reference_refund.created_at,
             message: returnObj.reference_refund.succeeded ? (
-              <>
-                Payment of {returnObj.reference_refund.formatted_amount} was{' '}
-                <Text weight='bold'>{name.pastTense}</Text>
-              </>
+              <Trans
+                i18nKey='apps.returns.details.timeline_payment_of_amount_was_action'
+                values={{
+                  amount: returnObj.reference_refund.formatted_amount,
+                  action: name.pastTense
+                }}
+                components={{ strong: <Text weight='bold' /> }}
+              />
             ) : (
-              <>
-                {/* `Payment capture of xxxx failed` or `Authorization of xxxx failed`, etc... */}
-                {name.singular} of {returnObj.reference_refund.formatted_amount}{' '}
-                <Text weight='bold'>failed</Text>
-              </>
+              // `Payment capture of xxxx failed` or `Authorization of xxxx failed`, etc...
+              <Trans
+                i18nKey='apps.returns.details.timeline_action_of_amount_failed'
+                values={{
+                  action: name.pastTense,
+                  amount: returnObj.reference_refund.formatted_amount
+                }}
+                components={{ strong: <Text weight='bold' /> }}
+              />
             )
           }
         })
@@ -315,10 +330,14 @@ const useTimelineReducer = (returnObj: Return) => {
               payload: {
                 date: returnLineItem.restocked_at,
                 message: (
-                  <span>
-                    Item {returnLineItem.sku_code ?? returnLineItem.bundle_code}{' '}
-                    was <Text weight='bold'>restocked</Text>
-                  </span>
+                  <Trans
+                    i18nKey='apps.returns.details.timeline_item_code_restocked'
+                    values={{
+                      code:
+                        returnLineItem.sku_code ?? returnLineItem.bundle_code
+                    }}
+                    components={{ strong: <Text weight='bold' /> }}
+                  />
                 )
               }
             })
@@ -348,8 +367,8 @@ const useTimelineReducer = (returnObj: Return) => {
                   <span>
                     {attachment.reference_origin ===
                     referenceOrigins.appReturnsRefundNote
-                      ? 'left a refund note'
-                      : 'left a note'}
+                      ? t('common.timeline.left_a_refund_note')
+                      : t('common.timeline.left_a_note')}
                   </span>
                 ),
                 note: attachment.description
@@ -378,5 +397,3 @@ const useTimelineReducer = (returnObj: Return) => {
 
   return [events, dispatch] as const
 }
-
-ReturnTimeline.displayName = 'ReturnTimeline'

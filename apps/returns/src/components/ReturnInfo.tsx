@@ -5,6 +5,7 @@ import {
   Text,
   useAppLinking,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Return } from '@commercelayer/sdk'
@@ -17,6 +18,7 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
   ({ returnObj }): JSX.Element => {
     const { canAccess } = useTokenProvider()
     const { navigateTo } = useAppLinking()
+    const { t } = useTranslation()
 
     const returnOrderMarket = returnObj.order?.market?.name
     const returnOrderNumber = `#${returnObj.order?.number}`
@@ -36,8 +38,8 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
       : {}
 
     return (
-      <Section title='Info'>
-        <ListDetailsItem label='Order' gutter='none'>
+      <Section title={t('apps.returns.details.info')}>
+        <ListDetailsItem label={t('resources.orders.name')} gutter='none'>
           <Text tag='div' weight='semibold'>
             {canAccess('orders') ? (
               <Button variant='link' {...navigateToOrder}>
@@ -48,7 +50,7 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
             )}
           </Text>
         </ListDetailsItem>
-        <ListDetailsItem label='Customer' gutter='none'>
+        <ListDetailsItem label={t('resources.customers.name')} gutter='none'>
           <Text tag='div' weight='semibold'>
             {canAccess('customers') ? (
               <Button variant='link' {...navigateToCustomer}>

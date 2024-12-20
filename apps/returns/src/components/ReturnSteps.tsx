@@ -4,6 +4,7 @@ import {
   Stack,
   Text,
   getReturnDisplayStatus,
+  useTranslation,
   withSkeletonTemplate,
   type BadgeProps
 } from '@commercelayer/app-elements'
@@ -35,12 +36,14 @@ function getReturnStatusBadgeVariant(
 
 export const ReturnSteps = withSkeletonTemplate<Props>(
   ({ returnObj }): JSX.Element => {
+    const { t } = useTranslation()
+
     return (
       <Stack>
         <div>
           <Spacer bottom='2'>
             <Text size='small' tag='div' variant='info' weight='semibold'>
-              Status
+              {t('apps.returns.attributes.status')}
             </Text>
           </Spacer>
           {returnObj.status !== undefined && (
@@ -55,7 +58,7 @@ export const ReturnSteps = withSkeletonTemplate<Props>(
         <div>
           <Spacer bottom='2'>
             <Text size='small' tag='div' variant='info' weight='semibold'>
-              Destination
+              {t('apps.returns.details.destination')}
             </Text>
           </Spacer>
           <Text weight='semibold' className='text-lg'>

@@ -1,8 +1,9 @@
+import { t } from '@commercelayer/app-elements'
 import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 
 export const instructions: FiltersInstructions = [
   {
-    label: 'Return locations',
+    label: t('apps.returns.details.return_locations'),
     type: 'options',
     sdk: {
       predicate: 'stock_location_id_in'
@@ -23,7 +24,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Status',
+    label: t('apps.returns.attributes.status'),
     type: 'options',
     sdk: {
       predicate: 'status_in',
@@ -55,7 +56,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Time Range',
+    label: t('common.time_range'),
     type: 'timeRange',
     sdk: {
       predicate: 'updated_at'
@@ -65,7 +66,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Search',
+    label: t('common.search'),
     type: 'textSearch',
     sdk: {
       predicate:

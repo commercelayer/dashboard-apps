@@ -16,10 +16,14 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
   if (scope === 'presetView') {
     return (
       <EmptyState
-        title='All good here'
+        title={t('common.empty_states.all_good_here')}
         description={
           <div>
-            <p>There are no orders for the current list.</p>
+            <p>
+              {t('common.empty_states.no_resources_found_for_list', {
+                resources: t('resources.orders.name_other').toLowerCase()
+              })}
+            </p>
           </div>
         }
       />
@@ -36,7 +40,7 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
           <div>
             <p>
               {t('common.empty_states.no_resources_found_for_filters', {
-                resources: t('resources.orders.name')
+                resources: t('resources.orders.name_other')
               })}
             </p>
           </div>

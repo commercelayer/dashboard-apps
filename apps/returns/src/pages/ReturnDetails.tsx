@@ -17,16 +17,18 @@ import {
   SkeletonTemplate,
   Spacer,
   useAppLinking,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function ReturnDetails(): JSX.Element {
+function ReturnDetails(): JSX.Element {
   const {
     canUser,
     settings: { mode }
   } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const [, params] = useRoute<{ returnId: string }>(appRoutes.details.path)
   const { goBack } = useAppLinking()
 
@@ -37,9 +39,9 @@ export function ReturnDetails(): JSX.Element {
   if (returnId === undefined || !canUser('read', 'returns')) {
     return (
       <PageLayout
-        title='Returns'
+        title={t('resources.returns.name_other')}
         navigationButton={{
-          label: 'Back',
+          label: t('common.back'),
           icon: 'arrowLeft',
           onClick: () => {
             setLocation(appRoutes.home.makePath())
@@ -48,10 +50,11 @@ export function ReturnDetails(): JSX.Element {
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title={t('common.not_authorized')}
+          description={t('common.not_authorized_description')}
           action={
             <Link href={appRoutes.home.makePath()}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant='primary'>{t('common.routes.go_home')}</Button>
             </Link>
           }
         />
@@ -59,7 +62,7 @@ export function ReturnDetails(): JSX.Element {
     )
   }
 
-  const pageTitle = `Return #${returnObj.number}`
+  const pageTitle = `${t('resources.returns.name')} #${returnObj.number}`
 
   return (
     <PageLayout
@@ -68,7 +71,7 @@ export function ReturnDetails(): JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }
       navigationButton={{
-        label: 'Returns',
+        label: t('resources.returns.name_other'),
         icon: 'arrowLeft',
         onClick: () => {
           goBack({
@@ -129,3 +132,5 @@ export function ReturnDetails(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default ReturnDetails
