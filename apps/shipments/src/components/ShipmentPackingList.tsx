@@ -13,6 +13,7 @@ import {
   Section,
   Spacer,
   useCoreSdkProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { type Shipment as ShipmentResource } from '@commercelayer/sdk'
@@ -102,6 +103,7 @@ const ParcelList = withSkeletonTemplate<{
 }>(({ shipment, showTitle }) => {
   const { sdkClient } = useCoreSdkProvider()
   const { mutateShipment } = useShipmentDetails(shipment.id)
+  const { t } = useTranslation()
 
   if ((shipment.parcels ?? []).length <= 0) {
     return null
@@ -111,7 +113,7 @@ const ParcelList = withSkeletonTemplate<{
     <Spacer top={showTitle ? '8' : undefined}>
       <Section
         titleSize='small'
-        title={showTitle ? 'Parcels' : undefined}
+        title={showTitle ? t('resources.parcels.name_other') : undefined}
         border='none'
       >
         <ResourceShipmentParcels

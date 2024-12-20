@@ -1,4 +1,5 @@
 import { getShipmentStatusName } from '#data/dictionaries'
+import { t } from '@commercelayer/app-elements'
 import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import type { Shipment } from '@commercelayer/sdk'
 
@@ -15,7 +16,7 @@ const textSearchPredicate = ['number', 'reference'].join('_or_') + '_cont'
 
 export const filtersInstructions: FiltersInstructions = [
   {
-    label: 'Stock locations',
+    label: t('resources.stock_locations.name_other'),
     type: 'options',
     sdk: {
       predicate: 'stock_location_id_in'
@@ -33,7 +34,7 @@ export const filtersInstructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Status',
+    label: t('apps.shipments.attributes.status'),
     type: 'options',
     sdk: {
       predicate: 'status_in',
@@ -51,7 +52,7 @@ export const filtersInstructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Time Range',
+    label: t('common.time_range'),
     type: 'timeRange',
     sdk: {
       predicate: 'updated_at'
@@ -61,7 +62,7 @@ export const filtersInstructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Tags',
+    label: t('resources.tags.name_other'),
     type: 'options',
     sdk: {
       predicate: 'tags_id_in'
@@ -80,7 +81,7 @@ export const filtersInstructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Search',
+    label: t('common.search'),
     type: 'textSearch',
     sdk: {
       predicate: textSearchPredicate

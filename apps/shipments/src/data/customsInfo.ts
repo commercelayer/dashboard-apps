@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { type InputSelectValue } from '@commercelayer/app-elements'
+import { t, type InputSelectValue } from '@commercelayer/app-elements'
 
 type AcceptedValues<T> = [T, ...T[]]
 
@@ -74,8 +74,10 @@ export function getIncotermsRule() {
 
 export function getDeliveryConfirmation() {
   const dictionary: Record<DeliveryConfirmation, string> = {
-    SIGNATURE: 'Signature',
-    NO_SIGNATURE: 'No signature'
+    SIGNATURE: t('apps.shipments.form.customs_info_customs_signer_signature'),
+    NO_SIGNATURE: t(
+      'apps.shipments.form.customs_info_customs_signer_no_signature'
+    )
   }
   const acceptedValues = Object.keys(
     dictionary
@@ -89,12 +91,12 @@ export function getDeliveryConfirmation() {
 
 export function getContentType() {
   const dictionary: Record<ContentType, string> = {
-    merchandise: 'Merchandise',
-    gift: 'Gift',
-    documents: 'Documents',
-    returned_goods: 'Returned goods',
-    sample: 'Sample',
-    other: 'Other'
+    merchandise: t('apps.shipments.form.customs_info_type_merchandise'),
+    gift: t('apps.shipments.form.customs_info_type_gift'),
+    documents: t('apps.shipments.form.customs_info_type_documents'),
+    returned_goods: t('apps.shipments.form.customs_info_type_returned_goods'),
+    sample: t('apps.shipments.form.customs_info_type_sample'),
+    other: t('apps.shipments.form.customs_info_type_other')
   }
   const acceptedValues = Object.keys(dictionary) as AcceptedValues<ContentType>
   return {
@@ -106,8 +108,8 @@ export function getContentType() {
 
 export function getNonDeliveryOption() {
   const dictionary: Record<NonDeliveryOptions, string> = {
-    return: 'Return',
-    abandon: 'Abandon'
+    return: t('apps.shipments.form.customs_info_failed_delivery_return'),
+    abandon: t('apps.shipments.form.customs_info_failed_delivery_abandon')
   }
   const acceptedValues = Object.keys(
     dictionary
@@ -122,10 +124,14 @@ export function getNonDeliveryOption() {
 
 export function getRestrictionType() {
   const dictionary: Record<RestrictionType, string> = {
-    none: 'None',
-    other: 'Other',
-    quarantine: 'Quarantine',
-    sanitary_phytosanitary_inspection: 'Sanitary or Phytosanitary inspection'
+    none: t('apps.shipments.form.customs_info_restriction_type_none'),
+    other: t('apps.shipments.form.customs_info_restriction_type_other'),
+    quarantine: t(
+      'apps.shipments.form.customs_info_restriction_type_quarantine'
+    ),
+    sanitary_phytosanitary_inspection: t(
+      'apps.shipments.form.customs_info_restriction_type_sanitary_phytosanitary_inspection'
+    )
   }
   const acceptedValues = Object.keys(
     dictionary

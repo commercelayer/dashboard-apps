@@ -35,7 +35,7 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
         description={
           <div>
             <p>
-              {t('common.empty_states.no_resource_found_for_filters', {
+              {t('common.empty_states.no_resources_found_for_filters', {
                 resources: t('resources.orders.name')
               })}
             </p>
@@ -54,7 +54,7 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
         description={
           <div>
             <p>
-              {t('common.empty_states.no_resource_found_for_filters', {
+              {t('common.empty_states.no_resources_found_for_filters', {
                 resources: t('resources.skus.name')
               })}
             </p>
@@ -73,7 +73,7 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
         description={
           <div>
             <p>
-              {t('common.empty_states.no_resource_found_for_filters', {
+              {t('common.empty_states.no_resources_found_for_filters', {
                 resources: t('resources.bundles.name')
               })}
             </p>

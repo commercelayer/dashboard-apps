@@ -10,12 +10,13 @@ import {
   EmptyState,
   PageLayout,
   Spacer,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { useEffect } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function Packing(): JSX.Element {
+function Packing(): JSX.Element {
   const {
     canUser,
     settings: { mode }
@@ -28,6 +29,7 @@ export function Packing(): JSX.Element {
   const isValidStatus = shipment?.status === 'packing'
   const { createParcelError, createParcelWithItems, isCreatingParcel } =
     useCreateParcel(shipmentId)
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (pickingList.length === 0 && !isMock(shipment)) {
@@ -47,12 +49,12 @@ export function Packing(): JSX.Element {
   ) {
     return (
       <PageLayout
-        title='Shipments'
+        title={t('resources.shipments.name_other')}
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.home.makePath({}))
           },
-          label: 'Shipments',
+          label: t('resources.shipments.name_other'),
           icon: 'arrowLeft'
         }}
         mode={mode}
@@ -60,10 +62,12 @@ export function Packing(): JSX.Element {
         <EmptyState
           title={
             !isValidStatus
-              ? 'This shipment is not in packing status'
+              ? t('apps.shipments.details.not_in_packing')
               : shipment.stock_location?.id == null
-                ? 'Missing stock_location'
-                : 'Not authorized'
+                ? t('common.missing_resource', {
+                    resource: t('resources.stock_locations.name')
+                  })
+                : t('common.not_authorized')
           }
           action={
             <Link
@@ -73,7 +77,7 @@ export function Packing(): JSX.Element {
                   : appRoutes.details.makePath({ shipmentId })
               }
             >
-              <Button variant='primary'>Go back</Button>
+              <Button variant='primary'>{t('common.go_back')}</Button>
             </Link>
           }
         />
@@ -84,12 +88,12 @@ export function Packing(): JSX.Element {
   return (
     <PageLayout
       overlay
-      title='Packing'
+      title={t('apps.shipments.tasks.packing')}
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.details.makePath({ shipmentId }))
         },
-        label: `Cancel`,
+        label: t('common.cancel'),
         icon: 'x'
       }}
       mode={mode}
@@ -122,3 +126,5 @@ export function Packing(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default Packing

@@ -1,5 +1,5 @@
 import { isMockedId, makeShipment } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { useCoreApi, useTranslation } from '@commercelayer/app-elements'
 
 export const shipmentIncludeAttribute = [
   'order',
@@ -28,6 +28,7 @@ export function useShipmentDetails(
   paused: boolean = false,
   shouldRevalidate: boolean = true
 ) {
+  const { t } = useTranslation()
   const {
     data: shipment,
     isLoading,
@@ -63,7 +64,7 @@ export function useShipmentDetails(
   //  purchase_error_message: 'The system could not verify your shipping account number. Please correct this number and resubmit.For assistance call DHL customer services',
   const purchaseError =
     shipment.purchase_failed_at != null
-      ? `${shipment.purchase_error_code} ${shipment.purchase_error_message ?? 'Could not purchase shipping label, please contact your carrier.'}`
+      ? `${shipment.purchase_error_code} ${shipment.purchase_error_message ?? t('apps.shipments.details.purchase_label_error')}`
       : null
 
   return {

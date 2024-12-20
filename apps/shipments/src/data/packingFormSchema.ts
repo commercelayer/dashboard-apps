@@ -5,6 +5,7 @@ import {
   getNonDeliveryOption,
   getRestrictionType
 } from '#data/customsInfo'
+import { t } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
 import { z } from 'zod'
 
@@ -14,9 +15,12 @@ export const packingFormSchema = z
       .string()
       .optional()
       // allow to start with an empty value
-      .refine((val) => !isEmpty(val), 'Please select a package'),
+      .refine(
+        (val) => !isEmpty(val),
+        t('apps.shipments.form.required_package')
+      ),
     weight: z.string().min(1, {
-      message: 'Please enter a weight'
+      message: t('apps.shipments.form.invalid_weight')
     }),
     unitOfWeight: z
       .enum(['gr', 'lb', 'oz'])
@@ -25,7 +29,7 @@ export const packingFormSchema = z
         if (val === undefined) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: 'Please select a unit of weight'
+            message: t('apps.shipments.form.invalid_unit_of_weight')
           })
 
           return z.NEVER
@@ -46,7 +50,7 @@ export const packingFormSchema = z
             minimum: 1,
             type: 'array',
             inclusive: true,
-            message: 'Please select at least one item'
+            message: t('validation.select_one_item')
           })
         }
       }),
@@ -74,7 +78,7 @@ export const packingFormSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['customs_signer'],
-        message: 'Required when specifying a customs form value'
+        message: t('apps.shipments.form.required_custom_form_value')
       })
     }
 
@@ -83,7 +87,7 @@ export const packingFormSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['customs_certify'],
-        message: 'Required when specifying a customs form value'
+        message: t('apps.shipments.form.required_custom_form_value')
       })
     }
 
@@ -92,7 +96,7 @@ export const packingFormSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['contents_explanation'],
-        message: 'Please specify if "other" is selected'
+        message: t('apps.shipments.form.required_if_other_is_selected')
       })
     }
 
@@ -105,7 +109,7 @@ export const packingFormSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['restriction_comments'],
-        message: "Please add a comment or select 'none' as restriction type"
+        message: t('apps.shipments.form.required_restriction_comments')
       })
     }
   })

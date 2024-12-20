@@ -8,6 +8,7 @@ import {
   Text,
   useCoreApi,
   useCoreSdkProvider,
+  useTranslation,
   type InputSelectValue
 } from '@commercelayer/app-elements'
 import type { ListResponse, Package } from '@commercelayer/sdk'
@@ -27,6 +28,7 @@ export function FormPackingFieldPackages({
 }: Props): JSX.Element {
   const { setValue, watch } = useFormContext<PackingFormValues>()
   const { packages, isLoading } = usePackages(stockLocationId)
+  const { t } = useTranslation()
 
   useEffect(() => {
     // automatically select the first package when there is only one package
@@ -45,7 +47,7 @@ export function FormPackingFieldPackages({
 
   if (packages.length === 0) {
     return (
-      <InputFeedback message='No packages found for current stock location' />
+      <InputFeedback message={t('apps.shipments.form.no_packages_found')} />
     )
   }
 
@@ -90,6 +92,7 @@ function InputSelectPackages({
   stockLocationId: string
 }): JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
+  const { t } = useTranslation()
 
   const { packages, isLoading } = usePackages(stockLocationId)
 
@@ -108,14 +111,12 @@ function InputSelectPackages({
   return (
     <HookedInputSelect
       name='packageId'
-      label='Package'
-      placeholder='Select a package'
+      label={t('resources.packages.name')}
+      placeholder={t('apps.shipments.form.select_package')}
       isLoading={isLoading}
       isSearchable
       menuFooterText={
-        hasMorePages
-          ? 'Showing 25 results. Type to search for more options.'
-          : undefined
+        hasMorePages ? t('common.forms.type_to_search_for_more') : undefined
       }
       loadAsyncValues={
         hasMorePages

@@ -14,7 +14,7 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@ad44ccd",
+    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@3cb6e43",
     "@commercelayer/sdk": "^6.26.0",
     "@hookform/resolvers": "^3.9.1",
     "dashboard-apps-common": "workspace:*",
