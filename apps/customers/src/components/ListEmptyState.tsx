@@ -20,9 +20,15 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
   if (scope === 'history') {
     return (
       <EmptyState
-        title='No customers yet!'
+        title={t('common.empty_states.no_resource_yet', {
+          resource: t('resources.customers.name').toLowerCase()
+        })}
         description={
-          canUser('create', 'customers') && 'Create your first customer'
+          canUser('create', 'customers')
+            ? t('common.empty_states.create_the_first_resource', {
+                resource: t('resources.customers.name').toLowerCase()
+              })
+            : undefined
         }
         action={
           canUser('create', 'customers') && (

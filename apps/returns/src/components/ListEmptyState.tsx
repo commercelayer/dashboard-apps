@@ -50,7 +50,7 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
         <div>
           <p>
             {t('common.empty_states.create_the_first_resource', {
-              resource: t('resources.orders.name').toLowerCase()
+              resource: t('resources.returns.name').toLowerCase()
             })}
           </p>
           <A
