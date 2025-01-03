@@ -21,6 +21,7 @@ export const makeInstructions = ({
         searchBy: 'name_cont',
         sortBy: { attribute: 'name', direction: 'asc' },
         previewLimit: 5,
+        hideWhenSingleItem: true,
         filters: {
           disabled_at_null: true
         }
@@ -39,11 +40,27 @@ export const makeInstructions = ({
       props: {
         mode: 'multi',
         options: [
-          { value: 'pending', label: 'Pending', isHidden: true },
-          { value: 'placed', label: 'Placed' },
-          { value: 'approved', label: 'Approved' },
-          { value: 'cancelled', label: 'Cancelled' },
-          { value: 'editing', label: 'Editing' }
+          {
+            value: 'pending',
+            label: t('resources.orders.attributes.status.pending'),
+            isHidden: true
+          },
+          {
+            value: 'placed',
+            label: t('resources.orders.attributes.status.placed')
+          },
+          {
+            value: 'approved',
+            label: t('resources.orders.attributes.status.approved')
+          },
+          {
+            value: 'cancelled',
+            label: t('resources.orders.attributes.status.cancelled')
+          },
+          {
+            value: 'editing',
+            label: t('resources.orders.attributes.status.editing')
+          }
         ]
       }
     }
@@ -59,14 +76,42 @@ export const makeInstructions = ({
       props: {
         mode: 'multi',
         options: [
-          { value: 'authorized', label: 'Authorized' },
-          { value: 'paid', label: 'Paid' },
-          { value: 'voided', label: 'Voided' },
-          { value: 'refunded', label: 'Refunded' },
-          { value: 'partially_authorized', label: 'Partially authorized' },
-          { value: 'partially_refunded', label: 'Partially refunded' },
-          { value: 'free', label: 'Free' },
-          { value: 'unpaid', label: 'Unpaid' }
+          {
+            value: 'authorized',
+            label: t('resources.orders.attributes.payment_status.authorized')
+          },
+          {
+            value: 'paid',
+            label: t('resources.orders.attributes.payment_status.paid')
+          },
+          {
+            value: 'voided',
+            label: t('resources.orders.attributes.payment_status.voided')
+          },
+          {
+            value: 'refunded',
+            label: t('resources.orders.attributes.payment_status.refunded')
+          },
+          {
+            value: 'partially_authorized',
+            label: t(
+              'resources.orders.attributes.payment_status.partially_authorized'
+            )
+          },
+          {
+            value: 'partially_refunded',
+            label: t(
+              'resources.orders.attributes.payment_status.partially_refunded'
+            )
+          },
+          {
+            value: 'free',
+            label: t('resources.orders.attributes.payment_status.free')
+          },
+          {
+            value: 'unpaid',
+            label: t('resources.orders.attributes.payment_status.unpaid')
+          }
         ]
       }
     }
@@ -82,10 +127,28 @@ export const makeInstructions = ({
       props: {
         mode: 'multi',
         options: [
-          { value: 'unfulfilled', label: 'Unfulfilled' },
-          { value: 'in_progress', label: 'In Progress' },
-          { value: 'fulfilled', label: 'Fulfilled' },
-          { value: 'not_required', label: 'Not Required' }
+          {
+            value: 'unfulfilled',
+            label: t(
+              'resources.orders.attributes.fulfillment_status.unfulfilled'
+            )
+          },
+          {
+            value: 'in_progress',
+            label: t(
+              'resources.orders.attributes.fulfillment_status.in_progress'
+            )
+          },
+          {
+            value: 'fulfilled',
+            label: t('resources.orders.attributes.fulfillment_status.fulfilled')
+          },
+          {
+            value: 'not_required',
+            label: t(
+              'resources.orders.attributes.fulfillment_status.not_required'
+            )
+          }
         ]
       }
     }
@@ -130,7 +193,7 @@ export const makeInstructions = ({
     render: {
       component: 'inputCurrencyRange',
       props: {
-        label: 'Amount'
+        label: t('common.amount')
       }
     }
   },
@@ -195,14 +258,42 @@ export const makeCartsInstructions = (): FiltersInstructions => [
       props: {
         mode: 'multi',
         options: [
-          { value: 'authorized', label: 'Authorized' },
-          { value: 'paid', label: 'Paid' },
-          { value: 'voided', label: 'Voided' },
-          { value: 'refunded', label: 'Refunded' },
-          { value: 'partially_authorized', label: 'Partially authorized' },
-          { value: 'partially_refunded', label: 'Partially refunded' },
-          { value: 'free', label: 'Free' },
-          { value: 'unpaid', label: 'Unpaid' }
+          {
+            value: 'authorized',
+            label: t('resources.orders.attributes.payment_status.authorized')
+          },
+          {
+            value: 'paid',
+            label: t('resources.orders.attributes.payment_status.paid')
+          },
+          {
+            value: 'voided',
+            label: t('resources.orders.attributes.payment_status.voided')
+          },
+          {
+            value: 'refunded',
+            label: t('resources.orders.attributes.payment_status.refunded')
+          },
+          {
+            value: 'partially_authorized',
+            label: t(
+              'resources.orders.attributes.payment_status.partially_authorized'
+            )
+          },
+          {
+            value: 'partially_refunded',
+            label: t(
+              'resources.orders.attributes.payment_status.partially_refunded'
+            )
+          },
+          {
+            value: 'free',
+            label: t('resources.orders.attributes.payment_status.free')
+          },
+          {
+            value: 'unpaid',
+            label: t('resources.orders.attributes.payment_status.unpaid')
+          }
         ]
       }
     }
@@ -216,7 +307,7 @@ export const makeCartsInstructions = (): FiltersInstructions => [
     render: {
       component: 'inputCurrencyRange',
       props: {
-        label: 'Amount'
+        label: t('common.amount')
       }
     }
   },

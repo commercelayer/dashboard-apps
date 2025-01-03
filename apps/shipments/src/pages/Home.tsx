@@ -130,7 +130,7 @@ function Home(): JSX.Element {
       </SkeletonTemplate>
 
       <Spacer bottom='14'>
-        <List title='Browse'>
+        <List title={t('apps.shipments.tasks.browse')}>
           <Link href={appRoutes.list.makePath({})} asChild>
             <ListItem
               icon={

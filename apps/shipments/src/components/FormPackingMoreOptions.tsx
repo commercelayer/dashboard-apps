@@ -28,10 +28,11 @@ import { useFormContext } from 'react-hook-form'
  * - CustomsInfo
  */
 export const FormPackingMoreOptions: FC = () => {
+  const { t } = useTranslation()
   return (
     <>
       <Spacer bottom='4'>
-        <Legend>More options</Legend>
+        <Legend>{t('apps.shipments.form.more_options')}</Legend>
       </Spacer>
 
       <IncotermsRules />

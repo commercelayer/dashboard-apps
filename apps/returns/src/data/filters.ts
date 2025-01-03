@@ -17,6 +17,7 @@ export const instructions: FiltersInstructions = [
         searchBy: 'name_cont',
         sortBy: { attribute: 'id', direction: 'asc' },
         previewLimit: 5,
+        hideWhenSingleItem: true,
         filters: {
           disabled_at_null: true
         }
@@ -29,7 +30,6 @@ export const instructions: FiltersInstructions = [
     sdk: {
       predicate: 'status_in',
       defaultOptions: [
-        'requested',
         'approved',
         'shipped',
         'received',
@@ -38,19 +38,39 @@ export const instructions: FiltersInstructions = [
         'refunded'
       ]
     },
-
     render: {
       component: 'inputToggleButton',
       props: {
         mode: 'multi',
         options: [
-          { value: 'requested', label: 'Requested' },
-          { value: 'approved', label: 'Approved' },
-          { value: 'shipped', label: 'Shipped' },
-          { value: 'received', label: 'Received' },
-          { value: 'cancelled', label: 'Cancelled' },
-          { value: 'rejected', label: 'Rejected' },
-          { value: 'refunded', label: 'Refunded' }
+          {
+            value: 'requested',
+            label: t('resources.returns.attributes.status.requested')
+          },
+          {
+            value: 'approved',
+            label: t('resources.returns.attributes.status.approved')
+          },
+          {
+            value: 'shipped',
+            label: t('resources.returns.attributes.status.shipped')
+          },
+          {
+            value: 'received',
+            label: t('resources.returns.attributes.status.received')
+          },
+          {
+            value: 'cancelled',
+            label: t('resources.returns.attributes.status.cancelled')
+          },
+          {
+            value: 'rejected',
+            label: t('resources.returns.attributes.status.rejected')
+          },
+          {
+            value: 'refunded',
+            label: t('resources.returns.attributes.status.refunded')
+          }
         ]
       }
     }
