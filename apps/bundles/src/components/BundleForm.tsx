@@ -179,31 +179,32 @@ export function BundleForm({
             </Grid>
           </Spacer>
         </Section>
-
-        <Section title='Bundle items'>
-          <Spacer top='4' bottom='4'>
-            <Text variant='info'>
-              Select the manual SKU list containing the bundle items.
-            </Text>
-          </Spacer>
-          <Spacer top='4' bottom='12'>
-            {!isLoadingSkuLists && <SkuListsSelect options={skuLists} />}
-            {bundleFormWatchedSkuList != null && (
-              <Spacer top='4' bottom='2'>
-                <Card gap='none'>
-                  {skuListItems != null
-                    ? skuListItems.map((item) => (
-                        <ListItemSkuListItem
-                          key={item.sku_code}
-                          resource={item}
-                        />
-                      ))
-                    : null}
-                </Card>
-              </Spacer>
-            )}
-          </Spacer>
-        </Section>
+        {defaultValues?.id == null && (
+          <Section title='Bundle items'>
+            <Spacer top='4' bottom='4'>
+              <Text variant='info'>
+                Select the manual SKU list containing the bundle items.
+              </Text>
+            </Spacer>
+            <Spacer top='4' bottom='12'>
+              {!isLoadingSkuLists && <SkuListsSelect options={skuLists} />}
+              {bundleFormWatchedSkuList != null && (
+                <Spacer top='4' bottom='2'>
+                  <Card gap='none'>
+                    {skuListItems != null
+                      ? skuListItems.map((item) => (
+                          <ListItemSkuListItem
+                            key={item.sku_code}
+                            resource={item}
+                          />
+                        ))
+                      : null}
+                  </Card>
+                </Spacer>
+              )}
+            </Spacer>
+          </Section>
+        )}
 
         <Section title='Selling info'>
           <Spacer top='6'>
