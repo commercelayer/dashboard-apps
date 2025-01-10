@@ -3,6 +3,7 @@ import {
   Section,
   useAppLinking,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Shipment } from '@commercelayer/sdk'
@@ -15,6 +16,7 @@ export const ShipmentInfo = withSkeletonTemplate<Props>(
   ({ shipment }): JSX.Element => {
     const { canAccess } = useTokenProvider()
     const { navigateTo } = useAppLinking()
+    const { t } = useTranslation()
 
     const shipmentOrderNumber = `#${shipment.order?.number}`
     const navigateToOrder = canAccess('orders')
@@ -34,17 +36,20 @@ export const ShipmentInfo = withSkeletonTemplate<Props>(
 
     return (
       <Section title='Info'>
-        <ListDetailsItem label='Shipping method' gutter='none'>
+        <ListDetailsItem
+          label={t('resources.shipping_methods.name')}
+          gutter='none'
+        >
           {shipment.shipping_method?.name}
         </ListDetailsItem>
-        <ListDetailsItem label='Order' gutter='none'>
+        <ListDetailsItem label={t('resources.orders.name')} gutter='none'>
           {canAccess('orders') ? (
             <a {...navigateToOrder}>{`${shipmentOrderNumber}`}</a>
           ) : (
             `${shipmentOrderNumber}`
           )}
         </ListDetailsItem>
-        <ListDetailsItem label='Customer' gutter='none'>
+        <ListDetailsItem label={t('resources.customers.name')} gutter='none'>
           {canAccess('customers') ? (
             <a {...navigateToCustomer}>{shipmentCustomerEmail}</a>
           ) : (

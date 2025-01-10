@@ -3,7 +3,8 @@ import {
   HookedValidationError,
   InputCheckboxGroup,
   ListItem,
-  Text
+  Text,
+  useTranslation
 } from '@commercelayer/app-elements'
 import type { InputCheckboxGroupProps } from '@commercelayer/app-elements/dist/ui/forms/InputCheckboxGroup'
 import type { StockLineItem } from '@commercelayer/sdk'
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export function FormPackingFieldItems({ stockLineItems }: Props): JSX.Element {
+  const { t } = useTranslation()
+
   const options: InputCheckboxGroupProps['options'] = useMemo(
     () =>
       stockLineItems.map((item) => ({
@@ -65,7 +68,7 @@ export function FormPackingFieldItems({ stockLineItems }: Props): JSX.Element {
         name='items'
         render={({ field: { onChange, value } }) => (
           <InputCheckboxGroup
-            title='Items'
+            title={t('apps.shipments.form.packing_items')}
             defaultValues={value}
             options={options}
             onChange={onChange}

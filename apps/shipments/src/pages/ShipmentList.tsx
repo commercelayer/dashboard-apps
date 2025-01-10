@@ -6,16 +6,18 @@ import {
   PageLayout,
   Spacer,
   useResourceFilters,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function ShipmentList(): JSX.Element {
+function ShipmentList(): JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
 
   const queryString = useSearch()
   const { SearchWithNav, FilteredList, viewTitle } = useResourceFilters({
@@ -25,14 +27,14 @@ export function ShipmentList(): JSX.Element {
 
   return (
     <PageLayout
-      title={viewTitle ?? 'Shipments'}
+      title={viewTitle ?? t('resources.shipments.name_other')}
       mode={mode}
       gap={isInViewPreset ? undefined : 'only-top'}
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
         },
-        label: 'Shipments',
+        label: t('resources.shipments.name_other'),
         icon: 'arrowLeft'
       }}
     >
@@ -82,15 +84,30 @@ export function ShipmentList(): JSX.Element {
           }}
           emptyState={
             <EmptyState
-              title='No shipments found!'
+              title={
+                isInViewPreset
+                  ? t('common.empty_states.all_good_here')
+                  : t('common.empty_states.no_resource_found', {
+                      resource: t('resources.shipments.name').toLowerCase()
+                    })
+              }
               description={
                 <div>
                   {isInViewPreset ? (
-                    <p>There are no shipments for the current list.</p>
+                    <p>
+                      {t('common.empty_states.no_resources_found_for_list', {
+                        resources: t(
+                          'resources.shipments.name_other'
+                        ).toLowerCase()
+                      })}
+                    </p>
                   ) : (
                     <p>
-                      We didn't find any shipments matching the current
-                      selection.
+                      {t('common.empty_states.no_resources_found_for_filters', {
+                        resources: t(
+                          'resources.shipments.name_other'
+                        ).toLowerCase()
+                      })}
                     </p>
                   )}
                 </div>
@@ -102,3 +119,5 @@ export function ShipmentList(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default ShipmentList

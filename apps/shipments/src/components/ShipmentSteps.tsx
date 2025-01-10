@@ -5,6 +5,7 @@ import {
   Spacer,
   Stack,
   Text,
+  useTranslation,
   withSkeletonTemplate,
   type BadgeProps
 } from '@commercelayer/app-elements'
@@ -18,13 +19,14 @@ export const ShipmentSteps = withSkeletonTemplate<Props>(
   ({ shipment }): JSX.Element => {
     const displayStatus = getShipmentDisplayStatus(shipment)
     const activeStockTransfers = useActiveStockTransfers(shipment)
+    const { t } = useTranslation()
 
     return (
       <Stack>
         <div>
           <Spacer bottom='2'>
             <Text size='small' tag='div' variant='info' weight='semibold'>
-              Status
+              {t('apps.shipments.attributes.status')}
             </Text>
           </Spacer>
           {shipment.status !== undefined && (
@@ -36,7 +38,7 @@ export const ShipmentSteps = withSkeletonTemplate<Props>(
                 activeStockTransfers.length > 0 && (
                   <div className='mt-2'>
                     <Text variant='warning' size='small' weight='semibold'>
-                      Awaiting stock transfers
+                      {t('apps.shipments.details.awaiting_stock_transfers')}
                     </Text>
                   </div>
                 )}
@@ -46,7 +48,7 @@ export const ShipmentSteps = withSkeletonTemplate<Props>(
         <div>
           <Spacer bottom='2'>
             <Text size='small' tag='div' variant='info' weight='semibold'>
-              Origin
+              {t('apps.shipments.details.origin')}
             </Text>
           </Spacer>
           <Text weight='semibold' className='text-[18px]'>

@@ -18,14 +18,15 @@ import {
   SkeletonTemplate,
   Spacer,
   Text,
-  formatDate,
+  formatDateWithPredicate,
   useAppLinking,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
 import { useRoute } from 'wouter'
 
-export function ShipmentDetails(): JSX.Element {
+function ShipmentDetails(): JSX.Element {
   const {
     canUser,
     settings: { mode },
@@ -33,6 +34,7 @@ export function ShipmentDetails(): JSX.Element {
   } = useTokenProvider()
   const [, params] = useRoute<{ shipmentId: string }>(appRoutes.details.path)
   const { goBack } = useAppLinking()
+  const { t } = useTranslation()
 
   const shipmentId = params?.shipmentId ?? ''
 
@@ -43,20 +45,21 @@ export function ShipmentDetails(): JSX.Element {
   if (shipmentId === undefined || !canUser('read', 'orders')) {
     return (
       <PageLayout
-        title='Orders'
+        title={t('resources.shipments.name_other')}
         navigationButton={{
           onClick: () => {
             goBack({
               defaultRelativePath: appRoutes.home.makePath({})
             })
           },
-          label: 'Back',
+          label: t('common.back'),
           icon: 'arrowLeft'
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title={t('common.not_authorized')}
+          description={t('common.not_authorized_description')}
           action={
             <Button
               variant='primary'
@@ -66,7 +69,7 @@ export function ShipmentDetails(): JSX.Element {
                 })
               }}
             >
-              Go back
+              {t('common.go_back')}
             </Button>
           }
         />
@@ -74,7 +77,7 @@ export function ShipmentDetails(): JSX.Element {
     )
   }
 
-  const pageTitle = `Shipment #${shipment.number}`
+  const pageTitle = `${t('resources.shipments.name')} #${shipment.number}`
 
   return (
     <PageLayout
@@ -85,11 +88,15 @@ export function ShipmentDetails(): JSX.Element {
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
-          <div>{`Updated on ${formatDate({
-            isoDate: shipment.updated_at,
-            timezone: user?.timezone,
-            format: 'full'
-          })}`}</div>
+          <div>
+            {formatDateWithPredicate({
+              predicate: t('common.updated'),
+              isoDate: shipment.updated_at,
+              timezone: user?.timezone,
+              locale: user?.locale,
+              format: 'full'
+            })}
+          </div>
           {!isEmpty(shipment.reference) && (
             <div>
               <Text variant='info'>Ref. {shipment.reference}</Text>
@@ -104,7 +111,7 @@ export function ShipmentDetails(): JSX.Element {
             defaultRelativePath: appRoutes.home.makePath({})
           })
         },
-        label: 'Back',
+        label: t('common.back'),
         icon: 'arrowLeft'
       }}
       gap='only-top'
@@ -167,3 +174,5 @@ export function ShipmentDetails(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default ShipmentDetails
