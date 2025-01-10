@@ -2,7 +2,8 @@ import {
   A,
   Button,
   EmptyState,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { Link } from 'wouter'
 
@@ -14,18 +15,29 @@ interface Props {
 
 export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
   const { canUser } = useTokenProvider()
+  const { t } = useTranslation()
 
   if (scope === 'history') {
     return (
       <EmptyState
-        title='No customers yet!'
+        title={t('common.empty_states.no_resource_yet', {
+          resource: t('resources.customers.name').toLowerCase()
+        })}
         description={
-          canUser('create', 'customers') && 'Create your first customer'
+          canUser('create', 'customers')
+            ? t('common.empty_states.create_the_first_resource', {
+                resource: t('resources.customers.name').toLowerCase()
+              })
+            : undefined
         }
         action={
           canUser('create', 'customers') && (
             <Link href={appRoutes.new.makePath()}>
-              <Button variant='primary'>New customer</Button>
+              <Button variant='primary'>
+                {t('common.add_resource', {
+                  resource: t('resources.customers.name').toLowerCase()
+                })}
+              </Button>
             </Link>
           )
         }
@@ -36,12 +48,15 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
   if (scope === 'userFiltered') {
     return (
       <EmptyState
-        title='No customers found!'
+        title={t('common.empty_states.no_resource_found', {
+          resource: t('resources.customers.name').toLowerCase()
+        })}
         description={
           <div>
             <p>
-              We didn't find any customers matching the current filters
-              selection.
+              {t('common.empty_states.no_resources_found_for_filters', {
+                resources: t('resources.customers.name').toLowerCase()
+              })}
             </p>
           </div>
         }
@@ -51,16 +66,22 @@ export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
 
   return (
     <EmptyState
-      title='No customers yet!'
+      title={t('common.empty_states.no_resource_yet', {
+        resource: t('resources.customers.name').toLowerCase()
+      })}
       description={
         <div>
-          <p>Add a customer with the API, or use the CLI.</p>
+          <p>
+            {t('common.empty_states.create_the_first_resource', {
+              resource: t('resources.customers.name').toLowerCase()
+            })}
+          </p>
           <A
             target='_blank'
             href='https://docs.commercelayer.io/core/v/api-reference/customers'
             rel='noreferrer'
           >
-            View API reference.
+            {t('common.view_api_docs')}
           </A>
         </div>
       }
