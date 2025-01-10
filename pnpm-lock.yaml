@@ -21,8 +21,8 @@ importers:
   apps/bundles:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -106,8 +106,8 @@ importers:
   apps/customers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -185,8 +185,8 @@ importers:
   apps/exports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.1)(react@18.3.1)(typescript@5.7.2)
@@ -273,8 +273,8 @@ importers:
   apps/gift_cards:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -352,8 +352,8 @@ importers:
   apps/imports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^1.4.5
         version: 1.4.5(eslint@8.57.1)(react@18.3.1)(typescript@5.7.2)
@@ -446,8 +446,8 @@ importers:
   apps/inventory:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -528,8 +528,8 @@ importers:
   apps/orders:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: ^6.26.0
         version: 6.26.0
@@ -613,8 +613,8 @@ importers:
   apps/price_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -695,8 +695,8 @@ importers:
   apps/promotions:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -780,8 +780,8 @@ importers:
   apps/returns:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -862,8 +862,8 @@ importers:
   apps/shipments:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -944,8 +944,8 @@ importers:
   apps/sku_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -1029,8 +1029,8 @@ importers:
   apps/skus:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -1117,8 +1117,8 @@ importers:
   apps/stock_transfers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -1196,8 +1196,8 @@ importers:
   apps/subscriptions:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: ^6.26.0
         version: 6.26.0
@@ -1278,8 +1278,8 @@ importers:
   apps/tags:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -1357,8 +1357,8 @@ importers:
   apps/webhooks:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: 6.26.0
         version: 6.26.0
@@ -1460,8 +1460,8 @@ importers:
   packages/common:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       '@commercelayer/sdk':
         specifier: ^6.26.0
         version: 6.26.0
@@ -1515,8 +1515,8 @@ importers:
   packages/index:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 3.5.5
-        version: 3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))
+        specifier: 4.0.0
+        version: 4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1680,8 +1680,8 @@ packages:
     resolution: {integrity: sha512-vN5p+1kl59GVKMvTHt55NzzmYVxprfJD+ql7U9NFIfKCBkYE55LYtS+WtPlaYOyzydrKI8Nezd+aZextrd+FMA==}
     engines: {node: '>=6.9.0'}
 
-  '@commercelayer/app-elements@3.5.5':
-    resolution: {integrity: sha512-oa65NIwk4JXQV1TGXef3USVznJqORBrtELg1m16j27MRNJgwshlBjvBAJmqjv8uyv+A2UZmUJcnThRmYNCaNdw==}
+  '@commercelayer/app-elements@4.0.0':
+    resolution: {integrity: sha512-1nux44ZnKGqAqjHd5bnPp5jfI7TZshWcQAA1Qe7WM8GJNo+eKZagGSiec0gjjGs/9PhC7u5qB7D9vIPEBTe/OQ==}
     engines: {node: '>=18', pnpm: '>=7'}
     peerDependencies:
       '@commercelayer/sdk': ^6.x
@@ -2075,14 +2075,17 @@ packages:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
 
-  '@floating-ui/react@0.26.28':
-    resolution: {integrity: sha512-yORQuuAtVpiRjpMhdc0wJj06b9JFjrYF4qp96j++v2NBpbi6SEGF7donUJ3TMieerQ6qVkAv1tgr7L4r5roTqw==}
+  '@floating-ui/react@0.27.3':
+    resolution: {integrity: sha512-CLHnes3ixIFFKVQDdICjel8muhFLOBdQH7fgtHNPY8UbCNqbeKZ262G7K66lGQOUQWWnYocf7ZbUsLJgGfsLHg==}
     peerDependencies:
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
 
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
+
+  '@floating-ui/utils@0.2.9':
+    resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
 
   '@hookform/resolvers@3.9.1':
     resolution: {integrity: sha512-ud2HqmGBM0P0IABqoskKWI6PEf6ZDDBZkFqe2Vnl+mTHCEHzr3ISjjZyCwTjC/qpL25JC9aIDkloQejvMeq0ug==}
@@ -3918,6 +3921,9 @@ packages:
     resolution: {integrity: sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==}
     engines: {node: '>=18'}
 
+  html-parse-stringify@3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+
   http-cache-semantics@4.1.1:
     resolution: {integrity: sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==}
 
@@ -3941,6 +3947,17 @@ packages:
     resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
     engines: {node: '>=18'}
     hasBin: true
+
+  i18next-resources-to-backend@1.2.1:
+    resolution: {integrity: sha512-okHbVA+HZ7n1/76MsfhPqDou0fptl2dAlhRDu2ideXloRRduzHsqDOznJBef+R3DFZnbvWoBW+KxJ7fnFjd6Yw==}
+
+  i18next@24.2.1:
+    resolution: {integrity: sha512-Q2wC1TjWcSikn1VAJg13UGIjc+okpFxQTxjVAymOnSA3RpttBQNMPf2ovcgoFVsV4QNxTfNZMAxorXZXsk4fBA==}
+    peerDependencies:
+      typescript: ^5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -5049,11 +5066,11 @@ packages:
     peerDependencies:
       react: ^16.9.0 || ^17.0.0 || ^18.0.0
 
-  react-datepicker@7.5.0:
-    resolution: {integrity: sha512-6MzeamV8cWSOcduwePHfGqY40acuGlS1cG//ePHT6bVbLxWyqngaStenfH03n1wbzOibFggF66kWaBTb1SbTtQ==}
+  react-datepicker@7.6.0:
+    resolution: {integrity: sha512-9cQH6Z/qa4LrGhzdc3XoHbhrxNcMi9MKjZmYgF/1MNNaJwvdSjv3Xd+jjvrEEbKEf71ZgCA3n7fQbdwd70qCRw==}
     peerDependencies:
-      react: ^16.9.0 || ^17 || ^18
-      react-dom: ^16.9.0 || ^17 || ^18
+      react: ^16.9.0 || ^17 || ^18 || ^19 || ^19.0.0-rc
+      react-dom: ^16.9.0 || ^17 || ^18 || ^19 || ^19.0.0-rc
 
   react-dom@18.3.1:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
@@ -5068,6 +5085,19 @@ packages:
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
+
+  react-i18next@15.4.0:
+    resolution: {integrity: sha512-Py6UkX3zV08RTvL6ZANRoBh9sL/ne6rQq79XlkHEdd82cZr2H9usbWpUNVadJntIZP2pu3M2rL1CN+5rQYfYFw==}
+    peerDependencies:
+      i18next: '>= 23.2.3'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -5869,6 +5899,10 @@ packages:
       jsdom:
         optional: true
 
+  void-elements@3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
+
   w3c-xmlserializer@5.0.0:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
     engines: {node: '>=18'}
@@ -6169,7 +6203,7 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
-  '@commercelayer/app-elements@3.5.5(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(wouter@3.3.5(react@18.3.1))':
+  '@commercelayer/app-elements@4.0.0(@commercelayer/sdk@6.26.0)(monaco-editor@0.52.2)(query-string@8.2.0)(react-dom@18.3.1(react@18.3.1))(react-gtm-module@2.0.11)(react-hook-form@7.53.2(react@18.3.1))(react@18.3.1)(typescript@5.7.2)(wouter@3.3.5(react@18.3.1))':
     dependencies:
       '@commercelayer/js-auth': 6.7.0
       '@commercelayer/sdk': 6.26.0
@@ -6179,6 +6213,8 @@ snapshots:
       '@types/react-datepicker': 7.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react-dom': 18.3.5(@types/react@18.3.16)
       classnames: 2.5.1
+      i18next: 24.2.1(typescript@5.7.2)
+      i18next-resources-to-backend: 1.2.1
       js-cookie: 3.0.5
       jwt-decode: 4.0.0
       lodash: 4.17.21
@@ -6186,10 +6222,11 @@ snapshots:
       query-string: 8.2.0
       react: 18.3.1
       react-currency-input-field: 3.9.0(react@18.3.1)
-      react-datepicker: 7.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-datepicker: 7.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
       react-gtm-module: 2.0.11
       react-hook-form: 7.53.2(react@18.3.1)
+      react-i18next: 15.4.0(i18next@24.2.1(typescript@5.7.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-select: 5.9.0(@types/react@18.3.16)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-tooltip: 5.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr: 2.2.5(react@18.3.1)
@@ -6199,7 +6236,9 @@ snapshots:
       zod: 3.24.1
     transitivePeerDependencies:
       - monaco-editor
+      - react-native
       - supports-color
+      - typescript
 
   '@commercelayer/eslint-config-ts-react@1.4.5(eslint@8.57.1)(react@18.3.1)(typescript@5.7.2)':
     dependencies:
@@ -6496,15 +6535,17 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@floating-ui/react@0.26.28(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@floating-ui/react@0.27.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react-dom': 2.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@floating-ui/utils': 0.2.8
+      '@floating-ui/utils': 0.2.9
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       tabbable: 6.2.0
 
   '@floating-ui/utils@0.2.8': {}
+
+  '@floating-ui/utils@0.2.9': {}
 
   '@hookform/resolvers@3.9.1(react-hook-form@7.53.2(react@18.3.1))':
     dependencies:
@@ -7129,7 +7170,7 @@ snapshots:
 
   '@types/react-datepicker@7.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      react-datepicker: 7.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-datepicker: 7.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - react
       - react-dom
@@ -8692,6 +8733,10 @@ snapshots:
     dependencies:
       whatwg-encoding: 3.1.1
 
+  html-parse-stringify@3.0.1:
+    dependencies:
+      void-elements: 3.1.0
+
   http-cache-semantics@4.1.1: {}
 
   http-proxy-agent@7.0.2:
@@ -8713,6 +8758,16 @@ snapshots:
   human-signals@5.0.0: {}
 
   husky@9.1.7: {}
+
+  i18next-resources-to-backend@1.2.1:
+    dependencies:
+      '@babel/runtime': 7.26.0
+
+  i18next@24.2.1(typescript@5.7.2):
+    dependencies:
+      '@babel/runtime': 7.26.0
+    optionalDependencies:
+      typescript: 5.7.2
 
   iconv-lite@0.4.24:
     dependencies:
@@ -9978,12 +10033,11 @@ snapshots:
     dependencies:
       react: 18.3.1
 
-  react-datepicker@7.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-datepicker@7.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@floating-ui/react': 0.26.28(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@floating-ui/react': 0.27.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       clsx: 2.1.1
       date-fns: 3.6.0
-      prop-types: 15.8.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -9998,6 +10052,15 @@ snapshots:
   react-hook-form@7.53.2(react@18.3.1):
     dependencies:
       react: 18.3.1
+
+  react-i18next@15.4.0(i18next@24.2.1(typescript@5.7.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      '@babel/runtime': 7.26.0
+      html-parse-stringify: 3.0.1
+      i18next: 24.2.1(typescript@5.7.2)
+      react: 18.3.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
 
   react-is@16.13.1: {}
 
@@ -10828,6 +10891,8 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+
+  void-elements@3.1.0: {}
 
   w3c-xmlserializer@5.0.0:
     dependencies:
