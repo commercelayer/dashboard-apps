@@ -14,6 +14,7 @@ import {
   Spacer,
   Text,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Return } from '@commercelayer/sdk'
@@ -26,6 +27,7 @@ interface Props {
 export const ReturnSummary = withSkeletonTemplate<Props>(
   ({ returnObj }): JSX.Element => {
     const { canUser } = useTokenProvider()
+    const { t } = useTranslation()
     const triggerAttributes = getReturnTriggerAttributes(returnObj)
 
     const { isLoading, errors, dispatch } = useTriggerAttribute(returnObj.id)
@@ -46,7 +48,7 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
 
     return (
       <Section
-        title='Items'
+        title={t('apps.returns.form.items')}
         actionButton={
           returnObj.status === 'received' &&
           restockableList.length > 0 &&
@@ -58,7 +60,7 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
                 setLocation(appRoutes.restock.makePath(returnObj.id))
               }}
             >
-              Restock
+              {t('apps.returns.actions.restock')}
             </Button>
           )
         }

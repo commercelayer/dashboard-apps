@@ -1,19 +1,24 @@
 import { instructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
-import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
+import {
+  PageLayout,
+  useResourceFilters,
+  useTranslation
+} from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
-export function Filters(): JSX.Element {
+function Filters(): JSX.Element {
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const { FiltersForm, adapters } = useResourceFilters({
     instructions
   })
 
   return (
     <PageLayout
-      title='Filters'
+      title={t('common.filters')}
       navigationButton={{
-        label: 'Back',
+        label: t('common.back'),
         icon: 'arrowLeft',
         onClick: () => {
           setLocation(
@@ -35,3 +40,5 @@ export function Filters(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default Filters
