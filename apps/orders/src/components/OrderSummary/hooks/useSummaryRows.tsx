@@ -3,6 +3,7 @@ import {
   Alert,
   Button,
   Spacer,
+  useTranslation,
   type ResourceLineItemsProps
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
@@ -17,6 +18,7 @@ export function useSummaryRows(order: Order): {
 } {
   const { mutateOrder } = useOrderDetails(order.id)
   const { isEditing, diffTotalAndPlacedTotal } = useOrderStatus(order)
+  const { t } = useTranslation()
 
   const { Overlay: AddCouponOverlay, open: openAddCouponOverlay } =
     useAddCouponOverlay(order, () => {
@@ -32,7 +34,7 @@ export function useSummaryRows(order: Order): {
         <>
           <AddCouponOverlay />
           {renderTotalRow({
-            label: 'Coupon',
+            label: t('resources.coupons.name'),
             value:
               order.coupon_code == null ? (
                 <Button
@@ -41,7 +43,9 @@ export function useSummaryRows(order: Order): {
                     openAddCouponOverlay()
                   }}
                 >
-                  Add coupon
+                  {t('common.add_resource', {
+                    resource: t('resources.coupons.name').toLowerCase()
+                  })}
                 </Button>
               ) : (
                 <div className='flex gap-3'>
@@ -70,10 +74,12 @@ export function useSummaryRows(order: Order): {
         {diffTotalAndPlacedTotal != null && (
           <Spacer bottom='8'>
             <Alert status='warning'>
-              The new total is {order.formatted_total_amount_with_taxes},{' '}
-              {diffTotalAndPlacedTotal} more than the original total.
+              {t('apps.orders.details.new_total_line1', {
+                total: order.formatted_total_amount_with_taxes,
+                difference: diffTotalAndPlacedTotal
+              })}
               <br />
-              Adjust the total to make it equal or less.
+              {t('apps.orders.details.new_total_line2')}
             </Alert>
           </Spacer>
         )}

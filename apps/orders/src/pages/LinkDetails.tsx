@@ -5,7 +5,8 @@ import {
   SkeletonTemplate,
   formatDate,
   useAppLinking,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
@@ -36,6 +37,7 @@ function LinkDetails(
     organization
   } = useTokenProvider()
   const { goBack } = useAppLinking()
+  const { t } = useTranslation()
 
   const [, setLocation] = useLocation()
   const orderId = props.params?.orderId ?? ''
@@ -60,11 +62,14 @@ function LinkDetails(
     scope: linkScope
   })
 
-  const pageTitle = `Checkout link is ${link?.status}!`
+  const pageTitle = t('common.links.checkout_link_status', {
+    status: link?.status
+  })
 
   const expiresIn = formatDate({
     isoDate: link?.expires_at ?? undefined,
     timezone: user?.timezone,
+    locale: user?.locale,
     format: 'full'
   })
 
@@ -104,7 +109,7 @@ function LinkDetails(
             defaultRelativePath: appRoutes.details.makePath({ orderId })
           })
         },
-        label: 'Close',
+        label: t('common.close'),
         icon: 'x'
       }}
       isLoading={isLoading}
@@ -124,22 +129,29 @@ function LinkDetails(
               href={link?.url ?? ''}
             >
               <Icon name='arrowSquareOut' size={16} />
-              Open checkout
+              {t('common.links.open_checkout')}
             </A>
           }
           share={{
             email: {
               to: order.customer_email,
-              subject: `Checkout your order (#${order.number})`,
-              body: `Dear customer,
-                      please follow this link to checkout your order #${order.number}:
-                      ${link.url}
-                      Thank you,
-                      The ${organization?.name} team`.replace(/^\s+/gm, '')
+              subject: t('common.links.share_email_subject', {
+                number: order.number
+              }),
+              body: t('common.links.share_email_body', {
+                number: order.number,
+                url: link.url,
+                organization: organization?.name,
+                interpolation: { escapeValue: false }
+              })
             },
             whatsapp: {
               number: phoneNumberForWhatsapp(order.billing_address?.phone),
-              text: `Please follow this link to checkout your order *${order.number}*: ${link.url}`
+              text: t('common.links.share_whatsapp_text', {
+                number: order.number,
+                url: link.url,
+                interpolation: { escapeValue: false }
+              })
             }
           }}
         />

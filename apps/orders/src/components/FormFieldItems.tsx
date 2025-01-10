@@ -3,6 +3,7 @@ import {
   HookedInputCheckboxGroup,
   ListItem,
   Text,
+  useTranslation,
   type HookedInputCheckboxGroupProps
 } from '@commercelayer/app-elements'
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export function FormFieldItems({ lineItems }: Props): JSX.Element {
+  const { t } = useTranslation()
   const options: HookedInputCheckboxGroupProps['options'] = useMemo(
     () =>
       lineItems.map((item) => ({
@@ -49,7 +51,7 @@ export function FormFieldItems({ lineItems }: Props): JSX.Element {
   )
 
   if (options.length === 0) {
-    return <div>No items</div>
+    return <div>{t('common.no_items')}</div>
   }
 
   return (

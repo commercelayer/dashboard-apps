@@ -3,6 +3,7 @@ import {
   Spacer,
   Text,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
@@ -16,6 +17,7 @@ interface Props {
 export const OrderSummary = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
     const { canUser } = useTokenProvider()
+    const { t } = useTranslation()
     const {
       actions,
       errors,
@@ -26,7 +28,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
     } = useActionButtons({ order })
 
     return (
-      <OrderLineItems title='Summary' order={order}>
+      <OrderLineItems title={t('apps.orders.details.summary')} order={order}>
         {canUser('update', 'orders') && <ActionButtons actions={actions} />}
 
         {renderErrorMessages(errors)}

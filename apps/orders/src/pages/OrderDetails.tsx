@@ -24,7 +24,8 @@ import {
   Spacer,
   formatDateWithPredicate,
   useAppLinking,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import type { ToolbarItem } from '@commercelayer/app-elements/dist/ui/composite/Toolbar'
 import { useLocation, useRoute } from 'wouter'
@@ -36,6 +37,7 @@ function OrderDetails(): JSX.Element {
     user
   } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path)
 
   const orderId = params?.orderId ?? ''
@@ -75,19 +77,19 @@ function OrderDetails(): JSX.Element {
   if (orderId === undefined || !canUser('read', 'orders') || error != null) {
     return (
       <PageLayout
-        title='Orders'
+        title={t('resources.orders.name_other')}
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.home.makePath({}))
           },
-          label: 'Back',
+          label: t('common.back'),
           icon: 'arrowLeft'
         }}
         mode={mode}
         scrollToTop
       >
         <EmptyState
-          title='Not authorized'
+          title={t('common.not_authorized')}
           action={
             <Button
               variant='primary'
@@ -95,7 +97,7 @@ function OrderDetails(): JSX.Element {
                 setLocation(appRoutes.home.makePath({}))
               }}
             >
-              Go back
+              {t('common.go_back')}
             </Button>
           }
         />
@@ -117,17 +119,19 @@ function OrderDetails(): JSX.Element {
           {order.placed_at != null ? (
             <div>
               {formatDateWithPredicate({
-                predicate: 'Placed',
+                predicate: t('resources.orders.attributes.status.placed'),
                 isoDate: order.placed_at ?? '',
-                timezone: user?.timezone
+                timezone: user?.timezone,
+                locale: user?.locale
               })}
             </div>
           ) : order.updated_at != null ? (
             <div>
               {formatDateWithPredicate({
-                predicate: 'Updated',
+                predicate: t('common.updated'),
                 isoDate: order.updated_at ?? '',
-                timezone: user?.timezone
+                timezone: user?.timezone,
+                locale: user?.locale
               })}
             </div>
           ) : null}
@@ -141,7 +145,7 @@ function OrderDetails(): JSX.Element {
             currentResourceId: orderId
           })
         },
-        label: 'Back',
+        label: t('common.back'),
         icon: 'arrowLeft'
       }}
       gap='only-top'

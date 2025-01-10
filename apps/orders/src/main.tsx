@@ -1,6 +1,7 @@
 import {
   CoreSdkProvider,
   ErrorBoundary,
+  I18NProvider,
   MetaTags,
   TokenProvider,
   createApp,
@@ -28,10 +29,12 @@ const Main: React.FC<ClAppProps> = (props) => (
           loadingElement={<div />}
           {...props}
         >
-          <CoreSdkProvider>
-            <MetaTags />
-            <App routerBase={props?.routerBase} />
-          </CoreSdkProvider>
+          <I18NProvider>
+            <CoreSdkProvider>
+              <MetaTags />
+              <App routerBase={props?.routerBase} />
+            </CoreSdkProvider>
+          </I18NProvider>
         </TokenProvider>
       </SWRConfig>
     </ErrorBoundary>

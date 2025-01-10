@@ -1,4 +1,4 @@
-import type { TriggerAttribute } from '@commercelayer/app-elements'
+import { t, type TriggerAttribute } from '@commercelayer/app-elements'
 import type { Order, OrderUpdate } from '@commercelayer/sdk'
 
 export type UITriggerAttributes =
@@ -83,14 +83,14 @@ export function getTriggerAttributeName(
   triggerAttribute: UITriggerAttributes
 ): string {
   const dictionary: Record<typeof triggerAttribute, string> = {
-    _approve: 'Approve',
-    _archive: 'Archive',
-    _cancel: 'Cancel order',
-    _capture: 'Capture payment',
-    _refund: 'Refund',
-    _unarchive: 'Unarchive',
-    _place: 'Place order',
-    __cancel_transactions: 'Cancel payment'
+    _approve: t('apps.orders.actions.approve'),
+    _archive: t('apps.orders.actions.archive'),
+    _cancel: t('apps.orders.actions.cancel'),
+    _capture: t('apps.orders.actions.capture_payment'),
+    _refund: t('apps.orders.actions.refund'),
+    _unarchive: t('apps.orders.actions.unarchive'),
+    _place: t('apps.orders.actions.place'),
+    __cancel_transactions: t('apps.orders.actions.cancel_transactions')
   }
 
   return dictionary[triggerAttribute]

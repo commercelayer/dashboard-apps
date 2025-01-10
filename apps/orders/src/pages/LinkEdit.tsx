@@ -6,7 +6,8 @@ import {
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { type Link, type LinkUpdate } from '@commercelayer/sdk'
 import {
@@ -21,6 +22,7 @@ function LinkEdit(props: PageProps<typeof appRoutes.linkEdit>): JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
 
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
@@ -33,20 +35,22 @@ function LinkEdit(props: PageProps<typeof appRoutes.linkEdit>): JSX.Element {
   if (!canUser('update', 'links')) {
     return (
       <PageLayout
-        title='Edit link'
+        title={t('common.edit_resource', {
+          resource: t('resources.links.name')
+        })}
         navigationButton={{
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: 'Cancel',
+          label: t('common.back'),
           icon: 'x'
         }}
         scrollToTop
         overlay
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title={t('common.not_authorized')}
+          description={t('common.not_authorized_description')}
           action={
             <Button
               variant='primary'
@@ -54,7 +58,7 @@ function LinkEdit(props: PageProps<typeof appRoutes.linkEdit>): JSX.Element {
                 setLocation(goBackUrl)
               }}
             >
-              Go back
+              {t('common.go_back')}
             </Button>
           }
         />
@@ -68,12 +72,14 @@ function LinkEdit(props: PageProps<typeof appRoutes.linkEdit>): JSX.Element {
 
   return (
     <PageLayout
-      title='Edit link'
+      title={t('common.edit_resource', {
+        resource: t('resources.links.name')
+      })}
       navigationButton={{
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: 'Back',
+        label: t('common.back'),
         icon: 'arrowLeft'
       }}
       scrollToTop

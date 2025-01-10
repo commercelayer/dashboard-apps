@@ -8,6 +8,7 @@ import { useReturnableList } from '#hooks/useReturnableList'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   useTokenProvider,
+  useTranslation,
   type DropdownItemProps
 } from '@commercelayer/app-elements'
 import type { PageHeadingToolbarProps } from '@commercelayer/app-elements/dist/ui/atoms/PageHeading/PageHeadingToolbar'
@@ -22,6 +23,7 @@ export function useOrderToolbar({
 }): PageHeadingToolbarProps {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const { inventoryModel } = useMarketInventoryModel(order.market?.id)
   const returnableLineItems = useReturnableList(order)
   const orderReturnStockLocation =
@@ -37,7 +39,7 @@ export function useOrderToolbar({
   >(() => {
     return showReturnDropDownItem
       ? {
-          label: 'Request return',
+          label: t('apps.orders.tasks.request_return'),
           onClick: () => {
             setLocation(appRoutes.return.makePath({ orderId: order.id }))
           }

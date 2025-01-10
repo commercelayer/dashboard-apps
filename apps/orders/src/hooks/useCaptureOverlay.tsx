@@ -6,7 +6,8 @@ import {
   PageHeading,
   ResourcePaymentMethod,
   Spacer,
-  useOverlay
+  useOverlay,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
 
@@ -17,30 +18,33 @@ interface OverlayHook {
 
 export function useCaptureOverlay(): OverlayHook {
   const { Overlay, open, close } = useOverlay()
+  const { t } = useTranslation()
 
   return {
     show: open,
     Overlay: ({ order, onConfirm }) => (
       <Overlay backgroundColor='light'>
         <PageHeading
-          title='Confirm capture'
+          title={t('apps.orders.details.confirm_capture')}
           navigationButton={{
             onClick: () => {
               close()
             },
-            label: 'Cancel',
+            label: t('common.cancel'),
             icon: 'x'
           }}
-          description='This action cannot be undone, proceed with caution.'
+          description={t('apps.orders.details.irreversible_action')}
         />
 
         <Spacer bottom='14'>
           <ListDetails>
-            <ListDetailsItem label='Order'>#{order.number}</ListDetailsItem>
-            <ListDetailsItem label='Customer'>
+            <ListDetailsItem label={t('resources.orders.name')}>
+              #{order.number}
+            </ListDetailsItem>
+            <ListDetailsItem label={t('resources.customers.name')}>
               {order.customer_email}
             </ListDetailsItem>
-            <ListDetailsItem label='Payment method'>
+            <ListDetailsItem label={t('apps.orders.details.payment_method')}>
               {hasPaymentMethod(order) ? (
                 <ResourcePaymentMethod
                   resource={order}
@@ -51,7 +55,7 @@ export function useCaptureOverlay(): OverlayHook {
                 '-'
               )}
             </ListDetailsItem>
-            <ListDetailsItem label='Amount'>
+            <ListDetailsItem label={t('common.amount')}>
               {order.formatted_total_amount}
             </ListDetailsItem>
           </ListDetails>
@@ -63,7 +67,7 @@ export function useCaptureOverlay(): OverlayHook {
             close()
           }}
         >
-          Capture {order.formatted_total_amount}
+          {t('apps.orders.actions.capture')} {order.formatted_total_amount}
         </Button>
       </Overlay>
     )

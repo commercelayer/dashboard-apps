@@ -1,4 +1,4 @@
-import type { FiltersInstructions } from '@commercelayer/app-elements'
+import { t, type FiltersInstructions } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
 
 export const makeInstructions = ({
@@ -7,7 +7,7 @@ export const makeInstructions = ({
   sortByAttribute?: 'placed_at' | 'created_at'
 }): FiltersInstructions => [
   {
-    label: 'Markets',
+    label: t('resources.markets.name_other'),
     type: 'options',
     sdk: {
       predicate: 'market_id_in'
@@ -21,6 +21,7 @@ export const makeInstructions = ({
         searchBy: 'name_cont',
         sortBy: { attribute: 'name', direction: 'asc' },
         previewLimit: 5,
+        hideWhenSingleItem: true,
         filters: {
           disabled_at_null: true
         }
@@ -28,7 +29,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Order status',
+    label: t('apps.orders.attributes.status'),
     type: 'options',
     sdk: {
       predicate: 'status_in',
@@ -39,17 +40,33 @@ export const makeInstructions = ({
       props: {
         mode: 'multi',
         options: [
-          { value: 'pending', label: 'Pending', isHidden: true },
-          { value: 'placed', label: 'Placed' },
-          { value: 'approved', label: 'Approved' },
-          { value: 'cancelled', label: 'Cancelled' },
-          { value: 'editing', label: 'Editing' }
+          {
+            value: 'pending',
+            label: t('resources.orders.attributes.status.pending'),
+            isHidden: true
+          },
+          {
+            value: 'placed',
+            label: t('resources.orders.attributes.status.placed')
+          },
+          {
+            value: 'approved',
+            label: t('resources.orders.attributes.status.approved')
+          },
+          {
+            value: 'cancelled',
+            label: t('resources.orders.attributes.status.cancelled')
+          },
+          {
+            value: 'editing',
+            label: t('resources.orders.attributes.status.editing')
+          }
         ]
       }
     }
   },
   {
-    label: 'Payment Status',
+    label: t('apps.orders.attributes.payment_status'),
     type: 'options',
     sdk: {
       predicate: 'payment_status_in'
@@ -59,20 +76,48 @@ export const makeInstructions = ({
       props: {
         mode: 'multi',
         options: [
-          { value: 'authorized', label: 'Authorized' },
-          { value: 'paid', label: 'Paid' },
-          { value: 'voided', label: 'Voided' },
-          { value: 'refunded', label: 'Refunded' },
-          { value: 'partially_authorized', label: 'Partially authorized' },
-          { value: 'partially_refunded', label: 'Partially refunded' },
-          { value: 'free', label: 'Free' },
-          { value: 'unpaid', label: 'Unpaid' }
+          {
+            value: 'authorized',
+            label: t('resources.orders.attributes.payment_status.authorized')
+          },
+          {
+            value: 'paid',
+            label: t('resources.orders.attributes.payment_status.paid')
+          },
+          {
+            value: 'voided',
+            label: t('resources.orders.attributes.payment_status.voided')
+          },
+          {
+            value: 'refunded',
+            label: t('resources.orders.attributes.payment_status.refunded')
+          },
+          {
+            value: 'partially_authorized',
+            label: t(
+              'resources.orders.attributes.payment_status.partially_authorized'
+            )
+          },
+          {
+            value: 'partially_refunded',
+            label: t(
+              'resources.orders.attributes.payment_status.partially_refunded'
+            )
+          },
+          {
+            value: 'free',
+            label: t('resources.orders.attributes.payment_status.free')
+          },
+          {
+            value: 'unpaid',
+            label: t('resources.orders.attributes.payment_status.unpaid')
+          }
         ]
       }
     }
   },
   {
-    label: 'Fulfillment Status',
+    label: t('apps.orders.attributes.fulfillment_status'),
     type: 'options',
     sdk: {
       predicate: 'fulfillment_status_in'
@@ -82,16 +127,34 @@ export const makeInstructions = ({
       props: {
         mode: 'multi',
         options: [
-          { value: 'unfulfilled', label: 'Unfulfilled' },
-          { value: 'in_progress', label: 'In Progress' },
-          { value: 'fulfilled', label: 'Fulfilled' },
-          { value: 'not_required', label: 'Not Required' }
+          {
+            value: 'unfulfilled',
+            label: t(
+              'resources.orders.attributes.fulfillment_status.unfulfilled'
+            )
+          },
+          {
+            value: 'in_progress',
+            label: t(
+              'resources.orders.attributes.fulfillment_status.in_progress'
+            )
+          },
+          {
+            value: 'fulfilled',
+            label: t('resources.orders.attributes.fulfillment_status.fulfilled')
+          },
+          {
+            value: 'not_required',
+            label: t(
+              'resources.orders.attributes.fulfillment_status.not_required'
+            )
+          }
         ]
       }
     }
   },
   {
-    label: 'Archived',
+    label: t('apps.orders.tasks.archived'),
     type: 'options',
     sdk: {
       predicate: 'archived',
@@ -112,7 +175,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Time Range',
+    label: t('common.time_range'),
     type: 'timeRange',
     sdk: {
       predicate: sortByAttribute
@@ -122,7 +185,7 @@ export const makeInstructions = ({
     }
   },
   {
-    label: 'Amount',
+    label: t('common.amount'),
     type: 'currencyRange',
     sdk: {
       predicate: 'total_amount_cents'
@@ -130,12 +193,12 @@ export const makeInstructions = ({
     render: {
       component: 'inputCurrencyRange',
       props: {
-        label: 'Amount'
+        label: t('common.amount')
       }
     }
   },
   {
-    label: 'Tags',
+    label: t('resources.tags.name_other'),
     type: 'options',
     sdk: {
       predicate: 'tags_id_in'
@@ -155,7 +218,7 @@ export const makeInstructions = ({
   },
 
   {
-    label: 'Search',
+    label: t('common.search'),
     type: 'textSearch',
     sdk: {
       predicate: 'aggregated_details',
@@ -169,7 +232,7 @@ export const makeInstructions = ({
 
 export const makeCartsInstructions = (): FiltersInstructions => [
   {
-    label: 'Order status',
+    label: t('apps.orders.attributes.status'),
     type: 'options',
     sdk: {
       predicate: 'status_in',
@@ -185,7 +248,7 @@ export const makeCartsInstructions = (): FiltersInstructions => [
     hidden: true
   },
   {
-    label: 'Payment Status',
+    label: t('apps.orders.attributes.payment_status'),
     type: 'options',
     sdk: {
       predicate: 'payment_status_in'
@@ -195,20 +258,48 @@ export const makeCartsInstructions = (): FiltersInstructions => [
       props: {
         mode: 'multi',
         options: [
-          { value: 'authorized', label: 'Authorized' },
-          { value: 'paid', label: 'Paid' },
-          { value: 'voided', label: 'Voided' },
-          { value: 'refunded', label: 'Refunded' },
-          { value: 'partially_authorized', label: 'Partially authorized' },
-          { value: 'partially_refunded', label: 'Partially refunded' },
-          { value: 'free', label: 'Free' },
-          { value: 'unpaid', label: 'Unpaid' }
+          {
+            value: 'authorized',
+            label: t('resources.orders.attributes.payment_status.authorized')
+          },
+          {
+            value: 'paid',
+            label: t('resources.orders.attributes.payment_status.paid')
+          },
+          {
+            value: 'voided',
+            label: t('resources.orders.attributes.payment_status.voided')
+          },
+          {
+            value: 'refunded',
+            label: t('resources.orders.attributes.payment_status.refunded')
+          },
+          {
+            value: 'partially_authorized',
+            label: t(
+              'resources.orders.attributes.payment_status.partially_authorized'
+            )
+          },
+          {
+            value: 'partially_refunded',
+            label: t(
+              'resources.orders.attributes.payment_status.partially_refunded'
+            )
+          },
+          {
+            value: 'free',
+            label: t('resources.orders.attributes.payment_status.free')
+          },
+          {
+            value: 'unpaid',
+            label: t('resources.orders.attributes.payment_status.unpaid')
+          }
         ]
       }
     }
   },
   {
-    label: 'Amount',
+    label: t('common.amount'),
     type: 'currencyRange',
     sdk: {
       predicate: 'total_amount_cents'
@@ -216,12 +307,12 @@ export const makeCartsInstructions = (): FiltersInstructions => [
     render: {
       component: 'inputCurrencyRange',
       props: {
-        label: 'Amount'
+        label: t('common.amount')
       }
     }
   },
   {
-    label: 'Search',
+    label: t('common.search'),
     type: 'textSearch',
     sdk: {
       predicate: 'aggregated_details',

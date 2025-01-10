@@ -9,6 +9,7 @@ import {
   Spacer,
   useCoreSdkProvider,
   useOverlay,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
@@ -34,6 +35,7 @@ export function useCustomerAddressOverlay(
   onChange?: Props['onChange']
 ) {
   const { Overlay, open, close } = useOverlay()
+  const { t } = useTranslation()
 
   return {
     close,
@@ -41,7 +43,9 @@ export function useCustomerAddressOverlay(
     Overlay: () => (
       <Overlay>
         <PageLayout
-          title='Select address'
+          title={t('common.select_resource', {
+            resource: t('resources.addresses.name').toLowerCase()
+          })}
           navigationButton={{
             onClick: () => {
               close()
@@ -61,6 +65,7 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
   ({ order, close, onChange }): JSX.Element | null => {
     const { sdkClient } = useCoreSdkProvider()
     const [apiError, setApiError] = useState<any>()
+    const { t } = useTranslation()
 
     const customerAddresses = order.customer?.customer_addresses ?? []
 
@@ -115,7 +120,7 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
                 methods.setValue('useForBilling', true)
               }}
             >
-              Use for billing
+              {t('apps.orders.details.use_for_billing')}
             </Button>
             <Button
               variant='secondary'
@@ -124,7 +129,7 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
                 methods.setValue('useForBilling', false)
               }}
             >
-              Use for shipping
+              {t('apps.orders.details.use_for_shipping')}
             </Button>
           </div>
         </Spacer>
