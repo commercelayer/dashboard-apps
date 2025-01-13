@@ -2,6 +2,7 @@ import {
   ResourceAddress,
   Section,
   Stack,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Return } from '@commercelayer/sdk'
@@ -12,6 +13,8 @@ interface Props {
 
 export const ReturnAddresses = withSkeletonTemplate<Props>(
   ({ returnObj }): JSX.Element | null => {
+    const { t } = useTranslation()
+
     if (
       returnObj.origin_address == null ||
       returnObj.destination_address == null
@@ -21,15 +24,15 @@ export const ReturnAddresses = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <Section title='Addresses' border='none'>
+        <Section title={t('resources.addresses.name_other')} border='none'>
           <Stack>
             <ResourceAddress
               address={returnObj.origin_address}
-              title='Origin'
+              title={t('apps.returns.details.origin')}
             />
             <ResourceAddress
               address={returnObj.destination_address}
-              title='Destination'
+              title={t('apps.returns.details.destination')}
             />
           </Stack>
         </Section>

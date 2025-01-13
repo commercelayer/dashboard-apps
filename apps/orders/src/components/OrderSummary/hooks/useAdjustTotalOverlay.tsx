@@ -5,9 +5,11 @@ import {
   HookedInputSelect,
   PageLayout,
   Spacer,
+  t,
   Text,
   useCoreSdkProvider,
   useOverlay,
+  useTranslation,
   type CurrencyCode
 } from '@commercelayer/app-elements'
 import type { CommerceLayerClient, Order } from '@commercelayer/sdk'
@@ -45,14 +47,15 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
   const currencyCode = order.currency_code as Uppercase<CurrencyCode>
   const manualAdjustment = getManualAdjustment(order)
   const { sdkClient } = useCoreSdkProvider()
+  const { t } = useTranslation()
 
   const validationSchema = useMemo(
     () =>
       z.object({
         type: z.literal('-').or(z.literal('+')),
         adjustTotal: z.number({
-          required_error: 'Please enter an amount.',
-          invalid_type_error: 'Please enter an amount.'
+          required_error: t('validation.amount_invalid'),
+          invalid_type_error: t('validation.amount_invalid')
         })
       }),
     []
@@ -98,12 +101,12 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
       }}
     >
       <PageLayout
-        title='Adjust total'
+        title={t('apps.orders.actions.adjust_total')}
         navigationButton={{
           onClick: () => {
             close()
           },
-          label: 'Cancel',
+          label: t('common.cancel'),
           icon: 'x'
         }}
       >
@@ -132,19 +135,19 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
               sign='+'
               disabled={isSubmitting}
               currencyCode={currencyCode}
-              label='Amount'
+              label={t('common.amount')}
               name='adjustTotal'
             />
           </div>
         </div>
         <Spacer top='2'>
           <Text variant='info'>
-            Select a positive amount type to increase the order total.
+            {t('apps.orders.form.select_adjustment_amount')}
           </Text>
         </Spacer>
         <Spacer top='14'>
           <Button type='submit' fullWidth disabled={isSubmitting}>
-            Apply
+            {t('common.apply')}
           </Button>
         </Spacer>
       </PageLayout>
@@ -166,7 +169,7 @@ async function createManualAdjustmentLineItem({
   const adjustment = await sdkClient.adjustments.create({
     currency_code: currencyCode,
     amount_cents: amount,
-    name: 'Manual adjustment',
+    name: t('apps.orders.form.manual_adjustment_name'),
     reference_origin: manualAdjustmentReferenceOrigin
   })
 

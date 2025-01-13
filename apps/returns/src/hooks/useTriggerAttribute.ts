@@ -3,7 +3,7 @@ import {
   returnIncludeAttribute,
   useReturnDetails
 } from '#hooks/useReturnDetails'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
+import { useCoreSdkProvider, useTranslation } from '@commercelayer/app-elements'
 import { CommerceLayerStatic } from '@commercelayer/sdk'
 import { useCallback, useState } from 'react'
 
@@ -18,6 +18,7 @@ interface TriggerAttributeHook {
 export function useTriggerAttribute(returnId: string): TriggerAttributeHook {
   const { mutateReturn } = useReturnDetails(returnId)
   const { sdkClient } = useCoreSdkProvider()
+  const { t } = useTranslation()
 
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<string[] | undefined>()
@@ -41,7 +42,7 @@ export function useTriggerAttribute(returnId: string): TriggerAttributeHook {
         setErrors(
           CommerceLayerStatic.isApiError(error)
             ? error.errors.map(({ detail }) => detail)
-            : ['Could not cancel this return']
+            : [t('apps.returns.details.delete_error')]
         )
       } finally {
         setIsLoading(false)

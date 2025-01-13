@@ -8,7 +8,8 @@ import {
   HookedForm,
   HookedValidationApiError,
   Spacer,
-  useIsChanged
+  useIsChanged,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { type Shipment, type StockLineItem } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -45,6 +46,7 @@ export function FormPacking({
     defaultValues,
     resolver: zodResolver(packingFormSchema)
   })
+  const { t } = useTranslation()
 
   // when stockLineItems changes, we need to re-render the form
   // to update defaults values for FormPackingFieldItems and FormPackingFieldPackages
@@ -88,10 +90,13 @@ export function FormPacking({
       </Spacer>
       <Button type='submit' fullWidth disabled={isSubmitting}>
         {isSubmitting === true
-          ? 'Packing'
-          : `Pack · ${methods
-              .watch('items')
-              .reduce((acc, i) => acc + i.quantity, 0)}`}
+          ? t('common.saving')
+          : t('apps.shipments.form.pack_items', {
+              items:
+                methods
+                  .watch('items')
+                  .reduce((acc, i) => acc + i.quantity, 0) ?? 0
+            })}
       </Button>
       <Spacer top='2'>
         <HookedValidationApiError

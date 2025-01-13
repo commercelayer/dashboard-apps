@@ -11,13 +11,15 @@ import {
   PageLayout,
   SkeletonTemplate,
   Spacer,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function RestockReturn(): JSX.Element {
+function RestockReturn(): JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const [, params] = useRoute<{ returnId: string }>(appRoutes.restock.path)
 
   const returnId = params?.returnId
@@ -47,9 +49,9 @@ export function RestockReturn(): JSX.Element {
   ) {
     return (
       <PageLayout
-        title='Restock'
+        title={t('apps.returns.actions.restock')}
         navigationButton={{
-          label: 'Back',
+          label: t('common.back'),
           icon: 'arrowLeft',
           onClick: () => {
             setLocation(goBackUrl)
@@ -57,11 +59,13 @@ export function RestockReturn(): JSX.Element {
         }}
       >
         <EmptyState
-          title='Permission Denied'
-          description='You cannot restock this return or you are not authorized to access this page.'
+          title={t('common.not_authorized')}
+          description={t('common.routes.invalid_resource_or_not_authorized', {
+            resource: t('resources.returns.name').toLowerCase()
+          })}
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant='primary'>{t('common.go_back')}</Button>
             </Link>
           }
         />
@@ -71,9 +75,13 @@ export function RestockReturn(): JSX.Element {
 
   return (
     <PageLayout
-      title={<SkeletonTemplate isLoading={isLoading}>Restock</SkeletonTemplate>}
+      title={
+        <SkeletonTemplate isLoading={isLoading}>
+          {t('apps.returns.actions.restock')}
+        </SkeletonTemplate>
+      }
       navigationButton={{
-        label: 'Back',
+        label: t('common.back'),
         icon: 'arrowLeft',
         onClick: () => {
           setLocation(goBackUrl)
@@ -112,10 +120,12 @@ export function RestockReturn(): JSX.Element {
               fullWidth
               disabled={isRestockingReturnLineItems}
             >
-              Restock
+              {t('apps.returns.actions.restock')}
             </Button>
           </>
         )}
     </PageLayout>
   )
 }
+
+export default RestockReturn

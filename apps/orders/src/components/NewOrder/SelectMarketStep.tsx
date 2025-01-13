@@ -1,4 +1,3 @@
-import type { PageProps } from '#components/Routes'
 import { appRoutes } from '#data/routes'
 import {
   Card,
@@ -11,7 +10,9 @@ import {
   Text,
   useCoreSdkProvider,
   useResourceFilters,
-  withSkeletonTemplate
+  useTranslation,
+  withSkeletonTemplate,
+  type PageProps
 } from '@commercelayer/app-elements'
 import type { Market } from '@commercelayer/sdk'
 import { useLocation } from 'wouter'
@@ -21,6 +22,7 @@ export const SelectMarketStep: React.FC<
   Pick<PageProps<typeof appRoutes.new>, 'overlay'>
 > = ({ overlay }) => {
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const search = useSearch()
 
   const { SearchWithNav, FilteredList } = useResourceFilters({
@@ -42,7 +44,7 @@ export const SelectMarketStep: React.FC<
         }
       },
       {
-        label: 'Search',
+        label: t('common.search'),
         type: 'textSearch',
         sdk: {
           predicate: 'name_cont'
@@ -56,11 +58,13 @@ export const SelectMarketStep: React.FC<
 
   return (
     <PageLayout
-      title='Select market'
+      title={t('common.select_resource', {
+        resource: t('resources.markets.name').toLowerCase()
+      })}
       overlay={overlay}
       gap='only-top'
       navigationButton={{
-        label: 'Close',
+        label: t('common.close'),
         icon: 'x',
         onClick() {
           setLocation(appRoutes.home.makePath({}))
@@ -84,9 +88,16 @@ export const SelectMarketStep: React.FC<
               hideTitle
               emptyState={
                 <EmptyState
-                  title='No markets found!'
+                  title={t('common.empty_states.no_resource_found', {
+                    resource: t('resources.markets.name').toLowerCase()
+                  })}
                   icon='shield'
-                  description='No markets found for this organization.'
+                  description={t(
+                    'common.empty_states.no_resource_found_for_organization',
+                    {
+                      resource: t('resources.markets.name').toLowerCase()
+                    }
+                  )}
                 />
               }
               type='markets'

@@ -1,6 +1,7 @@
 import {
   CoreSdkProvider,
   ErrorBoundary,
+  I18NProvider,
   MetaTags,
   TokenProvider,
   createApp,
@@ -21,18 +22,20 @@ const Main: React.FC<ClAppProps> = (props) => (
           revalidateOnFocus: false
         }}
       >
-        <TokenProvider
-          kind='shipments'
-          appSlug='shipments'
-          devMode={isDev}
-          loadingElement={<div />}
-          {...props}
-        >
-          <CoreSdkProvider>
-            <MetaTags />
-            <App routerBase={props?.routerBase} />
-          </CoreSdkProvider>
-        </TokenProvider>
+        <I18NProvider>
+          <TokenProvider
+            kind='shipments'
+            appSlug='shipments'
+            devMode={isDev}
+            loadingElement={<div />}
+            {...props}
+          >
+            <CoreSdkProvider>
+              <MetaTags />
+              <App routerBase={props?.routerBase} />
+            </CoreSdkProvider>
+          </TokenProvider>
+        </I18NProvider>
       </SWRConfig>
     </ErrorBoundary>
   </StrictMode>

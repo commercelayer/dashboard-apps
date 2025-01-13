@@ -6,6 +6,7 @@ import {
   Section,
   Stack,
   useCoreSdkProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
@@ -19,7 +20,7 @@ interface Props {
 export const OrderAddresses = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element | null => {
     const { sdkClient } = useCoreSdkProvider()
-
+    const { t } = useTranslation()
     const { isEditing } = useOrderStatus(order)
     const { mutateOrder } = useOrderDetails(order.id)
     const isEditable =
@@ -38,7 +39,7 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
         <AssignAddressOverlay />
         <Section
           border='none'
-          title='Addresses'
+          title={t('resources.addresses.name_other')}
           actionButton={
             isEditable &&
             (order.customer?.customer_addresses ?? []).length > 0 && (
@@ -51,14 +52,16 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
                 }}
               >
                 <Icon name='plus' />
-                Select address
+                {t('common.select_resource', {
+                  resource: t('resources.addresses.name').toLowerCase()
+                })}
               </Button>
             )
           }
         >
           <Stack>
             <ResourceAddress
-              title='Billing address'
+              title={t('resources.orders.attributes.billing_address')}
               address={order.billing_address}
               editable={isEditable}
               onCreate={(address) => {
@@ -74,7 +77,7 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
               requiresBillingInfo={order.requires_billing_info ?? undefined}
             />
             <ResourceAddress
-              title='Shipping address'
+              title={t('resources.orders.attributes.shipping_address')}
               address={order.shipping_address}
               editable={isEditable}
               onCreate={(address) => {

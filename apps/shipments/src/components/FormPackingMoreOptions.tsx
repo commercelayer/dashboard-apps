@@ -13,7 +13,8 @@ import {
   HookedInputSelect,
   Legend,
   Spacer,
-  Text
+  Text,
+  useTranslation
 } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
 import { useEffect, type FC, type ReactNode } from 'react'
@@ -27,10 +28,11 @@ import { useFormContext } from 'react-hook-form'
  * - CustomsInfo
  */
 export const FormPackingMoreOptions: FC = () => {
+  const { t } = useTranslation()
   return (
     <>
       <Spacer bottom='4'>
-        <Legend>More options</Legend>
+        <Legend>{t('apps.shipments.form.more_options')}</Legend>
       </Spacer>
 
       <IncotermsRules />
@@ -41,16 +43,17 @@ export const FormPackingMoreOptions: FC = () => {
 }
 
 const IncotermsRules: FC = () => {
+  const { t } = useTranslation()
   return (
     <OptionsGroup
-      label='Incoterms rules'
+      label={t('apps.shipments.form.incoterms_rules')}
       fieldsToReset={['incoterm']}
       name='incotermOptionsGroup'
     >
       <HookedInputSelect
         name='incoterm'
         initialValues={getIncotermsRule().selectOptions}
-        placeholder='Select an option'
+        placeholder={t('apps.shipments.form.select_option')}
         isClearable
       />
     </OptionsGroup>
@@ -58,16 +61,18 @@ const IncotermsRules: FC = () => {
 }
 
 const DeliveryConfirmation: FC = () => {
+  const { t } = useTranslation()
+
   return (
     <OptionsGroup
-      label='Delivery confirmations'
+      label={t('apps.shipments.form.delivery_confirmation')}
       fieldsToReset={['delivery_confirmation']}
       name='deliveryOptionsGroup'
     >
       <HookedInputSelect
         name='delivery_confirmation'
         initialValues={getDeliveryConfirmation().selectOptions}
-        placeholder='Select an option'
+        placeholder={t('apps.shipments.form.select_option')}
         isClearable
       />
     </OptionsGroup>
@@ -83,6 +88,7 @@ const DeliveryConfirmation: FC = () => {
  */
 const CustomsInfo: FC = () => {
   const { watch, setValue } = useFormContext<PackingFormValues>()
+  const { t } = useTranslation()
 
   const contentTypeValue = watch('contents_type')
   const restrictionTypeValue = watch('restriction_type')
@@ -101,7 +107,7 @@ const CustomsInfo: FC = () => {
 
   return (
     <OptionsGroup
-      label='Require custom forms'
+      label={t('apps.shipments.form.require_custom_forms')}
       name='customs_info_required'
       fieldsToReset={[
         'eel_pfc',
@@ -121,7 +127,7 @@ const CustomsInfo: FC = () => {
         <Spacer bottom='4'>
           <HookedInputSelect
             name='contents_type'
-            label='The type of item you are sending'
+            label={t('apps.shipments.form.customs_info_type')}
             initialValues={getContentType().selectOptions}
             isClearable
           />
@@ -131,7 +137,7 @@ const CustomsInfo: FC = () => {
           <Spacer bottom='4'>
             <HookedInput
               name='contents_explanation'
-              placeholder='Insert a brief description'
+              placeholder={t('apps.shipments.form.content_explanation_hint')}
             />
           </Spacer>
         )}
@@ -139,7 +145,7 @@ const CustomsInfo: FC = () => {
         <Spacer bottom='4'>
           <HookedInputSelect
             name='non_delivery_option'
-            label='In case the shipment cannot be delivered'
+            label={t('apps.shipments.form.customs_info_failed_delivery_label')}
             initialValues={getNonDeliveryOption().selectOptions}
             isClearable
           />
@@ -148,7 +154,7 @@ const CustomsInfo: FC = () => {
         <Spacer bottom='4'>
           <HookedInputSelect
             name='restriction_type'
-            label='Requires any special treatment'
+            label={t('apps.shipments.form.customs_info_restriction_type_label')}
             initialValues={getRestrictionType().selectOptions}
             isClearable
           />
@@ -157,18 +163,21 @@ const CustomsInfo: FC = () => {
           <Spacer bottom='4'>
             <HookedInput
               name='restriction_comments'
-              placeholder='Insert a brief description'
+              placeholder={t('apps.shipments.form.content_explanation_hint')}
             />
           </Spacer>
         )}
 
         <Spacer bottom='4'>
-          <HookedInput name='customs_signer' label='Customs signer' />
+          <HookedInput
+            name='customs_signer'
+            label={t('apps.shipments.form.customs_info_customs_signer_label')}
+          />
         </Spacer>
 
         <HookedInputCheckbox name='customs_certify'>
           <Text weight='semibold'>
-            I confirm the provided information is accurate
+            {t('apps.shipments.form.customs_info_confirm_checkbox_label')}
           </Text>
         </HookedInputCheckbox>
       </Card>

@@ -1,5 +1,4 @@
 import { OrderLineItems } from '#components/OrderSummary/OrderLineItems'
-import type { PageProps } from '#components/Routes'
 import { appRoutes } from '#data/routes'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
@@ -14,7 +13,10 @@ import {
   Section,
   SkeletonTemplate,
   Spacer,
-  useCoreSdkProvider
+  t,
+  useCoreSdkProvider,
+  useTranslation,
+  type PageProps
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -33,6 +35,7 @@ export const EditOrderStep: React.FC<
   const [, setLocation] = useLocation()
   const [apiError, setApiError] = useState<any>()
   const { sdkClient } = useCoreSdkProvider()
+  const { t } = useTranslation()
 
   const { order, isLoading } = useOrderDetails(orderId)
 
@@ -63,7 +66,7 @@ export const EditOrderStep: React.FC<
         overlay={overlay}
         gap='only-top'
         navigationButton={{
-          label: 'Close',
+          label: t('common.close'),
           icon: 'x',
           onClick() {
             setLocation(appRoutes.home.makePath({}))
@@ -71,8 +74,8 @@ export const EditOrderStep: React.FC<
         }}
       >
         <EmptyState
-          title='Not found'
-          description='We could not find the resource you are looking for.'
+          title={t('common.empty_states.not_found')}
+          description={t('common.empty_states.generic_not_found')}
         />
       </PageLayout>
     )
@@ -83,14 +86,15 @@ export const EditOrderStep: React.FC<
       title={
         <span>
           <SkeletonTemplate isLoading={isLoading}>
-            New order {order.market?.name}
+            {t('common.new')} {t('resources.orders.name').toLowerCase()}{' '}
+            {order.market?.name}
           </SkeletonTemplate>
         </span>
       }
       overlay={overlay}
       gap='only-top'
       navigationButton={{
-        label: 'Close',
+        label: t('common.close'),
         icon: 'x',
         onClick() {
           setLocation(appRoutes.home.makePath({}))
@@ -100,7 +104,7 @@ export const EditOrderStep: React.FC<
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer top='14'>
           <Card overflow='visible'>
-            <OrderLineItems title='Cart' order={order} />
+            <OrderLineItems title={t('apps.orders.tasks.cart')} order={order} />
           </Card>
         </Spacer>
 
@@ -112,10 +116,7 @@ export const EditOrderStep: React.FC<
                 errors: [
                   {
                     code: 42,
-                    title:
-                      'Cannot create the order without a valid item. Please select one.',
-                    detail:
-                      'Cannot create the order without a valid item. Please select one.'
+                    title: t('apps.orders.form.error_create_order')
                   }
                 ]
               })
@@ -143,7 +144,7 @@ export const EditOrderStep: React.FC<
           />
 
           <Spacer top='14'>
-            <Section title='Customer'>
+            <Section title={t('resources.customers.name')}>
               <Spacer top='6'>
                 <SelectCustomerComponent />
               </Spacer>
@@ -151,9 +152,9 @@ export const EditOrderStep: React.FC<
               <Spacer top='6'>
                 <HookedInputSelect
                   name='language_code'
-                  label='Language *'
+                  label={`${t('apps.orders.form.language')} *`}
                   initialValues={groupedLanguageList}
-                  hint={{ text: 'The language used for checkout.' }}
+                  hint={{ text: t('apps.orders.form.language_hint') }}
                 />
               </Spacer>
             </Section>
@@ -166,7 +167,9 @@ export const EditOrderStep: React.FC<
                 fullWidth
                 disabled={methods.formState.isSubmitting}
               >
-                Create order
+                {t('common.create_resource', {
+                  resource: t('resources.orders.name').toLowerCase()
+                })}
               </Button>
               <Spacer top='2'>
                 <HookedValidationApiError apiError={apiError} />
@@ -182,10 +185,7 @@ export const EditOrderStep: React.FC<
 const orderSchema = z.object({
   at_least_one_sku: z
     .boolean()
-    .refine(
-      (value) => value,
-      'Cannot create the order without a valid item. Please select one.'
-    ),
+    .refine((value) => value, t('apps.orders.form.error_create_order')),
   customer_email: z.string().email(),
   language_code: z
     .string()

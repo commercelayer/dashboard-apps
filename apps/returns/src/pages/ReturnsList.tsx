@@ -8,12 +8,13 @@ import {
   Spacer,
   useAppLinking,
   useResourceFilters,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function ReturnsList(): JSX.Element {
+function ReturnsList(): JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()
@@ -21,6 +22,7 @@ export function ReturnsList(): JSX.Element {
   const queryString = useSearch()
   const [, setLocation] = useLocation()
   const { goBack } = useAppLinking()
+  const { t } = useTranslation()
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
     useResourceFilters({
@@ -37,7 +39,7 @@ export function ReturnsList(): JSX.Element {
       mode={mode}
       gap='only-top'
       navigationButton={{
-        label: 'Back',
+        label: t('common.back'),
         icon: 'arrowLeft',
         onClick: () => {
           goBack({
@@ -90,3 +92,5 @@ export function ReturnsList(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default ReturnsList

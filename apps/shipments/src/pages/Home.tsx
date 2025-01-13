@@ -1,5 +1,5 @@
-import { getShipmentStatusName } from '#data/dictionaries'
 import { filtersInstructions } from '#data/filters'
+import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
   HomePageLayout,
@@ -9,17 +9,18 @@ import {
   Spacer,
   StatusIcon,
   Text,
-  useResourceFilters
+  useResourceFilters,
+  useTranslation
 } from '@commercelayer/app-elements'
-import type { Shipment } from '@commercelayer/sdk'
 import { useCallback } from 'react'
 import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
-export function Home(): JSX.Element {
+function Home(): JSX.Element {
   const search = useSearch()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
 
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
@@ -27,14 +28,15 @@ export function Home(): JSX.Element {
     instructions: filtersInstructions
   })
 
-  const getPresetUrlByStatus = useCallback(
-    (status: Shipment['status']): string => {
+  const getPresetUrl = useCallback(
+    (presetKey: keyof typeof presets): string => {
+      const preset = presets[presetKey]
       return appRoutes.list.makePath(
         {},
         adapters.adaptFormValuesToUrlQuery({
           formValues: {
-            status_in: [status],
-            viewTitle: getShipmentStatusName(status)
+            status_in: [preset.status_eq as string],
+            viewTitle: preset.viewTitle
           }
         })
       )
@@ -43,7 +45,7 @@ export function Home(): JSX.Element {
   )
 
   return (
-    <HomePageLayout title='Shipments'>
+    <HomePageLayout title={t('resources.shipments.name_other')}>
       <SearchWithNav
         hideFiltersNav
         onFilterClick={() => {}}
@@ -55,8 +57,8 @@ export function Home(): JSX.Element {
 
       <SkeletonTemplate isLoading={isLoadingCounters}>
         <Spacer bottom='14'>
-          <List title='Pending'>
-            <Link href={getPresetUrlByStatus('picking')} asChild>
+          <List title={t('apps.shipments.tasks.pending')}>
+            <Link href={getPresetUrl('picking')} asChild>
               <ListItem
                 icon={
                   <StatusIcon
@@ -67,26 +69,28 @@ export function Home(): JSX.Element {
                 }
               >
                 <Text weight='semibold'>
-                  Picking {formatCounter(counters?.picking)}
+                  {t('apps.shipments.tasks.picking')}{' '}
+                  {formatCounter(counters?.picking)}
                 </Text>
                 <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
 
-            <Link href={getPresetUrlByStatus('packing')} asChild>
+            <Link href={getPresetUrl('packing')} asChild>
               <ListItem
                 icon={
                   <StatusIcon name='package' background='orange' gap='small' />
                 }
               >
                 <Text weight='semibold'>
-                  Packing {formatCounter(counters?.packing)}
+                  {t('apps.shipments.tasks.packing')}{' '}
+                  {formatCounter(counters?.packing)}
                 </Text>
                 <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
 
-            <Link href={getPresetUrlByStatus('ready_to_ship')} asChild>
+            <Link href={getPresetUrl('readyToShip')} asChild>
               <ListItem
                 icon={
                   <StatusIcon
@@ -97,13 +101,14 @@ export function Home(): JSX.Element {
                 }
               >
                 <Text weight='semibold'>
-                  Ready to ship {formatCounter(counters?.readyToShip)}
+                  {t('apps.shipments.tasks.ready_to_ship')}{' '}
+                  {formatCounter(counters?.readyToShip)}
                 </Text>
                 <StatusIcon name='caretRight' />
               </ListItem>
             </Link>
 
-            <Link href={getPresetUrlByStatus('on_hold')} asChild>
+            <Link href={getPresetUrl('onHold')} asChild>
               <ListItem
                 icon={
                   <StatusIcon
@@ -114,7 +119,8 @@ export function Home(): JSX.Element {
                 }
               >
                 <Text weight='semibold'>
-                  On hold {formatCounter(counters?.onHold)}
+                  {t('apps.shipments.tasks.on_hold')}{' '}
+                  {formatCounter(counters?.onHold)}
                 </Text>
                 <StatusIcon name='caretRight' />
               </ListItem>
@@ -124,7 +130,7 @@ export function Home(): JSX.Element {
       </SkeletonTemplate>
 
       <Spacer bottom='14'>
-        <List title='Browse'>
+        <List title={t('apps.shipments.tasks.browse')}>
           <Link href={appRoutes.list.makePath({})} asChild>
             <ListItem
               icon={
@@ -135,7 +141,9 @@ export function Home(): JSX.Element {
                 />
               }
             >
-              <Text weight='semibold'>All shipments</Text>
+              <Text weight='semibold'>
+                {t('apps.shipments.tasks.all_shipments')}
+              </Text>
               <StatusIcon name='caretRight' />
             </ListItem>
           </Link>
@@ -148,3 +156,5 @@ export function Home(): JSX.Element {
 function formatCounter(counter = 0): string {
   return `(${Intl.NumberFormat().format(counter)})`
 }
+
+export default Home

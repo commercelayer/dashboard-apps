@@ -11,7 +11,8 @@ import {
   StatusIcon,
   Text,
   useCoreSdkProvider,
-  useResourceFilters
+  useResourceFilters,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
@@ -19,6 +20,7 @@ import { useListCounters } from '../metricsApi/useListCounters'
 
 function Home(): JSX.Element {
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const { sdkClient } = useCoreSdkProvider()
   const search = useSearch()
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
@@ -29,12 +31,12 @@ function Home(): JSX.Element {
 
   return (
     <HomePageLayout
-      title='Orders'
+      title={t('resources.orders.name_other')}
       toolbar={{
         buttons: [
           {
             icon: 'plus',
-            label: 'New order',
+            label: `${t('common.new')} ${t('resources.orders.name').toLowerCase()}`,
             size: 'small',
             onClick: () => {
               void sdkClient.markets
@@ -83,7 +85,7 @@ function Home(): JSX.Element {
 
       <SkeletonTemplate isLoading={isLoadingCounters}>
         <Spacer bottom='14'>
-          <List title='Open'>
+          <List title={t('apps.orders.tasks.open')}>
             <Link
               href={appRoutes.list.makePath(
                 {},
@@ -192,7 +194,7 @@ function Home(): JSX.Element {
         </Spacer>
 
         <Spacer bottom='14'>
-          <List title='Browse'>
+          <List title={t('apps.orders.tasks.browse')}>
             <Link
               href={appRoutes.list.makePath(
                 {},
