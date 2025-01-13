@@ -22,20 +22,20 @@ const Main: React.FC<ClAppProps> = (props) => (
           revalidateOnFocus: false
         }}
       >
-        <I18NProvider>
-          <TokenProvider
-            kind='shipments'
-            appSlug='shipments'
-            devMode={isDev}
-            loadingElement={<div />}
-            {...props}
-          >
+        <TokenProvider
+          kind='shipments'
+          appSlug='shipments'
+          devMode={isDev}
+          loadingElement={<div />}
+          {...props}
+        >
+          <I18NProvider>
             <CoreSdkProvider>
               <MetaTags />
               <App routerBase={props?.routerBase} />
             </CoreSdkProvider>
-          </TokenProvider>
-        </I18NProvider>
+          </I18NProvider>
+        </TokenProvider>
       </SWRConfig>
     </ErrorBoundary>
   </StrictMode>
