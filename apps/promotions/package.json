@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "app-promotions",
-  "version": "2.11.0",
+  "version": "2.11.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
