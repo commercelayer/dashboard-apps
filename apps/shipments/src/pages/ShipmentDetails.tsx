@@ -122,9 +122,6 @@ function ShipmentDetails(): JSX.Element {
           <Spacer top='14'>
             <ShipmentSteps shipment={shipment} />
           </Spacer>
-          <Spacer top='14'>
-            <ShipmentInfo shipment={shipment} />
-          </Spacer>
           {purchaseError != null && (
             <Spacer top='14'>
               <Alert status='error'>{purchaseError}</Alert>
@@ -135,6 +132,9 @@ function ShipmentDetails(): JSX.Element {
           </Spacer>
           <Spacer top='14'>
             <ShipmentAddresses shipment={shipment} />
+          </Spacer>
+          <Spacer top='14'>
+            <ShipmentInfo shipment={shipment} />
           </Spacer>
           <Spacer top='14'>
             <ResourceDetails

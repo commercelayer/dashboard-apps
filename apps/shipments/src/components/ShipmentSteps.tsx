@@ -48,11 +48,11 @@ export const ShipmentSteps = withSkeletonTemplate<Props>(
         <div>
           <Spacer bottom='2'>
             <Text size='small' tag='div' variant='info' weight='semibold'>
-              {t('apps.shipments.details.origin')}
+              {t('resources.shipping_methods.name')}
             </Text>
           </Spacer>
           <Text weight='semibold' className='text-[18px]'>
-            {shipment.stock_location?.name}
+            {shipment.shipping_method?.name}
           </Text>
         </div>
       </Stack>
