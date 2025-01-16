@@ -65,7 +65,8 @@ function ShipmentList(): JSX.Element {
                 'status',
                 'order',
                 'stock_location',
-                'stock_transfers'
+                'stock_transfers',
+                'shipping_method'
               ],
               orders: ['market', 'shipments'],
               markets: ['name']
@@ -75,7 +76,8 @@ function ShipmentList(): JSX.Element {
               'order.market',
               'order.shipments',
               'stock_location',
-              'stock_transfers'
+              'stock_transfers',
+              'shipping_method'
             ],
             pageSize: 25,
             sort: {
