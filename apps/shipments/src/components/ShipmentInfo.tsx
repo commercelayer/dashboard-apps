@@ -37,10 +37,10 @@ export const ShipmentInfo = withSkeletonTemplate<Props>(
     return (
       <Section title='Info'>
         <ListDetailsItem
-          label={t('resources.shipping_methods.name')}
+          label={t('apps.shipments.details.origin')}
           gutter='none'
         >
-          {shipment.shipping_method?.name}
+          {shipment.stock_location?.name}
         </ListDetailsItem>
         <ListDetailsItem label={t('resources.orders.name')} gutter='none'>
           {canAccess('orders') ? (
