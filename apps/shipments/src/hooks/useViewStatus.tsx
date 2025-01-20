@@ -105,22 +105,18 @@ export function useViewStatus(shipment: Shipment): ViewStatus {
         break
 
       case 'ready_to_ship':
-        result.contextActions = purchased
-          ? []
-          : [
-              {
-                label: t('apps.shipments.actions.set_back_to_packing'),
-                triggerAttribute: '_packing'
-              }
-            ]
-        result.footerActions = purchased
-          ? []
-          : [
-              {
-                label: t('apps.shipments.actions.set_shipped'),
-                triggerAttribute: '_ship'
-              }
-            ]
+        result.contextActions = [
+          {
+            label: t('apps.shipments.actions.set_back_to_packing'),
+            triggerAttribute: '_packing'
+          }
+        ]
+        result.footerActions = [
+          {
+            label: t('apps.shipments.actions.set_shipped'),
+            triggerAttribute: '_ship'
+          }
+        ]
         break
 
       case 'shipped':
