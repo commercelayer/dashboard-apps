@@ -20,7 +20,7 @@ export const App: FC<AppProps> = ({ routerBase }) => {
     <Router base={routerBase}>
       <Switch>
         <Route path={appRoutes.home.path}>
-          <Redirect to={appRoutes.list.path} />
+          <Redirect to={appRoutes.list.path} replace />
         </Route>
         <Route path={appRoutes.list.path} component={SkusList} />
         <Route path={appRoutes.filters.path} component={Filters} />
