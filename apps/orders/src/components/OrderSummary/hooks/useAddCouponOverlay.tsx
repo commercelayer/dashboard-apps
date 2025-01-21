@@ -6,7 +6,8 @@ import {
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useOverlay
+  useOverlay,
+  useTranslation
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -41,17 +42,18 @@ export function useAddCouponOverlay(
 const Form: React.FC<Props> = ({ order, onChange, close }) => {
   const { sdkClient } = useCoreSdkProvider()
   const [apiError, setApiError] = useState<string>()
+  const { t } = useTranslation()
 
   const validationSchema = useMemo(
     () =>
       z.object({
         couponCode: z
           .string({
-            required_error: 'Please enter a valid coupon code.',
-            invalid_type_error: 'Please enter a valid coupon code.'
+            required_error: t('validation.coupon_code_invalid'),
+            invalid_type_error: t('validation.coupon_code_invalid')
           })
           .min(8, {
-            message: 'Coupon code is too short (minimum is 8 characters)'
+            message: t('validation.coupon_code_too_short')
           })
       }),
     []
@@ -89,24 +91,26 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
       }}
     >
       <PageLayout
-        title='Add coupon'
+        title={t('common.add_resource', {
+          resource: t('resources.coupons.name').toLowerCase()
+        })}
         navigationButton={{
           onClick: () => {
             close()
           },
-          label: 'Cancel',
+          label: t('common.cancel'),
           icon: 'x'
         }}
       >
         <Spacer bottom='8'>
           <HookedInput
             disabled={isSubmitting}
-            label='Coupon code'
+            label={t('apps.orders.form.coupon_code')}
             name='couponCode'
           />
         </Spacer>
         <Button type='submit' fullWidth disabled={isSubmitting}>
-          Apply
+          {t('common.apply')}
         </Button>
 
         <Spacer top='4'>

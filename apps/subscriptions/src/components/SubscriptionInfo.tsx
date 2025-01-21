@@ -2,9 +2,9 @@ import { getFrequencyLabelByValue } from '#data/frequencies'
 import { makeOrderSubscription } from '#mocks'
 import {
   ListDetailsItem,
-  navigateTo,
   Section,
   Text,
+  useAppLinking,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { OrderSubscription } from '@commercelayer/sdk'
@@ -17,30 +17,22 @@ interface Props {
 export const SubscriptionInfo: FC<Props> = ({
   subscription = makeOrderSubscription()
 }) => {
-  const {
-    canAccess,
-    settings: { mode }
-  } = useTokenProvider()
+  const { canAccess } = useTokenProvider()
+  const { navigateTo } = useAppLinking()
 
   const subscriptionCustomerEmail = subscription?.customer_email
   const navigateToCustomer = canAccess('customers')
     ? navigateTo({
-        destination: {
-          app: 'customers',
-          resourceId: subscription?.customer?.id,
-          mode
-        }
+        app: 'customers',
+        resourceId: subscription?.customer?.id
       })
     : {}
 
   const subscriptionOrderNumber = `#${subscription.source_order?.number}`
   const navigateToOrder = canAccess('orders')
     ? navigateTo({
-        destination: {
-          app: 'orders',
-          resourceId: subscription.source_order?.id,
-          mode
-        }
+        app: 'orders',
+        resourceId: subscription.source_order?.id
       })
     : {}
 

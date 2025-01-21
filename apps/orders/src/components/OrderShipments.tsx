@@ -1,8 +1,9 @@
 import {
   ResourceListItem,
   Section,
-  navigateTo,
+  useAppLinking,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order, Shipment } from '@commercelayer/sdk'
@@ -13,18 +14,13 @@ interface Props {
 }
 
 const renderShipment = (shipment: Shipment): JSX.Element => {
-  const {
-    canAccess,
-    settings: { mode }
-  } = useTokenProvider()
+  const { canAccess } = useTokenProvider()
+  const { navigateTo } = useAppLinking()
 
   const navigateToShipment = canAccess('shipments')
     ? navigateTo({
-        destination: {
-          app: 'shipments',
-          resourceId: shipment.id,
-          mode
-        }
+        app: 'shipments',
+        resourceId: shipment.id
       })
     : {}
 
@@ -50,12 +46,18 @@ function hasShipments(
 }
 
 export const OrderShipments = withSkeletonTemplate<Props>(({ order }) => {
+  const { t } = useTranslation()
+
   if (!hasShipments(order)) {
     return null
   }
 
   return (
-    <Section title='Shipments'>
+    <Section
+      title={t('resources.shipments.name', {
+        count: order.shipments.length
+      })}
+    >
       {order.shipments.map((shipment) => renderShipment(shipment))}
     </Section>
   )

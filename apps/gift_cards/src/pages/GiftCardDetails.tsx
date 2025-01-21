@@ -18,7 +18,7 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
-  goBack,
+  useAppLinking,
   useCoreSdkProvider,
   useTokenProvider,
   type PageLayoutProps,
@@ -36,6 +36,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
   const [, setLocation] = useLocation()
   const { sdkClient } = useCoreSdkProvider()
   const { canUser } = useTokenProvider()
+  const { goBack } = useAppLinking()
 
   const giftCardId = params?.giftCardId
   const { giftCard, isLoading, error, mutateGiftCard } =
@@ -152,7 +153,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: giftCardId,
             defaultRelativePath: appRoutes.list.makePath({})
           })
         },

@@ -1,4 +1,4 @@
-import { CouponTable } from '#components/CouponTable'
+import { CouponRow } from '#components/CouponTable'
 import type { PageProps } from '#components/Routes'
 import { appRoutes } from '#data/routes'
 import {
@@ -18,7 +18,7 @@ function Page(props: PageProps<typeof appRoutes.couponList>): JSX.Element {
   const [, setLocation] = useLocation()
   const [searchValue, setSearchValue] = useState<string>()
 
-  const { list, isLoading, removeItem } = useResourceList({
+  const { list, ResourceList } = useResourceList({
     type: 'coupons',
     query: {
       filters: {
@@ -77,15 +77,29 @@ function Page(props: PageProps<typeof appRoutes.couponList>): JSX.Element {
       </Spacer>
 
       <Spacer top='10'>
-        <CouponTable
-          isLoading={isLoading}
-          boxed
-          promotionId={props.params.promotionId}
-          coupons={list ?? []}
-          onDelete={(couponId) => {
-            removeItem(couponId)
+        <div
+          style={{
+            borderWidth: '1px',
+            borderBottom: 0
           }}
-        />
+        >
+          <ResourceList
+            variant='table'
+            headings={[
+              { label: 'Code' },
+              { label: 'Used' },
+              { label: 'Expiry' },
+              { label: '' }
+            ]}
+            ItemTemplate={(p) => (
+              <CouponRow
+                {...p}
+                deleteRule={list?.length === 1}
+                promotionId={props.params.promotionId}
+              />
+            )}
+          />
+        </div>
       </Spacer>
     </PageLayout>
   )

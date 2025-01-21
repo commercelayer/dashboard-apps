@@ -21,7 +21,7 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
-  goBack,
+  useAppLinking,
   useTokenProvider,
   type DropdownItemProps,
   type PageHeadingProps
@@ -39,6 +39,7 @@ export function StockTransferDetails(): JSX.Element {
   const [, params] = useRoute<{ stockTransferId: string }>(
     appRoutes.details.path
   )
+  const { goBack } = useAppLinking()
 
   const stockTransferId = params?.stockTransferId ?? ''
 
@@ -151,7 +152,7 @@ export function StockTransferDetails(): JSX.Element {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: stockTransfer.id,
             defaultRelativePath: appRoutes.home.makePath({})
           })
         },

@@ -17,6 +17,7 @@ import {
   Badge,
   Button,
   Card,
+  CodeEditor,
   Dropdown,
   DropdownItem,
   Icon,
@@ -35,7 +36,7 @@ import {
   formatDate,
   formatDateWithPredicate,
   getPromotionDisplayStatus,
-  goBack,
+  useAppLinking,
   useCoreSdkProvider,
   useTokenProvider,
   withSkeletonTemplate
@@ -50,6 +51,7 @@ function Page(
   const {
     settings: { mode }
   } = useTokenProvider()
+  const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
 
@@ -126,7 +128,7 @@ function Page(
         label: 'Back',
         onClick() {
           goBack({
-            setLocation,
+            currentResourceId: promotion.id,
             defaultRelativePath: appRoutes.home.makePath({})
           })
         }
@@ -165,13 +167,13 @@ function Page(
         {promotion.type === 'flex_promotions' && (
           <Spacer top='14'>
             <Section title='Rules' border='none'>
-              <Text size='small'>
-                <Card overflow='visible' gap='4'>
-                  <pre style={{ overflowX: 'auto' }}>
-                    {JSON.stringify(promotion.rules, undefined, 2)}
-                  </pre>
-                </Card>
-              </Text>
+              <CodeEditor
+                readOnly
+                value={JSON.stringify(promotion.rules, undefined, 2)}
+                language='json'
+                jsonSchema='order-rules'
+                height='600px'
+              />
             </Section>
           </Spacer>
         )}

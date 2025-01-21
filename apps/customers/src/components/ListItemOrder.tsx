@@ -1,7 +1,7 @@
 import { makeOrder } from '#mocks'
 import {
   ResourceListItem,
-  navigateTo,
+  useAppLinking,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -14,18 +14,13 @@ interface Props {
 function ListItemOrderComponent({
   resource = makeOrder()
 }: Props): JSX.Element {
-  const {
-    canAccess,
-    settings: { mode }
-  } = useTokenProvider()
+  const { canAccess } = useTokenProvider()
+  const { navigateTo } = useAppLinking()
 
   const navigateToOrder = canAccess('orders')
     ? navigateTo({
-        destination: {
-          app: 'orders',
-          resourceId: resource.id,
-          mode
-        }
+        app: 'orders',
+        resourceId: resource.id
       })
     : {}
 

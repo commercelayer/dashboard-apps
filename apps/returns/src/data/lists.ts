@@ -1,3 +1,4 @@
+import { t } from '@commercelayer/app-elements'
 import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 
 export type ListType =
@@ -11,24 +12,24 @@ export const presets: Record<ListType, FormFullValues> = {
   requested: {
     status_in: ['requested'],
     archived_at_null: 'show',
-    viewTitle: 'Requested'
+    viewTitle: t('apps.returns.tasks.requested')
   },
   approved: {
     status_in: ['approved'],
     archived_at_null: 'show',
-    viewTitle: 'Approved'
+    viewTitle: t('apps.returns.tasks.approved')
   },
   shipped: {
     status_in: ['shipped'],
     archived_at_null: 'show',
-    viewTitle: 'Shipped'
+    viewTitle: t('apps.returns.tasks.shipped')
   },
   history: {
     archived_at_null: 'hide',
-    viewTitle: 'All returns'
+    viewTitle: t('apps.returns.tasks.all_returns')
   },
   archived: {
     archived_at_null: 'only',
-    viewTitle: 'Archived'
+    viewTitle: t('apps.returns.tasks.archived')
   }
 }

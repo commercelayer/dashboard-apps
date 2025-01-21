@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "dashboard-apps-common",
-  "version": "2.7.0",
+  "version": "2.11.2",
   "type": "module",
   "scripts": {
     "lint": "eslint src --ext .ts,.tsx",
@@ -9,8 +9,8 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "3.2.0",
-    "@commercelayer/sdk": "^6.25.0",
+    "@commercelayer/app-elements": "4.1.0",
+    "@commercelayer/sdk": "^6.26.0",
     "@hookform/resolvers": "^3.9.1",
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
@@ -18,15 +18,15 @@
     "react-hook-form": "7.53.2",
     "react-qrcode-logo": "^3.0.0",
     "swr": "^2.2.5",
-    "type-fest": "^4.26.1",
+    "type-fest": "^4.30.0",
     "wouter": "^3.3.5",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^1.4.5",
     "@types/lodash": "^4.17.13",
     "@types/react": "^18.3.12",
     "eslint": "^8.57.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   }
 }

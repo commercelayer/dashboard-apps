@@ -1,7 +1,6 @@
 import { makeStockTransfer } from '#mocks'
-import { ResourceListItem, navigateTo } from '@commercelayer/app-elements'
+import { ResourceListItem, useAppLinking } from '@commercelayer/app-elements'
 import type { StockTransfer } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
 
 interface Props {
   resource?: StockTransfer
@@ -14,7 +13,7 @@ export function ListItemStockTransfer({
   isLoading,
   delayMs
 }: Props): JSX.Element {
-  const [, setLocation] = useLocation()
+  const { navigateTo } = useAppLinking()
 
   return (
     <ResourceListItem
@@ -22,11 +21,8 @@ export function ListItemStockTransfer({
       isLoading={isLoading}
       delayMs={delayMs}
       {...navigateTo({
-        setLocation,
-        destination: {
-          app: 'stock_transfers',
-          resourceId: resource.id
-        }
+        app: 'stock_transfers',
+        resourceId: resource.id
       })}
     />
   )

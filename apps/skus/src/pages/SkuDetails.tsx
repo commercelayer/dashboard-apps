@@ -12,7 +12,7 @@ import {
   Tab,
   Tabs,
   Text,
-  goBack,
+  useAppLinking,
   useTokenProvider,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
@@ -33,6 +33,7 @@ export const SkuDetails: FC = () => {
     settings: { mode, extras },
     canUser
   } = useTokenProvider()
+  const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ skuId: string }>(appRoutes.details.path)
@@ -207,7 +208,7 @@ export const SkuDetails: FC = () => {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: skuId,
             defaultRelativePath: appRoutes.list.makePath({})
           })
         },

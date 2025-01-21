@@ -15,9 +15,14 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { type z } from 'zod'
-import { priceTierFormSchema } from './schema'
+import {
+  priceTierFrequencyFormSchema,
+  priceTierVolumeFormSchema
+} from './schema'
 
-export type PriceTierFormValues = z.infer<typeof priceTierFormSchema>
+export type PriceTierFormValues =
+  | z.infer<typeof priceTierVolumeFormSchema>
+  | z.infer<typeof priceTierFrequencyFormSchema>
 
 interface Props {
   defaultValues?: Partial<PriceTierFormValues>
@@ -37,7 +42,10 @@ export function PriceTierForm({
 }: Props): JSX.Element {
   const priceTierFormMethods = useForm<PriceTierFormValues>({
     defaultValues,
-    resolver: zodResolver(priceTierFormSchema)
+    resolver:
+      defaultValues?.type === 'volume'
+        ? zodResolver(priceTierVolumeFormSchema)
+        : zodResolver(priceTierFrequencyFormSchema)
   })
 
   const watchedUpTo = priceTierFormMethods.watch('up_to')

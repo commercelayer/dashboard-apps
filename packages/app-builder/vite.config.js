@@ -33,6 +33,8 @@ const htmlPlugin = ({ viteBase = '/' }) => {
  * @param {string} appSlug 
  * @returns 
  */
+
+// @ts-expect-error mismatching types: waiting for vitest 3.0 (see https://github.com/vitest-dev/vitest/issues/7014)
 export const defineConfig = (appSlug) => vitestDefineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const viteBase = env.PUBLIC_PROJECT_PATH != null && env.PUBLIC_PROJECT_PATH !== ''

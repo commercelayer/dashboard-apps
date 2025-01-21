@@ -10,6 +10,7 @@ import {
   withSkeletonTemplate,
   type ResourceListItemTemplateProps
 } from '@commercelayer/app-elements'
+import debounce from 'lodash/debounce'
 
 interface Props extends ResourceListItemTemplateProps<'sku_list_items'> {
   hasBundles: boolean
@@ -51,15 +52,14 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
               <InputSpinner
                 defaultValue={resource?.quantity ?? 1}
                 min={1}
-                disableKeyboard
-                onChange={(newQuantity) => {
+                onChange={debounce((newQuantity) => {
                   if (resource != null) {
                     void sdkClient.sku_list_items.update({
                       id: resource.id,
                       quantity: newQuantity
                     })
                   }
-                }}
+                }, 500)}
               />
             ) : (
               <Text weight='semibold' wrap='nowrap'>

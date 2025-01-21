@@ -21,7 +21,7 @@ const stockItemFormSchema = z.object({
   id: z.string().optional(),
   stockLocation: z.string().min(1),
   item: z.string().min(1),
-  quantity: z.string().min(0)
+  quantity: z.number().min(0)
 })
 
 export type StockItemFormValues = z.infer<typeof stockItemFormSchema>

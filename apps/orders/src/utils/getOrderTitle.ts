@@ -1,3 +1,4 @@
+import { t } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 
 /**
@@ -8,6 +9,8 @@ import type { Order } from '@commercelayer/sdk'
 
 export const getOrderTitle = (order: Order): string => {
   const orderTitleMarket =
-    order.market?.name != null ? `${order.market.name}` : 'Order'
+    order.market?.name != null
+      ? `${order.market.name}`
+      : t('resources.orders.name')
   return `${orderTitleMarket} #${order.number}`
 }

@@ -22,6 +22,7 @@ export const orderIncludeAttribute = [
   'shipments.shipping_method',
   'shipments.available_shipping_methods',
   'shipments.stock_location',
+  'shipments.shipping_method',
   'shipments.stock_line_items',
   'shipments.stock_line_items.sku'
 ]

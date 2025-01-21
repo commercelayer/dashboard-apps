@@ -15,13 +15,15 @@ import {
   Text,
   getAvatarSrcFromRate,
   getShipmentRates,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function Purchase(): JSX.Element | null {
+function Purchase(): JSX.Element | null {
   const [, params] = useRoute<{ shipmentId: string }>(appRoutes.purchase.path)
+  const { t } = useTranslation()
   const shipmentId = params?.shipmentId ?? ''
 
   const { shipment, isLoading } = useShipmentDetails(shipmentId)
@@ -35,7 +37,7 @@ export function Purchase(): JSX.Element | null {
     return (
       <NotAuthorized
         shipmentId={shipmentId}
-        title='Shipping label already purchased'
+        title={t('apps.shipments.details.label_already_purchased')}
       />
     )
   }
@@ -49,6 +51,7 @@ function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
     settings: { mode }
   } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const [selectedRateId, setSelectedRateId] = useState<string | undefined>()
 
   const { isRefreshing } = useShipmentRates(shipmentId)
@@ -98,8 +101,8 @@ function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
 
   const rateErrors = shipment.get_rates_errors?.map((error) =>
     isGetRatesError(error)
-      ? `${error.carrier}: ${error.message ?? 'Unable to get rates'}`
-      : 'Unable to get rates'
+      ? `${error.carrier}: ${error.message ?? t('apps.shipments.details.get_rates_error')}`
+      : t('apps.shipments.details.get_rates_error')
   )
 
   const options = useMemo(() => {
@@ -148,12 +151,12 @@ function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
   return (
     <PageLayout
       mode={mode}
-      title='Select a shipping rate'
+      title={t('apps.shipments.details.select_rate')}
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.details.makePath({ shipmentId }))
         },
-        label: `Cancel`,
+        label: t('common.cancel'),
         icon: 'x'
       }}
     >
@@ -193,10 +196,10 @@ function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
               }}
             >
               {!isReady
-                ? 'Getting rates...'
+                ? t('apps.shipments.details.getting_rates')
                 : isPurchasing
-                  ? 'Purchasing...'
-                  : 'Purchase label'}
+                  ? t('apps.shipments.details.purchasing')
+                  : t('apps.shipments.actions.purchase_label')}
             </Button>
           </SkeletonTemplate>
         </Spacer>
@@ -216,23 +219,24 @@ function NotAuthorized({
     settings: { mode }
   } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   return (
     <PageLayout
-      title='Select a shipping rate'
+      title={t('apps.shipments.details.select_rate')}
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
         },
-        label: 'Shipments',
+        label: t('resources.shipments.name_other'),
         icon: 'arrowLeft'
       }}
       mode={mode}
     >
       <EmptyState
-        title={title ?? 'Not authorized'}
+        title={title ?? t('common.not_authorized')}
         action={
           <Link href={appRoutes.details.makePath({ shipmentId })}>
-            <Button variant='primary'>Go back</Button>
+            <Button variant='primary'>{t('common.go_back')}</Button>
           </Link>
         }
       />
@@ -248,3 +252,5 @@ interface GetRatesError {
 function isGetRatesError(error: any): error is GetRatesError {
   return error.type === 'rate_error'
 }
+
+export default Purchase

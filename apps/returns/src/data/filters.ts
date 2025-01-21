@@ -1,8 +1,9 @@
+import { t } from '@commercelayer/app-elements'
 import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 
 export const instructions: FiltersInstructions = [
   {
-    label: 'Return locations',
+    label: t('apps.returns.details.return_locations'),
     type: 'options',
     sdk: {
       predicate: 'stock_location_id_in'
@@ -16,6 +17,7 @@ export const instructions: FiltersInstructions = [
         searchBy: 'name_cont',
         sortBy: { attribute: 'id', direction: 'asc' },
         previewLimit: 5,
+        hideWhenSingleItem: true,
         filters: {
           disabled_at_null: true
         }
@@ -23,12 +25,11 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Status',
+    label: t('apps.returns.attributes.status'),
     type: 'options',
     sdk: {
       predicate: 'status_in',
       defaultOptions: [
-        'requested',
         'approved',
         'shipped',
         'received',
@@ -37,25 +38,45 @@ export const instructions: FiltersInstructions = [
         'refunded'
       ]
     },
-
     render: {
       component: 'inputToggleButton',
       props: {
         mode: 'multi',
         options: [
-          { value: 'requested', label: 'Requested' },
-          { value: 'approved', label: 'Approved' },
-          { value: 'shipped', label: 'Shipped' },
-          { value: 'received', label: 'Received' },
-          { value: 'cancelled', label: 'Cancelled' },
-          { value: 'rejected', label: 'Rejected' },
-          { value: 'refunded', label: 'Refunded' }
+          {
+            value: 'requested',
+            label: t('resources.returns.attributes.status.requested')
+          },
+          {
+            value: 'approved',
+            label: t('resources.returns.attributes.status.approved')
+          },
+          {
+            value: 'shipped',
+            label: t('resources.returns.attributes.status.shipped')
+          },
+          {
+            value: 'received',
+            label: t('resources.returns.attributes.status.received')
+          },
+          {
+            value: 'cancelled',
+            label: t('resources.returns.attributes.status.cancelled')
+          },
+          {
+            value: 'rejected',
+            label: t('resources.returns.attributes.status.rejected')
+          },
+          {
+            value: 'refunded',
+            label: t('resources.returns.attributes.status.refunded')
+          }
         ]
       }
     }
   },
   {
-    label: 'Time Range',
+    label: t('common.time_range'),
     type: 'timeRange',
     sdk: {
       predicate: 'updated_at'
@@ -65,7 +86,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Search',
+    label: t('common.search'),
     type: 'textSearch',
     sdk: {
       predicate:

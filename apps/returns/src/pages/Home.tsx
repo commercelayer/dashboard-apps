@@ -10,15 +10,17 @@ import {
   Spacer,
   StatusIcon,
   Text,
-  useResourceFilters
+  useResourceFilters,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
-export function Home(): JSX.Element {
+function Home(): JSX.Element {
   const [, setLocation] = useLocation()
   const search = useSearch()
+  const { t } = useTranslation()
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
   const { adapters, SearchWithNav } = useResourceFilters({
@@ -26,7 +28,7 @@ export function Home(): JSX.Element {
   })
 
   return (
-    <HomePageLayout title='Returns'>
+    <HomePageLayout title={t('resources.returns.name_other')}>
       <SearchWithNav
         hideFiltersNav
         onFilterClick={() => {}}
@@ -38,7 +40,7 @@ export function Home(): JSX.Element {
 
       <SkeletonTemplate isLoading={isLoadingCounters}>
         <Spacer bottom='14'>
-          <List title='Open'>
+          <List title={t('apps.returns.tasks.open')}>
             <Link
               href={appRoutes.list.makePath(
                 adapters.adaptFormValuesToUrlQuery({
@@ -112,7 +114,7 @@ export function Home(): JSX.Element {
         </Spacer>
 
         <Spacer bottom='14'>
-          <List title='Browse'>
+          <List title={t('apps.returns.tasks.browse')}>
             <Link
               href={appRoutes.list.makePath(
                 adapters.adaptFormValuesToUrlQuery({
@@ -159,3 +161,5 @@ export function Home(): JSX.Element {
 function formatCounter(counter = 0): string {
   return `(${Intl.NumberFormat().format(counter)})`
 }
+
+export default Home

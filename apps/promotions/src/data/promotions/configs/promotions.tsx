@@ -5,21 +5,11 @@ export const genericPromotionOptions = z.object({
   starts_at: z.date(),
   expires_at: z.date(),
   reference: z.string().nullish(),
-  total_usage_limit: z
-    .number()
-    .min(1)
-    .or(z.string().regex(/^[1-9][0-9]+$|^[1-9]$|^$/))
-    .nullish()
-    .transform((p) =>
-      p != null && p !== '' ? parseInt(p.toString()) : undefined
-    ),
+  total_usage_limit: z.preprocess((value) => {
+    return Number.isNaN(value) ? null : value
+  }, z.number().min(1).nullish()),
   exclusive: z.boolean().default(false),
-  priority: z
-    .number()
-    .min(1)
-    .or(z.string().regex(/^[1-9][0-9]+$|^[1-9]$|^$/))
-    .nullish()
-    .transform((p) =>
-      p != null && p !== '' ? parseInt(p.toString()) : undefined
-    )
+  priority: z.preprocess((value) => {
+    return Number.isNaN(value) ? null : value
+  }, z.number().min(1).nullish())
 })

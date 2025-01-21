@@ -7,7 +7,8 @@ import {
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { type CustomerCreate } from '@commercelayer/sdk'
 import { useState } from 'react'
@@ -17,16 +18,20 @@ export function CustomerNew(): JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
 
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl = appRoutes.list.makePath()
+  const pageTitle = t('common.new_resource', {
+    resource: t('resources.customers.name').toLowerCase()
+  })
 
   if (!canUser('create', 'customers')) {
     return (
       <PageLayout
-        title='New customer'
+        title={pageTitle}
         navigationButton={{
           label: 'Back',
           icon: 'arrowLeft',
@@ -36,8 +41,8 @@ export function CustomerNew(): JSX.Element {
         }}
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title={t('common.not_authorized')}
+          description={t('common.not_authorized_description')}
           action={
             <Link href={goBackUrl}>
               <Button variant='primary'>Go back</Button>
@@ -50,9 +55,9 @@ export function CustomerNew(): JSX.Element {
 
   return (
     <PageLayout
-      title={<>New customer</>}
+      title={<>{pageTitle}</>}
       navigationButton={{
-        label: 'Customers',
+        label: t('resources.customers.name_other'),
         icon: 'arrowLeft',
         onClick: () => {
           setLocation(goBackUrl)
@@ -102,3 +107,5 @@ function adaptFormValuesToCustomer(
     }
   }
 }
+
+export default CustomerNew

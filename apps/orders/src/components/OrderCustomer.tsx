@@ -6,8 +6,9 @@ import {
   Section,
   StatusIcon,
   Text,
-  navigateTo,
+  useAppLinking,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
@@ -21,17 +22,15 @@ interface Props {
 
 export const OrderCustomer = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element | null => {
-    const {
-      canAccess,
-      settings: { mode }
-    } = useTokenProvider()
-
+    const { canAccess } = useTokenProvider()
+    const { t } = useTranslation()
     const { mutateOrder } = useOrderDetails(order.id)
     const { isEditing } = useOrderStatus(order)
     const { Overlay: EditCustomerOverlay, open: openEditCustomerOverlay } =
       useEditCustomerOverlay(order, () => {
         void mutateOrder()
       })
+    const { navigateTo } = useAppLinking()
 
     if (order.customer == null) {
       return null
@@ -39,11 +38,8 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
 
     const navigateToCustomer = canAccess('customers')
       ? navigateTo({
-          destination: {
-            app: 'customers',
-            resourceId: order.customer.id,
-            mode
-          }
+          app: 'customers',
+          resourceId: order.customer.id
         })
       : {}
 
@@ -51,7 +47,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
       <>
         <EditCustomerOverlay />
         <Section
-          title='Customer'
+          title={t('resources.customers.name')}
           actionButton={
             (order.status === 'draft' || order.status === 'pending') &&
             isEditing ? (
@@ -64,7 +60,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
                 }}
               >
                 <Icon name='pencilSimple' />
-                Edit
+                {t('common.edit')}
               </Button>
             ) : null
           }
@@ -83,7 +79,10 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
                     ({ value }) => value === order.language_code
                   )?.label
                 }{' '}
-                · {order.customer.total_orders_count} orders
+                · {order.customer.total_orders_count}{' '}
+                {t('resources.orders.name', {
+                  count: order.customer.total_orders_count ?? 0
+                }).toLowerCase()}
               </Text>
             </div>
             {canAccess('customers') && <StatusIcon name='caretRight' />}

@@ -19,6 +19,7 @@ import {
   Stack,
   isSingleValueSelected,
   useTokenProvider,
+  useTranslation,
   type InputSelectValue
 } from '@commercelayer/app-elements'
 import type { Address, StockLocation } from '@commercelayer/sdk'
@@ -28,6 +29,7 @@ import { Link, useLocation, useRoute } from 'wouter'
 function CreateReturn(): JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const [, params] = useRoute<{ orderId: string }>(appRoutes.return.path)
 
   const orderId = params?.orderId ?? ''
@@ -107,7 +109,7 @@ function CreateReturn(): JSX.Element {
   ) {
     return (
       <PageLayout
-        title='Request return'
+        title={t('apps.orders.tasks.request_return')}
         navigationButton={{
           onClick: () => {
             setLocation(goBackUrl)
@@ -117,11 +119,11 @@ function CreateReturn(): JSX.Element {
         }}
       >
         <EmptyState
-          title='Permission Denied'
-          description='You cannot create a return for this order or you are not authorized to access this page.'
+          title={t('common.not_authorized')}
+          description={t('common.not_authorized_description')}
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant='primary'>{t('common.go_back')}</Button>
             </Link>
           }
         />
@@ -134,14 +136,17 @@ function CreateReturn(): JSX.Element {
       overlay
       title={
         <SkeletonTemplate isLoading={isLoading}>
-          Request return
+          {t('apps.orders.tasks.request_return')}
         </SkeletonTemplate>
       }
       navigationButton={{
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: orderId != null ? getOrderTitle(order) : 'Orders',
+        label:
+          orderId != null
+            ? getOrderTitle(order)
+            : t('resources.orders.name_other'),
         icon: 'arrowLeft'
       }}
       scrollToTop
@@ -149,7 +154,7 @@ function CreateReturn(): JSX.Element {
       {stockLocations.length > 1 && (
         <Spacer bottom='12'>
           <InputSelect
-            label='To'
+            label={t('apps.returns.details.to_destination')}
             isClearable={false}
             initialValues={stockLocationsToSelectOptions(stockLocations)}
             defaultValue={stockLocationToSelectOption(
@@ -200,12 +205,12 @@ function CreateReturn(): JSX.Element {
                 <Section title='Addresses' border='none'>
                   <Stack>
                     <ResourceAddress
-                      title='Origin'
+                      title={t('apps.returns.details.origin')}
                       address={returnObj.origin_address}
                       editable
                     />
                     <ResourceAddress
-                      title='Destination'
+                      title={t('apps.returns.details.destination')}
                       address={destinationAddress}
                     />
                   </Stack>
@@ -218,7 +223,7 @@ function CreateReturn(): JSX.Element {
             fullWidth
             disabled={isCreatingReturnLineItems}
           >
-            Request return
+            {t('apps.orders.tasks.request_return')}
           </Button>
         </>
       )}

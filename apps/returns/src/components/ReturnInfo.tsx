@@ -3,8 +3,9 @@ import {
   ListDetailsItem,
   Section,
   Text,
-  navigateTo,
+  useAppLinking,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Return } from '@commercelayer/sdk'
@@ -15,37 +16,30 @@ interface Props {
 
 export const ReturnInfo = withSkeletonTemplate<Props>(
   ({ returnObj }): JSX.Element => {
-    const {
-      canAccess,
-      settings: { mode }
-    } = useTokenProvider()
+    const { canAccess } = useTokenProvider()
+    const { navigateTo } = useAppLinking()
+    const { t } = useTranslation()
 
     const returnOrderMarket = returnObj.order?.market?.name
     const returnOrderNumber = `#${returnObj.order?.number}`
     const navigateToOrder = canAccess('orders')
       ? navigateTo({
-          destination: {
-            app: 'orders',
-            resourceId: returnObj?.order?.id,
-            mode
-          }
+          app: 'orders',
+          resourceId: returnObj?.order?.id
         })
       : {}
 
     const returnCustomerEmail = returnObj?.customer?.email
     const navigateToCustomer = canAccess('customers')
       ? navigateTo({
-          destination: {
-            app: 'customers',
-            resourceId: returnObj?.customer?.id,
-            mode
-          }
+          app: 'customers',
+          resourceId: returnObj?.customer?.id
         })
       : {}
 
     return (
-      <Section title='Info'>
-        <ListDetailsItem label='Order' gutter='none'>
+      <Section title={t('apps.returns.details.info')}>
+        <ListDetailsItem label={t('resources.orders.name')} gutter='none'>
           <Text tag='div' weight='semibold'>
             {canAccess('orders') ? (
               <Button variant='link' {...navigateToOrder}>
@@ -56,7 +50,7 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
             )}
           </Text>
         </ListDetailsItem>
-        <ListDetailsItem label='Customer' gutter='none'>
+        <ListDetailsItem label={t('resources.customers.name')} gutter='none'>
           <Text tag='div' weight='semibold'>
             {canAccess('customers') ? (
               <Button variant='link' {...navigateToCustomer}>

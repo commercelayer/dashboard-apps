@@ -7,6 +7,7 @@ import {
   getOrderFulfillmentStatusName,
   getOrderPaymentStatusName,
   getOrderStatusName,
+  useTranslation,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
@@ -68,12 +69,14 @@ function getFulfillmentStatusBadgeVariant(
 
 export const OrderSteps = withSkeletonTemplate<Props>(
   ({ order }): JSX.Element => {
+    const { t } = useTranslation()
+
     return (
       <Stack>
         <div>
           <Spacer bottom='2'>
             <Text size='small' tag='div' variant='info' weight='semibold'>
-              Order
+              {t('resources.orders.name')}
             </Text>
           </Spacer>
           {order.status !== undefined && (
@@ -85,7 +88,7 @@ export const OrderSteps = withSkeletonTemplate<Props>(
         <div>
           <Spacer bottom='2'>
             <Text size='small' tag='div' variant='info' weight='semibold'>
-              Payment
+              {t('apps.orders.details.payment')}
             </Text>
           </Spacer>
           {order.payment_status !== undefined && (
@@ -98,7 +101,7 @@ export const OrderSteps = withSkeletonTemplate<Props>(
         <div>
           <Spacer bottom='2'>
             <Text size='small' tag='div' variant='info' weight='semibold'>
-              Fulfillment
+              {t('apps.orders.details.fulfillment')}
             </Text>
           </Spacer>
           {order.fulfillment_status !== undefined && (

@@ -1,12 +1,6 @@
-import { ErrorNotFound } from '#pages/ErrorNotFound'
-import { Filters } from '#pages/Filters'
-import { Home } from '#pages/Home'
-import Refund from '#pages/Refund'
-import { RestockReturn } from '#pages/RestockReturn'
-import { ReturnDetails } from '#pages/ReturnDetails'
-import { ReturnsList } from '#pages/ReturnsList'
+import { Routes } from '@commercelayer/app-elements'
 import type { FC } from 'react'
-import { Route, Router, Switch } from 'wouter'
+import { Router } from 'wouter'
 import { appRoutes } from './data/routes'
 
 interface AppProps {
@@ -16,29 +10,29 @@ interface AppProps {
 export const App: FC<AppProps> = ({ routerBase }) => {
   return (
     <Router base={routerBase}>
-      <Switch>
-        <Route path={appRoutes.home.path}>
-          <Home />
-        </Route>
-        <Route path={appRoutes.list.path}>
-          <ReturnsList />
-        </Route>
-        <Route path={appRoutes.filters.path}>
-          <Filters />
-        </Route>
-        <Route path={appRoutes.details.path}>
-          <ReturnDetails />
-        </Route>
-        <Route path={appRoutes.restock.path}>
-          <RestockReturn />
-        </Route>
-        <Route path={appRoutes.refund.path}>
-          <Refund />
-        </Route>
-        <Route>
-          <ErrorNotFound />
-        </Route>
-      </Switch>
+      <Routes
+        routes={appRoutes}
+        list={{
+          home: {
+            component: async () => await import('#pages/Home')
+          },
+          list: {
+            component: async () => await import('#pages/ReturnsList')
+          },
+          filters: {
+            component: async () => await import('#pages/Filters')
+          },
+          details: {
+            component: async () => await import('#pages/ReturnDetails')
+          },
+          restock: {
+            component: async () => await import('#pages/RestockReturn')
+          },
+          refund: {
+            component: async () => await import('#pages/Refund')
+          }
+        }}
+      />
     </Router>
   )
 }

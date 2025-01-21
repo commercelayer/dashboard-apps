@@ -5,6 +5,7 @@ import {
   Timeline,
   useCoreSdkProvider,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate,
   type TimelineEvent
 } from '@commercelayer/app-elements'
@@ -44,6 +45,7 @@ const useTimelineReducer = (
   customer: Customer
 ): [TimelineEvent[], React.Dispatch<TimelineReducerAction>] => {
   const [events, dispatch] = useReducer(timelineReducer, [])
+  const { t } = useTranslation()
 
   useEffect(
     function addPlaced() {
@@ -52,7 +54,9 @@ const useTimelineReducer = (
           type: 'add',
           payload: {
             date: customer.created_at,
-            message: 'Customer created'
+            message: t('common.timeline.resource_created', {
+              resource: t('resources.customers.name').toLowerCase()
+            })
           }
         })
       }
@@ -67,7 +71,9 @@ const useTimelineReducer = (
           type: 'add',
           payload: {
             date: customer.updated_at,
-            message: 'Customer updated'
+            message: t('common.timeline.resource_updated', {
+              resource: t('resources.customers.name').toLowerCase()
+            })
           }
         })
       }
@@ -86,7 +92,10 @@ const useTimelineReducer = (
               type: 'add',
               payload: {
                 date: order.placed_at,
-                message: `Order #${orderNumber} placed in ${orderMarket}`
+                message: t('common.timeline.order_placed', {
+                  number: orderNumber,
+                  market: orderMarket
+                })
               }
             })
           }
@@ -109,8 +118,8 @@ const useTimelineReducer = (
                   <span>
                     <Text weight='bold' className='text-gray-500'>
                       {attachment.name}
-                    </Text>
-                    {' left a note'}
+                    </Text>{' '}
+                    {t('common.timeline.left_a_note')}
                   </span>
                 ),
                 note: attachment.description
@@ -131,9 +140,10 @@ export const CustomerTimeline = withSkeletonTemplate<Props>(({ customer }) => {
   const { sdkClient } = useCoreSdkProvider()
   const { user } = useTokenProvider()
   const { mutateCustomer } = useCustomerDetails(customer.id)
+  const { t } = useTranslation()
 
   return (
-    <Section title='Timeline'>
+    <Section title={t('common.timeline.name')}>
       <Spacer top='8'>
         <Timeline
           events={events}

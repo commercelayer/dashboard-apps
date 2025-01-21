@@ -1,8 +1,8 @@
-import type { FiltersInstructions } from '@commercelayer/app-elements'
+import { t, type FiltersInstructions } from '@commercelayer/app-elements'
 
 export const instructions: FiltersInstructions = [
   {
-    label: 'Status',
+    label: t('apps.customers.attributes.status'),
     type: 'options',
     sdk: {
       predicate: 'status_in',
@@ -13,15 +13,24 @@ export const instructions: FiltersInstructions = [
       props: {
         mode: 'multi',
         options: [
-          { value: 'prospect', label: 'Prospect' },
-          { value: 'acquired', label: 'Acquired' },
-          { value: 'repeat', label: 'Repeat' }
+          {
+            value: 'prospect',
+            label: t('resources.customers.attributes.status.prospect')
+          },
+          {
+            value: 'acquired',
+            label: t('resources.customers.attributes.status.acquired')
+          },
+          {
+            value: 'repeat',
+            label: t('resources.customers.attributes.status.repeat')
+          }
         ]
       }
     }
   },
   {
-    label: 'Type',
+    label: t('apps.customers.details.type'),
     type: 'options',
     sdk: {
       predicate: 'password_present',
@@ -35,14 +44,14 @@ export const instructions: FiltersInstructions = [
       props: {
         mode: 'multi',
         options: [
-          { value: 'guest', label: 'Guest' },
-          { value: 'registered', label: 'Registered' }
+          { value: 'guest', label: t('apps.customers.details.guest') },
+          { value: 'registered', label: t('apps.customers.details.registered') }
         ]
       }
     }
   },
   {
-    label: 'Groups',
+    label: t('apps.customers.details.groups'),
     type: 'options',
     sdk: {
       predicate: 'customer_group_id_in'
@@ -60,7 +69,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Tags',
+    label: t('resources.tags.name_other'),
     type: 'options',
     sdk: {
       predicate: 'tags_id_in'
@@ -79,7 +88,7 @@ export const instructions: FiltersInstructions = [
     }
   },
   {
-    label: 'Search',
+    label: t('common.search'),
     type: 'textSearch',
     sdk: {
       predicate: ['email', 'customer_group_name'].join('_or_') + '_cont'

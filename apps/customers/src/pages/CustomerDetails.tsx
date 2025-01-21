@@ -8,8 +8,9 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
-  goBack,
+  useAppLinking,
   useTokenProvider,
+  useTranslation,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
@@ -32,6 +33,8 @@ export function CustomerDetails(): JSX.Element {
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ customerId: string }>(appRoutes.details.path)
+  const { goBack } = useAppLinking()
+  const { t } = useTranslation()
 
   const customerId = params?.customerId ?? ''
 
@@ -49,7 +52,7 @@ export function CustomerDetails(): JSX.Element {
 
   if (canUser('update', 'customers')) {
     pageToolbar.buttons?.push({
-      label: 'Edit',
+      label: t('common.edit'),
       size: 'small',
       variant: 'secondary',
       onClick: () => {
@@ -61,7 +64,7 @@ export function CustomerDetails(): JSX.Element {
   if (canUser('destroy', 'customers')) {
     pageToolbar.dropdownItems?.push([
       {
-        label: 'Delete',
+        label: t('common.delete'),
         onClick: () => {
           show()
         }
@@ -80,19 +83,20 @@ export function CustomerDetails(): JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>
           <div>
             {formatDateWithPredicate({
-              predicate: 'Created',
+              predicate: t('common.created'),
               isoDate: customer.created_at ?? '',
-              timezone: user?.timezone
+              timezone: user?.timezone,
+              locale: user?.locale
             })}
           </div>
         </SkeletonTemplate>
       }
       navigationButton={{
-        label: 'Back',
+        label: t('common.back'),
         icon: 'arrowLeft',
         onClick: () => {
           goBack({
-            setLocation,
+            currentResourceId: customerId,
             defaultRelativePath: appRoutes.list.makePath()
           })
         }
@@ -102,10 +106,10 @@ export function CustomerDetails(): JSX.Element {
     >
       {error != null ? (
         <EmptyState
-          title='Not authorized'
+          title={t('common.not_authorized')}
           action={
             <Link href={appRoutes.list.makePath()}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant='primary'>{t('common.go_back')}</Button>
             </Link>
           }
         />
@@ -167,3 +171,5 @@ export function CustomerDetails(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default CustomerDetails

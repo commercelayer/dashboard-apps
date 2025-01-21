@@ -2,20 +2,19 @@ import { Form } from '#components/Form'
 import { appRoutes } from '#data/routes'
 import {
   PageLayout,
-  goBack,
+  useAppLinking,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import isEmpty from 'lodash/isEmpty'
 import type { FC } from 'react'
-import { useLocation } from 'wouter'
 
 const GiftCardNew: FC = () => {
   const {
     settings: { mode }
   } = useTokenProvider()
-  const [, setLocation] = useLocation()
   const { sdkClient } = useCoreSdkProvider()
+  const { goBack } = useAppLinking()
 
   return (
     <PageLayout
@@ -25,7 +24,6 @@ const GiftCardNew: FC = () => {
       navigationButton={{
         onClick: () => {
           goBack({
-            setLocation,
             defaultRelativePath: appRoutes.list.makePath({})
           })
         },

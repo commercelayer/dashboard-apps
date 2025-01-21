@@ -4,7 +4,8 @@ import {
   PageLayout,
   Spacer,
   useResourceList,
-  useTokenProvider
+  useTokenProvider,
+  useTranslation
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
@@ -17,6 +18,7 @@ import { useCustomerDetails } from '#hooks/useCustomerDetails'
 export function CustomerOrders(): JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
+  const { t } = useTranslation()
   const [, params] = useRoute<{ customerId: string }>(appRoutes.orders.path)
   const customerId = params?.customerId ?? ''
 
@@ -41,7 +43,7 @@ export function CustomerOrders(): JSX.Element {
   if (!canUser('read', 'orders')) {
     return (
       <PageLayout
-        title='Orders'
+        title={t('resources.orders.name_other')}
         navigationButton={{
           label: 'Back',
           icon: 'arrowLeft',
@@ -51,11 +53,11 @@ export function CustomerOrders(): JSX.Element {
         }}
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title={t('common.not_authorized')}
+          description={t('common.not_authorized_description')}
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant='primary'>{t('common.go_back')}</Button>
             </Link>
           }
         />
@@ -67,7 +69,7 @@ export function CustomerOrders(): JSX.Element {
     <PageLayout
       title={<>{customer.email}</>}
       navigationButton={{
-        label: 'Back',
+        label: t('common.back'),
         icon: 'arrowLeft',
         onClick: () => {
           setLocation(goBackUrl)
@@ -77,7 +79,7 @@ export function CustomerOrders(): JSX.Element {
       <ScrollToTop />
       <Spacer bottom='14'>
         <ResourceList
-          title='All orders'
+          title={t('resources.orders.name_other')}
           emptyState={<ListEmptyState scope='presetView' />}
           ItemTemplate={ListItemOrder}
         />
@@ -85,3 +87,5 @@ export function CustomerOrders(): JSX.Element {
     </PageLayout>
   )
 }
+
+export default CustomerOrders
