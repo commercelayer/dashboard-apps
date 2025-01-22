@@ -30,6 +30,7 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
   prices: ['sku', 'price_tiers'],
   shipments: [
     'order',
+    'stock_line_items',
     'shipping_category',
     'shipping_method',
     'origin_address',
