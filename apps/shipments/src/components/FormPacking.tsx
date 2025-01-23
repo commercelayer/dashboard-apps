@@ -86,7 +86,7 @@ export function FormPacking({
         <FormPackingFieldWeight shipment={shipment} />
       </Spacer>
       <Spacer bottom='8'>
-        <FormPackingMoreOptions />
+        <FormPackingMoreOptions shipment={shipment} />
       </Spacer>
       <Button type='submit' fullWidth disabled={isSubmitting}>
         {isSubmitting === true
