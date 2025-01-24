@@ -4,15 +4,21 @@ import { addMonths } from 'date-fns/addMonths'
 import { useEffect, useState } from 'react'
 
 interface Props {
+  /** The order id. */
   orderId: Order['id']
+  /**
+   * The client id of a sales channel API credential used to create the link the first time.
+   * If missing it won't be possible to generate a new link the first time.
+   **/
   clientId?: string
+  /** The given scope. */
   scope?: string
 }
 
 /**
  * Get or create a checkout link related to a given order.
  * @param orderId - The order id.
- * @param clientId - The client id of a sales channel API credential.
+ * @param clientId - The client id of a sales channel API credential used to create the link the first time.
  * @param scope - The given scope.
  * @returns a list of resolved `Links`.
  */

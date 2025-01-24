@@ -42,12 +42,6 @@ function LinkDetails(
   const [, setLocation] = useLocation()
   const orderId = props.params?.orderId ?? ''
 
-  const linkSalesChannel = useMemo(() => {
-    if (extras?.salesChannels != null && extras?.salesChannels.length > 0) {
-      return extras.salesChannels[0]
-    }
-  }, [extras?.salesChannels])
-
   const { order } = useOrderDetails(orderId)
 
   const linkScope = useMemo(() => {
@@ -58,9 +52,18 @@ function LinkDetails(
 
   const { link, isLoading } = useGetCheckoutLink({
     orderId,
-    clientId: linkSalesChannel?.client_id,
+    clientId: extras?.salesChannels?.[0]?.client_id,
     scope: linkScope
   })
+
+  const linkSalesChannel = useMemo(() => {
+    return (
+      extras?.salesChannels?.find((sc) => sc.client_id === link?.client_id) ?? {
+        name: 'Sales channel',
+        client_id: link?.client_id
+      }
+    )
+  }, [extras?.salesChannels, link?.client_id])
 
   const pageTitle = t('common.links.checkout_link_status', {
     status: link?.status
