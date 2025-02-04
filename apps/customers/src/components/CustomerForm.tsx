@@ -7,6 +7,7 @@ import {
   Spacer,
   Text,
   useCoreSdkProvider,
+  useTokenProvider,
   useTranslation
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -42,6 +43,7 @@ export function CustomerForm({
   isSubmitting
 }: Props): JSX.Element {
   const { t } = useTranslation()
+  const { shouldRender } = useTokenProvider()
   const methods = useForm({
     defaultValues,
     resolver: zodResolver(customerFormSchema)
@@ -74,7 +76,7 @@ export function CustomerForm({
         />
       </Spacer>
 
-      {!isLoadingCustomerGroups && (
+      {!isLoadingCustomerGroups && shouldRender('customer_groups') && (
         <Spacer bottom='8'>
           <Select options={customerGroups} />
         </Spacer>

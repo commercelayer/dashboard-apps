@@ -8,6 +8,7 @@ import { OrderSummary } from '#components/OrderSummary'
 import { useOrderStatus } from '#components/OrderSummary/hooks/useOrderStatus'
 import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
+import { useGetMarketsCount } from '#hooks/useGetMarketsCount'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useOrderReturns } from '#hooks/useOrderReturns'
 import { useOrderToolbar } from '#hooks/useOrderToolbar'
@@ -33,6 +34,7 @@ import { useLocation, useRoute } from 'wouter'
 function OrderDetails(): JSX.Element {
   const {
     canUser,
+    shouldRender,
     settings: { mode, extras },
     user
   } = useTokenProvider()
@@ -42,10 +44,18 @@ function OrderDetails(): JSX.Element {
 
   const orderId = params?.orderId ?? ''
 
-  const { order, isLoading, error, mutateOrder } = useOrderDetails(orderId)
+  const {
+    order,
+    isLoading: isLoadingOrder,
+    error,
+    mutateOrder
+  } = useOrderDetails(orderId)
   const { isPendingWithTransactions } = useOrderStatus(order)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
   const toolbar = useOrderToolbar({ order })
+
+  const { count: marketsCount, isLoading: isLoadingMarkets } =
+    useGetMarketsCount()
 
   const { goBack } = useAppLinking()
 
@@ -105,7 +115,9 @@ function OrderDetails(): JSX.Element {
     )
   }
 
-  const pageTitle = getOrderTitle(order)
+  const isLoading = isLoadingMarkets || isLoadingOrder
+  const hideMarket = (marketsCount ?? 0) === 1
+  const pageTitle = getOrderTitle(order, { hideMarket })
 
   return (
     <PageLayout
@@ -176,37 +188,43 @@ function OrderDetails(): JSX.Element {
               <OrderReturns returns={returns} />
             </Spacer>
           )}
-          <Spacer top='14'>
-            <ResourceDetails
-              resource={order}
-              onUpdated={async () => {
-                void mutateOrder()
-              }}
-            />
-          </Spacer>
+          {shouldRender('details') && (
+            <Spacer top='14'>
+              <ResourceDetails
+                resource={order}
+                onUpdated={async () => {
+                  void mutateOrder()
+                }}
+              />
+            </Spacer>
+          )}
           {!isMockedId(order.id) && (
             <>
-              <Spacer top='14'>
-                <ResourceTags
-                  resourceType='orders'
-                  resourceId={order.id}
-                  overlay={{ title: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(
-                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
-                    )
-                  }}
-                />
-              </Spacer>
-              <Spacer top='14'>
-                <ResourceMetadata
-                  resourceType='orders'
-                  resourceId={order.id}
-                  overlay={{
-                    title: pageTitle
-                  }}
-                />
-              </Spacer>
+              {shouldRender('tags') && (
+                <Spacer top='14'>
+                  <ResourceTags
+                    resourceType='orders'
+                    resourceId={order.id}
+                    overlay={{ title: pageTitle }}
+                    onTagClick={(tagId) => {
+                      setLocation(
+                        appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                      )
+                    }}
+                  />
+                </Spacer>
+              )}
+              {shouldRender('metadata') && (
+                <Spacer top='14'>
+                  <ResourceMetadata
+                    resourceType='orders'
+                    resourceId={order.id}
+                    overlay={{
+                      title: pageTitle
+                    }}
+                  />
+                </Spacer>
+              )}
             </>
           )}
           {!['draft'].includes(order.status) && (

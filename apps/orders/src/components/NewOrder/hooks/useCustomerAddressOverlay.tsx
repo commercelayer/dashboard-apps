@@ -1,3 +1,4 @@
+import { useGetMarketsCount } from '#hooks/useGetMarketsCount'
 import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
@@ -36,6 +37,8 @@ export function useCustomerAddressOverlay(
 ) {
   const { Overlay, open, close } = useOverlay()
   const { t } = useTranslation()
+  const { count: marketsCount } = useGetMarketsCount()
+  const hideMarket = (marketsCount ?? 0) === 1
 
   return {
     close,
@@ -50,7 +53,7 @@ export function useCustomerAddressOverlay(
             onClick: () => {
               close()
             },
-            label: getOrderTitle(order),
+            label: getOrderTitle(order, { hideMarket }),
             icon: 'arrowLeft'
           }}
         >

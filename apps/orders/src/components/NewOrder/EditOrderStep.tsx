@@ -15,6 +15,7 @@ import {
   Spacer,
   t,
   useCoreSdkProvider,
+  useTokenProvider,
   useTranslation,
   type PageProps
 } from '@commercelayer/app-elements'
@@ -33,6 +34,7 @@ export const EditOrderStep: React.FC<
   }
 > = ({ overlay, orderId }) => {
   const [, setLocation] = useLocation()
+  const { shouldRender } = useTokenProvider()
   const [apiError, setApiError] = useState<any>()
   const { sdkClient } = useCoreSdkProvider()
   const { t } = useTranslation()
@@ -87,7 +89,7 @@ export const EditOrderStep: React.FC<
         <span>
           <SkeletonTemplate isLoading={isLoading}>
             {t('common.new')} {t('resources.orders.name').toLowerCase()}{' '}
-            {order.market?.name}
+            {shouldRender('markets') ? order.market?.name : ''}
           </SkeletonTemplate>
         </span>
       }
