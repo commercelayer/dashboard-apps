@@ -29,6 +29,7 @@ export function CustomerDetails(): JSX.Element {
   const {
     settings: { mode },
     user,
+    shouldRender,
     canUser
   } = useTokenProvider()
   const [, setLocation] = useLocation()
@@ -128,37 +129,43 @@ export function CustomerDetails(): JSX.Element {
             <Spacer top='14'>
               <CustomerAddresses customer={customer} />
             </Spacer>
-            <Spacer top='14'>
-              <ResourceDetails
-                resource={customer}
-                onUpdated={async () => {
-                  void mutateCustomer()
-                }}
-              />
-            </Spacer>
+            {shouldRender('details') && (
+              <Spacer top='14'>
+                <ResourceDetails
+                  resource={customer}
+                  onUpdated={async () => {
+                    void mutateCustomer()
+                  }}
+                />
+              </Spacer>
+            )}
             {!isMockedId(customer.id) && (
               <>
-                <Spacer top='14'>
-                  <ResourceTags
-                    resourceType='customers'
-                    resourceId={customer.id}
-                    overlay={{ title: pageTitle }}
-                    onTagClick={(tagId) => {
-                      setLocation(
-                        appRoutes.list.makePath(`tags_id_in=${tagId}`)
-                      )
-                    }}
-                  />
-                </Spacer>
-                <Spacer top='14'>
-                  <ResourceMetadata
-                    resourceType='customers'
-                    resourceId={customer.id}
-                    overlay={{
-                      title: pageTitle
-                    }}
-                  />
-                </Spacer>
+                {shouldRender('tags') && (
+                  <Spacer top='14'>
+                    <ResourceTags
+                      resourceType='customers'
+                      resourceId={customer.id}
+                      overlay={{ title: pageTitle }}
+                      onTagClick={(tagId) => {
+                        setLocation(
+                          appRoutes.list.makePath(`tags_id_in=${tagId}`)
+                        )
+                      }}
+                    />
+                  </Spacer>
+                )}
+                {shouldRender('metadata') && (
+                  <Spacer top='14'>
+                    <ResourceMetadata
+                      resourceType='customers'
+                      resourceId={customer.id}
+                      overlay={{
+                        title: pageTitle
+                      }}
+                    />
+                  </Spacer>
+                )}
               </>
             )}
             <Spacer top='14'>

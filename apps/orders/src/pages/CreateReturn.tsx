@@ -1,6 +1,7 @@
 import { FormReturn } from '#components/FormReturn'
 import { appRoutes } from '#data/routes'
 import { useCreateReturnLineItems } from '#hooks/useCreateReturnLineItems'
+import { useGetMarketsCount } from '#hooks/useGetMarketsCount'
 import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useReturn } from '#hooks/useReturn'
@@ -31,6 +32,8 @@ function CreateReturn(): JSX.Element {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
   const [, params] = useRoute<{ orderId: string }>(appRoutes.return.path)
+  const { count: marketsCount } = useGetMarketsCount()
+  const hideMarket = (marketsCount ?? 0) === 1
 
   const orderId = params?.orderId ?? ''
   const goBackUrl =
@@ -145,7 +148,7 @@ function CreateReturn(): JSX.Element {
         },
         label:
           orderId != null
-            ? getOrderTitle(order)
+            ? getOrderTitle(order, { hideMarket })
             : t('resources.orders.name_other'),
         icon: 'arrowLeft'
       }}

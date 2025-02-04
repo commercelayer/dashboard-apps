@@ -29,6 +29,7 @@ import { useRoute } from 'wouter'
 function ShipmentDetails(): JSX.Element {
   const {
     canUser,
+    shouldRender,
     settings: { mode },
     user
   } = useTokenProvider()
@@ -136,34 +137,40 @@ function ShipmentDetails(): JSX.Element {
           <Spacer top='14'>
             <ShipmentInfo shipment={shipment} />
           </Spacer>
-          <Spacer top='14'>
-            <ResourceDetails
-              resource={shipment}
-              onUpdated={async () => {
-                void mutateShipment()
-              }}
-            />
-          </Spacer>
+          {shouldRender('details') && (
+            <Spacer top='14'>
+              <ResourceDetails
+                resource={shipment}
+                onUpdated={async () => {
+                  void mutateShipment()
+                }}
+              />
+            </Spacer>
+          )}
           {!isMockedId(shipment.id) && (
             <>
-              <Spacer top='14'>
-                <ResourceTags
-                  resourceType='shipments'
-                  resourceId={shipment.id}
-                  overlay={{
-                    title: pageTitle
-                  }}
-                />
-              </Spacer>
-              <Spacer top='14'>
-                <ResourceMetadata
-                  resourceType='shipments'
-                  resourceId={shipment.id}
-                  overlay={{
-                    title: pageTitle
-                  }}
-                />
-              </Spacer>
+              {shouldRender('tags') && (
+                <Spacer top='14'>
+                  <ResourceTags
+                    resourceType='shipments'
+                    resourceId={shipment.id}
+                    overlay={{
+                      title: pageTitle
+                    }}
+                  />
+                </Spacer>
+              )}
+              {shouldRender('metadata') && (
+                <Spacer top='14'>
+                  <ResourceMetadata
+                    resourceType='shipments'
+                    resourceId={shipment.id}
+                    overlay={{
+                      title: pageTitle
+                    }}
+                  />
+                </Spacer>
+              )}
             </>
           )}
           <Spacer top='14'>

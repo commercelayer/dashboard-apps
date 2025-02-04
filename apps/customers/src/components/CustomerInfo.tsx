@@ -36,16 +36,18 @@ export const CustomerInfo = withSkeletonTemplate<Props>(
             {getCustomerStatusName(customer?.status)}
           </Text>
         </ListDetailsItem>
-        <ListDetailsItem
-          label={t('apps.customers.form.customer_group_label')}
-          gutter='none'
-        >
-          <Text tag='div' weight='semibold'>
-            {customer?.customer_group?.name ?? (
-              <Text className='text-gray-300'>&#8212;</Text>
-            )}
-          </Text>
-        </ListDetailsItem>
+        {customer?.customer_group != null && (
+          <ListDetailsItem
+            label={t('apps.customers.form.customer_group_label')}
+            gutter='none'
+          >
+            <Text tag='div' weight='semibold'>
+              {customer.customer_group.name ?? (
+                <Text className='text-gray-300'>&#8212;</Text>
+              )}
+            </Text>
+          </ListDetailsItem>
+        )}
         {customer.customer_subscriptions != null &&
           customer.customer_subscriptions.length > 0 && (
             <ListDetailsItem
