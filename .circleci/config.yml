@@ -12,7 +12,7 @@ setup: &setup
   - run:
       name: Setup
       command: |
-        sudo npm install -g pnpm
+        sudo npm install -g pnpm@9.15.5
         pnpm install
 
 jobs:
