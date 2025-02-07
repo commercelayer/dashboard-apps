@@ -8,7 +8,7 @@ function NewOrderPage(
 ): JSX.Element | null {
   const { shouldRender } = useTokenProvider()
 
-  if (shouldRender('create')) {
+  if (!shouldRender('create')) {
     return null
   }
 
