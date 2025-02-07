@@ -27,7 +27,8 @@ function Page(props: PageProps<typeof appRoutes.couponList>): JSX.Element {
           ? { code_or_coupon_recipient_email_cont: searchValue }
           : {})
       },
-      sort: ['-updated_at']
+      sort: ['-updated_at'],
+      pageSize: 25
     }
   })
 
@@ -91,13 +92,15 @@ function Page(props: PageProps<typeof appRoutes.couponList>): JSX.Element {
               { label: 'Expiry' },
               { label: '' }
             ]}
-            ItemTemplate={(p) => (
-              <CouponRow
-                {...p}
-                deleteRule={list?.length === 1}
-                promotionId={props.params.promotionId}
-              />
-            )}
+            ItemTemplate={(p) => {
+              return (
+                <CouponRow
+                  {...p}
+                  deleteRule={list?.length === 1}
+                  promotionId={props.params.promotionId}
+                />
+              )
+            }}
           />
         </div>
       </Spacer>
