@@ -11,6 +11,7 @@ import {
   useTranslation,
   type PageLayoutProps
 } from '@commercelayer/app-elements'
+import isEmpty from 'lodash/isEmpty'
 import { useMemo, useState } from 'react'
 import { useLocation } from 'wouter'
 
@@ -33,8 +34,13 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
     settings: { isFiltered: false }
   })
 
+  const recipientOverride = sessionStorage.getItem(
+    `customers:${organization?.slug}:supportEmail`
+  )
   const customerDeletionMail = {
-    recipient: 'support@commercelayer.io',
+    recipient: isEmpty(recipientOverride)
+      ? 'support@commercelayer.io'
+      : recipientOverride,
     subject: `Anonymize customer ${customer.email}`,
     body: `Anonymization request for customer ${customer.email} of organization ${organization?.name}`
   }
