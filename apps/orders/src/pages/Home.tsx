@@ -12,7 +12,6 @@ import {
   Text,
   useCoreSdkProvider,
   useResourceFilters,
-  useTokenProvider,
   useTranslation
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
@@ -22,7 +21,6 @@ import { useListCounters } from '../metricsApi/useListCounters'
 function Home(): JSX.Element {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
-  const { shouldRender } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const search = useSearch()
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
@@ -35,46 +33,44 @@ function Home(): JSX.Element {
     <HomePageLayout
       title={t('resources.orders.name_other')}
       toolbar={{
-        buttons: shouldRender('create')
-          ? [
-              {
-                icon: 'plus',
-                label: `${t('common.new')} ${t('resources.orders.name').toLowerCase()}`,
-                size: 'small',
-                onClick: () => {
-                  void sdkClient.markets
-                    .list({
-                      fields: ['id'],
-                      filters: {
-                        disabled_at_null: true
-                      },
-                      pageSize: 1
-                    })
-                    .then((markets) => {
-                      if (markets.meta.recordCount > 1) {
-                        setLocation(appRoutes.new.makePath({}))
-                      } else {
-                        const [resource] = markets
-                        if (resource != null) {
-                          void sdkClient.orders
-                            .create({
-                              market: {
-                                type: 'markets',
-                                id: resource.id
-                              }
-                            })
-                            .then((order) => {
-                              setLocation(
-                                appRoutes.new.makePath({ orderId: order.id })
-                              )
-                            })
-                        }
-                      }
-                    })
-                }
-              }
-            ]
-          : undefined
+        buttons: [
+          {
+            icon: 'plus',
+            label: `${t('common.new')} ${t('resources.orders.name').toLowerCase()}`,
+            size: 'small',
+            onClick: () => {
+              void sdkClient.markets
+                .list({
+                  fields: ['id'],
+                  filters: {
+                    disabled_at_null: true
+                  },
+                  pageSize: 1
+                })
+                .then((markets) => {
+                  if (markets.meta.recordCount > 1) {
+                    setLocation(appRoutes.new.makePath({}))
+                  } else {
+                    const [resource] = markets
+                    if (resource != null) {
+                      void sdkClient.orders
+                        .create({
+                          market: {
+                            type: 'markets',
+                            id: resource.id
+                          }
+                        })
+                        .then((order) => {
+                          setLocation(
+                            appRoutes.new.makePath({ orderId: order.id })
+                          )
+                        })
+                    }
+                  }
+                })
+            }
+          }
+        ]
       }}
     >
       <SearchWithNav

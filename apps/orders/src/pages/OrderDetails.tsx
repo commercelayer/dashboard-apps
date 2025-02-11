@@ -34,7 +34,6 @@ import { useLocation, useRoute } from 'wouter'
 function OrderDetails(): JSX.Element {
   const {
     canUser,
-    shouldRender,
     settings: { mode, extras },
     user
   } = useTokenProvider()
@@ -188,43 +187,37 @@ function OrderDetails(): JSX.Element {
               <OrderReturns returns={returns} />
             </Spacer>
           )}
-          {shouldRender('details') && (
-            <Spacer top='14'>
-              <ResourceDetails
-                resource={order}
-                onUpdated={async () => {
-                  void mutateOrder()
-                }}
-              />
-            </Spacer>
-          )}
+          <Spacer top='14'>
+            <ResourceDetails
+              resource={order}
+              onUpdated={async () => {
+                void mutateOrder()
+              }}
+            />
+          </Spacer>
           {!isMockedId(order.id) && (
             <>
-              {shouldRender('tags') && (
-                <Spacer top='14'>
-                  <ResourceTags
-                    resourceType='orders'
-                    resourceId={order.id}
-                    overlay={{ title: pageTitle }}
-                    onTagClick={(tagId) => {
-                      setLocation(
-                        appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
-                      )
-                    }}
-                  />
-                </Spacer>
-              )}
-              {shouldRender('metadata') && (
-                <Spacer top='14'>
-                  <ResourceMetadata
-                    resourceType='orders'
-                    resourceId={order.id}
-                    overlay={{
-                      title: pageTitle
-                    }}
-                  />
-                </Spacer>
-              )}
+              <Spacer top='14'>
+                <ResourceTags
+                  resourceType='orders'
+                  resourceId={order.id}
+                  overlay={{ title: pageTitle }}
+                  onTagClick={(tagId) => {
+                    setLocation(
+                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                    )
+                  }}
+                />
+              </Spacer>
+              <Spacer top='14'>
+                <ResourceMetadata
+                  resourceType='orders'
+                  resourceId={order.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
+              </Spacer>
             </>
           )}
           {!['draft'].includes(order.status) && (
