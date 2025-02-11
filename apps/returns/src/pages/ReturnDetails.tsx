@@ -25,7 +25,6 @@ import { Link, useLocation, useRoute } from 'wouter'
 function ReturnDetails(): JSX.Element {
   const {
     canUser,
-    shouldRender,
     settings: { mode }
   } = useTokenProvider()
   const [, setLocation] = useLocation()
@@ -95,40 +94,34 @@ function ReturnDetails(): JSX.Element {
           <Spacer top='14'>
             <ReturnAddresses returnObj={returnObj} />
           </Spacer>
-          {shouldRender('details') && (
-            <Spacer top='14'>
-              <ResourceDetails
-                resource={returnObj}
-                onUpdated={async () => {
-                  void mutateReturn()
-                }}
-              />
-            </Spacer>
-          )}
+          <Spacer top='14'>
+            <ResourceDetails
+              resource={returnObj}
+              onUpdated={async () => {
+                void mutateReturn()
+              }}
+            />
+          </Spacer>
           {!isMockedId(returnObj.id) && (
             <>
-              {shouldRender('tags') && (
-                <Spacer top='14'>
-                  <ResourceTags
-                    resourceType='returns'
-                    resourceId={returnObj.id}
-                    overlay={{
-                      title: pageTitle
-                    }}
-                  />
-                </Spacer>
-              )}
-              {shouldRender('metadata') && (
-                <Spacer top='14'>
-                  <ResourceMetadata
-                    resourceType='returns'
-                    resourceId={returnObj.id}
-                    overlay={{
-                      title: pageTitle
-                    }}
-                  />
-                </Spacer>
-              )}
+              <Spacer top='14'>
+                <ResourceTags
+                  resourceType='returns'
+                  resourceId={returnObj.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
+              </Spacer>
+              <Spacer top='14'>
+                <ResourceMetadata
+                  resourceType='returns'
+                  resourceId={returnObj.id}
+                  overlay={{
+                    title: pageTitle
+                  }}
+                />
+              </Spacer>
             </>
           )}
           <Spacer top='14'>
