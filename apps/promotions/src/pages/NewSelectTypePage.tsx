@@ -9,17 +9,19 @@ import {
   Spacer,
   StatusIcon,
   Text,
+  useCoreApi,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 
 function Page(props: PageProps<typeof appRoutes.newSelectType>): JSX.Element {
   const {
-    organization,
     settings: { mode }
   } = useTokenProvider()
 
   const [, setLocation] = useLocation()
+
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
 
   const hasRuleEngine = organization?.api_rules_engine === true
 

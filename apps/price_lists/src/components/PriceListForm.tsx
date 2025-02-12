@@ -10,7 +10,7 @@ import {
   Spacer,
   Text,
   currencies,
-  useTokenProvider
+  useCoreApi
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, type UseFormSetError } from 'react-hook-form'
@@ -55,7 +55,7 @@ export function PriceListForm({
   apiError,
   isSubmitting
 }: Props): JSX.Element {
-  const { organization } = useTokenProvider()
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
 
   const priceListFormMethods = useForm<PriceListFormValues>({
     defaultValues,

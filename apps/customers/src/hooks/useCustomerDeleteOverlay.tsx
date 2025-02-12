@@ -5,9 +5,9 @@ import {
   Button,
   PageLayout,
   Trans,
+  useCoreApi,
   useCoreSdkProvider,
   useOverlay,
-  useTokenProvider,
   useTranslation,
   type PageLayoutProps
 } from '@commercelayer/app-elements'
@@ -21,9 +21,10 @@ interface OverlayHook {
 
 export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
   const { sdkClient } = useCoreSdkProvider()
-  const { organization } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
+
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
 
   const { Overlay: DeleteOverlay, open, close } = useOverlay()
   const [isDeleting, setIsDeleting] = useState(false)

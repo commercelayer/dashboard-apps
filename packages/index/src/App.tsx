@@ -16,6 +16,7 @@ export const App: FC<ClAppProps> = (props) => {
             <Route key={slug} path={`/${slug}/*?`}>
               <Component
                 {...props}
+                kind='integration'
                 onAppClose={() => {
                   setLocation('/')
                 }}

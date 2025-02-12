@@ -5,6 +5,7 @@ import {
   SkeletonTemplate,
   formatDate,
   useAppLinking,
+  useCoreApi,
   useTokenProvider,
   useTranslation
 } from '@commercelayer/app-elements'
@@ -33,11 +34,12 @@ function LinkDetails(
 ): JSX.Element {
   const {
     settings: { mode, extras },
-    user,
-    organization
+    user
   } = useTokenProvider()
   const { goBack } = useAppLinking()
   const { t } = useTranslation()
+
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
 
   const [, setLocation] = useLocation()
   const orderId = props.params?.orderId ?? ''
