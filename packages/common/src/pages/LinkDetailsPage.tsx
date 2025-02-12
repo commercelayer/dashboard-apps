@@ -6,6 +6,7 @@ import {
   PageLayout,
   SkeletonTemplate,
   goBack,
+  useCoreApi,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import type { Link as ClayerLink } from '@commercelayer/sdk'
@@ -20,11 +21,12 @@ interface Props {
 
 export const LinkDetailsPage = ({ linkId, goBackUrl }: Props): JSX.Element => {
   const {
-    settings: { mode },
-    organization
+    settings: { mode }
   } = useTokenProvider()
 
   const [, setLocation] = useLocation()
+
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
 
   const { link, isLoading, error } = useLinkDetails(linkId)
 
