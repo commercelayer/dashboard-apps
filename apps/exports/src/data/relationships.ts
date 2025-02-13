@@ -13,6 +13,8 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
     'line_items.line_item_options',
     'shipments',
     'shipments.shipping_method',
+    'returns',
+    'returns.return_line_items',
     'authorizations',
     'captures',
     'voids',
