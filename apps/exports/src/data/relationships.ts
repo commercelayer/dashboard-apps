@@ -30,6 +30,7 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
   ],
   payment_methods: ['order'],
   prices: ['sku', 'price_tiers'],
+  returns: ['order', 'return_line_items'],
   shipments: [
     'order',
     'stock_line_items',
