@@ -34,7 +34,7 @@ export function Home(): JSX.Element {
 
   if (!canUser('read', 'price_lists')) {
     return (
-      <HomePageLayout title='Price lists'>
+      <HomePageLayout title='Prices'>
         <EmptyState title='You are not authorized' />
       </HomePageLayout>
     )
@@ -69,7 +69,7 @@ export function Home(): JSX.Element {
     )
 
   return (
-    <HomePageLayout title='Price lists'>
+    <HomePageLayout title='Prices'>
       {showSearchBar && (
         <Spacer top='4'>
           <SearchBar
