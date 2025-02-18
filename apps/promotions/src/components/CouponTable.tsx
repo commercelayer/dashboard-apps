@@ -82,6 +82,7 @@ export const CouponTable = ({
   )
 }
 
+// @ts-expect-error type missmatch
 export const CouponRow: FC<
   ResourceListItemTemplateProps<'coupons'> & {
     promotionId: string
@@ -98,6 +99,8 @@ export const CouponRow: FC<
     const { user } = useTokenProvider()
     const { show: showDeleteCouponOverlay, Overlay: CouponOverlay } =
       useDeleteCouponOverlay()
+
+    if (coupon == null) return null
 
     return (
       <>
@@ -169,7 +172,7 @@ export const CouponRow: FC<
                     onClick={() => {
                       showDeleteCouponOverlay({
                         coupon,
-                        deleteRule
+                        deleteRule: deleteRule ?? false
                       })
                     }}
                   />
