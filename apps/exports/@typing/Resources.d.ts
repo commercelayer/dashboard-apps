@@ -21,6 +21,7 @@ declare module 'App' {
     | 'shipments'
     | 'shipping_methods'
     | 'transactions'
+    | 'returns'
 
   export type ResourceWithRelationship =
     | 'bundles'
@@ -30,6 +31,7 @@ declare module 'App' {
     | 'order_subscriptions'
     | 'payment_methods'
     | 'prices'
+    | 'returns'
     | 'shipments'
     | 'shipping_categories'
     | 'shipping_methods'
