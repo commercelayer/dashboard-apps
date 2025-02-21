@@ -4,7 +4,7 @@ import { LinkEditPage } from 'dashboard-apps-common/src/pages/LinkEditPage'
 
 export function LinkEdit(
   props: PageProps<typeof appRoutes.linksEdit>
-): JSX.Element {
+): React.JSX.Element {
   const skuListId = props.params?.resourceId ?? ''
   const linkId = props.params?.linkId ?? ''
 

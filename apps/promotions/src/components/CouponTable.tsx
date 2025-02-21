@@ -18,7 +18,6 @@ import {
   type ResourceListItemTemplateProps
 } from '@commercelayer/app-elements'
 import type { Coupon } from '@commercelayer/sdk'
-import type { FC } from 'react'
 import { makeCoupon } from 'src/mocks/resources/coupons'
 import { useLocation } from 'wouter'
 
@@ -36,7 +35,7 @@ export const CouponTable = ({
   promotionId,
   boxed = false,
   isLoading = false
-}: Props): JSX.Element => {
+}: Props): React.JSX.Element => {
   const isFirstLoading = false
 
   return (
@@ -82,13 +81,12 @@ export const CouponTable = ({
   )
 }
 
-// @ts-expect-error type missmatch
-export const CouponRow: FC<
+export const CouponRow = withSkeletonTemplate<
   ResourceListItemTemplateProps<'coupons'> & {
     promotionId: string
     deleteRule?: boolean
   }
-> = withSkeletonTemplate(
+>(
   ({
     resource: coupon = makeCoupon(),
     promotionId,

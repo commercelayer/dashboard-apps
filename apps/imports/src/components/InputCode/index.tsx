@@ -12,7 +12,7 @@ interface Props {
 export function InputCode({
   onDataReady,
   onDataResetRequest
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const [renderKey, setRenderKey] = useState<number | undefined>(undefined)
 
   return (

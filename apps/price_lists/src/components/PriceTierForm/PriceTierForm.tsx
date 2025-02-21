@@ -39,7 +39,7 @@ export function PriceTierForm({
   onSubmit,
   apiError,
   isSubmitting
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const priceTierFormMethods = useForm<PriceTierFormValues>({
     defaultValues,
     resolver:

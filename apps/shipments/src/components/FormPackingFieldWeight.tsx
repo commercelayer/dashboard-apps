@@ -12,7 +12,7 @@ export function FormPackingFieldWeight({
   shipment
 }: {
   shipment: Shipment
-}): JSX.Element {
+}): React.JSX.Element {
   const { watch } = useFormContext()
   const { t } = useTranslation()
   useSyncFormPackingWeight({ shipment })

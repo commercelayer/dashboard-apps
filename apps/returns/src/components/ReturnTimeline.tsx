@@ -14,14 +14,8 @@ import {
 } from '@commercelayer/app-elements'
 
 import type { Attachment, Return, ReturnLineItem } from '@commercelayer/sdk'
-import isEmpty from 'lodash/isEmpty'
-import {
-  useCallback,
-  useEffect,
-  useReducer,
-  useState,
-  type Reducer
-} from 'react'
+import isEmpty from 'lodash-es/isEmpty'
+import { useCallback, useEffect, useReducer, useState } from 'react'
 
 export const ReturnTimeline = withSkeletonTemplate<{
   returnId?: string
@@ -130,18 +124,21 @@ const useTimelineReducer = (returnObj: Return) => {
   const [returnId, setReturnId] = useState<string>(returnObj.id)
   const { t } = useTranslation()
 
-  const [events, dispatch] = useReducer<
-    Reducer<
-      TimelineEvent[],
-      | {
+  type State = TimelineEvent[]
+  type Action =
+    | [
+        {
           type: 'add'
           payload: TimelineEvent
         }
-      | {
+      ]
+    | [
+        {
           type: 'clear'
         }
-    >
-  >((state, action) => {
+      ]
+
+  const [events, dispatch] = useReducer<State, Action>((state, action) => {
     switch (action.type) {
       case 'clear':
         return []

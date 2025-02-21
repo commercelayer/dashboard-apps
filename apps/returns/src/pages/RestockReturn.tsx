@@ -16,7 +16,7 @@ import {
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
-function RestockReturn(): JSX.Element {
+function RestockReturn(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()

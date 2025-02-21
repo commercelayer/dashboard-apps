@@ -6,7 +6,7 @@ import {
 } from '@commercelayer/app-elements'
 import type { QueryParamsList, Tag } from '@commercelayer/sdk'
 
-export function SelectTagComponent(): JSX.Element {
+export function SelectTagComponent(): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
 
   const { data: tags } = useCoreApi('tags', 'list', [getParams({ name: '' })])

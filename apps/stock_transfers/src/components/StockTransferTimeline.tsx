@@ -13,14 +13,8 @@ import {
 } from '@commercelayer/app-elements'
 
 import type { Attachment, StockTransfer } from '@commercelayer/sdk'
-import isEmpty from 'lodash/isEmpty'
-import {
-  useCallback,
-  useEffect,
-  useReducer,
-  useState,
-  type Reducer
-} from 'react'
+import isEmpty from 'lodash-es/isEmpty'
+import { useCallback, useEffect, useReducer, useState } from 'react'
 
 export const StockTransferTimeline = withSkeletonTemplate<{
   stockTransferId?: string
@@ -142,18 +136,21 @@ const useTimelineReducer = (stockTransfer: StockTransfer) => {
     stockTransfer.id
   )
 
-  const [events, dispatch] = useReducer<
-    Reducer<
-      TimelineEvent[],
-      | {
+  type State = TimelineEvent[]
+  type Action =
+    | [
+        {
           type: 'add'
           payload: TimelineEvent
         }
-      | {
+      ]
+    | [
+        {
           type: 'clear'
         }
-    >
-  >((state, action) => {
+      ]
+
+  const [events, dispatch] = useReducer<State, Action>((state, action) => {
     switch (action.type) {
       case 'clear':
         return []

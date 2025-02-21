@@ -18,7 +18,7 @@ import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 import { useListCounters } from '../metricsApi/useListCounters'
 
-function Home(): JSX.Element {
+function Home(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
   const { sdkClient } = useCoreSdkProvider()

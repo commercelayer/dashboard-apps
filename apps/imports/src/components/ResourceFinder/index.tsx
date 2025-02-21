@@ -1,16 +1,16 @@
-import { type CommerceLayerClient } from '@commercelayer/sdk'
-import { type AllowedParentResource, type AllowedResourceType } from 'App'
-import { useEffect, useRef, useState } from 'react'
-import { fetchResources } from './utils'
 import {
   InputSelect,
   Label,
   isSingleValueSelected
 } from '@commercelayer/app-elements'
 import {
-  type InputSelectValue,
-  type InputSelectProps
+  type InputSelectProps,
+  type InputSelectValue
 } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
+import { type CommerceLayerClient } from '@commercelayer/sdk'
+import { type AllowedParentResource, type AllowedResourceType } from 'App'
+import { useEffect, useRef, useState } from 'react'
+import { fetchResources } from './utils'
 
 interface Props extends Pick<InputSelectProps, 'feedback' | 'hint'> {
   /**
@@ -43,7 +43,7 @@ export function ResourceFinder({
   feedback,
   hint,
   onSelect
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true)
   const [initialValues, setInitialValues] = useState<InputSelectValue[]>([])
   const element = useRef<HTMLDivElement>(null)

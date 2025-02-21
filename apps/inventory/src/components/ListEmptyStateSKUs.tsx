@@ -4,7 +4,9 @@ interface Props {
   scope?: 'history' | 'userFiltered'
 }
 
-export function ListEmptyStateSKUs({ scope = 'history' }: Props): JSX.Element {
+export function ListEmptyStateSKUs({
+  scope = 'history'
+}: Props): React.JSX.Element {
   if (scope === 'userFiltered') {
     return (
       <EmptyState

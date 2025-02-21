@@ -16,7 +16,7 @@ import {
 import { useEffect } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-function Packing(): JSX.Element {
+function Packing(): React.JSX.Element {
   const {
     canUser,
     settings: { mode }

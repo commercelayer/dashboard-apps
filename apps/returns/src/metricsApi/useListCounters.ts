@@ -6,7 +6,7 @@ import {
 
 import type { ParsedScopes } from '@commercelayer/app-elements/dist/providers/TokenProvider/getInfoFromJwt'
 import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
-import castArray from 'lodash/castArray'
+import castArray from 'lodash-es/castArray'
 import useSWR, { type SWRResponse } from 'swr'
 import { metricsApiFetcher } from './fetcher'
 

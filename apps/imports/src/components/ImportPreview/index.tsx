@@ -1,4 +1,4 @@
-import { TableData, ErrorBoundary } from '@commercelayer/app-elements'
+import { ErrorBoundary, TableData } from '@commercelayer/app-elements'
 import type { JsonObject } from 'type-fest'
 
 interface Props {
@@ -7,7 +7,11 @@ interface Props {
   limit: number
 }
 
-export function ImportPreview({ title, data, limit }: Props): JSX.Element {
+export function ImportPreview({
+  title,
+  data,
+  limit
+}: Props): React.JSX.Element {
   return (
     <ErrorBoundary
       errorTitle='We were unable to show the preview'

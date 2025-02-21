@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const ListItemSku = withSkeletonTemplate<Props>(
-  ({ resource = makeSku() }): JSX.Element | null => {
+  ({ resource = makeSku() }): React.JSX.Element | null => {
     const { navigateTo } = useAppLinking()
 
     return (

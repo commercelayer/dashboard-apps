@@ -2,7 +2,7 @@ import { appRoutes } from '#data/routes'
 import { Button, EmptyState, PageLayout } from '@commercelayer/app-elements'
 import { Link } from 'wouter'
 
-export function ErrorNotFound(): JSX.Element {
+export function ErrorNotFound(): React.JSX.Element {
   return (
     <PageLayout title='Stock transfers'>
       <EmptyState

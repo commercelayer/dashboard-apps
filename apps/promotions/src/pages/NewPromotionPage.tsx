@@ -5,7 +5,9 @@ import { appRoutes } from '#data/routes'
 import { PageLayout, useTokenProvider } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
-function Page(props: PageProps<typeof appRoutes.newPromotion>): JSX.Element {
+function Page(
+  props: PageProps<typeof appRoutes.newPromotion>
+): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

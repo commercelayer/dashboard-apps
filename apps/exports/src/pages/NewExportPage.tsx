@@ -19,7 +19,7 @@ import { type ExportFormValues } from 'AppForm'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-const NewExportPage = (): JSX.Element | null => {
+const NewExportPage = (): React.JSX.Element | null => {
   const {
     canUser,
     settings: { mode },

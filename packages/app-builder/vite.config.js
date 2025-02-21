@@ -15,7 +15,7 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
  * the `base` config attribute from Vite configuration file.
  * @type {(options: { viteBase?: string }) => import('vite').Plugin}
  */
-const htmlPlugin = ({ viteBase = '/' }) => {
+const replaceRouterBase = ({ viteBase = '/' }) => {
   return {
     name: 'router-base-replacer',
     transformIndexHtml(html) {
@@ -28,13 +28,38 @@ const htmlPlugin = ({ viteBase = '/' }) => {
 }
 
 /**
+ * Replace the variable `routerBase` from the HTML with
+ * the `base` config attribute from Vite configuration file.
+ * @type {() => import('vite').Plugin}
+ */
+const injectReact19 = () => {
+  return {
+    name: 'inject-react-19',
+    transformIndexHtml() {
+      return [{
+        tag: 'script',
+        injectTo: 'head-prepend',
+        attrs: {
+          type: 'module'
+        },
+        children: `
+          import React from "https://esm.sh/react@19"
+          import ReactDOM from "https://esm.sh/react-dom@19"
+          window.React = React
+          window.ReactDOM = ReactDOM
+        `
+      }]
+    },
+  }
+}
+
+/**
  * Define the dashboard-app configuration for Vite.
  * @see https://vitejs.dev/config
  * @param {string} appSlug 
  * @returns 
  */
 
-// @ts-expect-error mismatching types: waiting for vitest 3.0 (see https://github.com/vitest-dev/vitest/issues/7014)
 export const defineConfig = (appSlug) => vitestDefineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const viteBase = env.PUBLIC_PROJECT_PATH != null && env.PUBLIC_PROJECT_PATH !== ''
@@ -45,7 +70,8 @@ export const defineConfig = (appSlug) => vitestDefineConfig(({ mode }) => {
     plugins: [
       react(),
       tsconfigPaths(),
-      htmlPlugin({ viteBase }),
+      replaceRouterBase({ viteBase }),
+      injectReact19()
     ],
     envPrefix: 'PUBLIC_',
     base: viteBase,

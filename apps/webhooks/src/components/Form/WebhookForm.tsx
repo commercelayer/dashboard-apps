@@ -40,7 +40,7 @@ interface Props {
   webhookData?: Webhook
 }
 
-const WebhookForm = ({ webhookData }: Props): JSX.Element | null => {
+const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
   const { sdkClient } = useCoreSdkProvider()
   const [apiError, setApiError] = useState<ApiError[] | undefined>(undefined)
   const [, setLocation] = useLocation()

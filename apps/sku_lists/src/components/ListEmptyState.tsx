@@ -8,7 +8,7 @@ interface Props {
 
 export function ListEmptyState({
   scope = 'noSKUListItems'
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   if (scope === 'noSKUsFiltered') {
     return (
       <EmptyState

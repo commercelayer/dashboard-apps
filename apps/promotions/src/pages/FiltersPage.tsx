@@ -4,7 +4,7 @@ import { appRoutes } from '#data/routes'
 import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
-function Page(props: PageProps<typeof appRoutes.filters>): JSX.Element {
+function Page(props: PageProps<typeof appRoutes.filters>): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { FiltersForm, adapters } = useResourceFilters({
     instructions: filtersInstructions,

@@ -14,7 +14,7 @@ interface Props {
 
 export function ListEmptyStateStockItems({
   scope = 'history'
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
 
   const [, paramsNewStockItem] = useRoute<{ stockLocationId: string }>(

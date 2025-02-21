@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const StockTransferInfo = withSkeletonTemplate<Props>(
-  ({ stockTransfer }): JSX.Element => {
+  ({ stockTransfer }): React.JSX.Element => {
     const { canAccess } = useTokenProvider()
     const { navigateTo } = useAppLinking()
 

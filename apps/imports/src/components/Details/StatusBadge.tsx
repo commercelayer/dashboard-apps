@@ -5,7 +5,7 @@ interface Props {
   job: Import
 }
 
-export function StatusBadge({ job }: Props): JSX.Element {
+export function StatusBadge({ job }: Props): React.JSX.Element {
   const errorsCount =
     job.errors_count != null && job.errors_count > 0
       ? job.errors_count

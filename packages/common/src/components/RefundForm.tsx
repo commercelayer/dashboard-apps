@@ -20,7 +20,7 @@ import type {
   ReturnLineItem
 } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
@@ -48,7 +48,7 @@ export function RefundForm({
   refundable,
   goBackUrl,
   lineItems
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { user } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()

@@ -12,7 +12,9 @@ import {
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
-function Page(props: PageProps<typeof appRoutes.editCoupon>): JSX.Element {
+function Page(
+  props: PageProps<typeof appRoutes.editCoupon>
+): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

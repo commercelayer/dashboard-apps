@@ -32,7 +32,7 @@ import {
 import type { ToolbarItem } from '@commercelayer/app-elements/dist/ui/composite/Toolbar'
 import { useLocation, useRoute } from 'wouter'
 
-function OrderDetails(): JSX.Element {
+function OrderDetails(): React.JSX.Element {
   const {
     canUser,
     settings: { mode, extras },

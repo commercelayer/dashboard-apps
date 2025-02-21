@@ -1,7 +1,7 @@
 import { usePickingList } from '#hooks/usePickingList'
 import { Progress } from '@commercelayer/app-elements'
 import type { Shipment } from '@commercelayer/sdk'
-import sumBy from 'lodash/sumBy'
+import sumBy from 'lodash-es/sumBy'
 import { useMemo } from 'react'
 
 export const ShipmentProgress: React.FC<{ shipment: Shipment }> = ({

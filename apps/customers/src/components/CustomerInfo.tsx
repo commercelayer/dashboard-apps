@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const CustomerInfo = withSkeletonTemplate<Props>(
-  ({ customer }): JSX.Element => {
+  ({ customer }): React.JSX.Element => {
     const { user } = useTokenProvider()
     const { t } = useTranslation()
 

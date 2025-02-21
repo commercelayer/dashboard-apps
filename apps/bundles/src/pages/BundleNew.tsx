@@ -9,11 +9,11 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type BundleCreate } from '@commercelayer/sdk'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
 
-export function BundleNew(): JSX.Element {
+export function BundleNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

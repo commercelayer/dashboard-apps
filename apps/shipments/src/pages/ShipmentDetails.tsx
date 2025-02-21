@@ -24,10 +24,10 @@ import {
   useTokenProvider,
   useTranslation
 } from '@commercelayer/app-elements'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import { useRoute } from 'wouter'
 
-function ShipmentDetails(): JSX.Element {
+function ShipmentDetails(): React.JSX.Element {
   const {
     canUser,
     settings: { mode },

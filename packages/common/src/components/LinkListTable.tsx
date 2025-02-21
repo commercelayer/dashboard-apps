@@ -13,7 +13,7 @@ interface Props {
 export const LinkListTable = ({
   resourceId,
   resourceType
-}: Props): JSX.Element | null => {
+}: Props): React.JSX.Element | null => {
   const [, setLocation] = useLocation()
 
   const {

@@ -14,7 +14,7 @@ import {
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-function ReturnsList(): JSX.Element {
+function ReturnsList(): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

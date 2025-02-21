@@ -13,7 +13,7 @@ import { type TagCreate } from '@commercelayer/sdk'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
 
-export function TagNew(): JSX.Element {
+export function TagNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

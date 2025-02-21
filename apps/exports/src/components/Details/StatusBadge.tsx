@@ -5,7 +5,7 @@ interface Props {
   job: Export
 }
 
-export function StatusBadge({ job }: Props): JSX.Element {
+export function StatusBadge({ job }: Props): React.JSX.Element {
   const { variant, label } = getUiStatusVariant(job.status)
   return (
     <div>

@@ -10,7 +10,7 @@ import {
   withSkeletonTemplate,
   type ResourceListItemTemplateProps
 } from '@commercelayer/app-elements'
-import debounce from 'lodash/debounce'
+import debounce from 'lodash-es/debounce'
 
 interface Props extends ResourceListItemTemplateProps<'sku_list_items'> {
   hasBundles: boolean
@@ -22,7 +22,7 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
     remove,
     hasBundles,
     isLoading
-  }): JSX.Element | null => {
+  }): React.JSX.Element | null => {
     const { sdkClient } = useCoreSdkProvider()
     const { canUser } = useTokenProvider()
 

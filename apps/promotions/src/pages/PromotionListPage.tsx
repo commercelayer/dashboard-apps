@@ -12,7 +12,9 @@ import {
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-function Page(props: PageProps<typeof appRoutes.promotionList>): JSX.Element {
+function Page(
+  props: PageProps<typeof appRoutes.promotionList>
+): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

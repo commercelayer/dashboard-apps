@@ -9,7 +9,7 @@ import {
 import { useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 
-function Filters(): JSX.Element {
+function Filters(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
 

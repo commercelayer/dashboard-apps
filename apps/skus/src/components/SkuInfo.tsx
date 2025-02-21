@@ -6,7 +6,7 @@ import {
   getUnitOfWeightName
 } from '@commercelayer/app-elements'
 import type { Sku } from '@commercelayer/sdk'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import type { FC } from 'react'
 
 interface Props {

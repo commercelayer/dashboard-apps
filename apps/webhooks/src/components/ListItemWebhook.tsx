@@ -20,7 +20,7 @@ import { useLocation } from 'wouter'
  * @param webhook - The webhook object.
  * @returns a valid StatusUI to be used in the StatusIcon component.
  */
-function getListUiIcon(webhook: Webhook): JSX.Element {
+function getListUiIcon(webhook: Webhook): React.JSX.Element {
   const everFired = hasWebhookEverFired(webhook)
   const status = getWebhookStatus(webhook)
   if (!everFired && status !== 'disabled') {

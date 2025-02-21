@@ -29,7 +29,7 @@ import { useSearch } from 'wouter/use-browser-location'
 
 export const SkuListDetails = (
   props: PageProps<typeof appRoutes.details>
-): JSX.Element => {
+): React.JSX.Element => {
   const {
     settings: { mode, extras },
     canUser

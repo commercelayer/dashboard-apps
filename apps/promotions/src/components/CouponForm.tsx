@@ -30,7 +30,7 @@ export function CouponForm({
   promotionId,
   couponId,
   defaultValues
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const [, setLocation] = useLocation()
   const [apiError, setApiError] = useState<any>()
   const { promotion } = usePromotion(promotionId)

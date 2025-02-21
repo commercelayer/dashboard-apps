@@ -11,7 +11,7 @@ import {
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 
-export function ResourceSelectorPage(): JSX.Element {
+export function ResourceSelectorPage(): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

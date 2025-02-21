@@ -17,7 +17,7 @@ import {
 import { useState } from 'react'
 import { Link } from 'wouter'
 
-export function Home(): JSX.Element {
+export function Home(): React.JSX.Element {
   const { canUser } = useTokenProvider()
 
   const [searchValue, setSearchValue] = useState<string>()

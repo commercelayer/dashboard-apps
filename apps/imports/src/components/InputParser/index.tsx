@@ -1,14 +1,14 @@
 import { type ImportCreate } from '@commercelayer/sdk'
 import { type AllowedResourceType } from 'App'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import { parse } from 'papaparse'
-import { type FC, useState, useEffect } from 'react'
+import { type FC, useEffect, useState } from 'react'
 import { type ZodIssue, type ZodSchema } from 'zod'
 
-import { adapters } from './adapters'
-import { parsers, isMakeSchemaFn } from './schemas'
-import { SuggestionTemplate } from './SuggestionTemplate'
 import { InputFile, Spacer, Text } from '@commercelayer/app-elements'
+import { adapters } from './adapters'
+import { isMakeSchemaFn, parsers } from './schemas'
+import { SuggestionTemplate } from './SuggestionTemplate'
 
 const importMaxSize = 10_000
 const skipSchemaValidation = true

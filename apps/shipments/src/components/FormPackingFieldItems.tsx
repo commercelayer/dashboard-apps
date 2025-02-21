@@ -14,7 +14,9 @@ interface Props {
   stockLineItems: StockLineItem[]
 }
 
-export function FormPackingFieldItems({ stockLineItems }: Props): JSX.Element {
+export function FormPackingFieldItems({
+  stockLineItems
+}: Props): React.JSX.Element {
   const { t } = useTranslation()
 
   const options: InputCheckboxGroupProps['options'] = useMemo(

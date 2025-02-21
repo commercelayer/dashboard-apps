@@ -12,7 +12,7 @@ import {
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function StockTransfersList(): JSX.Element {
+export function StockTransfersList(): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

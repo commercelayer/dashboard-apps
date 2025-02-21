@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const OrderLineItems = withSkeletonTemplate<Props>(
-  ({ title, order, children }): JSX.Element => {
+  ({ title, order, children }): React.JSX.Element => {
     const { sdkClient } = useCoreSdkProvider()
     const { mutateOrder } = useOrderDetails(order.id)
     const { summaryRows } = useSummaryRows(order)

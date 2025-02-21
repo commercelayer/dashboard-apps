@@ -1,6 +1,6 @@
 import { Avatar, Spacer, Text } from '@commercelayer/app-elements'
 import type { Bundle, Sku } from '@commercelayer/sdk'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import type { FC } from 'react'
 
 interface Props {

@@ -10,7 +10,7 @@ import {
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 
-export function SkuListNew(): JSX.Element {
+export function SkuListNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
 

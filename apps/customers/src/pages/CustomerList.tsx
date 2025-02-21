@@ -15,7 +15,7 @@ import {
 import { Link, useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function CustomerList(): JSX.Element {
+export function CustomerList(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { t } = useTranslation()
 

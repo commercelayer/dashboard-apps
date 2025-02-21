@@ -40,7 +40,7 @@ export function CustomerForm({
   onSubmit,
   apiError,
   isSubmitting
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { t } = useTranslation()
   const methods = useForm({
     defaultValues,
@@ -102,7 +102,11 @@ export function CustomerForm({
   )
 }
 
-function Select({ options }: { options: CustomerGroup[] }): JSX.Element | null {
+function Select({
+  options
+}: {
+  options: CustomerGroup[]
+}): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
   const { t } = useTranslation()
 

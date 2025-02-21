@@ -1,10 +1,10 @@
 import { type AllowedResourceType } from 'App'
-import { Orders } from './Orders'
-import { Skus } from './Skus'
-import { Prices } from './Prices'
 import { type AllFilters } from 'AppForm'
-import { StockItems } from './StockItems'
+import { Orders } from './Orders'
 import { OrderSubscriptions } from './OrderSubscriptions'
+import { Prices } from './Prices'
+import { Skus } from './Skus'
+import { StockItems } from './StockItems'
 
 interface Props {
   resourceType: AllowedResourceType
@@ -19,7 +19,10 @@ export const resourcesWithFilters = [
   'stock_items'
 ]
 
-export function Filters({ resourceType, onChange }: Props): JSX.Element | null {
+export function Filters({
+  resourceType,
+  onChange
+}: Props): React.JSX.Element | null {
   if (resourceType === 'orders') {
     return <Orders onChange={onChange} />
   }

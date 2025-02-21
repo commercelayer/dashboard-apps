@@ -11,7 +11,9 @@ import {
 import { useState } from 'react'
 import { useLocation } from 'wouter'
 
-function Page(props: PageProps<typeof appRoutes.couponList>): JSX.Element {
+function Page(
+  props: PageProps<typeof appRoutes.couponList>
+): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

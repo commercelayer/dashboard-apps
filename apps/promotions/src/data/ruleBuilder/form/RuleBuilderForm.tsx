@@ -32,7 +32,7 @@ export function RuleBuilderForm({
 }: {
   promotion: Exclude<Promotion, FlexPromotion>
   onSuccess: () => void
-}): JSX.Element {
+}): React.JSX.Element {
   const { inputParameter, methods, otherInputs, watchParameter } =
     useRuleBuilderFormFields(promotion)
 

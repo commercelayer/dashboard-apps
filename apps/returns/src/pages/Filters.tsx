@@ -7,7 +7,7 @@ import {
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
-function Filters(): JSX.Element {
+function Filters(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
   const { FiltersForm, adapters } = useResourceFilters({

@@ -9,7 +9,9 @@ interface Props {
   scope?: 'history' | 'userFiltered' | 'presetView' | 'noSKUs' | 'noBundles'
 }
 
-export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
+export function ListEmptyState({
+  scope = 'history'
+}: Props): React.JSX.Element {
   const { t } = useTranslation()
   const { canUser } = useTokenProvider()
 

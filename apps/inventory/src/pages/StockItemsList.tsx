@@ -16,7 +16,7 @@ import {
 import { Link, useLocation, useRoute } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function StockItemsList(): JSX.Element {
+export function StockItemsList(): React.JSX.Element {
   const {
     canUser,
     settings: { mode }

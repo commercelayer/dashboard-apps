@@ -3,7 +3,7 @@ import {
   formatDate,
   type CurrencyCode
 } from '@commercelayer/app-elements'
-import capitalize from 'lodash/capitalize'
+import capitalize from 'lodash-es/capitalize'
 
 interface NormalizedLogItem {
   date: string

@@ -6,7 +6,7 @@ interface Props {
 
 export function ListEmptyStateStockLocations({
   scope = 'history'
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   if (scope === 'userFiltered') {
     return (
       <EmptyState

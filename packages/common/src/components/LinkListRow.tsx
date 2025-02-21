@@ -33,7 +33,7 @@ export const LinkListRow = ({
   onLinkDetailsClick,
   onLinkEditClick,
   mutateList
-}: Props): JSX.Element => {
+}: Props): React.JSX.Element => {
   const { user, canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const { Overlay, open, close } = useOverlay()

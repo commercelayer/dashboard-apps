@@ -16,7 +16,7 @@ import {
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useSearch } from 'wouter'
 
-function HomePage(): JSX.Element {
+function HomePage(): React.JSX.Element {
   const { canUserManagePromotions } = usePromotionPermission()
 
   const search = useSearch()

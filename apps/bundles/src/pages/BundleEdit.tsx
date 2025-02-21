@@ -15,7 +15,7 @@ import { type Bundle, type BundleUpdate } from '@commercelayer/sdk'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function BundleEdit(): JSX.Element {
+export function BundleEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

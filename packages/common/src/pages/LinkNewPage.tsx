@@ -27,7 +27,7 @@ export const LinkNewPage = ({
   goBackUrl,
   pageDescription = 'Share the link with your customers and sell directly your products online.',
   defaultName
-}: Props): JSX.Element => {
+}: Props): React.JSX.Element => {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

@@ -7,7 +7,9 @@ interface Props {
   scope?: 'history' | 'userFiltered'
 }
 
-export function ListEmptyState({ scope = 'history' }: Props): JSX.Element {
+export function ListEmptyState({
+  scope = 'history'
+}: Props): React.JSX.Element {
   const { canUserManagePromotions } = usePromotionPermission()
 
   if (scope === 'userFiltered') {

@@ -11,7 +11,7 @@ import {
 
 export const ListItemSubscriptionItem = withSkeletonTemplate<
   ResourceListItemTemplateProps<'order_subscription_items'>
->(({ resource = makeOrderSubscriptionItem() }): JSX.Element | null => {
+>(({ resource = makeOrderSubscriptionItem() }): React.JSX.Element | null => {
   return (
     <ListItem
       icon={

@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const ListItemStockLocation = withSkeletonTemplate<Props>(
-  ({ resource = makeStockLocation() }): JSX.Element | null => {
+  ({ resource = makeStockLocation() }): React.JSX.Element | null => {
     const [, setLocation] = useLocation()
     return (
       <ListItem

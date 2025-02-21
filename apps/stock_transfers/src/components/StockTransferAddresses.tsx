@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const StockTransferAddresses = withSkeletonTemplate<Props>(
-  ({ stockTransfer }): JSX.Element | null => {
+  ({ stockTransfer }): React.JSX.Element | null => {
     if (
       stockTransfer.origin_stock_location?.address == null ||
       stockTransfer.destination_stock_location?.address == null

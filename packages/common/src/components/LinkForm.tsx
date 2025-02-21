@@ -46,7 +46,7 @@ export function LinkForm({
   onSubmit,
   apiError,
   isSubmitting
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const linkFormMethods = useForm<LinkFormValues>({
     defaultValues,
     resolver: zodResolver(linkFormSchema)

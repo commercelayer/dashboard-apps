@@ -9,7 +9,7 @@ export function SkuListsSelect({
   options
 }: {
   options: SkuList[]
-}): JSX.Element | null {
+}): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
 
   return (

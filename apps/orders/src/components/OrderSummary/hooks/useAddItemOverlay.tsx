@@ -22,7 +22,7 @@ interface OverlayHook {
 export function useAddItemOverlay(order: Order): OverlayHook {
   const { Overlay: OverlayElement, open, close } = useOverlay()
   const filterType = useRef<'skus' | 'bundles'>('skus')
-  const onConfirm = useRef<OnConfirm | undefined>()
+  const onConfirm = useRef<OnConfirm | undefined>(undefined)
   const { t } = useTranslation()
 
   const instructions: FiltersInstructions = [

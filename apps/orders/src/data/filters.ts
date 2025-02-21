@@ -1,5 +1,5 @@
 import { t, type FiltersInstructions } from '@commercelayer/app-elements'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 
 export const makeInstructions = ({
   sortByAttribute = 'placed_at'

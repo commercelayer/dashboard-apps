@@ -13,7 +13,7 @@ import {
 } from '@commercelayer/app-elements'
 import { Link } from 'wouter'
 
-function ListPage(): JSX.Element {
+function ListPage(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 

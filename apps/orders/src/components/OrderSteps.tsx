@@ -68,7 +68,7 @@ function getFulfillmentStatusBadgeVariant(
 }
 
 export const OrderSteps = withSkeletonTemplate<Props>(
-  ({ order }): JSX.Element => {
+  ({ order }): React.JSX.Element => {
     const { t } = useTranslation()
 
     return (

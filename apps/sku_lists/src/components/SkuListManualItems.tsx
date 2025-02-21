@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const SkuListManualItems = withSkeletonTemplate<Props>(
-  ({ skuListId, hasBundles }): JSX.Element | null => {
+  ({ skuListId, hasBundles }): React.JSX.Element | null => {
     const [searchValue, setSearchValue] = useState<string>()
     const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
       useAddItemOverlay()

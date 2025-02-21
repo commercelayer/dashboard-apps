@@ -320,7 +320,7 @@ function LineItemRow({
     tax: number
     discount: number
   }) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const [checked, setChecked] = useState<boolean>(true)
   const [quantity, setQuantity] = useState<number>(lineItem.quantity)
   const textVariant: TextProps['variant'] = checked ? 'primary' : 'disabled'

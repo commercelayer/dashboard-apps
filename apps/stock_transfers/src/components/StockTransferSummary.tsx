@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const StockTransferSummary = withSkeletonTemplate<Props>(
-  ({ stockTransfer }): JSX.Element => {
+  ({ stockTransfer }): React.JSX.Element => {
     const triggerActions = getStockTransferTriggerActions(stockTransfer).filter(
       (action) => action.hidden == null
     )
@@ -71,7 +71,7 @@ export const StockTransferSummary = withSkeletonTemplate<Props>(
   }
 )
 
-function renderErrorMessages(errors?: string[]): JSX.Element {
+function renderErrorMessages(errors?: string[]): React.JSX.Element {
   return errors != null && errors.length > 0 ? (
     <Spacer top='4'>
       {errors.map((message, idx) => (

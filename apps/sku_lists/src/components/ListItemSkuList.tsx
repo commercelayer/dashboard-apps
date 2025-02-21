@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const ListItemSkuList = withSkeletonTemplate<Props>(
-  ({ resource = makeSkuList() }): JSX.Element | null => {
+  ({ resource = makeSkuList() }): React.JSX.Element | null => {
     const [, setLocation] = useLocation()
     return (
       <ListItem

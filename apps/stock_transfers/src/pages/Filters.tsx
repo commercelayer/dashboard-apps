@@ -3,7 +3,7 @@ import { appRoutes } from '#data/routes'
 import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
 
-export function Filters(): JSX.Element {
+export function Filters(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { FiltersForm, adapters } = useResourceFilters({
     instructions

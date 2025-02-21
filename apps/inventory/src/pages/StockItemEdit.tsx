@@ -17,7 +17,7 @@ import { type StockItemUpdate } from '@commercelayer/sdk'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function StockItemEdit(): JSX.Element {
+export function StockItemEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

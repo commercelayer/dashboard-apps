@@ -10,7 +10,7 @@ export function ShippingCategorySelect({
   options
 }: {
   options: ShippingCategory[]
-}): JSX.Element | null {
+}): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
 
   return (

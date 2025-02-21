@@ -20,7 +20,7 @@ const returnStatuses = [
   'received'
 ]
 
-const renderReturn: React.FC<Return> = (returnObj) => {
+const renderReturn = (returnObj: Return): React.JSX.Element | undefined => {
   const { canAccess } = useTokenProvider()
   const { navigateTo } = useAppLinking()
 

@@ -54,7 +54,7 @@ export function PriceListForm({
   onSubmit,
   apiError,
   isSubmitting
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { data: organization } = useCoreApi('organization', 'retrieve', [])
 
   const priceListFormMethods = useForm<PriceListFormValues>({

@@ -1,22 +1,22 @@
-import { type AllowedResourceType } from 'App'
-import { type ExportFormValues } from 'AppForm'
-import { showResourceNiceName } from '#data/resources'
-import {
-  Spacer,
-  Button,
-  Tabs,
-  Tab,
-  ListItem,
-  HookedInputSimpleSelect,
-  HookedInputSwitch,
-  Section,
-  HookedForm
-} from '@commercelayer/app-elements'
-import { RelationshipSelector } from './RelationshipSelector'
 import { Filters } from '#components/Form/Filters'
 import { resourcesWithFilters } from '#components/Form/Filters/index'
 import { InputCode } from '#components/Form/Filters/InputCode'
+import { showResourceNiceName } from '#data/resources'
+import {
+  Button,
+  HookedForm,
+  HookedInputSimpleSelect,
+  HookedInputSwitch,
+  ListItem,
+  Section,
+  Spacer,
+  Tab,
+  Tabs
+} from '@commercelayer/app-elements'
+import { type AllowedResourceType } from 'App'
+import { type ExportFormValues } from 'AppForm'
 import { Controller, useForm } from 'react-hook-form'
+import { RelationshipSelector } from './RelationshipSelector'
 
 interface Props {
   resourceType: AllowedResourceType
@@ -30,7 +30,7 @@ export function Form({
   resourceType,
   defaultValues,
   onSubmit
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const methods = useForm<ExportFormValues>({
     defaultValues
   })

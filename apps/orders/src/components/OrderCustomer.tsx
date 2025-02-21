@@ -21,7 +21,7 @@ interface Props {
 }
 
 export const OrderCustomer = withSkeletonTemplate<Props>(
-  ({ order }): JSX.Element | null => {
+  ({ order }): React.JSX.Element | null => {
     const { canAccess } = useTokenProvider()
     const { t } = useTranslation()
     const { mutateOrder } = useOrderDetails(order.id)

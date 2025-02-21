@@ -33,7 +33,7 @@ function getStockTransferStatusBadgeVariant(
 }
 
 export const StockTransferSteps = withSkeletonTemplate<Props>(
-  ({ stockTransfer }): JSX.Element => {
+  ({ stockTransfer }): React.JSX.Element => {
     return (
       <Stack>
         <div>

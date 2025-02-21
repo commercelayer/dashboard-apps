@@ -1,9 +1,9 @@
-import { type AllowedResourceType } from 'App'
 import {
-  isResourceWithRelationship,
-  getRelationshipsByResourceType
+  getRelationshipsByResourceType,
+  isResourceWithRelationship
 } from '#data/relationships'
 import { HookedInputSelect } from '@commercelayer/app-elements'
+import { type AllowedResourceType } from 'App'
 
 interface Props {
   resourceType: AllowedResourceType
@@ -11,7 +11,7 @@ interface Props {
 
 export function RelationshipSelector({
   resourceType
-}: Props): JSX.Element | null {
+}: Props): React.JSX.Element | null {
   if (!isResourceWithRelationship(resourceType)) {
     return null
   }

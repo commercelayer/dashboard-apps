@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const ShipmentSteps = withSkeletonTemplate<Props>(
-  ({ shipment }): JSX.Element => {
+  ({ shipment }): React.JSX.Element => {
     const displayStatus = getShipmentDisplayStatus(shipment)
     const activeStockTransfers = useActiveStockTransfers(shipment)
     const { t } = useTranslation()

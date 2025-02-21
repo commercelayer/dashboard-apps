@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useImportDetailsContext } from './Provider'
 
-export function RowParentResource(): JSX.Element | null {
+export function RowParentResource(): React.JSX.Element | null {
   const {
     state: { data }
   } = useImportDetailsContext()

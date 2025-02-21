@@ -21,7 +21,7 @@ import {
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function SubscriptionEdit(): JSX.Element {
+export function SubscriptionEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

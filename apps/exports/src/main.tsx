@@ -13,7 +13,7 @@ import { App } from './App'
 
 const isDev = Boolean(import.meta.env.DEV)
 
-const Main: React.FC<ClAppProps> = (props) => (
+const Main = (props: ClAppProps): React.JSX.Element => (
   <StrictMode>
     <ErrorBoundary hasContainer>
       <TokenProvider

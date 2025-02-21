@@ -16,7 +16,7 @@ import {
 import { Link, useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 
-export function Home(): JSX.Element {
+export function Home(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const search = useSearch()
 

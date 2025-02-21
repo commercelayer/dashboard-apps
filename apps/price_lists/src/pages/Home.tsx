@@ -18,7 +18,7 @@ import {
 import { useState } from 'react'
 import { Link } from 'wouter'
 
-export function Home(): JSX.Element {
+export function Home(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [searchValue, setSearchValue] = useState<string>()
 
@@ -44,7 +44,7 @@ export function Home(): JSX.Element {
   const noPriceLists = priceListCount === 0 && !isFirstLoading
   const showSearchBar = priceListCount > 0 || searchValue != null
 
-  const NoPriceListsMessage = (): JSX.Element =>
+  const NoPriceListsMessage = (): React.JSX.Element =>
     noPriceLists && searchValue == null ? (
       <EmptyState
         title='No price lists yet!'

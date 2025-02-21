@@ -5,7 +5,7 @@ interface Props {
   job: Export
 }
 
-export function DescriptionLine({ job }: Props): JSX.Element {
+export function DescriptionLine({ job }: Props): React.JSX.Element {
   const { user } = useTokenProvider()
 
   return (

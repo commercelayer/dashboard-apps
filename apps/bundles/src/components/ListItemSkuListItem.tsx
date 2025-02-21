@@ -16,7 +16,7 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
     resource = makeSkuListItem(),
     isLoading,
     delayMs
-  }): JSX.Element | null => {
+  }): React.JSX.Element | null => {
     return (
       <ResourceListItem
         resource={resource}

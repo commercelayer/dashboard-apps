@@ -25,7 +25,7 @@ export function Routes<T extends Record<string, { path: string }>>({
       overlay?: boolean
     }
   }
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <Switch>
       {Object.entries(list).map(([key, { component, ...props }]) => {
@@ -78,7 +78,11 @@ function Route({
   )
 }
 
-function LoadingPage({ overlay = false }: { overlay?: boolean }): JSX.Element {
+function LoadingPage({
+  overlay = false
+}: {
+  overlay?: boolean
+}): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()
@@ -98,7 +102,7 @@ function LoadingPage({ overlay = false }: { overlay?: boolean }): JSX.Element {
   )
 }
 
-export function GenericPageNotFound(): JSX.Element {
+export function GenericPageNotFound(): React.JSX.Element {
   const [, setLocation] = useLocation()
   return (
     <PageLayout title=''>

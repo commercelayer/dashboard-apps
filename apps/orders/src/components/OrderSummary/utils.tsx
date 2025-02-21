@@ -27,7 +27,7 @@ export function renderTotalRow({
   label: React.ReactNode
   value: React.ReactNode
   bold?: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <ListItem borderStyle='none' padding='y' paddingSize='2'>
       <Text weight={bold ? 'bold' : 'medium'}>{label}</Text>
@@ -44,7 +44,7 @@ export function renderTotalRowAmount({
   formattedAmount,
   force = false,
   bold = false
-}: TotalRowProps): JSX.Element | null {
+}: TotalRowProps): React.JSX.Element | null {
   if (formattedAmount == null) {
     formattedAmount = ''
   }
@@ -56,7 +56,7 @@ export function renderTotalRowAmount({
     : null
 }
 
-export function renderDiscounts(order: Order): JSX.Element | null {
+export function renderDiscounts(order: Order): React.JSX.Element | null {
   type ItemType = NonNullable<Order['line_items']>[number]['item_type']
   type PromotionItemType = Extract<ItemType, `${string}_promotions`>
 
@@ -107,7 +107,7 @@ export function getManualAdjustment(order: Order): LineItem | undefined {
   return manualAdjustment
 }
 
-export function renderAdjustments(order: Order): JSX.Element | null {
+export function renderAdjustments(order: Order): React.JSX.Element | null {
   const adjustmentLineItems =
     order.line_items?.filter(
       (lineItem) =>
