@@ -83,22 +83,15 @@ export const ruleBuilderFormValidator = z
           .or(z.number())
           .nullable(),
         all_skus: z.enum(['all', 'any', 'number']),
-        min_quantity: z
-          .string()
-          .nullable()
-          .default(null)
-          .transform((minQuantity) => {
-            if (isNaN(parseInt(minQuantity ?? ''))) {
-              return null
-            }
-
-            return minQuantity
-          })
+        min_quantity: z.preprocess((value) => {
+          return Number.isNaN(value) ? null : value
+        }, z.number().positive().nullish())
       })
       .superRefine((data, ctx) => {
         if (
           data.all_skus === 'number' &&
-          isNaN(parseInt(data.min_quantity ?? ''))
+          (data.min_quantity == null ||
+            (data.min_quantity != null && data.min_quantity === 0))
         ) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
