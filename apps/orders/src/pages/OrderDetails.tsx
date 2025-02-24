@@ -18,6 +18,7 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceAttachments,
   ResourceDetails,
   ResourceMetadata,
   ResourceTags,
@@ -220,6 +221,9 @@ function OrderDetails(): JSX.Element {
               </Spacer>
             </>
           )}
+          <Spacer top='14'>
+            <ResourceAttachments resourceType='orders' resourceId={order.id} />
+          </Spacer>
           {!['draft'].includes(order.status) && (
             <Spacer top='14'>
               <Timeline order={order} />
