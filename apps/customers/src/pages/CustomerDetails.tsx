@@ -2,6 +2,7 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceAttachments,
   ResourceDetails,
   ResourceMetadata,
   ResourceTags,
@@ -163,6 +164,12 @@ export function CustomerDetails(): JSX.Element {
                 </Spacer>
               </>
             )}
+            <Spacer top='14'>
+              <ResourceAttachments
+                resourceType='customers'
+                resourceId={customer.id}
+              />
+            </Spacer>
             <Spacer top='14'>
               <CustomerTimeline customer={customer} />
             </Spacer>

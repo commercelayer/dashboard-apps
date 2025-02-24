@@ -11,6 +11,7 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceAttachments,
   ResourceDetails,
   ResourceMetadata,
   ResourceTags,
@@ -124,6 +125,12 @@ function ReturnDetails(): JSX.Element {
               </Spacer>
             </>
           )}
+          <Spacer top='14'>
+            <ResourceAttachments
+              resourceType='returns'
+              resourceId={returnObj.id}
+            />
+          </Spacer>
           <Spacer top='14'>
             <Timeline returnObj={returnObj} />
           </Spacer>

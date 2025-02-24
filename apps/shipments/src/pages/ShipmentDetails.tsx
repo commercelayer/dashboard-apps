@@ -12,6 +12,7 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  ResourceAttachments,
   ResourceDetails,
   ResourceMetadata,
   ResourceTags,
@@ -166,6 +167,12 @@ function ShipmentDetails(): JSX.Element {
               </Spacer>
             </>
           )}
+          <Spacer top='14'>
+            <ResourceAttachments
+              resourceType='shipments'
+              resourceId={shipment.id}
+            />
+          </Spacer>
           <Spacer top='14'>
             <ShipmentTimeline shipment={shipment} />
           </Spacer>
