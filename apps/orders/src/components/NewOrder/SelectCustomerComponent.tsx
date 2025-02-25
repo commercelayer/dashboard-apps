@@ -14,7 +14,7 @@ import type {
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-export function SelectCustomerComponent(): JSX.Element {
+export function SelectCustomerComponent(): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const { watch } = useFormContext()
   const [inputOptions, setInputOptions] = useState<ListResponse<Customer>>()

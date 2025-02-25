@@ -6,7 +6,7 @@ import {
   getRestrictionType
 } from '#data/customsInfo'
 import { t } from '@commercelayer/app-elements'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import { z } from 'zod'
 
 export const packingFormSchema = z

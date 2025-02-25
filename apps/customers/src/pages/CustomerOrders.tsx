@@ -15,7 +15,7 @@ import { ScrollToTop } from '#components/ScrollToTop'
 import { appRoutes } from '#data/routes'
 import { useCustomerDetails } from '#hooks/useCustomerDetails'
 
-export function CustomerOrders(): JSX.Element {
+export function CustomerOrders(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()

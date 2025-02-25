@@ -13,7 +13,7 @@ export function SelectMarketComponent({
   promotion
 }: {
   promotion: Promotion
-}): JSX.Element {
+}): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const currencyCodes = useCurrencyCodes(promotion)
 

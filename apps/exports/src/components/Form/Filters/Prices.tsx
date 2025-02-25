@@ -4,14 +4,14 @@ import {
   flatSelectValues,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
-import { type FilterValue, type PricesFilters, type PricesField } from 'AppForm'
+import { type FilterValue, type PricesField, type PricesFilters } from 'AppForm'
 import { useEffect, useState } from 'react'
 
 interface Props {
   onChange: (filters: PricesFilters) => void
 }
 
-export function Prices({ onChange }: Props): JSX.Element | null {
+export function Prices({ onChange }: Props): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
   const [filters, setFilter] = useState<PricesFilters>({})
 

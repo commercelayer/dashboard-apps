@@ -18,7 +18,7 @@ import {
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
-const DetailsPage = (): JSX.Element | null => {
+const DetailsPage = (): React.JSX.Element | null => {
   const {
     canUser,
     settings: { mode }

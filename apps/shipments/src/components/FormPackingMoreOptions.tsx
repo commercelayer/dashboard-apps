@@ -17,7 +17,7 @@ import {
   useTranslation
 } from '@commercelayer/app-elements'
 import type { Shipment } from '@commercelayer/sdk'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import { useEffect, type FC, type ReactNode } from 'react'
 import { useFormContext } from 'react-hook-form'
 
@@ -32,7 +32,7 @@ export function FormPackingMoreOptions({
   shipment
 }: {
   shipment: Shipment
-}): JSX.Element {
+}): React.JSX.Element {
   const { t } = useTranslation()
   const showCustomsInfo =
     shipment?.shipping_address?.country_code !==

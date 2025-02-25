@@ -35,7 +35,7 @@ export const ListItemTag = withSkeletonTemplate<
 
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const dropdownItems: JSX.Element[] = []
+  const dropdownItems: React.JSX.Element[] = []
 
   if (canUser('update', 'tags') && !isMock(resource)) {
     dropdownItems.push(

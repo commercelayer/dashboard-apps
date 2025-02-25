@@ -10,7 +10,7 @@ import {
   type TimelineEvent
 } from '@commercelayer/app-elements'
 import { type Customer } from '@commercelayer/sdk'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import { useEffect, useReducer, type Reducer } from 'react'
 
 import { isAttachmentValidNote, noteReferenceOrigin } from '#data/attachments'

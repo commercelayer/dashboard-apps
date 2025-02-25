@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const SubscriptionAddresses = withSkeletonTemplate<Props>(
-  ({ subscription }): JSX.Element | null => {
+  ({ subscription }): React.JSX.Element | null => {
     const order = subscription.source_order
 
     return (

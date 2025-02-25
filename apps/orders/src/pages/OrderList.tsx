@@ -13,7 +13,7 @@ import {
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-function OrderList(): JSX.Element {
+function OrderList(): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

@@ -19,7 +19,10 @@ interface Props {
   goBackUrl: string
 }
 
-export const LinkDetailsPage = ({ linkId, goBackUrl }: Props): JSX.Element => {
+export const LinkDetailsPage = ({
+  linkId,
+  goBackUrl
+}: Props): React.JSX.Element => {
   const {
     settings: { mode }
   } = useTokenProvider()

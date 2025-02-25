@@ -21,7 +21,7 @@ import {
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-function Purchase(): JSX.Element | null {
+function Purchase(): React.JSX.Element | null {
   const [, params] = useRoute<{ shipmentId: string }>(appRoutes.purchase.path)
   const { t } = useTranslation()
   const shipmentId = params?.shipmentId ?? ''
@@ -45,7 +45,11 @@ function Purchase(): JSX.Element | null {
   return <PurchaseShipment shipmentId={shipmentId} />
 }
 
-function PurchaseShipment({ shipmentId }: { shipmentId: string }): JSX.Element {
+function PurchaseShipment({
+  shipmentId
+}: {
+  shipmentId: string
+}): React.JSX.Element {
   const {
     canUser,
     settings: { mode }
@@ -214,7 +218,7 @@ function NotAuthorized({
 }: {
   shipmentId: string
   title?: string
-}): JSX.Element {
+}): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

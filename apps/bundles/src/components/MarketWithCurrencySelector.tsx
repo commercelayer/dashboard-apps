@@ -12,8 +12,8 @@ import {
   type Market,
   type Resource
 } from '@commercelayer/sdk'
-import isEmpty from 'lodash/isEmpty'
-import isString from 'lodash/isString'
+import isEmpty from 'lodash-es/isEmpty'
+import isString from 'lodash-es/isString'
 import { type FC } from 'react'
 import { useFormContext } from 'react-hook-form'
 

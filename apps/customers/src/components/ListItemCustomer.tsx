@@ -12,7 +12,7 @@ interface Props {
 
 function ListItemCustomerComponent({
   resource = makeCustomer()
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { navigateTo } = useAppLinking()
 
   return (

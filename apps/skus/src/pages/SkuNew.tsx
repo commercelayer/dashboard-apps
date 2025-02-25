@@ -16,7 +16,7 @@ import { type SkuCreate } from '@commercelayer/sdk'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
 
-export function SkuNew(): JSX.Element {
+export function SkuNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

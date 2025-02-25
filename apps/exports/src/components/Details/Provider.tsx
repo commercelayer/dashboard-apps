@@ -1,3 +1,4 @@
+import { useCoreSdkProvider } from '@commercelayer/app-elements'
 import { type Export } from '@commercelayer/sdk'
 import { type ExportDetailsContextValue } from 'App'
 import {
@@ -11,7 +12,6 @@ import {
 } from 'react'
 import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
 
 interface ExportDetailsProviderProps {
   exportId: string
@@ -27,7 +27,7 @@ export const useExportDetailsContext = (): ExportDetailsContextValue =>
 export function ExportDetailsProvider({
   exportId,
   children
-}: ExportDetailsProviderProps): JSX.Element {
+}: ExportDetailsProviderProps): React.JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { sdkClient } = useCoreSdkProvider()
   const intervalId = useRef<number | null>(null)

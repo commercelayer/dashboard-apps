@@ -14,7 +14,9 @@ import {
 } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 
-function Page(props: PageProps<typeof appRoutes.newSelectType>): JSX.Element {
+function Page(
+  props: PageProps<typeof appRoutes.newSelectType>
+): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

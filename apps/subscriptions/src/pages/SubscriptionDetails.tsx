@@ -29,7 +29,7 @@ import {
 } from '@commercelayer/app-elements'
 import { useLocation, useRoute } from 'wouter'
 
-function SubscriptionDetails(): JSX.Element {
+function SubscriptionDetails(): React.JSX.Element {
   const {
     canUser,
     settings: { mode },

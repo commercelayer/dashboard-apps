@@ -13,7 +13,7 @@ interface Props {
   returnLineItems: ReturnLineItem[]
 }
 
-export function FormFieldItems({ returnLineItems }: Props): JSX.Element {
+export function FormFieldItems({ returnLineItems }: Props): React.JSX.Element {
   const { t } = useTranslation()
 
   const options: HookedInputCheckboxGroupProps['options'] = useMemo(

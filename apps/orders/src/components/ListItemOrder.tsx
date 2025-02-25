@@ -17,7 +17,7 @@ export function ListItemOrder({
   resource = makeOrder(),
   isLoading,
   delayMs
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { navigateTo } = useAppLinking()
 
   return (

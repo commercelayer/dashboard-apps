@@ -10,7 +10,7 @@ import {
   type AvatarProps,
   type ResourceListItemTemplateProps
 } from '@commercelayer/app-elements'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 
 export const ListItemGiftCard = withSkeletonTemplate<
   ResourceListItemTemplateProps<'gift_cards'>

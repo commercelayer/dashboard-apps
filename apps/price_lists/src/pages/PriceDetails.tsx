@@ -21,7 +21,7 @@ import { usePriceDetails } from '#hooks/usePriceDetails'
 import { usePriceListDetails } from '#hooks/usePriceListDetails'
 import { useState } from 'react'
 
-export function PriceDetails(): JSX.Element {
+export function PriceDetails(): React.JSX.Element {
   const {
     settings: { mode },
     canUser

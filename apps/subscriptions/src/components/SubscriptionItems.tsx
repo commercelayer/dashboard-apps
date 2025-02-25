@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const SubscriptionItems = withSkeletonTemplate<Props>(
-  ({ subscriptionId }): JSX.Element | null => {
+  ({ subscriptionId }): React.JSX.Element | null => {
     const { ResourceList } = useResourceList({
       type: 'order_subscription_items',
       query: {

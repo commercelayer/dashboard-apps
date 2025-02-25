@@ -14,7 +14,7 @@ import {
 import { Link, useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function TagList(): JSX.Element {
+export function TagList(): React.JSX.Element {
   const { canUser } = useTokenProvider()
 
   const queryString = useSearch()

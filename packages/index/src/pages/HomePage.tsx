@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react'
 import { type AllowedAppSlug } from '../appList'
 import { appPromiseImports, humanReadable } from '../apps'
 
-export function HomePage(): JSX.Element {
+export function HomePage(): React.JSX.Element {
   const [visibility, setVisibility] = useState<
     Partial<Record<AllowedAppSlug, boolean>>
   >({})

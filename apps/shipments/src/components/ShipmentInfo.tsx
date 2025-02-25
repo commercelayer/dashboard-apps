@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const ShipmentInfo = withSkeletonTemplate<Props>(
-  ({ shipment }): JSX.Element => {
+  ({ shipment }): React.JSX.Element => {
     const { canAccess } = useTokenProvider()
     const { navigateTo } = useAppLinking()
     const { t } = useTranslation()

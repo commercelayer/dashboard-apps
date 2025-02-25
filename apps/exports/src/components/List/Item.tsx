@@ -11,15 +11,15 @@ import {
 } from '@commercelayer/app-elements'
 import { type Export } from '@commercelayer/sdk'
 import { Link } from 'wouter'
-import { getUiStatus } from './utils'
 import { DescriptionLine } from './ItemDescriptionLine'
 import { useListContext } from './Provider'
+import { getUiStatus } from './utils'
 
 interface Props {
   job: Export
 }
 
-export function Item({ job }: Props): JSX.Element {
+export function Item({ job }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { deleteExport } = useListContext()
 
@@ -54,7 +54,7 @@ export function Item({ job }: Props): JSX.Element {
   )
 }
 
-function TaskIcon({ job }: { job: Export }): JSX.Element {
+function TaskIcon({ job }: { job: Export }): React.JSX.Element {
   const status = getUiStatus(job.status)
 
   if (status === 'progress') {

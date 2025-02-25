@@ -18,7 +18,9 @@ import { useLinkDetails } from 'dashboard-apps-common/src/hooks/useLinkDetails'
 import { useState } from 'react'
 import { useLocation } from 'wouter'
 
-function LinkEdit(props: PageProps<typeof appRoutes.linkEdit>): JSX.Element {
+function LinkEdit(
+  props: PageProps<typeof appRoutes.linkEdit>
+): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

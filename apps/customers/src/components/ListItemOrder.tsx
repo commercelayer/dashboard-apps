@@ -13,7 +13,7 @@ interface Props {
 
 function ListItemOrderComponent({
   resource = makeOrder()
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { canAccess } = useTokenProvider()
   const { navigateTo } = useAppLinking()
 

@@ -24,7 +24,7 @@ export const useWebhookFormContext = (): WebhookFormContextValue =>
 export function WebhookFormProvider({
   webhookId,
   children
-}: WebhookFormProviderProps): JSX.Element {
+}: WebhookFormProviderProps): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const [state, dispatch] = useReducer(reducer, initialState)
 

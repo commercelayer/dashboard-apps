@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const ShipmentAddresses = withSkeletonTemplate<Props>(
-  ({ shipment }): JSX.Element | null => {
+  ({ shipment }): React.JSX.Element | null => {
     const { t } = useTranslation()
     if (shipment.shipping_address == null && shipment.origin_address == null) {
       return null

@@ -44,7 +44,7 @@ function getSubscriptionStatusName(
 }
 
 export const SubscriptionSteps = withSkeletonTemplate<Props>(
-  ({ subscription }): JSX.Element => {
+  ({ subscription }): React.JSX.Element => {
     const { user } = useTokenProvider()
 
     return (

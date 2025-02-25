@@ -35,7 +35,7 @@ function getReturnStatusBadgeVariant(
 }
 
 export const ReturnSteps = withSkeletonTemplate<Props>(
-  ({ returnObj }): JSX.Element => {
+  ({ returnObj }): React.JSX.Element => {
     const { t } = useTranslation()
 
     return (

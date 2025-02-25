@@ -10,7 +10,7 @@ import {
   useTokenProvider,
   type PageProps
 } from '@commercelayer/app-elements'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import type { FC } from 'react'
 
 const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {

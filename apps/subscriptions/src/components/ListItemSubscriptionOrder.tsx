@@ -12,11 +12,11 @@ import {
   type ResourceListItemTemplateProps
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
-import capitalize from 'lodash/capitalize'
+import capitalize from 'lodash-es/capitalize'
 
 export const ListItemSubscriptionOrder = withSkeletonTemplate<
   ResourceListItemTemplateProps<'orders'>
->(({ resource = makeOrder() }): JSX.Element | null => {
+>(({ resource = makeOrder() }): React.JSX.Element | null => {
   const { user, canAccess } = useTokenProvider()
   const { navigateTo } = useAppLinking()
 

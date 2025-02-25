@@ -35,7 +35,7 @@ export function TagForm({
   onSubmit,
   apiError,
   isSubmitting
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const methods = useForm({
     defaultValues,
     resolver: zodResolver(tagFormSchema)

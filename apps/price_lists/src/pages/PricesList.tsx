@@ -19,7 +19,7 @@ import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function PricesList(): JSX.Element {
+export function PricesList(): React.JSX.Element {
   const {
     canUser,
     settings: { mode }

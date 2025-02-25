@@ -68,7 +68,7 @@ export function BundleForm({
   onSubmit,
   apiError,
   isSubmitting
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const bundleFormMethods = useForm<BundleFormValues>({
     defaultValues,
     resolver: zodResolver(bundleFormSchema)
@@ -89,8 +89,7 @@ export function BundleForm({
 
   const imageFormMethods = useForm({
     defaultValues: {
-      name: defaultValues?.name,
-      image_url: defaultValues?.image_url
+      image_url: defaultValues?.image_url ?? ''
     },
     resolver: zodResolver(
       z.object({

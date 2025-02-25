@@ -11,7 +11,7 @@ export function SelectCurrencyComponent({
   promotion
 }: {
   promotion: Promotion
-}): JSX.Element {
+}): React.JSX.Element {
   const currencyCodes = useCurrencyCodes(promotion)
   const currencyValues: InputSelectValue[] =
     currencyCodes.length > 0

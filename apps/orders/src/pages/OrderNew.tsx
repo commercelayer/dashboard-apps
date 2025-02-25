@@ -5,7 +5,7 @@ import { type PageProps } from '@commercelayer/app-elements'
 
 function NewOrderPage(
   props: PageProps<typeof appRoutes.new>
-): JSX.Element | null {
+): React.JSX.Element | null {
   if (props.params.orderId != null) {
     return (
       <EditOrderStep overlay={props.overlay} orderId={props.params.orderId} />

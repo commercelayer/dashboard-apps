@@ -1,18 +1,18 @@
-import { appRoutes } from '#data/routes'
-import { useLocation, Link } from 'wouter'
 import { availableResources } from '#data/resources'
+import { appRoutes } from '#data/routes'
 import {
+  Icon,
   List,
   ListItem,
   PageLayout,
   Spacer,
-  useTokenProvider,
-  Icon,
   Text,
-  formatResourceName
+  formatResourceName,
+  useTokenProvider
 } from '@commercelayer/app-elements'
+import { Link, useLocation } from 'wouter'
 
-export function ResourceSelectorPage(): JSX.Element {
+export function ResourceSelectorPage(): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

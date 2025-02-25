@@ -25,7 +25,7 @@ interface Props {
 
 export function FormPackingFieldPackages({
   stockLocationId
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { setValue, watch } = useFormContext<PackingFormValues>()
   const { packages, isLoading } = usePackages(stockLocationId)
   const { t } = useTranslation()
@@ -90,7 +90,7 @@ function InputSelectPackages({
   stockLocationId
 }: {
   stockLocationId: string
-}): JSX.Element {
+}): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const { t } = useTranslation()
 

@@ -29,7 +29,7 @@ import {
 import { useMemo } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function StockTransferDetails(): JSX.Element {
+export function StockTransferDetails(): React.JSX.Element {
   const {
     canUser,
     settings: { mode },

@@ -6,7 +6,7 @@ import {
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import type { FC } from 'react'
 
 const GiftCardNew: FC = () => {

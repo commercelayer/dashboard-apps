@@ -1,6 +1,6 @@
 import { EmptyState, PageLayout } from '@commercelayer/app-elements'
 
-export function ErrorNotFound(): JSX.Element {
+export function ErrorNotFound(): React.JSX.Element {
   return (
     <PageLayout title='App router'>
       <EmptyState

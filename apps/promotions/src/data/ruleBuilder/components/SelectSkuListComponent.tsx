@@ -6,7 +6,7 @@ import {
 } from '@commercelayer/app-elements'
 import type { QueryParamsList, SkuList } from '@commercelayer/sdk'
 
-export function SelectSkuListComponent(): JSX.Element {
+export function SelectSkuListComponent(): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
 
   const { data: skuLists } = useCoreApi('sku_lists', 'list', [

@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const OrderAddresses = withSkeletonTemplate<Props>(
-  ({ order }): JSX.Element | null => {
+  ({ order }): React.JSX.Element | null => {
     const { sdkClient } = useCoreSdkProvider()
     const { t } = useTranslation()
     const { isEditing } = useOrderStatus(order)

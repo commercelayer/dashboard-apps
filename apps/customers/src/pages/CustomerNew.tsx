@@ -14,7 +14,7 @@ import { type CustomerCreate } from '@commercelayer/sdk'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
 
-export function CustomerNew(): JSX.Element {
+export function CustomerNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

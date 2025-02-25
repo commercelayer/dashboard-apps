@@ -13,7 +13,11 @@ interface Props {
   order: Order
 }
 
-const renderShipment = (shipment: Shipment): JSX.Element => {
+const OrderShipment = ({
+  shipment
+}: {
+  shipment: Shipment
+}): React.JSX.Element => {
   const { canAccess } = useTokenProvider()
   const { navigateTo } = useAppLinking()
 
@@ -58,7 +62,9 @@ export const OrderShipments = withSkeletonTemplate<Props>(({ order }) => {
         count: order.shipments.length
       })}
     >
-      {order.shipments.map((shipment) => renderShipment(shipment))}
+      {order?.shipments?.map((shipment) => (
+        <OrderShipment key={shipment.id} shipment={shipment} />
+      ))}
     </Section>
   )
 })

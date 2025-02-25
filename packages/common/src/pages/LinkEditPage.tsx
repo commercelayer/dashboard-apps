@@ -27,7 +27,7 @@ export const LinkEditPage = ({
   resourceType,
   linkId,
   goBackUrl
-}: Props): JSX.Element => {
+}: Props): React.JSX.Element => {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

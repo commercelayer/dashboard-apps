@@ -7,7 +7,10 @@ interface Props {
   hintText?: HintProps['children']
 }
 
-export function EventSelector({ name, hintText }: Props): JSX.Element | null {
+export function EventSelector({
+  name,
+  hintText
+}: Props): React.JSX.Element | null {
   const events = getAllEventsForSelect()
 
   return (

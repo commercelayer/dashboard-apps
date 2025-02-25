@@ -26,7 +26,7 @@ import { useCustomerDeleteOverlay } from '#hooks/useCustomerDeleteOverlay'
 import { useCustomerDetails } from '#hooks/useCustomerDetails'
 import { isMockedId } from '#mocks'
 
-export function CustomerDetails(): JSX.Element {
+export function CustomerDetails(): React.JSX.Element {
   const {
     settings: { mode },
     user,

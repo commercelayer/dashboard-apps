@@ -21,7 +21,7 @@ import {
   type UnitOfWeight
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'
 import { ShippingCategorySelect } from './ShippingCategorySelect'
@@ -80,7 +80,7 @@ export function SkuForm({
   onSubmit,
   apiError,
   isSubmitting
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const skuFormMethods = useForm<SkuFormValues>({
     defaultValues,
     resolver: zodResolver(skuFormSchema)
@@ -98,8 +98,7 @@ export function SkuForm({
 
   const imageFormMethods = useForm({
     defaultValues: {
-      name: defaultValues?.name,
-      imageUrl: defaultValues?.imageUrl
+      imageUrl: defaultValues?.imageUrl ?? ''
     },
     resolver: zodResolver(
       z.object({

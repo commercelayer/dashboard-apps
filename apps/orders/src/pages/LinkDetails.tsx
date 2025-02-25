@@ -31,7 +31,7 @@ function phoneNumberForWhatsapp(
 
 function LinkDetails(
   props: PageProps<typeof appRoutes.linkDetails>
-): JSX.Element {
+): React.JSX.Element {
   const {
     settings: { mode, extras },
     user

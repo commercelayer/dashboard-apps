@@ -21,7 +21,7 @@ function RefundPage({
   resourceId,
   noteReferenceOrigin,
   goBackUrl
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
 
   const {

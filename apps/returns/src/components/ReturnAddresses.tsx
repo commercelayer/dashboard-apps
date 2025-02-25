@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const ReturnAddresses = withSkeletonTemplate<Props>(
-  ({ returnObj }): JSX.Element | null => {
+  ({ returnObj }): React.JSX.Element | null => {
     const { t } = useTranslation()
 
     if (

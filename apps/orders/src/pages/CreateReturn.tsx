@@ -27,7 +27,7 @@ import type { Address, StockLocation } from '@commercelayer/sdk'
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-function CreateReturn(): JSX.Element {
+function CreateReturn(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()

@@ -65,7 +65,7 @@ export function useCustomerAddressOverlay(
 }
 
 const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
-  ({ order, close, onChange }): JSX.Element | null => {
+  ({ order, close, onChange }): React.JSX.Element | null => {
     const { sdkClient } = useCoreSdkProvider()
     const [apiError, setApiError] = useState<any>()
     const { t } = useTranslation()

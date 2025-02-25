@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const ReturnSummary = withSkeletonTemplate<Props>(
-  ({ returnObj }): JSX.Element => {
+  ({ returnObj }): React.JSX.Element => {
     const { canUser } = useTokenProvider()
     const { t } = useTranslation()
     const triggerAttributes = getReturnTriggerAttributes(returnObj)
@@ -116,7 +116,7 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
   }
 )
 
-function renderErrorMessages(errors?: string[]): JSX.Element {
+function renderErrorMessages(errors?: string[]): React.JSX.Element {
   return errors != null && errors.length > 0 ? (
     <Spacer top='4'>
       {errors.map((message, idx) => (

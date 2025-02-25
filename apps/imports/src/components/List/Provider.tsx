@@ -1,21 +1,21 @@
 import {
-  type QueryParamsList,
   type CommerceLayerClient,
   type Import,
-  type ListResponse
+  type ListResponse,
+  type QueryParamsList
 } from '@commercelayer/sdk'
-import { type ListImportContextValue, type ListImportContextState } from 'App'
+import { type ListImportContextState, type ListImportContextValue } from 'App'
 import {
   createContext,
   type ReactNode,
   useCallback,
+  useContext,
   useEffect,
   useReducer,
-  useContext,
   useRef
 } from 'react'
 
-import { initialValues, initialState } from './data'
+import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
 
 interface ListImportProviderProps {
@@ -42,7 +42,7 @@ export function ListImportProvider({
   children,
   pageSize,
   sdkClient
-}: ListImportProviderProps): JSX.Element {
+}: ListImportProviderProps): React.JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
   const intervalId = useRef<number | null>(null)
 

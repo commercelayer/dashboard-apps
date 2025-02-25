@@ -12,7 +12,7 @@ import {
 import { Link } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-export function SkuListsList(): JSX.Element {
+export function SkuListsList(): React.JSX.Element {
   const { canUser } = useTokenProvider()
 
   const queryString = useSearch()

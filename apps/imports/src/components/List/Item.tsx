@@ -1,31 +1,31 @@
-import {
-  Icon,
-  ListItem,
-  Text,
-  RadialProgress,
-  Button,
-  useTokenProvider,
-  formatResourceName,
-  StatusIcon
-} from '@commercelayer/app-elements'
-import {
-  type Import,
-  CommerceLayerStatic,
-  type ListableResourceType
-} from '@commercelayer/sdk'
 import { DescriptionLine } from '#components/List/ItemDescriptionLine'
 import { getUiStatus } from '#components/List/utils'
-import { getProgressPercentage } from '#utils/getProgressPercentage'
 import { appRoutes } from '#data/routes'
+import { getProgressPercentage } from '#utils/getProgressPercentage'
+import {
+  Button,
+  formatResourceName,
+  Icon,
+  ListItem,
+  RadialProgress,
+  StatusIcon,
+  Text,
+  useTokenProvider
+} from '@commercelayer/app-elements'
+import {
+  CommerceLayerStatic,
+  type Import,
+  type ListableResourceType
+} from '@commercelayer/sdk'
+import { useState } from 'react'
 import { Link } from 'wouter'
 import { useListContext } from './Provider'
-import { useState } from 'react'
 
 interface Props {
   job: Import
 }
 
-export function Item({ job }: Props): JSX.Element {
+export function Item({ job }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { deleteImport } = useListContext()
   const [deleteErrorMessage, setDeleteErrorMessage] = useState<string | null>()
@@ -83,7 +83,7 @@ export function Item({ job }: Props): JSX.Element {
   )
 }
 
-function TaskIcon({ job }: { job: Import }): JSX.Element {
+function TaskIcon({ job }: { job: Import }): React.JSX.Element {
   const status = getUiStatus(job.status)
   if (status === 'progress') {
     return <RadialProgress percentage={getProgressPercentage(job)?.value} />

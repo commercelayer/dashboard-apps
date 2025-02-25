@@ -13,7 +13,7 @@ interface Props {
   onChange: (filters: SkusFilters) => void
 }
 
-export function Skus({ onChange }: Props): JSX.Element | null {
+export function Skus({ onChange }: Props): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
   const [filters, setFilter] = useState<SkusFilters>({})
 

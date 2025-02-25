@@ -41,7 +41,7 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
   )
 })
 
-function JsonPreview({ json }: { json?: object | null }): JSX.Element {
+function JsonPreview({ json }: { json?: object | null }): React.JSX.Element {
   return (
     <pre>
       {json != null && Object.keys(json).length > 0 ? (

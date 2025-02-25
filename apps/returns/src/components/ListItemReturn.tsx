@@ -12,7 +12,7 @@ export function ListItemReturn({
   resource = makeReturn(),
   isLoading,
   delayMs
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { navigateTo } = useAppLinking()
 
   return (

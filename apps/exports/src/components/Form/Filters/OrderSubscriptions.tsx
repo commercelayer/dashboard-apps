@@ -7,9 +7,9 @@ import {
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import {
+  type FilterValue,
   type OrderSubscriptionField,
-  type OrderSubscriptionsFilters,
-  type FilterValue
+  type OrderSubscriptionsFilters
 } from 'AppForm'
 import { useEffect, useState } from 'react'
 import { parseFilterToDate } from './utils'
@@ -18,7 +18,9 @@ interface Props {
   onChange: (filters: OrderSubscriptionsFilters) => void
 }
 
-export function OrderSubscriptions({ onChange }: Props): JSX.Element | null {
+export function OrderSubscriptions({
+  onChange
+}: Props): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
   const [filters, setFilter] = useState<OrderSubscriptionsFilters>({})
 

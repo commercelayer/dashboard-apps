@@ -2,7 +2,7 @@ import { appRoutes } from '#data/routes'
 import { Button, EmptyState, PageLayout } from '@commercelayer/app-elements'
 import { Link, useLocation } from 'wouter'
 
-export function ErrorNotFound(): JSX.Element {
+export function ErrorNotFound(): React.JSX.Element {
   const [_, setLocation] = useLocation()
 
   return (

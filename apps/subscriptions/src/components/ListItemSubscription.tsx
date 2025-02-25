@@ -21,7 +21,7 @@ import { Link } from 'wouter'
  */
 function getListUiIcon(
   subscription: OrderSubscription
-): JSX.Element | undefined {
+): React.JSX.Element | undefined {
   const status = getSubscriptionStatus(subscription)
   switch (status) {
     case 'active':

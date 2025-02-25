@@ -32,7 +32,7 @@ export function SkuListForm({
   onSubmit,
   apiError,
   isSubmitting
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const skuListFormMethods = useForm<SkuListFormValues>({
     defaultValues,
     resolver: zodResolver(skuListFormSchema)

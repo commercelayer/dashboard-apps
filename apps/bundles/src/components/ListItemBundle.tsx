@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const ListItemBundle = withSkeletonTemplate<Props>(
-  ({ resource = makeBundle() }): JSX.Element | null => {
+  ({ resource = makeBundle() }): React.JSX.Element | null => {
     const { navigateTo } = useAppLinking()
 
     return (

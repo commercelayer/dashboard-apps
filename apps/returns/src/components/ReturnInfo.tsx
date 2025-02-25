@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const ReturnInfo = withSkeletonTemplate<Props>(
-  ({ returnObj }): JSX.Element => {
+  ({ returnObj }): React.JSX.Element => {
     const { canAccess } = useTokenProvider()
     const { navigateTo } = useAppLinking()
     const { t } = useTranslation()

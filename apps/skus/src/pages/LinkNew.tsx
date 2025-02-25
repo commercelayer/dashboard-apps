@@ -6,7 +6,7 @@ import { LinkNewPage } from 'dashboard-apps-common/src/pages/LinkNewPage'
 
 export function LinkNew(
   props: PageProps<typeof appRoutes.linksNew>
-): JSX.Element {
+): React.JSX.Element {
   const skuId = props.params?.resourceId ?? ''
   const goBackUrl = `${appRoutes.details.makePath({ skuId })}?tab=links`
 

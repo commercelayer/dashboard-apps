@@ -15,7 +15,7 @@ import { appRoutes } from '#data/routes'
 import { useSubscriptionDetails } from '#hooks/useSubscriptionDetails'
 import { getSubscriptionTitle } from '#utils/getSubscriptionTitle'
 
-export function SubscriptionOrders(): JSX.Element {
+export function SubscriptionOrders(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ subscriptionId: string }>(appRoutes.orders.path)

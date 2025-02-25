@@ -7,7 +7,7 @@
     "clean": "pnpx rimraf --glob **/node_modules **/pnpm-lock.yaml",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
-    "test": "pnpm -r test --stream",
+    "test": "pnpm  --stream -r test",
     "ts:check": "pnpm -r ts:check",
     "test:watch": "pnpm -r --parallel --aggregate-output --color test:watch",
     "dep:major": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u",
@@ -34,7 +34,7 @@
   ],
   "devDependencies": {
     "husky": "^9.1.7",
-    "lerna": "^8.1.9",
-    "lint-staged": "^15.2.11"
+    "lerna": "^8.2.0",
+    "lint-staged": "^15.4.3"
   }
 }

@@ -18,7 +18,7 @@ import {
 } from '@commercelayer/app-elements'
 import type { GiftCard } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash-es/isEmpty'
 import { useState, type FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'

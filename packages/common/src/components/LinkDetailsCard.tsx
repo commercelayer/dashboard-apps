@@ -38,7 +38,7 @@ export const LinkDetailsCard = ({
   primaryAction,
   showQR = false,
   share
-}: Props): JSX.Element => {
+}: Props): React.JSX.Element => {
   const linkQrRef = useRef<QRCode>(null)
 
   const handleLinkQrDownload = (): void => {

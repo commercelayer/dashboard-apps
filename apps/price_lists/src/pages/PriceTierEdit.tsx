@@ -31,7 +31,7 @@ import {
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-export function PriceTierEdit(): JSX.Element {
+export function PriceTierEdit(): React.JSX.Element {
   const {
     canUser,
     settings: { mode }

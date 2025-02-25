@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const CustomerAddresses = withSkeletonTemplate<Props>(
-  ({ customer }): JSX.Element | null => {
+  ({ customer }): React.JSX.Element | null => {
     const { canUser } = useTokenProvider()
     const { t } = useTranslation()
 

@@ -41,7 +41,7 @@ export function FormPacking({
   isSubmitting,
   stockLocationId,
   stockLineItems
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const methods = useForm({
     defaultValues,
     resolver: zodResolver(packingFormSchema)

@@ -12,7 +12,7 @@ export function ListItemPromotion({
   resource = makePercentageDiscountPromotion() as unknown as Promotion,
   isLoading,
   delayMs
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const { navigateTo } = useAppLinking()
 
   return (

@@ -23,7 +23,7 @@ import {
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
 
-function ReturnDetails(): JSX.Element {
+function ReturnDetails(): React.JSX.Element {
   const {
     canUser,
     settings: { mode }

@@ -5,8 +5,8 @@ import {
 } from '@commercelayer/app-elements'
 import {
   type FilterValue,
-  type StockItemsFilters,
-  type StockItemsField
+  type StockItemsField,
+  type StockItemsFilters
 } from 'AppForm'
 import { useEffect, useState } from 'react'
 
@@ -14,7 +14,7 @@ interface Props {
   onChange: (filters: StockItemsFilters) => void
 }
 
-export function StockItems({ onChange }: Props): JSX.Element | null {
+export function StockItems({ onChange }: Props): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
   const [filters, setFilter] = useState<StockItemsFilters>({})
 

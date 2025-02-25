@@ -13,7 +13,7 @@ import { useLocation } from 'wouter'
 
 function Page(
   props: PageProps<typeof appRoutes.newPromotionActivationRule>
-): JSX.Element {
+): React.JSX.Element {
   const {
     settings: { mode }
   } = useTokenProvider()

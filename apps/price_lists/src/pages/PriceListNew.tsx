@@ -15,7 +15,7 @@ import { type PriceListCreate } from '@commercelayer/sdk'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
 
-export function PriceListNew(): JSX.Element {
+export function PriceListNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()

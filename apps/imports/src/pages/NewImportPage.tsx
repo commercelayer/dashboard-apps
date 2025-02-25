@@ -24,7 +24,7 @@ import { unparse } from 'papaparse'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 
-function NewImportPage(): JSX.Element {
+function NewImportPage(): React.JSX.Element {
   const {
     canUser,
     settings: { mode }

@@ -6,7 +6,7 @@ interface Props {
   job: Import
 }
 
-export function DescriptionLine({ job }: Props): JSX.Element {
+export function DescriptionLine({ job }: Props): React.JSX.Element {
   const { user } = useTokenProvider()
 
   const errorsCount =
