@@ -75,7 +75,7 @@ export function useSummaryRows(order: Order): {
           <Spacer bottom='8'>
             <Alert status='warning'>
               {t('apps.orders.details.new_total_line1', {
-                total: order.formatted_total_amount_with_taxes,
+                new_total: order.formatted_total_amount_with_taxes,
                 difference: diffTotalAndPlacedTotal
               })}
               <br />
