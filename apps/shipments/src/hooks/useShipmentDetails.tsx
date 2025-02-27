@@ -1,5 +1,6 @@
 import { isMockedId, makeShipment } from '#mocks'
 import { useCoreApi, useTranslation } from '@commercelayer/app-elements'
+import isEmpty from 'lodash-es/isEmpty'
 
 export const shipmentIncludeAttribute = [
   'order',
@@ -33,13 +34,16 @@ export function useShipmentDetails(
     data: shipment,
     isLoading,
     mutate: mutateShipment,
-    isValidating
+    isValidating,
+    error
   } = useCoreApi(
     'shipments',
     'retrieve',
-    [id, { include: shipmentIncludeAttribute }],
+    !isMockedId(id) && !isEmpty(id)
+      ? [id, { include: shipmentIncludeAttribute }]
+      : null,
     {
-      isPaused: () => isMockedId(id) || paused,
+      isPaused: () => paused,
       fallbackData: makeShipment(),
       ...(shouldRevalidate
         ? {}
@@ -72,6 +76,7 @@ export function useShipmentDetails(
     isLoading,
     mutateShipment,
     isValidating,
+    error,
     isPurchasing,
     isPurchased,
     purchaseError

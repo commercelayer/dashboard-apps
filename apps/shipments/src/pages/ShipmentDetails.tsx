@@ -39,11 +39,11 @@ function ShipmentDetails(): React.JSX.Element {
 
   const shipmentId = params?.shipmentId ?? ''
 
-  const { shipment, isLoading, mutateShipment, purchaseError } =
+  const { shipment, isLoading, error, mutateShipment, purchaseError } =
     useShipmentDetails(shipmentId)
   const pageToolbar = useShipmentToolbar({ shipment })
 
-  if (shipmentId === undefined || !canUser('read', 'orders')) {
+  if (shipmentId === undefined || !canUser('read', 'orders') || error != null) {
     return (
       <PageLayout
         title={t('resources.shipments.name_other')}
