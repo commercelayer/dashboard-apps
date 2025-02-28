@@ -6,7 +6,7 @@ export const makeShipment = (): Shipment => {
   return {
     ...makeResource('shipments'),
     number: '#19346523/S/001',
-    status: 'upcoming',
+    status: 'packing',
     shipping_method: makeShippingMethod(),
     rates: [
       {
