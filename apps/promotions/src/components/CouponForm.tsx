@@ -12,10 +12,11 @@ import {
   Section,
   Spacer,
   Text,
+  useCoreApi,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation } from 'wouter'
 import { type z } from 'zod'
@@ -41,6 +42,17 @@ export function CouponForm({
   })
 
   const { sdkClient } = useCoreSdkProvider()
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
+  const minCodeLength = useMemo(
+    // @ts-expect-error types are not up to date
+    () => organization?.coupon_code_min_length ?? 8,
+    [organization]
+  )
+  const maxCodeLength = useMemo(
+    // @ts-expect-error types are not up to date
+    () => organization?.coupon_code_max_length ?? 40,
+    [organization]
+  )
 
   return (
     <HookedForm
@@ -100,9 +112,12 @@ export function CouponForm({
           <Spacer top='6'>
             <HookedInput
               name='code'
-              maxLength={40}
+              minLength={minCodeLength}
+              maxLength={maxCodeLength}
               label='Coupon code *'
-              hint={{ text: '8 to 40 characters.' }}
+              hint={{
+                text: `${minCodeLength} to ${maxCodeLength} characters.`
+              }}
             />
           </Spacer>
 
