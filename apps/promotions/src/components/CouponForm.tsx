@@ -44,13 +44,11 @@ export function CouponForm({
   const { sdkClient } = useCoreSdkProvider()
   const { data: organization } = useCoreApi('organization', 'retrieve', [])
   const minCodeLength = useMemo(
-    // @ts-expect-error types are not up to date
-    () => organization?.coupon_code_min_length ?? 8,
+    () => organization?.coupons_min_code_length ?? 8,
     [organization]
   )
   const maxCodeLength = useMemo(
-    // @ts-expect-error types are not up to date
-    () => organization?.coupon_code_max_length ?? 40,
+    () => organization?.coupons_max_code_length ?? 40,
     [organization]
   )
 
