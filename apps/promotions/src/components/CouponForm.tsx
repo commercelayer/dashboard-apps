@@ -24,7 +24,7 @@ import { type z } from 'zod'
 interface Props {
   promotionId: string
   couponId?: string
-  defaultValues?: Partial<z.infer<typeof couponForm>>
+  defaultValues?: Partial<z.infer<ReturnType<typeof couponForm>>>
 }
 
 export function CouponForm({
@@ -36,10 +36,6 @@ export function CouponForm({
   const [apiError, setApiError] = useState<any>()
   const { promotion } = usePromotion(promotionId)
   const { mutateCoupon } = useCoupon(couponId)
-  const methods = useForm<z.infer<typeof couponForm>>({
-    defaultValues,
-    resolver: zodResolver(couponForm)
-  })
 
   const { sdkClient } = useCoreSdkProvider()
   const { data: organization } = useCoreApi('organization', 'retrieve', [])
@@ -51,6 +47,10 @@ export function CouponForm({
     () => organization?.coupons_max_code_length ?? 40,
     [organization]
   )
+  const methods = useForm<z.infer<ReturnType<typeof couponForm>>>({
+    defaultValues,
+    resolver: zodResolver(couponForm(minCodeLength, maxCodeLength))
+  })
 
   return (
     <HookedForm

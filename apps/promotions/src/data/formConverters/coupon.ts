@@ -1,15 +1,18 @@
 import type { Coupon, CouponCreate, CouponUpdate } from '@commercelayer/sdk'
 import { z } from 'zod'
 
-export const couponForm = z.object({
-  code: z.string().min(8).max(40),
-  expires_at: z.date().nullish(),
-  usage_limit: z.preprocess((value) => {
-    return Number.isNaN(value) ? null : value
-  }, z.number().positive().nullish()),
-  recipient_email: z.string().nullish(),
-  customer_single_use: z.boolean().default(false)
-})
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const couponForm = (codeMin: number, codeMax: number) => {
+  return z.object({
+    code: z.string().min(codeMin).max(codeMax),
+    expires_at: z.date().nullish(),
+    usage_limit: z.preprocess((value) => {
+      return Number.isNaN(value) ? null : value
+    }, z.number().positive().nullish()),
+    recipient_email: z.string().nullish(),
+    customer_single_use: z.boolean().default(false)
+  })
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function couponToFormValues(coupon?: Coupon) {
@@ -29,7 +32,9 @@ export function couponToFormValues(coupon?: Coupon) {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function formValuesToCoupon(formValues: z.infer<typeof couponForm>) {
+export function formValuesToCoupon(
+  formValues: z.infer<ReturnType<typeof couponForm>>
+) {
   return {
     ...formValues,
     expires_at:
