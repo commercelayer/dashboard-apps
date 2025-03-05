@@ -52,7 +52,7 @@
     }
   },
   "include": [
-    "global.d.ts",
+    "i18n.d.ts",
     "src",
     ".eslintrc.cjs",
     "public/*.js",

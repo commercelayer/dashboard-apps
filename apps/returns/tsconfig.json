@@ -50,7 +50,7 @@
   },
   "include": [
     "vite.config.js",
-    "global.d.ts",
+    "i18n.d.ts",
     "src",
     ".eslintrc.cjs",
     "@typing/**/*.d.ts",
