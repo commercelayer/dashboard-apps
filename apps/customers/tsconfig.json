@@ -2,8 +2,15 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vitest/globals", "vite/client"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "types": [
+      "vitest/globals",
+      "vite/client"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,
@@ -21,18 +28,32 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "#components/*": ["src/components/*"],
-      "#contexts/*": ["src/contexts/*"],
-      "#data/*": ["src/data/*"],
-      "#hooks/*": ["src/hooks/*"],
-      "#mocks": ["src/mocks/index"],
-      "#pages/*": ["src/pages/*"],
-      "#utils/*": ["src/utils/*"]
+      "#components/*": [
+        "src/components/*"
+      ],
+      "#contexts/*": [
+        "src/contexts/*"
+      ],
+      "#data/*": [
+        "src/data/*"
+      ],
+      "#hooks/*": [
+        "src/hooks/*"
+      ],
+      "#mocks": [
+        "src/mocks/index"
+      ],
+      "#pages/*": [
+        "src/pages/*"
+      ],
+      "#utils/*": [
+        "src/utils/*"
+      ]
     }
   },
   "include": [
     "vite.config.js",
-    "global.d.ts",
+    "i18n.d.ts",
     "src",
     ".eslintrc.cjs",
     "@typing/**/*.d.ts",
