@@ -68,7 +68,7 @@ function Page(
         ]
       }}
     >
-      <Spacer top='4'>
+      <Spacer top='6'>
         <SearchBar
           initialValue={searchValue}
           onSearch={setSearchValue}
