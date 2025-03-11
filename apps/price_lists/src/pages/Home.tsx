@@ -71,7 +71,7 @@ export function Home(): React.JSX.Element {
   return (
     <HomePageLayout title='Prices'>
       {showSearchBar && (
-        <Spacer top='4'>
+        <Spacer top='6'>
           <SearchBar
             initialValue={searchValue}
             onSearch={setSearchValue}
@@ -82,7 +82,7 @@ export function Home(): React.JSX.Element {
           />
         </Spacer>
       )}
-      <Spacer top={showSearchBar ? '14' : '4'}>
+      <Spacer top={showSearchBar ? '14' : '6'}>
         {noPriceLists ? (
           <NoPriceListsMessage />
         ) : (
