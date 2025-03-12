@@ -29,11 +29,11 @@ export function FormPackingFieldItems({
             alignItems='center'
             borderStyle='none'
             icon={
-              item.sku?.image_url != null ? (
+              item.image_url != null ? (
                 <Avatar
-                  alt={item.sku.name}
+                  alt={item.name ?? ''}
                   size='small'
-                  src={item.sku.image_url as `https://${string}`}
+                  src={item.image_url as `https://${string}`}
                 />
               ) : undefined
             }
@@ -41,7 +41,7 @@ export function FormPackingFieldItems({
           >
             <div>
               <Text size='regular' tag='div' weight='bold'>
-                {item.sku?.name}
+                {item.name}
               </Text>
               {item.sku?.weight != null ? (
                 <Text size='small' tag='div' variant='info'>
