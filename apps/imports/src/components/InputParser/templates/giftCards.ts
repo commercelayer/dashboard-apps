@@ -10,6 +10,7 @@ export const csvGiftCardsTemplate: Array<
   'balance_max_cents',
   'single_use',
   'rechargeable',
+  'distribute_discount',
   'image_url',
   'expires_at',
   'recipient_email',

@@ -55,13 +55,18 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
           </ListDetailsItem>
         )}
 
-        {giftCard.rechargeable === true || giftCard.single_use === true ? (
+        {giftCard.rechargeable === true ||
+        giftCard.single_use === true ||
+        giftCard.distribute_discount === true ? (
           <ListDetailsItem label='Options' gutter='none'>
             {giftCard.rechargeable === true && (
               <Badge variant='teal'>Rechargeable</Badge>
             )}
             {giftCard.single_use === true && (
               <Badge variant='teal'>Single use</Badge>
+            )}
+            {giftCard.distribute_discount === true && (
+              <Badge variant='teal'>Distribute discount</Badge>
             )}
           </ListDetailsItem>
         ) : null}
