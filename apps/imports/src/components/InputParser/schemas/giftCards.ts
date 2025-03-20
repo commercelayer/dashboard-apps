@@ -14,6 +14,7 @@ const schema = z
     balance_max_cents: z.optional(z.string()),
     single_use: zodEnforceBoolean({ optional: true }),
     rechargeable: zodEnforceBoolean({ optional: true }),
+    distribute_discount: zodEnforceBoolean({ optional: true }),
     image_url: z.optional(z.string().url()),
     expires_at: z.optional(zodEnforceDateString), // 2018-01-02T12:00:00.000Z
     recipient_email: z.optional(z.string()),
