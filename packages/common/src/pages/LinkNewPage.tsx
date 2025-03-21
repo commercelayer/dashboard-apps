@@ -109,7 +109,7 @@ function adaptFormValuesToLink(
   return {
     name: formValues.name,
     client_id: formValues.clientId,
-    scope: `market:id:${formValues.market}`,
+    scope: `market:id:${formValues.market}${formValues.stockLocation != null ? ` stock_location:id:${formValues.stockLocation}` : ''}`,
     starts_at: formValues.startsAt.toJSON(),
     expires_at: formValues.expiresAt.toJSON(),
     item: {
