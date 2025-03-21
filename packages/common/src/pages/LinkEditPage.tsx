@@ -9,6 +9,7 @@ import {
 } from '@commercelayer/app-elements'
 
 import type { Link, LinkUpdate, Sku, SkuList } from '@commercelayer/sdk'
+import isEmpty from 'lodash-es/isEmpty'
 import { useState } from 'react'
 import { useLocation } from 'wouter'
 import { LinkForm, type LinkFormValues } from '../components/LinkForm'
@@ -112,11 +113,17 @@ export const LinkEditPage = ({
 }
 
 function adaptLinkToFormValues(link?: Link): LinkFormValues {
+  let [market, stockLocation] = link?.scope.split(' ') ?? []
+  market = market != null ? market?.replace('market:id:', '') : ''
+  stockLocation =
+    stockLocation != null ? stockLocation.replace('stock_location:id:', '') : ''
+
   return {
     id: link?.id,
     name: link?.name ?? '',
     clientId: link?.client_id ?? '',
-    market: link?.scope.replace('market:id:', '') ?? '',
+    market,
+    stockLocation,
     startsAt: new Date(link?.starts_at ?? ''),
     expiresAt: new Date(link?.expires_at ?? '')
   }
@@ -131,7 +138,7 @@ function adaptFormValuesToLink(
     id: formValues.id ?? '',
     name: formValues.name,
     client_id: formValues.clientId,
-    scope: `market:id:${formValues.market}`,
+    scope: `market:id:${formValues.market}${!isEmpty(formValues.stockLocation) ? ` stock_location:id:${formValues.stockLocation}` : ''}`,
     starts_at: formValues.startsAt.toJSON(),
     expires_at: formValues.expiresAt.toJSON(),
     item: {
