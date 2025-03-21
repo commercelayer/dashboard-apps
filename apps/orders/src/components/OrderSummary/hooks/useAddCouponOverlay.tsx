@@ -64,7 +64,9 @@ const Form: React.FC<Props> = ({ order, organization, onChange, close }) => {
             invalid_type_error: t('validation.coupon_code_invalid')
           })
           .min(couponMinLength, {
-            message: t('validation.coupon_code_too_short')
+            message: t('validation.coupon_code_too_short', {
+              min: couponMinLength
+            })
           })
       }),
     []
