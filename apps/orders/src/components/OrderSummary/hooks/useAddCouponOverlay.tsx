@@ -5,11 +5,12 @@ import {
   HookedValidationApiError,
   PageLayout,
   Spacer,
+  useCoreApi,
   useCoreSdkProvider,
   useOverlay,
   useTranslation
 } from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
+import type { Order, Organization } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,6 +18,7 @@ import { z } from 'zod'
 
 interface Props {
   order: Order
+  organization: Organization
   onChange?: () => void
   close: () => void
 }
@@ -27,22 +29,31 @@ export function useAddCouponOverlay(
   onChange?: Props['onChange']
 ) {
   const { Overlay, open, close } = useOverlay()
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
 
   return {
     close,
     open,
     Overlay: () => (
       <Overlay>
-        <Form order={order} onChange={onChange} close={close} />
+        {organization == null ? null : (
+          <Form
+            order={order}
+            organization={organization}
+            onChange={onChange}
+            close={close}
+          />
+        )}
       </Overlay>
     )
   }
 }
 
-const Form: React.FC<Props> = ({ order, onChange, close }) => {
+const Form: React.FC<Props> = ({ order, organization, onChange, close }) => {
   const { sdkClient } = useCoreSdkProvider()
   const [apiError, setApiError] = useState<string>()
   const { t } = useTranslation()
+  const couponMinLength = organization?.coupons_min_code_length ?? 8
 
   const validationSchema = useMemo(
     () =>
@@ -52,7 +63,7 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
             required_error: t('validation.coupon_code_invalid'),
             invalid_type_error: t('validation.coupon_code_invalid')
           })
-          .min(8, {
+          .min(couponMinLength, {
             message: t('validation.coupon_code_too_short')
           })
       }),
