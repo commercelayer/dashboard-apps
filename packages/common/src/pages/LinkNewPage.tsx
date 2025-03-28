@@ -8,6 +8,7 @@ import {
 } from '@commercelayer/app-elements'
 
 import type { LinkCreate, Sku, SkuList } from '@commercelayer/sdk'
+import isEmpty from 'lodash-es/isEmpty'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
 import { LinkForm, type LinkFormValues } from '../components/LinkForm'
@@ -109,7 +110,7 @@ function adaptFormValuesToLink(
   return {
     name: formValues.name,
     client_id: formValues.clientId,
-    scope: `market:id:${formValues.market}`,
+    scope: `market:id:${formValues.market}${!isEmpty(formValues.stockLocation) ? ` stock_location:id:${formValues.stockLocation}` : ''}`,
     starts_at: formValues.startsAt.toJSON(),
     expires_at: formValues.expiresAt.toJSON(),
     item: {
