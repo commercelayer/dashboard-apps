@@ -20,6 +20,7 @@ function getSubscriptionStatusBadgeVariant(
 ): BadgeProps['variant'] {
   switch (status) {
     case 'active':
+    case 'running':
       return 'success'
     case 'inactive':
     case 'draft':
@@ -34,6 +35,8 @@ function getSubscriptionStatusName(
   switch (status) {
     case 'active':
       return 'Active'
+    case 'running':
+      return 'Running'
     case 'inactive':
       return 'Inactive'
     case 'draft':

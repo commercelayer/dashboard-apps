@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@commercelayer/app-elements": "^5.1.5",
-    "@commercelayer/sdk": "^6.35.0",
+    "@commercelayer/sdk": "^6.36.0",
     "@hookform/resolvers": "^3.10.0",
     "date-fns": "^4.1.0",
     "lodash-es": "^4.17.21",
@@ -18,16 +18,16 @@
     "react-hook-form": "7.54.2",
     "react-qrcode-logo": "^3.0.0",
     "swr": "^2.3.3",
-    "type-fest": "^4.37.0",
+    "type-fest": "^4.38.0",
     "wouter": "^3.6.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@commercelayer/eslint-config-ts-react": "^2.2.0",
     "@types/lodash-es": "^4.17.12",
-    "@types/react": "^19.0.10",
+    "@types/react": "^19.0.12",
     "eslint": "^8.57.1",
-    "i18next": "^24.2.2",
+    "i18next": "^24.2.3",
     "typescript": "^5.8.2"
   }
 }
