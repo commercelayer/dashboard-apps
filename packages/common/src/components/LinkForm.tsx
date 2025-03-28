@@ -1,6 +1,7 @@
 import {
   Button,
   Grid,
+  Hint,
   HookedForm,
   HookedInput,
   HookedInputDate,
@@ -9,11 +10,13 @@ import {
   SkeletonTemplate,
   Spacer,
   Text,
+  useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
+import type { StockLocation } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addMonths } from 'date-fns/addMonths'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'
 import { useMarketsList } from '../hooks/useMarketsList'
@@ -23,6 +26,7 @@ const linkFormSchema = z.object({
   name: z.string().min(1),
   clientId: z.string().min(1),
   market: z.string().min(1),
+  stockLocation: z.string().optional(),
   startsAt: z.date(),
   expiresAt: z.date()
 })
@@ -52,9 +56,45 @@ export function LinkForm({
     resolver: zodResolver(linkFormSchema)
   })
   const { settings } = useTokenProvider()
+  const { sdkClient } = useCoreSdkProvider()
   const salesChannels = settings.extras?.salesChannels
 
   const { markets, isLoading: isLoadingMarkets } = useMarketsList({})
+  const [stockLocations, setStockLocations] = useState<StockLocation[]>()
+  const defaultStockLocation = { value: '', label: 'All stock locations' }
+  const selectedMarket = linkFormMethods.watch('market')
+
+  useEffect(() => {
+    if (selectedMarket != null) {
+      void sdkClient.markets
+        .retrieve(selectedMarket, {
+          fields: ['id', 'name', 'inventory_model'],
+          include: [
+            'inventory_model',
+            'inventory_model.inventory_stock_locations',
+            'inventory_model.inventory_stock_locations.stock_location'
+          ]
+        })
+        .then((market) => {
+          const marketsStockLocations: StockLocation[] = []
+          market.inventory_model?.inventory_stock_locations?.forEach(
+            (stockLocation) => {
+              if (stockLocation?.stock_location != null) {
+                marketsStockLocations.push(stockLocation.stock_location)
+              }
+            }
+          )
+          setStockLocations(marketsStockLocations)
+          if (
+            defaultValues?.stockLocation == null &&
+            marketsStockLocations.length >= 2
+          ) {
+            linkFormMethods.setValue('stockLocation', '')
+          }
+        })
+    }
+  }, [selectedMarket])
+
   const isLoading = markets == null || isLoadingMarkets
 
   const isAdvancedForm = resourceType !== 'orders'
@@ -134,11 +174,33 @@ export function LinkForm({
                   label: name
                 }))}
                 pathToValue='value'
-                hint={{
-                  text: <Text variant='info'>The market to use</Text>
-                }}
               />
             )}
+            {stockLocations != null && stockLocations.length >= 2 && (
+              <Spacer top='2'>
+                <HookedInputSelect
+                  name='stockLocation'
+                  label={undefined}
+                  initialValues={[
+                    defaultStockLocation,
+                    ...(stockLocations != null
+                      ? stockLocations?.map(({ id, name }) => ({
+                          value: id,
+                          label: name
+                        }))
+                      : [])
+                  ]}
+                  pathToValue='value'
+                />
+              </Spacer>
+            )}
+            <Spacer top='2'>
+              <Hint>
+                <Text variant='info'>
+                  Select a market and restrict to a stock location if available.
+                </Text>
+              </Hint>
+            </Spacer>
           </Spacer>
         )}
         <Spacer top='6' bottom='12'>
