@@ -64,7 +64,8 @@ function OrderDetails(): React.JSX.Element {
       order.status === 'pending' &&
       !isPendingWithTransactions &&
       extras?.salesChannels != null &&
-      extras?.salesChannels.length > 0
+      extras?.salesChannels.length > 0 &&
+      order.market?.private === false
     ) {
       const checkoutLinkButton: ToolbarItem = {
         label: 'Checkout',
