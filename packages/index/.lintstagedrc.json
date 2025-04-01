@@ -1,5 +1,5 @@
 {
-  "*.{js,jsx,ts,tsx}": [
+  "*.{js,mjs,jsx,ts,mts,tsx}": [
     "bash -c \"tsc -p ./tsconfig.json --noEmit\"",
     "pnpm lint:fix",
     "bash -c \"pnpm test\""

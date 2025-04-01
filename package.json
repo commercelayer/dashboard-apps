@@ -10,8 +10,8 @@
     "test": "pnpm  --stream -r test",
     "ts:check": "pnpm -r ts:check",
     "test:watch": "pnpm -r --parallel --aggregate-output --color test:watch",
-    "dep:major": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u",
-    "dep:minor": "pnpm dep:major -t minor",
+    "dep:major": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u && node replace-react.mjs",
+    "dep:minor": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u -t minor && node replace-react.mjs",
     "prepare": "husky"
   },
   "keywords": [],
@@ -35,7 +35,8 @@
   "devDependencies": {
     "husky": "^9.1.7",
     "lerna": "^8.2.1",
-    "lint-staged": "^15.5.0"
+    "lint-staged": "^15.5.0",
+    "replace-in-file": "^8.3.0"
   },
   "resolutions": {
     "axios": "^1.8.2"
