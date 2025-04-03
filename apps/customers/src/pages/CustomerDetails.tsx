@@ -17,6 +17,7 @@ import {
 import { Link, useLocation, useRoute } from 'wouter'
 
 import { CustomerAddresses } from '#components/CustomerAddresses'
+import { CustomerAnonymization } from '#components/CustomerAnonymization'
 import { CustomerInfo } from '#components/CustomerInfo'
 import { CustomerLastOrders } from '#components/CustomerLastOrders'
 import { CustomerTimeline } from '#components/CustomerTimeline'
@@ -117,6 +118,7 @@ export function CustomerDetails(): React.JSX.Element {
       ) : (
         <SkeletonTemplate isLoading={isLoading}>
           <Spacer bottom='4'>
+            <CustomerAnonymization customerId={customer.id} />
             <Spacer top='14'>
               <CustomerInfo customer={customer} />
             </Spacer>

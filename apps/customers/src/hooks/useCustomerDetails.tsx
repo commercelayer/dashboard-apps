@@ -17,23 +17,24 @@ export function useCustomerDetails(id: string): {
   } = useCoreApi(
     'customers',
     'retrieve',
-    [
-      id,
-      {
-        include: [
-          'customer_group',
-          'customer_addresses',
-          'customer_addresses.address',
-          'customer_payment_sources',
-          'customer_payment_sources.payment_source',
-          'customer_subscriptions',
-          // Timeline
-          'attachments'
+    !isMockedId(id)
+      ? [
+          id,
+          {
+            include: [
+              'customer_group',
+              'customer_addresses',
+              'customer_addresses.address',
+              'customer_payment_sources',
+              'customer_payment_sources.payment_source',
+              'customer_subscriptions',
+              // Timeline
+              'attachments'
+            ]
+          }
         ]
-      }
-    ],
+      : null,
     {
-      isPaused: () => isMockedId(id),
       fallbackData: makeCustomer()
     }
   )
