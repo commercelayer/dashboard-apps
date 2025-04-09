@@ -17,11 +17,14 @@ import {
 import { Link, useLocation, useRoute } from 'wouter'
 
 import { CustomerAddresses } from '#components/CustomerAddresses'
+import { CustomerAnonymization } from '#components/CustomerAnonymization'
 import { CustomerInfo } from '#components/CustomerInfo'
 import { CustomerLastOrders } from '#components/CustomerLastOrders'
 import { CustomerTimeline } from '#components/CustomerTimeline'
 import { CustomerWallet } from '#components/CustomerWallet'
 import { appRoutes } from '#data/routes'
+import { useCustomerCanBeAnonymized } from '#hooks/useCustomerCanBeAnonymized'
+import { useCustomerCanBeDeleted } from '#hooks/useCustomerCanBeDeleted'
 import { useCustomerDeleteOverlay } from '#hooks/useCustomerDeleteOverlay'
 import { useCustomerDetails } from '#hooks/useCustomerDetails'
 import { isMockedId } from '#mocks'
@@ -41,6 +44,8 @@ export function CustomerDetails(): React.JSX.Element {
 
   const { customer, isLoading, error, mutateCustomer } =
     useCustomerDetails(customerId)
+  const canBeDeleted = useCustomerCanBeDeleted(customerId)
+  const canBeAnonymized = useCustomerCanBeAnonymized(customerId)
 
   const { DeleteOverlay, show } = useCustomerDeleteOverlay(customerId)
 
@@ -62,7 +67,7 @@ export function CustomerDetails(): React.JSX.Element {
     })
   }
 
-  if (canUser('destroy', 'customers')) {
+  if (canBeDeleted || canBeAnonymized) {
     pageToolbar.dropdownItems?.push([
       {
         label: t('common.delete'),
@@ -117,6 +122,7 @@ export function CustomerDetails(): React.JSX.Element {
       ) : (
         <SkeletonTemplate isLoading={isLoading}>
           <Spacer bottom='4'>
+            <CustomerAnonymization customerId={customer.id} />
             <Spacer top='14'>
               <CustomerInfo customer={customer} />
             </Spacer>
