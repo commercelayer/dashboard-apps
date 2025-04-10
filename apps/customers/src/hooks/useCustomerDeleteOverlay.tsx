@@ -1,18 +1,17 @@
 import { appRoutes } from '#data/routes'
 import { useCustomerDetails } from '#hooks/useCustomerDetails'
-import { useCustomerOrdersList } from '#hooks/useCustomerOrdersList'
 import {
   Button,
   PageLayout,
-  Trans,
-  useCoreApi,
   useCoreSdkProvider,
   useOverlay,
   useTranslation,
   type PageLayoutProps
 } from '@commercelayer/app-elements'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useLocation } from 'wouter'
+import { useCustomerCanBeAnonymized } from './useCustomerCanBeAnonymized'
+import { useCustomerCanBeDeleted } from './useCustomerCanBeDeleted'
 
 interface OverlayHook {
   show: () => void
@@ -24,59 +23,26 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
 
-  const { data: organization } = useCoreApi('organization', 'retrieve', [])
-
   const { Overlay: DeleteOverlay, open, close } = useOverlay()
   const [isDeleting, setIsDeleting] = useState(false)
-  const { customer, isLoading } = useCustomerDetails(customerId)
-  const { orders } = useCustomerOrdersList({
-    id: customerId,
-    settings: { isFiltered: false }
-  })
-
-  const customerDeletionMail = {
-    recipient: 'support@commercelayer.io',
-    subject: `Anonymize customer ${customer.email}`,
-    body: `Anonymization request for customer ${customer.email} of organization ${organization?.name}`
-  }
-
-  const canBeDeleted = useMemo(() => {
-    return orders == null || orders.length === 0
-  }, [orders])
+  const { customer, isLoading, mutateCustomer } = useCustomerDetails(customerId)
+  const canBeDeleted = useCustomerCanBeDeleted(customerId)
+  const canBeAnonymized = useCustomerCanBeAnonymized(customerId)
   const deleteOverlayTitle: PageLayoutProps['title'] = canBeDeleted
     ? t('apps.customers.details.confirm_customer_delete', {
         email: customer?.email ?? ''
       })
-    : t('apps.customers.details.customer_cannot_be_deleted')
-  const deleteOverlayDescription: PageLayoutProps['description'] =
-    canBeDeleted ? (
-      t('apps.orders.details.irreversible_action')
-    ) : (
-      <Trans
-        i18nKey='apps.customers.details.customer_cannot_be_deleted_description'
-        components={{
-          a: (
-            <a
-              href={encodeURI(
-                `mailto:${customerDeletionMail.recipient}?subject=${customerDeletionMail.subject}&body=${customerDeletionMail.body}`
-              )}
-            >
-              {customerDeletionMail.recipient}
-            </a>
-          )
-        }}
-        values={{
-          support_email: customerDeletionMail.recipient
-        }}
-      />
-    )
+    : t('apps.customers.anonymize.title')
+  const deleteOverlayDescription: PageLayoutProps['description'] = canBeDeleted
+    ? t('apps.orders.details.irreversible_action')
+    : t('apps.customers.anonymize.description')
 
   return {
     show: () => {
       open()
     },
     DeleteOverlay: () => {
-      return (
+      return canBeDeleted || canBeAnonymized ? (
         <DeleteOverlay backgroundColor='light'>
           <PageLayout
             title={deleteOverlayTitle}
@@ -91,7 +57,7 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
             }}
             isLoading={isLoading}
           >
-            {canBeDeleted && (
+            {canBeDeleted ? (
               <Button
                 variant='danger'
                 size='small'
@@ -112,10 +78,35 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
                   resource: t('resources.customers.name').toLowerCase()
                 })}
               </Button>
+            ) : (
+              <Button
+                variant='danger'
+                size='small'
+                disabled={isDeleting}
+                onClick={(e) => {
+                  setIsDeleting(true)
+                  e.stopPropagation()
+                  void sdkClient.customers
+                    .update({
+                      id: customer.id,
+                      // @ts-expect-error sdk types are not up to date
+                      _request_anonymization: true
+                    })
+                    .then(() => {
+                      void mutateCustomer().then(() => {
+                        close()
+                      })
+                    })
+                    .catch(() => {})
+                }}
+                fullWidth
+              >
+                {t('apps.customers.anonymize.request_button')}
+              </Button>
             )}
           </PageLayout>
         </DeleteOverlay>
-      )
+      ) : null
     }
   }
 }
