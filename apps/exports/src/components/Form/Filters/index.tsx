@@ -3,6 +3,7 @@ import { type AllFilters } from 'AppForm'
 import { Orders } from './Orders'
 import { OrderSubscriptions } from './OrderSubscriptions'
 import { Prices } from './Prices'
+import { Returns } from './Returns'
 import { Skus } from './Skus'
 import { StockItems } from './StockItems'
 
@@ -16,7 +17,8 @@ export const resourcesWithFilters = [
   'order_subscriptions',
   'skus',
   'prices',
-  'stock_items'
+  'stock_items',
+  'returns'
 ]
 
 export function Filters({
@@ -25,6 +27,10 @@ export function Filters({
 }: Props): React.JSX.Element | null {
   if (resourceType === 'orders') {
     return <Orders onChange={onChange} />
+  }
+
+  if (resourceType === 'returns') {
+    return <Returns onChange={onChange} />
   }
 
   if (resourceType === 'order_subscriptions') {
