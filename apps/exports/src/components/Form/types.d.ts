@@ -12,8 +12,8 @@ declare module 'AppForm' {
   type OrdersField =
     | 'market_id_in'
     | 'status_in'
-    | 'created_at_gteq'
-    | 'created_at_lteq'
+    | 'placed_at_gteq'
+    | 'placed_at_lteq'
 
   // returns
   type ReturnsFilters = Filters<ReturnsField>
