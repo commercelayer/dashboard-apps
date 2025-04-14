@@ -9,6 +9,7 @@ declare module 'App' {
     | 'customer_subscriptions'
     | 'tax_categories'
     | 'stock_items'
+    | 'stock_transfers'
     | 'addresses'
     | 'bundles'
     | 'shipping_categories'

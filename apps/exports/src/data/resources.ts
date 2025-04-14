@@ -27,6 +27,7 @@ const resources: Record<AllowedResourceType, VisibleInUI> = {
   sku_options: true,
   skus: true,
   stock_items: true,
+  stock_transfers: true,
   tax_categories: true,
   transactions: true
 }
