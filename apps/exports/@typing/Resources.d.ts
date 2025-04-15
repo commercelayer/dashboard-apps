@@ -26,6 +26,7 @@ declare module 'App' {
 
   export type ResourceWithRelationship =
     | 'bundles'
+    | 'coupons'
     | 'customer_subscriptions'
     | 'customers'
     | 'order_subscriptions'
