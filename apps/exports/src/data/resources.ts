@@ -13,6 +13,7 @@ const resources: Record<AllowedResourceType, VisibleInUI> = {
   customer_subscriptions: true,
   customers: true,
   gift_cards: true,
+  in_stock_subscriptions: true,
   line_items: true,
   order_subscriptions: true,
   orders: true,

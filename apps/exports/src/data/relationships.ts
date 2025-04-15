@@ -5,6 +5,7 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
   customer_subscriptions: ['customer'],
   customers: ['customer_subscriptions', 'tags'],
   coupons: ['promotion_rule.promotion'],
+  in_stock_subscriptions: ['customer', 'market', 'sku'],
   orders: [
     'customer',
     'shipping_address',
