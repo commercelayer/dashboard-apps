@@ -11,8 +11,8 @@ export function useCustomerCanBeAnonymized(customerId: string): boolean {
   const canBeAnonymized =
     customer != null &&
     anonymizationInfo != null &&
-    (anonymizationInfo.status === 'in_progress' ||
-      anonymizationInfo.status === 'completed')
+    anonymizationInfo.status !== 'in_progress' &&
+    anonymizationInfo.status !== 'completed'
 
   return canUser('update', 'customers') && canBeAnonymized
 }
