@@ -87,14 +87,14 @@ export function Orders({ onChange }: Props): React.JSX.Element | null {
       </Spacer>
 
       <InputDateRange
-        label='Date range'
+        label='Placed date range'
         value={[
-          parseFilterToDate(filters.created_at_gteq),
-          parseFilterToDate(filters.created_at_lteq)
+          parseFilterToDate(filters.placed_at_gteq),
+          parseFilterToDate(filters.placed_at_lteq)
         ]}
         onChange={([from, to]) => {
-          updateFilters('created_at_gteq', from?.toISOString() ?? null)
-          updateFilters('created_at_lteq', to?.toISOString() ?? null)
+          updateFilters('placed_at_gteq', from?.toISOString() ?? null)
+          updateFilters('placed_at_lteq', to?.toISOString() ?? null)
         }}
         autoPlaceholder
         isClearable

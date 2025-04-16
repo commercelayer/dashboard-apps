@@ -4,6 +4,8 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
   bundles: ['sku_list', 'sku_list_items', 'tags'],
   customer_subscriptions: ['customer'],
   customers: ['customer_subscriptions', 'tags'],
+  coupons: ['promotion_rule.promotion'],
+  in_stock_subscriptions: ['customer', 'market', 'sku'],
   orders: [
     'customer',
     'shipping_address',
