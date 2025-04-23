@@ -1,8 +1,10 @@
 import { type AllowedResourceType } from 'App'
 import { type AllFilters } from 'AppForm'
+import { InStockSubscriptions } from './InStockSubscriptions'
 import { Orders } from './Orders'
 import { OrderSubscriptions } from './OrderSubscriptions'
 import { Prices } from './Prices'
+import { Returns } from './Returns'
 import { Skus } from './Skus'
 import { StockItems } from './StockItems'
 
@@ -12,10 +14,12 @@ interface Props {
 }
 
 export const resourcesWithFilters = [
-  'orders',
+  'in_stock_subscriptions',
   'order_subscriptions',
-  'skus',
+  'orders',
   'prices',
+  'returns',
+  'skus',
   'stock_items'
 ]
 
@@ -25,6 +29,14 @@ export function Filters({
 }: Props): React.JSX.Element | null {
   if (resourceType === 'orders') {
     return <Orders onChange={onChange} />
+  }
+
+  if (resourceType === 'returns') {
+    return <Returns onChange={onChange} />
+  }
+
+  if (resourceType === 'in_stock_subscriptions') {
+    return <InStockSubscriptions onChange={onChange} />
   }
 
   if (resourceType === 'order_subscriptions') {

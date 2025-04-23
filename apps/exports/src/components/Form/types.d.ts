@@ -12,8 +12,19 @@ declare module 'AppForm' {
   type OrdersField =
     | 'market_id_in'
     | 'status_in'
+    | 'placed_at_gteq'
+    | 'placed_at_lteq'
+
+  // in_stock_subscriptions
+  type InStockSubscriptionsFilters = Filters<InStockSubscriptionsField>
+  type InStockSubscriptionsField =
+    | 'status_in'
     | 'created_at_gteq'
     | 'created_at_lteq'
+
+  // returns
+  type ReturnsFilters = Filters<ReturnsField>
+  type ReturnsField = 'status_in' | 'created_at_gteq' | 'created_at_lteq'
 
   // order subscriptions
   type OrderSubscriptionsFilters = Filters<OrderSubscriptionField>
