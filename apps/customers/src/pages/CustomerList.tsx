@@ -3,11 +3,14 @@ import { ListItemCustomer } from '#components/ListItemCustomer'
 import { instructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
+import { useCustomerAnonymizedPendingList } from '#hooks/useCustomerAnonymizedPendingList'
 import {
+  Alert,
   Button,
   HomePageLayout,
   Icon,
   Spacer,
+  Text,
   useResourceFilters,
   useTokenProvider,
   useTranslation
@@ -26,6 +29,12 @@ export function CustomerList(): React.JSX.Element {
     useResourceFilters({
       instructions
     })
+
+  const { customers: customersWithPendingAnonymization } =
+    useCustomerAnonymizedPendingList({})
+  const hasPendingAnonymization =
+    customersWithPendingAnonymization != null &&
+    customersWithPendingAnonymization.length > 0
 
   const isUserCustomFiltered =
     hasActiveFilter && viewTitle === presets.all.viewTitle
@@ -47,6 +56,25 @@ export function CustomerList(): React.JSX.Element {
         }}
         hideFiltersNav={hideFiltersNav}
       />
+
+      {hasPendingAnonymization && (
+        <Spacer bottom='14'>
+          <Alert status='warning'>
+            <Text weight='semibold'>Pending anonymization requests:</Text>
+            <Spacer top='2'>
+              {customersWithPendingAnonymization.map((customer) => (
+                <Spacer key={customer.id} bottom='1'>
+                  <Text color='black' size='small' weight='semibold'>
+                    <Link href={appRoutes.details.makePath(customer.id)}>
+                      {customer.email}
+                    </Link>
+                  </Text>
+                </Spacer>
+              ))}
+            </Spacer>
+          </Alert>
+        </Spacer>
+      )}
 
       <Spacer bottom='14'>
         <FilteredList
