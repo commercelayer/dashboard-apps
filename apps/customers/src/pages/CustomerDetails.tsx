@@ -130,7 +130,12 @@ export function CustomerDetails(): React.JSX.Element {
               <CustomerLastOrders />
             </Spacer>
             <Spacer top='14'>
-              <CustomerWallet customer={customer} />
+              <CustomerWallet
+                customer={customer}
+                onRemovedPaymentSource={() => {
+                  void mutateCustomer()
+                }}
+              />
             </Spacer>
             <Spacer top='14'>
               <CustomerAddresses customer={customer} />
