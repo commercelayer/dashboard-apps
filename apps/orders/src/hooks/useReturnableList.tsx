@@ -20,8 +20,18 @@ export function useReturnableList(order: Order): LineItem[] {
   return useMemo(() => {
     if (!isMockedId(order.id)) {
       const returnLineItemsFromReturns = returnsToReturnLineItems(returns ?? [])
+
+      // if order is not fulfilled, we try to find returnable items form delivered shipments
+      const itemsToIterate =
+        order.fulfillment_status === 'fulfilled'
+          ? order.line_items
+          : order.shipments
+              ?.filter((s) => s.status === 'delivered')
+              ?.flatMap((s) => s.line_items)
+              .filter((item) => item != null)
+
       const returnableLineItems =
-        order.line_items
+        itemsToIterate
           ?.filter(
             (lineItem) =>
               lineItem.item_type === 'skus' || lineItem.item_type === 'bundles'

@@ -30,7 +30,6 @@ export function useOrderToolbar({
     inventoryModel?.inventory_return_locations ?? []
   const showReturnDropDownItem =
     canUser('create', 'returns') &&
-    order.fulfillment_status === 'fulfilled' &&
     orderReturnStockLocation.length > 0 &&
     returnableLineItems.length > 0
 

@@ -12,6 +12,7 @@ export const orderIncludeAttribute = [
   'shipping_address',
   'billing_address',
   'shipments',
+  'shipments.line_items', // required to check returnable items for delivered shipments
   'shipments.stock_transfers',
   'payment_method',
   'payment_source',

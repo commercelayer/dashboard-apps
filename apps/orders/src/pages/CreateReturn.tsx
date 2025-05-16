@@ -105,8 +105,12 @@ function CreateReturn(): React.JSX.Element {
   )
     return <></>
 
+  const hasAtLastOneDeliveredShipment = (order.shipments ?? []).some(
+    (s) => s.status === 'delivered'
+  )
   if (
-    order.fulfillment_status !== 'fulfilled' ||
+    (order.fulfillment_status !== 'fulfilled' &&
+      !hasAtLastOneDeliveredShipment) ||
     returnableLineItems.length === 0 ||
     !canUser('create', 'returns')
   ) {
