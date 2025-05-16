@@ -9,12 +9,12 @@ import {
 import { jwtDecode } from '@commercelayer/js-auth'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
-import { type AllowedAppSlug } from '../appList'
+import type { App } from 'src/appList'
 import { appPromiseImports, humanReadable } from '../apps'
 
 export function HomePage(): React.JSX.Element {
   const [visibility, setVisibility] = useState<
-    Partial<Record<AllowedAppSlug, boolean>>
+    Partial<Record<App['slug'], boolean>>
   >({})
   const [accessToken, setAccessToken] = useState<string | null>()
 
