@@ -1,5 +1,6 @@
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
+import { orderHasAsyncPendingCaptures } from '#utils/order'
 import {
   useTranslation,
   type ActionButtonsProps
@@ -48,6 +49,18 @@ export const useActionButtons = ({ order }: { order: Order }) => {
         > => !['_archive', '_unarchive', '_refund'].includes(triggerAttribute)
       )
       .map((triggerAttribute) => {
+        if (
+          triggerAttribute === '_capture' &&
+          orderHasAsyncPendingCaptures(order)
+        ) {
+          // Capture has already been triggered and is waiting for success
+          return {
+            label: 'Waiting for success capture',
+            variant: 'primary',
+            disabled: true,
+            onClick: () => {}
+          }
+        }
         return {
           label: getTriggerAttributeName(triggerAttribute),
           variant:
