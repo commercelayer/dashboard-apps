@@ -9,7 +9,7 @@ import {
 import { jwtDecode } from '@commercelayer/js-auth'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
-import type { App } from 'src/appList'
+import type { App } from '../appList'
 import { appPromiseImports, humanReadable } from '../apps'
 
 export function HomePage(): React.JSX.Element {

@@ -1,16 +1,21 @@
 // @ts-check
 
 /**
- * A number, or a string containing a number.
- * @typedef {Exclude<import('@commercelayer/app-elements').TokenProviderAllowedApp, 'dashboard' | 'resources' >} AllowedAppKind
+ * Allowed app kinds.
+ * @typedef {import('@commercelayer/app-elements').TokenProviderTokenApplicationKind} AllowedAppKind
  */
 
 /**
- * A number, or a string containing a number.
- * @typedef {{ name: string; slug: string, kind: AllowedAppKind; icon: import('@commercelayer/app-elements').IconProps['name'] }} App
+ * Allowed app slug.
+ * @typedef {import('@commercelayer/app-elements').TokenProviderAllowedAppSlug} AllowedAppSlug
  */
 
-/** @type {Record<App['slug'], App>} */
+/**
+ * The App type.
+ * @typedef {{ name: string; slug: AllowedAppSlug, kind: AllowedAppKind; icon: import('@commercelayer/app-elements').IconProps['name'] }} App
+ */
+
+/** @type {Record<string, App>} */
 export const apps = {
   orders: {
     name: 'Orders',
@@ -113,5 +118,11 @@ export const apps = {
     slug: 'subscriptions',
     kind: 'subscriptions',
     icon: 'calendarCheck'
+  },
+  whatever_you_want: {
+    name: 'My sample app',
+    slug: 'my_sample_app',
+    kind: 'generic',
+    icon: 'appWindow'
   }
 }
