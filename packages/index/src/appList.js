@@ -96,5 +96,10 @@ export const apps = {
     name: 'Subscriptions',
     slug: 'subscriptions',
     icon: 'calendarCheck'
+  },
+  generic: {
+    name: 'My sample app',
+    slug: 'generic',
+    icon: 'appWindow'
   }
 }

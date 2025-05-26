@@ -19,5 +19,8 @@
     "vitest": "^3.0.9",
     "yargs": "^17.7.2"
   },
-  "version": "3.3.2"
+  "version": "3.3.2",
+  "dependencies": {
+    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@47b927a"
+  }
 }
