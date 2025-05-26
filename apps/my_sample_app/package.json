@@ -1,7 +1,17 @@
 {
   "private": true,
-  "name": "app-tags",
+  "name": "app-my_sample_app",
+  "description": "A Commerce Layer Single Page Application.",
   "version": "3.4.0",
+  "license": "MIT",
+  "keywords": [
+    "reactjs",
+    "jamstack",
+    "headless",
+    "ecommerce",
+    "api",
+    "commercelayer"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,11 +21,12 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "ts:check": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest --passWithNoTests"
+    "test:watch": "vitest --passWithNoTests",
+    "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
     "@commercelayer/app-elements": "^5.3.0",
-    "@commercelayer/sdk": "6.36.0",
+    "@commercelayer/sdk": "^6.36.0",
     "@hookform/resolvers": "^3.10.0",
     "lodash-es": "^4.17.21",
     "react": "19.0.0",
@@ -34,6 +45,7 @@
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "cronstrue": "^2.57.0",
     "eslint": "^8.57.1",
     "i18next": "^24.2.3",
     "jsdom": "^26.0.0",
@@ -42,5 +54,8 @@
     "vite": "^6.2.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.9"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

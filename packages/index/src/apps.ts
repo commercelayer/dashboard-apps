@@ -1,6 +1,6 @@
 import type { ClAppProps } from '@commercelayer/app-elements'
 import { lazy, type FC, type LazyExoticComponent } from 'react'
-import { apps, type AllowedAppSlug, type App } from './appList'
+import { apps, type App } from './appList'
 
 export const appLazyImports = Object.values(apps).reduce(
   (acc, app) => {
@@ -12,7 +12,7 @@ export const appLazyImports = Object.values(apps).reduce(
     }
   },
   // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter, @typescript-eslint/consistent-type-assertions
-  {} as Record<AllowedAppSlug, LazyExoticComponent<FC<ClAppProps>>>
+  {} as Record<App['slug'], LazyExoticComponent<FC<ClAppProps>>>
 )
 
 export const appPromiseImports = Object.values(apps).reduce(
@@ -29,7 +29,7 @@ export const appPromiseImports = Object.values(apps).reduce(
     }
   },
   // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter, @typescript-eslint/consistent-type-assertions
-  {} as Record<AllowedAppSlug, { app: App; exists: () => Promise<boolean> }>
+  {} as Record<App['slug'], { app: App; exists: () => Promise<boolean> }>
 )
 
 /**
