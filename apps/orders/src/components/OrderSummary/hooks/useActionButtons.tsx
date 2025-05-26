@@ -55,7 +55,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
         ) {
           // Capture has already been triggered and is waiting for success
           return {
-            label: 'Waiting for success capture',
+            label: t('apps.orders.details.waiting_for_success_capture'),
             variant: 'primary',
             disabled: true,
             onClick: () => {}
