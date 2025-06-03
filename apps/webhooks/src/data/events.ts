@@ -145,7 +145,7 @@ export const webhookEvents: Record<ResourceWithEvent, string[]> = {
     'picking',
     'upcoming'
   ],
-  transaction: ['create'],
+  transaction: ['create', 'refused'],
   voids: ['create', 'failed', 'succeeded']
 }
 
