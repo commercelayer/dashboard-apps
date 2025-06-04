@@ -41,7 +41,7 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <Spacer top='10'>
+        <Spacer top='2'>
           <SearchBar
             initialValue={searchValue}
             onSearch={setSearchValue}

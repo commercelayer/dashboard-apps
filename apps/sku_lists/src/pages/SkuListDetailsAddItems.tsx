@@ -64,7 +64,7 @@ export const SkuListDetailsAddItems: FC<
   }
 
   if (isLoading || isValidating || skuList == null) {
-    // prevent rendering the inner list when `execludedCodes` is not ready
+    // prevent rendering the inner list when `excludedCodes` is not ready
     return null
   }
 
@@ -185,16 +185,16 @@ const SkuListAddItemsInner: FC<{
             searchBarPlaceholder='search...'
           />
         </div>
-        <div className='mt-4 mb-14'>
-          <button
+        <Spacer top='6' bottom='14'>
+          <Button
             onClick={() => {
               setLocation(appRoutes.details.makePath({ skuListId }))
             }}
-            className='text-primary font-bold rounded px-1 shadow-none !outline-0 !border-0 !ring-0 focus:shadow-focus'
+            variant='link'
           >
             Cancel
-          </button>
-        </div>
+          </Button>
+        </Spacer>
       </div>
       <Card gap='none'>
         <FilteredList
