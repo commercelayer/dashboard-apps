@@ -1,8 +1,9 @@
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
-  useTranslation,
-  type ActionButtonsProps
+  type ActionButtonsProps,
+  orderTransactionIsAnAsyncCapture,
+  useTranslation
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { useMemo } from 'react'
@@ -48,6 +49,18 @@ export const useActionButtons = ({ order }: { order: Order }) => {
         > => !['_archive', '_unarchive', '_refund'].includes(triggerAttribute)
       )
       .map((triggerAttribute) => {
+        if (
+          triggerAttribute === '_capture' &&
+          (order?.transactions ?? []).some(orderTransactionIsAnAsyncCapture)
+        ) {
+          // Capture has already been triggered and is waiting for success
+          return {
+            label: t('apps.orders.details.waiting_for_successful_capture'),
+            variant: 'primary',
+            disabled: true,
+            onClick: () => {}
+          }
+        }
         return {
           label: getTriggerAttributeName(triggerAttribute),
           variant:

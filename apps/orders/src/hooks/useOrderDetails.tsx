@@ -1,5 +1,8 @@
 import { isMockedId, makeOrder } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import {
+  orderTransactionIsAnAsyncCapture,
+  useCoreApi
+} from '@commercelayer/app-elements'
 import isEmpty from 'lodash-es/isEmpty'
 
 export const orderIncludeAttribute = [
@@ -48,7 +51,14 @@ export function useOrderDetails(id: string) {
         ]
       : null,
     {
-      fallbackData: makeOrder()
+      fallbackData: makeOrder(),
+      refreshInterval: (order) => {
+        return (order?.transactions ?? []).some(
+          orderTransactionIsAnAsyncCapture
+        )
+          ? 5000
+          : 0
+      }
     }
   )
 
