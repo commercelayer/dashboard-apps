@@ -1,4 +1,4 @@
-import { useAddItemOverlay } from '#hooks/useAddItemOverlay'
+import { appRoutes } from '#data/routes'
 import {
   Button,
   Icon,
@@ -6,12 +6,12 @@ import {
   Section,
   Spacer,
   Text,
-  useCoreSdkProvider,
   useResourceList,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import { useState } from 'react'
+import { useLocation } from 'wouter'
 import { ListItemSkuListItem } from './ListItemSkuListItem'
 
 interface Props {
@@ -22,11 +22,9 @@ interface Props {
 export const SkuListManualItems = withSkeletonTemplate<Props>(
   ({ skuListId, hasBundles }): React.JSX.Element | null => {
     const [searchValue, setSearchValue] = useState<string>()
-    const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
-      useAddItemOverlay()
+    const [, setLocation] = useLocation()
     const { canUser } = useTokenProvider()
-    const { sdkClient } = useCoreSdkProvider()
-    const { ResourceList, refresh, list, meta } = useResourceList({
+    const { ResourceList, meta } = useResourceList({
       type: 'sku_list_items',
       query: {
         filters: {
@@ -39,10 +37,6 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
         sort: ['position']
       }
     })
-
-    const excludedSkusFromAdd = list
-      ?.map((item) => item?.sku?.code ?? '')
-      .filter((item) => item !== '')
     const itemsCount = meta?.recordCount ?? 0
 
     return (
@@ -67,13 +61,14 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
                   variant='secondary'
                   size='mini'
                   alignItems='center'
-                  aria-label='Add bundle'
                   onClick={() => {
-                    showAddItemOverlay(excludedSkusFromAdd)
+                    setLocation(
+                      appRoutes.detailsAddItems.makePath({ skuListId })
+                    )
                   }}
                 >
                   <Icon name='plus' />
-                  Add item
+                  Add items
                 </Button>
               )
             }
@@ -93,19 +88,6 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
               )}
             />
           </Section>
-          <AddItemOverlay
-            onConfirm={(resource) => {
-              void sdkClient.sku_list_items
-                .create({
-                  quantity: 1,
-                  sku_list: sdkClient.sku_lists.relationship(skuListId),
-                  sku: sdkClient.skus.relationship(resource.id)
-                })
-                .then(() => {
-                  refresh()
-                })
-            }}
-          />
         </Spacer>
       </>
     )

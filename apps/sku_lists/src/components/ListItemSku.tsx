@@ -1,5 +1,7 @@
 import {
   Avatar,
+  Grid,
+  InputCheckbox,
   ListItem,
   Text,
   withSkeletonTemplate
@@ -10,25 +12,33 @@ import { makeSku } from 'src/mocks/resources/skus'
 interface Props {
   resource?: Sku
   onSelect?: (resource: Sku) => void
+  isSelected?: boolean
 }
 
 export const ListItemSku = withSkeletonTemplate<Props>(
-  ({ resource = makeSku(), onSelect }) => {
+  ({ resource = makeSku(), onSelect, isSelected }) => {
     return (
       <ListItem
         onClick={(e) => {
           e.preventDefault()
-          if (onSelect != null) {
-            onSelect(resource)
-          }
+          onSelect?.(resource)
         }}
         icon={
-          <Avatar
-            alt={resource.name}
-            src={resource.image_url as `https://${string}`}
-          />
+          <Grid columns='auto' alignItems='center'>
+            <InputCheckbox
+              checked={isSelected}
+              onChange={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                onSelect?.(resource)
+              }}
+            />
+            <Avatar
+              alt={resource.name}
+              src={resource.image_url as `https://${string}`}
+            />
+          </Grid>
         }
-        className='bg-white'
       >
         <div>
           <Text tag='div' variant='info' weight='semibold' size='small'>

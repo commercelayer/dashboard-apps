@@ -3,6 +3,7 @@ import { LinkDetails } from '#pages/LinkDetails'
 import { LinkEdit } from '#pages/LinkEdit'
 import { LinkNew } from '#pages/LinkNew'
 import { SkuListDetails } from '#pages/SkuListDetails'
+import { SkuListDetailsAddItems } from '#pages/SkuListDetailsAddItems'
 import { SkuListEdit } from '#pages/SkuListEdit'
 import { SkuListNew } from '#pages/SkuListNew'
 import { SkuListsList } from '#pages/SkuListsList'
@@ -23,6 +24,10 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         </Route>
         <Route path={appRoutes.list.path} component={SkuListsList} />
         <Route path={appRoutes.details.path} component={SkuListDetails} />
+        <Route
+          path={appRoutes.detailsAddItems.path}
+          component={SkuListDetailsAddItems}
+        />
         <Route path={appRoutes.edit.path} component={SkuListEdit} />
         <Route path={appRoutes.new.path} component={SkuListNew} />
         <Route path={appRoutes.linksNew.path} component={LinkNew} />
