@@ -17,7 +17,8 @@ const returnStatuses = [
   'cancelled',
   'shipped',
   'rejected',
-  'received'
+  'received',
+  'refunded'
 ]
 
 const renderReturn = (returnObj: Return): React.JSX.Element | undefined => {
