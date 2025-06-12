@@ -1,6 +1,7 @@
 import type { Promotion } from '#types'
 import { type IconProps } from '@commercelayer/app-elements'
 import type { ResourceTypeLock } from '@commercelayer/sdk'
+import type { UseFormReturn } from 'react-hook-form'
 import type { Replace } from 'type-fest'
 import { type z } from 'zod'
 import buy_x_pay_y_promotions from './configs/buy_x_pay_y_promotions'
@@ -50,8 +51,14 @@ export type PromotionConfig = {
       promotion: Extract<Promotion, { type: type }>
     }>
     formType: z.ZodObject<z.ZodRawShape, 'strip', z.ZodTypeAny>
-    Fields: React.FC<{ promotion?: Extract<Promotion, { type: type }> }>
-    Options: React.FC<{ promotion?: Extract<Promotion, { type: type }> }>
+    Fields: React.FC<{
+      promotion?: Extract<Promotion, { type: type }>
+      hookFormReturn: UseFormReturn<Record<string, any>, any, undefined>
+    }>
+    Options: React.FC<{
+      promotion?: Extract<Promotion, { type: type }>
+      hookFormReturn: UseFormReturn<Record<string, any>, any, undefined>
+    }>
     DetailsSectionInfo: React.FC<{
       promotion: Extract<Promotion, { type: type }>
     }>
