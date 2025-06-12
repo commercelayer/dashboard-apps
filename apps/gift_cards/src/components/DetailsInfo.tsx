@@ -39,9 +39,8 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
                 {giftCard.gift_card_recipient.customer.email}
               </a>
             ) : (
-              giftCard.gift_card_recipient.customer?.email
+              giftCard.gift_card_recipient.email
             )}
-            {giftCard.gift_card_recipient.email}
           </ListDetailsItem>
         )}
         {giftCard.expires_at != null && (
