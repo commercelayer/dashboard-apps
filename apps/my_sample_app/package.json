@@ -25,7 +25,7 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@6894630",
+    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@91df032",
     "@commercelayer/sdk": "^6.36.0",
     "@hookform/resolvers": "^3.10.0",
     "lodash-es": "^4.17.21",
