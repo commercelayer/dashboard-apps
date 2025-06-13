@@ -25,7 +25,7 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@91df032",
+    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@fd9cb60",
     "@commercelayer/eslint-config-ts-react": "^2.2.0",
     "@commercelayer/sdk": "6.36.0",
     "@vitejs/plugin-react": "^4.3.4",
