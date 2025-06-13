@@ -148,7 +148,7 @@ function Page(
               </Alert>
             )}
 
-          {viaApi && (
+          {viaApi && promotion.type !== 'flex_promotions' && (
             <Alert status='info'>
               This promotion is generated via API. Ask developers for details.
               If issues arise, just disable it.
