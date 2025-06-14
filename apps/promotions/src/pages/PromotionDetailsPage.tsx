@@ -1,4 +1,5 @@
 import { CouponTable } from '#components/CouponTable'
+import { SectionFlexRules } from '#components/FlexRuleBuilder'
 import { GenericPageNotFound, type PageProps } from '#components/Routes'
 import {
   appPromotionsReferenceOrigin,
@@ -17,7 +18,6 @@ import {
   Badge,
   Button,
   Card,
-  CodeEditor,
   Dropdown,
   DropdownItem,
   Icon,
@@ -148,7 +148,7 @@ function Page(
               </Alert>
             )}
 
-          {viaApi && (
+          {viaApi && promotion.type !== 'flex_promotions' && (
             <Alert status='info'>
               This promotion is generated via API. Ask developers for details.
               If issues arise, just disable it.
@@ -165,17 +165,11 @@ function Page(
         </Spacer>
 
         {promotion.type === 'flex_promotions' && (
-          <Spacer top='14'>
-            <Section title='Rules' border='none'>
-              <CodeEditor
-                readOnly
-                value={JSON.stringify(promotion.rules, undefined, 2)}
-                language='json'
-                jsonSchema='order-rules'
-                height='600px'
-              />
-            </Section>
-          </Spacer>
+          <>
+            <Spacer top='14'>
+              <SectionFlexRules promotion={promotion} />
+            </Spacer>
+          </>
         )}
 
         {promotion.type !== 'flex_promotions' && (

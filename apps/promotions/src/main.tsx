@@ -3,6 +3,7 @@ import {
   ErrorBoundary,
   I18NProvider,
   MetaTags,
+  ToastContainer,
   TokenProvider,
   createApp,
   type ClAppProps
@@ -33,6 +34,7 @@ const Main = (props: ClAppProps): React.JSX.Element => {
             <I18NProvider>
               <CoreSdkProvider>
                 <MetaTags />
+                <ToastContainer />
                 <App routerBase={props?.routerBase} />
               </CoreSdkProvider>
             </I18NProvider>

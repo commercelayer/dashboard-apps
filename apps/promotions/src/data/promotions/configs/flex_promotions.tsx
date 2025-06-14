@@ -25,17 +25,21 @@ export default {
         }, 'JSON is not valid')
       })
     ),
-    Fields: () => (
+    Fields: ({ promotion }) => (
       <>
-        <Spacer top='6'>
-          <HookedCodeEditor
-            name='rules'
-            label='Rules'
-            language='json'
-            jsonSchema='order-rules'
-            height='600px'
-          />
-        </Spacer>
+        {
+          promotion == null && (
+            <Spacer top='6'>
+              <HookedCodeEditor
+                name='rules'
+                label='Rules'
+                language='json'
+                jsonSchema='order-rules'
+                height='600px'
+              />
+            </Spacer>
+          )
+        }
       </>
     ),
     Options: () => <></>,
