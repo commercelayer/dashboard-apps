@@ -10,6 +10,7 @@ import {
   useTranslation
 } from '@commercelayer/app-elements'
 import { type Order } from '@commercelayer/sdk'
+import { isEmpty } from 'lodash-es'
 import { useAddItemOverlay } from './hooks/useAddItemOverlay'
 import { useOrderStatus } from './hooks/useOrderStatus'
 import { arrayOf } from './utils'
@@ -23,6 +24,7 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
     useAddItemOverlay(order)
   const { t } = useTranslation()
+  const hasExternalPrices = !isEmpty(order.market?.external_prices_url)
 
   const canEdit =
     order.status === 'placed' &&
@@ -64,7 +66,12 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
                 quantity: 1,
                 ...(type === 'skus'
                   ? { sku_code: code }
-                  : { bundle_code: code })
+                  : { bundle_code: code }),
+                ...(hasExternalPrices
+                  ? {
+                      _external_price: true
+                    }
+                  : {})
               })
               .then(async () => {
                 void mutateOrder()
