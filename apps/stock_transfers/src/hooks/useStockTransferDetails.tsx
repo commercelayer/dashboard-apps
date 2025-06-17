@@ -1,5 +1,5 @@
-import { isMockedId, makeStockTransfer } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { makeStockTransfer } from '#mocks'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 
 export const stockTransferIncludeAttribute = [
   'shipment.order',

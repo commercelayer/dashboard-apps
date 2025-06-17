@@ -4,10 +4,10 @@ import { appRoutes } from '#data/routes'
 import { useCreateParcel } from '#hooks/useCreateParcel'
 import { usePickingList } from '#hooks/usePickingList'
 import { useShipmentDetails } from '#hooks/useShipmentDetails'
-import { isMock } from '#mocks'
 import {
   Button,
   EmptyState,
+  isMock,
   PageLayout,
   Spacer,
   useTokenProvider,

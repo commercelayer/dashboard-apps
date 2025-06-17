@@ -11,7 +11,6 @@ import { appRoutes } from '#data/routes'
 import { useCancelOverlay } from '#hooks/useCancelOverlay'
 import { useStockTransferDetails } from '#hooks/useStockTransferDetails'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
-import { isMockedId } from '#mocks'
 import {
   Button,
   EmptyState,
@@ -21,6 +20,7 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
+  isMockedId,
   useAppLinking,
   useTokenProvider,
   type DropdownItemProps,

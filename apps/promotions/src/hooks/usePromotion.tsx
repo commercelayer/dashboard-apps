@@ -1,6 +1,6 @@
-import { isMockedId, makePercentageDiscountPromotion } from '#mocks'
+import { makePercentageDiscountPromotion } from '#mocks'
 import type { Promotion } from '#types'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import type { KeyedMutator } from 'swr'
 
 export const promotionIncludeAttribute = [

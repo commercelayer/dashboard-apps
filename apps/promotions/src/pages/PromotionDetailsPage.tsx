@@ -9,7 +9,6 @@ import { usePromotionRules } from '#data/ruleBuilder/usePromotionRules'
 import { useDeletePromotionOverlay } from '#hooks/useDeletePromotionOverlay'
 import { usePromotion } from '#hooks/usePromotion'
 import { usePromotionCoupons } from '#hooks/usePromotionCoupons'
-import { isMockedId } from '#mocks'
 import type { Promotion } from '#types'
 import {
   A,
@@ -36,6 +35,7 @@ import {
   formatDate,
   formatDateWithPredicate,
   getPromotionDisplayStatus,
+  isMockedId,
   useAppLinking,
   useCoreSdkProvider,
   useTokenProvider,

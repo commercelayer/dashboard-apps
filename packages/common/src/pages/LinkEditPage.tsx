@@ -2,19 +2,18 @@ import {
   Button,
   EmptyState,
   goBack,
+  isMock,
   PageLayout,
   Spacer,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-
 import type { Link, LinkUpdate, Sku, SkuList } from '@commercelayer/sdk'
 import isEmpty from 'lodash-es/isEmpty'
 import { useState } from 'react'
 import { useLocation } from 'wouter'
 import { LinkForm, type LinkFormValues } from '../components/LinkForm'
 import { useLinkDetails } from '../hooks/useLinkDetails'
-import { isMock } from '../mocks'
 
 interface Props {
   resourceId: Sku['id'] | SkuList['id']

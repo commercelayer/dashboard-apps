@@ -1,4 +1,4 @@
-import { isMockedId } from '#mocks'
+import { isMockedId } from '@commercelayer/app-elements'
 import type { Return, ReturnLineItem } from '@commercelayer/sdk'
 import { useMemo } from 'react'
 

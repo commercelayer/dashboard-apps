@@ -27,7 +27,7 @@ import { useCustomerCanBeAnonymized } from '#hooks/useCustomerCanBeAnonymized'
 import { useCustomerCanBeDeleted } from '#hooks/useCustomerCanBeDeleted'
 import { useCustomerDeleteOverlay } from '#hooks/useCustomerDeleteOverlay'
 import { useCustomerDetails } from '#hooks/useCustomerDetails'
-import { isMockedId } from '#mocks'
+import { isMockedId } from '@commercelayer/app-elements'
 
 export function CustomerDetails(): React.JSX.Element {
   const {

@@ -1,5 +1,6 @@
-import { isMockedId, makeOrder } from '#mocks'
+import { makeOrder } from '#mocks'
 import {
+  isMockedId,
   orderTransactionIsAnAsyncCapture,
   useCoreApi
 } from '@commercelayer/app-elements'

@@ -11,7 +11,6 @@ import {
 import { appRoutes } from '#data/routes'
 import { useSubscriptionDetails } from '#hooks/useSubscriptionDetails'
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
-import { isMockedId } from '#mocks'
 import { getSubscriptionTitle } from '#utils/getSubscriptionTitle'
 import {
   Button,
@@ -23,6 +22,7 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
+  isMockedId,
   useAppLinking,
   useTokenProvider,
   type PageHeadingProps

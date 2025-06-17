@@ -19,7 +19,7 @@ import { BundleInfo } from '#components/BundleInfo'
 import { BundleSkuList } from '#components/BundleSkuList'
 import { appRoutes } from '#data/routes'
 import { useBundleDetails } from '#hooks/useBundleDetails'
-import { isMockedId } from '#mocks'
+import { isMockedId } from '@commercelayer/app-elements'
 import { SkuDescription } from 'dashboard-apps-common/src/components/SkuDescription'
 import { useState, type FC } from 'react'
 

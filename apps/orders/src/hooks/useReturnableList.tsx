@@ -1,4 +1,4 @@
-import { isMockedId } from '#mocks'
+import { isMockedId } from '@commercelayer/app-elements'
 import type {
   LineItem,
   Order,

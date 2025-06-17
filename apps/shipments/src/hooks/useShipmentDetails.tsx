@@ -1,5 +1,9 @@
-import { isMockedId, makeShipment } from '#mocks'
-import { useCoreApi, useTranslation } from '@commercelayer/app-elements'
+import { makeShipment } from '#mocks'
+import {
+  isMockedId,
+  useCoreApi,
+  useTranslation
+} from '@commercelayer/app-elements'
 import isEmpty from 'lodash-es/isEmpty'
 
 export const shipmentIncludeAttribute = [

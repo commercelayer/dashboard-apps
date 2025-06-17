@@ -1,5 +1,5 @@
 import { appRoutes } from '#data/routes'
-import { isMock, makePriceTier } from '#mocks'
+import { makePriceTier } from '#mocks'
 import type { PriceTierType } from '#types'
 import { getPriceTierSdkResource, getUpToForTable } from '#utils/priceTiers'
 import {
@@ -8,6 +8,7 @@ import {
   DropdownDivider,
   DropdownItem,
   Icon,
+  isMock,
   PageLayout,
   Td,
   Tr,
