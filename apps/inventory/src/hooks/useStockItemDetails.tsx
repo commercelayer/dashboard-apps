@@ -1,5 +1,5 @@
-import { isMockedId, makeStockItem } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { makeStockItem } from '#mocks'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import type { StockItem } from '@commercelayer/sdk'
 import type { KeyedMutator } from 'swr'
 

@@ -1,8 +1,8 @@
 import { appRoutes, type PageProps } from '#data/routes'
-import { isMock } from '#mocks'
 import {
   Button,
   EmptyState,
+  isMock,
   PageLayout,
   Spacer,
   useCoreSdkProvider,

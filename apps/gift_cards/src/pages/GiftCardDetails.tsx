@@ -8,10 +8,10 @@ import {
   giftCardIncludeAttribute,
   useGiftCardDetails
 } from '#hooks/useGiftCardDetails'
-import { isMockedId } from '#mocks'
 import { maskGiftCardCode } from '#utils/code'
 import {
   GenericPageNotFound,
+  isMockedId,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,

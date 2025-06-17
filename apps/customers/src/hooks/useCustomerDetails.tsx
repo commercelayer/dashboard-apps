@@ -1,5 +1,5 @@
-import { isMockedId, makeCustomer } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { makeCustomer } from '#mocks'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import type { Customer } from '@commercelayer/sdk'
 import type { KeyedMutator } from 'swr'
 

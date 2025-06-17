@@ -1,4 +1,4 @@
-import { useCoreApi } from '@commercelayer/app-elements'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import type {
   Link,
   ListResponse,
@@ -6,7 +6,6 @@ import type {
   Resource
 } from '@commercelayer/sdk'
 import type { KeyedMutator } from 'swr'
-import { isMockedId } from '../mocks'
 
 interface UseLinksListSettings {
   pageNumber?: number

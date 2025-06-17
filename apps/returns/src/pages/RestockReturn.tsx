@@ -4,10 +4,10 @@ import { appRoutes } from '#data/routes'
 import { useRestockReturnLineItems } from '#hooks/useRestockReturnLineItems'
 import { useRestockableList } from '#hooks/useRestockableList'
 import { useReturnDetails } from '#hooks/useReturnDetails'
-import { isMock } from '#mocks'
 import {
   Button,
   EmptyState,
+  isMock,
   PageLayout,
   SkeletonTemplate,
   Spacer,

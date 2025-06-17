@@ -1,5 +1,4 @@
-import { isMockedId } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import type { ListResponse, Order, QueryPageSize } from '@commercelayer/sdk'
 
 interface UseCustomerOrdersListSettings {

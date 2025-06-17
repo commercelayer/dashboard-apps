@@ -6,10 +6,10 @@ import { ScrollToTop } from '#components/ScrollToTop'
 import { Timeline } from '#components/Timeline'
 import { appRoutes } from '#data/routes'
 import { useReturnDetails } from '#hooks/useReturnDetails'
-import { isMockedId } from '#mocks'
 import {
   Button,
   EmptyState,
+  isMockedId,
   PageLayout,
   ResourceAttachments,
   ResourceDetails,

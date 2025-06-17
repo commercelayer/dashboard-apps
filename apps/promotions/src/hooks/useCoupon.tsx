@@ -1,5 +1,4 @@
-import { isMockedId } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import type { Coupon } from '@commercelayer/sdk'
 import { makeCoupon } from 'src/mocks/resources/coupons'
 import type { KeyedMutator } from 'swr'

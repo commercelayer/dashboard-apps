@@ -1,5 +1,4 @@
-import { isMockedId } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import isEmpty from 'lodash-es/isEmpty'
 import { makeGiftCard } from '../mocks/resources/gift_cards'
 

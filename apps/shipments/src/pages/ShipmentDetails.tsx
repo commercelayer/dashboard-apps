@@ -6,7 +6,6 @@ import { ShipmentTimeline } from '#components/ShipmentTimeline'
 import { appRoutes } from '#data/routes'
 import { useShipmentDetails } from '#hooks/useShipmentDetails'
 import { useShipmentToolbar } from '#hooks/useShipmentToolbar'
-import { isMockedId } from '#mocks'
 import {
   Alert,
   Button,
@@ -20,6 +19,7 @@ import {
   Spacer,
   Text,
   formatDateWithPredicate,
+  isMockedId,
   useAppLinking,
   useTokenProvider,
   useTranslation

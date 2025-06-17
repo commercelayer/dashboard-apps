@@ -1,8 +1,7 @@
 import { isDefined } from '#data/isValid'
-import { isMockedId } from '#mocks'
 import type { Promotion } from '#types'
 import type { CurrencyCode } from '@commercelayer/app-elements'
-import { currencies, useCoreApi } from '@commercelayer/app-elements'
+import { currencies, isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import type { CustomPromotionRule, FlexPromotion } from '@commercelayer/sdk'
 import { useEffect, useMemo, useState } from 'react'
 

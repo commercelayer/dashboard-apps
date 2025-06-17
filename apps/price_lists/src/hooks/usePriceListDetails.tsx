@@ -1,5 +1,5 @@
-import { isMockedId, makePriceList } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { makePriceList } from '#mocks'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import type { PriceList } from '@commercelayer/sdk'
 import type { KeyedMutator } from 'swr'
 

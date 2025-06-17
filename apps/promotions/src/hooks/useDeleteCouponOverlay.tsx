@@ -1,6 +1,6 @@
-import { isMockedId } from '#mocks'
 import {
   Button,
+  isMockedId,
   PageHeading,
   SkeletonTemplate,
   useCoreSdkProvider,

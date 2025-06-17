@@ -5,10 +5,10 @@ import { ExportReport } from '#components/Details/ExportReport'
 import { ExportDetailsProvider } from '#components/Details/Provider'
 import { ErrorNotFound } from '#components/ErrorNotFound'
 import { appRoutes } from '#data/routes'
-import { isMockedId } from '#mocks'
 import {
   Button,
   EmptyState,
+  isMockedId,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,

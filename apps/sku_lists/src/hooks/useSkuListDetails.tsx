@@ -1,5 +1,5 @@
-import { isMockedId, makeSkuList } from '#mocks'
-import { useCoreApi } from '@commercelayer/app-elements'
+import { makeSkuList } from '#mocks'
+import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
 import type { SkuList } from '@commercelayer/sdk'
 import type { KeyedMutator } from 'swr'
 

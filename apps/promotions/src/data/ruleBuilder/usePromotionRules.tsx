@@ -1,7 +1,7 @@
-import { isMockedId } from '#mocks'
 import type { Promotion, PromotionRule } from '#types'
 import {
   formatCentsToCurrency,
+  isMockedId,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import type {

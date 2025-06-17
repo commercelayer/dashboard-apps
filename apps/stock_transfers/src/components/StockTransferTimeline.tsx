@@ -1,6 +1,6 @@
 import { isAttachmentValidNote, referenceOrigins } from '#data/attachments'
-import { isMockedId } from '#mocks'
 import {
+  isMockedId,
   Section,
   Spacer,
   Text,

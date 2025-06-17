@@ -1,5 +1,8 @@
-import { isMockedId } from '#mocks'
-import { useCoreApi, useCoreSdkProvider } from '@commercelayer/app-elements'
+import {
+  isMockedId,
+  useCoreApi,
+  useCoreSdkProvider
+} from '@commercelayer/app-elements'
 import type { Order, Return } from '@commercelayer/sdk'
 import { useEffect, useState } from 'react'
 import { useOrderReturns } from './useOrderReturns'

@@ -1,7 +1,7 @@
 import { isAttachmentValidNote, referenceOrigins } from '#data/attachments'
-import { isMockedId } from '#mocks'
 import {
   getOrderTransactionName,
+  isMockedId,
   Text,
   Timeline,
   Trans,

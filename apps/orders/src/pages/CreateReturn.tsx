@@ -6,7 +6,6 @@ import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useReturn } from '#hooks/useReturn'
 import { useReturnableList } from '#hooks/useReturnableList'
-import { isMock } from '#mocks'
 import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
@@ -18,6 +17,7 @@ import {
   SkeletonTemplate,
   Spacer,
   Stack,
+  isMock,
   isSingleValueSelected,
   useTokenProvider,
   useTranslation,

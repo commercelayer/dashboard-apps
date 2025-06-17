@@ -12,7 +12,6 @@ import { useGetMarketsCount } from '#hooks/useGetMarketsCount'
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import { useOrderReturns } from '#hooks/useOrderReturns'
 import { useOrderToolbar } from '#hooks/useOrderToolbar'
-import { isMockedId } from '#mocks'
 import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
@@ -25,6 +24,7 @@ import {
   SkeletonTemplate,
   Spacer,
   formatDateWithPredicate,
+  isMockedId,
   useAppLinking,
   useTokenProvider,
   useTranslation

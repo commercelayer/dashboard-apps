@@ -23,7 +23,7 @@ import { SkuListManualItems } from '#components/SkuListManualItems'
 import { appRoutes, type PageProps } from '#data/routes'
 import { useSkuListDeleteOverlay } from '#hooks/useSkuListDeleteOverlay'
 import { useSkuListDetails } from '#hooks/useSkuListDetails'
-import { isMockedId } from '#mocks'
+import { isMockedId } from '@commercelayer/app-elements'
 import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
 import { useSearch } from 'wouter/use-browser-location'
 

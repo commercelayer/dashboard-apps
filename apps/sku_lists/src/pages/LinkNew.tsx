@@ -1,6 +1,6 @@
 import { appRoutes, type PageProps } from '#data/routes'
 import { useSkuListDetails } from '#hooks/useSkuListDetails'
-import { isMockedId } from '#mocks'
+import { isMockedId } from '@commercelayer/app-elements'
 
 import { LinkNewPage } from 'dashboard-apps-common/src/pages/LinkNewPage'
 

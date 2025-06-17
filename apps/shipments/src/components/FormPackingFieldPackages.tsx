@@ -1,9 +1,10 @@
 import { type PackingFormValues } from '#data/packingFormSchema'
-import { isMock, repeat } from '#mocks'
+import { repeat } from '#mocks'
 import {
   HookedInputRadioGroup,
   HookedInputSelect,
   InputFeedback,
+  isMock,
   Spacer,
   Text,
   useCoreApi,
