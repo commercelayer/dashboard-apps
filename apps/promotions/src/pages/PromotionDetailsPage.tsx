@@ -465,11 +465,6 @@ const SectionInfo = withSkeletonTemplate<{
           {promotion.priority}
         </ListDetailsItem>
       )}
-      {promotion.reference != null && promotion.reference !== '' && (
-        <ListDetailsItem label='Reference' gutter='none'>
-          {promotion.reference}
-        </ListDetailsItem>
-      )}
     </Section>
   )
 })
