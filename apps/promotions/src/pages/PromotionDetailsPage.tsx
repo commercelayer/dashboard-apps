@@ -39,7 +39,8 @@ import {
   useAppLinking,
   useCoreSdkProvider,
   useTokenProvider,
-  withSkeletonTemplate
+  withSkeletonTemplate,
+  type PageHeadingProps
 } from '@commercelayer/app-elements'
 import type { FlexPromotion } from '@commercelayer/sdk'
 import { useMemo, useState } from 'react'
@@ -71,6 +72,71 @@ function Page(
 
   const pageTitle = promotion.name
 
+  const toolbar: PageHeadingProps['toolbar'] = {
+    buttons: [
+      {
+        label: displayStatus.isEnabled ? 'Disable' : 'Enable',
+        size: 'small',
+        onClick: () => {
+          void sdkClient[promotion.type]
+            .update({
+              id: promotion.id,
+              _disable: displayStatus.isEnabled,
+              _enable: !displayStatus.isEnabled
+            })
+            .then(() => {
+              void mutatePromotion()
+            })
+        }
+      }
+    ],
+    dropdownItems: [
+      [
+        {
+          label: 'Edit',
+          onClick: () => {
+            setLocation(
+              appRoutes.editPromotion.makePath({
+                promotionId: promotion.id
+              })
+            )
+          }
+        }
+      ],
+      [
+        {
+          label: 'Delete',
+          onClick: () => {
+            showDeleteOverlay()
+          }
+        }
+      ]
+    ]
+  }
+
+  if (promotion.type === 'flex_promotions') {
+    toolbar.dropdownItems?.[0]?.push({
+      label: 'Duplicate',
+      onClick: () => {
+        void sdkClient.flex_promotions
+          .create({
+            expires_at: promotion.expires_at,
+            starts_at: promotion.starts_at,
+            name: `${promotion.name} (copy)`,
+            rules: promotion.rules,
+            _disable: true
+          })
+          .then((promotion) => {
+            setLocation(
+              appRoutes.promotionDetails.makePath({
+                promotionId: promotion.id
+              })
+            )
+          })
+      }
+    })
+  }
+
   if (error != null) {
     return <GenericPageNotFound />
   }
@@ -81,47 +147,7 @@ function Page(
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }
       overlay={props.overlay}
-      toolbar={{
-        buttons: [
-          {
-            label: displayStatus.isEnabled ? 'Disable' : 'Enable',
-            size: 'small',
-            onClick: () => {
-              void sdkClient[promotion.type]
-                .update({
-                  id: promotion.id,
-                  _disable: displayStatus.isEnabled,
-                  _enable: !displayStatus.isEnabled
-                })
-                .then(() => {
-                  void mutatePromotion()
-                })
-            }
-          }
-        ],
-        dropdownItems: [
-          [
-            {
-              label: 'Edit',
-              onClick: () => {
-                setLocation(
-                  appRoutes.editPromotion.makePath({
-                    promotionId: promotion.id
-                  })
-                )
-              }
-            }
-          ],
-          [
-            {
-              label: 'Delete',
-              onClick: () => {
-                showDeleteOverlay()
-              }
-            }
-          ]
-        ]
-      }}
+      toolbar={toolbar}
       mode={mode}
       gap='only-top'
       navigationButton={{
