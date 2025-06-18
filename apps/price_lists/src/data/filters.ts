@@ -39,7 +39,9 @@ export const pricesFilterInstructions = ({
     label: 'Search',
     type: 'textSearch',
     sdk: {
-      predicate: ['sku_code'].join('_or_') + '_cont'
+      predicate:
+        ['reference', 'sku_code', 'sku_name', 'sku_reference'].join('_or_') +
+        '_cont'
     },
     render: {
       component: 'searchBar'
