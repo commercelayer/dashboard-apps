@@ -64,13 +64,7 @@ const DetailsPage = (): React.JSX.Element | null => {
             <PageLayout
               title={<ImportedResourceType />}
               mode={mode}
-              description={
-                <ImportDate
-                  atType='created_at'
-                  prefixText='Imported on '
-                  includeTime
-                />
-              }
+              description={<ImportDate atType='created_at' includeTime />}
               navigationButton={{
                 label: 'Imports',
                 icon: 'arrowLeft',
