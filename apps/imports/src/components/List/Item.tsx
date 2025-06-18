@@ -1,5 +1,4 @@
 import { DescriptionLine } from '#components/List/ItemDescriptionLine'
-import { getUiStatus } from '#components/List/utils'
 import { appRoutes } from '#data/routes'
 import { getProgressPercentage } from '#utils/getProgressPercentage'
 import {
@@ -84,20 +83,26 @@ export function Item({ job }: Props): React.JSX.Element {
 }
 
 function TaskIcon({ job }: { job: Import }): React.JSX.Element {
-  const status = getUiStatus(job.status)
-  if (status === 'progress') {
+  if (job.status === 'in_progress') {
     return <RadialProgress percentage={getProgressPercentage(job)?.value} />
   }
 
-  if (status === 'pending') {
+  if (job.status === 'pending') {
     return <RadialProgress />
   }
 
-  if (status === 'danger') {
+  if (
+    job.status === 'interrupted' ||
+    (job.started_at === 'completed' && job.processed_count === 0)
+  ) {
     return <StatusIcon gap='large' name='x' background='red' />
   }
 
-  if (status === 'success') {
+  if (job.status === 'completed' && (job.errors_count ?? 0) > 0) {
+    return <StatusIcon gap='large' name='warning' background='orange' />
+  }
+
+  if (job.status === 'completed') {
     return <StatusIcon gap='large' name='check' background='green' />
   }
 
