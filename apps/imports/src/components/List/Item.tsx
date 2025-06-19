@@ -93,7 +93,7 @@ function TaskIcon({ job }: { job: Import }): React.JSX.Element {
 
   if (
     job.status === 'interrupted' ||
-    (job.started_at === 'completed' && job.processed_count === 0)
+    (job.status === 'completed' && job.processed_count === 0)
   ) {
     return <StatusIcon gap='large' name='x' background='red' />
   }
