@@ -6,6 +6,7 @@ import {
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import type { Return } from '@commercelayer/sdk'
+import type { FC } from 'react'
 
 interface Props {
   returns?: Return[]
@@ -21,7 +22,7 @@ const returnStatuses = [
   'refunded'
 ]
 
-const renderReturn = (returnObj: Return): React.JSX.Element | undefined => {
+const ReturnListItem: FC<{ returnObj: Return }> = ({ returnObj }) => {
   const { canAccess } = useTokenProvider()
   const { navigateTo } = useAppLinking()
 
@@ -58,7 +59,9 @@ export const OrderReturns = withSkeletonTemplate<Props>(({ returns }) => {
 
   return (
     <Section title='Returns'>
-      {returns.map((returnObj) => renderReturn(returnObj))}
+      {returns.map((returnObj) => (
+        <ReturnListItem key={returnObj.id} returnObj={returnObj} />
+      ))}
     </Section>
   )
 })
