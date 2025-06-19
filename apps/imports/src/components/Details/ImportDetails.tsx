@@ -28,6 +28,11 @@ export const ImportDetails = withSkeletonTemplate(({ isLoading }) => {
           <StatusBadge job={data} />
         </ListDetailsItem>
       ) : null}
+      {data.processed_count != null && data.inputs_size != null ? (
+        <ListDetailsItem label='Processed' gutter='none'>
+          {data.processed_count}/{data.inputs_size}
+        </ListDetailsItem>
+      ) : null}
       {data.completed_at != null ? (
         <ListDetailsItem label='Completed at' gutter='none'>
           {formatDate({

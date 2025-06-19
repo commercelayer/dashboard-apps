@@ -1,5 +1,8 @@
 import { getProgressPercentage } from '#utils/getProgressPercentage'
-import { formatDate, useTokenProvider } from '@commercelayer/app-elements'
+import {
+  formatDateWithPredicate,
+  useTokenProvider
+} from '@commercelayer/app-elements'
 import { type Import } from '@commercelayer/sdk'
 
 interface Props {
@@ -27,19 +30,23 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
         )
       ) : job.status === 'interrupted' ? (
         <div>
-          Import failed on{' '}
-          {formatDate({ isoDate: job.updated_at, timezone: user?.timezone })}
+          {formatDateWithPredicate({
+            predicate: 'Import failed',
+            isoDate: job.updated_at,
+            timezone: user?.timezone
+          })}
         </div>
       ) : job.status === 'completed' ? (
         errorsCount != null ? (
           <div>
-            Imported with {errorsCount} error{errorsCount > 1 ? 's' : ''}
+            Import completed with {errorsCount} error
+            {errorsCount > 1 ? 's' : ''}
           </div>
         ) : (
           <div>
-            Imported on{' '}
             {job.completed_at != null &&
-              formatDate({
+              formatDateWithPredicate({
+                predicate: 'Imported',
                 isoDate: job.completed_at,
                 timezone: user?.timezone
               })}

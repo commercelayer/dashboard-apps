@@ -1,6 +1,6 @@
 import { useImportDetailsContext } from '#components/Details/Provider'
 import {
-  formatDate,
+  formatDateWithPredicate,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -12,13 +12,12 @@ interface Props extends React.HTMLAttributes<HTMLSpanElement> {
     | 'interrupted_at'
     | 'started_at'
     | 'updated_at'
-  prefixText?: string
   includeTime?: boolean
 }
 
 export const ImportDate = withSkeletonTemplate<Props>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ atType, prefixText, includeTime, isLoading, delayMs, ...props }) => {
+  ({ atType, includeTime, isLoading, delayMs, ...props }) => {
     const {
       state: { data }
     } = useImportDetailsContext()
@@ -32,9 +31,9 @@ export const ImportDate = withSkeletonTemplate<Props>(
     const dateAt = data[atType]
     return (
       <span {...props}>
-        {prefixText}{' '}
         {dateAt != null &&
-          formatDate({
+          formatDateWithPredicate({
+            predicate: 'Imported',
             isoDate: dateAt,
             format: includeTime === true ? 'full' : 'date',
             timezone: user?.timezone
