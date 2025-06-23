@@ -12,6 +12,7 @@ export const orderIncludeAttribute = [
   'customer.customer_addresses',
   'customer.customer_addresses.address',
   'line_items',
+  'line_items.gift_card',
   'line_items.line_item_options',
   'shipping_address',
   'billing_address',

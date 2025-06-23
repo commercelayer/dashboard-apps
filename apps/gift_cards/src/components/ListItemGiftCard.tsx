@@ -1,9 +1,10 @@
 import { BadgeStatus } from '#components/BadgeStatus'
 import { makeGiftCard } from '#mocks'
-import { maskGiftCardCode } from '#utils/code'
+
 import {
   Avatar,
   ListItem,
+  maskGiftCardCode,
   Text,
   useAppLinking,
   withSkeletonTemplate,
