@@ -31,20 +31,16 @@ export function FormPackingFieldPackages({
   const { packages, isLoading } = usePackages(stockLocationId)
   const { t } = useTranslation()
 
-  useEffect(() => {
-    // automatically select the first package when there is only one package
-    const isMockedData = packages.every(isMock)
-    const isSinglePackage = packages.length === 1
-    const firstPackageId = packages[0]?.id
-    if (
-      !isLoading &&
-      !isMockedData &&
-      isSinglePackage &&
-      firstPackageId != null
-    ) {
-      setValue('packageId', firstPackageId)
-    }
-  }, [packages, isLoading])
+  useEffect(
+    function selectFirstPackageOnLoad() {
+      const isMockedData = packages.every(isMock)
+      const firstPackageId = packages[0]?.id
+      if (!isLoading && !isMockedData && firstPackageId != null) {
+        setValue('packageId', firstPackageId)
+      }
+    },
+    [packages, isLoading]
+  )
 
   if (packages.length === 0) {
     return (
@@ -63,10 +59,11 @@ export function FormPackingFieldPackages({
   return (
     <HookedInputRadioGroup
       isLoading={isLoading}
+      delayMs={0}
       name='packageId'
       viewMode='grid'
       showInput={false}
-      key={selectedPackageId}
+      key={isLoading ? undefined : selectedPackageId}
       options={packages.map((item) => ({
         value: item.id,
         content: (
@@ -144,7 +141,11 @@ function usePackages(stockLocationId?: string): {
   packages: ListResponse<Package>
   isLoading: boolean
 } {
-  const { data: packages, isLoading } = useCoreApi(
+  const {
+    data: packages,
+    isLoading,
+    isValidating
+  } = useCoreApi(
     'packages',
     'list',
     stockLocationId == null
@@ -166,13 +167,14 @@ function usePackages(stockLocationId?: string): {
           }
         ],
     {
-      fallbackData: repeat(2, () => makePackage()) as ListResponse<Package>
+      fallbackData: repeat(2, () => makePackage()) as ListResponse<Package>,
+      revalidateOnFocus: false
     }
   )
 
   return {
     packages,
-    isLoading
+    isLoading: isLoading || isValidating
   }
 }
 
