@@ -1,5 +1,4 @@
 import { makeFiltersInstructions } from '#data/filters'
-import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
   PageLayout,
@@ -15,11 +14,11 @@ function Filters(): React.JSX.Element {
   const queryString = useSearch()
   const params = new URLSearchParams(queryString)
   const viewTitle = params.get('viewTitle') ?? undefined
-  const isPickingPage = viewTitle === presets.picking.viewTitle
+  const isInViewPreset = viewTitle != null
 
   const { FiltersForm, adapters } = useResourceFilters({
     instructions: makeFiltersInstructions({
-      hideFilterStatus: isPickingPage
+      hideFilterStatus: isInViewPreset
     })
   })
 

@@ -1,6 +1,5 @@
 import { ListItemShipment } from '#components/ListItemShipment'
 import { makeFiltersInstructions } from '#data/filters'
-import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
   EmptyState,
@@ -23,13 +22,11 @@ function ShipmentList(): React.JSX.Element {
   const queryString = useSearch()
   const params = new URLSearchParams(queryString)
   const viewTitle = params.get('viewTitle') ?? undefined
-  const isPickingPage = viewTitle === presets.picking.viewTitle
   const isInViewPreset = viewTitle != null
-  const showSearchWithNav = isInViewPreset && !isPickingPage
 
   const { SearchWithNav, FilteredList } = useResourceFilters({
     instructions: makeFiltersInstructions({
-      hideFilterStatus: isPickingPage
+      hideFilterStatus: isInViewPreset
     })
   })
 
@@ -37,7 +34,7 @@ function ShipmentList(): React.JSX.Element {
     <PageLayout
       title={viewTitle ?? t('resources.shipments.name_other')}
       mode={mode}
-      gap={showSearchWithNav ? undefined : 'only-top'}
+      gap='only-top'
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
@@ -56,8 +53,6 @@ function ShipmentList(): React.JSX.Element {
         onFilterClick={(queryString) => {
           setLocation(appRoutes.filters.makePath({}, queryString))
         }}
-        hideFiltersNav={showSearchWithNav}
-        hideSearchBar={showSearchWithNav}
       />
 
       <Spacer bottom='14'>
