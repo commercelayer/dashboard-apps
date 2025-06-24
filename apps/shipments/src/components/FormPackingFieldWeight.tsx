@@ -22,7 +22,8 @@ export function FormPackingFieldWeight({
       <HookedInput label={t('apps.shipments.details.weight')} name='weight' />
       <HookedInputSelect
         name='unitOfWeight'
-        label={t('apps.shipments.form.unit_of_weight')}
+        label='&nbsp;' // empty white space to keep field alignment
+        aria-label={t('apps.shipments.form.unit_of_weight')}
         key={watch('unitOfWeight')}
         initialValues={[
           {
