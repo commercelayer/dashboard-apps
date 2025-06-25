@@ -1,8 +1,4 @@
-import {
-  type CountryCodesFilterOptions,
-  makeCartsInstructions,
-  makeInstructions
-} from '#data/filters'
+import { makeCartsInstructions, makeInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
@@ -15,9 +11,8 @@ import { useCountryCodes } from 'src/metricsApi/useCountryCodes'
 import { useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 
-const Filters: FC<{ countryCodes?: CountryCodesFilterOptions }> = ({
-  countryCodes
-}) => {
+const Filters: FC = () => {
+  const { countryCodes } = useCountryCodes()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
 
@@ -67,14 +62,4 @@ const Filters: FC<{ countryCodes?: CountryCodesFilterOptions }> = ({
   )
 }
 
-const FiltersAsyncWrapper: FC = () => {
-  const { countryCodes, isLoading } = useCountryCodes()
-
-  if (isLoading) {
-    return null
-  }
-
-  return <Filters countryCodes={countryCodes} />
-}
-
-export default FiltersAsyncWrapper
+export default Filters

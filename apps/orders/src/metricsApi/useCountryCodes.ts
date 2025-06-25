@@ -28,7 +28,8 @@ export function useCountryCodes(): {
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,
-      revalidateOnReconnect: false
+      revalidateOnReconnect: false,
+      suspense: true
     }
   )
 

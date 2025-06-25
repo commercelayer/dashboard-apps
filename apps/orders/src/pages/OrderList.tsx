@@ -1,10 +1,6 @@
 import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemOrder } from '#components/ListItemOrder'
-import {
-  makeCartsInstructions,
-  makeInstructions,
-  type CountryCodesFilterOptions
-} from '#data/filters'
+import { makeCartsInstructions, makeInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
@@ -19,13 +15,12 @@ import { useCountryCodes } from 'src/metricsApi/useCountryCodes'
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-const OrderList: FC<{ countryCodes?: CountryCodesFilterOptions }> = ({
-  countryCodes
-}) => {
+const OrderList: FC = () => {
   const {
     settings: { mode }
   } = useTokenProvider()
   const { t } = useTranslation()
+  const { countryCodes } = useCountryCodes()
   const queryString = useSearch()
   const [, setLocation] = useLocation()
 
@@ -108,14 +103,4 @@ const OrderList: FC<{ countryCodes?: CountryCodesFilterOptions }> = ({
   )
 }
 
-const OrderListAsyncWrapper: FC = () => {
-  const { countryCodes, isLoading } = useCountryCodes()
-
-  if (isLoading) {
-    return null
-  }
-
-  return <OrderList countryCodes={countryCodes} />
-}
-
-export default OrderListAsyncWrapper
+export default OrderList
