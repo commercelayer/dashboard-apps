@@ -30,8 +30,8 @@ const Filters: FC<{ countryCodes?: CountryCodesFilterOptions }> = ({
     instructions: isPendingOrdersList
       ? makeCartsInstructions()
       : makeInstructions({
-        countryCodes
-      })
+          countryCodes
+        })
   })
 
   const searchParams = new URLSearchParams(location.search)
@@ -53,7 +53,7 @@ const Filters: FC<{ countryCodes?: CountryCodesFilterOptions }> = ({
         },
         label: searchParams.has('viewTitle')
           ? // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-          (searchParams.get('viewTitle') as string)
+            (searchParams.get('viewTitle') as string)
           : t('resources.orders.name_other'),
         icon: 'arrowLeft'
       }}
