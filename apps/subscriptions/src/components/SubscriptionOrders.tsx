@@ -11,8 +11,14 @@ import {
   useResourceList,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
-import type { OrderSubscription } from '@commercelayer/sdk'
+import type { Order, OrderSubscription } from '@commercelayer/sdk'
 import { useLocation } from 'wouter'
+
+export const allowedOrderStatuses: Array<Order['status']> = [
+  'pending',
+  'placed',
+  'approved'
+]
 
 interface Props {
   subscription: OrderSubscription
@@ -25,7 +31,7 @@ export const SubscriptionOrders = withSkeletonTemplate<Props>(
       query: {
         filters: {
           order_subscription_id_eq: subscription.id,
-          status_in: ['placed', 'pending']
+          status_in: allowedOrderStatuses
         },
         sort: ['-updated_at'],
         pageSize: 5

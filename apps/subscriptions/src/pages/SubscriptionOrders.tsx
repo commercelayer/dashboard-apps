@@ -1,3 +1,8 @@
+import { ListItemSubscriptionOrder } from '#components/ListItemSubscriptionOrder'
+import { allowedOrderStatuses } from '#components/SubscriptionOrders'
+import { appRoutes } from '#data/routes'
+import { useSubscriptionDetails } from '#hooks/useSubscriptionDetails'
+import { getSubscriptionTitle } from '#utils/getSubscriptionTitle'
 import {
   Button,
   EmptyState,
@@ -9,11 +14,6 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { Link, useLocation, useRoute } from 'wouter'
-
-import { ListItemSubscriptionOrder } from '#components/ListItemSubscriptionOrder'
-import { appRoutes } from '#data/routes'
-import { useSubscriptionDetails } from '#hooks/useSubscriptionDetails'
-import { getSubscriptionTitle } from '#utils/getSubscriptionTitle'
 
 export function SubscriptionOrders(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -29,7 +29,7 @@ export function SubscriptionOrders(): React.JSX.Element {
     query: {
       filters: {
         order_subscription_id_eq: subscriptionId,
-        status_in: ['placed', 'pending']
+        status_in: allowedOrderStatuses
       },
       sort: ['-updated_at'],
       pageSize: 25
