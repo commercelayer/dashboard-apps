@@ -3,6 +3,7 @@ import type { ResourceWithEvent } from 'App'
 
 export const webhookEvents: Record<ResourceWithEvent, string[]> = {
   addresses: ['tagged'],
+  anonymizations: ['start', 'complete', 'cancel', 'fail'],
   authorizations: ['create', 'failed', 'succeeded'],
   avalara_accounts: [
     'invoice_committed',
