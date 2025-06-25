@@ -1,6 +1,10 @@
 import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemOrder } from '#components/ListItemOrder'
-import { makeCartsInstructions, makeInstructions } from '#data/filters'
+import {
+  makeCartsInstructions,
+  makeInstructions,
+  type CountryCodesFilterOptions
+} from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
@@ -10,10 +14,14 @@ import {
   useTokenProvider,
   useTranslation
 } from '@commercelayer/app-elements'
+import { type FC } from 'react'
+import { useCountryCodes } from 'src/metricsApi/useCountryCodes'
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-function OrderList(): React.JSX.Element {
+const OrderList: FC<{ countryCodes?: CountryCodesFilterOptions }> = ({
+  countryCodes
+}) => {
   const {
     settings: { mode }
   } = useTokenProvider()
@@ -30,7 +38,8 @@ function OrderList(): React.JSX.Element {
       instructions: isPendingOrdersList
         ? makeCartsInstructions()
         : makeInstructions({
-            sortByAttribute: 'placed_at'
+            sortByAttribute: 'placed_at',
+            countryCodes
           })
     })
 
@@ -99,4 +108,14 @@ function OrderList(): React.JSX.Element {
   )
 }
 
-export default OrderList
+const OrderListAsyncWrapper: FC = () => {
+  const { countryCodes, isLoading } = useCountryCodes()
+
+  if (isLoading) {
+    return null
+  }
+
+  return <OrderList countryCodes={countryCodes} />
+}
+
+export default OrderListAsyncWrapper

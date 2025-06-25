@@ -1,4 +1,8 @@
-import { makeCartsInstructions, makeInstructions } from '#data/filters'
+import {
+  type CountryCodesFilterOptions,
+  makeCartsInstructions,
+  makeInstructions
+} from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
@@ -6,10 +10,14 @@ import {
   useResourceFilters,
   useTranslation
 } from '@commercelayer/app-elements'
+import type { FC } from 'react'
+import { useCountryCodes } from 'src/metricsApi/useCountryCodes'
 import { useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 
-function Filters(): React.JSX.Element {
+const Filters: FC<{ countryCodes?: CountryCodesFilterOptions }> = ({
+  countryCodes
+}) => {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
 
@@ -21,7 +29,9 @@ function Filters(): React.JSX.Element {
   const { FiltersForm, adapters } = useResourceFilters({
     instructions: isPendingOrdersList
       ? makeCartsInstructions()
-      : makeInstructions({})
+      : makeInstructions({
+        countryCodes
+      })
   })
 
   const searchParams = new URLSearchParams(location.search)
@@ -43,7 +53,7 @@ function Filters(): React.JSX.Element {
         },
         label: searchParams.has('viewTitle')
           ? // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-            (searchParams.get('viewTitle') as string)
+          (searchParams.get('viewTitle') as string)
           : t('resources.orders.name_other'),
         icon: 'arrowLeft'
       }}
@@ -57,4 +67,14 @@ function Filters(): React.JSX.Element {
   )
 }
 
-export default Filters
+const FiltersAsyncWrapper: FC = () => {
+  const { countryCodes, isLoading } = useCountryCodes()
+
+  if (isLoading) {
+    return null
+  }
+
+  return <Filters countryCodes={countryCodes} />
+}
+
+export default FiltersAsyncWrapper
