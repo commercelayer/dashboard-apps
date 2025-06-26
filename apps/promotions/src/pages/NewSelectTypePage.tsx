@@ -54,10 +54,10 @@ function Page(
         </Section>
       </Spacer>
       <Spacer top='10'>
-        <Section titleSize='small' title='More' border='none'>
-          <Grid columns={hasRuleEngine ? '2' : '1'}>
-            <LinkTo promotionType='external_promotions' />
+        <Section titleSize='small' title='Advanced' border='none'>
+          <Grid columns='1'>
             {hasRuleEngine && <LinkTo promotionType='flex_promotions' />}
+            <LinkTo promotionType='external_promotions' />
           </Grid>
         </Section>
       </Spacer>

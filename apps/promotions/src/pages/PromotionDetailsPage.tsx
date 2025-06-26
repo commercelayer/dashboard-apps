@@ -1,4 +1,5 @@
 import { CouponTable } from '#components/CouponTable'
+import { SectionFlexRules } from '#components/FlexRuleBuilder'
 import { GenericPageNotFound, type PageProps } from '#components/Routes'
 import {
   appPromotionsReferenceOrigin,
@@ -16,7 +17,6 @@ import {
   Badge,
   Button,
   Card,
-  CodeEditor,
   Dropdown,
   DropdownItem,
   Icon,
@@ -174,7 +174,7 @@ function Page(
               </Alert>
             )}
 
-          {viaApi && (
+          {viaApi && promotion.type !== 'flex_promotions' && (
             <Alert status='info'>
               This promotion is generated via API. Ask developers for details.
               If issues arise, just disable it.
@@ -191,17 +191,11 @@ function Page(
         </Spacer>
 
         {promotion.type === 'flex_promotions' && (
-          <Spacer top='14'>
-            <Section title='Rules' border='none'>
-              <CodeEditor
-                readOnly
-                value={JSON.stringify(promotion.rules, undefined, 2)}
-                language='json'
-                jsonSchema='order-rules'
-                height='600px'
-              />
-            </Section>
-          </Spacer>
+          <>
+            <Spacer top='14'>
+              <SectionFlexRules promotion={promotion} />
+            </Spacer>
+          </>
         )}
 
         {promotion.type !== 'flex_promotions' && (
@@ -495,11 +489,6 @@ const SectionInfo = withSkeletonTemplate<{
       {promotion.priority != null && (
         <ListDetailsItem label='Priority' gutter='none'>
           {promotion.priority}
-        </ListDetailsItem>
-      )}
-      {promotion.reference != null && promotion.reference !== '' && (
-        <ListDetailsItem label='Reference' gutter='none'>
-          {promotion.reference}
         </ListDetailsItem>
       )}
     </Section>
