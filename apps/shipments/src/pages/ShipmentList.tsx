@@ -66,6 +66,7 @@ function ShipmentList(): React.JSX.Element {
                 'number',
                 'updated_at',
                 'status',
+                'reference',
                 'order',
                 'stock_location',
                 'stock_transfers',
