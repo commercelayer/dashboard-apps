@@ -6,10 +6,13 @@ import {
   useResourceFilters,
   useTranslation
 } from '@commercelayer/app-elements'
+import type { FC } from 'react'
+import { useCountryCodes } from 'src/metricsApi/useCountryCodes'
 import { useLocation } from 'wouter'
 import { useSearch } from 'wouter/use-browser-location'
 
-function Filters(): React.JSX.Element {
+const Filters: FC = () => {
+  const { countryCodes } = useCountryCodes()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
 
@@ -21,7 +24,9 @@ function Filters(): React.JSX.Element {
   const { FiltersForm, adapters } = useResourceFilters({
     instructions: isPendingOrdersList
       ? makeCartsInstructions()
-      : makeInstructions({})
+      : makeInstructions({
+          countryCodes
+        })
   })
 
   const searchParams = new URLSearchParams(location.search)

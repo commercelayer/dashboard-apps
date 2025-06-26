@@ -10,14 +10,17 @@ import {
   useTokenProvider,
   useTranslation
 } from '@commercelayer/app-elements'
+import { type FC } from 'react'
+import { useCountryCodes } from 'src/metricsApi/useCountryCodes'
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
-function OrderList(): React.JSX.Element {
+const OrderList: FC = () => {
   const {
     settings: { mode }
   } = useTokenProvider()
   const { t } = useTranslation()
+  const { countryCodes } = useCountryCodes()
   const queryString = useSearch()
   const [, setLocation] = useLocation()
 
@@ -30,7 +33,8 @@ function OrderList(): React.JSX.Element {
       instructions: isPendingOrdersList
         ? makeCartsInstructions()
         : makeInstructions({
-            sortByAttribute: 'placed_at'
+            sortByAttribute: 'placed_at',
+            countryCodes
           })
     })
 

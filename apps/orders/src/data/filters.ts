@@ -1,33 +1,15 @@
 import { t, type FiltersInstructions } from '@commercelayer/app-elements'
 import isEmpty from 'lodash-es/isEmpty'
 
+export type CountryCodesFilterOptions = Array<{ label: string; value: string }>
+
 export const makeInstructions = ({
-  sortByAttribute = 'placed_at'
+  sortByAttribute = 'placed_at',
+  countryCodes
 }: {
   sortByAttribute?: 'placed_at' | 'created_at'
+  countryCodes?: CountryCodesFilterOptions
 }): FiltersInstructions => [
-  {
-    label: t('resources.markets.name_other'),
-    type: 'options',
-    sdk: {
-      predicate: 'market_id_in'
-    },
-    render: {
-      component: 'inputResourceGroup',
-      props: {
-        fieldForLabel: 'name',
-        fieldForValue: 'id',
-        resource: 'markets',
-        searchBy: 'name_cont',
-        sortBy: { attribute: 'name', direction: 'asc' },
-        previewLimit: 5,
-        hideWhenSingleItem: true,
-        filters: {
-          disabled_at_null: true
-        }
-      }
-    }
-  },
   {
     label: t('apps.orders.attributes.status'),
     type: 'options',
@@ -154,6 +136,43 @@ export const makeInstructions = ({
     }
   },
   {
+    label: t('resources.markets.name_other'),
+    type: 'options',
+    sdk: {
+      predicate: 'market_id_in'
+    },
+    render: {
+      component: 'inputResourceGroup',
+      props: {
+        fieldForLabel: 'name',
+        fieldForValue: 'id',
+        resource: 'markets',
+        searchBy: 'name_cont',
+        sortBy: { attribute: 'name', direction: 'asc' },
+        previewLimit: 5,
+        hideWhenSingleItem: true,
+        filters: {
+          disabled_at_null: true
+        }
+      }
+    }
+  },
+  {
+    label: 'Countries',
+    type: 'options',
+    hidden: countryCodes == null || countryCodes.length === 0,
+    sdk: {
+      predicate: 'country_codes_in'
+    },
+    render: {
+      component: 'inputToggleButton',
+      props: {
+        mode: 'multi',
+        options: countryCodes ?? []
+      }
+    }
+  },
+  {
     label: t('apps.orders.tasks.archived'),
     type: 'options',
     sdk: {
@@ -216,7 +235,6 @@ export const makeInstructions = ({
       }
     }
   },
-
   {
     label: t('common.search'),
     type: 'textSearch',
