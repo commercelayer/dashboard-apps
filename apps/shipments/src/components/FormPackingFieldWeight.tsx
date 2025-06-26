@@ -1,6 +1,5 @@
 import { useSyncFormPackingWeight } from '#hooks/useSyncFormPackingWeight'
 import {
-  Grid,
   HookedInput,
   HookedInputSelect,
   useTranslation
@@ -18,11 +17,14 @@ export function FormPackingFieldWeight({
   useSyncFormPackingWeight({ shipment })
 
   return (
-    <Grid columns='2'>
+    <div
+      style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '2.5fr 1fr' }}
+    >
       <HookedInput label={t('apps.shipments.details.weight')} name='weight' />
       <HookedInputSelect
         name='unitOfWeight'
-        label={t('apps.shipments.form.unit_of_weight')}
+        label={`\u00A0`} // empty white space to keep field alignment
+        aria-label={t('apps.shipments.form.unit_of_weight')}
         key={watch('unitOfWeight')}
         initialValues={[
           {
@@ -45,6 +47,6 @@ export function FormPackingFieldWeight({
           }
         ]}
       />
-    </Grid>
+    </div>
   )
 }

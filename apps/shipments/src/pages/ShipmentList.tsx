@@ -1,5 +1,5 @@
 import { ListItemShipment } from '#components/ListItemShipment'
-import { filtersInstructions } from '#data/filters'
+import { makeFiltersInstructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
   EmptyState,
@@ -20,16 +20,21 @@ function ShipmentList(): React.JSX.Element {
   const { t } = useTranslation()
 
   const queryString = useSearch()
-  const { SearchWithNav, FilteredList, viewTitle } = useResourceFilters({
-    instructions: filtersInstructions
-  })
+  const params = new URLSearchParams(queryString)
+  const viewTitle = params.get('viewTitle') ?? undefined
   const isInViewPreset = viewTitle != null
+
+  const { SearchWithNav, FilteredList } = useResourceFilters({
+    instructions: makeFiltersInstructions({
+      hideFilterStatus: isInViewPreset
+    })
+  })
 
   return (
     <PageLayout
       title={viewTitle ?? t('resources.shipments.name_other')}
       mode={mode}
-      gap={isInViewPreset ? undefined : 'only-top'}
+      gap='only-top'
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
@@ -48,8 +53,6 @@ function ShipmentList(): React.JSX.Element {
         onFilterClick={(queryString) => {
           setLocation(appRoutes.filters.makePath({}, queryString))
         }}
-        hideFiltersNav={isInViewPreset}
-        hideSearchBar={isInViewPreset}
       />
 
       <Spacer bottom='14'>
@@ -63,6 +66,7 @@ function ShipmentList(): React.JSX.Element {
                 'number',
                 'updated_at',
                 'status',
+                'reference',
                 'order',
                 'stock_location',
                 'stock_transfers',

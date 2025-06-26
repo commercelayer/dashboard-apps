@@ -1,4 +1,4 @@
-import { filtersInstructions } from '#data/filters'
+import { makeFiltersInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
@@ -25,7 +25,7 @@ function Home(): React.JSX.Element {
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
   const { SearchWithNav, adapters } = useResourceFilters({
-    instructions: filtersInstructions
+    instructions: makeFiltersInstructions()
   })
 
   const getPresetUrl = useCallback(

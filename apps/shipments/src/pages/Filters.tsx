@@ -1,4 +1,4 @@
-import { filtersInstructions } from '#data/filters'
+import { makeFiltersInstructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
   PageLayout,
@@ -6,12 +6,20 @@ import {
   useTranslation
 } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
+import { useSearch } from 'wouter/use-browser-location'
 
 function Filters(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
+  const queryString = useSearch()
+  const params = new URLSearchParams(queryString)
+  const viewTitle = params.get('viewTitle') ?? undefined
+  const isInViewPreset = viewTitle != null
+
   const { FiltersForm, adapters } = useResourceFilters({
-    instructions: filtersInstructions
+    instructions: makeFiltersInstructions({
+      hideFilterStatus: isInViewPreset
+    })
   })
 
   return (
