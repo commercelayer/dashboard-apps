@@ -72,7 +72,10 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
 
     const customerAddresses = order.customer?.customer_addresses ?? []
 
-    const methods = useForm<{ addressId: string; useForBilling: boolean }>({
+    const methods = useForm<{
+      addressId: string
+      useFor: 'billing' | 'shipping' | 'both'
+    }>({
       defaultValues: {
         addressId:
           customerAddresses.length === 1
@@ -80,30 +83,36 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
             : undefined
       },
       resolver: zodResolver(
-        z.object({ addressId: z.string(), useForBilling: z.boolean() })
+        z.object({
+          addressId: z.string(),
+          useFor: z.string()
+        })
       )
     })
 
     return (
       <HookedForm
         {...methods}
-        onSubmit={async (formValues) => {
-          await sdkClient.orders
-            .update({
+        onSubmit={async ({ addressId, useFor }) => {
+          setApiError(null)
+          const addressRelationship =
+            sdkClient.addresses.relationship(addressId)
+          try {
+            await sdkClient.orders.update({
               id: order.id,
-              [formValues.useForBilling
-                ? 'billing_address'
-                : 'shipping_address']: sdkClient.addresses.relationship(
-                formValues.addressId
-              )
+              ...(useFor === 'billing' || useFor === 'both'
+                ? { billing_address: addressRelationship }
+                : {}),
+              ...(useFor === 'shipping' || useFor === 'both'
+                ? { shipping_address: addressRelationship }
+                : {})
             })
-            .then(() => {
-              onChange?.()
-              close()
-            })
-            .catch((error) => {
-              setApiError(error)
-            })
+
+            onChange?.()
+            close()
+          } catch (error) {
+            setApiError(error)
+          }
         }}
       >
         <HookedInputRadioGroup
@@ -119,8 +128,9 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
             <Button
               variant='secondary'
               fullWidth
+              disabled={methods.formState.isSubmitting}
               onClick={() => {
-                methods.setValue('useForBilling', true)
+                methods.setValue('useFor', 'billing')
               }}
             >
               {t('apps.orders.details.use_for_billing')}
@@ -128,11 +138,22 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
             <Button
               variant='secondary'
               fullWidth
+              disabled={methods.formState.isSubmitting}
               onClick={() => {
-                methods.setValue('useForBilling', false)
+                methods.setValue('useFor', 'shipping')
               }}
             >
               {t('apps.orders.details.use_for_shipping')}
+            </Button>
+            <Button
+              variant='primary'
+              fullWidth
+              disabled={methods.formState.isSubmitting}
+              onClick={() => {
+                methods.setValue('useFor', 'both')
+              }}
+            >
+              Use for billing and shipping
             </Button>
           </div>
         </Spacer>
