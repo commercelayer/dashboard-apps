@@ -32,7 +32,8 @@ function Page(
   const hideFiltersNav = !(viewTitle == null)
 
   /** Whether the user is viewing only active promotions */
-  const isActivePreset = viewTitle != null && viewTitle === presets.active.viewTitle
+  const isActivePreset =
+    viewTitle != null && viewTitle === presets.active.viewTitle
 
   return (
     <PageLayout
@@ -85,14 +86,16 @@ function Page(
             },
             include: ['coupon_codes_promotion_rule'],
             pageSize: 25,
-            sort: isActivePreset ? {
-              exclusive: 'desc',
-              priority: 'asc',
-              starts_at: 'asc',
-              created_at: 'desc'
-            } : {
-              updated_at: 'desc'
-            }
+            sort: isActivePreset
+              ? {
+                  exclusive: 'desc',
+                  priority: 'asc',
+                  starts_at: 'asc',
+                  created_at: 'desc'
+                }
+              : {
+                  updated_at: 'desc'
+                }
           }}
           emptyState={
             <ListEmptyState

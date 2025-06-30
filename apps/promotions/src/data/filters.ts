@@ -105,7 +105,7 @@ export const filtersInstructions: FiltersInstructions = [
         mode: 'single',
         options: [
           { value: 'false', label: 'Has priority' },
-          { value: 'true', label: 'Doesn\'t have priority' }
+          { value: 'true', label: "Doesn't have priority" }
         ]
       }
     }
