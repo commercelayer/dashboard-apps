@@ -5,7 +5,9 @@ import { makeGiftCard } from '../mocks/resources/gift_cards'
 export const giftCardIncludeAttribute = [
   'market',
   'gift_card_recipient',
-  'gift_card_recipient.customer'
+  'gift_card_recipient.customer',
+  // Timeline
+  'attachments'
 ]
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
