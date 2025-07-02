@@ -111,6 +111,24 @@ export const filtersInstructions: FiltersInstructions = [
     }
   },
 
+  {
+    label: 'Exclusive',
+    type: 'options',
+    sdk: {
+      predicate: 'exclusive_true'
+    },
+    render: {
+      component: 'inputToggleButton',
+      props: {
+        mode: 'single',
+        options: [
+          { value: 'true', label: 'Is exclusive' },
+          { value: 'false', label: "Isn't exclusive" }
+        ]
+      }
+    }
+  },
+
   // {
   //   hidden: true,
   //   label: 'Starts at',
