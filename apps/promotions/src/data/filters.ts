@@ -93,6 +93,42 @@ export const filtersInstructions: FiltersInstructions = [
     }
   },
 
+  {
+    label: 'Priority',
+    type: 'options',
+    sdk: {
+      predicate: 'priority_null'
+    },
+    render: {
+      component: 'inputToggleButton',
+      props: {
+        mode: 'single',
+        options: [
+          { value: 'false', label: 'Has priority' },
+          { value: 'true', label: "Doesn't have priority" }
+        ]
+      }
+    }
+  },
+
+  {
+    label: 'Exclusive',
+    type: 'options',
+    sdk: {
+      predicate: 'exclusive_true'
+    },
+    render: {
+      component: 'inputToggleButton',
+      props: {
+        mode: 'single',
+        options: [
+          { value: 'true', label: 'Is exclusive' },
+          { value: 'false', label: "Isn't exclusive" }
+        ]
+      }
+    }
+  },
+
   // {
   //   hidden: true,
   //   label: 'Starts at',

@@ -2,6 +2,7 @@ import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemPromotion } from '#components/ListItemPromotion'
 import type { PageProps } from '#components/Routes'
 import { filtersInstructions, predicateWhitelist } from '#data/filters'
+import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
   PageLayout,
@@ -29,6 +30,10 @@ function Page(
     })
 
   const hideFiltersNav = !(viewTitle == null)
+
+  /** Whether the user is viewing only active promotions */
+  const isActivePreset =
+    viewTitle != null && viewTitle === presets.active.viewTitle
 
   return (
     <PageLayout
@@ -68,19 +73,29 @@ function Page(
                 'starts_at',
                 'expires_at',
                 'name',
+                'status',
                 'coupons',
                 'reference_origin',
                 'disabled_at',
                 'total_usage_limit',
                 'total_usage_count',
-                'coupon_codes_promotion_rule'
+                'coupon_codes_promotion_rule',
+                'exclusive',
+                'priority'
               ]
             },
             include: ['coupon_codes_promotion_rule'],
             pageSize: 25,
-            sort: {
-              updated_at: 'desc'
-            }
+            sort: isActivePreset
+              ? {
+                  exclusive: 'desc',
+                  priority: 'asc',
+                  starts_at: 'asc',
+                  created_at: 'desc'
+                }
+              : {
+                  updated_at: 'desc'
+                }
           }}
           emptyState={
             <ListEmptyState
