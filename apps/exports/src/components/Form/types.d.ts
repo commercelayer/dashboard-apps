@@ -12,6 +12,9 @@ declare module 'AppForm' {
   type OrdersField =
     | 'market_id_in'
     | 'status_in'
+    | 'payment_status_in'
+    | 'fulfillment_status_in'
+    | 'tags_id_in'
     | 'placed_at_gteq'
     | 'placed_at_lteq'
 
