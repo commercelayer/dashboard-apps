@@ -3,7 +3,7 @@ import { type ResourceWithRelationship } from 'App'
 export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
   bundles: ['sku_list', 'sku_list_items', 'tags'],
   customer_subscriptions: ['customer'],
-  customers: ['customer_subscriptions', 'tags'],
+  customers: ['customer_subscriptions', 'orders', 'tags'],
   coupons: ['promotion_rule.promotion'],
   in_stock_subscriptions: ['customer', 'market', 'sku'],
   orders: [
