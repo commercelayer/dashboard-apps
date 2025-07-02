@@ -14,7 +14,7 @@ export type SearchableResource =
   | 'stock_locations'
   | 'tags'
 
-export interface SearchParams<Res extends SearchableResource> {
+export interface SearchParams<ResType extends SearchableResource> {
   /**
    * signed sdk client
    */
@@ -22,11 +22,11 @@ export interface SearchParams<Res extends SearchableResource> {
   /**
    * the resource we are requesting
    */
-  resourceType: Res
+  resourceType: ResType
   /**
    * fields to return in search results
    */
-  fields?: QueryArrayFields<ListResource<Res>[number]>
+  fields?: QueryArrayFields<ListResource<ResType>[number]>
   /**
    * resource filed to be used as value in option item
    */
@@ -41,14 +41,14 @@ type ListResource<TResource extends SearchableResource> = Awaited<
   ReturnType<CommerceLayerClient[TResource]['list']>
 >
 
-export const fetchResourcesByHint = async <Res extends SearchableResource>({
+export const fetchResourcesByHint = async <ResType extends SearchableResource>({
   sdkClient,
   hint,
   resourceType,
   fields = ['name', 'id'],
   fieldForValue,
   fieldForLabel = 'name'
-}: SearchParams<Res> & {
+}: SearchParams<ResType> & {
   hint: string
 }): Promise<InputSelectValue[]> => {
   const fetchedResources = await sdkClient[resourceType].list({
@@ -65,13 +65,15 @@ export const fetchResourcesByHint = async <Res extends SearchableResource>({
   })
 }
 
-export const fetchInitialResources = async <Res extends SearchableResource>({
+export const fetchInitialResources = async <
+  ResType extends SearchableResource
+>({
   sdkClient,
   resourceType,
   fields = ['name', 'id'],
   fieldForValue,
   fieldForLabel
-}: SearchParams<Res>): Promise<InputSelectValue[]> => {
+}: SearchParams<ResType>): Promise<InputSelectValue[]> => {
   const fetchedResources = await sdkClient[resourceType].list({
     fields: fields as QueryArrayFields<Resource>,
     pageSize: 25

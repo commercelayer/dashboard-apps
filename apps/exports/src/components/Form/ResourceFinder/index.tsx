@@ -8,7 +8,8 @@ import { type PossibleSelectValue } from '@commercelayer/app-elements/dist/ui/fo
 import { useEffect, useState } from 'react'
 import { fetchInitialResources, fetchResourcesByHint } from './utils'
 
-interface Props<Res extends SearchableResource> extends SearchParams<Res> {
+interface Props<ResType extends SearchableResource>
+  extends SearchParams<ResType> {
   /**
    * Text to show above the input
    */
@@ -27,7 +28,7 @@ interface Props<Res extends SearchableResource> extends SearchParams<Res> {
   onSelect: (value: PossibleSelectValue) => void
 }
 
-export function ResourceFinder<Res extends SearchableResource>({
+export function ResourceFinder<ResType extends SearchableResource>({
   label,
   placeholder = 'Type to search or select from the list...',
   resourceType,
@@ -37,7 +38,7 @@ export function ResourceFinder<Res extends SearchableResource>({
   fields,
   fieldForValue,
   fieldForLabel
-}: Props<Res>): React.JSX.Element {
+}: Props<ResType>): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true)
   const [initialValues, setInitialValues] = useState<InputSelectValue[]>([])
   useEffect(() => {
