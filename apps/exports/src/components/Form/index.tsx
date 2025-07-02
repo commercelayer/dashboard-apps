@@ -1,17 +1,18 @@
 import { Filters } from '#components/Form/Filters'
 import { resourcesWithFilters } from '#components/Form/Filters/index'
 import { InputCode } from '#components/Form/Filters/InputCode'
+import { customFieldsSubset } from '#data/fields'
 import { showResourceNiceName } from '#data/resources'
 import {
   Button,
   HookedForm,
-  HookedInputSimpleSelect,
-  HookedInputSwitch,
-  ListItem,
-  Section,
+  HookedInputCheckbox,
+  HookedInputSelect,
+  Icon,
   Spacer,
   Tab,
-  Tabs
+  Tabs,
+  Tooltip
 } from '@commercelayer/app-elements'
 import { type AllowedResourceType } from 'App'
 import { type ExportFormValues } from 'AppForm'
@@ -66,42 +67,60 @@ export function Form({
           </Tab>
         </Tabs>
       </Spacer>
-      <Spacer bottom='14'>
+      <Spacer bottom='6'>
         <RelationshipSelector resourceType={resourceType} />
       </Spacer>
 
+      <Spacer bottom='6'>
+        <HookedInputSelect
+          label='Format'
+          name='format'
+          initialValues={[
+            { label: 'JSON', value: 'json' },
+            {
+              label: 'CSV',
+              value: 'csv'
+            }
+          ]}
+        />
+      </Spacer>
+
+      <Spacer bottom='2'>
+        {customFieldsSubset[resourceType] != null && (
+          <HookedInputCheckbox name='useCustomFields'>
+            <div
+              style={{
+                display: 'flex',
+                gap: '6px',
+                alignItems: 'center'
+              }}
+            >
+              Simple format
+              <Tooltip
+                label={<Icon name='info' />}
+                content='Export a predefined selection of key columns for easier use.'
+              />
+            </div>
+          </HookedInputCheckbox>
+        )}
+      </Spacer>
+
       <Spacer bottom='14'>
-        <Section title='More options' titleSize='small'>
-          <ListItem>
-            <HookedInputSwitch
-              id='toggle-cleanup'
-              inline
-              label='Dry data'
-              hint={{
-                text: 'Enable this flag to make the data importable.'
-              }}
-              name='dryData'
+        <HookedInputCheckbox name='dryData'>
+          <div
+            style={{
+              display: 'flex',
+              gap: '6px',
+              alignItems: 'center'
+            }}
+          >
+            Importable
+            <Tooltip
+              label={<Icon name='info' />}
+              content='Skip IDs, timestamps, and blanks to allow re-import.'
             />
-          </ListItem>
-          <ListItem>
-            <HookedInputSimpleSelect
-              id='format'
-              label='Format'
-              hint={{
-                text: 'Select the format of the exported data.'
-              }}
-              name='format'
-              options={[
-                { label: 'JSON', value: 'json' },
-                {
-                  label: 'CSV',
-                  value: 'csv'
-                }
-              ]}
-              inline
-            />
-          </ListItem>
-        </Section>
+          </div>
+        </HookedInputCheckbox>
       </Spacer>
 
       <Button variant='primary' type='submit' disabled={isLoading}>

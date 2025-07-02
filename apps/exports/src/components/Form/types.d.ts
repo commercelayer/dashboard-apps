@@ -65,5 +65,6 @@ declare module 'AppForm' {
     includes: string[]
     format: ExportFormat
     filters?: AllFilters
+    useCustomFields?: boolean
   }
 }
