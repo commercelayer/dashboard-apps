@@ -12,6 +12,7 @@ export type SearchableResource =
   | 'price_lists'
   | 'shipping_categories'
   | 'stock_locations'
+  | 'tags'
 
 export interface SearchParams<Res extends SearchableResource> {
   /**
@@ -40,18 +41,18 @@ type ListResource<TResource extends SearchableResource> = Awaited<
   ReturnType<CommerceLayerClient[TResource]['list']>
 >
 
-export const fetchResourcesByHint = async ({
+export const fetchResourcesByHint = async <Res extends SearchableResource>({
   sdkClient,
   hint,
   resourceType,
   fields = ['name', 'id'],
   fieldForValue,
   fieldForLabel = 'name'
-}: SearchParams<SearchableResource> & {
+}: SearchParams<Res> & {
   hint: string
 }): Promise<InputSelectValue[]> => {
   const fetchedResources = await sdkClient[resourceType].list({
-    fields,
+    fields: fields as QueryArrayFields<Resource>,
     filters: {
       [`${fieldForLabel}_cont`]: hint
     },
@@ -64,15 +65,15 @@ export const fetchResourcesByHint = async ({
   })
 }
 
-export const fetchInitialResources = async ({
+export const fetchInitialResources = async <Res extends SearchableResource>({
   sdkClient,
   resourceType,
   fields = ['name', 'id'],
   fieldForValue,
   fieldForLabel
-}: SearchParams<SearchableResource>): Promise<InputSelectValue[]> => {
+}: SearchParams<Res>): Promise<InputSelectValue[]> => {
   const fetchedResources = await sdkClient[resourceType].list({
-    fields,
+    fields: fields as QueryArrayFields<Resource>,
     pageSize: 25
   })
   return adaptApiToSuggestions({
