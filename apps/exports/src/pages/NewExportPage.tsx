@@ -77,6 +77,7 @@ const NewExportPage = (): React.JSX.Element | null => {
         resourceType,
         filters
       })
+
       await sdkClient.exports.create({
         resource_type: resourceType,
         dry_data: values.dryData,
@@ -84,7 +85,10 @@ const NewExportPage = (): React.JSX.Element | null => {
         format: values.format,
         fields:
           values.useCustomFields === true
-            ? customFieldsSubset[resourceType]
+            ? customFieldsSubset[resourceType]?.concat(
+                // we need to add all includes as fields or they will be ignored
+                (values.includes ?? []).map((res) => `${res}.*`)
+              )
             : undefined,
         filters
       })
