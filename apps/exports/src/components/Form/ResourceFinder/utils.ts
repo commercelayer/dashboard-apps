@@ -30,11 +30,11 @@ export interface SearchParams<ResType extends SearchableResource> {
    */
   fields?: QueryArrayFields<ListResource<ResType>[number]>
   /**
-   * resource filed to be used as value in option item
+   * resource field to be used as value in option item
    */
   fieldForValue?: 'code' | 'id'
   /**
-   * resource filed to be used as label in option item
+   * resource field to be used as label in option item
    */
   fieldForLabel?: 'code' | 'name'
   /**
@@ -52,7 +52,7 @@ export const fetchResourcesByHint = async <ResType extends SearchableResource>({
   hint,
   resourceType,
   fields = ['name', 'id'],
-  filters,
+  filters = {},
   fieldForValue,
   fieldForLabel = 'name'
 }: SearchParams<ResType> & {

@@ -41,7 +41,6 @@ export function Coupons({ onChange }: Props): React.JSX.Element | null {
       <ResourceFinder
         label='Promotion with coupons'
         resourceType='promotions'
-        // isMulti
         onSelect={(values) => {
           updateFilters(
             'promotion_rule_promotion_id_eq',
