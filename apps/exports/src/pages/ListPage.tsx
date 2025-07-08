@@ -8,7 +8,6 @@ import {
   HomePageLayout,
   Icon,
   List,
-  Spacer,
   useCoreSdkProvider,
   useResourceFilters,
   useTokenProvider
@@ -41,101 +40,98 @@ const ListPage: FC = () => {
 
   return (
     <HomePageLayout title='Exports'>
-      <Spacer top='14'>
-        <SearchWithNav
-          queryString={queryString}
-          onUpdate={(qs) => {
-            navigate(`?${qs}`, {
-              replace: true
-            })
-          }}
-          onFilterClick={(queryString) => {
-            setLocation(appRoutes.filters.makePath(queryString))
-          }}
-        />
+      <SearchWithNav
+        queryString={queryString}
+        onUpdate={(qs) => {
+          navigate(`?${qs}`, {
+            replace: true
+          })
+        }}
+        onFilterClick={(queryString) => {
+          setLocation(appRoutes.filters.makePath(queryString))
+        }}
+      />
+      <ListExportProvider
+        sdkClient={sdkClient}
+        pageSize={25}
+        filters={sdkFilters}
+      >
+        {({ state, changePage }) => {
+          const { isLoading, currentPage, list } = state
 
-        <ListExportProvider
-          sdkClient={sdkClient}
-          pageSize={25}
-          filters={sdkFilters}
-        >
-          {({ state, changePage }) => {
-            const { isLoading, currentPage, list } = state
+          if (isLoading) {
+            return <List isLoading />
+          }
 
-            if (isLoading) {
-              return <List isLoading />
-            }
-
-            if (list == null) {
-              return (
-                <div>
-                  <EmptyState title='Unable to load list' />
-                </div>
-              )
-            }
-
-            if (list.length === 0) {
-              return (
-                <div>
-                  <EmptyState
-                    title={
-                      hasActiveFilter ? 'No exports found!' : 'No exports yet!'
-                    }
-                    description={
-                      hasActiveFilter
-                        ? "We didn't find any exports matching the current filters selection."
-                        : 'Create your first export'
-                    }
-                    action={
-                      canUser('create', 'exports') && !hasActiveFilter ? (
-                        <Link href={appRoutes.selectResource.makePath()}>
-                          <Button variant='primary'>New export</Button>
-                        </Link>
-                      ) : undefined
-                    }
-                  />
-                </div>
-              )
-            }
-
-            const isRefetching = currentPage !== list.meta.currentPage
-            const { recordCount, recordsPerPage, pageCount } = list.meta
-
+          if (list == null) {
             return (
-              <List
-                isDisabled={isRefetching}
-                title='All Exports'
-                actionButton={
-                  canUser('create', 'exports') ? (
-                    <Link href={appRoutes.selectResource.makePath()} asChild>
-                      <Button
-                        variant='secondary'
-                        size='mini'
-                        alignItems='center'
-                        aria-label='Add export'
-                      >
-                        <Icon name='plus' />
-                        New
-                      </Button>
-                    </Link>
-                  ) : undefined
-                }
-                pagination={{
-                  recordsPerPage,
-                  recordCount,
-                  currentPage,
-                  onChangePageRequest: changePage,
-                  pageCount
-                }}
-              >
-                {list.map((job) => {
-                  return <Item key={job.id} job={job} />
-                })}
-              </List>
+              <div>
+                <EmptyState title='Unable to load list' />
+              </div>
             )
-          }}
-        </ListExportProvider>
-      </Spacer>
+          }
+
+          if (list.length === 0) {
+            return (
+              <div>
+                <EmptyState
+                  title={
+                    hasActiveFilter ? 'No exports found!' : 'No exports yet!'
+                  }
+                  description={
+                    hasActiveFilter
+                      ? "We didn't find any exports matching the current filters selection."
+                      : 'Create your first export'
+                  }
+                  action={
+                    canUser('create', 'exports') && !hasActiveFilter ? (
+                      <Link href={appRoutes.selectResource.makePath()}>
+                        <Button variant='primary'>New export</Button>
+                      </Link>
+                    ) : undefined
+                  }
+                />
+              </div>
+            )
+          }
+
+          const isRefetching = currentPage !== list.meta.currentPage
+          const { recordCount, recordsPerPage, pageCount } = list.meta
+
+          return (
+            <List
+              isDisabled={isRefetching}
+              title='All Exports'
+              actionButton={
+                canUser('create', 'exports') ? (
+                  <Link href={appRoutes.selectResource.makePath()} asChild>
+                    <Button
+                      variant='secondary'
+                      size='mini'
+                      alignItems='center'
+                      aria-label='Add export'
+                    >
+                      <Icon name='plus' />
+                      New
+                    </Button>
+                  </Link>
+                ) : undefined
+              }
+              pagination={{
+                recordsPerPage,
+                recordCount,
+                currentPage,
+                onChangePageRequest: changePage,
+                pageCount
+              }}
+            >
+              {list.map((job) => {
+                return <Item key={job.id} job={job} />
+              })}
+            </List>
+          )
+        }}
+      </ListExportProvider>
     </HomePageLayout>
   )
 }
