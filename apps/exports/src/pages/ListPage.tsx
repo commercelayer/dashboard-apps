@@ -1,5 +1,6 @@
 import { Item } from '#components/List/Item'
 import { ListExportProvider } from '#components/List/Provider'
+import { instructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import {
   Button,
@@ -9,13 +10,26 @@ import {
   List,
   Spacer,
   useCoreSdkProvider,
+  useResourceFilters,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { Link } from 'wouter'
+import { type FC } from 'react'
+import { Link, useLocation } from 'wouter'
+import { navigate, useSearch } from 'wouter/use-browser-location'
 
-function ListPage(): React.JSX.Element {
+const ListPage: FC = () => {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
+  const queryString = useSearch()
+  const [, setLocation] = useLocation()
+
+  const { sdkFilters, SearchWithNav, hasActiveFilter } = useResourceFilters({
+    instructions
+  })
+
+  if (sdkFilters == null) {
+    return null
+  }
 
   if (!canUser('read', 'exports')) {
     return (
@@ -28,7 +42,23 @@ function ListPage(): React.JSX.Element {
   return (
     <HomePageLayout title='Exports'>
       <Spacer top='14'>
-        <ListExportProvider sdkClient={sdkClient} pageSize={25}>
+        <SearchWithNav
+          queryString={queryString}
+          onUpdate={(qs) => {
+            navigate(`?${qs}`, {
+              replace: true
+            })
+          }}
+          onFilterClick={(queryString) => {
+            setLocation(appRoutes.filters.makePath(queryString))
+          }}
+        />
+
+        <ListExportProvider
+          sdkClient={sdkClient}
+          pageSize={25}
+          filters={sdkFilters}
+        >
           {({ state, changePage }) => {
             const { isLoading, currentPage, list } = state
 
@@ -48,10 +78,16 @@ function ListPage(): React.JSX.Element {
               return (
                 <div>
                   <EmptyState
-                    title='No export yet!'
-                    description='Create your first export'
+                    title={
+                      hasActiveFilter ? 'No exports found!' : 'No exports yet!'
+                    }
+                    description={
+                      hasActiveFilter
+                        ? "We didn't find any exports matching the current filters selection."
+                        : 'Create your first export'
+                    }
                     action={
-                      canUser('create', 'exports') ? (
+                      canUser('create', 'exports') && !hasActiveFilter ? (
                         <Link href={appRoutes.selectResource.makePath()}>
                           <Button variant='primary'>New export</Button>
                         </Link>
