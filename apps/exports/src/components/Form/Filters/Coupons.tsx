@@ -52,8 +52,7 @@ export function Coupons({ onChange }: Props): React.JSX.Element | null {
         fieldForLabel='name'
         fieldForValue='id'
         filters={{
-          // In this way we can get all the promotions that have at least one coupon code
-          coupon_codes_promotion_rule_created_at_gt: '1970-01-01T00:00:00.000Z'
+          coupons_id_not_null: true
         }}
       />
     </>
