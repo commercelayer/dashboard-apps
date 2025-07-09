@@ -1,6 +1,7 @@
 import { Form } from '#components/Form'
 import { adaptFormFiltersToSdk } from '#components/Form/Filters/utils'
 import { validateRecordsCount } from '#components/Form/validateRecordsCount'
+import { customFieldsSubset } from '#data/fields'
 import { isAvailableResource, showResourceNiceName } from '#data/resources'
 import { appRoutes } from '#data/routes'
 import { parseApiError } from '#utils/apiErrors'
@@ -76,11 +77,19 @@ const NewExportPage = (): React.JSX.Element | null => {
         resourceType,
         filters
       })
+
       await sdkClient.exports.create({
         resource_type: resourceType,
         dry_data: values.dryData,
         includes: values.includes,
         format: values.format,
+        fields:
+          values.useCustomFields === true
+            ? customFieldsSubset[resourceType]?.concat(
+                // we need to add all includes as fields or they will be ignored
+                (values.includes ?? []).map((res) => `${res}.*`)
+              )
+            : undefined,
         filters
       })
       setLocation(appRoutes.list.makePath())
@@ -112,6 +121,7 @@ const NewExportPage = (): React.JSX.Element | null => {
           defaultValues={{
             dryData: false,
             format: 'json',
+            useCustomFields: false,
             includes: []
           }}
           onSubmit={(values) => {
