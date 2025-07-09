@@ -5,6 +5,7 @@ import {
   Dropdown,
   DropdownItem,
   Icon,
+  useCoreApi,
   useCoreSdkProvider,
   useTokenProvider,
   useTranslation
@@ -24,7 +25,11 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
     useAddItemOverlay(order)
   const { t } = useTranslation()
-  const hasExternalPrices = !isEmpty(order.market?.external_prices_url)
+
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
+  const hasExternalPrices =
+    !isEmpty(order.market?.external_prices_url) &&
+    organization?.config?.apps?.orders?.external_price === true
 
   const canEdit =
     order.status === 'placed' &&
