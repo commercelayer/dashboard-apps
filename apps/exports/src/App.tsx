@@ -1,11 +1,12 @@
 import { ErrorNotFound } from '#components/ErrorNotFound'
 import { appRoutes } from '#data/routes'
-import { Router, Route, Switch } from 'wouter'
-import ListPage from './pages/ListPage'
-import { ResourceSelectorPage } from './pages/ResourceSelectorPage'
-import DetailsPage from './pages/DetailsPage'
-import NewExportPage from './pages/NewExportPage'
 import { type FC } from 'react'
+import { Route, Router, Switch } from 'wouter'
+import DetailsPage from './pages/DetailsPage'
+import Filters from './pages/Filters'
+import ListPage from './pages/ListPage'
+import NewExportPage from './pages/NewExportPage'
+import { ResourceSelectorPage } from './pages/ResourceSelectorPage'
 
 interface AppProps {
   routerBase?: string
@@ -17,6 +18,9 @@ export const App: FC<AppProps> = ({ routerBase }) => {
       <Switch>
         <Route path={appRoutes.list.path}>
           <ListPage />
+        </Route>
+        <Route path={appRoutes.filters.path}>
+          <Filters />
         </Route>
         <Route path={appRoutes.selectResource.path}>
           <ResourceSelectorPage />
