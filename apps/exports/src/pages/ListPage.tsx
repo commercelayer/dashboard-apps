@@ -101,7 +101,7 @@ const ListPage: FC = () => {
           return (
             <List
               isDisabled={isRefetching}
-              title='All Exports'
+              title='All'
               actionButton={
                 canUser('create', 'exports') ? (
                   <Link href={appRoutes.selectResource.makePath()} asChild>

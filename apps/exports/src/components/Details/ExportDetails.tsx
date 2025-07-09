@@ -62,7 +62,15 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
 
 function JsonPreview({ json }: { json?: object | null }): React.JSX.Element {
   return (
-    <pre className='bg-gray-50 overflow-x-auto p-4 text-sm'>
+    <pre
+      style={{
+        backgroundColor: '#f8f8f8', // .bg-gray-50
+        overflowX: 'auto', // .overflow-x-auto
+        padding: '1rem', // .p-4
+        fontSize: '.75rem', // .text-xs
+        borderRadius: '5px' // .rounded
+      }}
+    >
       {json != null && Object.keys(json).length > 0 ? (
         <>{JSON.stringify(json, null, 2)}</>
       ) : (
