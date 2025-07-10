@@ -1,4 +1,7 @@
-import { formatDate, useTokenProvider } from '@commercelayer/app-elements'
+import {
+  formatDateWithPredicate,
+  useTokenProvider
+} from '@commercelayer/app-elements'
 import { type Export } from '@commercelayer/sdk'
 
 interface Props {
@@ -16,17 +19,20 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
         <div>In progress</div>
       ) : job.interrupted_at != null ? (
         <div>
-          Export failed on{' '}
-          {formatDate({
+          {formatDateWithPredicate({
+            predicate: 'Export failed',
             isoDate: job.interrupted_at,
             timezone: user?.timezone
           })}
         </div>
       ) : job.status === 'completed' ? (
         <div>
-          Exported on{' '}
           {job.completed_at != null &&
-            formatDate({ isoDate: job.completed_at, timezone: user?.timezone })}
+            formatDateWithPredicate({
+              predicate: 'Exported',
+              isoDate: job.completed_at,
+              timezone: user?.timezone
+            })}
         </div>
       ) : (
         '-'
