@@ -40,7 +40,6 @@ declare module 'App' {
 
   export type ResourceWithEvent =
     | 'addresses'
-    | 'anonymizations'
     | 'authorizations'
     | 'avalara_accounts'
     | 'bundles'
