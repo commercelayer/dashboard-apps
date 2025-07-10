@@ -13,7 +13,8 @@ import {
   Spacer,
   Text,
   useCoreApi,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMemo, useState } from 'react'
@@ -38,6 +39,7 @@ export function CouponForm({
   const { mutateCoupon } = useCoupon(couponId)
 
   const { sdkClient } = useCoreSdkProvider()
+  const { user } = useTokenProvider()
   const { data: organization } = useCoreApi('organization', 'retrieve', [])
   const minCodeLength = useMemo(
     () => organization?.coupons_min_code_length ?? 8,
@@ -128,6 +130,7 @@ export function CouponForm({
               hint={{
                 text: 'Optionally set an expiration date for the coupon.'
               }}
+              timezone={user?.timezone}
             />
           </Spacer>
 

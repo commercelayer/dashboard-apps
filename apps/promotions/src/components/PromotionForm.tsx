@@ -18,7 +18,8 @@ import {
   Section,
   Spacer,
   Text,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
@@ -41,6 +42,7 @@ export function PromotionForm({
 }: Props): React.ReactNode {
   const [apiError, setApiError] = useState<any>()
   const { sdkClient } = useCoreSdkProvider()
+  const { user } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { promotion } = usePromotion(promotionId)
   const methods = useForm<z.infer<typeof promotionConfig.formType>>({
@@ -115,12 +117,14 @@ export function PromotionForm({
                 name='starts_at'
                 label='Starts on *'
                 hint={{ text: 'The date the promotion will start.' }}
+                timezone={user?.timezone}
               />
               <HookedInputDate
                 showTimeSelect
                 name='expires_at'
                 label='Expires on *'
                 hint={{ text: 'The date the promotion will end.' }}
+                timezone={user?.timezone}
               />
             </Grid>
           </Spacer>

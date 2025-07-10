@@ -3,7 +3,8 @@ import {
   InputSelect,
   Spacer,
   flatSelectValues,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import {
   type FilterValue,
@@ -19,6 +20,7 @@ interface Props {
 
 export function Returns({ onChange }: Props): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
+  const { user } = useTokenProvider()
   const [filters, setFilter] = useState<ReturnsFilters>({})
 
   if (sdkClient == null) {
@@ -93,6 +95,7 @@ export function Returns({ onChange }: Props): React.JSX.Element | null {
         }}
         autoPlaceholder
         isClearable
+        timezone={user?.timezone}
       />
     </div>
   )

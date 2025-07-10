@@ -14,6 +14,7 @@ import {
   Section,
   Spacer,
   Tooltip,
+  useTokenProvider,
   type CurrencyCode
 } from '@commercelayer/app-elements'
 import type { GiftCard } from '@commercelayer/sdk'
@@ -95,6 +96,7 @@ export const Form: FC<{
 }> = ({ giftCard, onSubmit }) => {
   const [apiError, setApiError] = useState<any>()
   const [, setLocation] = useLocation()
+  const { user } = useTokenProvider()
   const isNew = giftCard?.id == null
 
   const methods = useForm({
@@ -176,6 +178,7 @@ export const Form: FC<{
               hint={{
                 text: 'Up to when the card can be used.'
               }}
+              timezone={user?.timezone}
             />
           </Spacer>
           <Spacer top='6'>

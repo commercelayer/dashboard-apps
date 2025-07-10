@@ -6,7 +6,8 @@ import {
   HookedInputDate,
   HookedInputSelect,
   HookedValidationApiError,
-  Spacer
+  Spacer,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, type UseFormSetError } from 'react-hook-form'
@@ -40,6 +41,7 @@ export function SubscriptionForm({
     defaultValues,
     resolver: zodResolver(subscriptionFormSchema)
   })
+  const { user } = useTokenProvider()
 
   const frequencies = useSubscriptionModelsFrequencies()
 
@@ -74,6 +76,7 @@ export function SubscriptionForm({
           hint={{
             text: `The date and time of the subscription's next run.`
           }}
+          timezone={user?.timezone}
         />
       </Spacer>
       <Spacer top='14'>
