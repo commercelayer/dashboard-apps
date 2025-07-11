@@ -4,7 +4,8 @@ import {
   InputToggleButton,
   Spacer,
   flatSelectValues,
-  useCoreSdkProvider
+  useCoreSdkProvider,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import { type FilterValue, type SkusField, type SkusFilters } from 'AppForm'
 import { useEffect, useState } from 'react'
@@ -15,6 +16,7 @@ interface Props {
 
 export function Skus({ onChange }: Props): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
+  const { user } = useTokenProvider()
   const [filters, setFilter] = useState<SkusFilters>({})
 
   if (sdkClient == null) {
@@ -104,6 +106,7 @@ export function Skus({ onChange }: Props): React.JSX.Element | null {
         }}
         autoPlaceholder
         isClearable
+        timezone={user?.timezone}
       />
     </div>
   )
