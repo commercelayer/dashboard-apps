@@ -28,7 +28,7 @@
     "@commercelayer/app-elements": "5.5.3",
     "@commercelayer/eslint-config-ts-react": "^2.2.0",
     "@commercelayer/sdk": "6.36.0",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^4.6.0",
     "lodash-es": "^4.17.21",
     "papaparse": "^5.5.2",
     "react": "19.0.0",
@@ -54,7 +54,7 @@
     "rollup-plugin-external-globals": "^0.13.0",
     "type-fest": "^4.38.0",
     "typescript": "^5.8.2",
-    "vite": "^6.2.3",
+    "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.9"
   },

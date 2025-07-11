@@ -30,7 +30,7 @@
     "@commercelayer/sdk": "6.36.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^4.6.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "lodash-es": "^4.17.21",
@@ -53,7 +53,7 @@
     "prettier": "^3.5.3",
     "rollup-plugin-external-globals": "^0.13.0",
     "typescript": "^5.8.2",
-    "vite": "^6.2.3",
+    "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.9"
   },
