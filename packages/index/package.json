@@ -29,14 +29,14 @@
     "@types/node": "22.13.4",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^4.6.0",
     "eslint": "^8.57.1",
     "js-cookie": "^3.0.5",
     "js-yaml": "^4.1.0",
     "jsdom": "^26.0.0",
     "rollup-plugin-external-globals": "^0.13.0",
     "typescript": "^5.8.2",
-    "vite": "^6.2.3",
+    "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.9"
   }
