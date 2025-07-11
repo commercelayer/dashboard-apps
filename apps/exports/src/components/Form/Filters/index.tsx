@@ -1,5 +1,6 @@
 import { type AllowedResourceType } from 'App'
 import { type AllFilters } from 'AppForm'
+import { Coupons } from './Coupons'
 import { InStockSubscriptions } from './InStockSubscriptions'
 import { Orders } from './Orders'
 import { OrderSubscriptions } from './OrderSubscriptions'
@@ -18,6 +19,7 @@ export const resourcesWithFilters = [
   'order_subscriptions',
   'orders',
   'prices',
+  'coupons',
   'returns',
   'skus',
   'stock_items'
@@ -49,6 +51,10 @@ export function Filters({
 
   if (resourceType === 'prices') {
     return <Prices onChange={onChange} />
+  }
+
+  if (resourceType === 'coupons') {
+    return <Coupons onChange={onChange} />
   }
 
   if (resourceType === 'stock_items') {

@@ -36,6 +36,7 @@ export function ResourceFinder<ResType extends SearchableResource>({
   isMulti,
   onSelect,
   fields,
+  filters,
   fieldForValue,
   fieldForLabel
 }: Props<ResType>): React.JSX.Element {
@@ -50,6 +51,7 @@ export function ResourceFinder<ResType extends SearchableResource>({
       sdkClient,
       resourceType,
       fields,
+      filters,
       fieldForValue,
       fieldForLabel
     })
@@ -74,6 +76,7 @@ export function ResourceFinder<ResType extends SearchableResource>({
             hint,
             resourceType,
             fields,
+            filters,
             fieldForValue,
             fieldForLabel
           })

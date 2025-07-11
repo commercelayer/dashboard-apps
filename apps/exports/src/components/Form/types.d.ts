@@ -51,6 +51,10 @@ declare module 'AppForm' {
   type PricesFilters = Filters<PricesField>
   type PricesField = 'sku_code_in' | 'price_list_id_eq'
 
+  // coupons
+  type CouponsFilters = Filters<CouponsField>
+  type CouponsField = 'promotion_rule_promotion_id_eq'
+
   // stock_items
   type StockItemsFilters = Filters<StockItemsField>
   type StockItemsField = 'stock_location_id_in'
@@ -58,6 +62,7 @@ declare module 'AppForm' {
   type AllFilters = OrdersFilters &
     SkusFilters &
     PricesFilters &
+    CouponsFilters &
     StockItemsFilters
 
   interface ExportFormValues {
