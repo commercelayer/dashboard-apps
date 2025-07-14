@@ -2,6 +2,7 @@ import { BalanceLog } from '#components/BalanceLog'
 import { DetailsImage } from '#components/DetailsImage'
 import { DetailsInfo } from '#components/DetailsInfo'
 import { DetailsRecap } from '#components/DetailsRecap'
+import { GiftCardTimeline } from '#components/GiftCardTimeline'
 import { appRoutes } from '#data/routes'
 import { useDeleteOverlay } from '#hooks/useDeleteOverlay'
 import {
@@ -210,6 +211,9 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
             </Spacer>
           </>
         )}
+        <Spacer top='14'>
+          <GiftCardTimeline giftCard={giftCard} />
+        </Spacer>
       </SkeletonTemplate>
 
       <DeleteOverlay
