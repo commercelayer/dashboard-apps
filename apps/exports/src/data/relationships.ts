@@ -27,6 +27,7 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
   order_subscriptions: [
     'customer',
     'customer_payment_source',
+    'market',
     'source_order',
     'order_subscription_items'
   ],
