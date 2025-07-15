@@ -29,25 +29,24 @@ export const CustomerAnonymization = withSkeletonTemplate<Props>(
       'completed'
     ]
 
-    // @ts-expect-error sdk types are not up to date
-    const anonymizationInfo = customer.anonymization_info
-    const anonymizationInfoStatus = anonymizationInfo?.status as string
+    const anonymizationInfoStatus = customer.anonymization_info
+      ?.status as string
     const showAnonymizationInfo =
-      anonymizationInfo != null &&
-      'status' in anonymizationInfo &&
+      customer.anonymization_info != null &&
+      'status' in customer.anonymization_info &&
       anonymizationInfoVisibleStatuses.includes(anonymizationInfoStatus)
 
     if (!showAnonymizationInfo) return <></>
 
-    const anonymizationRequestedBy = `${anonymizationInfo?.requester?.first_name} ${anonymizationInfo?.requester?.last_name}`
+    const anonymizationRequestedBy = `${customer.anonymization_info?.requester?.first_name} ${customer.anonymization_info?.requester?.last_name}`
     const anonymizationRequestedAt = formatDate({
-      isoDate: anonymizationInfo?.requested_at,
+      isoDate: customer.anonymization_info?.requested_at,
       format: 'full',
       timezone: user?.timezone,
       showCurrentYear: true
     })
     const anonymizationCompletedAt = formatDate({
-      isoDate: anonymizationInfo?.completed_at,
+      isoDate: customer.anonymization_info?.completed_at,
       format: 'full',
       timezone: user?.timezone,
       showCurrentYear: true
@@ -99,7 +98,6 @@ export const CustomerAnonymization = withSkeletonTemplate<Props>(
                   void sdkClient.customers
                     .update({
                       id: customer.id,
-                      // @ts-expect-error sdk types are not up to date
                       _cancel_anonymization: true
                     })
                     .then(() => {

@@ -5,8 +5,8 @@
  * This script runs on "pre-commit" hook.
  * 
  * @example https://cdn.jsdelivr.net/npm/@commercelayer/drop-in.js@2/dist/drop-in/drop-in.esm.js
- * @example `https://esm.sh/react@19.0.0`
- * @example `https://esm.sh/react-dom@19.0.0`
+ * @example `https://esm.sh/react@19.1.0`
+ * @example `https://esm.sh/react-dom@19.1.0`
  */
 
 import { replaceInFileSync } from 'replace-in-file'

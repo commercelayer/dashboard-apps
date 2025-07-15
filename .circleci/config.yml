@@ -5,7 +5,7 @@ orbs:
 
 image: &image
   docker:
-    - image: cimg/node:20.11.0
+    - image: cimg/node:20.19.0
   resource_class: medium+
 
 setup: &setup

@@ -89,7 +89,6 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
                   void sdkClient.customers
                     .update({
                       id: customer.id,
-                      // @ts-expect-error sdk types are not up to date
                       _request_anonymization: true
                     })
                     .then(() => {
