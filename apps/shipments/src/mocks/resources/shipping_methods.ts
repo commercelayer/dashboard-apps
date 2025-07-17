@@ -5,6 +5,7 @@ export const makeShippingMethod = (): ShippingMethod => {
   return {
     ...makeResource('shipping_methods'),
     name: 'standard shipping',
-    price_amount_cents: 7
+    price_amount_cents: 7,
+    shared_secret: ''
   }
 }

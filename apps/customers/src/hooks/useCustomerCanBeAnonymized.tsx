@@ -5,14 +5,10 @@ export function useCustomerCanBeAnonymized(customerId: string): boolean {
   const { canUser } = useTokenProvider()
   const { customer } = useCustomerDetails(customerId)
 
-  // @ts-expect-error sdk types are not up to date
-  const anonymizationInfo = customer.anonymization_info
-
   const canBeAnonymized =
-    customer != null &&
-    anonymizationInfo != null &&
-    anonymizationInfo.status !== 'in_progress' &&
-    anonymizationInfo.status !== 'completed'
+    customer?.anonymization_info != null &&
+    customer.anonymization_info.status !== 'in_progress' &&
+    customer.anonymization_info.status !== 'completed'
 
   return canUser('update', 'customers') && canBeAnonymized
 }
