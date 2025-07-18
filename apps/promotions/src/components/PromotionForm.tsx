@@ -129,8 +129,11 @@ export function PromotionForm({
             </Grid>
           </Spacer>
 
-          {/* @ts-expect-error // TODO: I need to fix this */}
-          <promotionConfig.Fields promotion={promotion} />
+          <promotionConfig.Fields
+            // @ts-expect-error // TODO: I need to fix this
+            promotion={promotion}
+            hookFormReturn={methods}
+          />
 
           <Spacer top='6'>
             <HookedInput
@@ -143,15 +146,14 @@ export function PromotionForm({
               }}
             />
           </Spacer>
-
-          <Spacer top='6'>
-            <HookedInput name='reference' label='Reference' />
-          </Spacer>
         </Section>
       </Spacer>
 
-      {/* @ts-expect-error // TODO: I need to fix this */}
-      <promotionConfig.Options promotion={promotion} />
+      <promotionConfig.Options
+        // @ts-expect-error // TODO: I need to fix this
+        promotion={promotion}
+        hookFormReturn={methods}
+      />
 
       <Spacer top='14'>
         <Section title='How this promotion works with concurrent ones'>

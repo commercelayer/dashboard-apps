@@ -1,4 +1,10 @@
-import { HookedCodeEditor, Spacer } from '@commercelayer/app-elements'
+import { SectionFlexRules } from '#components/FlexRuleBuilder'
+import { makeFlexPromotion } from '#mocks'
+import {
+  InputFeedback,
+  Spacer,
+  useValidationFeedback
+} from '@commercelayer/app-elements'
 import { z } from 'zod'
 import type { PromotionConfig } from '../config'
 import { genericPromotionOptions } from './promotions'
@@ -7,9 +13,10 @@ export default {
   flex_promotions: {
     type: 'flex_promotions',
     slug: 'flex',
-    icon: 'asteriskSimple',
+    icon: 'target',
     titleList: 'Flex promotion',
-    description: 'A powerful flex promotion.',
+    description:
+      'Create advanced promotions with flexible conditions using the rules engine.',
     titleNew: 'flex promotion',
     formType: genericPromotionOptions.merge(
       z.object({
@@ -25,20 +32,30 @@ export default {
         }, 'JSON is not valid')
       })
     ),
-    Fields: () => (
-      <>
-        <Spacer top='6'>
-          <HookedCodeEditor
-            name='rules'
-            label='Rules'
-            language='json'
-            jsonSchema='order-rules'
-            height='600px'
-          />
-        </Spacer>
-      </>
-    ),
-    Options: () => <></>,
+    Options: ({ promotion, hookFormReturn }) => {
+      const feedback = useValidationFeedback('rules')
+      return (
+        <>
+          {promotion == null && (
+            <Spacer top='14'>
+              <SectionFlexRules
+                promotion={makeFlexPromotion()}
+                onChange={(rules) => {
+                  hookFormReturn.setValue(
+                    'rules',
+                    JSON.stringify(rules, null, 2)
+                  )
+                }}
+              />
+              {feedback != null && (
+                <InputFeedback className='mt-2' {...feedback} />
+              )}
+            </Spacer>
+          )}
+        </>
+      )
+    },
+    Fields: () => <></>,
     StatusDescription: () => <>Flex</>,
     DetailsSectionInfo: () => <></>
   }

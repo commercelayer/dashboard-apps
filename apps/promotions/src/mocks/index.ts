@@ -1,4 +1,5 @@
 export * from './resources/custom_promotion_rules'
+export * from './resources/flex_promotions'
 export * from './resources/markets'
 export * from './resources/percentage_discount_promotions'
 export * from './resources/price_lists'

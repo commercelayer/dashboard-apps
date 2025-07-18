@@ -12,11 +12,7 @@ export function promotionToFormValues(promotion?: Promotion) {
     ...promotion,
     starts_at: new Date(promotion.starts_at),
     expires_at: new Date(promotion.expires_at),
-    show_priority: promotion.priority != null,
-    reference:
-      promotion.reference != null && promotion.reference !== ''
-        ? promotion.reference
-        : null
+    show_priority: promotion.priority != null
   }
 
   if (promotion.type === 'flex_promotions') {
@@ -52,12 +48,6 @@ export function formValuesToPromotion(
     total_usage_limit:
       'total_usage_limit' in formValues && formValues.total_usage_limit != null
         ? formValues.total_usage_limit
-        : null,
-    reference:
-      'reference' in formValues &&
-      formValues.reference != null &&
-      formValues.reference !== ''
-        ? formValues.reference
         : null,
     rules:
       'rules' in formValues && formValues.rules != null
