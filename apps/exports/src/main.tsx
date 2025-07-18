@@ -7,9 +7,12 @@ import {
   createApp,
   type ClAppProps
 } from '@commercelayer/app-elements'
-import '@commercelayer/app-elements/style.css'
 import { StrictMode } from 'react'
 import { App } from './App'
+
+import '@commercelayer/app-elements/vendor.css'
+
+import '@commercelayer/app-elements/style.css'
 
 const isDev = Boolean(import.meta.env.DEV)
 
