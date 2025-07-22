@@ -53,11 +53,19 @@ export type PromotionConfig = {
     formType: z.ZodObject<z.ZodRawShape, 'strip', z.ZodTypeAny>
     Fields: React.FC<{
       promotion?: Extract<Promotion, { type: type }>
-      hookFormReturn: UseFormReturn<Record<string, any>, any, undefined>
+      hookFormReturn: UseFormReturn<
+        Record<string, any>,
+        any,
+        Record<string, any>
+      >
     }>
     Options: React.FC<{
       promotion?: Extract<Promotion, { type: type }>
-      hookFormReturn: UseFormReturn<Record<string, any>, any, undefined>
+      hookFormReturn: UseFormReturn<
+        Record<string, any>,
+        any,
+        Record<string, any>
+      >
     }>
     DetailsSectionInfo: React.FC<{
       promotion: Extract<Promotion, { type: type }>
