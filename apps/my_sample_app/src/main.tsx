@@ -8,10 +8,13 @@ import {
   type ClAppProps,
   type TokenProviderAllowedAppSlug
 } from '@commercelayer/app-elements'
-import '@commercelayer/app-elements/style.css'
 import { StrictMode } from 'react'
 import { SWRConfig } from 'swr'
 import { App } from './App'
+
+import '@commercelayer/app-elements/vendor.css'
+
+import '@commercelayer/app-elements/style.css'
 
 const isDev = Boolean(import.meta.env.DEV)
 
