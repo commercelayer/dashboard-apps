@@ -11,7 +11,7 @@ import {
 import type { ReturnFormValues } from '#components/FormReturn'
 import type { LineItem } from '@commercelayer/sdk'
 import { isEmpty } from 'lodash-es'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type FC } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 interface Props {
@@ -37,17 +37,6 @@ export function FormFieldItems({ lineItems }: Props): React.JSX.Element {
 function makeOptionItem(
   item: LineItem
 ): HookedInputCheckboxGroupProps['options'][number] {
-  const { watch, setValue } = useFormContext<ReturnFormValues>()
-  const items = watch('items') ?? []
-  const isSelected = items.find(({ value }) => value === item.id) != null
-  const [reason, setReason] = useState('')
-
-  useEffect(() => {
-    if (!isSelected && !isEmpty(reason)) {
-      setReason('')
-    }
-  }, [isSelected, reason])
-
   return {
     value: item.id,
     content: (
@@ -75,23 +64,38 @@ function makeOptionItem(
         </ListItem>
       </>
     ),
-    checkedElement: (
-      <Input
-        value={reason}
-        placeholder='Add reason'
-        onChange={(e) => {
-          e.stopPropagation()
-          setReason(e.target.value)
-          setValue(
-            `items.${items.findIndex(({ value }) => value === item.id)}.reason`,
-            e.target.value
-          )
-        }}
-      />
-    ),
+    checkedElement: <OptionInputReason item={item} />,
     quantity: {
       min: 1,
       max: item.quantity
     }
   }
+}
+
+/** When checked, show input for reason */
+const OptionInputReason: FC<{ item: LineItem }> = ({ item }) => {
+  const { watch, setValue } = useFormContext<ReturnFormValues>()
+  const items = watch('items') ?? []
+  const isSelected = items.find(({ value }) => value === item.id) != null
+  const [reason, setReason] = useState('')
+
+  useEffect(() => {
+    if (!isSelected && !isEmpty(reason)) {
+      setReason('')
+    }
+  }, [isSelected, reason])
+
+  return (
+    <Input
+      value={reason}
+      placeholder='Add reason'
+      onChange={(e) => {
+        setReason(e.target.value)
+        setValue(
+          `items.${items.findIndex(({ value }) => value === item.id)}.reason`,
+          e.target.value
+        )
+      }}
+    />
+  )
 }
