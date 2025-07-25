@@ -9,7 +9,13 @@ export type AppRoute = keyof typeof appRoutes
 export const appRoutes = {
   list: {
     path: '/',
-    makePath: () => '/'
+    makePath: (filters?: string) =>
+      hasFilterQuery(filters) ? `/?${filters}` : `/`
+  },
+  filters: {
+    path: '/filters',
+    makePath: (filters?: string) =>
+      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`
   },
   selectResource: {
     path: '/new',
@@ -23,4 +29,8 @@ export const appRoutes = {
     path: '/:importId',
     makePath: (importId: string) => `/${importId}`
   }
+}
+
+function hasFilterQuery(filters?: string): filters is string {
+  return Array.from(new URLSearchParams(filters)).length > 0
 }

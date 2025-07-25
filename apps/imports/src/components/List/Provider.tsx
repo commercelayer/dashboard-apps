@@ -2,6 +2,7 @@ import {
   type CommerceLayerClient,
   type Import,
   type ListResponse,
+  type QueryFilter,
   type QueryParamsList
 } from '@commercelayer/sdk'
 import { type ListImportContextState, type ListImportContextValue } from 'App'
@@ -15,6 +16,7 @@ import {
   useRef
 } from 'react'
 
+import { useIsChanged } from '@commercelayer/app-elements'
 import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
 
@@ -31,6 +33,11 @@ interface ListImportProviderProps {
    * Inner content where context exists
    */
   children: ((props: ListImportContextValue) => ReactNode) | ReactNode
+  /**
+   * SDK filters object to apply to the list of imports.
+   * This is optional and can be used to filter the imports based on specific criteria.
+   */
+  filters?: QueryFilter
 }
 const POLLING_INTERVAL = 4000
 
@@ -41,10 +48,29 @@ export const useListContext = (): ListImportContextValue => useContext(Context)
 export function ListImportProvider({
   children,
   pageSize,
-  sdkClient
+  sdkClient,
+  filters
 }: ListImportProviderProps): React.JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
   const intervalId = useRef<number | null>(null)
+
+  // update list when filters change
+  useIsChanged({
+    value: filters,
+    onChange: () => {
+      // Set the loading state to the first page
+      dispatch({ type: 'changePage', payload: 1 })
+      // Refresh the list with the new filters
+      void getAllImports({
+        cl: sdkClient,
+        state,
+        pageSize,
+        filters
+      }).then((list) => {
+        dispatch({ type: 'loadData', payload: list })
+      })
+    }
+  })
 
   const changePage = useCallback((page: number) => {
     dispatch({ type: 'changePage', payload: page })
@@ -54,7 +80,8 @@ export function ListImportProvider({
     const list = await getAllImports({
       cl: sdkClient,
       state,
-      pageSize
+      pageSize,
+      filters
     })
     dispatch({ type: 'loadData', payload: list })
   }, [state.currentPage])
@@ -111,15 +138,18 @@ export function ListImportProvider({
 const getAllImports = async ({
   cl,
   state,
-  pageSize
+  pageSize,
+  filters
 }: {
   cl: CommerceLayerClient
   state: ListImportContextState
   pageSize: number
+  filters?: QueryFilter
 }): Promise<ListResponse<Import>> => {
   return await cl.imports.list({
     pageNumber: state.currentPage,
     pageSize: pageSize as QueryParamsList<Import>['pageSize'],
-    sort: { created_at: 'desc' }
+    sort: { created_at: 'desc' },
+    filters
   })
 }
