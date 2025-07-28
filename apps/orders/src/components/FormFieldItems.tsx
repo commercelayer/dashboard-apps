@@ -88,7 +88,7 @@ const OptionInputReason: FC<{ item: LineItem }> = ({ item }) => {
   return (
     <Input
       value={reason}
-      placeholder='Add reason'
+      placeholder='Add a reason (optional)'
       onChange={(e) => {
         setReason(e.target.value)
         setValue(
