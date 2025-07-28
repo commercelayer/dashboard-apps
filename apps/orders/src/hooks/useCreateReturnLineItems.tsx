@@ -52,11 +52,13 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
                 .create({
                   return: sdkClient.returns.relationship(returnObj?.id ?? null),
                   quantity: item.quantity,
-                  return_reason: !isEmpty(item.reason)
+                  ...(!isEmpty(item.reason)
                     ? {
-                        [reasonKey]: item.reason
+                        return_reason: {
+                          [reasonKey]: item.reason
+                        }
                       }
-                    : null,
+                    : {}),
                   line_item: sdkClient.line_items.relationship(item.value)
                 })
                 .then((lineItem) => returnLineItems.push(lineItem))
