@@ -1,6 +1,6 @@
 import {
-  type AllowedResourceType,
   type AllowedParentResource,
+  type AllowedResourceType,
   type ResourceWithParent
 } from 'App'
 
@@ -39,7 +39,9 @@ const allResources = Object.keys(resources) as AllowedResourceType[]
  * A resource can be set as not available in UI by modifying the above `resources` object
  * @returns an array of available resources.
  */
-export const availableResources = allResources.filter((r) => resources[r])
+export const availableResources = allResources
+  .filter((r) => resources[r])
+  .sort()
 
 /**
  * Simple helper to understand if a resource is available
