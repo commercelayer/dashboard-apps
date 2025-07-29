@@ -1,11 +1,16 @@
 import { type ReturnFormValues } from '#components/FormReturn'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
+import {
+  formatDisplayName,
+  useCoreSdkProvider,
+  useTokenProvider
+} from '@commercelayer/app-elements'
 import type {
   CommerceLayerClient,
   Return,
   ReturnLineItem,
   StockLocation
 } from '@commercelayer/sdk'
+import { isEmpty } from 'lodash-es'
 import { useCallback, useState } from 'react'
 
 interface CreateReturnLineItemsHook {
@@ -20,6 +25,7 @@ interface CreateReturnLineItemsHook {
 
 export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
   const { sdkClient } = useCoreSdkProvider()
+  const { user } = useTokenProvider()
 
   const [isCreatingReturnLineItems, setIsCreatingReturnLineItems] =
     useState(false)
@@ -32,6 +38,12 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
       setCreateReturnLineItemsError(undefined)
       const returnLineItems: ReturnLineItem[] = []
 
+      // Use the user's name for the return reason key, or default to 'Admin' if not available (when using an integration token)
+      const reasonKey =
+        user?.firstName != null
+          ? formatDisplayName(user?.firstName, user?.lastName)
+          : 'Admin'
+
       try {
         await Promise.all(
           formValues.items.map(
@@ -40,6 +52,13 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
                 .create({
                   return: sdkClient.returns.relationship(returnObj?.id ?? null),
                   quantity: item.quantity,
+                  ...(!isEmpty(item.reason)
+                    ? {
+                        return_reason: {
+                          [reasonKey]: item.reason
+                        }
+                      }
+                    : {}),
                   line_item: sdkClient.line_items.relationship(item.value)
                 })
                 .then((lineItem) => returnLineItems.push(lineItem))

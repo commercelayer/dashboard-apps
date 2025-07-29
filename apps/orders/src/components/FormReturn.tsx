@@ -16,6 +16,7 @@ const returnFormSchema = z.object({
     .array(
       z.object({
         value: z.string().min(1),
+        reason: z.string().optional(),
         quantity: z.number()
       })
     )
