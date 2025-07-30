@@ -24,21 +24,36 @@ export const SkuListDetailsAddItems: FC<
   const { canUser } = useTokenProvider()
   const skuListId = params?.skuListId ?? ''
 
+  const { data: skuListItems } = useCoreApi('sku_list_items', 'list', [
+    {
+      pageSize: 1,
+      fields: ['id'],
+      filters: { sku_list_id_eq: skuListId }
+    }
+  ])
+  const totalSkuListItems = skuListItems?.meta.recordCount
+
   const {
     data: skuList,
     isLoading,
     isValidating,
     error
-  } = useCoreApi('sku_lists', 'retrieve', [
-    skuListId,
-    {
-      fields: {
-        sku_lists: ['sku_list_items'],
-        sku_list_items: ['id', 'sku_code']
-      },
-      include: ['sku_list_items']
-    }
-  ])
+  } = useCoreApi(
+    'sku_lists',
+    'retrieve',
+    totalSkuListItems == null
+      ? null
+      : [
+          skuListId,
+          {
+            fields: {
+              sku_lists: ['sku_list_items'],
+              sku_list_items: ['id', 'sku_code']
+            },
+            include: totalSkuListItems < 100 ? ['sku_list_items'] : []
+          }
+        ]
+  )
 
   // codes of SKUs already in the list we want to exclude from the list of items to add
   // we limit the number of codes to 100 to avoid performance issues and generate a query that is too long
