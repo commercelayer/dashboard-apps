@@ -1,4 +1,4 @@
-import { filtersInstructions, predicateWhitelist } from '#data/filters'
+import { filtersInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import { usePromotionPermission } from '#hooks/usePromotionPermission'
@@ -23,8 +23,7 @@ function HomePage(): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, adapters } = useResourceFilters({
-    instructions: filtersInstructions,
-    predicateWhitelist
+    instructions: filtersInstructions
   })
 
   return (

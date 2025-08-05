@@ -1,7 +1,7 @@
 import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemPromotion } from '#components/ListItemPromotion'
 import type { PageProps } from '#components/Routes'
-import { filtersInstructions, predicateWhitelist } from '#data/filters'
+import { filtersInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import { appRoutes } from '#data/routes'
 import {
@@ -25,11 +25,8 @@ function Page(
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
     useResourceFilters({
-      instructions: filtersInstructions,
-      predicateWhitelist
+      instructions: filtersInstructions
     })
-
-  const hideFiltersNav = !(viewTitle == null)
 
   /** Whether the user is viewing only active promotions */
   const isActivePreset =
@@ -58,7 +55,6 @@ function Page(
         onFilterClick={(queryString) => {
           setLocation(appRoutes.filters.makePath({}, queryString))
         }}
-        hideFiltersNav={hideFiltersNav}
       />
 
       <Spacer bottom='14'>
