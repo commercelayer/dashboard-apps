@@ -1,5 +1,5 @@
 import type { PageProps } from '#components/Routes'
-import { filtersInstructions, predicateWhitelist } from '#data/filters'
+import { filtersInstructions } from '#data/filters'
 import { appRoutes } from '#data/routes'
 import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
 import { useLocation } from 'wouter'
@@ -7,8 +7,7 @@ import { useLocation } from 'wouter'
 function Page(props: PageProps<typeof appRoutes.filters>): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { FiltersForm, adapters } = useResourceFilters({
-    instructions: filtersInstructions,
-    predicateWhitelist
+    instructions: filtersInstructions
   })
 
   return (
@@ -21,6 +20,7 @@ function Page(props: PageProps<typeof appRoutes.filters>): React.JSX.Element {
         onClick() {
           setLocation(
             appRoutes.promotionList.makePath(
+              {},
               adapters.adaptUrlQueryToUrlQuery({
                 queryString: location.search
               })
