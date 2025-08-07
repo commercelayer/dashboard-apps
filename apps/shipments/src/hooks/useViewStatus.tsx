@@ -42,6 +42,17 @@ export function useViewStatus(shipment: Shipment): ViewStatus {
     }
 
     switch (shipment.status) {
+      case 'upcoming':
+        // edge case when shipment is stuck in upcoming status
+        // upcoming shipments are only accessible from the orders app.
+        result.footerActions = [
+          {
+            label: 'Start picking',
+            triggerAttribute: '_picking'
+          }
+        ]
+        break
+
       case 'picking':
         result.footerActions = [
           {
@@ -94,6 +105,12 @@ export function useViewStatus(shipment: Shipment): ViewStatus {
               ]
             }
           } else {
+            result.contextActions = [
+              {
+                label: t('apps.shipments.actions.set_back_to_picking'),
+                triggerAttribute: '_picking'
+              }
+            ]
             result.footerActions = [
               {
                 label: t('apps.shipments.actions.set_ready_to_ship'),
@@ -107,8 +124,8 @@ export function useViewStatus(shipment: Shipment): ViewStatus {
       case 'ready_to_ship':
         result.contextActions = [
           {
-            label: t('apps.shipments.actions.set_back_to_packing'),
-            triggerAttribute: '_packing'
+            label: t('apps.shipments.actions.set_back_to_picking'),
+            triggerAttribute: '_picking'
           }
         ]
         result.footerActions = [
