@@ -34,11 +34,14 @@
   ],
   "devDependencies": {
     "husky": "^9.1.7",
-    "lerna": "^8.2.3",
-    "lint-staged": "^16.1.2",
+    "lerna": "^8.2.4",
+    "lint-staged": "^16.1.5",
     "replace-in-file": "^8.3.0"
   },
   "resolutions": {
-    "axios": "^1.8.2"
+    "axios": "^1.8.2",
+    "brace-expansion": "^2.0.2",
+    "form-data": "^4.0.4",
+    "tmp": "^0.2.4"
   }
 }
