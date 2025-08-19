@@ -243,6 +243,7 @@ export function SectionFlexRules({
           className='overflow-y-auto'
         >
           <RuleEngine
+            schemaType='order-rules'
             defaultValue={JSON.stringify(promotionRules)}
             defaultCodeEditorVisible
             onChange={(rules) => {
