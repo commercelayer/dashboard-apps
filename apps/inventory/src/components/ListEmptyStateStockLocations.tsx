@@ -27,7 +27,7 @@ export function ListEmptyStateStockLocations({
       title='No stock locations yet!'
       description={
         <div>
-          <p>Add a stock locations with the API, or use the CLI.</p>
+          <p>Add a stock location with the API, or use the CLI.</p>
           <A
             target='_blank'
             href='https://docs.commercelayer.io/core/v/api-reference/stock_locations'

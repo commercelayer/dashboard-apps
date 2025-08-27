@@ -31,34 +31,3 @@ export const appPromiseImports = Object.values(apps).reduce(
   // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter, @typescript-eslint/consistent-type-assertions
   {} as Record<App['slug'], { app: App; exists: () => Promise<boolean> }>
 )
-
-/**
- * Apply a standard dictionary. There're few words that need to be written in a specific case.
- * @example `paypal` => `PayPal`
- */
-function applyDictionary(text: string): string {
-  const dict = [
-    ['checkout com', 'Checkout.com'],
-    ['checkout.com', 'Checkout.com'],
-    ['paypal', 'PayPal'],
-    ['taxjar', 'TaxJar'],
-    ['google', 'Google'],
-    ['sku', 'SKU']
-  ]
-
-  return dict.reduce((acc, item) => {
-    const [input, output] = item
-
-    if (input == null || output == null) {
-      return acc
-    }
-
-    return acc.replace(new RegExp(input, 'i'), output)
-  }, text)
-}
-
-/** Convert `sku_option` to `Sku option` */
-export function humanReadable(text: string): string {
-  const capitalized = text[0]?.toUpperCase() + text.substring(1)
-  return applyDictionary(capitalized.replaceAll('_', ' ').replaceAll('-', ' '))
-}

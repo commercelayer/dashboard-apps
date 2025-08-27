@@ -9,13 +9,9 @@ import {
   Icon,
   PageLayout,
   SkeletonTemplate,
-  useCoreSdkProvider,
-  useOverlay,
   useResourceFilters,
-  useTokenProvider,
-  type PageHeadingProps
+  useTokenProvider
 } from '@commercelayer/app-elements'
-import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
 
@@ -39,10 +35,6 @@ export function PricesList(): React.JSX.Element {
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
     instructions: pricesFilterInstructions({ priceListId })
   })
-
-  const { sdkClient } = useCoreSdkProvider()
-  const { Overlay, open, close } = useOverlay()
-  const [isDeleting, setIsDeleting] = useState(false)
 
   if (error != null) {
     return (
@@ -69,35 +61,6 @@ export function PricesList(): React.JSX.Element {
     )
   }
 
-  const pageToolbar: PageHeadingProps['toolbar'] = {
-    buttons: [],
-    dropdownItems: []
-  }
-
-  if (canUser('update', 'price_lists') && priceListId !== '') {
-    pageToolbar.dropdownItems?.push([
-      {
-        label: 'Edit',
-        onClick: () => {
-          setLocation(
-            appRoutes.priceListEdit.makePath({ priceListId: priceList.id })
-          )
-        }
-      }
-    ])
-  }
-
-  if (canUser('destroy', 'price_lists') && priceListId !== '') {
-    pageToolbar.dropdownItems?.push([
-      {
-        label: 'Delete',
-        onClick: () => {
-          open()
-        }
-      }
-    ])
-  }
-
   const pageTitle = priceListId !== '' ? priceList.name : 'All prices'
 
   if (!canUser('read', 'price_lists') || !canUser('read', 'prices')) {
@@ -122,7 +85,6 @@ export function PricesList(): React.JSX.Element {
         label: 'Price lists',
         icon: 'arrowLeft'
       }}
-      toolbar={pageToolbar}
       scrollToTop
     >
       <SearchWithNav
@@ -171,41 +133,6 @@ export function PricesList(): React.JSX.Element {
           />
         }
       />
-      {canUser('destroy', 'price_lists') && (
-        <Overlay backgroundColor='light'>
-          <PageLayout
-            title={`Confirm that you want to delete the price list with name ${priceList.name}.`}
-            description='This action cannot be undone, proceed with caution.'
-            minHeight={false}
-            navigationButton={{
-              onClick: () => {
-                close()
-              },
-              label: `Cancel`,
-              icon: 'x'
-            }}
-          >
-            <Button
-              variant='danger'
-              size='small'
-              disabled={isDeleting}
-              onClick={(e) => {
-                setIsDeleting(true)
-                e.stopPropagation()
-                void sdkClient.price_lists
-                  .delete(priceList.id)
-                  .then(() => {
-                    setLocation(appRoutes.home.makePath({}))
-                  })
-                  .catch(() => {})
-              }}
-              fullWidth
-            >
-              Delete price list
-            </Button>
-          </PageLayout>
-        </Overlay>
-      )}
     </PageLayout>
   )
 }
