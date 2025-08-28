@@ -220,7 +220,8 @@ export function SectionFlexRules({
                       id: promotion.id,
                       rules: promotionRules
                     })
-                    .then(() => {
+                    .then((_promotion) => {
+                      // setPromotionRules(promotion.rules as PromotionRules)
                       setRuleIsSet(true)
                       close()
                     })

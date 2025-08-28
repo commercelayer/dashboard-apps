@@ -14,7 +14,7 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "6.1.1",
+    "@commercelayer/app-elements": "6.1.2",
     "@commercelayer/sdk": "^6.45.0",
     "@hookform/resolvers": "^3.10.0",
     "dashboard-apps-common": "workspace:*",
