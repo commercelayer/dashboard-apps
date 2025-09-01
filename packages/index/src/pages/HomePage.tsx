@@ -10,7 +10,7 @@ import { jwtDecode } from '@commercelayer/js-auth'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import type { App } from '../appList'
-import { appPromiseImports, humanReadable } from '../apps'
+import { appPromiseImports } from '../apps'
 
 export function HomePage(): React.JSX.Element {
   const [visibility, setVisibility] = useState<
@@ -79,7 +79,7 @@ export function HomePage(): React.JSX.Element {
                   </div>
                 }
               >
-                <Text weight='bold'>{humanReadable(app.slug)}</Text>
+                <Text weight='bold'>{app.name}</Text>
                 <StatusIcon name='caretRight' />
               </ListItem>
             )

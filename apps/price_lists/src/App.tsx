@@ -2,8 +2,6 @@ import { ErrorNotFound } from '#pages/ErrorNotFound'
 import { Home } from '#pages/Home'
 import { PriceDetails } from '#pages/PriceDetails'
 import { PriceEdit } from '#pages/PriceEdit'
-import { PriceListEdit } from '#pages/PriceListEdit'
-import { PriceListNew } from '#pages/PriceListNew'
 import { PriceNew } from '#pages/PriceNew'
 import { PriceTierEdit } from '#pages/PriceTierEdit'
 import { PriceTierNew } from '#pages/PriceTierNew'
@@ -21,8 +19,6 @@ export const App: FC<AppProps> = ({ routerBase }) => {
     <Router base={routerBase}>
       <Switch>
         <Route path={appRoutes.home.path} component={Home} />
-        <Route path={appRoutes.priceListNew.path} component={PriceListNew} />
-        <Route path={appRoutes.priceListEdit.path} component={PriceListEdit} />
         <Route path={appRoutes.pricesList.path} component={PricesList} />
         <Route path={appRoutes.priceNew.path} component={PriceNew} />
         <Route path={appRoutes.priceEdit.path} component={PriceEdit} />

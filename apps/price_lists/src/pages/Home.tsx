@@ -1,10 +1,9 @@
 import { ListItemPriceList } from '#components/ListItemPriceList'
 import { appRoutes } from '#data/routes'
 import {
-  Button,
+  A,
   EmptyState,
   HomePageLayout,
-  Icon,
   ListItem,
   SearchBar,
   Section,
@@ -48,12 +47,17 @@ export function Home(): React.JSX.Element {
     noPriceLists && searchValue == null ? (
       <EmptyState
         title='No price lists yet!'
-        action={
-          canUser('create', 'price_lists') && (
-            <Link href={appRoutes.priceListNew.makePath({})}>
-              <Button variant='primary'>Add a price list</Button>
-            </Link>
-          )
+        description={
+          <div>
+            <p>Add a price list with the API, or use the CLI.</p>
+            <A
+              target='_blank'
+              href='https://docs.commercelayer.io/core/v/api-reference/price_lists'
+              rel='noreferrer'
+            >
+              View API reference.
+            </A>
+          </div>
         }
       />
     ) : (
@@ -87,25 +91,7 @@ export function Home(): React.JSX.Element {
           <NoPriceListsMessage />
         ) : (
           <SkeletonTemplate isLoading={isFirstLoading || isLoading}>
-            <Section
-              title='Browse'
-              titleSize='small'
-              actionButton={
-                canUser('create', 'price_lists') ? (
-                  <Link href={appRoutes.priceListNew.makePath({})} asChild>
-                    <Button
-                      variant='secondary'
-                      size='mini'
-                      alignItems='center'
-                      aria-label='Add price list'
-                    >
-                      <Icon name='plus' />
-                      New
-                    </Button>
-                  </Link>
-                ) : undefined
-              }
-            >
+            <Section title='Browse' titleSize='small'>
               {(searchValue == null || searchValue?.length === 0) && (
                 <Link href={appRoutes.pricesList.makePath({})} asChild>
                   <ListItem>

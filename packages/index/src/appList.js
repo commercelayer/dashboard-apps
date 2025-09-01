@@ -102,7 +102,7 @@ export const apps = {
     icon: 'warehouse'
   },
   price_lists: {
-    name: 'Price lists',
+    name: 'Prices',
     slug: 'price_lists',
     kind: 'price_lists',
     icon: 'receipt'
