@@ -48,6 +48,7 @@ export function getTriggerAttributes(order: Order): UITriggerAttributes[] {
     case 'approved:authorized:unfulfilled':
     case 'approved:authorized:not_required':
     case 'approved:authorized:in_progress':
+    case 'approved:authorized:fulfilled':
       return ['_capture']
 
     case 'approved:paid:in_progress':
