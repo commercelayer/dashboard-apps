@@ -10,6 +10,7 @@ import {
   SkeletonTemplate,
   Spacer,
   Text,
+  useCoreApi,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
@@ -19,7 +20,7 @@ import { addMonths } from 'date-fns/addMonths'
 import { useEffect, useState } from 'react'
 import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'
-import { useMarketsList } from '../hooks/useMarketsList'
+import { RelationshipSelector } from './RelationshipSelector'
 
 const linkFormSchema = z.object({
   id: z.string().optional(),
@@ -59,7 +60,28 @@ export function LinkForm({
   const { sdkClient } = useCoreSdkProvider()
   const salesChannels = settings.extras?.salesChannels
 
-  const { markets, isLoading: isLoadingMarkets } = useMarketsList({})
+  const { data: marketData, isLoading } = useCoreApi(
+    'markets',
+    'list',
+    [
+      {
+        filters: {
+          customer_group_null: true,
+          private_true: false,
+          disabled_at_null: true
+        },
+        fields: ['id', 'name'],
+        sort: ['name'],
+        pageSize: 1
+      }
+    ],
+    {}
+  )
+  const isSingleMarketId =
+    marketData?.[0] != null && marketData?.meta.recordCount === 1
+      ? marketData[0].id
+      : null
+
   const [stockLocations, setStockLocations] = useState<StockLocation[]>()
   const defaultStockLocation = { value: '', label: 'All stock locations' }
   const selectedMarket = linkFormMethods.watch('market')
@@ -95,8 +117,6 @@ export function LinkForm({
     }
   }, [selectedMarket])
 
-  const isLoading = markets == null || isLoadingMarkets
-
   const isAdvancedForm = resourceType !== 'orders'
   const isCreateForm = defaultValues?.id == null
 
@@ -106,8 +126,8 @@ export function LinkForm({
       if (salesChannels != null && salesChannels.length > 0) {
         linkFormMethods.setValue('clientId', salesChannels[0]?.client_id ?? '')
       }
-      if (markets != null && markets.length === 1) {
-        linkFormMethods.setValue('market', markets[0]?.id ?? '')
+      if (isSingleMarketId != null) {
+        linkFormMethods.setValue('market', isSingleMarketId)
       }
       linkFormMethods.setValue('startsAt', new Date())
       linkFormMethods.setValue('expiresAt', addMonths(new Date(), 1))
@@ -117,7 +137,7 @@ export function LinkForm({
     isLoading,
     defaultValues,
     salesChannels,
-    markets,
+    isSingleMarketId,
     linkFormMethods
   ])
 
@@ -166,16 +186,19 @@ export function LinkForm({
         {isAdvancedForm && (
           <Spacer top='6' bottom='4'>
             {!isLoading && (
-              <HookedInputSelect
-                name='market'
+              <RelationshipSelector
+                fieldName='market'
                 label='Market *'
-                initialValues={markets?.map(({ id, name }) => ({
-                  value: id,
-                  label: name
-                }))}
-                pathToValue='value'
+                resourceType='markets'
+                defaultResourceId={defaultValues?.market}
+                filters={{
+                  customer_group_null: true,
+                  private_true: false,
+                  disabled_at_null: true
+                }}
               />
             )}
+
             {stockLocations != null && stockLocations.length >= 2 && (
               <Spacer top='2'>
                 <HookedInputSelect
