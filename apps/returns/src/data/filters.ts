@@ -103,8 +103,7 @@ export const instructions: FiltersInstructions = [
           'destination_address_company',
           'destination_address_first_name',
           'destination_address_last_name',
-          'destination_address_billing_info',
-          'return_line_items_line_item_sku_code'
+          'destination_address_billing_info'
         ].join('_or_') + '_cont'
     },
     render: {
