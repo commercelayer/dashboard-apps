@@ -27,6 +27,7 @@ import { useCustomerCanBeAnonymized } from '#hooks/useCustomerCanBeAnonymized'
 import { useCustomerCanBeDeleted } from '#hooks/useCustomerCanBeDeleted'
 import { useCustomerDeleteOverlay } from '#hooks/useCustomerDeleteOverlay'
 import { useCustomerDetails } from '#hooks/useCustomerDetails'
+import { useCustomerResetPasswordOverlay } from '#hooks/useCustomerResetPasswordOverlay'
 import { isMockedId } from '@commercelayer/app-elements'
 
 export function CustomerDetails(): React.JSX.Element {
@@ -48,12 +49,23 @@ export function CustomerDetails(): React.JSX.Element {
   const canBeAnonymized = useCustomerCanBeAnonymized(customerId)
 
   const { DeleteOverlay, show } = useCustomerDeleteOverlay(customerId)
+  const { ResetPasswordOverlay, showResetPasswordOverlay } =
+    useCustomerResetPasswordOverlay(customerId)
 
   const pageTitle = `${customer.email}`
 
   const pageToolbar: PageHeadingProps['toolbar'] = {
     buttons: [],
-    dropdownItems: []
+    dropdownItems: [
+      [
+        {
+          label: 'Reset Password',
+          onClick: () => {
+            showResetPasswordOverlay()
+          }
+        }
+      ]
+    ]
   }
 
   if (canUser('update', 'customers')) {
@@ -188,6 +200,7 @@ export function CustomerDetails(): React.JSX.Element {
         </SkeletonTemplate>
       )}
       {canUser('destroy', 'customers') && <DeleteOverlay />}
+      <ResetPasswordOverlay />
     </PageLayout>
   )
 }
