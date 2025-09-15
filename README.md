@@ -40,7 +40,7 @@ That access token is only required (and will work only) for development mode. In
 All our Dashboard apps are built using a shared component library [@commercelayer/app-elements](https://github.com/commercelayer/app-elements).
 You can browse the [official documentation](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-welcome--docs) to discover more about this topic.
 
-7. Build all applications into the `./dist` folder:
+6. Build all applications into the `./dist` folder:
 
 ```
 pnpm build:apps
@@ -66,10 +66,14 @@ docker build -t dashboard-apps:latest .
 docker run --rm -p 8080:80 dashboard-apps:latest
 ```
 
-The applications will be available at [localhost:8080](http://localhost:8080).
+The applications are available at [localhost:8080](http://localhost:8080). Since the router app is not included in the Docker image, you can open a specific app directly, for example [localhost:8080/customers](http://localhost:8080/customers).
+
+If instead you are running the container in production, you can now create a [custom app](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs) in the Commerce Layer Dashboard.
 
 > [!NOTE]
-> You can customize the Docker configuration as needed. The `Dockerfile` and `nginx.conf` files can be modified to adjust the build process, nginx settings, or add additional configuration for your specific deployment requirements.
+> This Docker setup is provided as a reference. Customize it as needed for your environment:
+> - Edit `Dockerfile` to tweak the build and image layout
+> - Edit `nginx.conf` to adjust routing, caching, and headers
 
 ## Running on Windows
 [Read more](https://github.com/commercelayer/.github/blob/main/PNPM_ON_WINDOWS.md)
