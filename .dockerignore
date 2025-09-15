@@ -1,0 +1,14 @@
+node_modules
+dist
+.git
+.gitignore
+.DS_Store
+.vscode
+**/.idea
+**/.env*
+pnpm-store
+lerna-debug.log
+coverage
+**/*.log
+
+

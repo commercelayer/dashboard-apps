@@ -1,14 +1,15 @@
-# Dashboard apps
+# Dashboard apps <!-- omit in toc -->
 
 Any Commerce Layer account comes with the hosted version of a full set of Dashboard applications, automatically enabled for admin users. An admin can then enable one or more apps for other organization members giving each member full or read-only access. For an updated list of the available applications, check the [`./apps`](apps) folder of this repository or read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-applications--docs).
 
 It's possible to clone this repository and add one or more apps to your Dashboard, in order to customize every part of the code and start using your own self-hosted version. For more information on how to do it, read more [here](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs). 
 
-## Table of contents
+## Table of contents <!-- omit in toc -->
 
 - [Getting started](#getting-started)
+- [Docker](#docker)
 - [Running on Windows](#running-on-windows)
-- [Help and support](#need-help)
+- [Need help?](#need-help)
 - [License](#license)
 
 
@@ -39,7 +40,7 @@ That access token is only required (and will work only) for development mode. In
 All our Dashboard apps are built using a shared component library [@commercelayer/app-elements](https://github.com/commercelayer/app-elements).
 You can browse the [official documentation](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-welcome--docs) to discover more about this topic.
 
-7. Build all applications into the `./dist` folder:
+6. Build all applications into the `./dist` folder:
 
 ```
 pnpm build:apps
@@ -52,6 +53,27 @@ pnpm build:apps
 [<img src="https://vercel.com/button" alt="Deploy to Vercel" height="35">](https://vercel.com/new/clone?repository-url=https://github.com/commercelayer/dashboard-apps&build-command=pnpm%20build%3Aelements%20%26%26%20pnpm%20build%3Aapps&output-directory=dist&env=PUBLIC_SELF_HOSTED_SLUG&envDescription=your%20organization%20slug) 
 
 8. Create a [custom app](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs) in the Commerce Layer Dashboard.
+
+## Docker
+
+You can build and run the dashboard apps using Docker for easy deployment and distribution.
+
+```bash
+docker build -t dashboard-apps:latest .
+```
+
+```bash
+docker run --rm -p 8080:80 dashboard-apps:latest
+```
+
+The applications are available at [localhost:8080](http://localhost:8080). Since the router app is not included in the Docker image, you can open a specific app directly, for example [localhost:8080/customers](http://localhost:8080/customers).
+
+If instead you are running the container in production, you can now create a [custom app](https://commercelayer.github.io/app-elements/?path=/docs/getting-started-custom-apps--docs) in the Commerce Layer Dashboard.
+
+> [!NOTE]
+> This Docker setup is provided as a reference. Customize it as needed for your environment:
+> - Edit `Dockerfile` to tweak the build and image layout
+> - Edit `nginx.conf` to adjust routing, caching, and headers
 
 ## Running on Windows
 [Read more](https://github.com/commercelayer/.github/blob/main/PNPM_ON_WINDOWS.md)
