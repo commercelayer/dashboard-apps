@@ -1,5 +1,6 @@
 import { useCustomerDetails } from '#hooks/useCustomerDetails'
 import {
+  Alert,
   Button,
   CodeBlock,
   PageLayout,
@@ -27,6 +28,9 @@ export function useCustomerResetPasswordOverlay(
     settings: { organizationSlug }
   } = useTokenProvider()
   const { t } = useTranslation()
+  const { settings } = useTokenProvider()
+  const clientId = settings.extras?.salesChannels?.at(0)?.client_id
+
   const [isCreating, setIsCreating] = useState(false)
   const [customerPasswordReset, setCustomerPasswordReset] =
     useState<CustomerPasswordReset | null>(null)
@@ -37,7 +41,13 @@ export function useCustomerResetPasswordOverlay(
   const ResetPasswordOverlay = useCallback(() => {
     const resetLink =
       customerPasswordReset != null
-        ? `https://${organizationSlug}.commercelayer.app/identity/reset-password?customerPasswordResetId=${customerPasswordReset.id}&resetPasswordToken=${customerPasswordReset.reset_password_token}`
+        ? [
+            `https://${organizationSlug}.commercelayer.app/identity/reset-password?clientId=${clientId}`,
+            `customerPasswordResetId=${customerPasswordReset.id}`,
+            `resetPasswordToken=${customerPasswordReset.reset_password_token}`,
+            'scope=market:all',
+            'returnUrl=none'
+          ].join('&')
         : null
 
     return (
@@ -73,41 +83,62 @@ export function useCustomerResetPasswordOverlay(
             </>
           )}
           {customerPasswordReset == null && (
-            <Button
-              variant='primary'
-              disabled={isCreating}
-              type='button'
-              onClick={() => {
-                setIsCreating(true)
-                void sdkClient.customer_password_resets
-                  .create({
-                    customer_email: customer.email,
-                    reference_origin: 'dashboard'
-                  })
-                  .then((res) => {
-                    if (isEmpty(res.reset_password_token)) {
-                      throw new Error('Failed to create reset password link')
-                    }
-                    setCustomerPasswordReset(res)
-                  })
-                  .catch(() => {
-                    toast('We could not generate a valid password reset link', {
-                      type: 'error'
+            <>
+              {clientId == null && (
+                <Spacer bottom='12'>
+                  <Alert status='warning'>
+                    To generate a reset password link, check that this
+                    organization has at least one valid sales channel configured
+                    (API credentials).
+                  </Alert>
+                </Spacer>
+              )}
+              <Button
+                variant='primary'
+                disabled={isCreating || clientId == null}
+                type='button'
+                onClick={() => {
+                  setIsCreating(true)
+                  void sdkClient.customer_password_resets
+                    .create({
+                      customer_email: customer.email,
+                      reference_origin: 'dashboard'
                     })
-                  })
-                  .finally(() => {
-                    setIsCreating(false)
-                  })
-              }}
-              fullWidth
-            >
-              Generate a password reset link
-            </Button>
+                    .then((res) => {
+                      if (isEmpty(res.reset_password_token)) {
+                        throw new Error('Failed to create reset password link')
+                      }
+                      setCustomerPasswordReset(res)
+                    })
+                    .catch(() => {
+                      toast(
+                        'We could not generate a valid password reset link',
+                        {
+                          type: 'error'
+                        }
+                      )
+                    })
+                    .finally(() => {
+                      setIsCreating(false)
+                    })
+                }}
+                fullWidth
+              >
+                Generate a password reset link
+              </Button>
+            </>
           )}
         </PageLayout>
       </Overlay>
     )
-  }, [Overlay, customerPasswordReset, customer.email, isLoading, isCreating])
+  }, [
+    Overlay,
+    customerPasswordReset,
+    customer.email,
+    isLoading,
+    isCreating,
+    clientId
+  ])
 
   return {
     showResetPasswordOverlay: open,
