@@ -79,7 +79,11 @@ function Home(): React.JSX.Element {
             <Link href={getPresetUrl('packing')} asChild>
               <ListItem
                 icon={
-                  <StatusIcon name='package' background='orange' gap='small' />
+                  <StatusIcon
+                    name='packageIcon'
+                    background='orange'
+                    gap='small'
+                  />
                 }
               >
                 <Text weight='semibold'>
