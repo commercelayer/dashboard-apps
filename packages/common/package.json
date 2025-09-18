@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "dashboard-apps-common",
-  "version": "3.11.5",
+  "version": "3.11.6",
   "type": "module",
   "scripts": {
     "lint": "eslint src --ext .ts,.tsx",
