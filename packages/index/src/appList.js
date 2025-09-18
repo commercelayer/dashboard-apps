@@ -27,7 +27,7 @@ export const apps = {
     name: 'Shipments',
     slug: 'shipments',
     kind: 'shipments',
-    icon: 'package'
+    icon: 'packageIcon'
   },
   customers: {
     name: 'Customers',
