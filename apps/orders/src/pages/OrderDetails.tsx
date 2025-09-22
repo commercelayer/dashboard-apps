@@ -27,9 +27,9 @@ import {
   isMockedId,
   useAppLinking,
   useTokenProvider,
-  useTranslation
+  useTranslation,
+  type ToolbarItem
 } from '@commercelayer/app-elements'
-import type { ToolbarItem } from '@commercelayer/app-elements/dist/ui/composite/Toolbar'
 import { useLocation, useRoute } from 'wouter'
 
 function OrderDetails(): React.JSX.Element {

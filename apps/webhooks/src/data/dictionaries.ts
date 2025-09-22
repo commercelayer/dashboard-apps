@@ -3,7 +3,6 @@ import type {
   IconProps,
   TriggerAttribute
 } from '@commercelayer/app-elements'
-import type { DisplayStatus } from '@commercelayer/app-elements/dist/dictionaries/types'
 import type { Webhook, WebhookUpdate } from '@commercelayer/sdk'
 
 type ActionVariant = 'primary' | 'secondary'
@@ -42,7 +41,8 @@ export function getWebhookStatus(webhook: Webhook): WebhookAppStatus {
   return 'active'
 }
 
-type WebhookDisplayStatus = Pick<DisplayStatus, 'label'> & {
+interface WebhookDisplayStatus {
+  label: string
   variant: BadgeProps['variant']
 }
 

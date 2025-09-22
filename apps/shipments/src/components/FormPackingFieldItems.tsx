@@ -4,9 +4,9 @@ import {
   InputCheckboxGroup,
   ListItem,
   Text,
-  useTranslation
+  useTranslation,
+  type InputCheckboxGroupProps
 } from '@commercelayer/app-elements'
-import type { InputCheckboxGroupProps } from '@commercelayer/app-elements/dist/ui/forms/InputCheckboxGroup'
 import type { StockLineItem } from '@commercelayer/sdk'
 import { useMemo } from 'react'
 import { Controller } from 'react-hook-form'

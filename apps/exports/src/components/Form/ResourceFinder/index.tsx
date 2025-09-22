@@ -2,9 +2,12 @@ import {
   type SearchParams,
   type SearchableResource
 } from '#components/Form/ResourceFinder/utils'
-import { InputSelect, Label } from '@commercelayer/app-elements'
-import { type InputSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
-import { type PossibleSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect/InputSelect'
+import {
+  InputSelect,
+  Label,
+  type InputSelectValue,
+  type PossibleSelectValue
+} from '@commercelayer/app-elements'
 import { useEffect, useState } from 'react'
 import { fetchInitialResources, fetchResourcesByHint } from './utils'
 

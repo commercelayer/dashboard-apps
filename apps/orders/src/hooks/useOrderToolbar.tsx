@@ -9,9 +9,9 @@ import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   useTokenProvider,
   useTranslation,
-  type DropdownItemProps
+  type DropdownItemProps,
+  type PageHeadingToolbarProps
 } from '@commercelayer/app-elements'
-import type { PageHeadingToolbarProps } from '@commercelayer/app-elements/dist/ui/atoms/PageHeading/PageHeadingToolbar'
 import { type Order } from '@commercelayer/sdk'
 import { useMemo } from 'react'
 import { useLocation } from 'wouter'

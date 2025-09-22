@@ -1,6 +1,6 @@
 import { getShipmentStatusName } from '#data/dictionaries'
+import type { FiltersInstructions } from '@commercelayer/app-elements'
 import { t } from '@commercelayer/app-elements'
-import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import type { Shipment } from '@commercelayer/sdk'
 
 const allowedStatuses: Array<Shipment['status']> = [

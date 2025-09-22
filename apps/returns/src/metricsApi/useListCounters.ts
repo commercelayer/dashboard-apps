@@ -1,11 +1,10 @@
 import { presets, type ListType } from '#data/lists'
 import {
   makeDateYearsRange,
-  useTokenProvider
+  useTokenProvider,
+  type FormFullValues,
+  type ParsedScopes
 } from '@commercelayer/app-elements'
-
-import type { ParsedScopes } from '@commercelayer/app-elements/dist/providers/TokenProvider/getInfoFromJwt'
-import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import castArray from 'lodash-es/castArray'
 import useSWR, { type SWRResponse } from 'swr'
 import { metricsApiFetcher } from './fetcher'

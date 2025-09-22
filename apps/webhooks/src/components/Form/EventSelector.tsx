@@ -1,6 +1,5 @@
 import { getAllEventsForSelect } from '#data/events'
-import { HookedInputSelect } from '@commercelayer/app-elements'
-import type { HintProps } from '@commercelayer/app-elements/dist/ui/atoms/Hint'
+import { HookedInputSelect, type HintProps } from '@commercelayer/app-elements'
 
 interface Props {
   name: string

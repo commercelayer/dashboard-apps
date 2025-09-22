@@ -1,12 +1,10 @@
 import {
   InputSelect,
   Label,
-  isSingleValueSelected
-} from '@commercelayer/app-elements'
-import {
+  isSingleValueSelected,
   type InputSelectProps,
   type InputSelectValue
-} from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
+} from '@commercelayer/app-elements'
 import { type CommerceLayerClient } from '@commercelayer/sdk'
 import { type AllowedParentResource, type AllowedResourceType } from 'App'
 import { useEffect, useRef, useState } from 'react'

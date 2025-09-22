@@ -1,9 +1,9 @@
 import { presets, type ListType } from '#data/lists'
 import {
   makeDateYearsRange,
-  useTokenProvider
+  useTokenProvider,
+  type ParsedScopes
 } from '@commercelayer/app-elements'
-import type { ParsedScopes } from '@commercelayer/app-elements/dist/providers/TokenProvider/getInfoFromJwt'
 import useSWR, { type SWRResponse } from 'swr'
 import { metricsApiFetcher } from './fetcher'
 
