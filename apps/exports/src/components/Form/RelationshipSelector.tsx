@@ -3,7 +3,7 @@ import {
   isResourceWithRelationship
 } from '#data/relationships'
 import { HookedInputSelect } from '@commercelayer/app-elements'
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 
 interface Props {
   resourceType: AllowedResourceType

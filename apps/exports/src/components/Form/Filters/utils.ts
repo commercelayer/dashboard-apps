@@ -1,7 +1,7 @@
 import { type QueryParamsList } from '@commercelayer/sdk'
-import { type AllFilters, type FilterValue } from 'AppForm'
 import { endOfDay, startOfDay } from 'date-fns'
-import { toZonedTime, fromZonedTime } from 'date-fns-tz'
+import { fromZonedTime, toZonedTime } from 'date-fns-tz'
+import { type AllFilters, type FilterValue } from '../types'
 
 export function adaptFormFiltersToSdk(
   filters?: AllFilters,

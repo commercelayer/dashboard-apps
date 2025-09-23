@@ -1,4 +1,4 @@
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 
 export type AppRoute = keyof typeof appRoutes
 

@@ -1,4 +1,4 @@
-import { type ResourceWithRelationship } from 'App'
+import { type ResourceWithRelationship } from '@typing/resources.types'
 
 export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
   bundles: ['sku_list', 'sku_list_items', 'tags'],

@@ -2,7 +2,7 @@ import {
   type CommerceLayerClient,
   type QueryParamsList
 } from '@commercelayer/sdk'
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 
 const MAX_EXPORTABLE_RECORDS = 10_000
 

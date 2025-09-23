@@ -2,7 +2,7 @@ import { makeExport } from '#mocks'
 import {
   type ExportDetailsContextState,
   type ExportDetailsContextValue
-} from 'App'
+} from './types'
 
 export const initialState: ExportDetailsContextState = {
   isLoading: true,

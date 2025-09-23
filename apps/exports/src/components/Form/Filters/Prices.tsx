@@ -4,8 +4,12 @@ import {
   flatSelectValues,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
-import { type FilterValue, type PricesField, type PricesFilters } from 'AppForm'
 import { useEffect, useState } from 'react'
+import {
+  type FilterValue,
+  type PricesField,
+  type PricesFilters
+} from '../types'
 
 interface Props {
   onChange: (filters: PricesFilters) => void

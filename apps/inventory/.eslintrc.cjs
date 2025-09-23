@@ -5,7 +5,7 @@ module.exports = {
   extends: ['@commercelayer/eslint-config-ts-react'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: path.resolve(__dirname, 'tsconfig.json'),
+    project: path.resolve(__dirname, 'tsconfig.app.json'),
     ecmaFeatures: {
       jsx: true
     },

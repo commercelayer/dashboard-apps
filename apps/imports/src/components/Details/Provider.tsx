@@ -1,6 +1,5 @@
 import { useCoreSdkProvider } from '@commercelayer/app-elements'
 import { type Import } from '@commercelayer/sdk'
-import { type ImportDetailsContextValue } from 'App'
 import {
   createContext,
   type ReactNode,
@@ -12,6 +11,7 @@ import {
 } from 'react'
 import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
+import { type ImportDetailsContextValue } from './types'
 
 interface ImportDetailsProviderProps {
   importId: string

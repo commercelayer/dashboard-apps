@@ -1,63 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
-    "types": [
-      "vitest/globals",
-      "@testing-library/jest-dom"
-    ],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "noEmit": true,
-    "esModuleInterop": false,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "baseUrl": "./",
-    "paths": {
-      "#styles/*": [
-        "src/styles/*"
-      ],
-      "#components/*": [
-        "src/components/*"
-      ],
-      "#data/*": [
-        "src/data/*"
-      ],
-      "#mocks": [
-        "src/mocks/index"
-      ],
-      "#utils/*": [
-        "src/utils/*"
-      ],
-      "#schemas/*": [
-        "src/schemas/*"
-      ]
-    },
-    "incremental": true
-  },
-  "include": [
-    "vite.config.js",
-    "i18n.d.ts",
-    "src",
-    ".eslintrc.cjs",
-    "@typing/**/*.d.ts",
-    "public/config*.js"
-  ],
+  "files": [],
   "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
     {
       "path": "./tsconfig.node.json"
     }
-  ],
-  "compileOnSave": false
+  ]
 }

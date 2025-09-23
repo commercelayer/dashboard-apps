@@ -1,5 +1,5 @@
 import { type Export } from '@commercelayer/sdk'
-import { type ExportDetailsContextState } from 'App'
+import { type ExportDetailsContextState } from './types'
 
 type Action =
   | { type: 'setLoading'; payload: boolean }

@@ -1,5 +1,5 @@
 import { CommerceLayerStatic } from '@commercelayer/sdk'
-import { type ApiError } from 'App'
+import { type ApiError } from '@typing/resources.types'
 
 export function parseApiError(err: any): ApiError[] {
   if (CommerceLayerStatic.isApiError(err) && Array.isArray(err.errors)) {

@@ -1,5 +1,5 @@
 import { type Import, type ListResponse } from '@commercelayer/sdk'
-import { type ListImportContextState } from 'App'
+import { type ListImportContextState } from './types'
 import { listHasProgressingItems } from './utils'
 
 type Action =

@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --fix --ext .ts,.tsx",
@@ -45,7 +45,6 @@
     "@types/node": "22.13.4",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "@types/testing-library__jest-dom": "^6.0.0",
     "dotenv": "^17.2.2",
     "eslint": "^8.57.1",
     "i18next": "^25.5.2",

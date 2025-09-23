@@ -1,5 +1,5 @@
 import { type ImportCreate } from '@commercelayer/sdk'
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 import isEmpty from 'lodash-es/isEmpty'
 import { parse } from 'papaparse'
 import { type FC, useEffect, useState } from 'react'
@@ -138,7 +138,7 @@ export const InputParser: FC<Props> = ({
         <InputFile
           title='Select a CSV or JSON file to upload'
           onChange={(e) => {
-            if (e.target.files != null && !isParsing) {
+            if (e.target.files?.[0] != null && !isParsing) {
               setFile(e.target.files[0])
             }
           }}

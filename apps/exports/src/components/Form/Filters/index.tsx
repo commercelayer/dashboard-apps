@@ -1,5 +1,5 @@
-import { type AllowedResourceType } from 'App'
-import { type AllFilters } from 'AppForm'
+import { type AllowedResourceType } from '@typing/resources.types'
+import { type AllFilters } from '../types'
 import { Coupons } from './Coupons'
 import { InStockSubscriptions } from './InStockSubscriptions'
 import { Orders } from './Orders'

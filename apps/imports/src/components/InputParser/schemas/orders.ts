@@ -3,13 +3,13 @@ import { isFalsy } from '#utils/isFalsy'
 import { z } from 'zod'
 import { zodCaseInsensitiveNativeEnum, zodEnforceBoolean } from './zodUtils'
 
-enum AllowedStatus {
-  'draft' = 'draft',
-  'pending' = 'pending',
-  'placed' = 'placed',
-  'approved' = 'approved',
-  'cancelled' = 'cancelled'
-}
+const allowedStatus = {
+  draft: 'draft',
+  pending: 'pending',
+  placed: 'placed',
+  approved: 'approved',
+  cancelled: 'cancelled'
+} as const
 
 const makeSchema = (hasParentResourceId: boolean) =>
   z
@@ -32,7 +32,7 @@ const makeSchema = (hasParentResourceId: boolean) =>
 
       // some custom definitions to handle importing of orders with status
       // to do so we need to import them as archived
-      status: z.optional(zodCaseInsensitiveNativeEnum(AllowedStatus)),
+      status: z.optional(zodCaseInsensitiveNativeEnum(allowedStatus)),
       _archive: zodEnforceBoolean({ optional: true })
     })
     .passthrough()

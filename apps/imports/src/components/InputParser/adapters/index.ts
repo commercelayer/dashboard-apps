@@ -1,5 +1,5 @@
 import { type ImportCreate } from '@commercelayer/sdk'
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 import { type ZodSchema } from 'zod'
 
 type ImportInputs = ImportCreate['inputs']

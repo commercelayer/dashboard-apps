@@ -2,17 +2,17 @@ import { isFalsy } from '#utils/isFalsy'
 import { z } from 'zod'
 
 import {
-  zodEnforcePositiveInt,
+  zodCaseInsensitiveNativeEnum,
   zodEnforceBoolean,
   zodEnforcePositiveFloat,
-  zodCaseInsensitiveNativeEnum
+  zodEnforcePositiveInt
 } from './zodUtils'
 
-enum AllowedUnitOfWeightEnum {
-  'grams' = 'gr',
-  'libra' = 'lb',
-  'ounce' = 'oz'
-}
+const allowedUnitOfWeight = {
+  grams: 'gr',
+  libra: 'lb',
+  ounce: 'oz'
+} as const
 
 const schema = z
   .object({
@@ -24,7 +24,7 @@ const schema = z
     pieces_per_pack: z.optional(zodEnforcePositiveInt),
     weight: z.optional(zodEnforcePositiveFloat),
     unit_of_weight: z.optional(
-      zodCaseInsensitiveNativeEnum(AllowedUnitOfWeightEnum)
+      zodCaseInsensitiveNativeEnum(allowedUnitOfWeight)
     ),
     hs_tariff_number: z.optional(z.string()),
     do_not_ship: zodEnforceBoolean({ optional: true }),

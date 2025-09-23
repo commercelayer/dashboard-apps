@@ -1,0 +1,36 @@
+{
+  "extends": "../../configs/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "#components/*": [
+        "src/components/*"
+      ],
+      "#data/*": [
+        "src/data/*"
+      ],
+      "#pages/*": [
+        "src/pages/*"
+      ],
+      "#mocks": [
+        "src/mocks/index"
+      ],
+      "#contexts/*": [
+        "src/contexts/*"
+      ],
+      "#hooks/*": [
+        "src/hooks/*"
+      ],
+      "#utils/*": [
+        "src/utils/*"
+      ]
+    }
+  },
+  "include": [
+    "vite.config.js",
+    "i18n.d.ts",
+    "src",
+    ".eslintrc.cjs",
+    "public/*.js",
+  ]
+}

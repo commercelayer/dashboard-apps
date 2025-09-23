@@ -6,12 +6,12 @@ import {
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
+import { useEffect, useState } from 'react'
 import {
   type FilterValue,
   type ReturnsField,
   type ReturnsFilters
-} from 'AppForm'
-import { useEffect, useState } from 'react'
+} from '../types'
 import { parseFilterToDate } from './utils'
 
 interface Props {

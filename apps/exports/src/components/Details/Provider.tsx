@@ -1,6 +1,5 @@
 import { useCoreSdkProvider } from '@commercelayer/app-elements'
 import { type Export } from '@commercelayer/sdk'
-import { type ExportDetailsContextValue } from 'App'
 import {
   createContext,
   type ReactNode,
@@ -12,6 +11,7 @@ import {
 } from 'react'
 import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
+import { type ExportDetailsContextValue } from './types'
 
 interface ExportDetailsProviderProps {
   exportId: string
