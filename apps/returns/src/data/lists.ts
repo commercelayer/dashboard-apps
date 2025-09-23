@@ -1,5 +1,5 @@
 import { t } from '@commercelayer/app-elements'
-import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
+import type { FormFullValues } from '@commercelayer/app-elements'
 
 export type ListType =
   | 'requested'

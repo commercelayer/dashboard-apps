@@ -1,5 +1,7 @@
-import type { InputSelectValue } from '@commercelayer/app-elements'
-import type { GroupedSelectValues } from '@commercelayer/app-elements/dist/ui/forms/InputSelect/InputSelect'
+import type {
+  GroupedSelectValues,
+  InputSelectValue
+} from '@commercelayer/app-elements'
 
 const supportedLanguages = ['en', 'it', 'de', 'pl', 'es', 'fr', 'hu', 'pt']
 

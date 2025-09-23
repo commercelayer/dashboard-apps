@@ -2,8 +2,15 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vitest/globals", "vite/client"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "types": [
+      "vitest/globals",
+      "vite/client"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": false,
@@ -11,7 +18,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "noEmit": true,
     "noUncheckedIndexedAccess": true,
@@ -21,13 +28,27 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "#components/*": ["src/components/*"],
-      "#contexts/*": ["src/contexts/*"],
-      "#data/*": ["src/data/*"],
-      "#hooks/*": ["src/hooks/*"],
-      "#mocks": ["src/mocks/index"],
-      "#pages/*": ["src/pages/*"],
-      "#utils/*": ["src/utils/*"]
+      "#components/*": [
+        "src/components/*"
+      ],
+      "#contexts/*": [
+        "src/contexts/*"
+      ],
+      "#data/*": [
+        "src/data/*"
+      ],
+      "#hooks/*": [
+        "src/hooks/*"
+      ],
+      "#mocks": [
+        "src/mocks/index"
+      ],
+      "#pages/*": [
+        "src/pages/*"
+      ],
+      "#utils/*": [
+        "src/utils/*"
+      ]
     }
   },
   "include": [

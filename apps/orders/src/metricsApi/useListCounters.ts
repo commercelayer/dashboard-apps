@@ -2,10 +2,10 @@ import { makeInstructions } from '#data/filters'
 import { presets } from '#data/lists'
 import {
   useResourceFilters,
-  useTokenProvider
+  useTokenProvider,
+  type MetricsFilters,
+  type UiFilterValue
 } from '@commercelayer/app-elements'
-import type { MetricsFilters } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/adaptSdkToMetrics'
-import type { UiFilterValue } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import type { QueryFilter } from '@commercelayer/sdk'
 import useSWR, { type SWRResponse } from 'swr'
 import { metricsApiFetcher } from './fetcher'

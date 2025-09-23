@@ -1,4 +1,4 @@
-import { type InputSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
+import type { InputSelectValue } from '@commercelayer/app-elements'
 import type {
   CommerceLayerClient,
   ListResponse,

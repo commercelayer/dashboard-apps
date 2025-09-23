@@ -1,4 +1,4 @@
-import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
+import type { FormFullValues } from '@commercelayer/app-elements'
 
 export type ListType = 'active' | 'upcoming' | 'disabled'
 

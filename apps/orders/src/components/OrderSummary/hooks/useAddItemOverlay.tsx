@@ -1,5 +1,6 @@
 import { ListEmptyState } from '#components/ListEmptyState'
 import { ListItemSkuBundle } from '#components/OrderSummary/ListItemSkuBundle'
+import type { FiltersInstructions } from '@commercelayer/app-elements'
 import {
   PageHeading,
   Spacer,
@@ -7,7 +8,6 @@ import {
   useResourceFilters,
   useTranslation
 } from '@commercelayer/app-elements'
-import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import type { Bundle, Order, Sku } from '@commercelayer/sdk'
 import { useRef } from 'react'
 import { navigate, useSearch } from 'wouter/use-browser-location'

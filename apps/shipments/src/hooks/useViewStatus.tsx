@@ -1,5 +1,8 @@
-import { hasBeenPurchased, useTranslation } from '@commercelayer/app-elements'
-import type { ActionButtonsProps } from '@commercelayer/app-elements/dist/ui/composite/ActionButtons'
+import {
+  hasBeenPurchased,
+  useTranslation,
+  type ActionButtonsProps
+} from '@commercelayer/app-elements'
 import type { Shipment, ShipmentUpdate } from '@commercelayer/sdk'
 import { useMemo } from 'react'
 import { useActiveStockTransfers } from './useActiveStockTransfers'

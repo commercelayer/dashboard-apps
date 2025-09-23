@@ -1,6 +1,6 @@
 import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import { useViewStatus } from '#hooks/useViewStatus'
-import type { PageHeadingToolbarProps } from '@commercelayer/app-elements/dist/ui/atoms/PageHeading/PageHeadingToolbar'
+import type { PageHeadingToolbarProps } from '@commercelayer/app-elements'
 import type { Shipment } from '@commercelayer/sdk'
 import type { FC } from 'react'
 

@@ -1,12 +1,12 @@
 import { ListEmptyStateSKUs } from '#components/ListEmptyStateSKUs'
 import { ListItemSku } from '#components/ListItemSku'
+import type { FiltersInstructions } from '@commercelayer/app-elements'
 import {
   Card,
   PageLayout,
   useOverlay,
   useResourceFilters
 } from '@commercelayer/app-elements'
-import type { FiltersInstructions } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 import type { Sku } from '@commercelayer/sdk'
 import { useState } from 'react'
 import { navigate, useSearch } from 'wouter/use-browser-location'

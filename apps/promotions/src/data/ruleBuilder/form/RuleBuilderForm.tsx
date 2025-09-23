@@ -13,9 +13,9 @@ import {
   HookedInputSelect,
   Spacer,
   useCoreSdkProvider,
+  type GroupedSelectValues,
   type InputSelectValue
 } from '@commercelayer/app-elements'
-import type { GroupedSelectValues } from '@commercelayer/app-elements/dist/ui/forms/InputSelect/InputSelect'
 import type {
   CustomPromotionRule,
   FlexPromotion,

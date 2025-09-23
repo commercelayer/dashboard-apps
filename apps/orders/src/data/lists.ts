@@ -1,5 +1,5 @@
+import type { FormFullValues } from '@commercelayer/app-elements'
 import { t } from '@commercelayer/app-elements'
-import type { FormFullValues } from '@commercelayer/app-elements/dist/ui/resources/useResourceFilters/types'
 
 export type ListType =
   | 'awaitingApproval'
