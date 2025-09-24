@@ -3,7 +3,7 @@ import {
   type CouponCodesPromotionRuleCreate,
   type Promotion
 } from '@commercelayer/sdk'
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 
 export async function validateParentResource({
   sdkClient,

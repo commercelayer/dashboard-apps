@@ -3,12 +3,12 @@ import {
   flatSelectValues,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
+import { useEffect, useState } from 'react'
 import {
   type CouponsField,
   type CouponsFilters,
   type FilterValue
-} from 'AppForm'
-import { useEffect, useState } from 'react'
+} from '../types'
 
 interface Props {
   onChange: (filters: CouponsFilters) => void

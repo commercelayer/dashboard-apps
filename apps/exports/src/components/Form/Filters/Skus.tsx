@@ -7,8 +7,8 @@ import {
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { type FilterValue, type SkusField, type SkusFilters } from 'AppForm'
 import { useEffect, useState } from 'react'
+import { type FilterValue, type SkusField, type SkusFilters } from '../types'
 
 interface Props {
   onChange: (filters: SkusFilters) => void

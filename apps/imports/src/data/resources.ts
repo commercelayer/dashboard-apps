@@ -2,7 +2,7 @@ import {
   type AllowedParentResource,
   type AllowedResourceType,
   type ResourceWithParent
-} from 'App'
+} from '@typing/resources.types'
 
 type VisibleInUI = boolean
 

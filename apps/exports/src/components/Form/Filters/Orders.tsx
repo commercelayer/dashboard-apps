@@ -7,8 +7,12 @@ import {
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { type FilterValue, type OrdersField, type OrdersFilters } from 'AppForm'
 import { useEffect, useState } from 'react'
+import {
+  type FilterValue,
+  type OrdersField,
+  type OrdersFilters
+} from '../types'
 import { parseFilterToDate } from './utils'
 
 interface Props {

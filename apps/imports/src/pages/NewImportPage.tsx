@@ -19,7 +19,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { CommerceLayerStatic, type ImportCreate } from '@commercelayer/sdk'
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 import { unparse } from 'papaparse'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'

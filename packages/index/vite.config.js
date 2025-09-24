@@ -1,3 +1,4 @@
+// @ts-check
 import react from '@vitejs/plugin-react'
 import externalGlobals from 'rollup-plugin-external-globals'
 import { loadEnv } from 'vite'

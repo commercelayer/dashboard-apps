@@ -1,5 +1,5 @@
 import { formatResourceName } from '@commercelayer/app-elements'
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 
 type VisibleInUI = boolean
 

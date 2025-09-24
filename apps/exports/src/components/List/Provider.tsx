@@ -5,7 +5,6 @@ import type {
   QueryFilter,
   QueryParamsList
 } from '@commercelayer/sdk'
-import { type ListExportContextState, type ListExportContextValue } from 'App'
 import {
   createContext,
   type ReactNode,
@@ -15,6 +14,10 @@ import {
   useReducer,
   useRef
 } from 'react'
+import {
+  type ListExportContextState,
+  type ListExportContextValue
+} from './types'
 
 import { useIsChanged } from '@commercelayer/app-elements'
 import { initialState, initialValues } from './data'

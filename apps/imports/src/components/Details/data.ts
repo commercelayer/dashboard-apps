@@ -1,8 +1,8 @@
+import { makeImport } from '#mocks'
 import {
   type ImportDetailsContextState,
   type ImportDetailsContextValue
-} from 'App'
-import { makeImport } from '#mocks'
+} from './types'
 
 export const initialState: ImportDetailsContextState = {
   isLoading: true,

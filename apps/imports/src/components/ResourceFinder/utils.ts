@@ -4,7 +4,10 @@ import type {
   ListResponse,
   Resource
 } from '@commercelayer/sdk'
-import { type AllowedParentResource, type AllowedResourceType } from 'App'
+import {
+  type AllowedParentResource,
+  type AllowedResourceType
+} from '@typing/resources.types'
 
 /**
  * Retrieve a list of resources from api filtered by hint if provided.

@@ -1,5 +1,6 @@
 import { Form } from '#components/Form'
 import { adaptFormFiltersToSdk } from '#components/Form/Filters/utils'
+import { type ExportFormValues } from '#components/Form/types'
 import { validateRecordsCount } from '#components/Form/validateRecordsCount'
 import { customFieldsSubset } from '#data/fields'
 import { isAvailableResource, showResourceNiceName } from '#data/resources'
@@ -15,8 +16,7 @@ import {
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { type ApiError } from 'App'
-import { type ExportFormValues } from 'AppForm'
+import { type ApiError } from '@typing/resources.types'
 import { useState } from 'react'
 import { Link, useLocation, useRoute } from 'wouter'
 

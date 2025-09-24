@@ -1,34 +1,13 @@
 {
+  "extends": "../../configs/tsconfig.app.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "noEmit": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "verbatimModuleSyntax": true,
-    "jsx": "react-jsx",
+    /* Project rules */
+    "types": [],
     "baseUrl": "./"
   },
   "include": [
     "i18n.d.ts",
     "src",
-    ".eslintrc.cjs",
-    "@typing/**/*.d.ts",
-    "public/*.js"
+    ".eslintrc.cjs"
   ]
 }

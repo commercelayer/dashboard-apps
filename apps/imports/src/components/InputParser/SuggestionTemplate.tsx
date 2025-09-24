@@ -1,5 +1,5 @@
 import { Button, Hint } from '@commercelayer/app-elements'
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 import { downloadTemplateAsCsvFile } from './templates'
 
 interface Props {

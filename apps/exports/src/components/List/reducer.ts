@@ -1,5 +1,5 @@
 import type { Export, ListResponse } from '@commercelayer/sdk'
-import type { ListExportContextState } from 'App'
+import type { ListExportContextState } from './types'
 import { listHasProgressingItems } from './utils'
 
 type Action =

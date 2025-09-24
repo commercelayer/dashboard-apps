@@ -6,7 +6,10 @@ import {
   type InputSelectValue
 } from '@commercelayer/app-elements'
 import { type CommerceLayerClient } from '@commercelayer/sdk'
-import { type AllowedParentResource, type AllowedResourceType } from 'App'
+import {
+  type AllowedParentResource,
+  type AllowedResourceType
+} from '@typing/resources.types'
 import { useEffect, useRef, useState } from 'react'
 import { fetchResources } from './utils'
 

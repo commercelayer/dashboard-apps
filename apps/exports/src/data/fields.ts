@@ -1,5 +1,5 @@
 import { type Market, type Order } from '@commercelayer/sdk'
-import { type AllowedResourceType } from 'App'
+import { type AllowedResourceType } from '@typing/resources.types'
 
 type OrdersField = keyof Order | `market.${keyof Market}`
 const orders: OrdersField[] = [

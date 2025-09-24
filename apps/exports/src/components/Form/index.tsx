@@ -14,10 +14,10 @@ import {
   Tabs,
   Tooltip
 } from '@commercelayer/app-elements'
-import { type AllowedResourceType } from 'App'
-import { type ExportFormValues } from 'AppForm'
+import { type AllowedResourceType } from '@typing/resources.types'
 import { Controller, useForm } from 'react-hook-form'
 import { RelationshipSelector } from './RelationshipSelector'
+import { type ExportFormValues } from './types'
 
 interface Props {
   resourceType: AllowedResourceType

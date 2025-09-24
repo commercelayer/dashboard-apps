@@ -1,17 +1,17 @@
 import { ZodError } from 'zod'
 
 import {
-  zodEnforceBoolean,
-  zodEnforcePositiveInt,
-  zodEnforcePositiveFloat,
-  zodEnforceDateString,
-  zodCaseInsensitiveNativeEnum,
-  zodEnforceInt
-} from './zodUtils'
-import {
-  zodEnforceNonNegativeInt,
-  zodEnforceFloat
+  zodEnforceFloat,
+  zodEnforceNonNegativeInt
 } from '#components/InputParser/schemas/zodUtils'
+import {
+  zodCaseInsensitiveNativeEnum,
+  zodEnforceBoolean,
+  zodEnforceDateString,
+  zodEnforceInt,
+  zodEnforcePositiveFloat,
+  zodEnforcePositiveInt
+} from './zodUtils'
 
 describe('check zodEnforceBoolean', () => {
   test('should parse true string text as boolean `true`', () => {
@@ -145,11 +145,11 @@ describe('check zodEnforceDateString', () => {
 
 describe('check zodCaseInsensitiveNativeEnum', () => {
   test('should allow int', () => {
-    enum MyCustomEnum {
-      'large' = 'xl',
-      'medium' = 'm',
-      'small' = 's'
-    }
+    const MyCustomEnum = {
+      large: 'xl',
+      medium: 'm',
+      small: 's'
+    } as const
     expect(zodCaseInsensitiveNativeEnum(MyCustomEnum).parse('M')).toBe('m')
     expect(zodCaseInsensitiveNativeEnum(MyCustomEnum).parse('xl')).toBe('xl')
     expect(
