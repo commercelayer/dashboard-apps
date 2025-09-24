@@ -31,6 +31,33 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "noUncheckedIndexedAccess": true
-  }
+    "noUncheckedIndexedAccess": true,
+    /* Aliases */
+    "paths": {
+      "#components/*": [
+        "src/components/*"
+      ],
+      "#contexts/*": [
+        "src/contexts/*"
+      ],
+      "#data/*": [
+        "src/data/*"
+      ],
+      "#hooks/*": [
+        "src/hooks/*"
+      ],
+      "#mocks": [
+        "src/mocks/index"
+      ],
+      "#pages/*": [
+        "src/pages/*"
+      ],
+      "#utils/*": [
+        "src/utils/*"
+      ],
+      "#types": [
+        "src/types.ts"
+      ]
+    }
+  },
 }

@@ -1,35 +1,6 @@
 {
   "extends": "../../configs/tsconfig.app.json",
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "#components/*": [
-        "src/components/*"
-      ],
-      "#contexts/*": [
-        "src/contexts/*"
-      ],
-      "#data/*": [
-        "src/data/*"
-      ],
-      "#hooks/*": [
-        "src/hooks/*"
-      ],
-      "#mocks": [
-        "src/mocks/index"
-      ],
-      "#pages/*": [
-        "src/pages/*"
-      ],
-      "#utils/*": [
-        "src/utils/*"
-      ]
-    }
-  },
-  "include": [
-    "i18n.d.ts",
-    "src",
-    ".eslintrc.cjs",
-    "public/*.js",
-  ]
+    "baseUrl": "./"
+  }
 }

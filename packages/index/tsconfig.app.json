@@ -2,35 +2,6 @@
   "extends": "../../configs/tsconfig.app.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "paths": {
-      "#components/*": [
-        "src/components/*"
-      ],
-      "#contexts/*": [
-        "src/contexts/*"
-      ],
-      "#data/*": [
-        "src/data/*"
-      ],
-      "#hooks/*": [
-        "src/hooks/*"
-      ],
-      "#mocks": [
-        "src/mocks/index"
-      ],
-      "#pages/*": [
-        "src/pages/*"
-      ],
-      "#utils/*": [
-        "src/utils/*"
-      ]
-    }
-  },
-  "include": [
-    "global.d.ts",
-    "src",
-    ".eslintrc.cjs",
-    "@typing/**/*.d.ts",
-    "public/*.js"
-  ]
+    "allowJs": true
+  }
 }
