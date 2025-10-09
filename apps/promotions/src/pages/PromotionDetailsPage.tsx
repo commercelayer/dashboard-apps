@@ -17,6 +17,7 @@ import {
   Badge,
   Button,
   Card,
+  CodeEditor,
   Dropdown,
   DropdownItem,
   Icon,
@@ -43,7 +44,7 @@ import {
   type PageHeadingProps
 } from '@commercelayer/app-elements'
 import type { FlexPromotion } from '@commercelayer/sdk'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState, type Ref } from 'react'
 import { Link, useLocation } from 'wouter'
 
 function Page(
@@ -306,16 +307,81 @@ function SectionCheck({
                     ? 'Hurray! It matches 🎉'
                     : "So sad, it doesn't match 😢"}
               </Spacer>
-              <Card overflow='visible' gap='4'>
-                <pre style={{ overflowX: 'auto' }}>
-                  {JSON.stringify(results, undefined, 2)}
-                </pre>
-              </Card>
             </Text>
+            {results.data.map((rule: any, index: number) => (
+              <CheckItem key={rule.id} index={index} rule={rule} />
+            ))}
           </Spacer>
         )}
       </Spacer>
     </Section>
+  )
+}
+
+function CheckItem({
+  index,
+  rule
+}: {
+  index: number
+  rule: any
+}): React.JSX.Element {
+  const [show, setShow] = useState(false)
+
+  type ExtractRef<T> = T extends { ref?: Ref<infer R> } ? R | null : never
+  const ref = useRef<ExtractRef<Parameters<typeof CodeEditor>[0]>>(null)
+
+  const idx = `#${(index + 1).toString().padStart(2, '0')}`
+
+  return (
+    <div>
+      <Spacer top='4'>
+        <Card
+          overflow='visible'
+          gap='4'
+          style={{
+            backgroundColor:
+              rule.match === true
+                ? 'var(--color-green-50)'
+                : 'var(--color-red-50)',
+            color:
+              rule.match === true
+                ? 'var(--color-green-700)'
+                : 'var(--color-red-700)'
+          }}
+        >
+          <div>
+            <button
+              onClick={() => {
+                setShow(!show)
+              }}
+              className='flex items-center justify-between w-full gap-2'
+            >
+              <div className='text-left flex gap-4'>
+                <b>{idx}</b>
+                <div>{rule.name}</div>
+              </div>
+              <Icon
+                name={show ? 'caretDown' : 'caretRight'}
+                size={16}
+                className='shrink-0'
+              />
+            </button>
+            {show && (
+              <Spacer top='4'>
+                <CodeEditor
+                  ref={ref}
+                  readOnly
+                  language='json'
+                  value={JSON.stringify(rule, undefined, 2)}
+                  jsonSchema='none'
+                  height={550}
+                />
+              </Spacer>
+            )}
+          </div>
+        </Card>
+      </Spacer>
+    </div>
   )
 }
 
