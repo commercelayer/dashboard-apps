@@ -138,7 +138,12 @@ export function CustomerDetails(): React.JSX.Element {
               />
             </Spacer>
             <Spacer top='14'>
-              <CustomerAddresses customer={customer} />
+              <CustomerAddresses
+                customer={customer}
+                onRemovedAddress={() => {
+                  void mutateCustomer()
+                }}
+              />
             </Spacer>
 
             <Spacer top='14'>
