@@ -9,7 +9,7 @@ export const DetailsImage: FC<{ giftCard: GiftCard }> = ({ giftCard }) => {
     <Section title='Image'>
       <Spacer top='6'>
         <img
-          src={giftCard.image_url}
+          src={giftCard.image_url ?? undefined}
           alt='Gift card'
           style={{
             maxWidth: '100%',
