@@ -10,6 +10,7 @@ import {
   Spacer,
   formatDateWithPredicate,
   useAppLinking,
+  useCoreApi,
   useTokenProvider,
   useTranslation,
   type PageHeadingProps
@@ -52,20 +53,15 @@ export function CustomerDetails(): React.JSX.Element {
   const { ResetPasswordOverlay, showResetPasswordOverlay } =
     useCustomerResetPasswordOverlay(customerId)
 
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
+  const enableResetPassword =
+    organization?.config?.apps?.customers?.enable_reset_password === true
+
   const pageTitle = `${customer.email}`
 
   const pageToolbar: PageHeadingProps['toolbar'] = {
     buttons: [],
-    dropdownItems: [
-      [
-        {
-          label: 'Reset Password',
-          onClick: () => {
-            showResetPasswordOverlay()
-          }
-        }
-      ]
-    ]
+    dropdownItems: []
   }
 
   if (canUser('update', 'customers')) {
@@ -77,6 +73,17 @@ export function CustomerDetails(): React.JSX.Element {
         setLocation(appRoutes.edit.makePath(customerId))
       }
     })
+  }
+
+  if (enableResetPassword) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Reset Password',
+        onClick: () => {
+          showResetPasswordOverlay()
+        }
+      }
+    ])
   }
 
   if (canBeDeleted || canBeAnonymized) {
