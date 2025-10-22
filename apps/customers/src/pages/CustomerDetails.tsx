@@ -10,6 +10,7 @@ import {
   Spacer,
   formatDateWithPredicate,
   useAppLinking,
+  useCoreApi,
   useTokenProvider,
   useTranslation,
   type PageHeadingProps
@@ -27,6 +28,7 @@ import { useCustomerCanBeAnonymized } from '#hooks/useCustomerCanBeAnonymized'
 import { useCustomerCanBeDeleted } from '#hooks/useCustomerCanBeDeleted'
 import { useCustomerDeleteOverlay } from '#hooks/useCustomerDeleteOverlay'
 import { useCustomerDetails } from '#hooks/useCustomerDetails'
+import { useCustomerResetPasswordOverlay } from '#hooks/useCustomerResetPasswordOverlay'
 import { isMockedId } from '@commercelayer/app-elements'
 
 export function CustomerDetails(): React.JSX.Element {
@@ -48,6 +50,12 @@ export function CustomerDetails(): React.JSX.Element {
   const canBeAnonymized = useCustomerCanBeAnonymized(customerId)
 
   const { DeleteOverlay, show } = useCustomerDeleteOverlay(customerId)
+  const { ResetPasswordOverlay, showResetPasswordOverlay } =
+    useCustomerResetPasswordOverlay(customerId)
+
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
+  const enableResetPassword =
+    organization?.config?.apps?.customers?.enable_reset_password === true
 
   const pageTitle = `${customer.email}`
 
@@ -65,6 +73,17 @@ export function CustomerDetails(): React.JSX.Element {
         setLocation(appRoutes.edit.makePath(customerId))
       }
     })
+  }
+
+  if (enableResetPassword) {
+    pageToolbar.dropdownItems?.push([
+      {
+        label: 'Reset Password',
+        onClick: () => {
+          showResetPasswordOverlay()
+        }
+      }
+    ])
   }
 
   if (canBeDeleted || canBeAnonymized) {
@@ -193,6 +212,7 @@ export function CustomerDetails(): React.JSX.Element {
         </SkeletonTemplate>
       )}
       {canUser('destroy', 'customers') && <DeleteOverlay />}
+      <ResetPasswordOverlay />
     </PageLayout>
   )
 }
