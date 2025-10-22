@@ -36,6 +36,7 @@ export const StockTransferSummary = withSkeletonTemplate<Props>(
     const lineItem = stockTransfer.line_item
     lineItem.formatted_total_amount = null
     lineItem.formatted_unit_amount = null
+    lineItem.quantity = stockTransfer.quantity
 
     return (
       <Section title='Stock items'>
