@@ -74,7 +74,9 @@ export function StockItemForm({
             top={defaultValues?.stockLocation == null ? '6' : '12'}
             bottom='4'
           >
-            <Text weight='semibold'>SKU</Text>
+            <Text weight='semibold' size='small'>
+              SKU
+            </Text>
             <Spacer top='2'>
               {stockItemFormWatchedItem == null ? (
                 <div

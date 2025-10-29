@@ -92,7 +92,9 @@ export function PriceForm({
             top={defaultValues?.price_list != null ? '12' : '6'}
             bottom='4'
           >
-            <Text weight='semibold'>SKU</Text>
+            <Text weight='semibold' size='small'>
+              SKU
+            </Text>
             <Spacer top='2'>
               {priceFormWatchedItem == null ? (
                 <div
