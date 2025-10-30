@@ -150,13 +150,29 @@ function Page(
             borderWidth: '1px',
             borderBottom: 0,
             borderRadius: 'var(--radius)',
-            overflow: 'hidden',
             borderColor:
               list?.length == null || list.length > 0
                 ? undefined
-                : 'transparent'
+                : 'transparent',
+            position: 'relative'
           }}
         >
+          {/* fake bottom border */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: -1,
+              right: -1,
+              height: '5px',
+              borderWidth: '1px',
+              borderTop: 0,
+              borderBottomLeftRadius: 'var(--radius)',
+              borderBottomRightRadius: 'var(--radius)',
+              pointerEvents: 'none',
+              touchAction: 'none'
+            }}
+          />
           <ResourceList
             variant='table'
             headings={[
