@@ -55,7 +55,8 @@ export function CustomerDetails(): React.JSX.Element {
 
   const { data: organization } = useCoreApi('organization', 'retrieve', [])
   const enableResetPassword =
-    organization?.config?.apps?.customers?.enable_reset_password === true
+    organization?.config?.apps?.customers?.enable_reset_password === true &&
+    canUser('create', 'customer_password_resets')
 
   const pageTitle = `${customer.email}`
 
