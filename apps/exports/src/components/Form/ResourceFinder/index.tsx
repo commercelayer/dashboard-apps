@@ -11,8 +11,9 @@ import {
 import { useEffect, useState } from 'react'
 import { fetchInitialResources, fetchResourcesByHint } from './utils'
 
-interface Props<ResType extends SearchableResource>
-  extends SearchParams<ResType> {
+interface Props<
+  ResType extends SearchableResource
+> extends SearchParams<ResType> {
   /**
    * Text to show above the input
    */

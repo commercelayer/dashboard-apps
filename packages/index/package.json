@@ -13,11 +13,11 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "6.4.1",
-    "lodash-es": "^4.17.21",
+    "@commercelayer/app-elements": "6.5.0",
+    "lodash-es": "^4.17.22",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "wouter": "^3.7.1"
+    "wouter": "^3.8.1"
   },
   "devDependencies": {
     "@commercelayer/app-builder": "workspace:*",
@@ -29,14 +29,14 @@
     "@types/node": "22.13.4",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.0.3",
+    "@vitejs/plugin-react": "^5.1.2",
     "eslint": "^8.57.1",
     "js-cookie": "^3.0.5",
-    "js-yaml": "^4.1.0",
-    "jsdom": "^27.0.0",
+    "js-yaml": "^4.1.1",
+    "jsdom": "^27.3.0",
     "rollup-plugin-external-globals": "^0.13.0",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.6",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
   }
