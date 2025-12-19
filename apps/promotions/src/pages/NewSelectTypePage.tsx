@@ -18,7 +18,7 @@ import {
 } from '@commercelayer/app-elements'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
-import flexPromotionImage from '../assets/flex-promotion.jpg'
+import { flexPromotionImageSrc } from '../assets/flex-promotion'
 
 function Page(
   props: PageProps<typeof appRoutes.newSelectType>
@@ -132,7 +132,7 @@ function UpsellFlexPromotion(): React.ReactNode {
                 backgroundPosition: 'top left',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
-                backgroundImage: `url(${flexPromotionImage})`
+                backgroundImage: `url(${flexPromotionImageSrc})`
               }}
             />
             <div>
