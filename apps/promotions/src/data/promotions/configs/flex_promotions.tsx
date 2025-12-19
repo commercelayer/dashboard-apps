@@ -15,8 +15,7 @@ export default {
     slug: 'flex',
     icon: 'target',
     titleList: 'Flex promotion',
-    description:
-      'Create advanced promotions with flexible conditions using the rules engine.',
+    description: 'Create advanced, flexible promotions with our rule builder.',
     titleNew: 'flex promotion',
     formType: genericPromotionOptions.merge(
       z.object({
