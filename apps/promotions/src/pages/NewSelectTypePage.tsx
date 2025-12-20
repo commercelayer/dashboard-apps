@@ -132,7 +132,8 @@ function UpsellFlexPromotion(): React.ReactNode {
                 backgroundPosition: 'top left',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
-                backgroundImage: `url(${flexPromotionImageSrc})`
+                backgroundImage: `url(${flexPromotionImageSrc})`,
+                borderRadius: '0 0 0 var(--radius)'
               }}
             />
             <div>
