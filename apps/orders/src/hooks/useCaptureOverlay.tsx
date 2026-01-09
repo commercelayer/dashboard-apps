@@ -56,7 +56,7 @@ export function useCaptureOverlay(): OverlayHook {
               )}
             </ListDetailsItem>
             <ListDetailsItem label={t('common.amount')}>
-              {order.formatted_total_amount}
+              {order.formatted_total_amount_with_taxes}
             </ListDetailsItem>
           </ListDetails>
         </Spacer>
@@ -67,7 +67,8 @@ export function useCaptureOverlay(): OverlayHook {
             close()
           }}
         >
-          {t('apps.orders.actions.capture')} {order.formatted_total_amount}
+          {t('apps.orders.actions.capture')}{' '}
+          {order.formatted_total_amount_with_taxes}
         </Button>
       </Overlay>
     )
