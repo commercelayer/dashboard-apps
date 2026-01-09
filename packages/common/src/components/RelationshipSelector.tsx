@@ -62,10 +62,8 @@ function makeSelectInitialValuesWithDefault<
   ).concat(sortedOptions)
 }
 
-interface RelationshipSelectorProps extends Pick<
-  InputSelectProps,
-  'label' | 'hint' | 'isClearable'
-> {
+interface RelationshipSelectorProps
+  extends Pick<InputSelectProps, 'label' | 'hint' | 'isClearable'> {
   /** The field name to use in the form state */
   fieldName: string
   /** The resource type to fetch */

@@ -95,10 +95,11 @@ export const fetchInitialResources = async <
   })
 }
 
-interface AdaptSuggestionsParams extends Pick<
-  SearchParams<SearchableResource>,
-  'fieldForLabel' | 'fieldForValue'
-> {
+interface AdaptSuggestionsParams
+  extends Pick<
+    SearchParams<SearchableResource>,
+    'fieldForLabel' | 'fieldForValue'
+  > {
   fetchedResources: ListResponse<
     Resource & { name?: string; code?: string | null; id: string }
   >
