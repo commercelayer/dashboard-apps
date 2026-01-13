@@ -3,7 +3,6 @@ import { makeOrderSubscription } from '#mocks'
 import { getSubscriptionStatus } from '#utils/getSubscriptionStatus'
 import {
   formatDate,
-  Hint,
   Icon,
   ListItem,
   StatusIcon,
@@ -66,12 +65,12 @@ export const ListItemSubscription =
               <Text weight='bold'>
                 {resource?.market?.name} #{resource.number}
               </Text>
-              <Hint>
+              <Text tag='div' variant='info' weight='medium' size='small'>
                 {date} · {resource.customer_email} ·{' '}
                 <Text variant={lastRunFailed ? 'danger' : 'info'}>
                   {status}
                 </Text>
-              </Hint>
+              </Text>
             </div>
             <Icon name='caretRight' />
           </ListItem>

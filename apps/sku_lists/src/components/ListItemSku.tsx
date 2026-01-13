@@ -41,10 +41,10 @@ export const ListItemSku = withSkeletonTemplate<Props>(
         }
       >
         <div>
-          <Text tag='div' variant='info' weight='semibold' size='small'>
+          <Text tag='div' variant='info' weight='medium' size='x-small'>
             {resource.code}
           </Text>
-          <Text tag='div' weight='bold'>
+          <Text tag='div' weight='semibold' size='regular'>
             {resource.name}
           </Text>
         </div>
