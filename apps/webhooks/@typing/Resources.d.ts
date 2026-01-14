@@ -55,6 +55,7 @@ declare module 'App' {
     | 'external_promotions'
     | 'fixed_amount_promotions'
     | 'fixed_price_promotions'
+    | 'flex_promotions'
     | 'free_gift_promotions'
     | 'free_shipping_promotions'
     | 'gift_cards'
