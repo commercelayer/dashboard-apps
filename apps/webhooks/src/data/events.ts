@@ -35,6 +35,7 @@ export const webhookEvents: Record<ResourceWithEvent, string[]> = {
   external_promotions: ['create', 'destroy', 'failed', 'tagged'],
   fixed_amount_promotions: ['create', 'destroy', 'tagged'],
   fixed_price_promotions: ['create', 'destroy', 'tagged'],
+  flex_promotions: ['create', 'destroy', 'tagged'],
   free_gift_promotions: ['create', 'destroy', 'tagged'],
   free_shipping_promotions: ['create', 'destroy', 'tagged'],
   gift_cards: [
