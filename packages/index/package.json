@@ -13,7 +13,7 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "6.5.1",
+    "@commercelayer/app-elements": "6.6.0",
     "lodash-es": "^4.17.22",
     "react": "19.1.1",
     "react-dom": "19.1.1",

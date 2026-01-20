@@ -3,7 +3,6 @@ import { appRoutes } from '#data/routes'
 import { makeWebhook } from '#mocks'
 import { getWebhookPredicateByStatus } from '#utils/getWebhookPredicateByStatus'
 import {
-  Hint,
   Icon,
   ListItem,
   RadialProgress,
@@ -63,9 +62,9 @@ export const ListItemWebhook = withSkeletonTemplate<ListItemWebhookProps>(
       >
         <div>
           <Text weight='bold'>{resource.name}</Text>
-          <Hint>
+          <Text tag='div' variant='info' weight='medium' size='small'>
             {resource.topic} · {webhookPredicate}
-          </Hint>
+          </Text>
         </div>
         <Icon name='caretRight' />
       </ListItem>

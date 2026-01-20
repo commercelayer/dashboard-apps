@@ -37,5 +37,8 @@
     "lerna": "^9.0.3",
     "lint-staged": "^16.2.7",
     "replace-in-file": "^8.4.0"
+  },
+  "resolutions": {
+    "tar": "^7.5.3"
   }
 }

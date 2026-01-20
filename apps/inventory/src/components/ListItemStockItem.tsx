@@ -48,7 +48,7 @@ export const ListItemStockItem = withSkeletonTemplate<Props>(
         <div>
           <div className='flex justify-between items-end'>
             <div>
-              <Text tag='div' weight='medium' variant='info' size='small'>
+              <Text tag='div' weight='medium' variant='info' size='x-small'>
                 {resource.sku?.code}
               </Text>
               <Text tag='div' weight='semibold'>

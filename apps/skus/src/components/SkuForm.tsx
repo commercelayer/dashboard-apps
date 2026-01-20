@@ -5,6 +5,7 @@ import {
   Button,
   ButtonImageSelect,
   Grid,
+  Hint,
   HookedForm,
   HookedInput,
   HookedInputCheckbox,
@@ -209,9 +210,7 @@ export function SkuForm({
               />
             </Grid>
             <Spacer top='2'>
-              <Text variant='info' size='small'>
-                Used to automatically calculate shipping weight.
-              </Text>
+              <Hint>Used to automatically calculate shipping weight.</Hint>
             </Spacer>
           </Spacer>
         </Section>
