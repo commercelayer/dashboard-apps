@@ -210,9 +210,7 @@ export function SkuForm({
               />
             </Grid>
             <Spacer top='2'>
-              <Hint>
-                Used to automatically calculate shipping weight.
-              </Hint>
+              <Hint>Used to automatically calculate shipping weight.</Hint>
             </Spacer>
           </Spacer>
         </Section>
