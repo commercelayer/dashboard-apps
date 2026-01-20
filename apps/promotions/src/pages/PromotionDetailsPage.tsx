@@ -1,3 +1,4 @@
+import { CouponGeneratorModal } from '#components/CouponGeneratorModal'
 import { CouponTable } from '#components/CouponTable'
 import { SectionFlexRules } from '#components/FlexRuleBuilder'
 import { GenericPageNotFound, type PageProps } from '#components/Routes'
@@ -694,6 +695,7 @@ const SectionCoupon = withSkeletonTemplate<{
   promotion: Promotion
 }>(({ promotion }) => {
   const [, setLocation] = useLocation()
+  const [showCouponGenerator, setShowCouponGenerator] = useState(false)
   const {
     isLoading: isLoadingCoupons,
     coupons,
@@ -741,12 +743,37 @@ const SectionCoupon = withSkeletonTemplate<{
         border='none'
         actionButton={
           hasCoupons ? (
-            <Link href={addCouponLink} asChild>
-              <A href='' variant='secondary' size='mini' alignItems='center'>
-                <Icon name='plus' />
-                Coupon
-              </A>
-            </Link>
+            <Dropdown
+              dropdownLabel={
+                <Button
+                  alignItems='center'
+                  size='mini'
+                  variant='secondary'
+                  onClick={() => {
+                    setLocation(addCouponLink)
+                  }}
+                >
+                  <Icon name='plus' size={16} />
+                  New
+                </Button>
+              }
+              dropdownItems={[
+                <DropdownItem
+                  key='single'
+                  label='Single coupon'
+                  onClick={() => {
+                    setLocation(addCouponLink)
+                  }}
+                />,
+                <DropdownItem
+                  key='multiple'
+                  label='Multiple coupons'
+                  onClick={() => {
+                    setShowCouponGenerator(true)
+                  }}
+                />
+              ]}
+            />
           ) : undefined
         }
       >
@@ -771,6 +798,12 @@ const SectionCoupon = withSkeletonTemplate<{
           </Link>
         </Spacer>
       )}
+      <CouponGeneratorModal
+        show={showCouponGenerator}
+        handleClose={() => {
+          setShowCouponGenerator(false)
+        }}
+      />
     </SkeletonTemplate>
   )
 })
