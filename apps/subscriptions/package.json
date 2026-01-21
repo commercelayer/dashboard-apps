@@ -2,7 +2,7 @@
   "private": true,
   "name": "app-subscriptions",
   "description": "A Commerce Layer Single Page Application to manage subscriptions with a nice GUI.",
-  "version": "3.18.0",
+  "version": "3.18.1",
   "license": "MIT",
   "keywords": [
     "reactjs",
@@ -26,7 +26,7 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "6.6.0",
+    "@commercelayer/app-elements": "6.6.1",
     "@commercelayer/sdk": "6.50.1",
     "@hookform/resolvers": "^3.10.0",
     "lodash-es": "^4.17.22",

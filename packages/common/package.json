@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "dashboard-apps-common",
-  "version": "3.18.0",
+  "version": "3.18.1",
   "type": "module",
   "scripts": {
     "lint": "eslint src --ext .ts,.tsx",
@@ -9,7 +9,7 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "6.6.0",
+    "@commercelayer/app-elements": "6.6.1",
     "@commercelayer/sdk": "6.50.1",
     "@hookform/resolvers": "^3.10.0",
     "date-fns": "^4.1.0",
