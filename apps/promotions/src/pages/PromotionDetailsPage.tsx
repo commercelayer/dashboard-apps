@@ -799,9 +799,13 @@ const SectionCoupon = withSkeletonTemplate<{
         </Spacer>
       )}
       <CouponGeneratorModal
+        promotion={promotion}
         show={showCouponGenerator}
         handleClose={() => {
           setShowCouponGenerator(false)
+        }}
+        onImportCreated={(importId) => {
+          console.log('Coupon import created with ID:', importId)
         }}
       />
     </SkeletonTemplate>

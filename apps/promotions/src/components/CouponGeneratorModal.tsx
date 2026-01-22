@@ -1,3 +1,4 @@
+import type { Promotion } from '#types'
 import {
   Button,
   Grid,
@@ -9,22 +10,29 @@ import {
   Label,
   Modal,
   Spacer,
-  Text
+  Text,
+  useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMemo, type FC } from 'react'
+import { useCallback, useMemo, useState, type FC } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 
 interface CouponGeneratorModalProps {
+  promotion: Promotion
   show: boolean
   handleClose: () => void
+  onImportCreated: (importId: string) => void
 }
 
 export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
+  promotion,
   show,
-  handleClose
+  handleClose,
+  onImportCreated
 }) => {
+  const [isGenerating, setIsGenerating] = useState(false)
+  const { sdkClient } = useCoreSdkProvider()
   const methods = useForm<CouponGeneratorFormSchema>({
     defaultValues: {
       numberOfCoupons: 1000,
@@ -49,21 +57,68 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
     [codeLength, codeCase, prefix]
   )
 
+  const getPromotionRuleId = useCallback(async () => {
+    let { id } = promotion?.coupon_codes_promotion_rule ?? {}
+    if (id == null) {
+      ;({ id } = await sdkClient.coupon_codes_promotion_rules.create({
+        promotion: {
+          id: promotion.id,
+          type: promotion.type
+        }
+      }))
+    }
+    return id
+  }, [promotion.id, sdkClient])
+
   return (
-    <Modal show={show} onClose={handleClose} size='small'>
+    <Modal
+      show={show}
+      onClose={() => {
+        if (!isGenerating) {
+          handleClose()
+        }
+      }}
+      size='small'
+    >
       <Modal.Header>Multiple coupons</Modal.Header>
       <Modal.Body>
         <HookedForm
           {...methods}
-          onSubmit={(values) => {
-            console.log('values', values)
-            const generatedCodes = generateUniqueCoupons({
-              numberOfCoupons: values.numberOfCoupons,
-              codeLength: values.codeLength,
-              case: values.case,
-              prefix: values.prefix
-            })
-            console.log('generatedCodes', generatedCodes)
+          onSubmit={async (values) => {
+            setIsGenerating(true)
+            try {
+              const generatedCodes = generateUniqueCoupons({
+                numberOfCoupons: values.numberOfCoupons,
+                codeLength: values.codeLength,
+                case: values.case,
+                prefix: values.prefix
+              })
+
+              const promotionRuleId = await getPromotionRuleId()
+
+              const csvContent = makeCsv({
+                codes: generatedCodes,
+                promotionRuleId,
+                usageLimit: values.usageLimit ?? undefined,
+                expiresAt: values.expiresAt ?? undefined
+              })
+
+              console.log('Generated CSV Content:\n', csvContent)
+
+              const couponImport = await sdkClient.imports.create({
+                format: 'csv',
+                inputs: csvContent as unknown as object[],
+                resource_type: 'coupons',
+                reference: `promotion_id:${promotion.id}`
+              })
+
+              onImportCreated(couponImport.id)
+              handleClose()
+              setIsGenerating(false)
+            } catch (error) {
+              console.error('Error generating coupons:', error)
+              setIsGenerating(false)
+            }
           }}
         >
           <Spacer bottom='8'>
@@ -130,7 +185,18 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
             </HookedInputCheckbox>
           </Spacer>
           <Spacer bottom='2'>
-            <HookedInputCheckbox name='usageLimit'>
+            <HookedInputCheckbox
+              name='hasUsageLimit'
+              checkedElement={
+                <HookedInput
+                  name='usageLimit'
+                  placeholder='max usage'
+                  type='number'
+                  min={0}
+                  step={1}
+                />
+              }
+            >
               Limit usage
             </HookedInputCheckbox>
           </Spacer>
@@ -140,8 +206,8 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
             </HookedInputCheckbox>
           </Spacer>
 
-          <Button type='submit' fullWidth>
-            Generate coupons
+          <Button type='submit' fullWidth disabled={isGenerating}>
+            {isGenerating ? 'Generating…' : 'Generate coupons'}
           </Button>
         </HookedForm>
       </Modal.Body>
@@ -150,6 +216,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
 }
 
 const formValidationSchema = z.object({
+  // coupon generation rules
   numberOfCoupons: z
     .number()
     .min(2, 'At least 2 coupon must be generated')
@@ -164,13 +231,17 @@ const formValidationSchema = z.object({
     .max(4, 'Prefix cannot exceed 4 characters')
     .optional()
     .nullable(),
+
   // options
-  // hasExpiration: z.boolean().default(false),
   expiresAt: z
     .date()
     .transform((date) => date.toISOString())
     .optional(),
-  usageLimit: z.boolean().default(false),
+  usageLimit: z
+    .number()
+    .min(1, 'Usage limit must be at least 1')
+    .optional()
+    .nullable(),
   customerSingleUse: z.boolean().default(false)
 })
 
@@ -217,4 +288,28 @@ function generateUniqueCoupons(params: CouponGeneratorParams): string[] {
   }
 
   return Array.from(coupons)
+}
+
+function makeCsv({
+  codes,
+  promotionRuleId,
+  expiresAt,
+  usageLimit,
+  customerSingleUse
+}: {
+  codes: string[]
+  promotionRuleId?: string
+  expiresAt?: string
+  usageLimit?: number
+  customerSingleUse?: boolean
+}): string {
+  const header =
+    'code,promotion_rule_id,expires_at,usage_limit,customer_single_use\n'
+  const rows = codes
+    .map(
+      (code) =>
+        `${code},${promotionRuleId ?? ''},${expiresAt ?? ''},${usageLimit ?? ''},${customerSingleUse ?? ''}\n`
+    )
+    .join('')
+  return header + rows
 }
