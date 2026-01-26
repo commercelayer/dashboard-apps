@@ -1,5 +1,4 @@
-import { CouponGeneratorModal } from '#components/CouponGeneratorModal'
-import { CouponTable } from '#components/CouponTable'
+import { CouponList } from '#components/CouponList'
 import { SectionFlexRules } from '#components/FlexRuleBuilder'
 import { GenericPageNotFound, type PageProps } from '#components/Routes'
 import {
@@ -10,7 +9,6 @@ import { appRoutes } from '#data/routes'
 import { usePromotionRules } from '#data/ruleBuilder/usePromotionRules'
 import { useDeletePromotionOverlay } from '#hooks/useDeletePromotionOverlay'
 import { usePromotion } from '#hooks/usePromotion'
-import { usePromotionCoupons } from '#hooks/usePromotionCoupons'
 import type { Promotion } from '#types'
 import {
   A,
@@ -33,6 +31,8 @@ import {
   SkeletonTemplate,
   Spacer,
   Stack,
+  Tab,
+  Tabs,
   Text,
   formatDate,
   formatDateWithPredicate,
@@ -162,94 +162,103 @@ function Page(
         }
       }}
     >
-      <SkeletonTemplate isLoading={isLoading}>
-        <DeleteOverlay promotion={promotion} />
+      <Spacer top='14'>
+        <Tabs>
+          <Tab name='Overview'>
+            <SkeletonTemplate isLoading={isLoading}>
+              <DeleteOverlay promotion={promotion} />
+              <Spacer top='6'>
+                {!isLoadingRules &&
+                  !hasRules &&
+                  !viaApi &&
+                  promotion.type !== 'flex_promotions' && (
+                    <Alert status='warning'>
+                      Define activation rules below to prevent application to
+                      all orders.
+                    </Alert>
+                  )}
 
-        <Spacer top='14'>
-          {!isLoadingRules &&
-            !hasRules &&
-            !viaApi &&
-            promotion.type !== 'flex_promotions' && (
-              <Alert status='warning'>
-                Define activation rules below to prevent application to all
-                orders.
-              </Alert>
-            )}
+                {viaApi && promotion.type !== 'flex_promotions' && (
+                  <Alert status='info'>
+                    This promotion is generated via API. Ask developers for
+                    details. If issues arise, just disable it.
+                  </Alert>
+                )}
 
-          {viaApi && promotion.type !== 'flex_promotions' && (
-            <Alert status='info'>
-              This promotion is generated via API. Ask developers for details.
-              If issues arise, just disable it.
-            </Alert>
-          )}
+                <Spacer top='14'>
+                  <CardStatus promotionId={props.params.promotionId} />
+                </Spacer>
+              </Spacer>
 
-          <Spacer top='14'>
-            <CardStatus promotionId={props.params.promotionId} />
-          </Spacer>
-        </Spacer>
+              <Spacer top='14'>
+                <SectionInfo promotion={promotion} />
+              </Spacer>
 
-        <Spacer top='14'>
-          <SectionInfo promotion={promotion} />
-        </Spacer>
+              {promotion.type === 'flex_promotions' && (
+                <>
+                  <Spacer top='14'>
+                    <SectionFlexRules promotion={promotion} />
+                  </Spacer>
+                </>
+              )}
 
-        {promotion.type === 'flex_promotions' && (
-          <>
-            <Spacer top='14'>
-              <SectionFlexRules promotion={promotion} />
+              {promotion.type !== 'flex_promotions' && (
+                <>
+                  <Spacer top='14'>
+                    <SectionActivationRules
+                      promotionId={props.params.promotionId}
+                    />
+                  </Spacer>
+                </>
+              )}
+
+              <Spacer top='14'>
+                <ResourceDetails
+                  resource={promotion}
+                  onUpdated={async () => {
+                    void mutatePromotion()
+                  }}
+                />
+              </Spacer>
+
+              {!isMockedId(promotion.id) && (
+                <>
+                  <Spacer top='14'>
+                    <ResourceTags
+                      overlay={{
+                        title: pageTitle
+                      }}
+                      resourceType={promotion.type}
+                      resourceId={promotion.id}
+                    />
+                  </Spacer>
+                  <Spacer top='14'>
+                    <ResourceMetadata
+                      overlay={{
+                        title: pageTitle
+                      }}
+                      resourceType={promotion.type}
+                      resourceId={promotion.id}
+                    />
+                  </Spacer>
+                </>
+              )}
+
+              {promotion.type === 'flex_promotions' && (
+                <Spacer top='14'>
+                  <SectionCheck promotion={promotion} />
+                </Spacer>
+              )}
+            </SkeletonTemplate>
+          </Tab>
+          <Tab name='Coupons'>
+            <Spacer top='6'>
+              {/* <SectionCoupon promotion={promotion} /> */}
+              <CouponList promotion={promotion} />
             </Spacer>
-          </>
-        )}
-
-        {promotion.type !== 'flex_promotions' && (
-          <>
-            <Spacer top='14'>
-              <SectionActivationRules promotionId={props.params.promotionId} />
-            </Spacer>
-          </>
-        )}
-
-        <Spacer top='14'>
-          <SectionCoupon promotion={promotion} />
-        </Spacer>
-
-        <Spacer top='14'>
-          <ResourceDetails
-            resource={promotion}
-            onUpdated={async () => {
-              void mutatePromotion()
-            }}
-          />
-        </Spacer>
-
-        {!isMockedId(promotion.id) && (
-          <>
-            <Spacer top='14'>
-              <ResourceTags
-                overlay={{
-                  title: pageTitle
-                }}
-                resourceType={promotion.type}
-                resourceId={promotion.id}
-              />
-            </Spacer>
-            <Spacer top='14'>
-              <ResourceMetadata
-                overlay={{
-                  title: pageTitle
-                }}
-                resourceType={promotion.type}
-                resourceId={promotion.id}
-              />
-            </Spacer>
-          </>
-        )}
-
-        {promotion.type === 'flex_promotions' && (
-          <Spacer top='14'>
-            <SectionCheck promotion={promotion} />
-          </Spacer>
-        )}
-      </SkeletonTemplate>
+          </Tab>
+        </Tabs>
+      </Spacer>
     </PageLayout>
   )
 }
@@ -687,127 +696,6 @@ const SectionActivationRules = withSkeletonTemplate<{
           </ListItem>
         )}
       </Section>
-    </SkeletonTemplate>
-  )
-})
-
-const SectionCoupon = withSkeletonTemplate<{
-  promotion: Promotion
-}>(({ promotion }) => {
-  const [, setLocation] = useLocation()
-  const [showCouponGenerator, setShowCouponGenerator] = useState(false)
-  const {
-    isLoading: isLoadingCoupons,
-    coupons,
-    mutatePromotionCoupons
-  } = usePromotionCoupons(
-    promotion.coupon_codes_promotion_rule != null ? promotion.id : undefined
-  )
-
-  const addCouponLink = appRoutes.newCoupon.makePath({
-    promotionId: promotion.id
-  })
-
-  const hasCoupons = coupons != null && coupons.length > 0
-  const showAll = (coupons?.meta.pageCount ?? 0) > 1
-
-  const emptyList = (
-    <ListItem
-      alignIcon='center'
-      icon={<Icon name='ticket' size={32} />}
-      paddingSize='6'
-      variant='boxed'
-    >
-      <Text>
-        Activate the promotion only if customer enter a specific coupon code at
-        checkout.
-      </Text>
-      <Button
-        alignItems='center'
-        size='small'
-        variant='secondary'
-        onClick={() => {
-          setLocation(addCouponLink)
-        }}
-      >
-        <Icon name='plus' size={16} />
-        Coupon
-      </Button>
-    </ListItem>
-  )
-
-  return (
-    <SkeletonTemplate isLoading={isLoadingCoupons}>
-      <Section
-        title={hasCoupons ? `Coupons · ${coupons.meta.recordCount}` : 'Coupons'}
-        border='none'
-        actionButton={
-          hasCoupons ? (
-            <Dropdown
-              dropdownLabel={
-                <Button
-                  alignItems='center'
-                  size='mini'
-                  variant='secondary'
-                  onClick={() => {
-                    setLocation(addCouponLink)
-                  }}
-                >
-                  <Icon name='plus' size={16} />
-                  New
-                </Button>
-              }
-              dropdownItems={[
-                <DropdownItem
-                  key='single'
-                  label='Single coupon'
-                  onClick={() => {
-                    setLocation(addCouponLink)
-                  }}
-                />,
-                <DropdownItem
-                  key='multiple'
-                  label='Multiple coupons'
-                  onClick={() => {
-                    setShowCouponGenerator(true)
-                  }}
-                />
-              ]}
-            />
-          ) : undefined
-        }
-      >
-        {hasCoupons ? (
-          <CouponTable
-            coupons={coupons}
-            onDelete={() => {
-              void mutatePromotionCoupons()
-            }}
-            promotionId={promotion.id}
-          />
-        ) : (
-          emptyList
-        )}
-      </Section>
-      {showAll && (
-        <Spacer top='4' bottom='4'>
-          <Link
-            href={appRoutes.couponList.makePath({ promotionId: promotion.id })}
-          >
-            View all coupons
-          </Link>
-        </Spacer>
-      )}
-      <CouponGeneratorModal
-        promotion={promotion}
-        show={showCouponGenerator}
-        handleClose={() => {
-          setShowCouponGenerator(false)
-        }}
-        onImportCreated={(importId) => {
-          console.log('Coupon import created with ID:', importId)
-        }}
-      />
     </SkeletonTemplate>
   )
 })
