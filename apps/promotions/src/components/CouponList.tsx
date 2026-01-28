@@ -3,6 +3,7 @@ import { CouponRow } from '#components/CouponTable'
 import { appRoutes } from '#data/routes'
 import type { Promotion } from '#types'
 import {
+  Alert,
   Button,
   Dropdown,
   DropdownItem,
@@ -15,6 +16,7 @@ import {
 import type { QueryFilter } from '@commercelayer/sdk'
 import { type FC, useMemo, useState } from 'react'
 import { useLocation } from 'wouter'
+import { useCouponImports } from '../hooks/useCouponImports'
 
 type FilterStatus = 'all' | 'active' | 'expired' | 'never'
 
@@ -26,6 +28,17 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   const [showCouponGenerator, setShowCouponGenerator] = useState(false)
   const [searchValue, setSearchValue] = useState<string>()
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all')
+
+  const {
+    importedCoupons: importedCouponsCompleted,
+    isLoading: isLoadingImportedCouponsCompleted
+  } = useCouponImports(promotion.id, 'completed')
+  const {
+    importedCoupons: importedCouponsPending,
+    isLoading: isLoadingImportedCouponsPending
+  } = useCouponImports(promotion.id, 'pending')
+  const isLoading =
+    isLoadingImportedCouponsCompleted || isLoadingImportedCouponsPending
 
   const filterStatusLabel: Record<FilterStatus, string> = {
     all: 'All',
@@ -65,6 +78,11 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   const addCouponLink = appRoutes.newCoupon.makePath({
     promotionId: promotion.id
   })
+
+  const hasPendingCoupons = (importedCouponsPending?.length ?? 0) > 0
+
+  console.log('Imported Coupons Completed:', importedCouponsCompleted)
+  console.log('Imported Coupons Pending:', importedCouponsPending)
 
   return (
     <>
@@ -151,6 +169,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
                 onClick={() => {
                   setShowCouponGenerator(true)
                 }}
+                disabled={isLoading || hasPendingCoupons}
               />
             ]}
           />
@@ -167,6 +186,10 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
           console.log('Coupon import created with ID:', importId)
         }}
       />
+
+      {(importedCouponsPending?.length ?? 0) > 0 && (
+        <Alert status='warning'>Generating coupons</Alert>
+      )}
 
       <Spacer top='4' bottom='8'>
         <div
