@@ -11,10 +11,11 @@ import {
   Modal,
   Spacer,
   Text,
+  useCoreApi,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useMemo, useState, type FC } from 'react'
+import { useCallback, useEffect, useMemo, useState, type FC } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 
@@ -33,6 +34,25 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
 }) => {
   const [isGenerating, setIsGenerating] = useState(false)
   const { sdkClient } = useCoreSdkProvider()
+  const [importId, setImportId] = useState<string | null>(null)
+
+  const {
+    data: importJob,
+    isLoading,
+    isValidating
+  } = useCoreApi('imports', 'retrieve', importId == null ? null : [importId], {
+    refreshInterval: importId ? 5000 : undefined
+  })
+
+  const isImporting = isLoading || isValidating
+
+  useEffect(() => {
+    if (importJob?.status === 'completed') {
+      setImportId(null)
+      setIsGenerating(false)
+    }
+  }, [importJob])
+
   const methods = useForm<CouponGeneratorFormSchema>({
     defaultValues: {
       numberOfCoupons: 1000,
@@ -103,8 +123,6 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                 expiresAt: values.expiresAt ?? undefined
               })
 
-              console.log('Generated CSV Content:\n', csvContent)
-
               const couponImport = await sdkClient.imports.create({
                 format: 'csv',
                 inputs: csvContent as unknown as object[],
@@ -136,9 +154,9 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                 <HookedInputSelect
                   name='codeLength'
                   initialValues={[
-                    { label: '6 characters', value: 6 },
                     { label: '8 characters', value: 8 },
-                    { label: '10 characters', value: 10 }
+                    { label: '10 characters', value: 10 },
+                    { label: '12 characters', value: 12 }
                   ]}
                 />
                 <HookedInputSelect
@@ -207,7 +225,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
           </Spacer>
 
           <Button type='submit' fullWidth disabled={isGenerating}>
-            {isGenerating ? 'Generating…' : 'Generate coupons'}
+            {isGenerating || isImporting ? 'Generating…' : 'Generate coupons'}
           </Button>
         </HookedForm>
       </Modal.Body>
