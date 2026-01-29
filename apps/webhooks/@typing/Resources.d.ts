@@ -80,6 +80,6 @@ declare module 'App' {
     | 'skus'
     | 'sku_options'
     | 'stock_transfers'
-    | 'transaction'
+    | 'transactions'
     | 'voids'
 }
