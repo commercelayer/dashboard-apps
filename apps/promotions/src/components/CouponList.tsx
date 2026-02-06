@@ -3,7 +3,6 @@ import { CouponRow } from '#components/CouponTable'
 import { appRoutes } from '#data/routes'
 import type { Promotion } from '#types'
 import {
-  Alert,
   Button,
   Dropdown,
   DropdownItem,
@@ -11,12 +10,14 @@ import {
   SearchBar,
   Spacer,
   Text,
-  useResourceList
+  toast,
+  useCoreSdkProvider,
+  useResourceList,
+  useTokenProvider
 } from '@commercelayer/app-elements'
 import type { QueryFilter } from '@commercelayer/sdk'
 import { type FC, useMemo, useState } from 'react'
 import { useLocation } from 'wouter'
-import { useCouponImports } from '../hooks/useCouponImports'
 
 type FilterStatus = 'all' | 'active' | 'expired' | 'never'
 
@@ -24,21 +25,12 @@ interface CouponListProps {
   promotion: Promotion
 }
 export const CouponList: FC<CouponListProps> = ({ promotion }) => {
+  const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [showCouponGenerator, setShowCouponGenerator] = useState(false)
   const [searchValue, setSearchValue] = useState<string>()
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all')
-
-  const {
-    importedCoupons: importedCouponsCompleted,
-    isLoading: isLoadingImportedCouponsCompleted
-  } = useCouponImports(promotion.id, 'completed')
-  const {
-    importedCoupons: importedCouponsPending,
-    isLoading: isLoadingImportedCouponsPending
-  } = useCouponImports(promotion.id, 'pending')
-  const isLoading =
-    isLoadingImportedCouponsCompleted || isLoadingImportedCouponsPending
+  const { sdkClient } = useCoreSdkProvider()
 
   const filterStatusLabel: Record<FilterStatus, string> = {
     all: 'All',
@@ -70,7 +62,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
     }
   }, [filterStatus, searchValue])
 
-  const { list, ResourceList } = useResourceList({
+  const { list, ResourceList, refresh } = useResourceList({
     type: 'coupons',
     query
   })
@@ -78,11 +70,6 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   const addCouponLink = appRoutes.newCoupon.makePath({
     promotionId: promotion.id
   })
-
-  const hasPendingCoupons = (importedCouponsPending?.length ?? 0) > 0
-
-  console.log('Imported Coupons Completed:', importedCouponsCompleted)
-  console.log('Imported Coupons Pending:', importedCouponsPending)
 
   return (
     <>
@@ -146,7 +133,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
               <Button
                 alignItems='center'
                 size='small'
-                variant='primary'
+                variant='secondary'
                 onClick={() => {
                   setLocation(addCouponLink)
                 }}
@@ -155,23 +142,48 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
                 New
               </Button>
             }
-            dropdownItems={[
-              <DropdownItem
-                key='single'
-                label='Single coupon'
-                onClick={() => {
-                  setLocation(addCouponLink)
-                }}
-              />,
-              <DropdownItem
-                key='multiple'
-                label='Multiple coupons'
-                onClick={() => {
-                  setShowCouponGenerator(true)
-                }}
-                disabled={isLoading || hasPendingCoupons}
-              />
-            ]}
+            dropdownItems={
+              <>
+                <DropdownItem
+                  label='Single coupon'
+                  onClick={() => {
+                    setLocation(addCouponLink)
+                  }}
+                />
+                {canUser('create', 'imports') && (
+                  <DropdownItem
+                    label='Multiple coupons'
+                    onClick={() => {
+                      void sdkClient.imports
+                        .list({
+                          filters: {
+                            resource_type_eq: 'coupons',
+                            reference_eq: `promotion_id:${promotion.id}`,
+                            status_in:
+                              status === 'completed'
+                                ? ['completed']
+                                : ['pending', 'in_progress']
+                          },
+                          pageSize: 1,
+                          fields: ['id', 'status']
+                        })
+                        .then((couponImports) => {
+                          if (couponImports.meta.recordCount === 0) {
+                            setShowCouponGenerator(true)
+                          } else {
+                            toast(
+                              'There is already an ongoing import for this promotion.',
+                              {
+                                type: 'error'
+                              }
+                            )
+                          }
+                        })
+                    }}
+                  />
+                )}
+              </>
+            }
           />
         </div>
       </Spacer>
@@ -179,17 +191,13 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
       <CouponGeneratorModal
         promotion={promotion}
         show={showCouponGenerator}
-        handleClose={() => {
+        onClose={(shouldReloadList) => {
+          if (shouldReloadList === true) {
+            refresh()
+          }
           setShowCouponGenerator(false)
         }}
-        onImportCreated={(importId) => {
-          console.log('Coupon import created with ID:', importId)
-        }}
       />
-
-      {(importedCouponsPending?.length ?? 0) > 0 && (
-        <Alert status='warning'>Generating coupons</Alert>
-      )}
 
       <Spacer top='4' bottom='8'>
         <div

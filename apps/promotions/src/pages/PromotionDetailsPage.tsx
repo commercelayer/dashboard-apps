@@ -46,7 +46,8 @@ import {
 } from '@commercelayer/app-elements'
 import type { FlexPromotion } from '@commercelayer/sdk'
 import { useMemo, useRef, useState, type Ref } from 'react'
-import { Link, useLocation } from 'wouter'
+import { Link, useLocation, useSearch } from 'wouter'
+import { navigate } from 'wouter/use-browser-location'
 
 function Page(
   props: PageProps<typeof appRoutes.promotionDetails>
@@ -57,6 +58,9 @@ function Page(
   const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
+  const search = useSearch()
+  const params = new URLSearchParams(search)
+  const defaultTab = parseInt(params.get('tab') ?? '0')
 
   const { isLoading, promotion, mutatePromotion, error } = usePromotion(
     props.params.promotionId
@@ -163,7 +167,12 @@ function Page(
       }}
     >
       <Spacer top='14'>
-        <Tabs>
+        <Tabs
+          defaultTab={defaultTab}
+          onTabSwitch={(tabIndex) => {
+            navigate(`?tab=${tabIndex}`)
+          }}
+        >
           <Tab name='Overview'>
             <SkeletonTemplate isLoading={isLoading}>
               <DeleteOverlay promotion={promotion} />
