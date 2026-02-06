@@ -43,8 +43,8 @@ const injectReact19 = () => {
           type: 'module'
         },
         children: `
-          import React from "https://esm.sh/react@19.1.1"
-          import ReactDOM from "https://esm.sh/react-dom@19.1.1"
+          import React from "https://esm.sh/react@19.2.4"
+          import ReactDOM from "https://esm.sh/react-dom@19.2.4"
           window.React = React
           window.ReactDOM = ReactDOM
         `
