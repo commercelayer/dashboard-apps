@@ -10,12 +10,11 @@ import {
   SearchBar,
   Spacer,
   Text,
-  toast,
   useCoreSdkProvider,
   useResourceList,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import type { QueryFilter } from '@commercelayer/sdk'
+import type { Import, QueryFilter } from '@commercelayer/sdk'
 import { type FC, useMemo, useState } from 'react'
 import { useLocation } from 'wouter'
 
@@ -31,6 +30,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   const [searchValue, setSearchValue] = useState<string>()
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all')
   const { sdkClient } = useCoreSdkProvider()
+  const [currentImportJob, setCurrentImportJob] = useState<Import | null>(null)
 
   const filterStatusLabel: Record<FilterStatus, string> = {
     all: 'All',
@@ -73,124 +73,111 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
 
   return (
     <>
-      <Spacer top='6'>
-        <div
-          style={{
-            display: 'flex',
-            gap: '1rem',
-            flexWrap: 'nowrap',
-            alignItems: 'center'
-          }}
-        >
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <SearchBar
-              initialValue={searchValue}
-              onSearch={setSearchValue}
-              placeholder='Search…'
-              onClear={() => {
-                setSearchValue('')
-              }}
-              variant='outline'
-            />
-          </div>
-
-          <Dropdown
-            key={filterStatus}
-            dropdownItems={filterStatusList.map((status) => (
-              <DropdownItem
-                key={status}
-                label={filterStatusLabel[status]}
-                onClick={() => {
-                  setFilterStatus(status)
-                }}
-                icon={filterStatus === status ? 'check' : 'keep-space'}
-              />
-            ))}
-            dropdownLabel={
-              <Button variant='secondary' alignItems='center' size='small'>
-                <Text
-                  variant='info'
-                  size='small'
-                  className='flex gap-1 items-center'
-                >
-                  View:{' '}
-                  <Text
-                    variant='primary'
-                    weight='semibold'
-                    size='small'
-                    className='flex gap-1 items-center '
-                  >
-                    {filterStatusLabel[filterStatus]}
-                  </Text>
-                  <Icon name='caretDown' size={16} />
-                </Text>
-              </Button>
-            }
+      <div
+        style={{
+          display: 'flex',
+          gap: '0.5rem',
+          flexWrap: 'nowrap',
+          alignItems: 'center'
+        }}
+      >
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <SearchBar
+            initialValue={searchValue}
+            onSearch={setSearchValue}
+            placeholder='Search…'
+            onClear={() => {
+              setSearchValue('')
+            }}
+            variant='outline'
           />
+        </div>
 
-          <Dropdown
-            dropdownLabel={
-              <Button
-                alignItems='center'
+        <Dropdown
+          key={filterStatus}
+          dropdownItems={filterStatusList.map((status) => (
+            <DropdownItem
+              key={status}
+              label={filterStatusLabel[status]}
+              onClick={() => {
+                setFilterStatus(status)
+              }}
+              icon={filterStatus === status ? 'check' : 'keep-space'}
+            />
+          ))}
+          dropdownLabel={
+            <Button variant='secondary' alignItems='center' size='small'>
+              <Text
+                variant='info'
                 size='small'
-                variant='secondary'
+                className='flex gap-1 items-center'
+              >
+                View:{' '}
+                <Text
+                  variant='primary'
+                  weight='semibold'
+                  size='small'
+                  className='flex gap-1 items-center '
+                >
+                  {filterStatusLabel[filterStatus]}
+                </Text>
+                <Icon name='caretDown' size={16} />
+              </Text>
+            </Button>
+          }
+        />
+
+        <Dropdown
+          dropdownLabel={
+            <Button
+              alignItems='center'
+              size='small'
+              variant='secondary'
+              onClick={() => {
+                setLocation(addCouponLink)
+              }}
+            >
+              <Icon name='plus' size={16} />
+              New
+            </Button>
+          }
+          dropdownItems={
+            <>
+              <DropdownItem
+                label='Single coupon'
                 onClick={() => {
                   setLocation(addCouponLink)
                 }}
-              >
-                <Icon name='plus' size={16} />
-                New
-              </Button>
-            }
-            dropdownItems={
-              <>
+              />
+              {canUser('create', 'imports') && (
                 <DropdownItem
-                  label='Single coupon'
+                  label='Multiple coupons'
                   onClick={() => {
-                    setLocation(addCouponLink)
+                    void sdkClient.imports
+                      .list({
+                        filters: {
+                          resource_type_eq: 'coupons',
+                          reference_eq: `promotion_id:${promotion.id}`
+                          // status_in: ['pending', 'in_progress']
+                        },
+                        pageSize: 1
+                      })
+                      .then((couponImports) => {
+                        setCurrentImportJob(couponImports[0] ?? null)
+                        setShowCouponGenerator(true)
+                      })
                   }}
                 />
-                {canUser('create', 'imports') && (
-                  <DropdownItem
-                    label='Multiple coupons'
-                    onClick={() => {
-                      void sdkClient.imports
-                        .list({
-                          filters: {
-                            resource_type_eq: 'coupons',
-                            reference_eq: `promotion_id:${promotion.id}`,
-                            status_in:
-                              status === 'completed'
-                                ? ['completed']
-                                : ['pending', 'in_progress']
-                          },
-                          pageSize: 1,
-                          fields: ['id', 'status']
-                        })
-                        .then((couponImports) => {
-                          if (couponImports.meta.recordCount === 0) {
-                            setShowCouponGenerator(true)
-                          } else {
-                            toast(
-                              'There is already an ongoing import for this promotion.',
-                              {
-                                type: 'error'
-                              }
-                            )
-                          }
-                        })
-                    }}
-                  />
-                )}
-              </>
-            }
-          />
-        </div>
-      </Spacer>
+              )}
+            </>
+          }
+        />
+      </div>
 
       <CouponGeneratorModal
         promotion={promotion}
         show={showCouponGenerator}
+        currentImportJob={currentImportJob}
         onClose={(shouldReloadList) => {
           if (shouldReloadList === true) {
             refresh()

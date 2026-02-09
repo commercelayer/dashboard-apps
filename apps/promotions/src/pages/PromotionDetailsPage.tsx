@@ -166,6 +166,10 @@ function Page(
         }
       }}
     >
+      <Spacer top='10'>
+        <CardStatus promotionId={props.params.promotionId} />
+      </Spacer>
+
       <Spacer top='14'>
         <Tabs
           defaultTab={defaultTab}
@@ -193,10 +197,6 @@ function Page(
                     details. If issues arise, just disable it.
                   </Alert>
                 )}
-
-                <Spacer top='14'>
-                  <CardStatus promotionId={props.params.promotionId} />
-                </Spacer>
               </Spacer>
 
               <Spacer top='14'>
@@ -261,10 +261,7 @@ function Page(
             </SkeletonTemplate>
           </Tab>
           <Tab name='Coupons'>
-            <Spacer top='6'>
-              {/* <SectionCoupon promotion={promotion} /> */}
-              <CouponList promotion={promotion} />
-            </Spacer>
+            {!isMockedId(promotion.id) && <CouponList promotion={promotion} />}
           </Tab>
         </Tabs>
       </Spacer>

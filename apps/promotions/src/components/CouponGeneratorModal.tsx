@@ -29,17 +29,21 @@ interface CouponGeneratorModalProps {
   promotion: Promotion
   show: boolean
   onClose: (shouldReloadList?: boolean) => void
+  currentImportJob: Import | null
 }
 
 export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
   promotion,
   show,
-  onClose
+  onClose,
+  currentImportJob
 }) => {
   const [isGeneratingCsv, setIsGeneratingCsv] = useState(false)
   const [isDeletingImport, setIsDeletingImport] = useState(false)
   const { sdkClient } = useCoreSdkProvider()
-  const [importId, setImportId] = useState<string | null>(null)
+  const [importId, setImportId] = useState<string | undefined>(
+    currentImportJob?.id
+  )
 
   const { data: importJob } = useCoreApi(
     'imports',
@@ -47,10 +51,12 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
     importId == null ? null : [importId],
     {
       refreshInterval: (job) =>
-        importId != null && job?.status !== 'completed' ? 1000 : 0
+        importId != null && job?.status !== 'completed' ? 1000 : 0,
+      fallbackData: currentImportJob ?? undefined
     }
   )
 
+  const isImportInProgress = importId != null || importJob != null
   const isImportCompleted = importJob?.status === 'completed'
   const importedCsvFile = importJob?.attachment_url
 
@@ -99,17 +105,16 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
           onClose()
         }
       }}
-      size={importId != null ? 'x-small' : 'small'}
+      size={isImportCompleted || isImportInProgress ? 'x-small' : 'small'}
     >
-      {importId != null && isImportCompleted ? (
-        // IMPORT SUCCESS
+      {isImportCompleted ? (
         <>
           <Modal.Body>
-            <Spacer bottom='4'>
+            <Spacer top='4' bottom='4'>
               <StatusIcon
                 name='check'
                 background='green'
-                gap='x-large'
+                gap='large'
                 align='center'
               />
             </Spacer>
@@ -126,12 +131,11 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
             {importedCsvFile != null && (
               <A
                 href={importedCsvFile}
-                download
                 variant='primary'
                 onClick={() => {
                   onClose(true)
                   setIsGeneratingCsv(false)
-                  setImportId(null)
+                  setImportId(undefined)
                 }}
                 fullWidth
                 alignItems='center'
@@ -147,24 +151,24 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
               onClick={() => {
                 onClose(true)
                 setIsGeneratingCsv(false)
-                setImportId(null)
+                setImportId(undefined)
               }}
             >
               Close
             </Button>
           </Modal.Footer>
         </>
-      ) : importId != null || importJob != null ? (
-        // IMPORT IN PROGRESS
+      ) : isImportInProgress ? (
         <>
           <Modal.Body>
-            <RadialProgress
-              percentage={
-                importJob == null ? 0 : getProgressPercentage(importJob).value
-              }
-              align='center'
-            />
-
+            <Spacer top='4' bottom='6'>
+              <RadialProgress
+                percentage={
+                  importJob == null ? 0 : getProgressPercentage(importJob).value
+                }
+                align='center'
+              />
+            </Spacer>
             <Text weight='semibold' align='center' tag='div'>
               Generating coupons…
             </Text>
@@ -174,7 +178,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
               </Text>
             </Spacer>
           </Modal.Body>
-          {importJob?.status === 'pending' && (
+          {importJob?.status === 'pending' ? (
             <Modal.Footer>
               <Button
                 type='button'
@@ -188,7 +192,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                     .delete(importId)
                     .then(() => {
                       onClose(true)
-                      setImportId(null)
+                      setImportId(undefined)
                     })
                     .catch(() => {
                       toast('Could not cancel the import')
@@ -201,6 +205,8 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                 Cancel generation
               </Button>
             </Modal.Footer>
+          ) : (
+            <div style={{ paddingTop: '1rem' }} />
           )}
         </>
       ) : (
