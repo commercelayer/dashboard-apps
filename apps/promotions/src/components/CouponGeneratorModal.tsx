@@ -51,7 +51,10 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
     importId == null ? null : [importId],
     {
       refreshInterval: (job) =>
-        importId != null && job?.status !== 'completed' ? 1000 : 0,
+        (importId != null || currentImportJob != null) &&
+        job?.status !== 'completed'
+          ? 1000
+          : 0,
       fallbackData: currentImportJob ?? undefined
     }
   )
