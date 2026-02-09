@@ -157,8 +157,8 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
                       .list({
                         filters: {
                           resource_type_eq: 'coupons',
-                          reference_eq: `promotion_id:${promotion.id}`
-                          // status_in: ['pending', 'in_progress']
+                          reference_eq: `promotion_id:${promotion.id}`,
+                          status_in: ['pending', 'in_progress']
                         },
                         pageSize: 1
                       })
