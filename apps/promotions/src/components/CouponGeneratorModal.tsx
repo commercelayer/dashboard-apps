@@ -2,7 +2,6 @@ import type { Promotion } from '#types'
 import {
   A,
   Button,
-  Grid,
   HookedForm,
   HookedInput,
   HookedInputCheckbox,
@@ -19,7 +18,7 @@ import {
   useCoreApi,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
-import type { Import } from '@commercelayer/sdk'
+import { CommerceLayerStatic, type Import } from '@commercelayer/sdk'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useMemo, useState, type FC } from 'react'
 import { useForm } from 'react-hook-form'
@@ -38,6 +37,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
   onClose,
   currentImportJob
 }) => {
+  const { data: organization } = useCoreApi('organization', 'retrieve', [])
   const [isGeneratingCsv, setIsGeneratingCsv] = useState(false)
   const [isDeletingImport, setIsDeletingImport] = useState(false)
   const { sdkClient } = useCoreSdkProvider()
@@ -62,15 +62,24 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
   const isImportInProgress = importId != null || importJob != null
   const isImportCompleted = importJob?.status === 'completed'
   const importedCsvFile = importJob?.attachment_url
+  const minCodeLength = organization?.coupons_min_code_length ?? 8
+  const maxCodeLength = organization?.coupons_max_code_length ?? 40
+  const prefixMaxLength = 25
 
   const methods = useForm<CouponGeneratorFormSchema>({
     defaultValues: {
       numberOfCoupons: 1000,
-      codeLength: 8,
+      codeLength: minCodeLength,
       case: 'mixed',
       prefix: ''
     },
-    resolver: zodResolver(formValidationSchema)
+    resolver: zodResolver(
+      makeFormValidationSchema({
+        minCodeLength,
+        maxCodeLength,
+        prefixMaxLength
+      })
+    )
   })
 
   const codeLength = methods.watch('codeLength')
@@ -126,7 +135,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
             </Text>
             <Spacer top='1'>
               <Text align='center' tag='div' size='small' variant='info'>
-                Download now or find them later in Imports.
+                Download now or find them in Imports.
               </Text>
             </Spacer>
           </Modal.Body>
@@ -235,7 +244,8 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                     codes: generatedCodes,
                     promotionRuleId,
                     usageLimit: values.usageLimit ?? undefined,
-                    expiresAt: values.expiresAt ?? undefined
+                    expiresAt: values.expiresAt ?? undefined,
+                    customerSingleUse: values.customerSingleUse || undefined
                   })
 
                   const couponImport = await sdkClient.imports.create({
@@ -247,8 +257,16 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                   setImportId(couponImport.id)
                   setIsGeneratingCsv(false)
                 } catch (error) {
-                  console.error('Error generating coupons:', error)
                   setIsGeneratingCsv(false)
+                  const apiError = CommerceLayerStatic.isApiError(error)
+                    ? error
+                    : null
+                  const errorMessage =
+                    apiError?.errors?.map((e: any) => e.detail).join(', ') ??
+                    'An error occurred while generating coupons'
+                  toast(errorMessage, {
+                    type: 'error'
+                  })
                 }
               }}
             >
@@ -262,12 +280,21 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
               </Spacer>
               <Spacer bottom='8'>
                 <Label>Format</Label>
-                <Spacer bottom='2'>
-                  <Grid columns='2'>
+                <Spacer top='2' bottom='2'>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 1fr',
+                      gap: '8px'
+                    }}
+                  >
                     <HookedInputSelect
                       name='codeLength'
                       initialValues={[
-                        { label: '8 characters', value: 8 },
+                        {
+                          label: `${minCodeLength} characters`,
+                          value: minCodeLength
+                        },
                         { label: '10 characters', value: 10 },
                         { label: '12 characters', value: 12 }
                       ]}
@@ -280,7 +307,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                         { label: 'Mixed', value: 'mixed' }
                       ]}
                     />
-                  </Grid>
+                  </div>
                 </Spacer>
                 <Spacer bottom='2'>
                   <HookedInput name='prefix' placeholder='Prefix (optional)' />
@@ -348,37 +375,58 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
   )
 }
 
-const formValidationSchema = z.object({
-  // coupon generation rules
-  numberOfCoupons: z
-    .number()
-    .min(2, 'At least 2 coupon must be generated')
-    .max(5000, 'A maximum of 5000 coupons can be generated at once'),
-  codeLength: z
-    .number()
-    .min(6, 'Code length must be at least 4 characters')
-    .max(10, 'Code length cannot exceed 20 characters'),
-  case: z.enum(['upper', 'lower', 'mixed']),
-  prefix: z
-    .string()
-    .max(4, 'Prefix cannot exceed 4 characters')
-    .optional()
-    .nullable(),
+const makeFormValidationSchema = ({
+  minCodeLength,
+  maxCodeLength,
+  prefixMaxLength
+}: {
+  minCodeLength: number
+  maxCodeLength: number
+  prefixMaxLength: number
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+}) =>
+  z.object({
+    // coupon generation rules
+    numberOfCoupons: z
+      .number()
+      .min(2, 'At least 2 coupon must be generated')
+      .max(5000, 'You can generate up to 5,000 coupons at once'),
+    codeLength: z
+      .number()
+      .min(
+        minCodeLength,
+        `Code length must be at least ${minCodeLength} characters`
+      )
+      .max(
+        maxCodeLength,
+        `Code length cannot exceed ${maxCodeLength} characters`
+      ),
+    case: z.enum(['upper', 'lower', 'mixed']),
+    prefix: z
+      .string()
+      .max(
+        prefixMaxLength,
+        `Prefix cannot exceed ${prefixMaxLength} characters`
+      )
+      .optional()
+      .nullable(),
 
-  // options
-  expiresAt: z
-    .date()
-    .transform((date) => date.toISOString())
-    .optional(),
-  usageLimit: z
-    .number()
-    .min(1, 'Usage limit must be at least 1')
-    .optional()
-    .nullable(),
-  customerSingleUse: z.boolean().default(false)
-})
+    // options
+    expiresAt: z
+      .date()
+      .transform((date) => date.toISOString())
+      .optional(),
+    usageLimit: z
+      .number()
+      .min(1, 'Usage limit must be at least 1')
+      .optional()
+      .nullable(),
+    customerSingleUse: z.boolean().default(false)
+  })
 
-type CouponGeneratorFormSchema = z.infer<typeof formValidationSchema>
+type CouponGeneratorFormSchema = z.infer<
+  ReturnType<typeof makeFormValidationSchema>
+>
 
 interface CouponGeneratorParams {
   numberOfCoupons: number
