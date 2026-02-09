@@ -11,8 +11,8 @@ import {
   Spacer,
   Tab,
   Tabs,
-  Text,
   useAppLinking,
+  useCoreApi,
   useTokenProvider,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
@@ -24,6 +24,7 @@ import { useSkuDeleteOverlay } from '#hooks/useSkuDeleteOverlay'
 import { useSkuDetails } from '#hooks/useSkuDetails'
 import { isMockedId } from '@commercelayer/app-elements'
 import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
+import { LinksEmptyState } from 'dashboard-apps-common/src/components/LinksEmptyState'
 import { SkuDescription } from 'dashboard-apps-common/src/components/SkuDescription'
 import { type FC } from 'react'
 import { useSearch } from 'wouter/use-browser-location'
@@ -76,8 +77,27 @@ export const SkuDetails: FC = () => {
     dropdownItems: []
   }
 
-  const showLinks =
+  const hasSalesChannels =
     extras?.salesChannels != null && extras?.salesChannels.length > 0
+
+  const { data: publicMarkets } = useCoreApi(
+    'markets',
+    'list',
+    [
+      {
+        fields: ['id'],
+        filters: {
+          customer_group_null: true,
+          private_true: false,
+          disabled_at_null: true
+        },
+        pageSize: 1
+      }
+    ],
+    {}
+  )
+  const hasPublicMarkets =
+    publicMarkets != null && publicMarkets.meta.recordCount > 0
 
   if (canUser('update', 'skus')) {
     pageToolbar.buttons?.push({
@@ -101,7 +121,7 @@ export const SkuDetails: FC = () => {
     ])
   }
 
-  const tabs = ['info', ...(showLinks ? ['links'] : [])]
+  const tabs = ['info', 'links']
   const queryString = useSearch()
   const urlParams = new URLSearchParams(queryString)
   const defaultTab =
@@ -109,9 +129,10 @@ export const SkuDetails: FC = () => {
       ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
       : 0
 
-  const linkListTable = showLinks
-    ? LinkListTable({ resourceId: skuId, resourceType: 'skus' })
-    : null
+  const linkListTable =
+    hasSalesChannels && hasPublicMarkets
+      ? LinkListTable({ resourceId: skuId, resourceType: 'skus' })
+      : null
 
   const SkuInfos = (
     <>
@@ -152,48 +173,53 @@ export const SkuDetails: FC = () => {
     </>
   )
 
-  const SkuTabs = showLinks ? (
+  const SkuTabs = (
     <Tabs keepAlive defaultTab={defaultTab}>
       <Tab name='Info'>{SkuInfos}</Tab>
-      {showLinks ? (
-        <Tab name='Links'>
-          <Spacer top='10'>
-            <Section
-              title='Links'
-              border={linkListTable != null ? 'none' : undefined}
-              actionButton={
-                canUser('update', 'skus') &&
-                showLinks && (
-                  <Button
-                    size='mini'
-                    variant='secondary'
-                    alignItems='center'
-                    onClick={() => {
-                      setLocation(
-                        appRoutes.linksNew.makePath({
-                          resourceId: skuId
-                        })
-                      )
-                    }}
-                  >
-                    <Icon name='lightning' size={16} />
-                    New link
-                  </Button>
-                )
-              }
-            >
-              {linkListTable ?? (
-                <Spacer top='4'>
-                  <Text variant='info'>No items.</Text>
-                </Spacer>
-              )}
-            </Section>
-          </Spacer>
-        </Tab>
-      ) : null}
+      <Tab name='Links'>
+        <Spacer top='10'>
+          <Section
+            title='Links'
+            border={linkListTable != null ? 'none' : undefined}
+            actionButton={
+              canUser('update', 'skus') &&
+              hasSalesChannels &&
+              hasPublicMarkets && (
+                <Button
+                  size='mini'
+                  variant='secondary'
+                  alignItems='center'
+                  onClick={() => {
+                    setLocation(
+                      appRoutes.linksNew.makePath({
+                        resourceId: skuId
+                      })
+                    )
+                  }}
+                >
+                  <Icon name='lightning' size={16} />
+                  New link
+                </Button>
+              )
+            }
+          >
+            {linkListTable ?? (
+              <LinksEmptyState
+                scope={
+                  !hasSalesChannels
+                    ? 'no-sales-channels'
+                    : !hasPublicMarkets
+                      ? 'no-public-markets'
+                      : 'no-links'
+                }
+                resourceId={skuId}
+                resourceType='skus'
+              />
+            )}
+          </Section>
+        </Spacer>
+      </Tab>
     </Tabs>
-  ) : (
-    SkuInfos
   )
 
   return (
