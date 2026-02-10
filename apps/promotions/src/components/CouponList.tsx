@@ -184,6 +184,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
           }
           setShowCouponGenerator(false)
         }}
+        key={currentImportJob?.id}
       />
 
       <Spacer top='4' bottom='8'>
