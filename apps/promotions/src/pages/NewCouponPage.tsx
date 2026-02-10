@@ -17,6 +17,9 @@ function Page(props: PageProps<typeof appRoutes.newCoupon>): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const { isLoading } = usePromotion(props.params.promotionId)
+  const couponListLocation = `${appRoutes.promotionDetails.makePath({
+    promotionId: props.params.promotionId
+  })}?tab=1`
 
   return (
     <PageLayout
@@ -28,17 +31,18 @@ function Page(props: PageProps<typeof appRoutes.newCoupon>): React.JSX.Element {
         label: 'Close',
         icon: 'x',
         onClick() {
-          setLocation(
-            appRoutes.promotionDetails.makePath({
-              promotionId: props.params.promotionId
-            })
-          )
+          setLocation(couponListLocation)
         }
       }}
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer top='10'>
-          <CouponForm promotionId={props.params.promotionId} />
+          <CouponForm
+            promotionId={props.params.promotionId}
+            onSuccess={() => {
+              setLocation(couponListLocation)
+            }}
+          />
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>

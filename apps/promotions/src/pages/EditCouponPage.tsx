@@ -24,6 +24,9 @@ function Page(
   const { coupon, isLoading: isLoadingCoupon } = useCoupon(
     props.params.couponId
   )
+  const couponListLocation = `${appRoutes.promotionDetails.makePath({
+    promotionId: props.params.promotionId
+  })}?tab=1`
 
   return (
     <PageLayout
@@ -35,11 +38,7 @@ function Page(
         label: 'Close',
         icon: 'x',
         onClick() {
-          setLocation(
-            appRoutes.promotionDetails.makePath({
-              promotionId: props.params.promotionId
-            })
-          )
+          setLocation(couponListLocation)
         }
       }}
     >
@@ -49,6 +48,9 @@ function Page(
             promotionId={props.params.promotionId}
             couponId={props.params.couponId}
             defaultValues={couponToFormValues(coupon)}
+            onSuccess={() => {
+              setLocation(couponListLocation)
+            }}
           />
         </Spacer>
       </SkeletonTemplate>

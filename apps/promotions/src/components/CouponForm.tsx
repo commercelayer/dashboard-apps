@@ -1,5 +1,4 @@
 import { couponForm, formValuesToCoupon } from '#data/formConverters/coupon'
-import { appRoutes } from '#data/routes'
 import { useCoupon } from '#hooks/useCoupon'
 import { usePromotion } from '#hooks/usePromotion'
 import {
@@ -19,21 +18,21 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useLocation } from 'wouter'
 import { type z } from 'zod'
 
 interface Props {
   promotionId: string
   couponId?: string
   defaultValues?: Partial<z.infer<ReturnType<typeof couponForm>>>
+  onSuccess: () => void
 }
 
 export function CouponForm({
   promotionId,
   couponId,
-  defaultValues
+  defaultValues,
+  onSuccess
 }: Props): React.JSX.Element {
-  const [, setLocation] = useLocation()
   const [apiError, setApiError] = useState<any>()
   const { promotion } = usePromotion(promotionId)
   const { mutateCoupon } = useCoupon(couponId)
@@ -100,11 +99,7 @@ export function CouponForm({
 
         await mutateCoupon()
 
-        setLocation(
-          appRoutes.promotionDetails.makePath({
-            promotionId
-          })
-        )
+        onSuccess()
       }}
     >
       <Spacer top='14'>
