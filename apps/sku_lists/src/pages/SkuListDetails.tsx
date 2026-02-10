@@ -12,8 +12,8 @@ import {
   Spacer,
   Tab,
   Tabs,
-  Text,
   useAppLinking,
+  useCoreApi,
   useTokenProvider,
   type PageHeadingProps
 } from '@commercelayer/app-elements'
@@ -25,6 +25,7 @@ import { useSkuListDeleteOverlay } from '#hooks/useSkuListDeleteOverlay'
 import { useSkuListDetails } from '#hooks/useSkuListDetails'
 import { isMockedId } from '@commercelayer/app-elements'
 import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
+import { LinksEmptyState } from 'dashboard-apps-common/src/components/LinksEmptyState'
 import { useSearch } from 'wouter/use-browser-location'
 
 export const SkuListDetails = (
@@ -36,6 +37,8 @@ export const SkuListDetails = (
   } = useTokenProvider()
   const { goBack } = useAppLinking()
 
+  const queryString = useSearch()
+
   const [, setLocation] = useLocation()
   const skuListId = props.params?.skuListId ?? ''
 
@@ -44,6 +47,26 @@ export const SkuListDetails = (
 
   const { Overlay: DeleteOverlay, show: showDeleteOverlay } =
     useSkuListDeleteOverlay(skuList)
+
+  const hasSalesChannels =
+    extras?.salesChannels != null && extras?.salesChannels.length > 0
+
+  const { data: publicMarkets } = useCoreApi(
+    'markets',
+    'list',
+    [
+      {
+        fields: ['id'],
+        filters: {
+          customer_group_null: true,
+          private_true: false,
+          disabled_at_null: true
+        },
+        pageSize: 1
+      }
+    ],
+    {}
+  )
 
   if (error != null) {
     return (
@@ -81,11 +104,10 @@ export const SkuListDetails = (
     dropdownItems: []
   }
 
-  const showLinks =
-    extras?.salesChannels != null && extras?.salesChannels.length > 0
+  const hasPublicMarkets =
+    publicMarkets != null && publicMarkets.meta.recordCount > 0
 
-  const tabs = ['items', ...(showLinks ? ['links'] : []), 'info']
-  const queryString = useSearch()
+  const tabs = ['items', 'links', 'info']
   const urlParams = new URLSearchParams(queryString)
   const defaultTab =
     urlParams.get('tab') != null
@@ -113,10 +135,6 @@ export const SkuListDetails = (
       }
     ])
   }
-
-  const linkListTable = showLinks
-    ? LinkListTable({ resourceId: skuListId, resourceType: 'sku_lists' })
-    : null
 
   return (
     <PageLayout
@@ -168,41 +186,56 @@ export const SkuListDetails = (
               </Spacer>
             )}
           </Tab>
-          {showLinks ? (
-            <Tab name='Links'>
-              <Spacer top='10'>
-                <Section
-                  title='Links'
-                  border={linkListTable != null ? 'none' : undefined}
-                  actionButton={
-                    showLinks && (
-                      <Button
-                        size='mini'
-                        variant='secondary'
-                        alignItems='center'
-                        onClick={() => {
-                          setLocation(
-                            appRoutes.linksNew.makePath({
-                              resourceId: skuListId
-                            })
-                          )
-                        }}
-                      >
-                        <Icon name='lightning' size='16' />
-                        New link
-                      </Button>
-                    )
-                  }
-                >
-                  {linkListTable ?? (
-                    <Spacer top='4'>
-                      <Text variant='info'>No items.</Text>
-                    </Spacer>
-                  )}
-                </Section>
-              </Spacer>
-            </Tab>
-          ) : null}
+          <Tab name='Links'>
+            <Spacer top='10'>
+              <Section
+                title='Links'
+                border={
+                  hasSalesChannels && hasPublicMarkets ? 'none' : undefined
+                }
+                actionButton={
+                  canUser('update', 'sku_lists') &&
+                  hasSalesChannels &&
+                  hasPublicMarkets && (
+                    <Button
+                      size='mini'
+                      variant='secondary'
+                      alignItems='center'
+                      onClick={() => {
+                        setLocation(
+                          appRoutes.linksNew.makePath({
+                            resourceId: skuListId
+                          })
+                        )
+                      }}
+                    >
+                      <Icon name='lightning' size='16' />
+                      New link
+                    </Button>
+                  )
+                }
+              >
+                {hasSalesChannels && hasPublicMarkets ? (
+                  <LinkListTable
+                    resourceId={skuListId}
+                    resourceType='sku_lists'
+                  />
+                ) : (
+                  <LinksEmptyState
+                    scope={
+                      !hasSalesChannels
+                        ? 'no-sales-channels'
+                        : !hasPublicMarkets
+                          ? 'no-public-markets'
+                          : 'no-links'
+                    }
+                    resourceId={skuListId}
+                    resourceType='sku_lists'
+                  />
+                )}
+              </Section>
+            </Spacer>
+          </Tab>
           <Tab name='Info'>
             <Spacer top='10'>
               <ResourceDetails
