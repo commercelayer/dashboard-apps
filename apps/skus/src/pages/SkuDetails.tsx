@@ -47,7 +47,7 @@ export const SkuDetails: FC = () => {
 
   const { Overlay: SkuDeleteOverlay, show } = useSkuDeleteOverlay(sku)
 
-    const hasSalesChannels =
+  const hasSalesChannels =
     extras?.salesChannels != null && extras?.salesChannels.length > 0
 
   const { data: publicMarkets } = useCoreApi(
@@ -68,7 +68,6 @@ export const SkuDetails: FC = () => {
   )
   const hasPublicMarkets =
     publicMarkets != null && publicMarkets.meta.recordCount > 0
-
 
   if (error != null) {
     return (

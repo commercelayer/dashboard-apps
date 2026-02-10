@@ -104,8 +104,6 @@ export const SkuListDetails = (
     dropdownItems: []
   }
 
-
-
   const hasPublicMarkets =
     publicMarkets != null && publicMarkets.meta.recordCount > 0
 
@@ -192,7 +190,9 @@ export const SkuListDetails = (
             <Spacer top='10'>
               <Section
                 title='Links'
-                border={hasSalesChannels && hasPublicMarkets ? 'none' : undefined}
+                border={
+                  hasSalesChannels && hasPublicMarkets ? 'none' : undefined
+                }
                 actionButton={
                   canUser('update', 'sku_lists') &&
                   hasSalesChannels &&
@@ -216,7 +216,10 @@ export const SkuListDetails = (
                 }
               >
                 {hasSalesChannels && hasPublicMarkets ? (
-                  <LinkListTable resourceId={skuListId} resourceType='sku_lists' />
+                  <LinkListTable
+                    resourceId={skuListId}
+                    resourceType='sku_lists'
+                  />
                 ) : (
                   <LinksEmptyState
                     scope={

@@ -40,13 +40,24 @@ export function LinksEmptyState({
   resourceId,
   resourceType: _resourceType
 }: Props): React.JSX.Element {
-  const { canUser } = useTokenProvider()
+  const { canUser, role, settings } = useTokenProvider()
 
   if (scope === 'no-sales-channels') {
     return (
       <EmptyState
         title='Sales channels required'
         description='To create shareable links for this resource, your organization needs at least one sales channel configured.'
+        action={
+          role?.kind === 'admin' && (
+            <a
+              href={`${settings.dashboardUrl}/api-credentials/new`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              <Button variant='primary'>Configure sales channels</Button>
+            </a>
+          )
+        }
       />
     )
   }
@@ -56,6 +67,17 @@ export function LinksEmptyState({
       <EmptyState
         title='Public market required'
         description='To create shareable links for this resource, your organization needs at least one public market configured.'
+        action={
+          role?.kind === 'admin' && (
+            <a
+              href={`${settings.dashboardUrl}/settings/markets/new`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              <Button variant='primary'>Configure public markets</Button>
+            </a>
+          )
+        }
       />
     )
   }
@@ -75,9 +97,11 @@ export function LinksEmptyState({
       title='No links yet'
       description='Create your first shareable link for this resource.'
       action={
-        <Link href={linksRoutes.linksNew.makePath({ resourceId })}>
-          <Button variant='primary'>New link</Button>
-        </Link>
+        canUser('create', 'links') && (
+          <Link href={linksRoutes.linksNew.makePath({ resourceId })}>
+            <Button variant='primary'>New link</Button>
+          </Link>
+        )
       }
     />
   )
