@@ -36,6 +36,8 @@ export const SkuDetails: FC = () => {
   } = useTokenProvider()
   const { goBack } = useAppLinking()
 
+  const queryString = useSearch()
+
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ skuId: string }>(appRoutes.details.path)
 
@@ -44,6 +46,29 @@ export const SkuDetails: FC = () => {
   const { sku, isLoading, error, mutateSku } = useSkuDetails(skuId)
 
   const { Overlay: SkuDeleteOverlay, show } = useSkuDeleteOverlay(sku)
+
+    const hasSalesChannels =
+    extras?.salesChannels != null && extras?.salesChannels.length > 0
+
+  const { data: publicMarkets } = useCoreApi(
+    'markets',
+    'list',
+    [
+      {
+        fields: ['id'],
+        filters: {
+          customer_group_null: true,
+          private_true: false,
+          disabled_at_null: true
+        },
+        pageSize: 1
+      }
+    ],
+    {}
+  )
+  const hasPublicMarkets =
+    publicMarkets != null && publicMarkets.meta.recordCount > 0
+
 
   if (error != null) {
     return (
@@ -77,28 +102,6 @@ export const SkuDetails: FC = () => {
     dropdownItems: []
   }
 
-  const hasSalesChannels =
-    extras?.salesChannels != null && extras?.salesChannels.length > 0
-
-  const { data: publicMarkets } = useCoreApi(
-    'markets',
-    'list',
-    [
-      {
-        fields: ['id'],
-        filters: {
-          customer_group_null: true,
-          private_true: false,
-          disabled_at_null: true
-        },
-        pageSize: 1
-      }
-    ],
-    {}
-  )
-  const hasPublicMarkets =
-    publicMarkets != null && publicMarkets.meta.recordCount > 0
-
   if (canUser('update', 'skus')) {
     pageToolbar.buttons?.push({
       label: 'Edit',
@@ -122,17 +125,11 @@ export const SkuDetails: FC = () => {
   }
 
   const tabs = ['info', 'links']
-  const queryString = useSearch()
   const urlParams = new URLSearchParams(queryString)
   const defaultTab =
     urlParams.get('tab') != null
       ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
       : 0
-
-  const linkListTable =
-    hasSalesChannels && hasPublicMarkets
-      ? LinkListTable({ resourceId: skuId, resourceType: 'skus' })
-      : null
 
   const SkuInfos = (
     <>
@@ -180,7 +177,7 @@ export const SkuDetails: FC = () => {
         <Spacer top='10'>
           <Section
             title='Links'
-            border={linkListTable != null ? 'none' : undefined}
+            border={hasSalesChannels && hasPublicMarkets ? 'none' : undefined}
             actionButton={
               canUser('update', 'skus') &&
               hasSalesChannels &&
@@ -203,7 +200,9 @@ export const SkuDetails: FC = () => {
               )
             }
           >
-            {linkListTable ?? (
+            {hasSalesChannels && hasPublicMarkets ? (
+              <LinkListTable resourceId={skuId} resourceType='skus' />
+            ) : (
               <LinksEmptyState
                 scope={
                   !hasSalesChannels

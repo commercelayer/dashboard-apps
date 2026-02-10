@@ -37,6 +37,8 @@ export const SkuListDetails = (
   } = useTokenProvider()
   const { goBack } = useAppLinking()
 
+  const queryString = useSearch()
+
   const [, setLocation] = useLocation()
   const skuListId = props.params?.skuListId ?? ''
 
@@ -45,6 +47,26 @@ export const SkuListDetails = (
 
   const { Overlay: DeleteOverlay, show: showDeleteOverlay } =
     useSkuListDeleteOverlay(skuList)
+
+  const hasSalesChannels =
+    extras?.salesChannels != null && extras?.salesChannels.length > 0
+
+  const { data: publicMarkets } = useCoreApi(
+    'markets',
+    'list',
+    [
+      {
+        fields: ['id'],
+        filters: {
+          customer_group_null: true,
+          private_true: false,
+          disabled_at_null: true
+        },
+        pageSize: 1
+      }
+    ],
+    {}
+  )
 
   if (error != null) {
     return (
@@ -82,30 +104,12 @@ export const SkuListDetails = (
     dropdownItems: []
   }
 
-  const hasSalesChannels =
-    extras?.salesChannels != null && extras?.salesChannels.length > 0
 
-  const { data: publicMarkets } = useCoreApi(
-    'markets',
-    'list',
-    [
-      {
-        fields: ['id'],
-        filters: {
-          customer_group_null: true,
-          private_true: false,
-          disabled_at_null: true
-        },
-        pageSize: 1
-      }
-    ],
-    {}
-  )
+
   const hasPublicMarkets =
     publicMarkets != null && publicMarkets.meta.recordCount > 0
 
   const tabs = ['items', 'links', 'info']
-  const queryString = useSearch()
   const urlParams = new URLSearchParams(queryString)
   const defaultTab =
     urlParams.get('tab') != null
@@ -133,11 +137,6 @@ export const SkuListDetails = (
       }
     ])
   }
-
-  const linkListTable =
-    hasSalesChannels && hasPublicMarkets
-      ? LinkListTable({ resourceId: skuListId, resourceType: 'sku_lists' })
-      : null
 
   return (
     <PageLayout
@@ -193,7 +192,7 @@ export const SkuListDetails = (
             <Spacer top='10'>
               <Section
                 title='Links'
-                border={linkListTable != null ? 'none' : undefined}
+                border={hasSalesChannels && hasPublicMarkets ? 'none' : undefined}
                 actionButton={
                   canUser('update', 'sku_lists') &&
                   hasSalesChannels &&
@@ -216,7 +215,9 @@ export const SkuListDetails = (
                   )
                 }
               >
-                {linkListTable ?? (
+                {hasSalesChannels && hasPublicMarkets ? (
+                  <LinkListTable resourceId={skuListId} resourceType='sku_lists' />
+                ) : (
                   <LinksEmptyState
                     scope={
                       !hasSalesChannels
