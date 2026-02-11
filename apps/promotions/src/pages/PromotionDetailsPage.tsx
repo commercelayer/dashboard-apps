@@ -174,7 +174,8 @@ function Page(
         <Tabs
           defaultTab={defaultTab}
           onTabSwitch={(tabIndex) => {
-            navigate(`?tab=${tabIndex}`)
+            params.set('tab', tabIndex.toString())
+            navigate(`?${params.toString()}`)
           }}
         >
           <Tab name='Overview'>
