@@ -5,24 +5,24 @@ import {
   StatusIcon,
   Text,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Bundle, Sku } from '@commercelayer/sdk'
-import { makeSku } from 'src/mocks/resources/skus'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements";
+import type { Bundle, Sku } from "@commercelayer/sdk";
+import { makeSku } from "src/mocks/resources/skus";
 
 interface Props {
-  resource?: Sku | Bundle
-  onSelect: (resource: Sku | Bundle) => void
+  resource?: Sku | Bundle;
+  onSelect: (resource: Sku | Bundle) => void;
 }
 
 export const ListItemSkuBundle = withSkeletonTemplate<Props>(
   ({ resource = makeSku(), onSelect }) => {
-    const { t } = useTranslation()
+    const { t } = useTranslation();
     return (
       <ListItem
         onClick={(e) => {
-          e.preventDefault()
-          onSelect(resource)
+          e.preventDefault();
+          onSelect(resource);
         }}
         icon={
           <Avatar
@@ -32,18 +32,18 @@ export const ListItemSkuBundle = withSkeletonTemplate<Props>(
         }
       >
         <div>
-          <Text tag='div' variant='info' weight='semibold'>
+          <Text tag="div" variant="info" weight="medium" size="x-small">
             {resource.code}
           </Text>
-          <Text tag='div' weight='bold'>
-            {resource.name}{' '}
-            {resource.type === 'bundles' && (
-              <Badge variant='teal'>{t('resources.bundles.name')}</Badge>
+          <Text tag="div" weight="semibold">
+            {resource.name}{" "}
+            {resource.type === "bundles" && (
+              <Badge variant="teal">{t("resources.bundles.name")}</Badge>
             )}
           </Text>
         </div>
-        <StatusIcon name='caretRight' />
+        <StatusIcon name="caretRight" />
       </ListItem>
-    )
-  }
-)
+    );
+  },
+);
