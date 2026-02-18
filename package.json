@@ -12,6 +12,8 @@
     "test:watch": "pnpm -r --parallel --aggregate-output --color test:watch",
     "dep:major": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u && node replace-react.mjs",
     "dep:minor": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u -t minor && node replace-react.mjs",
+    "elements:preview": "node replace-app-elements.mjs preview",
+    "elements:bump": "node replace-app-elements.mjs bump",
     "prepare": "husky"
   },
   "keywords": [],
