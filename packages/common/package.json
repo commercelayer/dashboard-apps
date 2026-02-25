@@ -9,7 +9,7 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "6.10.1",
+    "@commercelayer/app-elements": "6.10.2",
     "@commercelayer/sdk": "6.52.0",
     "@hookform/resolvers": "^3.10.0",
     "date-fns": "^4.1.0",
@@ -18,7 +18,7 @@
     "react-hook-form": "7.62.0",
     "react-qrcode-logo": "^4.0.0",
     "swr": "^2.4.0",
-    "type-fest": "^5.4.3",
+    "type-fest": "^5.4.4",
     "wouter": "^3.9.0",
     "zod": "^3.25.76"
   },
@@ -27,7 +27,7 @@
     "@types/lodash-es": "^4.17.12",
     "@types/react": "^19.2.13",
     "eslint": "^8.57.1",
-    "i18next": "^25.8.4",
+    "i18next": "^25.8.13",
     "typescript": "^5.9.3"
   }
 }
