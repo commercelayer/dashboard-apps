@@ -36,10 +36,10 @@ export function FormFieldItems({ returnLineItems }: Props): React.JSX.Element {
             }
             padding='none'
           >
-            <Text size='regular' tag='div' weight='bold'>
+            <Text size='regular' tag='div' weight='semibold'>
               {item.name}
             </Text>
-            <Text size='regular' tag='div' weight='bold' wrap='nowrap'>
+            <Text size='regular' tag='div' weight='medium' wrap='nowrap'>
               x {item.quantity}
             </Text>
           </ListItem>

@@ -390,7 +390,7 @@ function LineItemRow({
         align='right'
         style={{ borderStyle: 'dashed', fontSize: '1rem', minWidth: '110px' }}
       >
-        <Text wrap='nowrap' weight='medium' variant={textVariant}>
+        <Text wrap='nowrap' weight='medium' size='small' variant={textVariant}>
           {formatCentsToCurrency(
             totalAmountCents,
             item?.currency_code as CurrencyCode
