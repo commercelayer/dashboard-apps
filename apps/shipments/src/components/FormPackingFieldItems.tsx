@@ -40,7 +40,7 @@ export function FormPackingFieldItems({
             padding='none'
           >
             <div>
-              <Text size='regular' tag='div' weight='bold'>
+              <Text size='regular' tag='div' weight='semibold'>
                 {item.name}
               </Text>
               {item.sku?.weight != null ? (

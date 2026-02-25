@@ -57,7 +57,7 @@ function makeOptionItem(
           padding='none'
         >
           <div>
-            <Text size='regular' tag='div' weight='bold'>
+            <Text size='regular' tag='div' weight='semibold'>
               {item.name}
             </Text>
           </div>
