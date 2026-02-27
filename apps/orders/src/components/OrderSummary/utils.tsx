@@ -68,7 +68,9 @@ export function renderDiscounts(order: Order): React.JSX.Element | null {
     free_shipping_promotions: undefined,
     percentage_discount_promotions: undefined,
     buy_x_pay_y_promotions: undefined,
-    flex_promotions: undefined
+    flex_promotions: undefined,
+    // @ts-expect-error TODO: Remove this line when the SDK is fixed
+    discount_engine_items: undefined
   } satisfies Record<PromotionItemType, undefined>) as ItemType[]
 
   const promotionLineItems =
