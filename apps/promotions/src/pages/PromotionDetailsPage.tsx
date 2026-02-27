@@ -40,6 +40,7 @@ import {
   isMockedId,
   useAppLinking,
   useCoreSdkProvider,
+  useResourceList,
   useTokenProvider,
   withSkeletonTemplate,
   type PageHeadingProps
@@ -150,7 +151,17 @@ function Page(
   return (
     <PageLayout
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle}
+          <Badge
+            variant={
+              displayStatus.status === 'active' ? 'success' : 'secondary'
+            }
+            className='inline-block align-middle ml-2'
+          >
+            {displayStatus.label.toLowerCase()}
+          </Badge>
+        </SkeletonTemplate>
       }
       overlay={props.overlay}
       toolbar={toolbar}
@@ -409,23 +420,26 @@ const CardStatus = withSkeletonTemplate<{
   promotionId: string
 }>(({ promotionId }) => {
   const { promotion } = usePromotion(promotionId)
-  const displayStatus = useDisplayStatus(promotionId)
+  const { user } = useTokenProvider()
   const config = promotionConfig[promotion.type]
+
+  const query = useMemo<Parameters<typeof useResourceList>[0]['query']>(() => {
+    return {
+      filters: {
+        promotion_rule_promotion_id_eq: promotionId
+      },
+      sort: ['-updated_at'],
+      pageSize: 10
+    }
+  }, [promotionId])
+
+  const { meta } = useResourceList({
+    type: 'coupons',
+    query
+  })
 
   return (
     <Stack>
-      <div>
-        <Spacer bottom='2'>
-          <Text size='small' variant='info' weight='semibold'>
-            Status
-          </Text>
-        </Spacer>
-        <Badge
-          variant={displayStatus.status === 'active' ? 'success' : 'secondary'}
-        >
-          {displayStatus.label}
-        </Badge>
-      </div>
       <div>
         <Spacer bottom='2'>
           <Text size='small' variant='info' weight='semibold'>
@@ -451,6 +465,18 @@ const CardStatus = withSkeletonTemplate<{
           {promotion.total_usage_count}
           {promotion.total_usage_limit != null &&
             ` / ${promotion.total_usage_limit}`}
+        </Text>
+      </div>
+      <div>
+        <Spacer bottom='2'>
+          <Text size='small' variant='info' weight='semibold'>
+            Coupons
+          </Text>
+        </Spacer>
+        <Text weight='semibold' style={{ fontSize: '18px' }}>
+          {meta?.recordCount?.toLocaleString(user?.locale, {
+            useGrouping: 'always'
+          })}
         </Text>
       </div>
     </Stack>
