@@ -5,6 +5,7 @@ import {
   Dropdown,
   DropdownItem,
   Icon,
+  toast,
   useCoreApi,
   useCoreSdkProvider,
   useTokenProvider,
@@ -80,6 +81,11 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
               })
               .then(async () => {
                 void mutateOrder()
+              })
+              .catch(() => {
+                toast('Could not add item to order', {
+                  type: 'error'
+                })
               })
           }}
         />

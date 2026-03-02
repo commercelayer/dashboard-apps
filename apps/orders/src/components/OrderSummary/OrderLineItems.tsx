@@ -2,6 +2,7 @@ import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   ResourceLineItems,
   Section,
+  toast,
   useCoreSdkProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -57,6 +58,11 @@ export const OrderLineItems = withSkeletonTemplate<Props>(
                   })
                   .then(() => {
                     void mutateOrder()
+                  })
+                  .catch(() => {
+                    toast('Could not add item to order', {
+                      type: 'error'
+                    })
                   })
               }
             )
