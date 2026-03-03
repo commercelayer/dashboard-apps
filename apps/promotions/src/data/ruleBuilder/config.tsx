@@ -80,54 +80,6 @@ export const ruleBuilderConfig: RuleBuilderConfig = {
       return true
     }
   },
-  skuListPromotionRule: {
-    resource: 'sku_list_promotion_rules',
-    rel: 'sku_lists',
-    label: 'SKU list',
-    operators: null,
-    Component: () => {
-      const { watch } = useFormContext()
-      const watchedAllSKUs = watch('all_skus')
-      return (
-        <>
-          <SelectSkuListComponent />
-          <Spacer top='4'>
-            <HookedInputSelect
-              name='all_skus'
-              initialValues={[
-                { label: 'Active for any SKU in the SKU list', value: 'any' },
-                { label: 'Active for all SKUs in the SKU list', value: 'all' },
-                { label: 'Active for at least', value: 'number' }
-              ]}
-            />
-            {watchedAllSKUs === 'number' && (
-              <Spacer top='4'>
-                <HookedInput
-                  type='number'
-                  min={0}
-                  name='min_quantity'
-                  suffix={<Text variant='info'>SKUs in the SKU list</Text>}
-                />
-              </Spacer>
-            )}
-          </Spacer>
-        </>
-      )
-    },
-    isAvailable() {
-      return true
-    }
-  },
-  line_items_sku_tags_id: {
-    resource: 'custom_promotion_rules',
-    rel: 'tags',
-    label: 'SKU tag',
-    operators: [matchers.in, matchers.not_in],
-    Component: () => <SelectTagComponent />,
-    isAvailable() {
-      return true
-    }
-  },
   customer_status: {
     resource: 'custom_promotion_rules',
     rel: null,
@@ -182,11 +134,49 @@ export const ruleBuilderConfig: RuleBuilderConfig = {
       return true
     }
   },
-  tags_id: {
+  skuListPromotionRule: {
+    resource: 'sku_list_promotion_rules',
+    rel: 'sku_lists',
+    label: 'Order contains SKU list',
+    operators: null,
+    Component: () => {
+      const { watch } = useFormContext()
+      const watchedAllSKUs = watch('all_skus')
+      return (
+        <>
+          <SelectSkuListComponent />
+          <Spacer top='4'>
+            <HookedInputSelect
+              name='all_skus'
+              initialValues={[
+                { label: 'Active for any SKU in the SKU list', value: 'any' },
+                { label: 'Active for all SKUs in the SKU list', value: 'all' },
+                { label: 'Active for at least', value: 'number' }
+              ]}
+            />
+            {watchedAllSKUs === 'number' && (
+              <Spacer top='4'>
+                <HookedInput
+                  type='number'
+                  min={0}
+                  name='min_quantity'
+                  suffix={<Text variant='info'>SKUs in the SKU list</Text>}
+                />
+              </Spacer>
+            )}
+          </Spacer>
+        </>
+      )
+    },
+    isAvailable() {
+      return true
+    }
+  },
+  line_items_sku_tags_id: {
     resource: 'custom_promotion_rules',
     rel: 'tags',
-    label: 'Order tag',
-    operators: [matchers.in, matchers.not_in],
+    label: 'Order contains SKU with tag',
+    operators: [matchers.in],
     Component: () => <SelectTagComponent />,
     isAvailable() {
       return true
@@ -195,7 +185,7 @@ export const ruleBuilderConfig: RuleBuilderConfig = {
   subtotal_amount_cents: {
     resource: 'custom_promotion_rules',
     rel: null,
-    label: 'Cart subtotal',
+    label: 'Order subtotal',
     operators: [
       matchers.eq,
       matchers.gteq,
@@ -213,7 +203,7 @@ export const ruleBuilderConfig: RuleBuilderConfig = {
   total_amount_cents: {
     resource: 'custom_promotion_rules',
     rel: null,
-    label: 'Cart total',
+    label: 'Order total',
     operators: [
       matchers.eq,
       matchers.gteq,
@@ -226,6 +216,16 @@ export const ruleBuilderConfig: RuleBuilderConfig = {
     ),
     isAvailable({ currencyCodes }) {
       return currencyCodes.length === 1
+    }
+  },
+  tags_id: {
+    resource: 'custom_promotion_rules',
+    rel: 'tags',
+    label: 'Order tag',
+    operators: [matchers.in, matchers.not_in],
+    Component: () => <SelectTagComponent />,
+    isAvailable() {
+      return true
     }
   }
 }
