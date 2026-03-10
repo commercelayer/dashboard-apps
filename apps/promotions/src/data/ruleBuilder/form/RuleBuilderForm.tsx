@@ -206,8 +206,17 @@ function useRuleBuilderFormFields(
   }, [ruleBuilderConfig, currencyCodes, rules])
 
   const operatorInitialValues: InputSelectValue[] | null = useMemo(() => {
-    if (watchParameter == null) {
-      return []
+    // We don't want to show operator selection if there is no parameter
+    // selected or if the selected parameter does not have any operator or
+    // just have only one.
+    const noOperatorsToShow =
+      watchParameter == null ||
+      (watchParameter != null &&
+        (ruleBuilderConfig[watchParameter]?.operators == null ||
+          ruleBuilderConfig[watchParameter]?.operators?.length <= 1))
+
+    if (noOperatorsToShow) {
+      return null
     }
 
     return (ruleBuilderConfig[watchParameter]?.operators?.map(
@@ -240,6 +249,15 @@ function useRuleBuilderFormFields(
   useEffect(() => {
     methods.resetField('operator')
     methods.resetField('value')
+    // We auto select the first available operator option.
+    // This is needed also in case we don't show the operator selection
+    // in case of only one operator available.
+    if (watchParameter != null) {
+      methods.setValue(
+        'operator',
+        ruleBuilderConfig[watchParameter]?.operators?.[0]?.value ?? null
+      )
+    }
   }, [watchParameter])
 
   return {

@@ -6,6 +6,7 @@ import {
   promotionConfig
 } from '#data/promotions/config'
 import { appRoutes } from '#data/routes'
+import { ruleBuilderConfig } from '#data/ruleBuilder/config'
 import { usePromotionRules } from '#data/ruleBuilder/usePromotionRules'
 import { useDeletePromotionOverlay } from '#hooks/useDeletePromotionOverlay'
 import { usePromotion } from '#hooks/usePromotion'
@@ -640,69 +641,78 @@ const SectionActivationRules = withSkeletonTemplate<{
       >
         {hasRules ? (
           <Card backgroundColor='light' overflow='visible' gap='4'>
-            {rules.map((rule, index) => (
-              <Spacer key={rule.key} top={index > 0 ? '2' : undefined}>
-                <Card overflow='visible' gap='4'>
-                  <ListItem padding='none' borderStyle='none'>
-                    <div>
-                      {rule.label} {rule.valid && `${rule.matcherLabel} `}
-                      {rule.values.map((value, i, list) => (
-                        <span key={value}>
-                          <b>{value}</b>
-                          {i < list.length - 1 ? <>,&nbsp;</> : null}
-                        </span>
-                      ))}
-                      {rule.suffixLabel != null && ` ${rule.suffixLabel}`}
-                    </div>
-                    {rule.valid && (
-                      <div>
-                        <Dropdown
-                          dropdownItems={
-                            <>
-                              <DropdownItem
-                                label='Delete'
-                                onClick={function () {
-                                  switch (rule.promotionRule.type) {
-                                    case 'custom_promotion_rules': {
-                                      void sdkClient.custom_promotion_rules
-                                        .update({
-                                          id: rule.promotionRule.id,
-                                          filters: {
-                                            ...rule.promotionRule.filters,
-                                            [rule.predicate]: undefined
-                                          }
-                                        })
-                                        .then(async () => {
-                                          return await mutatePromotion()
-                                        })
-                                      break
-                                    }
+            {rules.map((rule, index) => {
+              const showOperatorLabel =
+                'configKey' in rule &&
+                ruleBuilderConfig[rule.configKey]?.operators != null &&
+                Object.keys(ruleBuilderConfig[rule.configKey]?.operators ?? {})
+                  .length > 1
 
-                                    case 'sku_list_promotion_rules': {
-                                      void sdkClient.sku_list_promotion_rules
-                                        .delete(rule.promotionRule.id)
-                                        .then(async () => {
-                                          return await mutatePromotion()
-                                        })
-                                      break
-                                    }
-                                  }
-                                }}
-                              />
-                            </>
-                          }
-                          dropdownLabel={
-                            <Button variant='circle'>
-                              <Icon name='dotsThree' size={24} />
-                            </Button>
-                          }
-                        />
+              return (
+                <Spacer key={rule.key} top={index > 0 ? '2' : undefined}>
+                  <Card overflow='visible' gap='4'>
+                    <ListItem padding='none' borderStyle='none'>
+                      <div>
+                        {`${rule.label} `}
+                        {`${showOperatorLabel ? `${rule.matcherLabel} ` : ''}`}
+                        {rule.values.map((value, i, list) => (
+                          <span key={value}>
+                            <b>{value}</b>
+                            {i < list.length - 1 ? <>,&nbsp;</> : null}
+                          </span>
+                        ))}
+                        {rule.suffixLabel != null && ` ${rule.suffixLabel}`}
                       </div>
-                    )}
-                  </ListItem>
-                </Card>
-              </Spacer>
-            ))}
+                      {rule.valid && (
+                        <div>
+                          <Dropdown
+                            dropdownItems={
+                              <>
+                                <DropdownItem
+                                  label='Delete'
+                                  onClick={function () {
+                                    switch (rule.promotionRule.type) {
+                                      case 'custom_promotion_rules': {
+                                        void sdkClient.custom_promotion_rules
+                                          .update({
+                                            id: rule.promotionRule.id,
+                                            filters: {
+                                              ...rule.promotionRule.filters,
+                                              [rule.predicate]: undefined
+                                            }
+                                          })
+                                          .then(async () => {
+                                            return await mutatePromotion()
+                                          })
+                                        break
+                                      }
+
+                                      case 'sku_list_promotion_rules': {
+                                        void sdkClient.sku_list_promotion_rules
+                                          .delete(rule.promotionRule.id)
+                                          .then(async () => {
+                                            return await mutatePromotion()
+                                          })
+                                        break
+                                      }
+                                    }
+                                  }}
+                                />
+                              </>
+                            }
+                            dropdownLabel={
+                              <Button variant='circle'>
+                                <Icon name='dotsThree' size={24} />
+                              </Button>
+                            }
+                          />
+                        </div>
+                      )}
+                    </ListItem>
+                  </Card>
+                </Spacer>
+              )
+            })}
           </Card>
         ) : (
           <ListItem
