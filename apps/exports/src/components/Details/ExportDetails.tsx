@@ -18,11 +18,23 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
     return null
   }
 
+  // TODO: simplify this when SDK is updated
+  const progressPercentage =
+    'progress' in data && typeof data.progress === 'number'
+      ? `${data.progress.toFixed(2)}%`
+      : undefined
+
   return (
     <ListDetails title='Info' isLoading={isLoading}>
       {data.status != null ? (
         <ListDetailsItem label='Status' gutter='none'>
           <StatusBadge job={data} />
+        </ListDetailsItem>
+      ) : null}
+
+      {data.status === 'in_progress' && progressPercentage != null ? (
+        <ListDetailsItem label='Progress' gutter='none'>
+          {progressPercentage}
         </ListDetailsItem>
       ) : null}
 
