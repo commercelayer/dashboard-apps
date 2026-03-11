@@ -15,5 +15,7 @@ export function ExportCount({
   if (data == null) {
     return null
   }
-  return <span {...props}>{data[type] ?? 0}</span>
+  const value = data[type] ?? 0
+  const formattedValue = new Intl.NumberFormat().format(value)
+  return <span {...props}>{formattedValue}</span>
 }
