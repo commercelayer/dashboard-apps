@@ -1,12 +1,16 @@
 import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
+  A,
   Button,
+  maskGiftCardCode,
   Text,
+  useAppLinking,
+  useCoreSdkProvider,
   useTokenProvider,
   useTranslation
 } from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { useMemo } from 'react'
+import type { GiftCard, Order } from '@commercelayer/sdk'
+import { useEffect, useMemo, useState } from 'react'
 import { useAdjustTotalOverlay } from './hooks/useAdjustTotalOverlay'
 import { useOrderStatus } from './hooks/useOrderStatus'
 import { useSelectShippingMethodOverlay } from './hooks/useSelectShippingMethodOverlay'
@@ -157,7 +161,7 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
       {renderAdjustments(order)}
       {canEditManualAdjustment ? adjustmentButton : adjustmentText}
       {renderTotalRowAmount({
-        label: t('resources.gift_cards.name'),
+        label: <OrderGiftCardLabel giftCardCode={order.gift_card_code} />,
         amountCents: order.gift_card_amount_cents,
         formattedAmount: order.formatted_gift_card_amount
       })}
@@ -168,6 +172,70 @@ export const SummaryRows: React.FC<{ order: Order; editable: boolean }> = ({
         formattedAmount: order.formatted_total_amount_with_taxes,
         bold: true
       })}
+    </>
+  )
+}
+
+/**
+ * This component is responsible for rendering a valid given gift card code,
+ * sliced by a defined amount of characters, eventually linked to the gift
+ * card detail page of the `gift_cards` app.
+ */
+const OrderGiftCardLabel: React.FC<{
+  giftCardCode?: Order['gift_card_code']
+}> = ({ giftCardCode }) => {
+  const { t } = useTranslation()
+  const { sdkClient } = useCoreSdkProvider()
+  const { navigateTo } = useAppLinking()
+  const [orderGiftCard, setOrderGiftCard] = useState<GiftCard>()
+
+  useEffect(() => {
+    if (giftCardCode != null) {
+      void sdkClient.gift_cards
+        .list({
+          pageSize: 1,
+          fields: {
+            gift_cards: ['id']
+          },
+          filters: {
+            code_eq: giftCardCode
+          }
+        })
+        .then((data) => {
+          if (data[0] != null) {
+            setOrderGiftCard(data[0])
+          }
+        })
+    }
+  }, [giftCardCode])
+
+  if (giftCardCode == null) {
+    return null
+  }
+
+  const giftCardLabel = useMemo(() => {
+    const giftCardLabel = (
+      <Text weight='bold'>{maskGiftCardCode(giftCardCode)}</Text>
+    )
+
+    const giftCardHref = navigateTo({
+      app: 'gift_cards',
+      resourceId: orderGiftCard?.id
+    })?.href
+    const giftCardLink =
+      giftCardHref != null ? (
+        <A href={giftCardHref}>{giftCardLabel}</A>
+      ) : (
+        giftCardLabel
+      )
+
+    return giftCardLink
+  }, [giftCardCode, orderGiftCard])
+
+  return (
+    <>
+      <Text>{t('resources.gift_cards.name')} ending in </Text>
+      {giftCardLabel}
     </>
   )
 }
