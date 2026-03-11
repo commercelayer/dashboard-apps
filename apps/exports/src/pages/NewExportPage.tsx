@@ -1,7 +1,6 @@
 import { Form } from '#components/Form'
 import { adaptFormFiltersToSdk } from '#components/Form/Filters/utils'
 import { type ExportFormValues } from '#components/Form/types'
-import { validateRecordsCount } from '#components/Form/validateRecordsCount'
 import { customFieldsSubset } from '#data/fields'
 import { isAvailableResource, showResourceNiceName } from '#data/resources'
 import { appRoutes } from '#data/routes'
@@ -72,11 +71,6 @@ const NewExportPage = (): React.JSX.Element | null => {
 
     try {
       const filters = adaptFormFiltersToSdk(values.filters, user?.timezone)
-      await validateRecordsCount({
-        sdkClient,
-        resourceType,
-        filters
-      })
 
       await sdkClient.exports.create({
         resource_type: resourceType,
