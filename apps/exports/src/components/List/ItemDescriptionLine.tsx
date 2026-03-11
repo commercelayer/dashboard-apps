@@ -5,7 +5,7 @@ import {
 import { type Export } from '@commercelayer/sdk'
 
 interface Props {
-  job: Export
+  job: Export & { progress?: number }
 }
 
 export function DescriptionLine({ job }: Props): React.JSX.Element {
@@ -16,7 +16,9 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
       {job.status === 'pending' ? (
         <div>Pending</div>
       ) : job.status === 'in_progress' ? (
-        <div>In progress</div>
+        <div>
+          Export in progress {job.progress != null ? `${job.progress}%` : ''}
+        </div>
       ) : job.interrupted_at != null ? (
         <div>
           {formatDateWithPredicate({
