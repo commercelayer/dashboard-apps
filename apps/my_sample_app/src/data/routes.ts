@@ -1,4 +1,5 @@
-import { createRoute } from '@commercelayer/app-elements'
+import { createRoute, createTypedRoute } from '@commercelayer/app-elements'
+import type { ListableResourceType } from '@commercelayer/sdk'
 
 export type AppRoute = keyof typeof appRoutes
 
@@ -7,5 +8,12 @@ export type AppRoute = keyof typeof appRoutes
 // a `path` property to be used as patter matching in <Route path> component
 // and `makePath` method to be used to generate the path used in navigation and links
 export const appRoutes = {
-  home: createRoute('/')
+  home: createRoute('/'),
+  list: createTypedRoute<{ resourceType: ListableResourceType }>()(
+    '/:resourceType/'
+  ),
+  details: createTypedRoute<{
+    resourceType: ListableResourceType
+    resourceId: string
+  }>()('/:resourceType/:resourceId/')
 }
