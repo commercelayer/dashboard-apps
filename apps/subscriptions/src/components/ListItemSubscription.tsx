@@ -7,6 +7,7 @@ import {
   ListItem,
   StatusIcon,
   Text,
+  useAppLinking,
   useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
@@ -46,6 +47,8 @@ export const ListItemSubscription =
   withSkeletonTemplate<ListItemSubscriptionProps>(
     ({ resource = makeOrderSubscription() }) => {
       const { user } = useTokenProvider()
+      const { navigateTo } = useAppLinking()
+
       const lastRunFailed =
         resource.succeeded_on_last_run === false && resource.last_run_at != null
       const status = lastRunFailed ? 'Last run failed' : resource.status
@@ -59,6 +62,10 @@ export const ListItemSubscription =
       return (
         <Link
           href={appRoutes.details.makePath({ subscriptionId: resource.id })}
+          {...navigateTo({
+            app: 'subscriptions',
+            resourceId: resource.id
+          })}
         >
           <ListItem alignItems='center' icon={getListUiIcon(resource)}>
             <div>
