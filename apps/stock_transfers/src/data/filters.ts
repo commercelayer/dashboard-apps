@@ -49,7 +49,6 @@ export const instructions: FiltersInstructions = [
     sdk: {
       predicate: 'status_in',
       defaultOptions: [
-        'upcoming',
         'picking',
         'in_transit',
         'completed',
@@ -57,13 +56,11 @@ export const instructions: FiltersInstructions = [
         'on_hold'
       ]
     },
-
     render: {
       component: 'inputToggleButton',
       props: {
         mode: 'multi',
         options: [
-          { value: 'upcoming', label: 'Upcoming' },
           { value: 'picking', label: 'Picking' },
           { value: 'in_transit', label: 'In transit' },
           { value: 'completed', label: 'Completed' },
