@@ -23,7 +23,9 @@ export function Item({ job }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { deleteExport } = useListContext()
 
-  const canDelete = job.status === 'pending' && canUser('destroy', 'exports')
+  const canDelete =
+    (job.status === 'pending' || job.status === 'in_progress') &&
+    canUser('destroy', 'exports')
 
   return (
     <Link href={appRoutes.details.makePath(job.id)} asChild>
@@ -39,7 +41,7 @@ export function Item({ job }: Props): React.JSX.Element {
         {canDelete ? (
           <Button
             type='button'
-            variant='danger'
+            variant='secondary'
             onClick={() => {
               deleteExport(job.id)
             }}
@@ -54,11 +56,15 @@ export function Item({ job }: Props): React.JSX.Element {
   )
 }
 
-function TaskIcon({ job }: { job: Export }): React.JSX.Element {
+function TaskIcon({
+  job
+}: {
+  job: Export & { progress?: number }
+}): React.JSX.Element {
   const status = getUiStatus(job.status)
 
   if (status === 'progress') {
-    return <RadialProgress percentage={0} />
+    return <RadialProgress percentage={job.progress} />
   }
 
   if (status === 'pending') {
