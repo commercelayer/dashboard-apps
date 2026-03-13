@@ -62,9 +62,10 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
     }
   }, [filterStatus, searchValue])
 
-  const { list, ResourceList, refresh } = useResourceList({
+  const { list, ResourceList, refresh, Pagination } = useResourceList({
     type: 'coupons',
-    query
+    query,
+    paginationType: 'pagination'
   })
 
   const addCouponLink = appRoutes.newCoupon.makePath({
@@ -237,6 +238,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
             }}
           />
         </div>
+        <Pagination />
       </Spacer>
     </>
   )
