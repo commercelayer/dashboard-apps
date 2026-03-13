@@ -1,5 +1,6 @@
 import {
   Badge,
+  formatDate,
   ListDetails,
   ListDetailsItem,
   Tag,
@@ -7,7 +8,6 @@ import {
 } from '@commercelayer/app-elements'
 import isEmpty from 'lodash-es/isEmpty'
 import { useExportDetailsContext } from './Provider'
-import { StatusBadge } from './StatusBadge'
 
 export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
   const {
@@ -20,9 +20,12 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
 
   return (
     <ListDetails title='Info' isLoading={isLoading}>
-      {data.status != null ? (
-        <ListDetailsItem label='Status' gutter='none'>
-          <StatusBadge job={data} />
+      {data.estimated_completion_at != null && data.status === 'in_progress' ? (
+        <ListDetailsItem label='Estimated Completion' gutter='none'>
+          {formatDate({
+            isoDate: data.estimated_completion_at,
+            format: 'distanceToNow'
+          })}
         </ListDetailsItem>
       ) : null}
 
