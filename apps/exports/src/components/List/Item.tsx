@@ -10,6 +10,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Export } from '@commercelayer/sdk'
+import { useState } from 'react'
 import { Link } from 'wouter'
 import { DescriptionLine } from './ItemDescriptionLine'
 import { useListContext } from './Provider'
@@ -22,6 +23,7 @@ interface Props {
 export function Item({ job }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { deleteExport } = useListContext()
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const canDelete =
     (job.status === 'pending' || job.status === 'in_progress') &&
@@ -42,8 +44,14 @@ export function Item({ job }: Props): React.JSX.Element {
           <Button
             type='button'
             variant='secondary'
-            onClick={() => {
-              deleteExport(job.id)
+            disabled={isDeleting}
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setIsDeleting(true)
+              void deleteExport(job.id).finally(() => {
+                setIsDeleting(false)
+              })
             }}
           >
             Cancel
