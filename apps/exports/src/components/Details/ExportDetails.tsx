@@ -4,6 +4,7 @@ import {
   ListDetails,
   ListDetailsItem,
   Tag,
+  useTokenProvider,
   withSkeletonTemplate
 } from '@commercelayer/app-elements'
 import isEmpty from 'lodash-es/isEmpty'
@@ -13,6 +14,7 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
   const {
     state: { data }
   } = useExportDetailsContext()
+  const { user } = useTokenProvider()
 
   if (data == null) {
     return null
@@ -24,8 +26,16 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
         <ListDetailsItem label='Estimated Completion' gutter='none'>
           {formatDate({
             isoDate: data.estimated_completion_at,
-            format: 'distanceToNow'
+            format: 'full',
+            timezone: user?.timezone
+          })}{' '}
+          (
+          {formatDate({
+            isoDate: data.estimated_completion_at,
+            format: 'distanceToNow',
+            timezone: user?.timezone
           })}
+          )
         </ListDetailsItem>
       ) : null}
 
