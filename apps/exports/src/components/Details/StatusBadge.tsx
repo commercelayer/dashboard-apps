@@ -21,7 +21,7 @@ function getUiStatusVariant(apiStatus?: string): {
 } {
   if (apiStatus === 'in_progress') {
     return {
-      variant: 'primary',
+      variant: 'warning',
       label: 'in progress'
     }
   }
