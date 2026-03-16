@@ -1,7 +1,7 @@
-import { type Export } from '@commercelayer/sdk'
-import { useExportDetailsContext } from './Provider'
 import { Report, withSkeletonTemplate } from '@commercelayer/app-elements'
+import { type Export } from '@commercelayer/sdk'
 import { ExportCount } from './ExportCount'
+import { useExportDetailsContext } from './Provider'
 
 export const ExportReport = withSkeletonTemplate(({ isLoading }) => {
   const {
@@ -20,7 +20,7 @@ export const ExportReport = withSkeletonTemplate(({ isLoading }) => {
       isLoading={isLoading}
       items={[
         {
-          label: getStatusLabel(data),
+          label: 'Records',
           count: <ExportCount type='records_count' />,
           linkUrl: getSourceFileUrl(data),
           linkLabel
@@ -29,22 +29,6 @@ export const ExportReport = withSkeletonTemplate(({ isLoading }) => {
     />
   )
 })
-
-function getStatusLabel(data: Export): string {
-  switch (data.status) {
-    case 'completed':
-      return 'Records exported'
-
-    case 'pending':
-      return 'Exporting records'
-
-    case 'in_progress':
-      return 'Exporting records'
-
-    default:
-      return 'Records'
-  }
-}
 
 function getSourceFileUrl(job?: Export): string | undefined {
   if (
