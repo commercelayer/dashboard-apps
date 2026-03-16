@@ -12,5 +12,5 @@ export const initialState: ListExportContextState = {
 export const initialValues: ListExportContextValue = {
   state: initialState,
   changePage: () => undefined,
-  deleteExport: () => undefined
+  deleteExport: async () => undefined
 }
