@@ -7,7 +7,6 @@ import {
 } from '@commercelayer/app-elements'
 import isEmpty from 'lodash-es/isEmpty'
 import { useExportDetailsContext } from './Provider'
-import { StatusBadge } from './StatusBadge'
 
 export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
   const {
@@ -20,12 +19,6 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
 
   return (
     <ListDetails title='Info' isLoading={isLoading}>
-      {data.status != null ? (
-        <ListDetailsItem label='Status' gutter='none'>
-          <StatusBadge job={data} />
-        </ListDetailsItem>
-      ) : null}
-
       <ListDetailsItem label='Includes' gutter='none'>
         {data.includes != null && data.includes.length > 0 ? (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>

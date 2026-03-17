@@ -89,13 +89,15 @@ export function ListExportProvider({
     dispatch({ type: 'loadData', payload: list })
   }, [state.currentPage])
 
-  const deleteExport = (exportId: string): void => {
-    sdkClient.exports
-      .delete(exportId)
-      .then(fetchList)
-      .catch(() => {
-        console.error('Export not found')
-      })
+  const deleteExport = async (exportId: string): Promise<void> => {
+    try {
+      await sdkClient.exports.update({ id: exportId, _interrupt: true })
+      await sdkClient.exports.delete(exportId)
+
+      await fetchList()
+    } catch (error) {
+      console.error('Error interrupting export:', error)
+    }
   }
 
   useEffect(
