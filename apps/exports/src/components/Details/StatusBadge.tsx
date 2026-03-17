@@ -33,6 +33,13 @@ function getUiStatusVariant(apiStatus?: string): {
     }
   }
 
+  if (apiStatus === 'failed') {
+    return {
+      variant: 'danger',
+      label: 'failed'
+    }
+  }
+
   if (apiStatus === 'completed') {
     return {
       variant: 'success',
