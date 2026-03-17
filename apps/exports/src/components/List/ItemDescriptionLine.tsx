@@ -25,7 +25,7 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
       ) : job.interrupted_at != null ? (
         <div>
           {formatDateWithPredicate({
-            predicate: 'Export failed',
+            predicate: 'Export interrupted',
             isoDate: job.interrupted_at,
             timezone: user?.timezone
           })}
@@ -39,6 +39,9 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
               timezone: user?.timezone
             })}
         </div>
+      ) : // @ts-expect-error - Waiting for SDK to update types
+      job.status === 'failed' ? (
+        <div>Export failed</div>
       ) : (
         '-'
       )}
