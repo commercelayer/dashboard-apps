@@ -7,7 +7,10 @@ import { type Export } from '@commercelayer/sdk'
 import type { FC } from 'react'
 
 interface Props {
-  job: Export & { progress?: number }
+  job: Export & {
+    progress?: number
+    estimated_completion_at?: string
+  }
 }
 
 export function DescriptionLine({ job }: Props): React.JSX.Element {
@@ -19,8 +22,16 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
         <div>Pending</div>
       ) : job.status === 'in_progress' ? (
         <div>
-          Export in progress {job.progress != null ? `${job.progress}%` : ''}{' '}
-          <RemainingTime job={job} />
+          {(job.records_count ?? 0).toLocaleString()} records
+          {job.progress != null
+            ? ` · ${job.progress}% complete`
+            : ' · in progress'}
+          {job.estimated_completion_at != null ? (
+            <>
+              {' · '}
+              <RemainingTime job={job} />
+            </>
+          ) : null}
         </div>
       ) : job.interrupted_at != null ? (
         <div>
