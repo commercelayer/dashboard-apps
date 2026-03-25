@@ -43,6 +43,8 @@ export function getTriggerAttributes(order: Order): UITriggerAttributes[] {
       return ['_approve', '_cancel']
 
     case 'placed:unpaid:unfulfilled':
+    case 'placed:partially_authorized:unfulfilled':
+    case 'placed:partially_authorized:not_required':
       return ['_cancel']
 
     case 'approved:authorized:unfulfilled':
