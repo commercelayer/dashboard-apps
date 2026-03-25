@@ -123,6 +123,7 @@ function adaptLinkToFormValues(link?: Link): LinkFormValues {
     clientId: link?.client_id ?? '',
     market,
     stockLocation,
+    language: link?.params?.lang as string | undefined,
     startsAt: new Date(link?.starts_at ?? ''),
     expiresAt: new Date(link?.expires_at ?? '')
   }
@@ -140,6 +141,10 @@ function adaptFormValuesToLink(
     scope: `market:id:${formValues.market}${!isEmpty(formValues.stockLocation) ? ` stock_location:id:${formValues.stockLocation}` : ''}`,
     starts_at: formValues.startsAt.toJSON(),
     expires_at: formValues.expiresAt.toJSON(),
+    params:
+      !isEmpty(formValues.language)
+        ? { lang: formValues.language }
+        : null,
     item: {
       type: resourceType,
       id: resourceId

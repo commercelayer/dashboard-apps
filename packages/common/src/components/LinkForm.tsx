@@ -22,12 +22,29 @@ import { useForm, type UseFormSetError } from 'react-hook-form'
 import { z } from 'zod'
 import { RelationshipSelector } from './RelationshipSelector'
 
+// Sourced from https://github.com/commercelayer/mfe-microstore/blob/main/packages/microstore/src/providers/i18n/index.ts
+// Keep in sync when new locales are added to mfe-microstore.
+const microstoreLanguages = [
+  { value: 'hr', label: 'Croatian' },
+  { value: 'nl', label: 'Dutch' },
+  { value: 'en', label: 'English' },
+  { value: 'fr', label: 'French' },
+  { value: 'de', label: 'German' },
+  { value: 'hu', label: 'Hungarian' },
+  { value: 'it', label: 'Italian' },
+  { value: 'pl', label: 'Polish' },
+  { value: 'pt', label: 'Portuguese' },
+  { value: 'sl', label: 'Slovenian' },
+  { value: 'es', label: 'Spanish' }
+]
+
 const linkFormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1),
   clientId: z.string().min(1),
   market: z.string().min(1),
   stockLocation: z.string().optional(),
+  language: z.string().optional(),
   startsAt: z.date(),
   expiresAt: z.date()
 })
@@ -131,6 +148,7 @@ export function LinkForm({
       }
       linkFormMethods.setValue('startsAt', new Date())
       linkFormMethods.setValue('expiresAt', addMonths(new Date(), 1))
+      linkFormMethods.setValue('language', 'en')
     }
   }, [
     resourceType,
@@ -224,6 +242,23 @@ export function LinkForm({
                 </Text>
               </Hint>
             </Spacer>
+          </Spacer>
+        )}
+        {isAdvancedForm && (
+          <Spacer top='6' bottom='4'>
+            <HookedInputSelect
+              name='language'
+              label='Language'
+              initialValues={microstoreLanguages}
+              pathToValue='value'
+              hint={{
+                text: (
+                  <Text variant='info'>
+                    The language displayed on the microstore.
+                  </Text>
+                )
+              }}
+            />
           </Spacer>
         )}
         <Spacer top='6' bottom='12'>
