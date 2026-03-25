@@ -15,6 +15,9 @@ interface Props {
 
 export function DescriptionLine({ job }: Props): React.JSX.Element {
   const { user } = useTokenProvider()
+  const isEtaPending =
+    job.estimated_completion_at != null &&
+    new Date(job.estimated_completion_at) > new Date()
 
   return (
     <>
@@ -26,7 +29,7 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
           {job.progress != null
             ? ` · ${job.progress}% complete`
             : ' · in progress'}
-          {job.estimated_completion_at != null ? (
+          {isEtaPending ? (
             <>
               {' · '}
               <RemainingTime job={job} />
@@ -81,5 +84,5 @@ const RemainingTime: FC<{
     timezone: user?.timezone
   })
 
-  return <span title={etaFullDate}>({etaDistance})</span>
+  return <span title={etaFullDate}>{etaDistance}</span>
 }
