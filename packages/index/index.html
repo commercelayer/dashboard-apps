@@ -19,7 +19,11 @@
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       window.clApp_index.init(document.getElementById('root-app'), {
-        organizationSlug: '%PUBLIC_SELF_HOSTED_SLUG%'
+        organizationSlug: '%PUBLIC_SELF_HOSTED_SLUG%',
+        // For testing purposes only, you can use a list of sales channel in order to test links management.
+        extras: {
+          "salesChannels": [{ "id": "xxx", "type": "api_credentials", "name": "Checkout", "client_id": "yyy" }]
+        }
       })
     })
   </script>
