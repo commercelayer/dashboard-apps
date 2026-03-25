@@ -3,14 +3,15 @@ import { type Export } from '@commercelayer/sdk'
 
 interface Props {
   job: Export
+  className?: string
 }
 
-export function StatusBadge({ job }: Props): React.JSX.Element {
+export function StatusBadge({ job, className }: Props): React.JSX.Element {
   const { variant, label } = getUiStatusVariant(job.status)
   return (
-    <div>
-      <Badge variant={variant}>{label}</Badge>
-    </div>
+    <Badge variant={variant} className={className}>
+      {label}
+    </Badge>
   )
 }
 
@@ -20,7 +21,7 @@ function getUiStatusVariant(apiStatus?: string): {
 } {
   if (apiStatus === 'in_progress') {
     return {
-      variant: 'primary',
+      variant: 'warning',
       label: 'in progress'
     }
   }
@@ -29,6 +30,13 @@ function getUiStatusVariant(apiStatus?: string): {
     return {
       variant: 'danger',
       label: 'interrupted'
+    }
+  }
+
+  if (apiStatus === 'failed') {
+    return {
+      variant: 'danger',
+      label: 'failed'
     }
   }
 

@@ -10,6 +10,7 @@ import {
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Export } from '@commercelayer/sdk'
+import { useState } from 'react'
 import { Link } from 'wouter'
 import { DescriptionLine } from './ItemDescriptionLine'
 import { useListContext } from './Provider'
@@ -22,8 +23,11 @@ interface Props {
 export function Item({ job }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { deleteExport } = useListContext()
+  const [isDeleting, setIsDeleting] = useState(false)
 
-  const canDelete = job.status === 'pending' && canUser('destroy', 'exports')
+  const canDelete =
+    (job.status === 'pending' || job.status === 'in_progress') &&
+    canUser('destroy', 'exports')
 
   return (
     <Link href={appRoutes.details.makePath(job.id)} asChild>
@@ -39,9 +43,15 @@ export function Item({ job }: Props): React.JSX.Element {
         {canDelete ? (
           <Button
             type='button'
-            variant='danger'
-            onClick={() => {
-              deleteExport(job.id)
+            variant='secondary'
+            disabled={isDeleting}
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setIsDeleting(true)
+              void deleteExport(job.id).finally(() => {
+                setIsDeleting(false)
+              })
             }}
           >
             Cancel
@@ -54,11 +64,15 @@ export function Item({ job }: Props): React.JSX.Element {
   )
 }
 
-function TaskIcon({ job }: { job: Export }): React.JSX.Element {
+function TaskIcon({
+  job
+}: {
+  job: Export & { progress?: number }
+}): React.JSX.Element {
   const status = getUiStatus(job.status)
 
   if (status === 'progress') {
-    return <RadialProgress percentage={0} />
+    return <RadialProgress percentage={job.progress} />
   }
 
   if (status === 'pending') {

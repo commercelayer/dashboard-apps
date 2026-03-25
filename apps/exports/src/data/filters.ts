@@ -6,13 +6,23 @@ export const instructions: FiltersInstructions = [
     type: 'options',
     sdk: {
       predicate: 'status_in',
-      defaultOptions: ['pending', 'in_progress', 'interrupted', 'completed']
+      defaultOptions: [
+        'failed',
+        'pending',
+        'in_progress',
+        'interrupted',
+        'completed'
+      ]
     },
     render: {
       component: 'inputToggleButton',
       props: {
         mode: 'multi',
         options: [
+          {
+            value: 'failed',
+            label: 'Failed'
+          },
           {
             value: 'pending',
             label: 'Pending'

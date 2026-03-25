@@ -12,7 +12,7 @@ export function getUiStatus(apiStatus?: string): StatusUI {
     return 'progress'
   }
 
-  if (apiStatus === 'interrupted') {
+  if (apiStatus === 'interrupted' || apiStatus === 'failed') {
     return 'danger'
   }
 

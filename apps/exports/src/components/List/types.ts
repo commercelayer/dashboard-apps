@@ -3,7 +3,7 @@ import type { Export, ListResponse } from '@commercelayer/sdk'
 export interface ListExportContextValue {
   state: ListExportContextState
   changePage: (page: number) => void
-  deleteExport: (id: string) => void
+  deleteExport: (id: string) => Promise<void>
 }
 
 export interface ListExportContextState {
