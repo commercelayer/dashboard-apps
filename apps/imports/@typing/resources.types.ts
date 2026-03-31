@@ -5,6 +5,7 @@ export type AllowedResourceType =
   | 'coupons'
   | 'gift_cards'
   | 'customers'
+  | 'customer_addresses'
   | 'customer_subscriptions'
   | 'customer_payment_sources'
   | 'tax_categories'

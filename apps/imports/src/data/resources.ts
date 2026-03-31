@@ -18,6 +18,7 @@ const resources: Record<AllowedResourceType, VisibleInUI> = {
   customer_payment_sources: true,
   sku_lists: true,
   sku_options: true,
+  customer_addresses: true,
   customer_subscriptions: true,
   customers: true,
   gift_cards: true,

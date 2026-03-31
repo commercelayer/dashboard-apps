@@ -10,6 +10,7 @@ export const adapters: Record<
 > = {
   addresses: (...args) => fromCsvSchemaToImportInputs(...args),
   bundles: (...args) => fromCsvSchemaToImportInputs(...args),
+  customer_addresses: (...args) => fromCsvSchemaToImportInputs(...args),
   customer_payment_sources: (...args) => fromCsvSchemaToImportInputs(...args),
   skus: (...args) => fromCsvSchemaToImportInputs(...args),
   sku_lists: (...args) => fromCsvSchemaToImportInputs(...args),

@@ -2,6 +2,7 @@ import { type AllowedResourceType } from '@typing/resources.types'
 import { csvAddressTemplate } from './address'
 import { csvBundleTemplate } from './bundle'
 import { csvCouponTemplate } from './coupon'
+import { csvCustomerAddressesTemplate } from './customerAddresses'
 import { csvCustomerPaymentSourcesTemplate } from './customerPaymentSources'
 import { csvCustomersTemplate } from './customers'
 import { csvCustomerSubscriptionsTemplate } from './customerSubscriptions'
@@ -28,6 +29,7 @@ const templates: Record<AllowedResourceType, string[]> = {
   sku_options: csvSkuOptionTemplate,
   gift_cards: csvGiftCardsTemplate,
   customers: csvCustomersTemplate,
+  customer_addresses: csvCustomerAddressesTemplate,
   customer_payment_sources: csvCustomerPaymentSourcesTemplate,
   customer_subscriptions: csvCustomerSubscriptionsTemplate,
   tax_categories: csvTaxCategoryTemplate,

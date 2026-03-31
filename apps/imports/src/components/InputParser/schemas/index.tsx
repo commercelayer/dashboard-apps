@@ -3,6 +3,7 @@ import { type ZodSchema } from 'zod'
 import { csvAddressSchema } from './address'
 import { csvBundleSchema } from './bundle'
 import { csvCouponsSchema } from './coupon'
+import { csvCustomerAddressesSchema } from './customerAddresses'
 import { csvCustomerPaymentSourcesSchema } from './customerPaymentSources'
 import { csvCustomersSchema } from './customers'
 import { csvCustomerSubscriptionsSchema } from './customerSubscriptions'
@@ -36,6 +37,7 @@ export const parsers: Record<AllowedResourceType, SchemaOrMakeSchemaFn> = {
   skus: csvSkusSchema,
   prices: csvPricesSchema,
   coupons: csvCouponsSchema,
+  customer_addresses: csvCustomerAddressesSchema,
   customer_payment_sources: csvCustomerPaymentSourcesSchema,
   sku_lists: csvSkuListSchema,
   sku_options: csvSkuOptionSchema,
