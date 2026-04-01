@@ -3,8 +3,10 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "pnpm --filter index dev",
+    "build": "pnpm build:apps",
     "build:apps": "pnpm --parallel --aggregate-output --color --filter \"app-*\" build",
     "clean": "pnpx rimraf --glob **/node_modules **/pnpm-lock.yaml",
+    "check": "pnpm lint",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
     "test": "pnpm  --stream -r test",
@@ -28,7 +30,7 @@
   "license": "MIT",
   "engines": {
     "node": ">=20",
-    "pnpm": ">=8"
+    "pnpm": "10.x"
   },
   "workspaces": [
     "packages/*",
