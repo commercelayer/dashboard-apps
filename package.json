@@ -38,8 +38,8 @@
   ],
   "devDependencies": {
     "husky": "^9.1.7",
-    "lerna": "^9.0.4",
-    "lint-staged": "^16.2.7",
+    "lerna": "^9.0.7",
+    "lint-staged": "^16.4.0",
     "replace-in-file": "^8.4.0"
   },
   "resolutions": {
