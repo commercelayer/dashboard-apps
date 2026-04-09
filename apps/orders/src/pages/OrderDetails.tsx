@@ -1,5 +1,6 @@
 import { OrderAddresses } from '#components/OrderAddresses'
 import { OrderCustomer } from '#components/OrderCustomer'
+import { OrderInfos } from '#components/OrderInfos'
 import { OrderPayment } from '#components/OrderPayment'
 import { OrderReturns } from '#components/OrderReturns'
 import { OrderShipments } from '#components/OrderShipments'
@@ -173,10 +174,10 @@ function OrderDetails(): React.JSX.Element {
             <OrderSummary order={order} />
           </Spacer>
           <Spacer top='14'>
-            <OrderCustomer order={order} />
+            <OrderPayment order={order} />
           </Spacer>
           <Spacer top='14'>
-            <OrderPayment order={order} />
+            <OrderCustomer order={order} />
           </Spacer>
           <Spacer top='14'>
             <OrderAddresses order={order} />
@@ -189,6 +190,9 @@ function OrderDetails(): React.JSX.Element {
               <OrderReturns returns={returns} />
             </Spacer>
           )}
+          <Spacer top='14'>
+            <OrderInfos order={order} />
+          </Spacer>
           <Spacer top='14'>
             <ResourceDetails
               resource={order}

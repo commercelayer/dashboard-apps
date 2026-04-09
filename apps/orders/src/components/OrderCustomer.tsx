@@ -13,7 +13,6 @@ import {
 } from '@commercelayer/app-elements'
 import type { Order } from '@commercelayer/sdk'
 import { useEditCustomerOverlay } from './NewOrder/hooks/useEditCustomerOverlay'
-import { languageList } from './NewOrder/languages'
 import { useOrderStatus } from './OrderSummary/hooks/useOrderStatus'
 
 interface Props {
@@ -74,12 +73,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
                 {order.customer.email}
               </Text>
               <Text size='small' tag='div' variant='info' weight='medium'>
-                {
-                  languageList.find(
-                    ({ value }) => value === order.language_code
-                  )?.label
-                }{' '}
-                · {order.customer.total_orders_count}{' '}
+                {order.customer.total_orders_count}{' '}
                 {t('resources.orders.name', {
                   count: order.customer.total_orders_count ?? 0
                 }).toLowerCase()}
