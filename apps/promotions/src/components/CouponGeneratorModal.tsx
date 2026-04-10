@@ -439,9 +439,10 @@ function generateUniqueCoupons(params: CouponGeneratorParams): string[] {
   const { numberOfCoupons, codeLength, case: caseType, prefix } = params
 
   // Character sets - numbers are always included
-  const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  const lowercase = 'abcdefghijklmnopqrstuvwxyz'
-  const numbers = '0123456789'
+  // ambiguous characters are excluded (eg: 0, O, 1, l, I, B, 8)
+  const uppercase = 'ACDEFGHJKLMNPQRSTUVWXYZ'
+  const lowercase = 'abcdefghijkmnpqrstuvwxyz'
+  const numbers = '2345679'
 
   let charset = numbers
   if (caseType === 'upper') {
