@@ -12,6 +12,7 @@ import {
   PageLayout,
   Spacer,
   Text,
+  toast,
   useCoreSdkProvider,
   useEditMetadataOverlay,
   useOverlay,
@@ -30,12 +31,15 @@ export const ListItemTag = withSkeletonTemplate<
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 
-  const { Overlay, open, close } = useOverlay()
+  const [isDeleting, setIsDeleting] = useState(false)
+  const {
+    Overlay: DeleteTagOverlay,
+    open: showDeleteTagOverlay,
+    close: hideDeleteTagOverlay
+  } = useOverlay()
 
   const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
     useEditMetadataOverlay()
-
-  const [isDeleting, setIsDeleting] = useState(false)
 
   const dropdownItems: React.JSX.Element[] = []
 
@@ -70,7 +74,8 @@ export const ListItemTag = withSkeletonTemplate<
       <DropdownItem
         label='Delete'
         onClick={() => {
-          open()
+          setIsDeleting(false)
+          showDeleteTagOverlay()
         }}
       />
     )
@@ -101,16 +106,18 @@ export const ListItemTag = withSkeletonTemplate<
         {contextMenu}
       </ListItem>
       {canUser('destroy', 'tags') && (
-        <Overlay>
+        <DeleteTagOverlay>
           <PageLayout
-            title={`Confirm that you want to cancel the ${resource.name} tag.`}
+            title={`Confirm that you want to delete the ${resource.name} tag.`}
             description='This action cannot be undone, proceed with caution.'
             minHeight={false}
             navigationButton={{
               label: 'Cancel',
               icon: 'x',
               onClick: () => {
-                close()
+                if (!isDeleting) {
+                  hideDeleteTagOverlay()
+                }
               }
             }}
           >
@@ -121,16 +128,27 @@ export const ListItemTag = withSkeletonTemplate<
               onClick={(e) => {
                 setIsDeleting(true)
                 e.stopPropagation()
-                void sdkClient.tags.delete(resource.id).then(() => {
-                  remove?.()
-                  close()
-                })
+                let wasDeleted = false
+                void sdkClient.tags
+                  .delete(resource.id)
+                  .then(() => {
+                    wasDeleted = true
+                  })
+                  .catch((error) => {
+                    const title: string | undefined = error?.errors?.[0]?.title
+                    toast(title ?? 'An error occurred', { type: 'error' })
+                  })
+                  .finally(() => {
+                    setIsDeleting(false)
+                    hideDeleteTagOverlay()
+                    if (wasDeleted) remove?.()
+                  })
               }}
             >
               Delete tag
             </Button>
           </PageLayout>
-        </Overlay>
+        </DeleteTagOverlay>
       )}
     </>
   )
