@@ -118,8 +118,6 @@ export const GiftCardTimeline = withSkeletonTemplate<Props>(({ giftCard }) => {
   const { mutateGiftCard } = useGiftCardDetails(giftCard.id)
   const { t } = useTranslation()
 
-  console.log('user', user)
-
   return (
     <Section title={t('common.timeline.name')}>
       <Spacer top='8'>
