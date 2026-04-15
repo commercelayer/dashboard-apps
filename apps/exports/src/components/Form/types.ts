@@ -74,5 +74,6 @@ export interface ExportFormValues {
   includes: string[]
   format: ExportFormat
   filters?: AllFilters
+  filtersSource?: 'ui' | 'custom'
   useCustomFields?: boolean
 }
