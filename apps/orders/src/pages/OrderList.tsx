@@ -10,7 +10,8 @@ import {
   useTokenProvider,
   useTranslation
 } from '@commercelayer/app-elements'
-import { type FC } from 'react'
+import type { Order } from '@commercelayer/sdk'
+import { useCallback, type FC } from 'react'
 import { useCountryCodes } from 'src/metricsApi/useCountryCodes'
 import { useLocation } from 'wouter'
 import { navigate, useSearch } from 'wouter/use-browser-location'
@@ -28,7 +29,7 @@ const OrderList: FC = () => {
     new URLSearchParams(queryString).get('viewTitle') ===
     presets.pending.viewTitle
 
-  const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
+  const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter, adapters } =
     useResourceFilters({
       instructions: isPendingOrdersList
         ? makeCartsInstructions()
@@ -37,6 +38,27 @@ const OrderList: FC = () => {
             countryCodes
           })
     })
+
+  const activeFilters = adapters.adaptUrlQueryToFormValues({ queryString })
+  const searchFilterValue = activeFilters?.aggregated_details
+  const isMaybeIdSearch =
+    typeof searchFilterValue === 'string' &&
+    /^[a-zA-Z]{10}$/.test(searchFilterValue)
+
+  const preProcess = useCallback(
+    (list: Order[]) => {
+      if (!isMaybeIdSearch) return list
+
+      const exactMatch = list.find((item) => item.id === searchFilterValue)
+      if (exactMatch != null) return [exactMatch]
+
+      // No exact match: drop case-insensitive ID false positives from the API
+      return list.filter(
+        (item) => item.id.toLowerCase() !== searchFilterValue.toLowerCase()
+      )
+    },
+    [isMaybeIdSearch, searchFilterValue]
+  )
 
   const hideFiltersNav = !(
     viewTitle == null ||
@@ -85,6 +107,7 @@ const OrderList: FC = () => {
               fields: ['order.*', 'billing_address.*', 'market.*']
             }
           }}
+          preProcess={preProcess}
           hideTitle={viewTitle === presets.pending.viewTitle}
           emptyState={
             <ListEmptyState
