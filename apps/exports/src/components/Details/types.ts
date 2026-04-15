@@ -7,10 +7,7 @@ export interface ExportDetailsContextValue {
 }
 
 export interface ExportDetailsContextState {
-  data: Export & {
-    estimated_completion_at?: string
-    progress?: number
-  }
+  data: Export
   isLoading: boolean
   isDeleting: boolean
   isPolling: boolean

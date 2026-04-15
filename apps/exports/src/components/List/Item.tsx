@@ -64,15 +64,11 @@ export function Item({ job }: Props): React.JSX.Element {
   )
 }
 
-function TaskIcon({
-  job
-}: {
-  job: Export & { progress?: number }
-}): React.JSX.Element {
+function TaskIcon({ job }: { job: Export }): React.JSX.Element {
   const status = getUiStatus(job.status)
 
   if (status === 'progress') {
-    return <RadialProgress percentage={job.progress} />
+    return <RadialProgress percentage={job.progress ?? undefined} />
   }
 
   if (status === 'pending') {

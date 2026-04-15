@@ -7,10 +7,7 @@ import { type Export } from '@commercelayer/sdk'
 import type { FC } from 'react'
 
 interface Props {
-  job: Export & {
-    progress?: number
-    estimated_completion_at?: string
-  }
+  job: Export
 }
 
 export function DescriptionLine({ job }: Props): React.JSX.Element {
@@ -53,8 +50,7 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
               timezone: user?.timezone
             })}
         </div>
-      ) : // @ts-expect-error - Waiting for SDK to update types
-      job.status === 'failed' ? (
+      ) : job.status === 'failed' ? (
         <div>Export failed</div>
       ) : (
         '-'
@@ -64,7 +60,7 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
 }
 
 const RemainingTime: FC<{
-  job: Export & { estimated_completion_at?: string }
+  job: Export
 }> = ({ job }) => {
   const { user } = useTokenProvider()
 

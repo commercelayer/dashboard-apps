@@ -27,11 +27,11 @@ importers:
   apps/bundles:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -115,11 +115,11 @@ importers:
   apps/customers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -197,14 +197,14 @@ importers:
   apps/exports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^2.8.2
         version: 2.8.2(eslint@8.57.1)(react@19.2.4)(typescript@5.9.3)
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -285,11 +285,11 @@ importers:
   apps/gift_cards:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -367,14 +367,14 @@ importers:
   apps/imports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/eslint-config-ts-react':
         specifier: ^2.8.2
         version: 2.8.2(eslint@8.57.1)(react@19.2.4)(typescript@5.9.3)
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@vitejs/plugin-react':
         specifier: ^5.2.0
         version: 5.2.0(vite@7.3.1(@types/node@22.13.4)(yaml@2.8.3))
@@ -458,11 +458,11 @@ importers:
   apps/inventory:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -543,11 +543,11 @@ importers:
   apps/my_sample_app:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -628,11 +628,11 @@ importers:
   apps/orders:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -716,11 +716,11 @@ importers:
   apps/price_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -801,11 +801,11 @@ importers:
   apps/promotions:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -889,11 +889,11 @@ importers:
   apps/returns:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -974,11 +974,11 @@ importers:
   apps/shipments:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -1059,11 +1059,11 @@ importers:
   apps/sku_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -1147,11 +1147,11 @@ importers:
   apps/skus:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -1238,11 +1238,11 @@ importers:
   apps/stock_transfers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -1320,11 +1320,11 @@ importers:
   apps/subscriptions:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -1405,11 +1405,11 @@ importers:
   apps/tags:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -1487,11 +1487,11 @@ importers:
   apps/webhooks:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -1593,11 +1593,11 @@ importers:
   packages/common:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       '@commercelayer/sdk':
-        specifier: 6.52.0
-        version: 6.52.0
+        specifier: 6.57.0
+        version: 6.57.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
@@ -1651,8 +1651,8 @@ importers:
   packages/index:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: 6.13.1
-        version: 6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
+        specifier: 7.0.0
+        version: 7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))
       lodash-es:
         specifier: ^4.18.0
         version: 4.18.0
@@ -1828,9 +1828,9 @@ packages:
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
 
-  '@commercelayer/app-elements@6.13.1':
-    resolution: {integrity: sha512-vzrFGpKPBD6bzL3qkAI+OTyiDPBTsE5yrg/hwYUCSxDZcI/+8jFdPpGdqlAI+QOyp/5lFYJ1/MnpuuCHV/4KQw==}
-    engines: {node: '>=18', pnpm: '>=7'}
+  '@commercelayer/app-elements@7.0.0':
+    resolution: {integrity: sha512-Dq5w94imhb5mJq4E9nO+WpB5oBSXp7PZ0WDXstopQ5RGPD5XoojOk8xJtxfi9bM1sO/HI4E07K0VebJNeeO+ZA==}
+    engines: {node: '22', pnpm: '10'}
     peerDependencies:
       '@commercelayer/sdk': ^6.x
       query-string: ^9.x
@@ -1857,12 +1857,12 @@ packages:
     resolution: {integrity: sha512-kk4VqN2iEOreXFq76YqTP83KhBs09Z5Ez9nZNlikXWf5DXzkrOfShqqEwq8ezHjSOlqs4xVyxgQzsEdPP35CeQ==}
     engines: {node: '>=18.0.0'}
 
-  '@commercelayer/js-auth@7.3.0':
-    resolution: {integrity: sha512-o4HkMHqXqhPJ3gOA/61Na9T0ssLluV/SQEPtnb/N9/WpbiemEW43M1h/Iuc0/H8fSThqWe3Crt5HwGT5qAz6vQ==}
+  '@commercelayer/js-auth@7.4.1':
+    resolution: {integrity: sha512-5OLk7EknJowznEEEBBPfcl1uhx5apJ0OESyzqocjCXY3sPma9pabGCMJWelmGIU/esoqvdwNIFGIc2EIeVea6A==}
     engines: {node: '>=20.0.0'}
 
-  '@commercelayer/sdk@6.52.0':
-    resolution: {integrity: sha512-A4d9J6h8U6njYqT5mwBy9/ux4ZuXzaBUf5KtzzFY5Nx7H9X0BzTAycasB3ZVht0Z0v1edqQgAAxeOvP69nhzAA==}
+  '@commercelayer/sdk@6.57.0':
+    resolution: {integrity: sha512-m4Rk8bKd2B32xWLxy+b4K5p0fAuhOG0FN5WGXxTbiVXV88YP3xYEYQZZDDy70A1p9TchsNH+bTnhtRdqn+Mcug==}
     engines: {node: '>=20'}
 
   '@csstools/color-helpers@6.0.2':
@@ -4664,6 +4664,9 @@ packages:
     resolution: {integrity: sha512-koAgswPPA+UTaPN64Etp+PGP+WT6oqOS2NMi5yDkMaiGw9qY4VxQbQF0mtKMyr4BlTznWyzePV5UpECTJQmSUA==}
     deprecated: Bad release. Please use lodash-es@4.17.23 instead.
 
+  lodash-es@4.18.1:
+    resolution: {integrity: sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==}
+
   lodash.ismatch@4.4.0:
     resolution: {integrity: sha512-fPMfXjGQEV9Xsq/8MTSgUf255gawYRbjwMyDbcvDhXgV7enSZA0hynz6vMPnpAb5iONEzBHBPsT+0zes5Z301g==}
 
@@ -5370,8 +5373,8 @@ packages:
       react: ^18 || ^19
       react-dom: ^18 || ^19
 
-  react-tooltip@5.30.0:
-    resolution: {integrity: sha512-Yn8PfbgQ/wmqnL7oBpz1QiDaLKrzZMdSUUdk7nVeGTwzbxCAJiJzR4VSYW+eIO42F1INt57sPUmpgKv0KwJKtg==}
+  react-tooltip@5.30.1:
+    resolution: {integrity: sha512-1lSPLQXuVooePxadUpmcwLgOsF1mIty7UZTJ9XnyfX4drOzStYs4JMXnazcDLguQr41W5OUZddOp9kfvArdpEQ==}
     peerDependencies:
       react: '>=16.14.0'
       react-dom: '>=16.14.0'
@@ -6439,10 +6442,10 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@commercelayer/app-elements@6.13.1(@commercelayer/sdk@6.52.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))':
+  '@commercelayer/app-elements@7.0.0(@commercelayer/sdk@6.57.0)(query-string@9.3.1)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.9.0(react@19.2.4))':
     dependencies:
-      '@commercelayer/js-auth': 7.3.0
-      '@commercelayer/sdk': 6.52.0
+      '@commercelayer/js-auth': 7.4.1
+      '@commercelayer/sdk': 6.57.0
       '@date-fns/tz': 1.4.1
       '@monaco-editor/react': 4.7.0(monaco-editor@0.53.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@types/lodash-es': 4.17.12
@@ -6454,7 +6457,7 @@ snapshots:
       i18next-resources-to-backend: 1.2.1
       js-cookie: 3.0.5
       jwt-decode: 4.0.0
-      lodash-es: 4.18.0
+      lodash-es: 4.18.1
       monaco-editor: 0.53.0
       pluralize: 8.0.0
       query-string: 9.3.1
@@ -6467,7 +6470,7 @@ snapshots:
       react-i18next: 15.7.4(i18next@25.10.10(typescript@5.9.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)
       react-select: 5.10.2(@types/react@19.2.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react-toastify: 11.0.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      react-tooltip: 5.30.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react-tooltip: 5.30.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       swr: 2.4.1(react@19.2.4)
       ts-invariant: 0.10.3
       type-fest: 5.5.0
@@ -6515,9 +6518,9 @@ snapshots:
 
   '@commercelayer/js-auth@6.7.2': {}
 
-  '@commercelayer/js-auth@7.3.0': {}
+  '@commercelayer/js-auth@7.4.1': {}
 
-  '@commercelayer/sdk@6.52.0': {}
+  '@commercelayer/sdk@6.57.0': {}
 
   '@csstools/color-helpers@6.0.2': {}
 
@@ -9588,6 +9591,8 @@ snapshots:
 
   lodash-es@4.18.0: {}
 
+  lodash-es@4.18.1: {}
+
   lodash.ismatch@4.4.0: {}
 
   lodash.merge@4.6.2: {}
@@ -10415,7 +10420,7 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  react-tooltip@5.30.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+  react-tooltip@5.30.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
       '@floating-ui/dom': 1.7.6
       classnames: 2.5.1
