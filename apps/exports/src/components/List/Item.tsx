@@ -7,6 +7,7 @@ import {
   RadialProgress,
   StatusIcon,
   Text,
+  Tooltip,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Export } from '@commercelayer/sdk'
@@ -56,30 +57,40 @@ export function Item({ job }: Props): React.JSX.Element {
         </div>
         <div className='flex items-center gap-2'>
           {canPause && (
-            <Button
-              type='button'
-              variant='secondary'
-              disabled={isActing}
-              onClick={handleAction(async () => {
-                await interruptExport(job.id)
-              })}
-              size='small'
-            >
-              <Icon name='pause' />
-            </Button>
+            <Tooltip
+              label={
+                <Button
+                  type='button'
+                  variant='secondary'
+                  disabled={isActing}
+                  onClick={handleAction(async () => {
+                    await interruptExport(job.id)
+                  })}
+                  size='small'
+                >
+                  <Icon name='pause' />
+                </Button>
+              }
+              content='Pause export'
+            />
           )}
           {canResume && (
-            <Button
-              type='button'
-              variant='secondary'
-              disabled={isActing}
-              onClick={handleAction(async () => {
-                await resumeExport(job.id)
-              })}
-              size='small'
-            >
-              <Icon name='play' />
-            </Button>
+            <Tooltip
+              label={
+                <Button
+                  type='button'
+                  variant='secondary'
+                  disabled={isActing}
+                  onClick={handleAction(async () => {
+                    await resumeExport(job.id)
+                  })}
+                  size='small'
+                >
+                  <Icon name='play' />
+                </Button>
+              }
+              content='Resume export'
+            />
           )}
           {canDelete && (
             <Button
