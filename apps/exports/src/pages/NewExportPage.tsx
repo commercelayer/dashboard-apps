@@ -70,7 +70,10 @@ const NewExportPage = (): React.JSX.Element | null => {
     setIsLoading(true)
 
     try {
-      const filters = adaptFormFiltersToSdk(values.filters, user?.timezone)
+      const filters =
+        values.filtersSource === 'custom'
+          ? values.filters
+          : adaptFormFiltersToSdk(values.filters, user?.timezone)
 
       await sdkClient.exports.create({
         resource_type: resourceType,

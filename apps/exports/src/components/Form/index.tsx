@@ -46,7 +46,13 @@ export function Form({
                 name='filters'
                 control={methods.control}
                 render={({ field: { onChange } }) => (
-                  <Filters resourceType={resourceType} onChange={onChange} />
+                  <Filters
+                    resourceType={resourceType}
+                    onChange={(value) => {
+                      methods.setValue('filtersSource', 'ui')
+                      onChange(value)
+                    }}
+                  />
                 )}
               />
             </Tab>
@@ -57,8 +63,12 @@ export function Form({
               control={methods.control}
               render={({ field: { onChange } }) => (
                 <InputCode
-                  onDataReady={onChange}
+                  onDataReady={(value) => {
+                    methods.setValue('filtersSource', 'custom')
+                    onChange(value)
+                  }}
                   onDataResetRequest={() => {
+                    methods.setValue('filtersSource', 'custom')
                     onChange(undefined)
                   }}
                 />
