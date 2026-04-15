@@ -67,6 +67,7 @@ export function Item({ job }: Props): React.JSX.Element {
                     await interruptExport(job.id)
                   })}
                   size='small'
+                  aria-label='Pause export'
                 >
                   <Icon name='pause' />
                 </Button>
@@ -85,6 +86,7 @@ export function Item({ job }: Props): React.JSX.Element {
                     await resumeExport(job.id)
                   })}
                   size='small'
+                  aria-label='Resume export'
                 >
                   <Icon name='play' />
                 </Button>
