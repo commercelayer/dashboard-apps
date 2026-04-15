@@ -7,11 +7,14 @@ import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import { useViewStatus } from '#hooks/useViewStatus'
 import {
   ActionButtons,
+  Alert,
   Hr,
+  isAllStockTransfersCancelled,
   ResourceLineItems,
   ResourceShipmentParcels,
   Section,
   Spacer,
+  Text,
   useCoreSdkProvider,
   useTranslation,
   withSkeletonTemplate
@@ -34,6 +37,15 @@ export const ShipmentPackingList = withSkeletonTemplate<Props>(
 
     if (isLoading === true) {
       return null
+    }
+
+    // No parcels already created and no items to pick, there's nothing the user can do here
+    if (stockItemsList.length === 0 && (shipment.parcels ?? []).length === 0) {
+      return isAllStockTransfersCancelled(shipment) ? (
+        <Alert status='error'>All stock transfers have been cancelled</Alert>
+      ) : (
+        <Text>No items found</Text>
+      )
     }
 
     return (
