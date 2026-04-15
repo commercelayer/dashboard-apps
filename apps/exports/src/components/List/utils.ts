@@ -1,6 +1,6 @@
 import type { Export, ListResponse } from '@commercelayer/sdk'
 
-type StatusUI = 'progress' | 'success' | 'danger' | 'pending'
+type StatusUI = 'progress' | 'success' | 'danger' | 'pending' | 'paused'
 
 /**
  * Get the relative status Union Type from the api status {@link https://docs.commercelayer.io/core/v/api-reference/imports/object}
@@ -12,7 +12,11 @@ export function getUiStatus(apiStatus?: string): StatusUI {
     return 'progress'
   }
 
-  if (apiStatus === 'interrupted' || apiStatus === 'failed') {
+  if (apiStatus === 'interrupted') {
+    return 'paused'
+  }
+
+  if (apiStatus === 'failed') {
     return 'danger'
   }
 

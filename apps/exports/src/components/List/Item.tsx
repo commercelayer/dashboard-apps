@@ -22,12 +22,26 @@ interface Props {
 
 export function Item({ job }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
-  const { deleteExport } = useListContext()
-  const [isDeleting, setIsDeleting] = useState(false)
+  const { deleteExport, interruptExport, resumeExport } = useListContext()
+  const [isActing, setIsActing] = useState(false)
+
+  const handleAction =
+    (action: () => Promise<void>) => (e: React.MouseEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setIsActing(true)
+      void action().finally(() => {
+        setIsActing(false)
+      })
+    }
 
   const canDelete =
-    (job.status === 'pending' || job.status === 'in_progress') &&
+    ['interrupted', 'pending', 'in_progress'].includes(job.status) &&
     canUser('destroy', 'exports')
+  const canPause =
+    ['pending', 'in_progress'].includes(job.status) &&
+    canUser('update', 'exports')
+  const canResume = job.status === 'interrupted' && canUser('update', 'exports')
 
   return (
     <Link href={appRoutes.details.makePath(job.id)} asChild>
@@ -40,25 +54,47 @@ export function Item({ job }: Props): React.JSX.Element {
             <DescriptionLine job={job} />
           </Text>
         </div>
-        {canDelete ? (
-          <Button
-            type='button'
-            variant='secondary'
-            disabled={isDeleting}
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              setIsDeleting(true)
-              void deleteExport(job.id).finally(() => {
-                setIsDeleting(false)
-              })
-            }}
-          >
-            Cancel
-          </Button>
-        ) : (
-          <Icon name='caretRight' />
-        )}
+        <div className='flex items-center gap-2'>
+          {canPause && (
+            <Button
+              type='button'
+              variant='secondary'
+              disabled={isActing}
+              onClick={handleAction(async () => {
+                await interruptExport(job.id)
+              })}
+              size='small'
+            >
+              <Icon name='pause' />
+            </Button>
+          )}
+          {canResume && (
+            <Button
+              type='button'
+              variant='secondary'
+              disabled={isActing}
+              onClick={handleAction(async () => {
+                await resumeExport(job.id)
+              })}
+              size='small'
+            >
+              <Icon name='play' />
+            </Button>
+          )}
+          {canDelete && (
+            <Button
+              type='button'
+              variant='secondary'
+              disabled={isActing}
+              onClick={handleAction(async () => {
+                await deleteExport(job.id)
+              })}
+              size='small'
+            >
+              Cancel
+            </Button>
+          )}
+        </div>
       </ListItem>
     </Link>
   )
@@ -71,7 +107,7 @@ function TaskIcon({ job }: { job: Export }): React.JSX.Element {
     return <RadialProgress percentage={job.progress ?? undefined} />
   }
 
-  if (status === 'pending') {
+  if (status === 'pending' || status === 'paused') {
     return <RadialProgress />
   }
 

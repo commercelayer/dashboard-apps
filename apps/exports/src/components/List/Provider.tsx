@@ -100,6 +100,24 @@ export function ListExportProvider({
     }
   }
 
+  const interruptExport = async (exportId: string): Promise<void> => {
+    try {
+      await sdkClient.exports.update({ id: exportId, _interrupt: true })
+      await fetchList()
+    } catch (error) {
+      console.error('Error interrupting export:', error)
+    }
+  }
+
+  const resumeExport = async (exportId: string): Promise<void> => {
+    try {
+      await sdkClient.exports.update({ id: exportId, _start: true })
+      await fetchList()
+    } catch (error) {
+      console.error('Error resuming export:', error)
+    }
+  }
+
   useEffect(
     function handleChangePageIgnoringFirstRender() {
       if (state.list?.meta.currentPage != null) {
@@ -132,7 +150,9 @@ export function ListExportProvider({
   const value: ListExportContextValue = {
     state,
     changePage,
-    deleteExport
+    deleteExport,
+    interruptExport,
+    resumeExport
   }
 
   return (

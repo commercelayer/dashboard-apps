@@ -28,8 +28,8 @@ function getUiStatusVariant(apiStatus?: string): {
 
   if (apiStatus === 'interrupted') {
     return {
-      variant: 'danger',
-      label: 'interrupted'
+      variant: 'warning',
+      label: 'paused'
     }
   }
 

@@ -1,5 +1,5 @@
-import { getUiStatus, listHasProgressingItems } from './utils'
 import type { Export, ListResponse } from '@commercelayer/sdk'
+import { getUiStatus, listHasProgressingItems } from './utils'
 
 // getUiStatus
 describe('getUiStatus', () => {
@@ -7,8 +7,12 @@ describe('getUiStatus', () => {
     expect(getUiStatus('in_progress')).toBe('progress')
   })
 
-  test('should return `danger` status for the `<StatusIcon>` component when job is `interrupted`', () => {
-    expect(getUiStatus('interrupted')).toBe('danger')
+  test('should return `danger` status for the `<StatusIcon>` component when job is `failed`', () => {
+    expect(getUiStatus('failed')).toBe('danger')
+  })
+
+  test('should return `paused` status for the `<StatusIcon>` component when job is `interrupted`', () => {
+    expect(getUiStatus('interrupted')).toBe('paused')
   })
 
   test('should return `success` status for the `<StatusIcon>` component when job is `completed`', () => {
