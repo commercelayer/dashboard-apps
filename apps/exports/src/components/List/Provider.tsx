@@ -19,7 +19,7 @@ import {
   type ListExportContextValue
 } from './types'
 
-import { useIsChanged } from '@commercelayer/app-elements'
+import { toast, useIsChanged } from '@commercelayer/app-elements'
 import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
 
@@ -96,7 +96,28 @@ export function ListExportProvider({
 
       await fetchList()
     } catch (error) {
+      toast('Could not delete export', { type: 'error' })
       console.error('Error interrupting export:', error)
+    }
+  }
+
+  const interruptExport = async (exportId: string): Promise<void> => {
+    try {
+      await sdkClient.exports.update({ id: exportId, _interrupt: true })
+      await fetchList()
+    } catch (error) {
+      toast('Could not interrupt export', { type: 'error' })
+      console.error('Error interrupting export:', error)
+    }
+  }
+
+  const resumeExport = async (exportId: string): Promise<void> => {
+    try {
+      await sdkClient.exports.update({ id: exportId, _start: true })
+      await fetchList()
+    } catch (error) {
+      toast('Could not resume export', { type: 'error' })
+      console.error('Error resuming export:', error)
     }
   }
 
@@ -132,7 +153,9 @@ export function ListExportProvider({
   const value: ListExportContextValue = {
     state,
     changePage,
-    deleteExport
+    deleteExport,
+    interruptExport,
+    resumeExport
   }
 
   return (

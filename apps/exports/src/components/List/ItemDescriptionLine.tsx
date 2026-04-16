@@ -20,26 +20,20 @@ export function DescriptionLine({ job }: Props): React.JSX.Element {
     <>
       {job.status === 'pending' ? (
         <div>Pending</div>
-      ) : job.status === 'in_progress' ? (
+      ) : job.status === 'in_progress' || job.status === 'interrupted' ? (
         <div>
           {(job.records_count ?? 0).toLocaleString()} records
           {job.progress != null
             ? ` · ${job.progress}% complete`
             : ' · in progress'}
-          {isEtaPending ? (
+          {job.status === 'in_progress' && isEtaPending ? (
             <>
               {' · '}
               <RemainingTime job={job} />
             </>
+          ) : job.status === 'interrupted' ? (
+            ' · Paused'
           ) : null}
-        </div>
-      ) : job.interrupted_at != null ? (
-        <div>
-          {formatDateWithPredicate({
-            predicate: 'Export interrupted',
-            isoDate: job.interrupted_at,
-            timezone: user?.timezone
-          })}
         </div>
       ) : job.status === 'completed' ? (
         <div>

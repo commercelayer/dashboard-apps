@@ -7,6 +7,7 @@ import {
   RadialProgress,
   StatusIcon,
   Text,
+  Tooltip,
   useTokenProvider
 } from '@commercelayer/app-elements'
 import { type Export } from '@commercelayer/sdk'
@@ -22,12 +23,26 @@ interface Props {
 
 export function Item({ job }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
-  const { deleteExport } = useListContext()
-  const [isDeleting, setIsDeleting] = useState(false)
+  const { deleteExport, interruptExport, resumeExport } = useListContext()
+  const [isActing, setIsActing] = useState(false)
+
+  const handleAction =
+    (action: () => Promise<void>) => (e: React.MouseEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setIsActing(true)
+      void action().finally(() => {
+        setIsActing(false)
+      })
+    }
 
   const canDelete =
-    (job.status === 'pending' || job.status === 'in_progress') &&
+    ['interrupted', 'pending', 'in_progress'].includes(job.status) &&
     canUser('destroy', 'exports')
+  const canPause =
+    ['pending', 'in_progress'].includes(job.status) &&
+    canUser('update', 'exports')
+  const canResume = job.status === 'interrupted' && canUser('update', 'exports')
 
   return (
     <Link href={appRoutes.details.makePath(job.id)} asChild>
@@ -40,25 +55,59 @@ export function Item({ job }: Props): React.JSX.Element {
             <DescriptionLine job={job} />
           </Text>
         </div>
-        {canDelete ? (
-          <Button
-            type='button'
-            variant='secondary'
-            disabled={isDeleting}
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              setIsDeleting(true)
-              void deleteExport(job.id).finally(() => {
-                setIsDeleting(false)
-              })
-            }}
-          >
-            Cancel
-          </Button>
-        ) : (
-          <Icon name='caretRight' />
-        )}
+        <div className='flex items-center gap-2'>
+          {canPause && (
+            <Tooltip
+              label={
+                <Button
+                  type='button'
+                  variant='secondary'
+                  disabled={isActing}
+                  onClick={handleAction(async () => {
+                    await interruptExport(job.id)
+                  })}
+                  size='small'
+                  aria-label='Pause export'
+                >
+                  <Icon name='pause' />
+                </Button>
+              }
+              content='Pause export'
+            />
+          )}
+          {canResume && (
+            <Tooltip
+              label={
+                <Button
+                  type='button'
+                  variant='secondary'
+                  disabled={isActing}
+                  onClick={handleAction(async () => {
+                    await resumeExport(job.id)
+                  })}
+                  size='small'
+                  aria-label='Resume export'
+                >
+                  <Icon name='play' />
+                </Button>
+              }
+              content='Resume export'
+            />
+          )}
+          {canDelete && (
+            <Button
+              type='button'
+              variant='secondary'
+              disabled={isActing}
+              onClick={handleAction(async () => {
+                await deleteExport(job.id)
+              })}
+              size='small'
+            >
+              Cancel
+            </Button>
+          )}
+        </div>
       </ListItem>
     </Link>
   )
@@ -67,7 +116,7 @@ export function Item({ job }: Props): React.JSX.Element {
 function TaskIcon({ job }: { job: Export }): React.JSX.Element {
   const status = getUiStatus(job.status)
 
-  if (status === 'progress') {
+  if (status === 'progress' || status === 'paused') {
     return <RadialProgress percentage={job.progress ?? undefined} />
   }
 
