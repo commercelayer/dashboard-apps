@@ -20,6 +20,21 @@ export default {
     formType: genericPromotionOptions.merge(
       z.object({
         promotion_url: z.string().url(),
+        external_includes: z
+          .string()
+          .nullish()
+          .refine(
+            (value) => {
+              if (value == null || value.trim() === '') {
+                return true
+              }
+              return parseIncludes(value).every(isValidResourceName)
+            },
+            {
+              message:
+                'Please provide a comma-separated list of valid resource names.'
+            }
+          ),
         sku_list: z.string().nullish()
       })
     ),
@@ -37,6 +52,27 @@ export default {
                     external promotions guide
                   </a>{' '}
                   for setup.
+                </>
+              )
+            }}
+          />
+        </Spacer>
+        <Spacer top='6'>
+          <HookedInput
+            name='external_includes'
+            label='External includes'
+            hint={{
+              text: (
+                <>
+                  Comma-separated resource names for the request payload. Leave
+                  empty for defaults.{' '}
+                  <a
+                    href='https://docs.commercelayer.io/core/external-resources#custom-include-list'
+                    target='_blank'
+                    rel='noreferrer'
+                  >
+                    Learn more
+                  </a>
                 </>
               )
             }}
@@ -61,7 +97,37 @@ export default {
         <ListDetailsItem label='External service URL' gutter='none'>
           {promotion.promotion_url}
         </ListDetailsItem>
+        {promotion.external_includes != null && (
+          <ListDetailsItem label='External Includes' gutter='none'>
+            <div>
+              {promotion.external_includes
+                .map((item) => item.trim())
+                .join(', ')}
+            </div>
+          </ListDetailsItem>
+        )}
       </>
     )
   }
 } satisfies Pick<PromotionConfig, 'external_promotions'>
+
+export function parseIncludes(value: string): string[] {
+  return [
+    ...new Set(
+      value
+        .split(',')
+        .map((s) => s.trim().toLowerCase())
+        .filter(Boolean)
+    )
+  ]
+}
+
+/**
+ * Valid resource names may contain lowercase letters, underscores, and dots only.
+ * Examples:
+ * - valid: `orders`, `shipments_items`, `customer.addresses`
+ * - invalid: `Order`, `line-items`, `sku list`, `items/sku`
+ */
+export function isValidResourceName(item: string): boolean {
+  return /^[a-z_.]+$/.test(item)
+}
