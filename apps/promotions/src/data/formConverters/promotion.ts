@@ -1,4 +1,5 @@
 import type { promotionConfig } from '#data/promotions/config'
+import { parseIncludes } from '#data/promotions/configs/external_promotions'
 import type { Promotion } from '#types'
 import { type z } from 'zod'
 
@@ -12,7 +13,11 @@ export function promotionToFormValues(promotion?: Promotion) {
     ...promotion,
     starts_at: new Date(promotion.starts_at),
     expires_at: new Date(promotion.expires_at),
-    show_priority: promotion.priority != null
+    show_priority: promotion.priority != null,
+    external_includes:
+      'external_includes' in promotion
+        ? promotion.external_includes?.map((item) => item.trim()).join(', ')
+        : undefined
   }
 
   if (promotion.type === 'flex_promotions') {
@@ -66,6 +71,18 @@ export function formValuesToPromotion(
                 ? formValues.sku_list
                 : null
           }
+        : undefined,
+    external_includes:
+      'external_includes' in formValues && formValues.external_includes != null
+        ? toIncludesArray(formValues.external_includes as string)
         : undefined
   }
+}
+
+function toIncludesArray(value?: string | null): string[] | null {
+  if (value == null || value.trim() === '') {
+    return null
+  }
+  const includes = parseIncludes(value)
+  return includes.length > 0 ? includes : null
 }

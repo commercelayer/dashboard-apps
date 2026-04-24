@@ -212,7 +212,7 @@ export function PromotionForm({
             {promotionId != null ? 'Update' : 'Create promotion'}
           </Button>
 
-          <Spacer top='2'>
+          <Spacer top='4' bottom='8'>
             <HookedValidationApiError apiError={apiError} />
           </Spacer>
         </Spacer>
