@@ -80,6 +80,9 @@ export function formValuesToPromotion(
 }
 
 function toIncludesArray(value?: string | null): string[] | null {
-  if (value == null || value.trim() === '') return null
-  return [...new Set(parseIncludes(value))]
+  if (value == null || value.trim() === '') {
+    return null
+  }
+  const includes = parseIncludes(value)
+  return includes.length > 0 ? includes : null
 }
