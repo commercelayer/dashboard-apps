@@ -98,7 +98,7 @@ export default {
           {promotion.promotion_url}
         </ListDetailsItem>
         {promotion.external_includes != null && (
-          <ListDetailsItem label='External Includes' gutter='none'>
+          <ListDetailsItem label='Includes' gutter='none'>
             <div>
               {promotion.external_includes
                 .map((item) => item.trim())
