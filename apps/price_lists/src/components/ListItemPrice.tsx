@@ -1,15 +1,15 @@
-import { appRoutes } from '#data/routes'
-import { makePrice } from '#mocks'
 import {
   Avatar,
   Badge,
   ListItem,
   Spacer,
   Text,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Price } from '@commercelayer/sdk'
-import { useLocation, useRoute } from 'wouter'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Price } from "@commercelayer/sdk"
+import { useLocation, useRoute } from "wouter"
+import { appRoutes } from "#data/routes"
+import { makePrice } from "#mocks"
 
 interface Props {
   resource?: Price
@@ -22,10 +22,10 @@ export const ListItemPrice = withSkeletonTemplate<Props>(
     const [, setLocation] = useLocation()
 
     const [, params] = useRoute<{ priceListId: string }>(
-      appRoutes.pricesList.path
+      appRoutes.pricesList.path,
     )
 
-    const priceListId = params?.priceListId ?? ''
+    const priceListId = params?.priceListId ?? ""
 
     const hasFrequencyPriceTiers =
       resource.price_frequency_tiers != null &&
@@ -39,43 +39,43 @@ export const ListItemPrice = withSkeletonTemplate<Props>(
       <ListItem
         icon={
           <Avatar
-            alt={resource.sku?.name ?? ''}
+            alt={resource.sku?.name ?? ""}
             src={resource.sku?.image_url as `https://${string}`}
           />
         }
-        alignItems='top'
+        alignItems="top"
         onClick={() => {
           setLocation(
             appRoutes.priceDetails.makePath({
               priceListId,
-              priceId: resource.id
-            })
+              priceId: resource.id,
+            }),
           )
         }}
       >
         <div>
-          <Text tag='div' weight='medium' size='x-small' variant='info'>
+          <Text tag="div" weight="medium" size="x-small" variant="info">
             {resource.sku?.code}
           </Text>
-          <Text tag='div' weight='semibold'>
+          <Text tag="div" weight="semibold">
             {resource.sku?.name}
           </Text>
-          {priceListId === '' && (
-            <Spacer bottom={hasPriceTiers ? '2' : undefined}>
-              <Text tag='div' weight='medium' variant='info' size='small'>
+          {priceListId === "" && (
+            <Spacer bottom={hasPriceTiers ? "2" : undefined}>
+              <Text tag="div" weight="medium" variant="info" size="small">
                 {resource.price_list?.name}
               </Text>
             </Spacer>
           )}
           {hasPriceTiers && (
-            <div className='flex items-center gap-2 mt-1'>
+            <div className="flex items-center gap-2 mt-1">
               {hasFrequencyPriceTiers && (
-                <Badge variant='teal' icon='calendarBlank'>
+                <Badge variant="teal" icon="calendarBlank">
                   Frequency pricing
                 </Badge>
               )}
               {hasVolumePriceTiers && (
-                <Badge variant='teal' icon='stack'>
+                <Badge variant="teal" icon="stack">
                   Volume pricing
                 </Badge>
               )}
@@ -84,11 +84,11 @@ export const ListItemPrice = withSkeletonTemplate<Props>(
         </div>
         <div>
           <Text
-            tag='div'
-            weight='medium'
-            size='small'
-            variant='info'
-            wrap='nowrap'
+            tag="div"
+            weight="medium"
+            size="small"
+            variant="info"
+            wrap="nowrap"
           >
             {resource.formatted_compare_at_amount !==
             resource.formatted_amount ? (
@@ -97,11 +97,11 @@ export const ListItemPrice = withSkeletonTemplate<Props>(
               <>&nbsp;</>
             )}
           </Text>
-          <Text tag='div' weight='semibold' wrap='nowrap'>
+          <Text tag="div" weight="semibold" wrap="nowrap">
             {resource.formatted_amount}
           </Text>
         </div>
       </ListItem>
     )
-  }
+  },
 )

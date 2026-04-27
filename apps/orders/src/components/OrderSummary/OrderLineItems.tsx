@@ -1,16 +1,16 @@
-import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   ResourceLineItems,
   Section,
   toast,
   useCoreSdkProvider,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import { type Order } from '@commercelayer/sdk'
-import { HeaderActions } from './HeaderActions'
-import { useAddItemOverlay } from './hooks/useAddItemOverlay'
-import { useOrderStatus } from './hooks/useOrderStatus'
-import { useSummaryRows } from './hooks/useSummaryRows'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { useOrderDetails } from "#hooks/useOrderDetails"
+import { HeaderActions } from "./HeaderActions"
+import { useAddItemOverlay } from "./hooks/useAddItemOverlay"
+import { useOrderStatus } from "./hooks/useOrderStatus"
+import { useSummaryRows } from "./hooks/useSummaryRows"
 
 interface Props {
   title: string
@@ -40,18 +40,18 @@ export const OrderLineItems = withSkeletonTemplate<Props>(
           }}
           onSwap={(itemToSwap) => {
             showAddItemOverlay(
-              itemToSwap.item_type === 'skus' ||
-                itemToSwap.item_type === 'bundles'
+              itemToSwap.item_type === "skus" ||
+                itemToSwap.item_type === "bundles"
                 ? itemToSwap.item_type
-                : 'skus',
+                : "skus",
               (selectedItem) => {
                 void sdkClient.line_items
                   .create({
                     order: sdkClient.orders.relationship(order.id),
                     quantity: 1,
-                    ...(selectedItem.type === 'skus'
+                    ...(selectedItem.type === "skus"
                       ? { sku_code: selectedItem.code }
-                      : { bundle_code: selectedItem.code })
+                      : { bundle_code: selectedItem.code }),
                   })
                   .then(async () => {
                     await sdkClient.line_items.delete(itemToSwap.id)
@@ -60,11 +60,11 @@ export const OrderLineItems = withSkeletonTemplate<Props>(
                     void mutateOrder()
                   })
                   .catch(() => {
-                    toast('Could not add item to order', {
-                      type: 'error'
+                    toast("Could not add item to order", {
+                      type: "error",
                     })
                   })
-              }
+              },
             )
           }}
           footer={summaryRows}
@@ -73,5 +73,5 @@ export const OrderLineItems = withSkeletonTemplate<Props>(
         {children}
       </Section>
     )
-  }
+  },
 )

@@ -1,8 +1,8 @@
 import type { Translation } from "@commercelayer/app-elements"
 
-declare module 'i18next' {
+declare module "i18next" {
   interface CustomTypeOptions {
-    defaultNS: 'translation'
+    defaultNS: "translation"
     resources: {
       translation: Translation
     }

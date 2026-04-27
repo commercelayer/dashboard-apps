@@ -1,5 +1,5 @@
-import { formatResourceName } from '@commercelayer/app-elements'
-import { type AllowedResourceType } from '@typing/resources.types'
+import { formatResourceName } from "@commercelayer/app-elements"
+import type { AllowedResourceType } from "@typing/resources.types"
 
 type VisibleInUI = boolean
 
@@ -30,7 +30,7 @@ const resources: Record<AllowedResourceType, VisibleInUI> = {
   stock_items: true,
   stock_transfers: true,
   tax_categories: true,
-  transactions: true
+  transactions: true,
 }
 
 /**
@@ -51,7 +51,7 @@ export const availableResources = allResources
  * @returns `true` when the resource is available, `false` otherwise
  */
 export const isAvailableResource = (
-  resourceType: any
+  resourceType: any,
 ): resourceType is AllowedResourceType => {
   try {
     return availableResources.includes(resourceType as AllowedResourceType)
@@ -68,12 +68,12 @@ export const isAvailableResource = (
  */
 export function showResourceNiceName(resource?: string): string {
   if (resource == null) {
-    return '-'
+    return "-"
   }
 
   return formatResourceName({
     resource: resource as AllowedResourceType,
-    format: 'title',
-    count: 'plural'
+    format: "title",
+    count: "plural",
   })
 }

@@ -1,6 +1,6 @@
-import type { Export, ListResponse } from '@commercelayer/sdk'
+import type { Export, ListResponse } from "@commercelayer/sdk"
 
-type StatusUI = 'progress' | 'success' | 'danger' | 'pending' | 'paused'
+type StatusUI = "progress" | "success" | "danger" | "pending" | "paused"
 
 /**
  * Get the relative status Union Type from the api status {@link https://docs.commercelayer.io/core/v/api-reference/imports/object}
@@ -8,23 +8,23 @@ type StatusUI = 'progress' | 'success' | 'danger' | 'pending' | 'paused'
  * @returns a valid StatusUI to be used in the StatusIcon component.
  */
 export function getUiStatus(apiStatus?: string): StatusUI {
-  if (apiStatus === 'in_progress') {
-    return 'progress'
+  if (apiStatus === "in_progress") {
+    return "progress"
   }
 
-  if (apiStatus === 'interrupted') {
-    return 'paused'
+  if (apiStatus === "interrupted") {
+    return "paused"
   }
 
-  if (apiStatus === 'failed') {
-    return 'danger'
+  if (apiStatus === "failed") {
+    return "danger"
   }
 
-  if (apiStatus === 'completed') {
-    return 'success'
+  if (apiStatus === "completed") {
+    return "success"
   }
 
-  return 'pending'
+  return "pending"
 }
 
 /**
@@ -36,6 +36,6 @@ export function getUiStatus(apiStatus?: string): StatusUI {
 export function listHasProgressingItems(list: ListResponse<Export>): boolean {
   return list.some(
     (job) =>
-      job.status != null && ['pending', 'in_progress'].includes(job.status)
+      job.status != null && ["pending", "in_progress"].includes(job.status),
   )
 }

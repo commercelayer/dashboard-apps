@@ -1,13 +1,13 @@
-import { appRoutes } from '#data/routes'
-import { makeStockLocation } from '#mocks'
 import {
   Icon,
   ListItem,
   Text,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { StockLocation } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { StockLocation } from "@commercelayer/sdk"
+import { useLocation } from "wouter"
+import { appRoutes } from "#data/routes"
+import { makeStockLocation } from "#mocks"
 
 interface Props {
   resource?: StockLocation
@@ -20,16 +20,16 @@ export const ListItemStockLocation = withSkeletonTemplate<Props>(
     const [, setLocation] = useLocation()
     return (
       <ListItem
-        className='items-center'
+        className="items-center"
         onClick={() => {
           setLocation(appRoutes.stockLocation.makePath(resource.id))
         }}
       >
         <div>
-          <Text weight='semibold'>{resource.name}</Text>
+          <Text weight="semibold">{resource.name}</Text>
         </div>
-        <Icon name='caretRight' />
+        <Icon name="caretRight" />
       </ListItem>
     )
-  }
+  },
 )

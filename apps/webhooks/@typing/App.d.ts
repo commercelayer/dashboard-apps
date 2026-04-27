@@ -1,4 +1,4 @@
-declare module 'App' {
+declare module "App" {
   export interface WebhookFormContextValue {
     refetch: () => Promise<void>
     state: WebhookFormContextState

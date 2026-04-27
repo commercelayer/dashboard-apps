@@ -1,22 +1,21 @@
-import { appRoutes, type PageProps } from '#data/routes'
-import { useSkuDetails } from '#hooks/useSkuDetails'
-import { isMockedId } from '@commercelayer/app-elements'
-
-import { LinkNewPage } from 'dashboard-apps-common/src/pages/LinkNewPage'
+import { isMockedId } from "@commercelayer/app-elements"
+import { LinkNewPage } from "dashboard-apps-common/src/pages/LinkNewPage"
+import { appRoutes, type PageProps } from "#data/routes"
+import { useSkuDetails } from "#hooks/useSkuDetails"
 
 export function LinkNew(
-  props: PageProps<typeof appRoutes.linksNew>
+  props: PageProps<typeof appRoutes.linksNew>,
 ): React.JSX.Element {
-  const skuId = props.params?.resourceId ?? ''
+  const skuId = props.params?.resourceId ?? ""
   const goBackUrl = `${appRoutes.details.makePath({ skuId })}?tab=links`
 
   const { sku, isLoading } = useSkuDetails(skuId)
-  const defaultName = isLoading || isMockedId(sku.id) ? '' : sku.name
+  const defaultName = isLoading || isMockedId(sku.id) ? "" : sku.name
 
   return (
     <LinkNewPage
       resourceId={skuId}
-      resourceType='skus'
+      resourceType="skus"
       goBackUrl={goBackUrl}
       defaultName={defaultName}
     />

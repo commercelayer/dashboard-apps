@@ -1,25 +1,25 @@
 import {
   HookedInputSelect,
+  type InputSelectValue,
   useCoreApi,
   useCoreSdkProvider,
-  type InputSelectValue
-} from '@commercelayer/app-elements'
-import type { QueryParamsList, SkuList } from '@commercelayer/sdk'
+} from "@commercelayer/app-elements"
+import type { QueryParamsList, SkuList } from "@commercelayer/sdk"
 
 export function SelectSkuListComponent(): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
 
-  const { data: skuLists } = useCoreApi('sku_lists', 'list', [
-    getParams({ name: '' })
+  const { data: skuLists } = useCoreApi("sku_lists", "list", [
+    getParams({ name: "" }),
   ])
 
   return (
     <HookedInputSelect
-      name='value'
-      placeholder='Search...'
+      name="value"
+      placeholder="Search..."
       menuFooterText={
         skuLists != null && skuLists.meta.recordCount > 25
-          ? 'Type to search for more options.'
+          ? "Type to search for more options."
           : undefined
       }
       initialValues={toInputSelectValues(skuLists ?? [])}
@@ -36,19 +36,19 @@ function getParams({ name }: { name: string }): QueryParamsList<SkuList> {
   return {
     pageSize: 25,
     sort: {
-      name: 'asc'
+      name: "asc",
     },
     filters: {
-      name_cont: name
-    }
+      name_cont: name,
+    },
   }
 }
 
 function toInputSelectValues(
-  items: Array<{ name: string; id: string }>
+  items: Array<{ name: string; id: string }>,
 ): InputSelectValue[] {
   return items.map(({ name, id }) => ({
     label: name,
-    value: id
+    value: id,
   }))
 }

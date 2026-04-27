@@ -1,26 +1,26 @@
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { SkuListItem } from '@commercelayer/sdk'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { SkuListItem } from "@commercelayer/sdk"
 
 export function useSkuListItems(id: string): {
   skuListItems?: SkuListItem[]
   isLoadingItems: boolean
 } {
-  const pauseRequest = isMockedId(id) || id === ''
+  const pauseRequest = isMockedId(id) || id === ""
   const { data: skuListItems, isLoading: isLoadingItems } = useCoreApi(
-    'sku_lists',
-    'sku_list_items',
+    "sku_lists",
+    "sku_list_items",
     pauseRequest
       ? null
       : [
           id,
           {
-            include: ['sku'],
+            include: ["sku"],
             sort: {
-              position: 'asc'
+              position: "asc",
             },
-            pageSize: 25
-          }
-        ]
+            pageSize: 25,
+          },
+        ],
   )
 
   return { skuListItems, isLoadingItems }

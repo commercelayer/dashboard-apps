@@ -1,7 +1,7 @@
-import { isFalsy } from '#utils/isFalsy'
-import { z } from 'zod'
+import { z } from "zod"
+import { isFalsy } from "#utils/isFalsy"
 
-import { zodEnforceBoolean } from './zodUtils'
+import { zodEnforceBoolean } from "./zodUtils"
 
 const schema = z
   .object({
@@ -12,15 +12,15 @@ const schema = z
     sku_code_regex: z.optional(z.string()),
     reference: z.optional(z.string()),
     reference_origin: z.optional(z.string()),
-    'sku_list_items.sku_code': z.optional(z.string().min(1))
+    "sku_list_items.sku_code": z.optional(z.string().min(1)),
   })
   .passthrough()
   .superRefine((data, ctx) => {
     if (isFalsy(data.manual) && isFalsy(data.sku_code_regex)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['sku_code_regex'],
-        message: 'sku_code_regex is required, if manual is falsy'
+        path: ["sku_code_regex"],
+        message: "sku_code_regex is required, if manual is falsy",
       })
     }
   })

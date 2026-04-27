@@ -5,18 +5,18 @@ import {
   Dropdown,
   DropdownDivider,
   DropdownItem,
+  type HintProps,
   Icon,
   Spacer,
-  type HintProps
-} from '@commercelayer/app-elements'
-import type { Link } from '@commercelayer/sdk'
-import { useRef, type MutableRefObject } from 'react'
-import { QRCode } from 'react-qrcode-logo'
-import { slugify } from '../helpers/slugify'
+} from "@commercelayer/app-elements"
+import type { Link } from "@commercelayer/sdk"
+import { type MutableRefObject, useRef } from "react"
+import { QRCode } from "react-qrcode-logo"
+import { slugify } from "../helpers/slugify"
 
 interface Props {
   link: Link
-  linkHint?: HintProps['children']
+  linkHint?: HintProps["children"]
   primaryAction?: React.ReactNode
   showQR?: boolean
   share?: {
@@ -37,14 +37,14 @@ export const LinkDetailsCard = ({
   linkHint,
   primaryAction,
   showQR = false,
-  share
+  share,
 }: Props): React.JSX.Element => {
   const linkQrRef = useRef<QRCode>(null)
 
   const handleLinkQrDownload = (): void => {
     linkQrRef.current?.download(
-      'jpg',
-      `${new Date().toISOString().split('T')[0]}_${slugify(link.name)}`
+      "jpg",
+      `${new Date().toISOString().split("T")[0]}_${slugify(link.name)}`,
     )
   }
 
@@ -52,14 +52,14 @@ export const LinkDetailsCard = ({
   const shareVisible = hasShareOptions || showQR
 
   return (
-    <Card overflow='visible'>
+    <Card overflow="visible">
       {showQR && (
-        <div className='flex justify-center'>
+        <div className="flex justify-center">
           <QRCode
             ref={linkQrRef as MutableRefObject<QRCode>}
-            value={decodeURIComponent(link.url ?? '')}
+            value={decodeURIComponent(link.url ?? "")}
             size={300}
-            logoImage='https://data.commercelayer.app/assets/logos/glyph/black/commercelayer_glyph_black.svg'
+            logoImage="https://data.commercelayer.app/assets/logos/glyph/black/commercelayer_glyph_black.svg"
             logoWidth={50}
             logoHeight={50}
             logoPadding={20}
@@ -67,28 +67,28 @@ export const LinkDetailsCard = ({
           />
         </div>
       )}
-      <Spacer top={showQR ? '12' : undefined} bottom='6'>
+      <Spacer top={showQR ? "12" : undefined} bottom="6">
         <CodeBlock
           showCopyAction
           hint={
             linkHint != null
               ? {
-                  text: linkHint
+                  text: linkHint,
                 }
               : undefined
           }
         >
-          {link?.url ?? ''}
+          {link?.url ?? ""}
         </CodeBlock>
       </Spacer>
-      <div className='flex justify-between'>
+      <div className="flex justify-between">
         {primaryAction}
-        <div className='flex'>
+        <div className="flex">
           {shareVisible && (
             <Dropdown
               dropdownLabel={
-                <Button variant='primary' size='small' alignItems='center'>
-                  <Icon name='shareFat' size={16} />
+                <Button variant="primary" size="small" alignItems="center">
+                  <Icon name="shareFat" size={16} />
                   Share
                 </Button>
               }
@@ -96,29 +96,29 @@ export const LinkDetailsCard = ({
                 <>
                   {share?.email != null ? (
                     <DropdownItem
-                      icon='envelopeSimple'
-                      label='Email'
+                      icon="envelopeSimple"
+                      label="Email"
                       href={encodeURI(
-                        `mailto:${share.email.to ?? ''}?subject=${share.email.subject}&body=${share.email.body}`
+                        `mailto:${share.email.to ?? ""}?subject=${share.email.subject}&body=${share.email.body}`,
                       )}
                     />
                   ) : null}
                   {share?.whatsapp != null ? (
                     <DropdownItem
-                      icon='whatsappLogo'
-                      label='Whatsapp'
-                      target='_blank'
+                      icon="whatsappLogo"
+                      label="Whatsapp"
+                      target="_blank"
                       href={encodeURI(
-                        `https://api.whatsapp.com/send?phone=${share.whatsapp.number ?? ''}&text=${share.whatsapp.text}`
+                        `https://api.whatsapp.com/send?phone=${share.whatsapp.number ?? ""}&text=${share.whatsapp.text}`,
                       )}
                     />
                   ) : null}
                   {hasShareOptions && showQR && <DropdownDivider />}
                   {showQR && (
                     <DropdownItem
-                      icon='qrCode'
-                      label='Download QR'
-                      target='_blank'
+                      icon="qrCode"
+                      label="Download QR"
+                      target="_blank"
                       onClick={handleLinkQrDownload}
                     />
                   )}

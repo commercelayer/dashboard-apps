@@ -1,11 +1,11 @@
-import { appRoutes } from '#data/routes'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { useLocation } from "wouter"
+import { appRoutes } from "#data/routes"
 import {
   shipmentIncludeAttribute,
-  useShipmentDetails
-} from '#hooks/useShipmentDetails'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { useLocation } from 'wouter'
+  useShipmentDetails,
+} from "#hooks/useShipmentDetails"
 
 export function useAsyncPurchase(shipmentId: string): {
   isPurchasing: boolean
@@ -20,7 +20,7 @@ export function useAsyncPurchase(shipmentId: string): {
   const { shipment, mutateShipment, isPurchasing } = useShipmentDetails(
     shipmentId,
     false,
-    false
+    false,
   )
 
   const cleanUp = useCallback(() => {
@@ -68,9 +68,9 @@ export function useAsyncPurchase(shipmentId: string): {
         {
           id: shipment.id,
           _purchase: true,
-          selected_rate_id: selectedRateId
+          selected_rate_id: selectedRateId,
         },
-        { include: shipmentIncludeAttribute }
+        { include: shipmentIncludeAttribute },
       )
       setIsPolling(true)
       setIsPurchaseStarted(false)
@@ -82,6 +82,6 @@ export function useAsyncPurchase(shipmentId: string): {
 
   return {
     isPurchasing: isPurchasing || isPurchaseStarted || isPolling,
-    handlePurchase
+    handlePurchase,
   }
 }

@@ -1,4 +1,3 @@
-import type { Promotion } from '#types'
 import {
   A,
   Button,
@@ -16,13 +15,14 @@ import {
   Text,
   toast,
   useCoreApi,
-  useCoreSdkProvider
-} from '@commercelayer/app-elements'
-import { CommerceLayerStatic, type Import } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useMemo, useState, type FC } from 'react'
-import { useForm } from 'react-hook-form'
-import z from 'zod'
+  useCoreSdkProvider,
+} from "@commercelayer/app-elements"
+import { CommerceLayerStatic, type Import } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { type FC, useCallback, useMemo, useState } from "react"
+import { useForm } from "react-hook-form"
+import z from "zod"
+import type { Promotion } from "#types"
 
 interface CouponGeneratorModalProps {
   promotion: Promotion
@@ -35,32 +35,32 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
   promotion,
   show,
   onClose,
-  currentImportJob
+  currentImportJob,
 }) => {
-  const { data: organization } = useCoreApi('organization', 'retrieve', [])
+  const { data: organization } = useCoreApi("organization", "retrieve", [])
   const [isGeneratingCsv, setIsGeneratingCsv] = useState(false)
   const [isDeletingImport, setIsDeletingImport] = useState(false)
   const { sdkClient } = useCoreSdkProvider()
   const [importId, setImportId] = useState<string | undefined>(
-    currentImportJob?.id
+    currentImportJob?.id,
   )
 
   const { data: importJob } = useCoreApi(
-    'imports',
-    'retrieve',
+    "imports",
+    "retrieve",
     importId == null ? null : [importId],
     {
       refreshInterval: (job) =>
         (importId != null || currentImportJob != null) &&
-        job?.status !== 'completed'
+        job?.status !== "completed"
           ? 1000
           : 0,
-      fallbackData: currentImportJob ?? undefined
-    }
+      fallbackData: currentImportJob ?? undefined,
+    },
   )
 
   const isImportInProgress = importId != null || importJob != null
-  const isImportCompleted = importJob?.status === 'completed'
+  const isImportCompleted = importJob?.status === "completed"
   const importedCsvFile = importJob?.attachment_url
   const minCodeLength = organization?.coupons_min_code_length ?? 8
   const maxCodeLength = organization?.coupons_max_code_length ?? 40
@@ -70,30 +70,30 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
     defaultValues: {
       numberOfCoupons: 1000,
       codeLength: minCodeLength,
-      case: 'mixed',
-      prefix: ''
+      case: "mixed",
+      prefix: "",
     },
     resolver: zodResolver(
       makeFormValidationSchema({
         minCodeLength,
         maxCodeLength,
-        prefixMaxLength
-      })
-    )
+        prefixMaxLength,
+      }),
+    ),
   })
 
-  const codeLength = methods.watch('codeLength')
-  const codeCase = methods.watch('case')
-  const prefix = methods.watch('prefix')
+  const codeLength = methods.watch("codeLength")
+  const codeCase = methods.watch("case")
+  const prefix = methods.watch("prefix")
   const codeSample = useMemo(
     () =>
       generateUniqueCoupons({
         numberOfCoupons: 1,
         codeLength,
         case: codeCase,
-        prefix
+        prefix,
       })[0],
-    [codeLength, codeCase, prefix]
+    [codeLength, codeCase, prefix],
   )
 
   const getPromotionRuleId = useCallback(async () => {
@@ -102,8 +102,8 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
       ;({ id } = await sdkClient.coupon_codes_promotion_rules.create({
         promotion: {
           id: promotion.id,
-          type: promotion.type
-        }
+          type: promotion.type,
+        },
       }))
     }
     return id
@@ -117,24 +117,24 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
           onClose()
         }
       }}
-      size={isImportCompleted || isImportInProgress ? 'x-small' : 'small'}
+      size={isImportCompleted || isImportInProgress ? "x-small" : "small"}
     >
       {isImportCompleted ? (
         <>
           <Modal.Body>
-            <Spacer top='4' bottom='4'>
+            <Spacer top="4" bottom="4">
               <StatusIcon
-                name='check'
-                background='green'
-                gap='large'
-                align='center'
+                name="check"
+                background="green"
+                gap="large"
+                align="center"
               />
             </Spacer>
-            <Text weight='semibold' align='center' tag='div'>
+            <Text weight="semibold" align="center" tag="div">
               Your coupons are ready.
             </Text>
-            <Spacer top='1'>
-              <Text align='center' tag='div' size='small' variant='info'>
+            <Spacer top="1">
+              <Text align="center" tag="div" size="small" variant="info">
                 Download now or find them in Imports.
               </Text>
             </Spacer>
@@ -143,22 +143,22 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
             {importedCsvFile != null && (
               <A
                 href={importedCsvFile}
-                variant='primary'
+                variant="primary"
                 onClick={() => {
                   onClose(true)
                   setIsGeneratingCsv(false)
                   setImportId(undefined)
                 }}
                 fullWidth
-                alignItems='center'
+                alignItems="center"
               >
-                <Icon name='fileArrowDown' />
+                <Icon name="fileArrowDown" />
                 Download (CSV)
               </A>
             )}
             <Button
-              type='button'
-              variant='secondary'
+              type="button"
+              variant="secondary"
               fullWidth
               onClick={() => {
                 onClose(true)
@@ -173,28 +173,28 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
       ) : isImportInProgress ? (
         <>
           <Modal.Body>
-            <Spacer top='4' bottom='6'>
+            <Spacer top="4" bottom="6">
               <RadialProgress
                 percentage={
                   importJob == null ? 0 : getProgressPercentage(importJob).value
                 }
-                align='center'
+                align="center"
               />
             </Spacer>
-            <Text weight='semibold' align='center' tag='div'>
+            <Text weight="semibold" align="center" tag="div">
               Generating coupons…
             </Text>
-            <Spacer top='1'>
-              <Text align='center' tag='div' size='small' variant='info'>
+            <Spacer top="1">
+              <Text align="center" tag="div" size="small" variant="info">
                 This may take a few moments.
               </Text>
             </Spacer>
           </Modal.Body>
-          {importJob?.status === 'pending' ? (
+          {importJob?.status === "pending" ? (
             <Modal.Footer>
               <Button
-                type='button'
-                variant='secondary'
+                type="button"
+                variant="secondary"
                 fullWidth
                 disabled={isDeletingImport}
                 onClick={() => {
@@ -207,7 +207,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                       setImportId(undefined)
                     })
                     .catch(() => {
-                      toast('Could not cancel the import')
+                      toast("Could not cancel the import")
                     })
                     .finally(() => {
                       setIsDeletingImport(false)
@@ -218,7 +218,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
               </Button>
             </Modal.Footer>
           ) : (
-            <div style={{ paddingTop: '1rem' }} />
+            <div style={{ paddingTop: "1rem" }} />
           )}
         </>
       ) : (
@@ -235,7 +235,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                     numberOfCoupons: values.numberOfCoupons,
                     codeLength: values.codeLength,
                     case: values.case,
-                    prefix: values.prefix
+                    prefix: values.prefix,
                   })
 
                   const promotionRuleId = await getPromotionRuleId()
@@ -245,14 +245,14 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                     promotionRuleId,
                     usageLimit: values.usageLimit ?? undefined,
                     expiresAt: values.expiresAt ?? undefined,
-                    customerSingleUse: values.customerSingleUse || undefined
+                    customerSingleUse: values.customerSingleUse || undefined,
                   })
 
                   const couponImport = await sdkClient.imports.create({
-                    format: 'csv',
+                    format: "csv",
                     inputs: csvContent as unknown as object[],
-                    resource_type: 'coupons',
-                    reference: `promotion_id:${promotion.id}`
+                    resource_type: "coupons",
+                    reference: `promotion_id:${promotion.id}`,
                   })
                   setImportId(couponImport.id)
                   setIsGeneratingCsv(false)
@@ -262,78 +262,78 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                     ? error
                     : null
                   const errorMessage =
-                    apiError?.errors?.map((e: any) => e.detail).join(', ') ??
-                    'An error occurred while generating coupons'
+                    apiError?.errors?.map((e: any) => e.detail).join(", ") ??
+                    "An error occurred while generating coupons"
                   toast(errorMessage, {
-                    type: 'error'
+                    type: "error",
                   })
                 }
               }}
             >
-              <Spacer bottom='8'>
+              <Spacer bottom="8">
                 <HookedInput
-                  type='number'
-                  name='numberOfCoupons'
-                  label='Number'
-                  suffix='codes'
+                  type="number"
+                  name="numberOfCoupons"
+                  label="Number"
+                  suffix="codes"
                 />
               </Spacer>
-              <Spacer bottom='8'>
+              <Spacer bottom="8">
                 <Label>Format</Label>
-                <Spacer top='2' bottom='2'>
+                <Spacer top="2" bottom="2">
                   <div
                     style={{
-                      display: 'grid',
-                      gridTemplateColumns: '1fr 1fr',
-                      gap: '8px'
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "8px",
                     }}
                   >
                     <HookedInputSelect
-                      name='codeLength'
+                      name="codeLength"
                       initialValues={[
                         {
                           label: `${minCodeLength} characters`,
-                          value: minCodeLength
+                          value: minCodeLength,
                         },
-                        { label: '10 characters', value: 10 },
-                        { label: '12 characters', value: 12 }
+                        { label: "10 characters", value: 10 },
+                        { label: "12 characters", value: 12 },
                       ]}
                     />
                     <HookedInputSelect
-                      name='case'
+                      name="case"
                       initialValues={[
-                        { label: 'Uppercase', value: 'upper' },
-                        { label: 'Lowercase', value: 'lower' },
-                        { label: 'Mixed', value: 'mixed' }
+                        { label: "Uppercase", value: "upper" },
+                        { label: "Lowercase", value: "lower" },
+                        { label: "Mixed", value: "mixed" },
                       ]}
                     />
                   </div>
                 </Spacer>
-                <Spacer bottom='2'>
-                  <HookedInput name='prefix' placeholder='Prefix (optional)' />
+                <Spacer bottom="2">
+                  <HookedInput name="prefix" placeholder="Prefix (optional)" />
                 </Spacer>
                 <div
                   style={{
-                    padding: '10px',
+                    padding: "10px",
                     fontSize: 13,
-                    backgroundColor: '#F8F8F8',
+                    backgroundColor: "#F8F8F8",
                     borderRadius: 5,
-                    textAlign: 'center'
+                    textAlign: "center",
                   }}
                 >
-                  <Text color='info'>
-                    Preview: <Text weight='semibold'>{codeSample}</Text>
+                  <Text color="info">
+                    Preview: <Text weight="semibold">{codeSample}</Text>
                   </Text>
                 </div>
               </Spacer>
 
-              <Spacer bottom='2'>
+              <Spacer bottom="2">
                 <HookedInputCheckbox
-                  name='hasExpiration'
+                  name="hasExpiration"
                   checkedElement={
                     <HookedInputDate
-                      name='expiresAt'
-                      placeholder='Expiration date'
+                      name="expiresAt"
+                      placeholder="Expiration date"
                       minDate={new Date()}
                       showTimeSelect
                     />
@@ -342,14 +342,14 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                   Set expiration date
                 </HookedInputCheckbox>
               </Spacer>
-              <Spacer bottom='2'>
+              <Spacer bottom="2">
                 <HookedInputCheckbox
-                  name='hasUsageLimit'
+                  name="hasUsageLimit"
                   checkedElement={
                     <HookedInput
-                      name='usageLimit'
-                      placeholder='max usage'
-                      type='number'
+                      name="usageLimit"
+                      placeholder="max usage"
+                      type="number"
                       min={0}
                       step={1}
                     />
@@ -358,14 +358,14 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                   Limit usage
                 </HookedInputCheckbox>
               </Spacer>
-              <Spacer bottom='12'>
-                <HookedInputCheckbox name='customerSingleUse'>
+              <Spacer bottom="12">
+                <HookedInputCheckbox name="customerSingleUse">
                   Single use per customer
                 </HookedInputCheckbox>
               </Spacer>
 
-              <Button type='submit' fullWidth disabled={isGeneratingCsv}>
-                {isGeneratingCsv ? 'Generating…' : 'Generate coupons'}
+              <Button type="submit" fullWidth disabled={isGeneratingCsv}>
+                {isGeneratingCsv ? "Generating…" : "Generate coupons"}
               </Button>
             </HookedForm>
           </Modal.Body>
@@ -378,35 +378,34 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
 const makeFormValidationSchema = ({
   minCodeLength,
   maxCodeLength,
-  prefixMaxLength
+  prefixMaxLength,
 }: {
   minCodeLength: number
   maxCodeLength: number
   prefixMaxLength: number
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 }) =>
   z.object({
     // coupon generation rules
     numberOfCoupons: z
       .number()
-      .min(2, 'At least 2 coupon must be generated')
-      .max(5000, 'You can generate up to 5,000 coupons at once'),
+      .min(2, "At least 2 coupon must be generated")
+      .max(5000, "You can generate up to 5,000 coupons at once"),
     codeLength: z
       .number()
       .min(
         minCodeLength,
-        `Code length must be at least ${minCodeLength} characters`
+        `Code length must be at least ${minCodeLength} characters`,
       )
       .max(
         maxCodeLength,
-        `Code length cannot exceed ${maxCodeLength} characters`
+        `Code length cannot exceed ${maxCodeLength} characters`,
       ),
-    case: z.enum(['upper', 'lower', 'mixed']),
+    case: z.enum(["upper", "lower", "mixed"]),
     prefix: z
       .string()
       .max(
         prefixMaxLength,
-        `Prefix cannot exceed ${prefixMaxLength} characters`
+        `Prefix cannot exceed ${prefixMaxLength} characters`,
       )
       .optional()
       .nullable(),
@@ -418,10 +417,10 @@ const makeFormValidationSchema = ({
       .optional(),
     usageLimit: z
       .number()
-      .min(1, 'Usage limit must be at least 1')
+      .min(1, "Usage limit must be at least 1")
       .optional()
       .nullable(),
-    customerSingleUse: z.boolean().default(false)
+    customerSingleUse: z.boolean().default(false),
   })
 
 type CouponGeneratorFormSchema = z.infer<
@@ -431,7 +430,7 @@ type CouponGeneratorFormSchema = z.infer<
 interface CouponGeneratorParams {
   numberOfCoupons: number
   codeLength: number
-  case: 'upper' | 'lower' | 'mixed'
+  case: "upper" | "lower" | "mixed"
   prefix?: string | null
 }
 
@@ -440,21 +439,21 @@ function generateUniqueCoupons(params: CouponGeneratorParams): string[] {
 
   // Character sets - numbers are always included
   // ambiguous characters are excluded (eg: 0, O, 1, l, I, B, 8)
-  const uppercase = 'ACDEFGHJKLMNPQRSTUVWXYZ'
-  const lowercase = 'abcdefghijkmnpqrstuvwxyz'
-  const numbers = '2345679'
+  const uppercase = "ACDEFGHJKLMNPQRSTUVWXYZ"
+  const lowercase = "abcdefghijkmnpqrstuvwxyz"
+  const numbers = "2345679"
 
   let charset = numbers
-  if (caseType === 'upper') {
+  if (caseType === "upper") {
     charset += uppercase
-  } else if (caseType === 'lower') {
+  } else if (caseType === "lower") {
     charset += lowercase
   } else {
     charset += uppercase + lowercase
   }
 
   const coupons = new Set<string>()
-  const prefixStr = prefix ?? ''
+  const prefixStr = prefix ?? ""
 
   while (coupons.size < numberOfCoupons) {
     const randomValues = new Uint32Array(codeLength)
@@ -477,7 +476,7 @@ function makeCsv({
   promotionRuleId,
   expiresAt,
   usageLimit,
-  customerSingleUse
+  customerSingleUse,
 }: {
   codes: string[]
   promotionRuleId?: string
@@ -486,13 +485,13 @@ function makeCsv({
   customerSingleUse?: boolean
 }): string {
   const header =
-    'code,promotion_rule_id,expires_at,usage_limit,customer_single_use\n'
+    "code,promotion_rule_id,expires_at,usage_limit,customer_single_use\n"
   const rows = codes
     .map(
       (code) =>
-        `${code},${promotionRuleId ?? ''},${expiresAt ?? ''},${usageLimit ?? ''},${customerSingleUse ?? ''}\n`
+        `${code},${promotionRuleId ?? ""},${expiresAt ?? ""},${usageLimit ?? ""},${customerSingleUse ?? ""}\n`,
     )
-    .join('')
+    .join("")
   return header + rows
 }
 
@@ -500,7 +499,6 @@ function getProgressPercentage(importJob: Import): {
   value: number
   formatted: string
 } {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { processed_count, inputs_size } = importJob
   if (
     processed_count != null &&
@@ -512,16 +510,16 @@ function getProgressPercentage(importJob: Import): {
     return value > 100
       ? {
           value: 100,
-          formatted: '100%'
+          formatted: "100%",
         }
       : {
           value,
-          formatted: `${value}%`
+          formatted: `${value}%`,
         }
   }
 
   return {
     value: 0,
-    formatted: '0%'
+    formatted: "0%",
   }
 }

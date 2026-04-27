@@ -1,12 +1,12 @@
-import { isMockedId } from '@commercelayer/app-elements'
+import { isMockedId } from "@commercelayer/app-elements"
 import type {
   LineItem,
   Order,
   Return,
-  ReturnLineItem
-} from '@commercelayer/sdk'
-import { useMemo } from 'react'
-import { useOrderReturns } from './useOrderReturns'
+  ReturnLineItem,
+} from "@commercelayer/sdk"
+import { useMemo } from "react"
+import { useOrderReturns } from "./useOrderReturns"
 
 /**
  * This hook is used to obtain a list of `line_items` suitable for being returned for a given `Order`.
@@ -23,10 +23,10 @@ export function useReturnableList(order: Order): LineItem[] {
 
       // if order is not fulfilled, we try to find returnable items form delivered shipments
       const itemsToIterate =
-        order.fulfillment_status === 'fulfilled'
+        order.fulfillment_status === "fulfilled"
           ? order.line_items
           : order.shipments
-              ?.filter((s) => s.status === 'delivered')
+              ?.filter((s) => s.status === "delivered")
               ?.flatMap((s) => s.line_items)
               .filter((item) => item != null)
 
@@ -34,7 +34,7 @@ export function useReturnableList(order: Order): LineItem[] {
         itemsToIterate
           ?.filter(
             (lineItem) =>
-              lineItem.item_type === 'skus' || lineItem.item_type === 'bundles'
+              lineItem.item_type === "skus" || lineItem.item_type === "bundles",
           )
           ?.map((lineItem) => {
             const returnLineItemQuantity: number =
@@ -43,11 +43,11 @@ export function useReturnableList(order: Order): LineItem[] {
                   (item.sku_code != null &&
                     item.sku_code === lineItem.sku_code) ||
                   (item.bundle_code != null &&
-                    item.bundle_code === lineItem.bundle_code)
+                    item.bundle_code === lineItem.bundle_code),
               )?.quantity ?? 0
             return {
               ...lineItem,
-              quantity: lineItem.quantity - returnLineItemQuantity
+              quantity: lineItem.quantity - returnLineItemQuantity,
             }
           })
           .filter((lineItem) => lineItem.quantity > 0) ?? []
@@ -63,15 +63,15 @@ function returnsToReturnLineItems(returns: Return[]): ReturnLineItem[] {
   for (const returnObj of returns) {
     for (const returnLineItem of returnObj.return_line_items ?? []) {
       if (
-        returnObj.status === 'draft' ||
-        returnObj.status === 'cancelled' ||
+        returnObj.status === "draft" ||
+        returnObj.status === "cancelled" ||
         (returnLineItem.sku_code == null && returnLineItem.bundle_code == null)
       ) {
         break
       }
 
-      const returnLineItemSkuCode = returnLineItem.sku_code ?? ''
-      const returnLineItemBundleCode = returnLineItem.bundle_code ?? ''
+      const returnLineItemSkuCode = returnLineItem.sku_code ?? ""
+      const returnLineItemBundleCode = returnLineItem.bundle_code ?? ""
       const returnLineItemKey =
         returnLineItemSkuCode.length > 0
           ? returnLineItemSkuCode
@@ -84,12 +84,12 @@ function returnsToReturnLineItems(returns: Return[]): ReturnLineItem[] {
       } else {
         returnLineItems[returnLineItemKey] = {
           ...returnLineItem,
-          type: 'return_line_items',
+          type: "return_line_items",
           name: returnLineItem.name,
           sku_code: returnLineItem.sku_code,
           bundle_code: returnLineItem.bundle_code,
           image_url: returnLineItem.image_url,
-          quantity: returnLineItem.quantity ?? 0
+          quantity: returnLineItem.quantity ?? 0,
         }
       }
     }

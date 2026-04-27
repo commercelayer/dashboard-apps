@@ -1,10 +1,10 @@
-import { z } from 'zod'
+import { z } from "zod"
 
 import {
   zodEnforceBoolean,
   zodEnforceDateString,
-  zodEnforceNonNegativeInt
-} from './zodUtils'
+  zodEnforceNonNegativeInt,
+} from "./zodUtils"
 
 const schema = z
   .object({
@@ -21,15 +21,15 @@ const schema = z
     reference: z.optional(z.string()),
     reference_origin: z.optional(z.string()),
     market_id: z.optional(z.string().min(1)),
-    gift_card_recipient_id: z.optional(z.string().min(1))
+    gift_card_recipient_id: z.optional(z.string().min(1)),
   })
   .passthrough()
   .superRefine((data, ctx) => {
     if (data.market_id == null && data.currency_code == null) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['currency_code'],
-        message: 'currency_code is required if no market_id is specified'
+        path: ["currency_code"],
+        message: "currency_code is required if no market_id is specified",
       })
     }
   })

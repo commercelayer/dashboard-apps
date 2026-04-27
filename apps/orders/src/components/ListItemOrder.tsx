@@ -1,11 +1,11 @@
-import { makeOrder } from '#mocks'
 import {
-  ResourceListItem,
+  type CurrencyCode,
   formatCentsToCurrency,
+  ResourceListItem,
   useAppLinking,
-  type CurrencyCode
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { makeOrder } from "#mocks"
 
 interface Props {
   resource?: Order
@@ -16,7 +16,7 @@ interface Props {
 export function ListItemOrder({
   resource = makeOrder(),
   isLoading,
-  delayMs
+  delayMs,
 }: Props): React.JSX.Element {
   const { navigateTo } = useAppLinking()
 
@@ -24,13 +24,13 @@ export function ListItemOrder({
     <ResourceListItem
       resource={{
         ...resource,
-        formatted_total_amount: getFormattedTotalAmount(resource)
+        formatted_total_amount: getFormattedTotalAmount(resource),
       }}
       isLoading={isLoading}
       delayMs={delayMs}
       {...navigateTo({
-        app: 'orders',
-        resourceId: resource.id
+        app: "orders",
+        resourceId: resource.id,
       })}
     />
   )
@@ -40,10 +40,10 @@ export function ListItemOrder({
  * This helper aims to get `formatted_total_amount` from a metrics `Order`.
  */
 function getFormattedTotalAmount(resource: Order): string | null | undefined {
-  if ('total_amount' in resource && resource.currency_code != null) {
+  if ("total_amount" in resource && resource.currency_code != null) {
     return formatCentsToCurrency(
       (resource.total_amount as number) * 100,
-      resource.currency_code as CurrencyCode
+      resource.currency_code as CurrencyCode,
     )
   }
 

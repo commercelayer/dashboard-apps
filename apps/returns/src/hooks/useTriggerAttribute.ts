@@ -1,11 +1,11 @@
-import type { getReturnTriggerAttributeName } from '#data/dictionaries'
+import { useCoreSdkProvider, useTranslation } from "@commercelayer/app-elements"
+import { CommerceLayerStatic } from "@commercelayer/sdk"
+import { useCallback, useState } from "react"
+import type { getReturnTriggerAttributeName } from "#data/dictionaries"
 import {
   returnIncludeAttribute,
-  useReturnDetails
-} from '#hooks/useReturnDetails'
-import { useCoreSdkProvider, useTranslation } from '@commercelayer/app-elements'
-import { CommerceLayerStatic } from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
+  useReturnDetails,
+} from "#hooks/useReturnDetails"
 
 type UITriggerAttributes = Parameters<typeof getReturnTriggerAttributeName>[0]
 
@@ -31,29 +31,29 @@ export function useTriggerAttribute(returnId: string): TriggerAttributeHook {
         const updatedReturn = await sdkClient.returns.update(
           {
             id: returnId,
-            [triggerAttribute]: true
+            [triggerAttribute]: true,
           },
           {
-            include: returnIncludeAttribute
-          }
+            include: returnIncludeAttribute,
+          },
         )
         void mutateReturn(updatedReturn)
       } catch (error) {
         setErrors(
           CommerceLayerStatic.isApiError(error)
             ? error.errors.map(({ detail }) => detail)
-            : [t('apps.returns.details.delete_error')]
+            : [t("apps.returns.details.delete_error")],
         )
       } finally {
         setIsLoading(false)
       }
     },
-    [returnId]
+    [returnId],
   )
 
   return {
     isLoading,
     errors,
-    dispatch
+    dispatch,
   }
 }

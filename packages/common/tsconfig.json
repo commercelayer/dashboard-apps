@@ -5,9 +5,5 @@
     "types": [],
     "baseUrl": "./"
   },
-  "include": [
-    "i18n.d.ts",
-    "src",
-    ".eslintrc.cjs"
-  ]
+  "include": ["i18n.d.ts", "src"]
 }

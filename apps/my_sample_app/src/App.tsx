@@ -1,14 +1,14 @@
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
   HomePageLayout,
   Spacer,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { Route, Router, Switch } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Route, Router, Switch } from "wouter"
+import { ErrorNotFound } from "#components/ErrorNotFound"
+import { appRoutes } from "#data/routes"
 
 interface AppProps {
   routerBase?: string
@@ -21,15 +21,15 @@ export const App: FC<AppProps> = ({ routerBase }) => {
     <Router base={routerBase}>
       <Switch>
         <Route path={appRoutes.home.path}>
-          <HomePageLayout title='My Sample App'>
-            <Spacer top='14'>
+          <HomePageLayout title="My Sample App">
+            <Spacer top="14">
               <EmptyState
-                title='Welcome'
-                description='This is a starter template. Start building your application by modifying this `App.tsx` component.'
+                title="Welcome"
+                description="This is a starter template. Start building your application by modifying this `App.tsx` component."
               />
             </Spacer>
-            <Spacer top='14'>
-              {canUser('create', 'orders') ? (
+            <Spacer top="14">
+              {canUser("create", "orders") ? (
                 <EmptyState
                   title="canUser('create', 'orders') ?"
                   description={
@@ -42,12 +42,12 @@ export const App: FC<AppProps> = ({ routerBase }) => {
                     </>
                   }
                   action={
-                    <Button variant='primary'>
+                    <Button variant="primary">
                       Create an Order (not implemented)
                     </Button>
                   }
                 />
-              ) : canUser('read', 'orders') ? (
+              ) : canUser("read", "orders") ? (
                 <EmptyState
                   title="canUser('read', 'orders') ?"
                   description={

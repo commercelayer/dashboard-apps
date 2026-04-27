@@ -1,8 +1,3 @@
-import { ListItemSubscriptionOrder } from '#components/ListItemSubscriptionOrder'
-import { allowedOrderStatuses } from '#components/SubscriptionOrders'
-import { appRoutes } from '#data/routes'
-import { useSubscriptionDetails } from '#hooks/useSubscriptionDetails'
-import { getSubscriptionTitle } from '#utils/getSubscriptionTitle'
 import {
   Button,
   EmptyState,
@@ -11,29 +6,34 @@ import {
   Td,
   Tr,
   useResourceList,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { Link, useLocation, useRoute } from "wouter"
+import { ListItemSubscriptionOrder } from "#components/ListItemSubscriptionOrder"
+import { allowedOrderStatuses } from "#components/SubscriptionOrders"
+import { appRoutes } from "#data/routes"
+import { useSubscriptionDetails } from "#hooks/useSubscriptionDetails"
+import { getSubscriptionTitle } from "#utils/getSubscriptionTitle"
 
 export function SubscriptionOrders(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ subscriptionId: string }>(appRoutes.orders.path)
-  const subscriptionId = params?.subscriptionId ?? ''
+  const subscriptionId = params?.subscriptionId ?? ""
 
   const { subscription } = useSubscriptionDetails(subscriptionId)
   const pageTitle = getSubscriptionTitle(subscription)
 
   const { ResourceList, isFirstLoading } = useResourceList({
-    type: 'orders',
+    type: "orders",
     query: {
       filters: {
         order_subscription_id_eq: subscriptionId,
-        status_in: allowedOrderStatuses
+        status_in: allowedOrderStatuses,
       },
-      sort: ['-updated_at'],
-      pageSize: 25
-    }
+      sort: ["-updated_at"],
+      pageSize: 25,
+    },
   })
 
   const goBackUrl =
@@ -41,25 +41,25 @@ export function SubscriptionOrders(): React.JSX.Element {
       ? appRoutes.details.makePath({ subscriptionId })
       : appRoutes.list.makePath({})
 
-  if (!canUser('read', 'orders')) {
+  if (!canUser("read", "orders")) {
     return (
       <PageLayout
         title={pageTitle}
         navigationButton={{
-          label: 'Back',
-          icon: 'arrowLeft',
+          label: "Back",
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(goBackUrl)
-          }
+          },
         }}
         scrollToTop
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -71,30 +71,30 @@ export function SubscriptionOrders(): React.JSX.Element {
     <PageLayout
       title={pageTitle}
       navigationButton={{
-        label: 'Back',
-        icon: 'arrowLeft',
+        label: "Back",
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(goBackUrl)
-        }
+        },
       }}
       scrollToTop
       isLoading={isFirstLoading}
     >
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <ResourceList
-          title='Recurring orders'
-          variant='table'
+          title="Recurring orders"
+          variant="table"
           headings={[
             {
-              label: 'DATE'
+              label: "DATE",
             },
             {
-              label: 'ORDER',
-              align: 'left'
+              label: "ORDER",
+              align: "left",
             },
             {
-              label: 'PAYMENT STATUS'
-            }
+              label: "PAYMENT STATUS",
+            },
           ]}
           emptyState={
             <Tr>

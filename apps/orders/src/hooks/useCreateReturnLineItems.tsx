@@ -1,17 +1,17 @@
-import { type ReturnFormValues } from '#components/FormReturn'
 import {
   formatDisplayName,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
 import type {
   CommerceLayerClient,
   Return,
   ReturnLineItem,
-  StockLocation
-} from '@commercelayer/sdk'
-import { isEmpty } from 'lodash-es'
-import { useCallback, useState } from 'react'
+  StockLocation,
+} from "@commercelayer/sdk"
+import { isEmpty } from "lodash-es"
+import { useCallback, useState } from "react"
+import type { ReturnFormValues } from "#components/FormReturn"
 
 interface CreateReturnLineItemsHook {
   isCreatingReturnLineItems: boolean
@@ -19,7 +19,7 @@ interface CreateReturnLineItemsHook {
   createReturnLineItems: (
     returnObj: Return,
     stockLocation: StockLocation,
-    formValues: ReturnFormValues
+    formValues: ReturnFormValues,
   ) => Promise<void>
 }
 
@@ -30,9 +30,9 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
   const [isCreatingReturnLineItems, setIsCreatingReturnLineItems] =
     useState(false)
   const [createReturnLineItemsError, setCreateReturnLineItemsError] =
-    useState<CreateReturnLineItemsHook['createReturnLineItemsError']>()
+    useState<CreateReturnLineItemsHook["createReturnLineItemsError"]>()
 
-  const createReturnLineItems: CreateReturnLineItemsHook['createReturnLineItems'] =
+  const createReturnLineItems: CreateReturnLineItemsHook["createReturnLineItems"] =
     useCallback(async (returnObj, stockLocation, formValues) => {
       setIsCreatingReturnLineItems(true)
       setCreateReturnLineItemsError(undefined)
@@ -42,7 +42,7 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
       const reasonKey =
         user?.firstName != null
           ? formatDisplayName(user?.firstName, user?.lastName)
-          : 'Admin'
+          : "Admin"
 
       try {
         await Promise.all(
@@ -55,24 +55,24 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
                   ...(!isEmpty(item.reason)
                     ? {
                         return_reason: {
-                          [reasonKey]: item.reason
-                        }
+                          [reasonKey]: item.reason,
+                        },
                       }
                     : {}),
-                  line_item: sdkClient.line_items.relationship(item.value)
+                  line_item: sdkClient.line_items.relationship(item.value),
                 })
-                .then((lineItem) => returnLineItems.push(lineItem))
-          )
+                .then((lineItem) => returnLineItems.push(lineItem)),
+          ),
         )
         await sdkClient.returns.update(
           {
             id: returnObj.id,
             stock_location: sdkClient.stock_locations.relationship(
-              stockLocation.id
+              stockLocation.id,
             ),
-            _request: true
+            _request: true,
           },
-          { include: ['stock_location'] }
+          { include: ["stock_location"] },
         )
       } catch (err) {
         // delete line items and return if they were partially created
@@ -89,17 +89,17 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
   return {
     isCreatingReturnLineItems,
     createReturnLineItemsError,
-    createReturnLineItems
+    createReturnLineItems,
   }
 }
 
 async function deleteReturnLineItems(
   lineItems: ReturnLineItem[],
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerClient,
 ): Promise<void> {
   await Promise.all(
     lineItems.map(async (item) => {
       await sdkClient.return_line_items.delete(item.id)
-    })
+    }),
   )
 }

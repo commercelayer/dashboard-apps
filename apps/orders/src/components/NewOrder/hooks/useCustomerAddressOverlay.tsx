@@ -1,5 +1,3 @@
-import { useGetMarketsCount } from '#hooks/useGetMarketsCount'
-import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
   HookedForm,
@@ -11,13 +9,15 @@ import {
   useCoreSdkProvider,
   useOverlay,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { useGetMarketsCount } from "#hooks/useGetMarketsCount"
+import { getOrderTitle } from "#utils/getOrderTitle"
 
 interface Props {
   order: Order
@@ -30,10 +30,9 @@ interface PropsAddresses {
   onChange?: () => void
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useCustomerAddressOverlay(
-  order: Props['order'],
-  onChange?: Props['onChange']
+  order: Props["order"],
+  onChange?: Props["onChange"],
 ) {
   const { Overlay, open, close } = useOverlay()
   const { t } = useTranslation()
@@ -46,21 +45,21 @@ export function useCustomerAddressOverlay(
     Overlay: () => (
       <Overlay>
         <PageLayout
-          title={t('common.select_resource', {
-            resource: t('resources.addresses.name').toLowerCase()
+          title={t("common.select_resource", {
+            resource: t("resources.addresses.name").toLowerCase(),
           })}
           navigationButton={{
             onClick: () => {
               close()
             },
             label: getOrderTitle(order, { hideMarket }),
-            icon: 'arrowLeft'
+            icon: "arrowLeft",
           }}
         >
           <CustomerAddresses order={order} close={close} onChange={onChange} />
         </PageLayout>
       </Overlay>
-    )
+    ),
   }
 }
 
@@ -74,20 +73,20 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
 
     const methods = useForm<{
       addressId: string
-      useFor: 'billing' | 'shipping' | 'both'
+      useFor: "billing" | "shipping" | "both"
     }>({
       defaultValues: {
         addressId:
           customerAddresses.length === 1
             ? customerAddresses[0]?.address?.id
-            : undefined
+            : undefined,
       },
       resolver: zodResolver(
         z.object({
           addressId: z.string(),
-          useFor: z.string()
-        })
-      )
+          useFor: z.string(),
+        }),
+      ),
     })
 
     return (
@@ -100,12 +99,12 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
           try {
             await sdkClient.orders.update({
               id: order.id,
-              ...(useFor === 'billing' || useFor === 'both'
+              ...(useFor === "billing" || useFor === "both"
                 ? { billing_address: addressRelationship }
                 : {}),
-              ...(useFor === 'shipping' || useFor === 'both'
+              ...(useFor === "shipping" || useFor === "both"
                 ? { shipping_address: addressRelationship }
-                : {})
+                : {}),
             })
 
             onChange?.()
@@ -116,51 +115,51 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
         }}
       >
         <HookedInputRadioGroup
-          name='addressId'
+          name="addressId"
           showInput={false}
           options={customerAddresses.map((address) => ({
             content: <ResourceAddress address={address.address} />,
-            value: address?.address?.id ?? ''
+            value: address?.address?.id ?? "",
           }))}
         />
-        <Spacer top='10'>
-          <div className='flex flex-row gap-6 md:gap-8'>
+        <Spacer top="10">
+          <div className="flex flex-row gap-6 md:gap-8">
             <Button
-              variant='secondary'
+              variant="secondary"
               fullWidth
               disabled={methods.formState.isSubmitting}
               onClick={() => {
-                methods.setValue('useFor', 'billing')
+                methods.setValue("useFor", "billing")
               }}
             >
-              {t('apps.orders.details.use_for_billing')}
+              {t("apps.orders.details.use_for_billing")}
             </Button>
             <Button
-              variant='secondary'
+              variant="secondary"
               fullWidth
               disabled={methods.formState.isSubmitting}
               onClick={() => {
-                methods.setValue('useFor', 'shipping')
+                methods.setValue("useFor", "shipping")
               }}
             >
-              {t('apps.orders.details.use_for_shipping')}
+              {t("apps.orders.details.use_for_shipping")}
             </Button>
             <Button
-              variant='primary'
+              variant="primary"
               fullWidth
               disabled={methods.formState.isSubmitting}
               onClick={() => {
-                methods.setValue('useFor', 'both')
+                methods.setValue("useFor", "both")
               }}
             >
               Use for billing and shipping
             </Button>
           </div>
         </Spacer>
-        <Spacer top='2'>
+        <Spacer top="2">
           <HookedValidationApiError apiError={apiError} />
         </Spacer>
       </HookedForm>
     )
-  }
+  },
 )

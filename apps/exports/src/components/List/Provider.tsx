@@ -1,10 +1,11 @@
+import { toast, useIsChanged } from "@commercelayer/app-elements"
 import type {
   CommerceLayerClient,
   Export,
   ListResponse,
   QueryFilter,
-  QueryParamsList
-} from '@commercelayer/sdk'
+  QueryParamsList,
+} from "@commercelayer/sdk"
 import {
   createContext,
   type ReactNode,
@@ -12,16 +13,11 @@ import {
   useContext,
   useEffect,
   useReducer,
-  useRef
-} from 'react'
-import {
-  type ListExportContextState,
-  type ListExportContextValue
-} from './types'
-
-import { toast, useIsChanged } from '@commercelayer/app-elements'
-import { initialState, initialValues } from './data'
-import { reducer } from './reducer'
+  useRef,
+} from "react"
+import { initialState, initialValues } from "./data"
+import { reducer } from "./reducer"
+import type { ListExportContextState, ListExportContextValue } from "./types"
 
 interface ListExportProviderProps {
   /**
@@ -52,7 +48,7 @@ export function ListExportProvider({
   children,
   pageSize,
   sdkClient,
-  filters
+  filters,
 }: ListExportProviderProps): React.JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
   const intervalId = useRef<number | null>(null)
@@ -62,21 +58,21 @@ export function ListExportProvider({
     value: filters,
     onChange: () => {
       // Set the loading state to the first page
-      dispatch({ type: 'changePage', payload: 1 })
+      dispatch({ type: "changePage", payload: 1 })
       // Refresh the list with the new filters
       void getAllExports({
         cl: sdkClient,
         state,
         pageSize,
-        filters
+        filters,
       }).then((list) => {
-        dispatch({ type: 'loadData', payload: list })
+        dispatch({ type: "loadData", payload: list })
       })
-    }
+    },
   })
 
   const changePage = useCallback((page: number) => {
-    dispatch({ type: 'changePage', payload: page })
+    dispatch({ type: "changePage", payload: page })
   }, [])
 
   const fetchList = useCallback(async () => {
@@ -84,9 +80,9 @@ export function ListExportProvider({
       cl: sdkClient,
       state,
       pageSize,
-      filters
+      filters,
     })
-    dispatch({ type: 'loadData', payload: list })
+    dispatch({ type: "loadData", payload: list })
   }, [state.currentPage])
 
   const deleteExport = async (exportId: string): Promise<void> => {
@@ -96,8 +92,8 @@ export function ListExportProvider({
 
       await fetchList()
     } catch (error) {
-      toast('Could not delete export', { type: 'error' })
-      console.error('Error interrupting export:', error)
+      toast("Could not delete export", { type: "error" })
+      console.error("Error interrupting export:", error)
     }
   }
 
@@ -106,8 +102,8 @@ export function ListExportProvider({
       await sdkClient.exports.update({ id: exportId, _interrupt: true })
       await fetchList()
     } catch (error) {
-      toast('Could not interrupt export', { type: 'error' })
-      console.error('Error interrupting export:', error)
+      toast("Could not interrupt export", { type: "error" })
+      console.error("Error interrupting export:", error)
     }
   }
 
@@ -116,8 +112,8 @@ export function ListExportProvider({
       await sdkClient.exports.update({ id: exportId, _start: true })
       await fetchList()
     } catch (error) {
-      toast('Could not resume export', { type: 'error' })
-      console.error('Error resuming export:', error)
+      toast("Could not resume export", { type: "error" })
+      console.error("Error resuming export:", error)
     }
   }
 
@@ -127,7 +123,7 @@ export function ListExportProvider({
         void fetchList()
       }
     },
-    [state.currentPage]
+    [state.currentPage],
   )
 
   useEffect(
@@ -147,7 +143,7 @@ export function ListExportProvider({
         }
       }
     },
-    [state.isPolling]
+    [state.isPolling],
   )
 
   const value: ListExportContextValue = {
@@ -155,12 +151,12 @@ export function ListExportProvider({
     changePage,
     deleteExport,
     interruptExport,
-    resumeExport
+    resumeExport,
   }
 
   return (
     <Context.Provider value={value}>
-      {typeof children === 'function' ? children(value) : children}
+      {typeof children === "function" ? children(value) : children}
     </Context.Provider>
   )
 }
@@ -169,7 +165,7 @@ const getAllExports = async ({
   cl,
   state,
   pageSize,
-  filters
+  filters,
 }: {
   cl: CommerceLayerClient
   state: ListExportContextState
@@ -178,8 +174,8 @@ const getAllExports = async ({
 }): Promise<ListResponse<Export>> => {
   return await cl.exports.list({
     pageNumber: state.currentPage,
-    pageSize: pageSize as QueryParamsList<Export>['pageSize'],
-    sort: { created_at: 'desc' },
-    filters
+    pageSize: pageSize as QueryParamsList<Export>["pageSize"],
+    sort: { created_at: "desc" },
+    filters,
   })
 }

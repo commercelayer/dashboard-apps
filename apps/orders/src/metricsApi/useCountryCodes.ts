@@ -1,10 +1,10 @@
-import { type CountryCodesFilterOptions } from '#data/filters'
-import { useTokenProvider } from '@commercelayer/app-elements'
-import useSWR from 'swr'
-import { metricsApiFetcher } from './fetcher'
+import { useTokenProvider } from "@commercelayer/app-elements"
+import useSWR from "swr"
+import type { CountryCodesFilterOptions } from "#data/filters"
+import { metricsApiFetcher } from "./fetcher"
 
 interface MetricsApiBreakdownByCountryResponse {
-  'order.country_code'?: Array<{
+  "order.country_code"?: Array<{
     label: string // country code
     value: string // orders count
   }>
@@ -15,27 +15,27 @@ export function useCountryCodes(): {
   isLoading: boolean
 } {
   const {
-    settings: { accessToken, organizationSlug, domain }
+    settings: { accessToken, organizationSlug, domain },
   } = useTokenProvider()
 
   const { data, isLoading } = useSWR(
     {
       domain,
       slug: organizationSlug,
-      accessToken
+      accessToken,
     },
     fetchCountryForFilter,
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-      suspense: true
-    }
+      suspense: true,
+    },
   )
 
   return {
     countryCodes: data ?? [],
-    isLoading
+    isLoading,
   }
 }
 
@@ -46,16 +46,16 @@ async function fetchCountryDictionary(): Promise<
   }>
 > {
   const res = await fetch(
-    'https://data.commercelayer.app/assets/lists/countries.json'
+    "https://data.commercelayer.app/assets/lists/countries.json",
   )
-  if (!res.ok) throw new Error('Failed to fetch countries')
+  if (!res.ok) throw new Error("Failed to fetch countries")
   return await res.json()
 }
 
 async function fetchCountryForFilter({
   domain,
   slug,
-  accessToken
+  accessToken,
 }: {
   domain: string
   slug: string
@@ -63,38 +63,38 @@ async function fetchCountryForFilter({
 }): Promise<CountryCodesFilterOptions> {
   return await Promise.allSettled([
     metricsApiFetcher<MetricsApiBreakdownByCountryResponse>({
-      endpoint: '/orders/breakdown',
+      endpoint: "/orders/breakdown",
       domain,
       slug,
       accessToken,
       body: {
         breakdown: {
-          by: 'order.country_code',
-          field: 'order.id',
-          operator: 'value_count',
-          sort: 'desc',
-          limit: 100
-        }
-      }
+          by: "order.country_code",
+          field: "order.id",
+          operator: "value_count",
+          sort: "desc",
+          limit: 100,
+        },
+      },
     }),
-    fetchCountryDictionary()
+    fetchCountryDictionary(),
   ]).then(([responseMetrics, responseAllCountries]) => {
-    if (responseMetrics.status !== 'fulfilled') {
+    if (responseMetrics.status !== "fulfilled") {
       return []
     }
     const allCountries =
-      responseAllCountries.status === 'fulfilled'
+      responseAllCountries.status === "fulfilled"
         ? responseAllCountries.value
         : []
     const normalizedOptions = responseMetrics.value.data[
-      'order.country_code'
+      "order.country_code"
     ]?.map((metricsItem) => {
       const countryCode = metricsItem.label
       return {
         value: countryCode,
         label:
           allCountries.find((country) => country.value === countryCode)
-            ?.label ?? countryCode.toUpperCase()
+            ?.label ?? countryCode.toUpperCase(),
       }
     })
     return normalizedOptions ?? []

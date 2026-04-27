@@ -10,10 +10,10 @@ import {
   useOverlay,
   useTokenProvider,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Customer, CustomerAddress } from '@commercelayer/sdk'
-import { useState } from 'react'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Customer, CustomerAddress } from "@commercelayer/sdk"
+import { useState } from "react"
 
 interface Props {
   customer: Customer
@@ -31,64 +31,64 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
     const [addressSetForDeletion, setAddressSetForDeletion] =
       useState<CustomerAddress | null>(null)
 
-    const addresses = customer.customer_addresses?.map(
-      (customerAddress, idx) =>
-        customerAddress?.address != null ? (
-          <div key={idx} className='relative'>
-            <ListItem>
-              <ResourceAddress
-                address={customerAddress?.address}
-                editable={canUser('update', 'addresses')}
-                showBillingInfo
-              />
-            </ListItem>
-            {canUser('destroy', 'addresses') && (
-              <div className='absolute right-0' style={{ bottom: '12px' }}>
-                <button
-                  onClick={() => {
-                    setAddressSetForDeletion(customerAddress)
-                    open()
-                  }}
-                >
-                  <Icon name='trash' size={18} />
-                </button>
-              </div>
-            )}
-          </div>
-        ) : null
+    const addresses = customer.customer_addresses?.map((customerAddress) =>
+      customerAddress?.address != null ? (
+        <div key={customerAddress?.address?.id} className="relative">
+          <ListItem>
+            <ResourceAddress
+              address={customerAddress?.address}
+              editable={canUser("update", "addresses")}
+              showBillingInfo
+            />
+          </ListItem>
+          {canUser("destroy", "addresses") && (
+            <div className="absolute right-0" style={{ bottom: "12px" }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setAddressSetForDeletion(customerAddress)
+                  open()
+                }}
+              >
+                <Icon name="trash" size={18} />
+              </button>
+            </div>
+          )}
+        </div>
+      ) : null,
     )
 
     if (addresses?.length === 0) return <></>
 
     return (
       <>
-        <Section title={t('resources.addresses.name_other')}>
+        <Section title={t("resources.addresses.name_other")}>
           {addresses}
         </Section>
-        {canUser('destroy', 'addresses') && (
-          <DeleteOverlay backgroundColor='light'>
+        {canUser("destroy", "addresses") && (
+          <DeleteOverlay backgroundColor="light">
             <PageLayout
               title={`Confirm that you want to delete the address for ${addressSetForDeletion?.address?.full_name}.`}
-              description='This action cannot be undone, proceed with caution.'
+              description="This action cannot be undone, proceed with caution."
               minHeight={false}
               navigationButton={{
                 onClick: () => {
                   close()
                 },
                 label: `Cancel`,
-                icon: 'x'
+                icon: "x",
               }}
             >
               <Button
-                variant='danger'
-                size='small'
+                variant="danger"
+                size="small"
                 disabled={isDeleting}
                 onClick={(e) => {
                   setIsDeleting(true)
                   e.stopPropagation()
                   try {
                     void sdkClient.customer_addresses
-                      .delete(addressSetForDeletion?.id ?? '')
+                      .delete(addressSetForDeletion?.id ?? "")
                       .then(() => {
                         if (onRemovedAddress != null) {
                           onRemovedAddress()
@@ -97,7 +97,7 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
                   } catch (error) {
                     const title: string | undefined = (error as any)
                       ?.errors?.[0]?.title
-                    toast(title ?? 'An error occurred', { type: 'error' })
+                    toast(title ?? "An error occurred", { type: "error" })
                   } finally {
                     setIsDeleting(false)
                     close()
@@ -112,5 +112,5 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
         )}
       </>
     )
-  }
+  },
 )

@@ -1,9 +1,9 @@
-import { useCoreApi } from '@commercelayer/app-elements'
+import { useCoreApi } from "@commercelayer/app-elements"
 import type {
   CustomerGroup,
   ListResponse,
-  QueryPageSize
-} from '@commercelayer/sdk'
+  QueryPageSize,
+} from "@commercelayer/sdk"
 
 interface UseCustomerGroupsListSettings {
   pageNumber?: number
@@ -33,20 +33,20 @@ export function useCustomerGroupsList({ hint, settings }: Props): {
   const {
     data: customerGroups,
     isLoading,
-    error
+    error,
   } = useCoreApi(
-    'customer_groups',
-    'list',
+    "customer_groups",
+    "list",
     [
       {
-        fields: ['id', 'name'],
+        fields: ["id", "name"],
         filters: hint != null ? { name_cont: hint } : undefined,
-        sort: ['name'],
+        sort: ["name"],
         pageNumber,
-        pageSize
-      }
+        pageSize,
+      },
     ],
-    {}
+    {},
   )
 
   return { customerGroups, error, isLoading }

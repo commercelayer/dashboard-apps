@@ -1,9 +1,9 @@
 import {
+  type CurrencyCode,
   formatCentsToCurrency,
   formatDate,
-  type CurrencyCode
-} from '@commercelayer/app-elements'
-import capitalize from 'lodash-es/capitalize'
+} from "@commercelayer/app-elements"
+import capitalize from "lodash-es/capitalize"
 
 interface NormalizedLogItem {
   date: string
@@ -32,7 +32,7 @@ export function normalizeLogs({
   usageLog,
   balanceLog,
   timezone,
-  currencyCode
+  currencyCode,
 }: {
   usageLog?: Record<OrderId, UsageLogItem[]> | null
   balanceLog?: BalanceLogItem[] | null
@@ -46,24 +46,24 @@ export function normalizeLogs({
         type: capitalize(item.action),
         orderId,
         orderNumber: item.order_number,
-        amount: formatCentsToCurrency(item.amount_cents, currencyCode)
-      }))
+        amount: formatCentsToCurrency(item.amount_cents, currencyCode),
+      })),
   )
 
   const normalizedBalance = (balanceLog ?? [])
     .map((item) => ({
       date: item.datetime,
-      type: 'Change',
+      type: "Change",
       orderId: undefined,
       orderNumber: undefined,
-      amount: formatCentsToCurrency(item.balance_change_cents, currencyCode)
+      amount: formatCentsToCurrency(item.balance_change_cents, currencyCode),
     }))
     // remove duplicates from balance already present in usage, by considering same amount and date without milliseconds
     .filter((item) => {
       const dup = normalizedUsage.find(
         (o) =>
           removeMilliseconds(o.date) === removeMilliseconds(item.date) &&
-          o.amount === item.amount
+          o.amount === item.amount,
       )
       return dup == null
     })
@@ -76,13 +76,13 @@ export function normalizeLogs({
       ...item,
       date: formatDate({
         isoDate: item.date,
-        format: 'full',
+        format: "full",
         timezone,
-        showCurrentYear: true
-      })
+        showCurrentYear: true,
+      }),
     }))
 }
 
 function removeMilliseconds(date: string): string {
-  return date.split('.')[0] ?? ''
+  return date.split(".")[0] ?? ""
 }

@@ -1,11 +1,11 @@
-import type { getWebhookTriggerActionName } from '#data/dictionaries'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import { CommerceLayerStatic } from "@commercelayer/sdk"
+import { useCallback, useState } from "react"
+import type { getWebhookTriggerActionName } from "#data/dictionaries"
 import {
   useWebhookDetails,
-  webhookIncludeAttribute
-} from '#hooks/useWebhookDetails'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import { CommerceLayerStatic } from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
+  webhookIncludeAttribute,
+} from "#hooks/useWebhookDetails"
 
 type UITriggerAttributes = Parameters<typeof getWebhookTriggerActionName>[0]
 
@@ -30,29 +30,29 @@ export function useTriggerAttribute(webhookId: string): TriggerAttributeHook {
         const updatedWebhook = await sdkClient.webhooks.update(
           {
             id: webhookId,
-            [triggerAttribute]: true
+            [triggerAttribute]: true,
           },
           {
-            include: webhookIncludeAttribute
-          }
+            include: webhookIncludeAttribute,
+          },
         )
         void mutateWebhook(updatedWebhook)
       } catch (error) {
         setErrors(
           CommerceLayerStatic.isApiError(error)
             ? error.errors.map(({ detail }) => detail)
-            : ['Could not cancel this webhook']
+            : ["Could not cancel this webhook"],
         )
       } finally {
         setIsLoading(false)
       }
     },
-    [webhookId]
+    [webhookId],
   )
 
   return {
     isLoading,
     errors,
-    dispatch
+    dispatch,
   }
 }

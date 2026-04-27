@@ -1,7 +1,3 @@
-import { filtersInstructions } from '#data/filters'
-import { presets } from '#data/lists'
-import { appRoutes } from '#data/routes'
-import { usePromotionPermission } from '#hooks/usePromotionPermission'
 import {
   A,
   HomePageLayout,
@@ -12,9 +8,13 @@ import {
   Spacer,
   StatusIcon,
   Text,
-  useResourceFilters
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useSearch } from 'wouter'
+  useResourceFilters,
+} from "@commercelayer/app-elements"
+import { Link, useLocation, useSearch } from "wouter"
+import { filtersInstructions } from "#data/filters"
+import { presets } from "#data/lists"
+import { appRoutes } from "#data/routes"
+import { usePromotionPermission } from "#hooks/usePromotionPermission"
 
 function HomePage(): React.JSX.Element {
   const { canUserManagePromotions } = usePromotionPermission()
@@ -23,11 +23,11 @@ function HomePage(): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, adapters } = useResourceFilters({
-    instructions: filtersInstructions
+    instructions: filtersInstructions,
   })
 
   return (
-    <HomePageLayout title='Promotions'>
+    <HomePageLayout title="Promotions">
       <SearchWithNav
         hideFiltersNav
         onFilterClick={() => {}}
@@ -37,14 +37,14 @@ function HomePage(): React.JSX.Element {
         queryString={search}
       />
 
-      <Spacer top='14'>
+      <Spacer top="14">
         <List
-          title='Browse'
+          title="Browse"
           actionButton={
-            canUserManagePromotions('create', 'atLeastOne') ? (
+            canUserManagePromotions("create", "atLeastOne") ? (
               <Link asChild href={appRoutes.newSelectType.makePath({})}>
-                <A href='' variant='secondary' size='mini' alignItems='center'>
-                  <Icon name='plus' />
+                <A href="" variant="secondary" size="mini" alignItems="center">
+                  <Icon name="plus" />
                   New
                 </A>
               </Link>
@@ -55,16 +55,16 @@ function HomePage(): React.JSX.Element {
             href={appRoutes.promotionList.makePath(
               {},
               adapters.adaptFormValuesToUrlQuery({
-                formValues: presets.active
-              })
+                formValues: presets.active,
+              }),
             )}
             asChild
           >
             <ListItem
-              icon={<StatusIcon name='pulse' background='green' gap='small' />}
+              icon={<StatusIcon name="pulse" background="green" gap="small" />}
             >
-              <Text weight='semibold'>{presets.active.viewTitle} </Text>
-              <StatusIcon name='caretRight' />
+              <Text weight="semibold">{presets.active.viewTitle} </Text>
+              <StatusIcon name="caretRight" />
             </ListItem>
           </Link>
 
@@ -72,14 +72,14 @@ function HomePage(): React.JSX.Element {
             href={appRoutes.promotionList.makePath(
               {},
               adapters.adaptFormValuesToUrlQuery({
-                formValues: presets.upcoming
-              })
+                formValues: presets.upcoming,
+              }),
             )}
             asChild
           >
-            <ListItem icon={<RadialProgress size='small' />}>
-              <Text weight='semibold'>{presets.upcoming.viewTitle} </Text>
-              <StatusIcon name='caretRight' />
+            <ListItem icon={<RadialProgress size="small" />}>
+              <Text weight="semibold">{presets.upcoming.viewTitle} </Text>
+              <StatusIcon name="caretRight" />
             </ListItem>
           </Link>
 
@@ -87,18 +87,18 @@ function HomePage(): React.JSX.Element {
             href={appRoutes.promotionList.makePath(
               {},
               adapters.adaptFormValuesToUrlQuery({
-                formValues: presets.disabled
-              })
+                formValues: presets.disabled,
+              }),
             )}
             asChild
           >
             <ListItem
               icon={
-                <StatusIcon name='minus' background='lightGray' gap='small' />
+                <StatusIcon name="minus" background="lightGray" gap="small" />
               }
             >
-              <Text weight='semibold'>{presets.disabled.viewTitle} </Text>
-              <StatusIcon name='caretRight' />
+              <Text weight="semibold">{presets.disabled.viewTitle} </Text>
+              <StatusIcon name="caretRight" />
             </ListItem>
           </Link>
 
@@ -106,14 +106,14 @@ function HomePage(): React.JSX.Element {
             <ListItem
               icon={
                 <StatusIcon
-                  name='asteriskSimple'
-                  background='black'
-                  gap='small'
+                  name="asteriskSimple"
+                  background="black"
+                  gap="small"
                 />
               }
             >
-              <Text weight='semibold'>All promotions</Text>
-              <Icon name='caretRight' />
+              <Text weight="semibold">All promotions</Text>
+              <Icon name="caretRight" />
             </ListItem>
           </Link>
         </List>

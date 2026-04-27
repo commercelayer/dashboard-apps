@@ -1,14 +1,14 @@
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import type { WebhookFormContextValue } from 'App'
+import type { WebhookFormContextValue } from "App"
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
 import {
   createContext,
   useCallback,
   useContext,
   useEffect,
-  useReducer
-} from 'react'
-import { initialState, initialValues } from './data'
-import { reducer } from './reducer'
+  useReducer,
+} from "react"
+import { initialState, initialValues } from "./data"
+import { reducer } from "./reducer"
 
 interface WebhookFormProviderProps {
   webhookId: string
@@ -23,7 +23,7 @@ export const useWebhookFormContext = (): WebhookFormContextValue =>
 
 export function WebhookFormProvider({
   webhookId,
-  children
+  children,
 }: WebhookFormProviderProps): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -31,9 +31,9 @@ export function WebhookFormProvider({
   const fetchJob = useCallback(async () => {
     try {
       const webhook = await sdkClient.webhooks.retrieve(webhookId)
-      dispatch({ type: 'webhook/loaded', payload: webhook })
+      dispatch({ type: "webhook/loaded", payload: webhook })
     } catch {
-      dispatch({ type: 'webhook/onError' })
+      dispatch({ type: "webhook/onError" })
     }
   }, [webhookId])
 
@@ -45,12 +45,12 @@ export function WebhookFormProvider({
     state,
     refetch: async () => {
       await fetchJob()
-    }
+    },
   }
 
   return (
     <Context.Provider value={value}>
-      {typeof children === 'function' ? children(value) : children}
+      {typeof children === "function" ? children(value) : children}
     </Context.Provider>
   )
 }

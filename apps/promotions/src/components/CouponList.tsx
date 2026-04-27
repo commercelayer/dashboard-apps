@@ -1,7 +1,3 @@
-import { CouponGeneratorModal } from '#components/CouponGeneratorModal'
-import { CouponRow } from '#components/CouponTable'
-import { appRoutes } from '#data/routes'
-import type { Promotion } from '#types'
 import {
   Button,
   Dropdown,
@@ -12,13 +8,17 @@ import {
   Text,
   useCoreSdkProvider,
   useResourceList,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { Import, QueryFilter } from '@commercelayer/sdk'
-import { type FC, useMemo, useState } from 'react'
-import { useLocation } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { Import, QueryFilter } from "@commercelayer/sdk"
+import { type FC, useMemo, useState } from "react"
+import { useLocation } from "wouter"
+import { CouponGeneratorModal } from "#components/CouponGeneratorModal"
+import { CouponRow } from "#components/CouponTable"
+import { appRoutes } from "#data/routes"
+import type { Promotion } from "#types"
 
-type FilterStatus = 'all' | 'active' | 'expired' | 'never'
+type FilterStatus = "all" | "active" | "expired" | "never"
 
 interface CouponListProps {
   promotion: Promotion
@@ -28,70 +28,70 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   const [, setLocation] = useLocation()
   const [showCouponGenerator, setShowCouponGenerator] = useState(false)
   const [searchValue, setSearchValue] = useState<string>()
-  const [filterStatus, setFilterStatus] = useState<FilterStatus>('all')
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>("all")
   const { sdkClient } = useCoreSdkProvider()
   const [currentImportJob, setCurrentImportJob] = useState<Import | null>(null)
 
   const filterStatusLabel: Record<FilterStatus, string> = {
-    all: 'All',
-    active: 'Active',
-    expired: 'Expired',
-    never: 'Never expire'
+    all: "All",
+    active: "Active",
+    expired: "Expired",
+    never: "Never expire",
   }
 
-  const filterStatusList: FilterStatus[] = ['all', 'active', 'expired', 'never']
+  const filterStatusList: FilterStatus[] = ["all", "active", "expired", "never"]
 
   const filterStatusPredicate: Record<FilterStatus, QueryFilter> = {
     all: {},
     active: { expires_at_gt: new Date().toJSON() },
     expired: { expires_at_lt: new Date().toJSON() },
-    never: { expires_at_null: true }
+    never: { expires_at_null: true },
   }
 
-  const query = useMemo<Parameters<typeof useResourceList>[0]['query']>(() => {
+  const query = useMemo<Parameters<typeof useResourceList>[0]["query"]>(() => {
     return {
       filters: {
         promotion_rule_promotion_id_eq: promotion.id,
         ...(searchValue != null
           ? { code_or_coupon_recipient_email_cont: searchValue }
           : {}),
-        ...(filterStatusPredicate[filterStatus] ?? {})
+        ...(filterStatusPredicate[filterStatus] ?? {}),
       },
-      sort: ['-updated_at'],
-      pageSize: 25
+      sort: ["-updated_at"],
+      pageSize: 25,
     }
   }, [filterStatus, searchValue])
 
   const { list, ResourceList, refresh, Pagination } = useResourceList({
-    type: 'coupons',
+    type: "coupons",
     query,
-    paginationType: 'pagination',
-    paginationScrollTo: 'list'
+    paginationType: "pagination",
+    paginationScrollTo: "list",
   })
 
   const addCouponLink = appRoutes.newCoupon.makePath({
-    promotionId: promotion.id
+    promotionId: promotion.id,
   })
 
   return (
     <>
       <div
         style={{
-          display: 'flex',
-          gap: '0.5rem',
-          flexWrap: 'nowrap',
-          alignItems: 'center'
+          display: "flex",
+          gap: "0.5rem",
+          flexWrap: "nowrap",
+          alignItems: "center",
         }}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
           <SearchBar
             initialValue={searchValue}
             onSearch={setSearchValue}
-            placeholder='Search…'
+            placeholder="Search…"
             onClear={() => {
-              setSearchValue('')
+              setSearchValue("")
             }}
-            variant='outline'
+            variant="outline"
           />
         </div>
 
@@ -104,26 +104,26 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
               onClick={() => {
                 setFilterStatus(status)
               }}
-              icon={filterStatus === status ? 'check' : 'keep-space'}
+              icon={filterStatus === status ? "check" : "keep-space"}
             />
           ))}
           dropdownLabel={
-            <Button variant='secondary' alignItems='center' size='small'>
+            <Button variant="secondary" alignItems="center" size="small">
               <Text
-                variant='info'
-                size='small'
-                className='flex gap-1 items-center'
+                variant="info"
+                size="small"
+                className="flex gap-1 items-center"
               >
-                View:{' '}
+                View:{" "}
                 <Text
-                  variant='primary'
-                  weight='semibold'
-                  size='small'
-                  className='flex gap-1 items-center '
+                  variant="primary"
+                  weight="semibold"
+                  size="small"
+                  className="flex gap-1 items-center "
                 >
                   {filterStatusLabel[filterStatus]}
                 </Text>
-                <Icon name='caretDown' size={16} />
+                <Icon name="caretDown" size={16} />
               </Text>
             </Button>
           }
@@ -132,37 +132,37 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         <Dropdown
           dropdownLabel={
             <Button
-              alignItems='center'
-              size='small'
-              variant='secondary'
+              alignItems="center"
+              size="small"
+              variant="secondary"
               onClick={() => {
                 setLocation(addCouponLink)
               }}
             >
-              <Icon name='plus' size={16} />
+              <Icon name="plus" size={16} />
               New
             </Button>
           }
           dropdownItems={
             <>
               <DropdownItem
-                label='Single coupon'
+                label="Single coupon"
                 onClick={() => {
                   setLocation(addCouponLink)
                 }}
               />
-              {canUser('create', 'imports') && (
+              {canUser("create", "imports") && (
                 <DropdownItem
-                  label='Multiple coupons'
+                  label="Multiple coupons"
                   onClick={() => {
                     void sdkClient.imports
                       .list({
                         filters: {
-                          resource_type_eq: 'coupons',
+                          resource_type_eq: "coupons",
                           reference_eq: `promotion_id:${promotion.id}`,
-                          status_in: ['pending', 'in_progress']
+                          status_in: ["pending", "in_progress"],
                         },
-                        pageSize: 1
+                        pageSize: 1,
                       })
                       .then((couponImports) => {
                         setCurrentImportJob(couponImports[0] ?? null)
@@ -189,44 +189,44 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         key={currentImportJob?.id}
       />
 
-      <Spacer top='4' bottom='8'>
+      <Spacer top="4" bottom="8">
         <div
           style={{
-            borderWidth: '1px',
+            borderWidth: "1px",
             borderBottom: 0,
-            borderRadius: 'var(--radius)',
+            borderRadius: "var(--radius)",
             borderColor:
               list?.length == null || list.length > 0
                 ? undefined
-                : 'transparent',
-            position: 'relative'
+                : "transparent",
+            position: "relative",
           }}
         >
           {/* fake bottom border */}
           {list?.length !== 0 && (
             <div
               style={{
-                position: 'absolute',
+                position: "absolute",
                 bottom: 0,
                 left: -1,
                 right: -1,
-                height: '5px',
-                borderWidth: '1px',
+                height: "5px",
+                borderWidth: "1px",
                 borderTop: 0,
-                borderBottomLeftRadius: 'var(--radius)',
-                borderBottomRightRadius: 'var(--radius)',
-                pointerEvents: 'none',
-                touchAction: 'none'
+                borderBottomLeftRadius: "var(--radius)",
+                borderBottomRightRadius: "var(--radius)",
+                pointerEvents: "none",
+                touchAction: "none",
               }}
             />
           )}
           <ResourceList
-            variant='table'
+            variant="table"
             headings={[
-              { label: 'Code' },
-              { label: 'Used' },
-              { label: 'Expiry' },
-              { label: '' }
+              { label: "Code" },
+              { label: "Used" },
+              { label: "Expiry" },
+              { label: "" },
             ]}
             ItemTemplate={(p) => {
               return (

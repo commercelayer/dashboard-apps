@@ -1,48 +1,48 @@
-import { subscriptionFailedOnLastRun } from '#utils/subscriptionFailedOnLastRun'
-import type { BadgeProps } from '@commercelayer/app-elements'
+import type { BadgeProps } from "@commercelayer/app-elements"
 import {
   Badge,
+  formatDate,
   Spacer,
   Stack,
   Text,
-  formatDate,
   useTokenProvider,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { OrderSubscription } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { OrderSubscription } from "@commercelayer/sdk"
+import { subscriptionFailedOnLastRun } from "#utils/subscriptionFailedOnLastRun"
 
 interface Props {
   subscription: OrderSubscription
 }
 
 function getSubscriptionStatusBadgeVariant(
-  status: OrderSubscription['status']
-): BadgeProps['variant'] {
+  status: OrderSubscription["status"],
+): BadgeProps["variant"] {
   switch (status) {
-    case 'active':
-    case 'running':
-      return 'success'
-    case 'inactive':
-    case 'draft':
-    case 'cancelled':
-      return 'secondary'
+    case "active":
+    case "running":
+      return "success"
+    case "inactive":
+    case "draft":
+    case "cancelled":
+      return "secondary"
   }
 }
 
 function getSubscriptionStatusName(
-  status: OrderSubscription['status']
+  status: OrderSubscription["status"],
 ): string {
   switch (status) {
-    case 'active':
-      return 'Active'
-    case 'running':
-      return 'Running'
-    case 'inactive':
-      return 'Inactive'
-    case 'draft':
-      return 'Draft'
-    case 'cancelled':
-      return 'Cancelled'
+    case "active":
+      return "Active"
+    case "running":
+      return "Running"
+    case "inactive":
+      return "Inactive"
+    case "draft":
+      return "Draft"
+    case "cancelled":
+      return "Cancelled"
   }
 }
 
@@ -53,8 +53,8 @@ export const SubscriptionSteps = withSkeletonTemplate<Props>(
     return (
       <Stack>
         <div>
-          <Spacer bottom='2'>
-            <Text size='small' tag='div' variant='info' weight='semibold'>
+          <Spacer bottom="2">
+            <Text size="small" tag="div" variant="info" weight="semibold">
               Status
             </Text>
           </Spacer>
@@ -67,39 +67,39 @@ export const SubscriptionSteps = withSkeletonTemplate<Props>(
           )}
         </div>
         <div>
-          <Spacer bottom='2'>
-            <Text size='small' tag='div' variant='info' weight='semibold'>
+          <Spacer bottom="2">
+            <Text size="small" tag="div" variant="info" weight="semibold">
               Last run
             </Text>
           </Spacer>
-          <div className='flex items-center gap-2'>
+          <div className="flex items-center gap-2">
             <Text>
               {formatDate({
-                isoDate: subscription.last_run_at ?? '',
-                format: 'full',
-                timezone: user?.timezone
+                isoDate: subscription.last_run_at ?? "",
+                format: "full",
+                timezone: user?.timezone,
               })}
             </Text>
             {subscriptionFailedOnLastRun(subscription) && (
-              <Badge variant='danger'>Failed</Badge>
+              <Badge variant="danger">Failed</Badge>
             )}
           </div>
         </div>
         <div>
-          <Spacer bottom='2'>
-            <Text size='small' tag='div' variant='info' weight='semibold'>
+          <Spacer bottom="2">
+            <Text size="small" tag="div" variant="info" weight="semibold">
               Next run
             </Text>
           </Spacer>
           <Text>
-            {subscription.status !== 'cancelled' ? (
+            {subscription.status !== "cancelled" ? (
               formatDate({
-                isoDate: subscription.next_run_at ?? '',
-                format: 'full',
-                timezone: user?.timezone
+                isoDate: subscription.next_run_at ?? "",
+                format: "full",
+                timezone: user?.timezone,
               })
             ) : (
-              <Text data-testid='empty-string' variant='disabled'>
+              <Text data-testid="empty-string" variant="disabled">
                 &#8212;
               </Text>
             )}
@@ -107,5 +107,5 @@ export const SubscriptionSteps = withSkeletonTemplate<Props>(
         </div>
       </Stack>
     )
-  }
+  },
 )

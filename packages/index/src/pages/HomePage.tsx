@@ -4,17 +4,17 @@ import {
   PageError,
   PageLayout,
   StatusIcon,
-  Text
-} from '@commercelayer/app-elements'
-import { jwtDecode } from '@commercelayer/js-auth'
-import Cookies from 'js-cookie'
-import { useEffect, useState } from 'react'
-import type { App } from '../appList'
-import { appPromiseImports } from '../apps'
+  Text,
+} from "@commercelayer/app-elements"
+import { jwtDecode } from "@commercelayer/js-auth"
+import Cookies from "js-cookie"
+import { useEffect, useState } from "react"
+import type { App } from "../appList"
+import { appPromiseImports } from "../apps"
 
 export function HomePage(): React.JSX.Element {
   const [visibility, setVisibility] = useState<
-    Partial<Record<App['slug'], boolean>>
+    Partial<Record<App["slug"], boolean>>
   >({})
   const [accessToken, setAccessToken] = useState<string | null>()
 
@@ -27,19 +27,19 @@ export function HomePage(): React.JSX.Element {
   }, [])
 
   useEffect(function checkAccessToken() {
-    const cookieName = 'cl-dashboard-app-access-token'
+    const cookieName = "cl-dashboard-app-access-token"
     const searchParams = new URLSearchParams(location.search)
-    const accessTokenFromUrl = searchParams.get('accessToken')
+    const accessTokenFromUrl = searchParams.get("accessToken")
 
     if (accessTokenFromUrl != null) {
       Cookies.set(cookieName, accessTokenFromUrl, {
-        expires: new Date(jwtDecode(accessTokenFromUrl).payload.exp * 1000)
+        expires: new Date(jwtDecode(accessTokenFromUrl).payload.exp * 1000),
       })
-      searchParams.delete('accessToken')
-      window.history.replaceState('', document.title, `/`)
+      searchParams.delete("accessToken")
+      window.history.replaceState("", document.title, `/`)
     }
 
-    const accessTokenFromCookie = Cookies.get('cl-dashboard-app-access-token')
+    const accessTokenFromCookie = Cookies.get("cl-dashboard-app-access-token")
 
     if (accessTokenFromCookie != null) {
       setAccessToken(accessTokenFromCookie)
@@ -55,17 +55,17 @@ export function HomePage(): React.JSX.Element {
   if (accessToken === null) {
     return (
       <PageError
-        errorName='Invalid token'
-        errorDescription='The provided authorization token is not valid'
+        errorName="Invalid token"
+        errorDescription="The provided authorization token is not valid"
       />
     )
   }
 
   return (
-    <PageLayout title='App router'>
+    <PageLayout title="App router">
       {Object.entries(appPromiseImports)
         .sort(([, a], [, b]) =>
-          a.app.name < b.app.name ? -1 : a.app.name > b.app.name ? 1 : 0
+          a.app.name < b.app.name ? -1 : a.app.name > b.app.name ? 1 : 0,
         )
         .map(([, { app }]) => {
           return (
@@ -74,13 +74,13 @@ export function HomePage(): React.JSX.Element {
                 key={app.slug}
                 href={`/${app.slug}?accessToken=${accessToken}`}
                 icon={
-                  <div className='bg-gray-50 rounded p-2'>
-                    <Icon name={app.icon} className='text-primary' size={24} />
+                  <div className="bg-gray-50 rounded p-2">
+                    <Icon name={app.icon} className="text-primary" size={24} />
                   </div>
                 }
               >
-                <Text weight='bold'>{app.name}</Text>
-                <StatusIcon name='caretRight' />
+                <Text weight="bold">{app.name}</Text>
+                <StatusIcon name="caretRight" />
               </ListItem>
             )
           )

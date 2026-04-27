@@ -1,30 +1,30 @@
 import {
-  PriceTierForm,
-  type PriceTierFormValues
-} from '#components/PriceTierForm'
-import { appRoutes } from '#data/routes'
-import { usePriceListDetails } from '#hooks/usePriceListDetails'
-import { getPriceTierSdkResource, getUpToFromForm } from '#utils/priceTiers'
-import {
   Button,
   EmptyState,
   PageLayout,
   SkeletonTemplate,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type {
+  PriceFrequencyTierCreate,
+  PriceVolumeTierCreate,
+} from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
 import {
-  type PriceFrequencyTierCreate,
-  type PriceVolumeTierCreate
-} from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  PriceTierForm,
+  type PriceTierFormValues,
+} from "#components/PriceTierForm"
+import { appRoutes } from "#data/routes"
+import { usePriceListDetails } from "#hooks/usePriceListDetails"
+import { getPriceTierSdkResource, getUpToFromForm } from "#utils/priceTiers"
 
 export function PriceTierNew(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [location, setLocation] = useLocation()
@@ -32,20 +32,20 @@ export function PriceTierNew(): React.JSX.Element {
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const tierType = location.includes('frequency') ? 'frequency' : 'volume'
+  const tierType = location.includes("frequency") ? "frequency" : "volume"
 
   const pathName =
-    tierType === 'frequency' ? 'priceFrequencyTierNew' : 'priceVolumeTierNew'
+    tierType === "frequency" ? "priceFrequencyTierNew" : "priceVolumeTierNew"
   const sdkResource = getPriceTierSdkResource(tierType)
 
   const [, params] = useRoute<{ priceListId: string; priceId: string }>(
-    appRoutes[pathName].path
+    appRoutes[pathName].path,
   )
-  const priceListId = params?.priceListId ?? ''
-  const priceId = params?.priceId ?? ''
+  const priceListId = params?.priceListId ?? ""
+  const priceId = params?.priceId ?? ""
   const { priceList, isLoading, error } = usePriceListDetails(priceListId)
 
-  const pageTitle = 'New tier'
+  const pageTitle = "New tier"
 
   if (error != null) {
     return (
@@ -56,15 +56,15 @@ export function PriceTierNew(): React.JSX.Element {
             setLocation(appRoutes.home.makePath({}))
           },
           label: pageTitle,
-          icon: 'arrowLeft'
+          icon: "arrowLeft",
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.home.makePath({})}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -74,7 +74,7 @@ export function PriceTierNew(): React.JSX.Element {
 
   const goBackUrl = appRoutes.priceDetails.makePath({ priceListId, priceId })
 
-  if (!canUser('create', sdkResource)) {
+  if (!canUser("create", sdkResource)) {
     return (
       <PageLayout
         title={pageTitle}
@@ -82,18 +82,18 @@ export function PriceTierNew(): React.JSX.Element {
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: 'Cancel',
-          icon: 'x'
+          label: "Cancel",
+          icon: "x",
         }}
         scrollToTop
         overlay
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -108,20 +108,20 @@ export function PriceTierNew(): React.JSX.Element {
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
-      gap='only-top'
+      gap="only-top"
       scrollToTop
       overlay
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom='14'>
+        <Spacer bottom="14">
           <PriceTierForm
             defaultValues={{
               currency_code: priceList.currency_code,
               price: 0,
-              type: tierType
+              type: tierType,
             }}
             apiError={apiError}
             isSubmitting={isSaving}
@@ -134,8 +134,8 @@ export function PriceTierNew(): React.JSX.Element {
                   setLocation(
                     appRoutes.priceDetails.makePath({
                       priceListId,
-                      priceId
-                    })
+                      priceId,
+                    }),
                   )
                 })
                 .catch((error) => {
@@ -152,7 +152,7 @@ export function PriceTierNew(): React.JSX.Element {
 
 function adaptFormValuesToPriceTier(
   formValues: PriceTierFormValues,
-  priceId: string
+  priceId: string,
 ): PriceFrequencyTierCreate | PriceVolumeTierCreate {
   return {
     name: formValues.name,
@@ -160,7 +160,7 @@ function adaptFormValuesToPriceTier(
     price_amount_cents: formValues.price,
     price: {
       id: priceId,
-      type: 'prices'
-    }
+      type: "prices",
+    },
   }
 }

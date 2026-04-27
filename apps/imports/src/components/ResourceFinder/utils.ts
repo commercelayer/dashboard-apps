@@ -1,13 +1,13 @@
-import { type InputSelectValue } from '@commercelayer/app-elements'
+import type { InputSelectValue } from "@commercelayer/app-elements"
 import type {
   CommerceLayerClient,
   ListResponse,
-  Resource
-} from '@commercelayer/sdk'
-import {
-  type AllowedParentResource,
-  type AllowedResourceType
-} from '@typing/resources.types'
+  Resource,
+} from "@commercelayer/sdk"
+import type {
+  AllowedParentResource,
+  AllowedResourceType,
+} from "@typing/resources.types"
 
 /**
  * Retrieve a list of resources from api filtered by hint if provided.
@@ -19,7 +19,7 @@ import {
 export const fetchResources = async ({
   sdkClient,
   resourceType,
-  hint
+  hint,
 }: {
   sdkClient: CommerceLayerClient
   resourceType: AllowedResourceType | AllowedParentResource
@@ -30,14 +30,14 @@ export const fetchResources = async ({
     filters:
       hint != null
         ? {
-            name_cont: hint
+            name_cont: hint,
           }
         : undefined,
     pageSize: 25,
     // @ts-expect-error Expression produces a union type that is too complex to represent
     sort: {
-      created_at: 'desc'
-    }
+      created_at: "desc",
+    },
   })
   return adaptApiToSuggestions(fetchedResources)
 }
@@ -49,13 +49,13 @@ export const fetchResources = async ({
  * @returns an array of objects containing `value` and `label` keys
  */
 function adaptApiToSuggestions(
-  fetchedResources: ListResponse<Resource & { name?: string | null }>
+  fetchedResources: ListResponse<Resource & { name?: string | null }>,
 ): InputSelectValue[] {
   return fetchedResources.map((r) => {
-    const label = 'name' in r && r.name != null ? r.name : r.id
+    const label = "name" in r && r.name != null ? r.name : r.id
     return {
       label,
-      value: r.id
+      value: r.id,
     }
   })
 }

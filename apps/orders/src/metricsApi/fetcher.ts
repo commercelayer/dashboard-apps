@@ -11,17 +11,17 @@ export const metricsApiFetcher = async <Data>({
   slug,
   accessToken,
   body,
-  domain
+  domain,
 }: MetricsApiFetcherParams): Promise<VndApiResponse<Data>> => {
   const url = `https://${slug}.${domain}/metrics${endpoint}`
   const response = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      accept: 'application/vnd.api.v1+json',
-      'content-type': 'application/vnd.api+json',
-      authorization: `Bearer ${accessToken}`
+      accept: "application/vnd.api.v1+json",
+      "content-type": "application/vnd.api+json",
+      authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   })
   return await response.json()
 }

@@ -1,17 +1,17 @@
-import { BundleForm, type BundleFormValues } from '#components/BundleForm'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { type BundleCreate } from '@commercelayer/sdk'
-import isEmpty from 'lodash-es/isEmpty'
-import { useState } from 'react'
-import { Link, useLocation } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { BundleCreate } from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
+import { useState } from "react"
+import { Link, useLocation } from "wouter"
+import { BundleForm, type BundleFormValues } from "#components/BundleForm"
+import { appRoutes } from "#data/routes"
 
 export function BundleNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -23,26 +23,26 @@ export function BundleNew(): React.JSX.Element {
 
   const goBackUrl = appRoutes.list.makePath({})
 
-  if (!canUser('create', 'bundles')) {
+  if (!canUser("create", "bundles")) {
     return (
       <PageLayout
-        title='New bundle'
+        title="New bundle"
         navigationButton={{
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: 'Cancel',
-          icon: 'x'
+          label: "Cancel",
+          icon: "x",
         }}
         scrollToTop
         overlay
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -57,17 +57,17 @@ export function BundleNew(): React.JSX.Element {
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
       scrollToTop
       overlay
     >
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <BundleForm
           defaultValues={{
-            market: '',
-            currency_code: 'USD'
+            market: "",
+            currency_code: "USD",
           }}
           apiError={apiError}
           isSubmitting={isSaving}
@@ -98,19 +98,19 @@ function adaptFormValuesToBundle(formValues: BundleFormValues): BundleCreate {
     image_url: formValues.image_url,
     sku_list: {
       id: formValues.sku_list,
-      type: 'sku_lists'
+      type: "sku_lists",
     },
     ...(!isEmpty(formValues.market) && formValues.market != null
       ? {
           market: {
             id: formValues.market,
-            type: 'markets'
-          }
+            type: "markets",
+          },
         }
       : {
-          currency_code: formValues.currency_code
+          currency_code: formValues.currency_code,
         }),
     price_amount_cents: formValues.price,
-    compare_at_amount_cents: formValues.original_price
+    compare_at_amount_cents: formValues.original_price,
   }
 }

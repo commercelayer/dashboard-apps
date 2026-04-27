@@ -1,14 +1,13 @@
-import { type ImportCreate } from '@commercelayer/sdk'
-import { type AllowedResourceType } from '@typing/resources.types'
-import isEmpty from 'lodash-es/isEmpty'
-import { parse } from 'papaparse'
-import { type FC, useEffect, useState } from 'react'
-import { type ZodIssue, type ZodSchema } from 'zod'
-
-import { InputFile, Spacer, Text } from '@commercelayer/app-elements'
-import { adapters } from './adapters'
-import { isMakeSchemaFn, parsers } from './schemas'
-import { SuggestionTemplate } from './SuggestionTemplate'
+import { InputFile, Spacer, Text } from "@commercelayer/app-elements"
+import type { ImportCreate } from "@commercelayer/sdk"
+import type { AllowedResourceType } from "@typing/resources.types"
+import isEmpty from "lodash-es/isEmpty"
+import { parse } from "papaparse"
+import { type FC, useEffect, useState } from "react"
+import type { ZodIssue, ZodSchema } from "zod"
+import { adapters } from "./adapters"
+import { SuggestionTemplate } from "./SuggestionTemplate"
+import { isMakeSchemaFn, parsers } from "./schemas"
 
 const importMaxSize = 10_000
 const skipSchemaValidation = true
@@ -16,8 +15,8 @@ const skipSchemaValidation = true
 interface Props {
   hasParentResource?: boolean
   onDataReady: (
-    inputs?: ImportCreate['inputs'],
-    format?: 'csv' | 'json'
+    inputs?: ImportCreate["inputs"],
+    format?: "csv" | "json",
   ) => void
   onDataResetRequest: () => void
   resourceType: AllowedResourceType
@@ -27,7 +26,7 @@ export const InputParser: FC<Props> = ({
   onDataReady,
   onDataResetRequest,
   resourceType,
-  hasParentResource = false
+  hasParentResource = false,
 }) => {
   const [isParsing, setIsParsing] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -52,21 +51,20 @@ export const InputParser: FC<Props> = ({
       error: () => {
         setIsParsing(false)
         setErrorMessage(
-          'Unable to load CSV file, it does not match the template'
+          "Unable to load CSV file, it does not match the template",
         )
       },
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       complete: async ({ data: csvRows }) => {
         if (csvRows.length > importMaxSize) {
           setErrorMessage(
-            `Maximum number of records exceeded. You are trying to import ${csvRows.length} records, but limit is ${importMaxSize} per task. Please split your file in smaller chunks.`
+            `Maximum number of records exceeded. You are trying to import ${csvRows.length} records, but limit is ${importMaxSize} per task. Please split your file in smaller chunks.`,
           )
           setIsParsing(false)
           return
         }
 
         if (skipSchemaValidation) {
-          onDataReady(csvRows as ImportCreate['inputs'], 'csv')
+          onDataReady(csvRows as ImportCreate["inputs"], "csv")
           setIsParsing(false)
           return
         }
@@ -79,17 +77,17 @@ export const InputParser: FC<Props> = ({
 
         if (!parsedResources.success) {
           setErrorList(parsedResources.error.errors)
-          setErrorMessage('We have found some errors for some important fields')
+          setErrorMessage("We have found some errors for some important fields")
           setIsParsing(false)
           return
         }
         const inputAsJson = adapters[resourceType](
-          parsedResources.data as ZodSchema[]
+          parsedResources.data as ZodSchema[],
         )
         // we want to keep json around so we can preview data and handle the json to csv conversion later
-        onDataReady(inputAsJson, 'csv')
+        onDataReady(inputAsJson, "csv")
         setIsParsing(false)
-      }
+      },
     })
   }
 
@@ -98,9 +96,9 @@ export const InputParser: FC<Props> = ({
     setErrorMessage(null)
     try {
       const json = JSON.parse(await file.text())
-      onDataReady(json as ImportCreate['inputs'], 'json')
+      onDataReady(json as ImportCreate["inputs"], "json")
     } catch {
-      setErrorMessage('Invalid JSON file')
+      setErrorMessage("Invalid JSON file")
     } finally {
       setIsParsing(false)
     }
@@ -112,19 +110,19 @@ export const InputParser: FC<Props> = ({
         return
       }
       switch (file.type) {
-        case 'text/csv':
+        case "text/csv":
           void loadAndParseCSV(file)
           return
 
-        case 'application/json':
+        case "application/json":
           void loadAndParseJson(file)
           return
 
         default:
-          setErrorMessage('Invalid file format. Only CSV or JSON allowed.')
+          setErrorMessage("Invalid file format. Only CSV or JSON allowed.")
       }
     },
-    [file]
+    [file],
   )
 
   useEffect(() => {
@@ -134,9 +132,9 @@ export const InputParser: FC<Props> = ({
 
   return (
     <div>
-      <Spacer bottom='4'>
+      <Spacer bottom="4">
         <InputFile
-          title='Select a CSV or JSON file to upload'
+          title="Select a CSV or JSON file to upload"
           onChange={(e) => {
             if (e.target.files?.[0] != null && !isParsing) {
               setFile(e.target.files[0])
@@ -150,23 +148,23 @@ export const InputParser: FC<Props> = ({
       {file == null ? (
         <SuggestionTemplate resourceType={resourceType} />
       ) : (
-        <Text variant='info' size='small'>
-          File uploaded:{' '}
-          <Text variant='primary' tag='span'>
+        <Text variant="info" size="small">
+          File uploaded:{" "}
+          <Text variant="primary" tag="span">
             {file.name}
           </Text>
         </Text>
       )}
 
-      <Text variant='danger' size='small'>
-        {typeof errorMessage === 'string' && (
-          <Spacer top='2'>{errorMessage}</Spacer>
+      <Text variant="danger" size="small">
+        {typeof errorMessage === "string" && (
+          <Spacer top="2">{errorMessage}</Spacer>
         )}
         {errorList != null && errorList.length > 0 ? (
-          <Spacer top='2'>
-            {errorList.slice(0, 5).map((issue, idx) => (
-              <p key={idx}>
-                Row {issue.path.join(' - ')} - {issue.message}
+          <Spacer top="2">
+            {errorList.slice(0, 5).map((issue) => (
+              <p key={issue.path.join("-")}>
+                Row {issue.path.join(" - ")} - {issue.message}
               </p>
             ))}
             {errorList.length > 5 ? (

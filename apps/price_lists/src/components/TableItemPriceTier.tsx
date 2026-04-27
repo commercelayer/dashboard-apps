@@ -1,7 +1,3 @@
-import { appRoutes } from '#data/routes'
-import { makePriceTier } from '#mocks'
-import type { PriceTierType } from '#types'
-import { getPriceTierSdkResource, getUpToForTable } from '#utils/priceTiers'
 import {
   Button,
   Dropdown,
@@ -15,17 +11,20 @@ import {
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
 import type {
   Price,
   PriceFrequencyTier,
-  PriceVolumeTier
-} from '@commercelayer/sdk'
-
-import { useState } from 'react'
-import type { KeyedMutator } from 'swr'
-import { useLocation, useRoute } from 'wouter'
+  PriceVolumeTier,
+} from "@commercelayer/sdk"
+import { useState } from "react"
+import type { KeyedMutator } from "swr"
+import { useLocation, useRoute } from "wouter"
+import { appRoutes } from "#data/routes"
+import { makePriceTier } from "#mocks"
+import type { PriceTierType } from "#types"
+import { getPriceTierSdkResource, getUpToForTable } from "#utils/priceTiers"
 
 interface Props {
   type: PriceTierType
@@ -36,10 +35,10 @@ interface Props {
 export const TableItemPriceTier = withSkeletonTemplate<Props>(
   ({ type, resource = makePriceTier(type), mutatePrice }) => {
     const [, params] = useRoute<{ priceListId: string; priceId: string }>(
-      appRoutes.priceDetails.path
+      appRoutes.priceDetails.path,
     )
-    const priceListId = params?.priceListId ?? ''
-    const priceId = params?.priceId ?? ''
+    const priceListId = params?.priceListId ?? ""
+    const priceId = params?.priceId ?? ""
 
     const [, setLocation] = useLocation()
     const { canUser } = useTokenProvider()
@@ -51,30 +50,30 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
 
     const sdkResource = getPriceTierSdkResource(type)
     const appRoutesPath =
-      type === 'frequency' ? 'priceFrequencyTierEdit' : 'priceVolumeTierEdit'
+      type === "frequency" ? "priceFrequencyTierEdit" : "priceVolumeTierEdit"
 
-    const contextMenuEdit = canUser('update', sdkResource) &&
+    const contextMenuEdit = canUser("update", sdkResource) &&
       !isMock(resource) && (
         <DropdownItem
-          label='Edit'
+          label="Edit"
           onClick={() => {
             setLocation(
               appRoutes[appRoutesPath].makePath({
                 priceListId,
                 priceId,
-                tierId: resource.id
-              })
+                tierId: resource.id,
+              }),
             )
           }}
         />
       )
 
-    const contextMenuDivider = canUser('update', sdkResource) &&
-      canUser('destroy', sdkResource) && <DropdownDivider />
+    const contextMenuDivider = canUser("update", sdkResource) &&
+      canUser("destroy", sdkResource) && <DropdownDivider />
 
-    const contextMenuDelete = canUser('destroy', sdkResource) && (
+    const contextMenuDelete = canUser("destroy", sdkResource) && (
       <DropdownItem
-        label='Delete'
+        label="Delete"
         onClick={() => {
           open()
         }}
@@ -83,7 +82,7 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
 
     const contextMenu = (
       <Dropdown
-        dropdownLabel={<Icon name='dotsThree' size={24} />}
+        dropdownLabel={<Icon name="dotsThree" size={24} />}
         dropdownItems={
           <>
             {contextMenuEdit}
@@ -100,25 +99,25 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
           <Td>{resource.name}</Td>
           <Td>{getUpToForTable(resource?.up_to, type)}</Td>
           <Td>{resource.formatted_price_amount}</Td>
-          <Td align='right'>{contextMenu}</Td>
+          <Td align="right">{contextMenu}</Td>
         </Tr>
-        {canUser('destroy', sdkResource) && (
+        {canUser("destroy", sdkResource) && (
           <Overlay>
             <PageLayout
               title={`Confirm that you want to delete the price ${type} tier with name ${resource.name}.`}
-              description='This action cannot be undone, proceed with caution.'
+              description="This action cannot be undone, proceed with caution."
               minHeight={false}
               navigationButton={{
-                label: 'Cancel',
-                icon: 'x',
+                label: "Cancel",
+                icon: "x",
                 onClick: () => {
                   close()
-                }
+                },
               }}
             >
               <Button
-                variant='danger'
-                size='small'
+                variant="danger"
+                size="small"
                 disabled={isDeleting}
                 onClick={(e) => {
                   setIsDeleting(true)
@@ -142,5 +141,5 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
         )}
       </>
     )
-  }
+  },
 )

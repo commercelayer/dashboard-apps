@@ -1,5 +1,3 @@
-import { showResourceNiceName } from '#data/resources'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   Icon,
@@ -8,14 +6,16 @@ import {
   StatusIcon,
   Text,
   Tooltip,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { type Export } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link } from 'wouter'
-import { DescriptionLine } from './ItemDescriptionLine'
-import { useListContext } from './Provider'
-import { getUiStatus } from './utils'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { Export } from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link } from "wouter"
+import { showResourceNiceName } from "#data/resources"
+import { appRoutes } from "#data/routes"
+import { DescriptionLine } from "./ItemDescriptionLine"
+import { useListContext } from "./Provider"
+import { getUiStatus } from "./utils"
 
 interface Props {
   job: Export
@@ -37,72 +37,72 @@ export function Item({ job }: Props): React.JSX.Element {
     }
 
   const canDelete =
-    ['interrupted', 'pending', 'in_progress'].includes(job.status) &&
-    canUser('destroy', 'exports')
+    ["interrupted", "pending", "in_progress"].includes(job.status) &&
+    canUser("destroy", "exports")
   const canPause =
-    ['pending', 'in_progress'].includes(job.status) &&
-    canUser('update', 'exports')
-  const canResume = job.status === 'interrupted' && canUser('update', 'exports')
+    ["pending", "in_progress"].includes(job.status) &&
+    canUser("update", "exports")
+  const canResume = job.status === "interrupted" && canUser("update", "exports")
 
   return (
     <Link href={appRoutes.details.makePath(job.id)} asChild>
       <ListItem icon={<TaskIcon job={job} />}>
         <div>
-          <Text tag='div' weight='semibold'>
+          <Text tag="div" weight="semibold">
             {showResourceNiceName(job.resource_type)}
           </Text>
-          <Text tag='div' size='small' variant='info' weight='medium'>
+          <Text tag="div" size="small" variant="info" weight="medium">
             <DescriptionLine job={job} />
           </Text>
         </div>
-        <div className='flex items-center gap-2'>
+        <div className="flex items-center gap-2">
           {canPause && (
             <Tooltip
               label={
                 <Button
-                  type='button'
-                  variant='secondary'
+                  type="button"
+                  variant="secondary"
                   disabled={isActing}
                   onClick={handleAction(async () => {
                     await interruptExport(job.id)
                   })}
-                  size='small'
-                  aria-label='Pause export'
+                  size="small"
+                  aria-label="Pause export"
                 >
-                  <Icon name='pause' />
+                  <Icon name="pause" />
                 </Button>
               }
-              content='Pause export'
+              content="Pause export"
             />
           )}
           {canResume && (
             <Tooltip
               label={
                 <Button
-                  type='button'
-                  variant='secondary'
+                  type="button"
+                  variant="secondary"
                   disabled={isActing}
                   onClick={handleAction(async () => {
                     await resumeExport(job.id)
                   })}
-                  size='small'
-                  aria-label='Resume export'
+                  size="small"
+                  aria-label="Resume export"
                 >
-                  <Icon name='play' />
+                  <Icon name="play" />
                 </Button>
               }
-              content='Resume export'
+              content="Resume export"
             />
           )}
           {canDelete && (
             <Button
-              type='button'
-              variant='secondary'
+              type="button"
+              variant="secondary"
               disabled={isActing}
               onClick={handleAction(async () => {
                 await deleteExport(job.id)
               })}
-              size='small'
+              size="small"
             >
               Cancel
             </Button>
@@ -116,21 +116,21 @@ export function Item({ job }: Props): React.JSX.Element {
 function TaskIcon({ job }: { job: Export }): React.JSX.Element {
   const status = getUiStatus(job.status)
 
-  if (status === 'progress' || status === 'paused') {
+  if (status === "progress" || status === "paused") {
     return <RadialProgress percentage={job.progress ?? undefined} />
   }
 
-  if (status === 'pending') {
+  if (status === "pending") {
     return <RadialProgress />
   }
 
-  if (status === 'danger') {
-    return <StatusIcon gap='large' name='x' background='red' />
+  if (status === "danger") {
+    return <StatusIcon gap="large" name="x" background="red" />
   }
 
-  if (status === 'success') {
-    return <StatusIcon gap='large' name='check' background='green' />
+  if (status === "success") {
+    return <StatusIcon gap="large" name="check" background="green" />
   }
 
-  return <StatusIcon gap='large' name='minus' background='gray' />
+  return <StatusIcon gap="large" name="minus" background="gray" />
 }

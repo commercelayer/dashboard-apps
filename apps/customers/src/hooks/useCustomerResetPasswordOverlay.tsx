@@ -1,4 +1,3 @@
-import { useCustomerDetails } from '#hooks/useCustomerDetails'
 import {
   Alert,
   Button,
@@ -9,11 +8,12 @@ import {
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import type { CustomerPasswordReset } from '@commercelayer/sdk'
-import { isEmpty } from 'lodash-es'
-import { useCallback, useState } from 'react'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { CustomerPasswordReset } from "@commercelayer/sdk"
+import { isEmpty } from "lodash-es"
+import { useCallback, useState } from "react"
+import { useCustomerDetails } from "#hooks/useCustomerDetails"
 
 interface OverlayHook {
   showResetPasswordOverlay: () => void
@@ -21,11 +21,11 @@ interface OverlayHook {
 }
 
 export function useCustomerResetPasswordOverlay(
-  customerId: string
+  customerId: string,
 ): OverlayHook {
   const { sdkClient } = useCoreSdkProvider()
   const {
-    settings: { organizationSlug }
+    settings: { organizationSlug },
   } = useTokenProvider()
   const { t } = useTranslation()
   const { settings } = useTokenProvider()
@@ -45,48 +45,48 @@ export function useCustomerResetPasswordOverlay(
             `https://${organizationSlug}.commercelayer.app/identity/reset-password?clientId=${clientId}`,
             `customerPasswordResetId=${customerPasswordReset.id}`,
             `resetPasswordToken=${customerPasswordReset.reset_password_token}`,
-            'scope=market:all',
-            'returnUrl=none'
-          ].join('&')
+            "scope=market:all",
+            "returnUrl=none",
+          ].join("&")
         : null
 
     return (
-      <Overlay backgroundColor='light'>
+      <Overlay backgroundColor="light">
         <PageLayout
-          title='Reset customer password'
+          title="Reset customer password"
           description="Generate a link to reset the customer's password."
           minHeight={false}
           navigationButton={{
             onClick: () => {
               close()
             },
-            label: t('common.back'),
-            icon: 'arrowLeft'
+            label: t("common.back"),
+            icon: "arrowLeft",
           }}
           isLoading={isLoading}
         >
           {resetLink != null && (
             <>
-              <Spacer bottom='12'>
+              <Spacer bottom="12">
                 <CodeBlock
                   showCopyAction
                   hint={{
-                    text: 'Share this link with the customer to allow them to reset their password.'
+                    text: "Share this link with the customer to allow them to reset their password.",
                   }}
                 >
                   {resetLink}
                 </CodeBlock>
               </Spacer>
-              <Button type='button' fullWidth onClick={close}>
-                {t('common.close')}
+              <Button type="button" fullWidth onClick={close}>
+                {t("common.close")}
               </Button>
             </>
           )}
           {customerPasswordReset == null && (
             <>
               {clientId == null && (
-                <Spacer bottom='12'>
-                  <Alert status='warning'>
+                <Spacer bottom="12">
+                  <Alert status="warning">
                     To generate a reset password link, check that this
                     organization has at least one valid sales channel configured
                     (API credentials).
@@ -94,28 +94,28 @@ export function useCustomerResetPasswordOverlay(
                 </Spacer>
               )}
               <Button
-                variant='primary'
+                variant="primary"
                 disabled={isCreating || clientId == null}
-                type='button'
+                type="button"
                 onClick={() => {
                   setIsCreating(true)
                   void sdkClient.customer_password_resets
                     .create({
                       customer_email: customer.email,
-                      reference_origin: 'dashboard'
+                      reference_origin: "dashboard",
                     })
                     .then((res) => {
                       if (isEmpty(res.reset_password_token)) {
-                        throw new Error('Failed to create reset password link')
+                        throw new Error("Failed to create reset password link")
                       }
                       setCustomerPasswordReset(res)
                     })
                     .catch(() => {
                       toast(
-                        'We could not generate a valid password reset link',
+                        "We could not generate a valid password reset link",
                         {
-                          type: 'error'
-                        }
+                          type: "error",
+                        },
                       )
                     })
                     .finally(() => {
@@ -137,11 +137,11 @@ export function useCustomerResetPasswordOverlay(
     customer.email,
     isLoading,
     isCreating,
-    clientId
+    clientId,
   ])
 
   return {
     showResetPasswordOverlay: open,
-    ResetPasswordOverlay
+    ResetPasswordOverlay,
   }
 }

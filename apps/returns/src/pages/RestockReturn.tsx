@@ -1,9 +1,3 @@
-import { FormRestock } from '#components/FormRestock'
-import { ScrollToTop } from '#components/ScrollToTop'
-import { appRoutes } from '#data/routes'
-import { useRestockReturnLineItems } from '#hooks/useRestockReturnLineItems'
-import { useRestockableList } from '#hooks/useRestockableList'
-import { useReturnDetails } from '#hooks/useReturnDetails'
 import {
   Button,
   EmptyState,
@@ -12,9 +6,15 @@ import {
   SkeletonTemplate,
   Spacer,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import { Link, useLocation, useRoute } from "wouter"
+import { FormRestock } from "#components/FormRestock"
+import { ScrollToTop } from "#components/ScrollToTop"
+import { appRoutes } from "#data/routes"
+import { useRestockableList } from "#hooks/useRestockableList"
+import { useRestockReturnLineItems } from "#hooks/useRestockReturnLineItems"
+import { useReturnDetails } from "#hooks/useReturnDetails"
 
 function RestockReturn(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -29,7 +29,7 @@ function RestockReturn(): React.JSX.Element {
       : appRoutes.home.makePath()
 
   const { returnObj, isLoading, mutateReturn } = useReturnDetails(
-    returnId ?? ''
+    returnId ?? "",
   )
 
   const restockableReturnLineItems = useRestockableList(returnObj)
@@ -37,35 +37,35 @@ function RestockReturn(): React.JSX.Element {
   const {
     restockReturnLineItemsError,
     restockReturnLineItems,
-    isRestockingReturnLineItems
+    isRestockingReturnLineItems,
   } = useRestockReturnLineItems()
 
   if (
     returnObj == null ||
     isMock(returnObj) ||
-    returnObj.status !== 'received' ||
+    returnObj.status !== "received" ||
     restockableReturnLineItems?.length === 0 ||
-    !canUser('update', 'return_line_items')
+    !canUser("update", "return_line_items")
   ) {
     return (
       <PageLayout
-        title={t('apps.returns.actions.restock')}
+        title={t("apps.returns.actions.restock")}
         navigationButton={{
-          label: t('common.back'),
-          icon: 'arrowLeft',
+          label: t("common.back"),
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(goBackUrl)
-          }
+          },
         }}
       >
         <EmptyState
-          title={t('common.not_authorized')}
-          description={t('common.routes.invalid_resource_or_not_authorized', {
-            resource: t('resources.returns.name').toLowerCase()
+          title={t("common.not_authorized")}
+          description={t("common.routes.invalid_resource_or_not_authorized", {
+            resource: t("resources.returns.name").toLowerCase(),
           })}
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>{t('common.go_back')}</Button>
+              <Button variant="primary">{t("common.go_back")}</Button>
             </Link>
           }
         />
@@ -77,15 +77,15 @@ function RestockReturn(): React.JSX.Element {
     <PageLayout
       title={
         <SkeletonTemplate isLoading={isLoading}>
-          {t('apps.returns.actions.restock')}
+          {t("apps.returns.actions.restock")}
         </SkeletonTemplate>
       }
       navigationButton={{
-        label: t('common.back'),
-        icon: 'arrowLeft',
+        label: t("common.back"),
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(goBackUrl)
-        }
+        },
       }}
       overlay
     >
@@ -93,13 +93,13 @@ function RestockReturn(): React.JSX.Element {
       {restockableReturnLineItems != null &&
         restockableReturnLineItems.length !== 0 && (
           <>
-            <Spacer bottom='4'>
+            <Spacer bottom="4">
               <FormRestock
                 defaultValues={{
                   items: restockableReturnLineItems?.map((item) => ({
                     quantity: item.quantity,
-                    value: item.id
-                  }))
+                    value: item.id,
+                  })),
                 }}
                 returnLineItems={restockableReturnLineItems}
                 apiError={restockReturnLineItemsError}
@@ -109,18 +109,18 @@ function RestockReturn(): React.JSX.Element {
                       void mutateReturn().finally(() => {
                         setLocation(goBackUrl)
                       })
-                    }
+                    },
                   )
                 }}
               />
             </Spacer>
             <Button
-              type='submit'
-              form='return-restock-form'
+              type="submit"
+              form="return-restock-form"
               fullWidth
               disabled={isRestockingReturnLineItems}
             >
-              {t('apps.returns.actions.restock')}
+              {t("apps.returns.actions.restock")}
             </Button>
           </>
         )}

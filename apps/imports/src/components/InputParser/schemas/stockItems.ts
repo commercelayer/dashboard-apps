@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { isFalsy } from '#utils/isFalsy'
-import { z } from 'zod'
+import { z } from "zod"
+import { isFalsy } from "#utils/isFalsy"
 
-import { zodEnforceNonNegativeInt } from './zodUtils'
+import { zodEnforceNonNegativeInt } from "./zodUtils"
 
 const makeSchema = (hasParentResourceId: boolean) =>
   z
@@ -12,29 +11,30 @@ const makeSchema = (hasParentResourceId: boolean) =>
       reference: z.optional(z.string()),
       reference_origin: z.optional(z.string()),
       stock_location_id: z.optional(z.string().min(1)),
-      sku_id: z.optional(z.string().min(1))
+      sku_id: z.optional(z.string().min(1)),
     })
     .passthrough()
     .superRefine((data, ctx) => {
       if (!hasParentResourceId && isFalsy(data.stock_location_id)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['stock_location_id'],
-          message: 'stock_location_id is required if parent resource is not set'
+          path: ["stock_location_id"],
+          message:
+            "stock_location_id is required if parent resource is not set",
         })
       }
 
       if (isFalsy(data.sku_code) && isFalsy(data.sku_id)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['sku_id'],
-          message: 'sku_id is required, if sku_code is not present'
+          path: ["sku_id"],
+          message: "sku_id is required, if sku_code is not present",
         })
       }
     })
 
 export const csvStockItemsSchema = ({
-  hasParentResource
+  hasParentResource,
 }: {
   hasParentResource: boolean
 }) => z.array(makeSchema(hasParentResource))

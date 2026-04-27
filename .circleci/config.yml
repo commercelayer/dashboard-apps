@@ -26,7 +26,7 @@ jobs:
           command: pnpm audit || exit 0
       - run:
           name: Test
-          command: pnpm --if-present lint && pnpm --if-present ts:check && pnpm --if-present test
+          command: pnpm --if-present check && pnpm --if-present ts:check && pnpm --if-present test
   build-test:
     <<: *image
     steps:
@@ -38,7 +38,7 @@ jobs:
       - run:
           name: Test
           command: |
-            pnpm --aggregate-output --color $(node latest-pnpm-filters.cjs) lint
+            pnpm --aggregate-output --color $(node latest-pnpm-filters.cjs) check
             pnpm --aggregate-output --color $(node latest-pnpm-filters.cjs) ts:check
             pnpm --aggregate-output --color $(node latest-pnpm-filters.cjs) test
   build:

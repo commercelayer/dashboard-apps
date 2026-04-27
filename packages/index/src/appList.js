@@ -18,111 +18,111 @@
 /** @type {Record<string, App>} */
 export const apps = {
   orders: {
-    name: 'Orders',
-    slug: 'orders',
-    kind: 'orders',
-    icon: 'shoppingBag'
+    name: "Orders",
+    slug: "orders",
+    kind: "orders",
+    icon: "shoppingBag",
   },
   shipments: {
-    name: 'Shipments',
-    slug: 'shipments',
-    kind: 'shipments',
-    icon: 'packageIcon'
+    name: "Shipments",
+    slug: "shipments",
+    kind: "shipments",
+    icon: "packageIcon",
   },
   customers: {
-    name: 'Customers',
-    slug: 'customers',
-    kind: 'customers',
-    icon: 'users'
+    name: "Customers",
+    slug: "customers",
+    kind: "customers",
+    icon: "users",
   },
   returns: {
-    name: 'Returns',
-    slug: 'returns',
-    kind: 'returns',
-    icon: 'arrowUUpLeft'
+    name: "Returns",
+    slug: "returns",
+    kind: "returns",
+    icon: "arrowUUpLeft",
   },
   stock_transfers: {
-    name: 'Stock transfers',
-    slug: 'stock_transfers',
-    kind: 'stock_transfers',
-    icon: 'arrowsLeftRight'
+    name: "Stock transfers",
+    slug: "stock_transfers",
+    kind: "stock_transfers",
+    icon: "arrowsLeftRight",
   },
   skus: {
-    name: 'SKUs',
-    slug: 'skus',
-    kind: 'skus',
-    icon: 'tShirt'
+    name: "SKUs",
+    slug: "skus",
+    kind: "skus",
+    icon: "tShirt",
   },
   sku_lists: {
-    name: 'SKU Lists',
-    slug: 'sku_lists',
-    kind: 'sku_lists',
-    icon: 'clipboardText'
+    name: "SKU Lists",
+    slug: "sku_lists",
+    kind: "sku_lists",
+    icon: "clipboardText",
   },
   imports: {
-    name: 'Imports',
-    slug: 'imports',
-    kind: 'imports',
-    icon: 'download'
+    name: "Imports",
+    slug: "imports",
+    kind: "imports",
+    icon: "download",
   },
   exports: {
-    name: 'Exports',
-    slug: 'exports',
-    kind: 'exports',
-    icon: 'upload'
+    name: "Exports",
+    slug: "exports",
+    kind: "exports",
+    icon: "upload",
   },
   webhooks: {
-    name: 'Webhooks',
-    slug: 'webhooks',
-    kind: 'webhooks',
-    icon: 'webhooksLogo'
+    name: "Webhooks",
+    slug: "webhooks",
+    kind: "webhooks",
+    icon: "webhooksLogo",
   },
   tags: {
-    name: 'Tags',
-    slug: 'tags',
-    kind: 'tags',
-    icon: 'tag'
+    name: "Tags",
+    slug: "tags",
+    kind: "tags",
+    icon: "tag",
   },
   bundles: {
-    name: 'Bundles',
-    slug: 'bundles',
-    kind: 'bundles',
-    icon: 'shapes'
+    name: "Bundles",
+    slug: "bundles",
+    kind: "bundles",
+    icon: "shapes",
   },
   gift_cards: {
-    name: 'Gift cards',
-    slug: 'gift_cards',
-    kind: 'gift_cards',
-    icon: 'gift'
+    name: "Gift cards",
+    slug: "gift_cards",
+    kind: "gift_cards",
+    icon: "gift",
   },
   inventory: {
-    name: 'Inventory',
-    slug: 'inventory',
-    kind: 'inventory',
-    icon: 'warehouse'
+    name: "Inventory",
+    slug: "inventory",
+    kind: "inventory",
+    icon: "warehouse",
   },
   price_lists: {
-    name: 'Prices',
-    slug: 'price_lists',
-    kind: 'price_lists',
-    icon: 'receipt'
+    name: "Prices",
+    slug: "price_lists",
+    kind: "price_lists",
+    icon: "receipt",
   },
   promotions: {
-    name: 'Promotions',
-    slug: 'promotions',
-    kind: 'promotions',
-    icon: 'seal'
+    name: "Promotions",
+    slug: "promotions",
+    kind: "promotions",
+    icon: "seal",
   },
   subscriptions: {
-    name: 'Subscriptions',
-    slug: 'subscriptions',
-    kind: 'subscriptions',
-    icon: 'calendarCheck'
+    name: "Subscriptions",
+    slug: "subscriptions",
+    kind: "subscriptions",
+    icon: "calendarCheck",
   },
   whatever_you_want: {
-    name: 'My sample app',
-    slug: 'my_sample_app',
-    kind: 'generic',
-    icon: 'appWindow'
-  }
+    name: "My sample app",
+    slug: "my_sample_app",
+    kind: "generic",
+    icon: "appWindow",
+  },
 }

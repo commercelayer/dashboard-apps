@@ -1,6 +1,6 @@
-import { makeStockTransfer } from '#mocks'
-import { ResourceListItem, useAppLinking } from '@commercelayer/app-elements'
-import type { StockTransfer } from '@commercelayer/sdk'
+import { ResourceListItem, useAppLinking } from "@commercelayer/app-elements"
+import type { StockTransfer } from "@commercelayer/sdk"
+import { makeStockTransfer } from "#mocks"
 
 interface Props {
   resource?: StockTransfer
@@ -11,7 +11,7 @@ interface Props {
 export function ListItemStockTransfer({
   resource = makeStockTransfer(),
   isLoading,
-  delayMs
+  delayMs,
 }: Props): React.JSX.Element {
   const { navigateTo } = useAppLinking()
 
@@ -21,8 +21,8 @@ export function ListItemStockTransfer({
       isLoading={isLoading}
       delayMs={delayMs}
       {...navigateTo({
-        app: 'stock_transfers',
-        resourceId: resource.id
+        app: "stock_transfers",
+        resourceId: resource.id,
       })}
     />
   )

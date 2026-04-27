@@ -3,19 +3,19 @@ import {
   HookedForm,
   HookedInput,
   HookedValidationApiError,
-  Spacer
-} from '@commercelayer/app-elements'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, type UseFormSetError } from 'react-hook-form'
-import { z } from 'zod'
+  Spacer,
+} from "@commercelayer/app-elements"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { type UseFormSetError, useForm } from "react-hook-form"
+import { z } from "zod"
 
 const tagFormSchema = z.object({
   name: z
     .string()
     .refine(
       (value) => /^[a-zA-Z0-9]+(?:(-|_|:)[a-zA-Z0-9]+)*$/.test(value),
-      'Name is invalid'
-    )
+      "Name is invalid",
+    ),
 })
 
 export type TagFormValues = z.infer<typeof tagFormSchema>
@@ -25,7 +25,7 @@ interface Props {
   isSubmitting: boolean
   onSubmit: (
     formValues: TagFormValues,
-    setError: UseFormSetError<TagFormValues>
+    setError: UseFormSetError<TagFormValues>,
   ) => void
   apiError?: any
 }
@@ -34,11 +34,11 @@ export function TagForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting
+  isSubmitting,
 }: Props): React.JSX.Element {
   const methods = useForm({
     defaultValues,
-    resolver: zodResolver(tagFormSchema)
+    resolver: zodResolver(tagFormSchema),
   })
 
   return (
@@ -48,15 +48,15 @@ export function TagForm({
         onSubmit(formValues, methods.setError)
       }}
     >
-      <Spacer bottom='8'>
-        <HookedInput name='name' label='Name' autoComplete='off' />
+      <Spacer bottom="8">
+        <HookedInput name="name" label="Name" autoComplete="off" />
       </Spacer>
 
-      <Spacer top='14'>
-        <Button type='submit' disabled={isSubmitting} className='w-full'>
-          {defaultValues.name.length === 0 ? 'Create' : 'Update'}
+      <Spacer top="14">
+        <Button type="submit" disabled={isSubmitting} className="w-full">
+          {defaultValues.name.length === 0 ? "Create" : "Update"}
         </Button>
-        <Spacer top='2'>
+        <Spacer top="2">
           <HookedValidationApiError apiError={apiError} />
         </Spacer>
       </Spacer>

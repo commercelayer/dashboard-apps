@@ -1,26 +1,26 @@
-import { makeOrder } from '#mocks'
 import {
   ResourceListItem,
   useAppLinking,
   useTokenProvider,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { makeOrder } from "#mocks"
 
 interface Props {
   resource?: Order
 }
 
 function ListItemOrderComponent({
-  resource = makeOrder()
+  resource = makeOrder(),
 }: Props): React.JSX.Element {
   const { canAccess } = useTokenProvider()
   const { navigateTo } = useAppLinking()
 
-  const navigateToOrder = canAccess('orders')
+  const navigateToOrder = canAccess("orders")
     ? navigateTo({
-        app: 'orders',
-        resourceId: resource.id
+        app: "orders",
+        resourceId: resource.id,
       })
     : {}
 

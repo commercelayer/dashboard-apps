@@ -6,9 +6,9 @@ import {
   useAppLinking,
   useTokenProvider,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Return } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Return } from "@commercelayer/sdk"
 
 interface Props {
   returnObj: Return
@@ -22,27 +22,27 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
 
     const returnOrderMarket = returnObj.order?.market?.name
     const returnOrderNumber = `#${returnObj.order?.number}`
-    const navigateToOrder = canAccess('orders')
+    const navigateToOrder = canAccess("orders")
       ? navigateTo({
-          app: 'orders',
-          resourceId: returnObj?.order?.id
+          app: "orders",
+          resourceId: returnObj?.order?.id,
         })
       : {}
 
     const returnCustomerEmail = returnObj?.customer?.email
-    const navigateToCustomer = canAccess('customers')
+    const navigateToCustomer = canAccess("customers")
       ? navigateTo({
-          app: 'customers',
-          resourceId: returnObj?.customer?.id
+          app: "customers",
+          resourceId: returnObj?.customer?.id,
         })
       : {}
 
     return (
-      <Section title={t('apps.returns.details.info')}>
-        <ListDetailsItem label={t('resources.orders.name')} gutter='none'>
-          <Text tag='div' weight='semibold'>
-            {canAccess('orders') ? (
-              <Button variant='link' {...navigateToOrder}>
+      <Section title={t("apps.returns.details.info")}>
+        <ListDetailsItem label={t("resources.orders.name")} gutter="none">
+          <Text tag="div" weight="semibold">
+            {canAccess("orders") ? (
+              <Button variant="link" {...navigateToOrder}>
                 {`${returnOrderMarket} ${returnOrderNumber}`}
               </Button>
             ) : (
@@ -50,10 +50,10 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
             )}
           </Text>
         </ListDetailsItem>
-        <ListDetailsItem label={t('resources.customers.name')} gutter='none'>
-          <Text tag='div' weight='semibold'>
-            {canAccess('customers') ? (
-              <Button variant='link' {...navigateToCustomer}>
+        <ListDetailsItem label={t("resources.customers.name")} gutter="none">
+          <Text tag="div" weight="semibold">
+            {canAccess("customers") ? (
+              <Button variant="link" {...navigateToCustomer}>
                 {returnCustomerEmail}
               </Button>
             ) : (
@@ -63,5 +63,5 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
         </ListDetailsItem>
       </Section>
     )
-  }
+  },
 )

@@ -1,6 +1,3 @@
-import { PriceForm, type PriceFormValues } from '#components/PriceForm'
-import { appRoutes } from '#data/routes'
-import { usePriceDetails } from '#hooks/usePriceDetails'
 import {
   Button,
   EmptyState,
@@ -8,11 +5,14 @@ import {
   SkeletonTemplate,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { type PriceUpdate } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { PriceUpdate } from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { PriceForm, type PriceFormValues } from "#components/PriceForm"
+import { appRoutes } from "#data/routes"
+import { usePriceDetails } from "#hooks/usePriceDetails"
 
 export function PriceEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -22,17 +22,17 @@ export function PriceEdit(): React.JSX.Element {
   const [isSaving, setIsSaving] = useState(false)
 
   const [, params] = useRoute<{ priceListId: string; priceId: string }>(
-    appRoutes.priceEdit.path
+    appRoutes.priceEdit.path,
   )
-  const priceId = params?.priceId ?? ''
+  const priceId = params?.priceId ?? ""
 
   const { price, isLoading, mutatePrice } = usePriceDetails(priceId)
-  const priceListId = price?.price_list?.id ?? ''
-  const pageTitle = 'Edit price'
+  const priceListId = price?.price_list?.id ?? ""
+  const pageTitle = "Edit price"
 
   const goBackUrl = appRoutes.priceDetails.makePath({ priceListId, priceId })
 
-  if (!canUser('update', 'prices')) {
+  if (!canUser("update", "prices")) {
     return (
       <PageLayout
         title={pageTitle}
@@ -40,18 +40,18 @@ export function PriceEdit(): React.JSX.Element {
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: 'Cancel',
-          icon: 'x'
+          label: "Cancel",
+          icon: "x",
         }}
         scrollToTop
         overlay
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -68,14 +68,14 @@ export function PriceEdit(): React.JSX.Element {
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
-      gap='only-top'
+      gap="only-top"
       scrollToTop
       overlay
     >
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         {!isLoading && price != null ? (
           <PriceForm
             resource={price}
@@ -85,7 +85,7 @@ export function PriceEdit(): React.JSX.Element {
               price: price.amount_cents,
               original_price: price.compare_at_amount_cents ?? 0,
               item: price.sku?.id,
-              price_list: price.price_list?.id
+              price_list: price.price_list?.id,
             }}
             apiError={apiError}
             isSubmitting={isSaving}
@@ -113,19 +113,19 @@ export function PriceEdit(): React.JSX.Element {
 
 function adaptFormValuesToPrice(
   formValues: PriceFormValues,
-  priceListId: string
+  priceListId: string,
 ): PriceUpdate {
   return {
-    id: formValues.id ?? '',
+    id: formValues.id ?? "",
     amount_cents: formValues.price,
     compare_at_amount_cents: formValues.original_price,
     sku: {
       id: formValues.item ?? null,
-      type: 'skus'
+      type: "skus",
     },
     price_list: {
       id: priceListId,
-      type: 'price_lists'
-    }
+      type: "price_lists",
+    },
   }
 }

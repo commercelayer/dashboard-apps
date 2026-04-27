@@ -1,20 +1,20 @@
-import { getParentResourceIfNeeded } from '#data/resources'
 import {
-  ListDetailsItem,
   formatResourceName,
-  useCoreSdkProvider
-} from '@commercelayer/app-elements'
-import { useEffect, useState } from 'react'
-import { useImportDetailsContext } from './Provider'
+  ListDetailsItem,
+  useCoreSdkProvider,
+} from "@commercelayer/app-elements"
+import { useEffect, useState } from "react"
+import { getParentResourceIfNeeded } from "#data/resources"
+import { useImportDetailsContext } from "./Provider"
 
 export function RowParentResource(): React.JSX.Element | null {
   const {
-    state: { data }
+    state: { data },
   } = useImportDetailsContext()
   const { sdkClient } = useCoreSdkProvider()
 
   const [isLoading, setIsLoading] = useState(true)
-  const [parentResourceName, setParentResourceName] = useState('')
+  const [parentResourceName, setParentResourceName] = useState("")
   const parentResourceType =
     data?.resource_type != null
       ? getParentResourceIfNeeded(data.resource_type)
@@ -34,7 +34,7 @@ export function RowParentResource(): React.JSX.Element | null {
           .retrieve(parentResourceId)
           .then((res) => {
             const resourceName =
-              'name' in res && res.name != null
+              "name" in res && res.name != null
                 ? `${res.name} (ID: ${parentResourceId})`
                 : res.id
             setParentResourceName(resourceName)
@@ -47,7 +47,7 @@ export function RowParentResource(): React.JSX.Element | null {
           })
       }
     },
-    [parentResourceId, parentResourceType, sdkClient]
+    [parentResourceId, parentResourceType, sdkClient],
   )
 
   if (data?.parent_resource_id == null || parentResourceType === false) {
@@ -58,14 +58,14 @@ export function RowParentResource(): React.JSX.Element | null {
     <>
       {data.parent_resource_id != null && data.resource_type != null ? (
         <ListDetailsItem
-          label='Parent resource'
-          gutter='none'
+          label="Parent resource"
+          gutter="none"
           isLoading={isLoading}
         >
           <div
             title={formatResourceName({
               resource: parentResourceType,
-              count: 'plural'
+              count: "plural",
             })}
           >
             {parentResourceName}

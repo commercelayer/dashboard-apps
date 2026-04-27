@@ -1,38 +1,38 @@
-import type { FiltersInstructions } from '@commercelayer/app-elements'
+import type { FiltersInstructions } from "@commercelayer/app-elements"
 
 interface StockItemsInstructionsConfig {
   stockLocationId?: string
 }
 
 export const stockItemsInstructions = ({
-  stockLocationId
+  stockLocationId,
 }: StockItemsInstructionsConfig): FiltersInstructions => {
   const instructions: FiltersInstructions = []
   if (stockLocationId != null)
     instructions.push({
-      label: 'Stock location',
-      type: 'options',
+      label: "Stock location",
+      type: "options",
       sdk: {
-        predicate: 'stock_location_id_in',
-        defaultOptions: [stockLocationId]
+        predicate: "stock_location_id_in",
+        defaultOptions: [stockLocationId],
       },
       render: {
-        component: 'inputToggleButton',
+        component: "inputToggleButton",
         props: {
-          mode: 'single',
-          options: [{ value: stockLocationId, label: stockLocationId }]
-        }
-      }
+          mode: "single",
+          options: [{ value: stockLocationId, label: stockLocationId }],
+        },
+      },
     })
   instructions.push({
-    label: 'Search',
-    type: 'textSearch',
+    label: "Search",
+    type: "textSearch",
     sdk: {
-      predicate: ['sku_code', 'sku_name'].join('_or_') + '_cont'
+      predicate: ["sku_code", "sku_name"].join("_or_") + "_cont",
     },
     render: {
-      component: 'searchBar'
-    }
+      component: "searchBar",
+    },
   })
   return instructions
 }

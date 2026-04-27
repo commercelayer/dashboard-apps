@@ -1,5 +1,5 @@
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import { type Import } from '@commercelayer/sdk'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import type { Import } from "@commercelayer/sdk"
 import {
   createContext,
   type ReactNode,
@@ -7,11 +7,11 @@ import {
   useContext,
   useEffect,
   useReducer,
-  useRef
-} from 'react'
-import { initialState, initialValues } from './data'
-import { reducer } from './reducer'
-import { type ImportDetailsContextValue } from './types'
+  useRef,
+} from "react"
+import { initialState, initialValues } from "./data"
+import { reducer } from "./reducer"
+import type { ImportDetailsContextValue } from "./types"
 
 interface ImportDetailsProviderProps {
   importId: string
@@ -26,7 +26,7 @@ export const useImportDetailsContext = (): ImportDetailsContextValue =>
 
 export function ImportDetailsProvider({
   importId,
-  children
+  children,
 }: ImportDetailsProviderProps): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -34,27 +34,27 @@ export function ImportDetailsProvider({
 
   const fetchImport = useCallback(
     async ({ handleLoadingState }: { handleLoadingState: boolean }) => {
-      handleLoadingState && dispatch({ type: 'setLoading', payload: true })
+      handleLoadingState && dispatch({ type: "setLoading", payload: true })
       try {
         const importDetails = await sdkClient.imports.retrieve(importId)
-        dispatch({ type: 'setData', payload: importDetails })
+        dispatch({ type: "setData", payload: importDetails })
       } catch {
-        dispatch({ type: 'setNotFound', payload: true })
-        dispatch({ type: 'togglePolling', payload: false })
-        dispatch({ type: 'setLoading', payload: false })
+        dispatch({ type: "setNotFound", payload: true })
+        dispatch({ type: "togglePolling", payload: false })
+        dispatch({ type: "setLoading", payload: false })
       }
-      handleLoadingState && dispatch({ type: 'setLoading', payload: false })
+      handleLoadingState && dispatch({ type: "setLoading", payload: false })
     },
-    [importId]
+    [importId],
   )
 
   const deleteImport = useCallback(async (): Promise<boolean> => {
-    dispatch({ type: 'setDeleting', payload: true })
+    dispatch({ type: "setDeleting", payload: true })
     return await sdkClient.imports
       .delete(importId)
       .then(() => true)
       .catch(() => {
-        dispatch({ type: 'setDeleting', payload: false })
+        dispatch({ type: "setDeleting", payload: false })
         return false
       })
   }, [importId])
@@ -66,9 +66,9 @@ export function ImportDetailsProvider({
       }
 
       const shouldPoll = statusForPolling.includes(state.data.status)
-      dispatch({ type: 'togglePolling', payload: shouldPoll })
+      dispatch({ type: "togglePolling", payload: shouldPoll })
     },
-    [state.data]
+    [state.data],
   )
 
   useEffect(
@@ -87,7 +87,7 @@ export function ImportDetailsProvider({
         }
       }
     },
-    [state.isPolling]
+    [state.isPolling],
   )
 
   const value: ImportDetailsContextValue = {
@@ -95,14 +95,14 @@ export function ImportDetailsProvider({
     refetch: async () => {
       await fetchImport({ handleLoadingState: false })
     },
-    deleteImport
+    deleteImport,
   }
 
   return (
     <Context.Provider value={value}>
-      {typeof children === 'function' ? children(value) : children}
+      {typeof children === "function" ? children(value) : children}
     </Context.Provider>
   )
 }
 
-const statusForPolling: Array<Import['status']> = ['pending', 'in_progress']
+const statusForPolling: Array<Import["status"]> = ["pending", "in_progress"]

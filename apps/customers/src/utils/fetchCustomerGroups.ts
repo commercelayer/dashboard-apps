@@ -1,8 +1,8 @@
 import type {
   CommerceLayerClient,
   CustomerGroup,
-  ListResponse
-} from '@commercelayer/sdk'
+  ListResponse,
+} from "@commercelayer/sdk"
 
 interface FetchCustomerGroupsConfig {
   sdkClient: CommerceLayerClient
@@ -17,20 +17,20 @@ interface FetchCustomerGroupsConfig {
 
 export const fetchCustomerGroups = async ({
   sdkClient,
-  hint
+  hint,
 }: FetchCustomerGroupsConfig): Promise<ListResponse<CustomerGroup>> => {
   const list = await sdkClient.customer_groups.list({
-    fields: ['id', 'name'],
+    fields: ["id", "name"],
     pageSize: 10,
     filters:
       hint != null
         ? {
-            name_cont: hint
+            name_cont: hint,
           }
         : undefined,
     sort: {
-      name: 'asc'
-    }
+      name: "asc",
+    },
   })
   return list
 }

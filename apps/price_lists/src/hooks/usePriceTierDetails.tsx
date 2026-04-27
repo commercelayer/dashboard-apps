@@ -1,13 +1,13 @@
-import { makePriceTier } from '#mocks'
-import type { PriceTierType } from '#types'
-import { getPriceTierSdkResource } from '#utils/priceTiers'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { PriceFrequencyTier, PriceVolumeTier } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { PriceFrequencyTier, PriceVolumeTier } from "@commercelayer/sdk"
+import type { KeyedMutator } from "swr"
+import { makePriceTier } from "#mocks"
+import type { PriceTierType } from "#types"
+import { getPriceTierSdkResource } from "#utils/priceTiers"
 
 export function usePriceTierDetails(
   id: string,
-  type: PriceTierType
+  type: PriceTierType,
 ): {
   tier: PriceFrequencyTier | PriceVolumeTier
   isLoading: boolean
@@ -20,9 +20,9 @@ export function usePriceTierDetails(
     data: tier,
     isLoading,
     error,
-    mutate: mutateTier
-  } = useCoreApi(sdkResource, 'retrieve', !isMockedId(id) ? [id] : null, {
-    fallbackData: makePriceTier(type)
+    mutate: mutateTier,
+  } = useCoreApi(sdkResource, "retrieve", !isMockedId(id) ? [id] : null, {
+    fallbackData: makePriceTier(type),
   })
 
   return { tier, error, isLoading, mutateTier }

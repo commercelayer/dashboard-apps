@@ -1,11 +1,11 @@
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import type { Link, Order } from '@commercelayer/sdk'
-import { addMonths } from 'date-fns/addMonths'
-import { useEffect, useState } from 'react'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import type { Link, Order } from "@commercelayer/sdk"
+import { addMonths } from "date-fns/addMonths"
+import { useEffect, useState } from "react"
 
 interface Props {
   /** The order id. */
-  orderId: Order['id']
+  orderId: Order["id"]
   /**
    * The client id of a sales channel API credential used to create the link the first time.
    * If missing it won't be possible to generate a new link the first time.
@@ -54,9 +54,9 @@ export function useGetCheckoutLink({ orderId, clientId, scope }: Props): {
           starts_at: new Date().toJSON(),
           expires_at: addMonths(new Date(), 1).toJSON(),
           item: {
-            type: 'orders',
-            id: orderId
-          }
+            type: "orders",
+            id: orderId,
+          },
         })
         .then((createdLink) => {
           setCanCreateLink(false)

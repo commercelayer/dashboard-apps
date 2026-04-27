@@ -1,8 +1,3 @@
-import { ListEmptyStateStockItems } from '#components/ListEmptyStateStockItems'
-import { ListItemStockItem } from '#components/ListItemStockItem'
-import { stockItemsInstructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
-import { useStockLocationDetails } from '#hooks/useStockLocationDetails'
 import {
   A,
   Button,
@@ -11,22 +6,27 @@ import {
   PageLayout,
   SkeletonTemplate,
   useResourceFilters,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { Link, useLocation, useRoute } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyStateStockItems } from "#components/ListEmptyStateStockItems"
+import { ListItemStockItem } from "#components/ListItemStockItem"
+import { stockItemsInstructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
+import { useStockLocationDetails } from "#hooks/useStockLocationDetails"
 
 export function StockItemsList(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
 
   const [, params] = useRoute<{ stockLocationId?: string }>(
-    appRoutes.stockLocation.path
+    appRoutes.stockLocation.path,
   )
 
-  const stockLocationId = params?.stockLocationId ?? ''
+  const stockLocationId = params?.stockLocationId ?? ""
 
   const stockLocationDetails = useStockLocationDetails(stockLocationId)
   const { stockLocation, isLoading, error } = stockLocationDetails ?? null
@@ -35,27 +35,27 @@ export function StockItemsList(): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions: stockItemsInstructions({ stockLocationId })
+    instructions: stockItemsInstructions({ stockLocationId }),
   })
 
   if (error != null) {
     return (
       <PageLayout
-        title='Inventory'
+        title="Inventory"
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.home.makePath())
           },
-          label: 'Inventory',
-          icon: 'arrowLeft'
+          label: "Inventory",
+          icon: "arrowLeft",
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.home.makePath()}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -64,12 +64,12 @@ export function StockItemsList(): React.JSX.Element {
   }
 
   const pageTitle =
-    stockLocationId !== '' ? stockLocation.name : 'All inventory'
+    stockLocationId !== "" ? stockLocation.name : "All inventory"
 
-  if (!canUser('read', 'stock_locations')) {
+  if (!canUser("read", "stock_locations")) {
     return (
-      <PageLayout title='Inventory' mode={mode}>
-        <EmptyState title='You are not authorized' />
+      <PageLayout title="Inventory" mode={mode}>
+        <EmptyState title="You are not authorized" />
       </PageLayout>
     )
   }
@@ -80,20 +80,20 @@ export function StockItemsList(): React.JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }
       mode={mode}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.home.makePath())
         },
-        label: 'Inventory',
-        icon: 'arrowLeft'
+        label: "Inventory",
+        icon: "arrowLeft",
       }}
     >
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs: any) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={() => {}}
@@ -101,27 +101,27 @@ export function StockItemsList(): React.JSX.Element {
       />
 
       <FilteredList
-        type='stock_items'
+        type="stock_items"
         query={{
-          include: ['sku', 'reserved_stock', 'stock_location'],
+          include: ["sku", "reserved_stock", "stock_location"],
           sort: {
-            created_at: 'desc'
-          }
+            created_at: "desc",
+          },
         }}
         actionButton={
-          canUser('create', 'stock_items') ? (
+          canUser("create", "stock_items") ? (
             <Link
               href={appRoutes.newStockItem.makePath(stockLocationId)}
               asChild
             >
               <A
-                href=''
-                variant='secondary'
-                size='mini'
-                alignItems='center'
-                aria-label='Add stock item'
+                href=""
+                variant="secondary"
+                size="mini"
+                alignItems="center"
+                aria-label="Add stock item"
               >
-                <Icon name='plus' />
+                <Icon name="plus" />
                 Stock item
               </A>
             </Link>
@@ -130,7 +130,7 @@ export function StockItemsList(): React.JSX.Element {
         ItemTemplate={ListItemStockItem}
         emptyState={
           <ListEmptyStateStockItems
-            scope={hasActiveFilter ? 'userFiltered' : 'history'}
+            scope={hasActiveFilter ? "userFiltered" : "history"}
           />
         }
       />

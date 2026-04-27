@@ -1,10 +1,10 @@
+import { Button, withSkeletonTemplate } from "@commercelayer/app-elements"
+import type { Webhook } from "@commercelayer/sdk"
 import {
   getWebhookTriggerAction,
-  getWebhookTriggerActionName
-} from '#data/dictionaries'
-import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
-import { Button, withSkeletonTemplate } from '@commercelayer/app-elements'
-import type { Webhook } from '@commercelayer/sdk'
+  getWebhookTriggerActionName,
+} from "#data/dictionaries"
+import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
 interface WebhookTriggerActionButtonProps {
   webhook: Webhook
@@ -19,13 +19,13 @@ export const WebhookTriggerActionButton =
     return (
       <Button
         disabled={isLoading}
-        size='small'
-        variant='primary'
+        size="small"
+        variant="primary"
         onClick={() => {
           void dispatch(triggerAction.triggerAttribute)
         }}
         style={{
-          alignSelf: 'baseline'
+          alignSelf: "baseline",
         }}
       >
         {label}

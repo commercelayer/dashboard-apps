@@ -1,12 +1,9 @@
-import {
-  type ListExportContextState,
-  type ListExportContextValue
-} from './types'
+import type { ListExportContextState, ListExportContextValue } from "./types"
 
 export const initialState: ListExportContextState = {
   isLoading: true,
   isPolling: false,
-  currentPage: 1
+  currentPage: 1,
 }
 
 export const initialValues: ListExportContextValue = {
@@ -14,5 +11,5 @@ export const initialValues: ListExportContextValue = {
   changePage: () => undefined,
   deleteExport: async () => undefined,
   interruptExport: async () => undefined,
-  resumeExport: async () => undefined
+  resumeExport: async () => undefined,
 }

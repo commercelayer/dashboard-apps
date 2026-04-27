@@ -2,34 +2,34 @@ import {
   HookedValidationApiError,
   Spacer,
   t,
-  useIsChanged
-} from '@commercelayer/app-elements'
-import { type ReturnLineItem } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { forwardRef, useState } from 'react'
-import { FormProvider, useForm, type UseFormSetError } from 'react-hook-form'
-import { z } from 'zod'
-import { FormFieldItems } from './FormFieldItems'
+  useIsChanged,
+} from "@commercelayer/app-elements"
+import type { ReturnLineItem } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { forwardRef, useState } from "react"
+import { FormProvider, type UseFormSetError, useForm } from "react-hook-form"
+import { z } from "zod"
+import { FormFieldItems } from "./FormFieldItems"
 
 const restockFormSchema = z.object({
   items: z
     .array(
       z.object({
         value: z.string().nonempty(),
-        quantity: z.number()
-      })
+        quantity: z.number(),
+      }),
     )
     .superRefine((val, ctx) => {
       if (val.length === 0) {
         ctx.addIssue({
           code: z.ZodIssueCode.too_small,
           minimum: 1,
-          type: 'array',
+          type: "array",
           inclusive: true,
-          message: t('validation.select_one_item')
+          message: t("validation.select_one_item"),
         })
       }
-    })
+    }),
 })
 
 export type RestockFormValues = z.infer<typeof restockFormSchema>
@@ -39,7 +39,7 @@ interface Props {
   defaultValues: RestockFormDefaultValues
   onSubmit: (
     formValues: RestockFormValues,
-    setError: UseFormSetError<RestockFormValues>
+    setError: UseFormSetError<RestockFormValues>,
   ) => void
   apiError?: any
   returnLineItems: ReturnLineItem[]
@@ -49,7 +49,7 @@ export const FormRestock = forwardRef<HTMLFormElement, Props>(
   ({ onSubmit, defaultValues, apiError, returnLineItems }, ref) => {
     const methods = useForm({
       defaultValues,
-      resolver: zodResolver(restockFormSchema)
+      resolver: zodResolver(restockFormSchema),
     })
 
     // when returnLineItems changes, we need to re-render the form
@@ -58,8 +58,8 @@ export const FormRestock = forwardRef<HTMLFormElement, Props>(
     useIsChanged({
       value: returnLineItems,
       onChange: () => {
-        setRenderKey(new Date().getTime())
-      }
+        setRenderKey(Date.now())
+      },
     })
 
     useIsChanged({
@@ -68,7 +68,7 @@ export const FormRestock = forwardRef<HTMLFormElement, Props>(
         if (apiError == null) {
           methods.reset(defaultValues)
         }
-      }
+      },
     })
 
     const doSubmit = methods.handleSubmit(async (data) => {
@@ -82,15 +82,15 @@ export const FormRestock = forwardRef<HTMLFormElement, Props>(
             void doSubmit(e)
           }}
           ref={ref}
-          id='return-restock-form'
+          id="return-restock-form"
         >
-          <Spacer bottom='12'>
+          <Spacer bottom="12">
             <FormFieldItems returnLineItems={returnLineItems} />
-            <Spacer top='2'>
+            <Spacer top="2">
               <HookedValidationApiError
                 apiError={apiError}
                 fieldMap={{
-                  return_line_item: 'items'
+                  return_line_item: "items",
                 }}
               />
             </Spacer>
@@ -98,5 +98,5 @@ export const FormRestock = forwardRef<HTMLFormElement, Props>(
         </form>
       </FormProvider>
     )
-  }
+  },
 )

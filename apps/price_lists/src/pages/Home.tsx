@@ -1,5 +1,3 @@
-import { ListItemPriceList } from '#components/ListItemPriceList'
-import { appRoutes } from '#data/routes'
 import {
   A,
   EmptyState,
@@ -12,29 +10,31 @@ import {
   StatusIcon,
   Text,
   useResourceList,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useState } from 'react'
-import { Link } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useState } from "react"
+import { Link } from "wouter"
+import { ListItemPriceList } from "#components/ListItemPriceList"
+import { appRoutes } from "#data/routes"
 
 export function Home(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [searchValue, setSearchValue] = useState<string>()
 
   const { meta, isLoading, isFirstLoading, ResourceList } = useResourceList({
-    type: 'price_lists',
+    type: "price_lists",
     query: {
       filters: {
-        ...(searchValue != null ? { name_cont: searchValue } : {})
+        ...(searchValue != null ? { name_cont: searchValue } : {}),
       },
-      sort: ['-updated_at']
-    }
+      sort: ["-updated_at"],
+    },
   })
 
-  if (!canUser('read', 'price_lists')) {
+  if (!canUser("read", "price_lists")) {
     return (
-      <HomePageLayout title='Prices'>
-        <EmptyState title='You are not authorized' />
+      <HomePageLayout title="Prices">
+        <EmptyState title="You are not authorized" />
       </HomePageLayout>
     )
   }
@@ -46,14 +46,14 @@ export function Home(): React.JSX.Element {
   const NoPriceListsMessage = (): React.JSX.Element =>
     noPriceLists && searchValue == null ? (
       <EmptyState
-        title='No price lists yet!'
+        title="No price lists yet!"
         description={
           <div>
             <p>Add a price list with the API, or use the CLI.</p>
             <A
-              target='_blank'
-              href='https://docs.commercelayer.io/core/v/api-reference/price_lists'
-              rel='noreferrer'
+              target="_blank"
+              href="https://docs.commercelayer.io/core/v/api-reference/price_lists"
+              rel="noreferrer"
             >
               View API reference.
             </A>
@@ -62,41 +62,41 @@ export function Home(): React.JSX.Element {
       />
     ) : (
       <>
-        <Text weight='semibold'>
+        <Text weight="semibold">
           No results found. Try a new search.
           <br />
           If you were looking for an SKU instead of a Price list, search again
-          within{' '}
+          within{" "}
           <Link href={appRoutes.pricesList.makePath({})}>All Prices</Link>.
         </Text>
       </>
     )
 
   return (
-    <HomePageLayout title='Prices'>
+    <HomePageLayout title="Prices">
       {showSearchBar && (
-        <Spacer top='6'>
+        <Spacer top="6">
           <SearchBar
             initialValue={searchValue}
             onSearch={setSearchValue}
-            placeholder='Search price lists...'
+            placeholder="Search price lists..."
             onClear={() => {
-              setSearchValue('')
+              setSearchValue("")
             }}
           />
         </Spacer>
       )}
-      <Spacer top={showSearchBar ? '14' : '6'}>
+      <Spacer top={showSearchBar ? "14" : "6"}>
         {noPriceLists ? (
           <NoPriceListsMessage />
         ) : (
           <SkeletonTemplate isLoading={isFirstLoading || isLoading}>
-            <Section title='Browse' titleSize='small'>
+            <Section title="Browse" titleSize="small">
               {(searchValue == null || searchValue?.length === 0) && (
                 <Link href={appRoutes.pricesList.makePath({})} asChild>
                   <ListItem>
-                    <Text weight='semibold'>All prices</Text>
-                    <StatusIcon name='caretRight' />
+                    <Text weight="semibold">All prices</Text>
+                    <StatusIcon name="caretRight" />
                   </ListItem>
                 </Link>
               )}

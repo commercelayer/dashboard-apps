@@ -1,8 +1,8 @@
-import { z } from 'zod'
-import { matchers, ruleBuilderConfig } from '../config'
+import { z } from "zod"
+import { matchers, ruleBuilderConfig } from "../config"
 
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I
+  k: infer I,
 ) => void
   ? I
   : never
@@ -17,7 +17,7 @@ type Push<T extends any[], V> = [...T, V]
 type TuplifyUnion<
   T,
   L = LastOf<T>,
-  N = [T] extends [never] ? true : false
+  N = [T] extends [never] ? true : false,
 > = true extends N ? [] : Push<TuplifyUnion<Exclude<T, L>>, L>
 
 export const ruleBuilderFormValidator = z
@@ -26,7 +26,7 @@ export const ruleBuilderFormValidator = z
       .enum(
         Object.keys(ruleBuilderConfig) as TuplifyUnion<
           keyof typeof ruleBuilderConfig
-        >
+        >,
       )
       .nullable(),
     operator: z
@@ -37,17 +37,17 @@ export const ruleBuilderFormValidator = z
       .min(1)
       .or(z.string().array().min(1))
       .or(z.number())
-      .nullable()
+      .nullable(),
   })
   .superRefine((data, ctx) => {
     // Validate "parameter"
     if (data.parameter == null) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['parameter'],
+        path: ["parameter"],
         message: `One of ${Object.values(ruleBuilderConfig)
           .map(({ label }) => `"${label}"`)
-          .join(' or ')} is required`
+          .join(" or ")} is required`,
       })
     }
 
@@ -59,8 +59,8 @@ export const ruleBuilderFormValidator = z
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['operator'],
-        message: `One of ${ruleBuilderConfig[data.parameter].operators?.map(({ label }) => `"${label}"`).join(' or ')} is required`
+        path: ["operator"],
+        message: `One of ${ruleBuilderConfig[data.parameter].operators?.map(({ label }) => `"${label}"`).join(" or ")} is required`,
       })
     }
 
@@ -68,8 +68,8 @@ export const ruleBuilderFormValidator = z
     if (data.parameter != null && data.value == null) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['value'],
-        message: `Input is required`
+        path: ["value"],
+        message: `Input is required`,
       })
     }
   })
@@ -82,22 +82,22 @@ export const ruleBuilderFormValidator = z
           .or(z.string().array().min(1))
           .or(z.number())
           .nullable(),
-        all_skus: z.enum(['all', 'any', 'number']),
+        all_skus: z.enum(["all", "any", "number"]),
         min_quantity: z.preprocess((value) => {
           return Number.isNaN(value) ? null : value
-        }, z.number().positive().nullish())
+        }, z.number().positive().nullish()),
       })
       .superRefine((data, ctx) => {
         if (
-          data.all_skus === 'number' &&
+          data.all_skus === "number" &&
           (data.min_quantity == null ||
             (data.min_quantity != null && data.min_quantity === 0))
         ) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            path: ['min_quantity'],
-            message: `Input is required`
+            path: ["min_quantity"],
+            message: `Input is required`,
           })
         }
-      })
+      }),
   )

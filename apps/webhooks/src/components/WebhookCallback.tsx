@@ -2,9 +2,9 @@ import {
   CodeBlock,
   Section,
   Spacer,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Webhook } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Webhook } from "@commercelayer/sdk"
 
 interface WebhookCallbackProps {
   webhook: Webhook
@@ -13,31 +13,31 @@ interface WebhookCallbackProps {
 export const WebhookCallback = withSkeletonTemplate<WebhookCallbackProps>(
   ({ webhook }) => {
     return (
-      <Section title='Callback'>
-        <Spacer top='6' bottom='10'>
-          <CodeBlock label='Callback URL' showCopyAction>
+      <Section title="Callback">
+        <Spacer top="6" bottom="10">
+          <CodeBlock label="Callback URL" showCopyAction>
             {webhook.callback_url}
           </CodeBlock>
         </Spacer>
-        <Spacer bottom='12'>
+        <Spacer bottom="12">
           <CodeBlock
-            label='Shared secret'
+            label="Shared secret"
             showCopyAction
             showSecretAction
             hint={{
               text: (
                 <>
-                  Used to verify the{' '}
+                  Used to verify the{" "}
                   <a
-                    href='https://docs.commercelayer.io/core/callbacks-security'
-                    target='_blank'
-                    rel='noreferrer'
+                    href="https://docs.commercelayer.io/core/callbacks-security"
+                    target="_blank"
+                    rel="noreferrer"
                   >
                     callback authenticity
                   </a>
                   .
                 </>
-              )
+              ),
             }}
           >
             {webhook.shared_secret}
@@ -45,5 +45,5 @@ export const WebhookCallback = withSkeletonTemplate<WebhookCallbackProps>(
         </Spacer>
       </Section>
     )
-  }
+  },
 )

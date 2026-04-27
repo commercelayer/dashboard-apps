@@ -1,11 +1,11 @@
-import type { getOrderSubscriptionTriggerActionName } from '#data/dictionaries'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import { CommerceLayerStatic } from "@commercelayer/sdk"
+import { useCallback, useState } from "react"
+import type { getOrderSubscriptionTriggerActionName } from "#data/dictionaries"
 import {
   orderSubscriptionIncludeAttribute,
-  useSubscriptionDetails
-} from '#hooks/useSubscriptionDetails'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import { CommerceLayerStatic } from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
+  useSubscriptionDetails,
+} from "#hooks/useSubscriptionDetails"
 
 type UITriggerAttributes = Parameters<
   typeof getOrderSubscriptionTriggerActionName
@@ -18,7 +18,7 @@ interface TriggerAttributeHook {
 }
 
 export function useTriggerAttribute(
-  orderSubscriptionId: string
+  orderSubscriptionId: string,
 ): TriggerAttributeHook {
   const { mutateSubscription } = useSubscriptionDetails(orderSubscriptionId)
   const { sdkClient } = useCoreSdkProvider()
@@ -35,29 +35,29 @@ export function useTriggerAttribute(
           await sdkClient.order_subscriptions.update(
             {
               id: orderSubscriptionId,
-              [triggerAttribute]: true
+              [triggerAttribute]: true,
             },
             {
-              include: orderSubscriptionIncludeAttribute
-            }
+              include: orderSubscriptionIncludeAttribute,
+            },
           )
         void mutateSubscription(updatedOrderSubscription)
       } catch (error) {
         setErrors(
           CommerceLayerStatic.isApiError(error)
             ? error.errors.map(({ detail }) => detail)
-            : ['Could not cancel this orderSubscription']
+            : ["Could not cancel this orderSubscription"],
         )
       } finally {
         setIsLoading(false)
       }
     },
-    [orderSubscriptionId]
+    [orderSubscriptionId],
   )
 
   return {
     isLoading,
     errors,
-    dispatch
+    dispatch,
   }
 }

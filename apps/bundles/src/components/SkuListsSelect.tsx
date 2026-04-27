@@ -1,12 +1,12 @@
-import { fetchSkuLists } from '#utils/fetchSkuLists'
 import {
   HookedInputSelect,
-  useCoreSdkProvider
-} from '@commercelayer/app-elements'
-import type { SkuList } from '@commercelayer/sdk'
+  useCoreSdkProvider,
+} from "@commercelayer/app-elements"
+import type { SkuList } from "@commercelayer/sdk"
+import { fetchSkuLists } from "#utils/fetchSkuLists"
 
 export function SkuListsSelect({
-  options
+  options,
 }: {
   options: SkuList[]
 }): React.JSX.Element | null {
@@ -14,19 +14,19 @@ export function SkuListsSelect({
 
   return (
     <HookedInputSelect
-      name='sku_list'
-      placeholder='All SKU lists with manual items...'
+      name="sku_list"
+      placeholder="All SKU lists with manual items..."
       initialValues={options.map(({ id, name }) => ({
         value: id,
-        label: name
+        label: name,
       }))}
       isClearable
-      pathToValue='value'
+      pathToValue="value"
       loadAsyncValues={async (hint) => {
         const list = await fetchSkuLists({ sdkClient, hint })
         return list.map(({ id, name }) => ({
           value: id,
-          label: name
+          label: name,
         }))
       }}
     />

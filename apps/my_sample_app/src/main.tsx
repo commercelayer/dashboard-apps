@@ -1,35 +1,35 @@
 import {
+  type ClAppProps,
   CoreSdkProvider,
+  createApp,
   ErrorBoundary,
   I18NProvider,
   MetaTags,
   TokenProvider,
-  createApp,
-  type ClAppProps,
-  type TokenProviderAllowedAppSlug
-} from '@commercelayer/app-elements'
-import { StrictMode } from 'react'
-import { SWRConfig } from 'swr'
-import { App } from './App'
+  type TokenProviderAllowedAppSlug,
+} from "@commercelayer/app-elements"
+import { StrictMode } from "react"
+import { SWRConfig } from "swr"
+import { App } from "./App"
 
-import '@commercelayer/app-elements/vendor.css'
+import "@commercelayer/app-elements/vendor.css"
 
-import '@commercelayer/app-elements/style.css'
+import "@commercelayer/app-elements/style.css"
 
 const isDev = Boolean(import.meta.env.DEV)
 
-const appSlug: TokenProviderAllowedAppSlug = 'my_sample_app'
+const appSlug: TokenProviderAllowedAppSlug = "my_sample_app"
 
 const Main = (props: ClAppProps): React.JSX.Element => (
   <StrictMode>
     <ErrorBoundary hasContainer>
       <SWRConfig
         value={{
-          revalidateOnFocus: false
+          revalidateOnFocus: false,
         }}
       >
         <TokenProvider
-          kind='generic'
+          kind="generic"
           appSlug={appSlug}
           devMode={isDev}
           loadingElement={<div />}

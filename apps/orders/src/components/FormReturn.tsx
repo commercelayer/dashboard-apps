@@ -2,14 +2,14 @@ import {
   HookedValidationApiError,
   Spacer,
   t,
-  useIsChanged
-} from '@commercelayer/app-elements'
-import { type LineItem } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { forwardRef, useState } from 'react'
-import { FormProvider, useForm, type UseFormSetError } from 'react-hook-form'
-import { z } from 'zod'
-import { FormFieldItems } from './FormFieldItems'
+  useIsChanged,
+} from "@commercelayer/app-elements"
+import type { LineItem } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { forwardRef, useState } from "react"
+import { FormProvider, type UseFormSetError, useForm } from "react-hook-form"
+import { z } from "zod"
+import { FormFieldItems } from "./FormFieldItems"
 
 const returnFormSchema = z.object({
   items: z
@@ -17,20 +17,20 @@ const returnFormSchema = z.object({
       z.object({
         value: z.string().min(1),
         reason: z.string().optional(),
-        quantity: z.number()
-      })
+        quantity: z.number(),
+      }),
     )
     .superRefine((val, ctx) => {
       if (val.length === 0) {
         ctx.addIssue({
           code: z.ZodIssueCode.too_small,
           minimum: 1,
-          type: 'array',
+          type: "array",
           inclusive: true,
-          message: t('validation.select_one_item')
+          message: t("validation.select_one_item"),
         })
       }
-    })
+    }),
 })
 
 export type ReturnFormValues = z.infer<typeof returnFormSchema>
@@ -40,7 +40,7 @@ interface Props {
   defaultValues: ReturnFormDefaultValues
   onSubmit: (
     formValues: ReturnFormValues,
-    setError: UseFormSetError<ReturnFormValues>
+    setError: UseFormSetError<ReturnFormValues>,
   ) => void
   apiError?: any
   lineItems: LineItem[]
@@ -50,7 +50,7 @@ export const FormReturn = forwardRef<HTMLFormElement, Props>(
   ({ onSubmit, defaultValues, apiError, lineItems }, ref) => {
     const methods = useForm({
       defaultValues,
-      resolver: zodResolver(returnFormSchema)
+      resolver: zodResolver(returnFormSchema),
     })
 
     // when lineItems changes, we need to re-render the form
@@ -59,8 +59,8 @@ export const FormReturn = forwardRef<HTMLFormElement, Props>(
     useIsChanged({
       value: lineItems,
       onChange: () => {
-        setRenderKey(new Date().getTime())
-      }
+        setRenderKey(Date.now())
+      },
     })
 
     useIsChanged({
@@ -69,7 +69,7 @@ export const FormReturn = forwardRef<HTMLFormElement, Props>(
         if (apiError == null) {
           methods.reset(defaultValues)
         }
-      }
+      },
     })
 
     const doSubmit = methods.handleSubmit(async (data) => {
@@ -83,19 +83,19 @@ export const FormReturn = forwardRef<HTMLFormElement, Props>(
             void doSubmit(e)
           }}
           ref={ref}
-          id='return-creation-form'
+          id="return-creation-form"
         >
-          <Spacer bottom='12'>
+          <Spacer bottom="12">
             <FormFieldItems lineItems={lineItems} />
           </Spacer>
           <HookedValidationApiError
             apiError={apiError}
             fieldMap={{
-              return_line_item: 'items'
+              return_line_item: "items",
             }}
           />
         </form>
       </FormProvider>
     )
-  }
+  },
 )

@@ -4,6 +4,8 @@ import {
   CodeBlock,
   EmptyState,
   Icon,
+  isMockedId,
+  type PageHeadingProps,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
@@ -15,32 +17,29 @@ import {
   useAppLinking,
   useCoreApi,
   useTokenProvider,
-  type PageHeadingProps
-} from '@commercelayer/app-elements'
-import { Link, useLocation } from 'wouter'
-
-import { SkuListManualItems } from '#components/SkuListManualItems'
-import { appRoutes, type PageProps } from '#data/routes'
-import { useSkuListDeleteOverlay } from '#hooks/useSkuListDeleteOverlay'
-import { useSkuListDetails } from '#hooks/useSkuListDetails'
-import { isMockedId } from '@commercelayer/app-elements'
-import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
-import { LinksEmptyState } from 'dashboard-apps-common/src/components/LinksEmptyState'
-import { useSearch } from 'wouter/use-browser-location'
+} from "@commercelayer/app-elements"
+import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
+import { LinksEmptyState } from "dashboard-apps-common/src/components/LinksEmptyState"
+import { Link, useLocation } from "wouter"
+import { useSearch } from "wouter/use-browser-location"
+import { SkuListManualItems } from "#components/SkuListManualItems"
+import { appRoutes, type PageProps } from "#data/routes"
+import { useSkuListDeleteOverlay } from "#hooks/useSkuListDeleteOverlay"
+import { useSkuListDetails } from "#hooks/useSkuListDetails"
 
 export const SkuListDetails = (
-  props: PageProps<typeof appRoutes.details>
+  props: PageProps<typeof appRoutes.details>,
 ): React.JSX.Element => {
   const {
     settings: { mode, extras },
-    canUser
+    canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
 
   const queryString = useSearch()
 
   const [, setLocation] = useLocation()
-  const skuListId = props.params?.skuListId ?? ''
+  const skuListId = props.params?.skuListId ?? ""
 
   const { skuList, isLoading, error, mutateSkuList } =
     useSkuListDetails(skuListId)
@@ -52,20 +51,20 @@ export const SkuListDetails = (
     extras?.salesChannels != null && extras?.salesChannels.length > 0
 
   const { data: publicMarkets } = useCoreApi(
-    'markets',
-    'list',
+    "markets",
+    "list",
     [
       {
-        fields: ['id'],
+        fields: ["id"],
         filters: {
           customer_group_null: true,
           private_true: false,
-          disabled_at_null: true
+          disabled_at_null: true,
         },
-        pageSize: 1
-      }
+        pageSize: 1,
+      },
     ],
-    {}
+    {},
   )
 
   if (error != null) {
@@ -76,16 +75,16 @@ export const SkuListDetails = (
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
-          label: 'SKU Lists',
-          icon: 'arrowLeft'
+          label: "SKU Lists",
+          icon: "arrowLeft",
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.list.makePath({})}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -99,40 +98,40 @@ export const SkuListDetails = (
   const isAutomatic =
     skuList?.manual === false && skuList.sku_code_regex != null
 
-  const pageToolbar: PageHeadingProps['toolbar'] = {
+  const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
-    dropdownItems: []
+    dropdownItems: [],
   }
 
   const hasPublicMarkets =
     publicMarkets != null && publicMarkets.meta.recordCount > 0
 
-  const tabs = ['items', 'links', 'info']
+  const tabs = ["items", "links", "info"]
   const urlParams = new URLSearchParams(queryString)
   const defaultTab =
-    urlParams.get('tab') != null
-      ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
+    urlParams.get("tab") != null
+      ? (tabs.indexOf(urlParams.get("tab") ?? "") ?? 0)
       : 0
 
-  if (canUser('update', 'sku_lists')) {
+  if (canUser("update", "sku_lists")) {
     pageToolbar.buttons?.push({
-      label: 'Edit',
-      size: 'small',
-      variant: 'secondary',
+      label: "Edit",
+      size: "small",
+      variant: "secondary",
       onClick: () => {
         setLocation(appRoutes.edit.makePath({ skuListId }))
-      }
+      },
     })
   }
 
-  if (canUser('destroy', 'sku_lists')) {
+  if (canUser("destroy", "sku_lists")) {
     pageToolbar.dropdownItems?.push([
       {
-        label: 'Delete',
+        label: "Delete",
         onClick: () => {
           showDeleteOverlay()
-        }
-      }
+        },
+      },
     ])
   }
 
@@ -146,24 +145,24 @@ export const SkuListDetails = (
         onClick: () => {
           goBack({
             currentResourceId: skuListId,
-            defaultRelativePath: appRoutes.list.makePath({})
+            defaultRelativePath: appRoutes.list.makePath({}),
           })
         },
-        label: 'SKU Lists',
-        icon: 'arrowLeft'
+        label: "SKU Lists",
+        icon: "arrowLeft",
       }}
       toolbar={pageToolbar}
       scrollToTop
-      gap='only-top'
+      gap="only-top"
     >
-      <Spacer top='10' bottom='4'>
+      <Spacer top="10" bottom="4">
         <Tabs keepAlive defaultTab={defaultTab}>
-          <Tab name='Items'>
+          <Tab name="Items">
             {isManual && (
               <>
                 {hasBundles && (
-                  <Spacer top='10' bottom='14'>
-                    <Alert status='info'>
+                  <Spacer top="10" bottom="14">
+                    <Alert status="info">
                       Items in a SKU List linked to a Bundle cannot be modified.
                     </Alert>
                   </Spacer>
@@ -175,41 +174,41 @@ export const SkuListDetails = (
               </>
             )}
             {isAutomatic && (
-              <Spacer top='10'>
+              <Spacer top="10">
                 <CodeBlock
                   hint={{
-                    text: 'Matching SKU codes are automatically included to this list.'
+                    text: "Matching SKU codes are automatically included to this list.",
                   }}
                 >
-                  {skuList.sku_code_regex ?? ''}
+                  {skuList.sku_code_regex ?? ""}
                 </CodeBlock>
               </Spacer>
             )}
           </Tab>
-          <Tab name='Links'>
-            <Spacer top='10'>
+          <Tab name="Links">
+            <Spacer top="10">
               <Section
-                title='Links'
+                title="Links"
                 border={
-                  hasSalesChannels && hasPublicMarkets ? 'none' : undefined
+                  hasSalesChannels && hasPublicMarkets ? "none" : undefined
                 }
                 actionButton={
-                  canUser('update', 'sku_lists') &&
+                  canUser("update", "sku_lists") &&
                   hasSalesChannels &&
                   hasPublicMarkets && (
                     <Button
-                      size='mini'
-                      variant='secondary'
-                      alignItems='center'
+                      size="mini"
+                      variant="secondary"
+                      alignItems="center"
                       onClick={() => {
                         setLocation(
                           appRoutes.linksNew.makePath({
-                            resourceId: skuListId
-                          })
+                            resourceId: skuListId,
+                          }),
                         )
                       }}
                     >
-                      <Icon name='lightning' size='16' />
+                      <Icon name="lightning" size="16" />
                       New link
                     </Button>
                   )
@@ -218,26 +217,26 @@ export const SkuListDetails = (
                 {hasSalesChannels && hasPublicMarkets ? (
                   <LinkListTable
                     resourceId={skuListId}
-                    resourceType='sku_lists'
+                    resourceType="sku_lists"
                   />
                 ) : (
                   <LinksEmptyState
                     scope={
                       !hasSalesChannels
-                        ? 'no-sales-channels'
+                        ? "no-sales-channels"
                         : !hasPublicMarkets
-                          ? 'no-public-markets'
-                          : 'no-links'
+                          ? "no-public-markets"
+                          : "no-links"
                     }
                     resourceId={skuListId}
-                    resourceType='sku_lists'
+                    resourceType="sku_lists"
                   />
                 )}
               </Section>
             </Spacer>
           </Tab>
-          <Tab name='Info'>
-            <Spacer top='10'>
+          <Tab name="Info">
+            <Spacer top="10">
               <ResourceDetails
                 resource={skuList}
                 onUpdated={async () => {
@@ -246,12 +245,12 @@ export const SkuListDetails = (
               />
             </Spacer>
             {!isMockedId(skuList.id) && (
-              <Spacer top='14'>
+              <Spacer top="14">
                 <ResourceMetadata
-                  resourceType='sku_lists'
+                  resourceType="sku_lists"
                   resourceId={skuList.id}
                   overlay={{
-                    title: pageTitle
+                    title: pageTitle,
                   }}
                 />
               </Spacer>
@@ -259,7 +258,7 @@ export const SkuListDetails = (
           </Tab>
         </Tabs>
       </Spacer>
-      {canUser('destroy', 'sku_lists') && <DeleteOverlay />}
+      {canUser("destroy", "sku_lists") && <DeleteOverlay />}
     </PageLayout>
   )
 }

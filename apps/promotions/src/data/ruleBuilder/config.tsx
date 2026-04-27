@@ -1,55 +1,55 @@
-import type { Promotion } from '#types'
 import {
+  type CurrencyCode,
   HookedInput,
   HookedInputSelect,
   Spacer,
   Text,
-  type CurrencyCode
-} from '@commercelayer/app-elements'
-import type { FlexPromotion, ListableResourceType } from '@commercelayer/sdk'
-import { useFormContext } from 'react-hook-form'
-import { InputCurrencyComponent } from './components/InputCurrencyComponent'
-import { SelectCurrencyComponent } from './components/SelectCurrencyComponent'
-import { SelectMarketComponent } from './components/SelectMarketComponent'
-import { SelectSkuListComponent } from './components/SelectSkuListComponent'
-import { SelectTagComponent } from './components/SelectTagComponent'
-import type { Rule } from './usePromotionRules'
+} from "@commercelayer/app-elements"
+import type { FlexPromotion, ListableResourceType } from "@commercelayer/sdk"
+import { useFormContext } from "react-hook-form"
+import type { Promotion } from "#types"
+import { InputCurrencyComponent } from "./components/InputCurrencyComponent"
+import { SelectCurrencyComponent } from "./components/SelectCurrencyComponent"
+import { SelectMarketComponent } from "./components/SelectMarketComponent"
+import { SelectSkuListComponent } from "./components/SelectSkuListComponent"
+import { SelectTagComponent } from "./components/SelectTagComponent"
+import type { Rule } from "./usePromotionRules"
 
 export const matchers = {
   in: {
-    label: 'is',
-    value: 'in'
+    label: "is",
+    value: "in",
   },
   not_in: {
-    label: 'is not',
-    value: 'not_in'
+    label: "is not",
+    value: "not_in",
   },
   eq: {
-    label: 'is equal to',
-    value: 'eq'
+    label: "is equal to",
+    value: "eq",
   },
   gteq: {
-    label: 'is equal or greater than',
-    value: 'gteq'
+    label: "is equal or greater than",
+    value: "gteq",
   },
   gt: {
-    label: 'is greater than',
-    value: 'gt'
+    label: "is greater than",
+    value: "gt",
   },
   lteq: {
-    label: 'is equal or lower than',
-    value: 'lteq'
+    label: "is equal or lower than",
+    value: "lteq",
   },
   lt: {
-    label: 'is lower than',
-    value: 'lt'
+    label: "is lower than",
+    value: "lt",
   },
   end_any: {
-    label: 'ends with',
-    value: 'end_any'
-  }
+    label: "ends with",
+    value: "end_any",
+  },
 } as const satisfies {
-  [key in 'in' | 'not_in' | 'eq' | 'gteq' | 'gt' | 'lteq' | 'lt' | 'end_any']: {
+  [key in "in" | "not_in" | "eq" | "gteq" | "gt" | "lteq" | "lt" | "end_any"]: {
     label: string
     value: key
   }
@@ -57,110 +57,110 @@ export const matchers = {
 
 export const ruleBuilderConfig: RuleBuilderConfig = {
   market_id: {
-    resource: 'custom_promotion_rules',
-    rel: 'markets',
-    label: 'Market',
+    resource: "custom_promotion_rules",
+    rel: "markets",
+    label: "Market",
     operators: [matchers.in, matchers.not_in],
     Component: ({ promotion }) => (
       <SelectMarketComponent promotion={promotion} />
     ),
     isAvailable() {
       return true
-    }
+    },
   },
   currency_code: {
-    resource: 'custom_promotion_rules',
+    resource: "custom_promotion_rules",
     rel: null,
-    label: 'Currency',
+    label: "Currency",
     operators: [matchers.in, matchers.not_in],
     Component: ({ promotion }) => (
       <SelectCurrencyComponent promotion={promotion} />
     ),
     isAvailable() {
       return true
-    }
+    },
   },
   customer_status: {
-    resource: 'custom_promotion_rules',
+    resource: "custom_promotion_rules",
     rel: null,
-    label: 'Customer status',
+    label: "Customer status",
     operators: [matchers.in, matchers.not_in],
     Component: () => (
       <HookedInputSelect
-        name='value'
-        placeholder='Select...'
+        name="value"
+        placeholder="Select..."
         initialValues={[
-          { label: 'Prospect', value: 'prospect' },
+          { label: "Prospect", value: "prospect" },
           {
-            label: 'Acquired',
-            value: 'acquired'
+            label: "Acquired",
+            value: "acquired",
           },
-          { label: 'Repeat', value: 'repeat' }
+          { label: "Repeat", value: "repeat" },
         ]}
         isMulti
       />
     ),
     isAvailable() {
       return true
-    }
+    },
   },
   customer_tags_id: {
-    resource: 'custom_promotion_rules',
-    rel: 'tags',
-    label: 'Customer tag',
+    resource: "custom_promotion_rules",
+    rel: "tags",
+    label: "Customer tag",
     operators: [matchers.in, matchers.not_in],
     Component: () => <SelectTagComponent />,
     isAvailable() {
       return true
-    }
+    },
   },
   customer_email: {
-    resource: 'custom_promotion_rules',
+    resource: "custom_promotion_rules",
     rel: null,
-    label: 'Customer email',
+    label: "Customer email",
     operators: [matchers.end_any],
-    Component: () => <HookedInput name='value' />,
+    Component: () => <HookedInput name="value" />,
     isAvailable() {
       return true
-    }
+    },
   },
   customer_customer_subscriptions_reference: {
-    resource: 'custom_promotion_rules',
+    resource: "custom_promotion_rules",
     rel: null,
-    label: 'Customer subscription',
+    label: "Customer subscription",
     operators: [matchers.in, matchers.not_in],
-    Component: () => <HookedInput name='value' />,
+    Component: () => <HookedInput name="value" />,
     isAvailable() {
       return true
-    }
+    },
   },
   skuListPromotionRule: {
-    resource: 'sku_list_promotion_rules',
-    rel: 'sku_lists',
-    label: 'Order contains SKU list',
+    resource: "sku_list_promotion_rules",
+    rel: "sku_lists",
+    label: "Order contains SKU list",
     operators: null,
     Component: () => {
       const { watch } = useFormContext()
-      const watchedAllSKUs = watch('all_skus')
+      const watchedAllSKUs = watch("all_skus")
       return (
         <>
           <SelectSkuListComponent />
-          <Spacer top='4'>
+          <Spacer top="4">
             <HookedInputSelect
-              name='all_skus'
+              name="all_skus"
               initialValues={[
-                { label: 'Active for any SKU in the SKU list', value: 'any' },
-                { label: 'Active for all SKUs in the SKU list', value: 'all' },
-                { label: 'Active for at least', value: 'number' }
+                { label: "Active for any SKU in the SKU list", value: "any" },
+                { label: "Active for all SKUs in the SKU list", value: "all" },
+                { label: "Active for at least", value: "number" },
               ]}
             />
-            {watchedAllSKUs === 'number' && (
-              <Spacer top='4'>
+            {watchedAllSKUs === "number" && (
+              <Spacer top="4">
                 <HookedInput
-                  type='number'
+                  type="number"
                   min={0}
-                  name='min_quantity'
-                  suffix={<Text variant='info'>SKUs in the SKU list</Text>}
+                  name="min_quantity"
+                  suffix={<Text variant="info">SKUs in the SKU list</Text>}
                 />
               </Spacer>
             )}
@@ -170,81 +170,81 @@ export const ruleBuilderConfig: RuleBuilderConfig = {
     },
     isAvailable() {
       return true
-    }
+    },
   },
   line_items_sku_tags_id: {
-    resource: 'custom_promotion_rules',
-    rel: 'tags',
-    label: 'Order contains SKU with tag',
+    resource: "custom_promotion_rules",
+    rel: "tags",
+    label: "Order contains SKU with tag",
     operators: [matchers.in],
     Component: () => <SelectTagComponent />,
     isAvailable() {
       return true
-    }
+    },
   },
   subtotal_amount_cents: {
-    resource: 'custom_promotion_rules',
+    resource: "custom_promotion_rules",
     rel: null,
-    label: 'Order subtotal',
+    label: "Order subtotal",
     operators: [
       matchers.eq,
       matchers.gteq,
       matchers.gt,
       matchers.lteq,
-      matchers.lt
+      matchers.lt,
     ],
     Component: ({ promotion }) => (
       <InputCurrencyComponent promotion={promotion} />
     ),
     isAvailable({ currencyCodes }) {
       return currencyCodes.length === 1
-    }
+    },
   },
   total_amount_cents: {
-    resource: 'custom_promotion_rules',
+    resource: "custom_promotion_rules",
     rel: null,
-    label: 'Order total',
+    label: "Order total",
     operators: [
       matchers.eq,
       matchers.gteq,
       matchers.gt,
       matchers.lteq,
-      matchers.lt
+      matchers.lt,
     ],
     Component: ({ promotion }) => (
       <InputCurrencyComponent promotion={promotion} />
     ),
     isAvailable({ currencyCodes }) {
       return currencyCodes.length === 1
-    }
+    },
   },
   tags_id: {
-    resource: 'custom_promotion_rules',
-    rel: 'tags',
-    label: 'Order tag',
+    resource: "custom_promotion_rules",
+    rel: "tags",
+    label: "Order tag",
     operators: [matchers.in, matchers.not_in],
     Component: () => <SelectTagComponent />,
     isAvailable() {
       return true
-    }
-  }
+    },
+  },
 }
 
 export type RuleBuilderConfig = Record<
-  | 'market_id'
-  | 'currency_code'
-  | 'total_amount_cents'
-  | 'line_items_sku_tags_id'
-  | 'customer_status'
-  | 'customer_tags_id'
-  | 'customer_email'
-  | 'customer_customer_subscriptions_reference'
-  | 'tags_id'
-  | 'subtotal_amount_cents'
-  | 'skuListPromotionRule',
+  | "market_id"
+  | "currency_code"
+  | "total_amount_cents"
+  | "line_items_sku_tags_id"
+  | "customer_status"
+  | "customer_tags_id"
+  | "customer_email"
+  | "customer_customer_subscriptions_reference"
+  | "tags_id"
+  | "subtotal_amount_cents"
+  | "skuListPromotionRule",
   {
-    resource: 'custom_promotion_rules' | 'sku_list_promotion_rules'
-    rel: Extract<ListableResourceType, 'markets' | 'tags' | 'sku_lists'> | null
+    resource: "custom_promotion_rules" | "sku_list_promotion_rules"
+    rel: Extract<ListableResourceType, "markets" | "tags" | "sku_lists"> | null
     label: string
     operators: Array<(typeof matchers)[keyof typeof matchers]> | null
     Component: (props: {

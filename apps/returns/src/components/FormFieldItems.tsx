@@ -1,14 +1,15 @@
 import {
   Avatar,
   HookedInputCheckboxGroup,
+  type HookedInputCheckboxGroupProps,
   ListItem,
   Text,
   useTranslation,
-  type HookedInputCheckboxGroupProps
-} from '@commercelayer/app-elements'
+} from "@commercelayer/app-elements"
 
-import type { ReturnLineItem } from '@commercelayer/sdk'
-import { useMemo } from 'react'
+import type { ReturnLineItem } from "@commercelayer/sdk"
+import { useMemo } from "react"
+
 interface Props {
   returnLineItems: ReturnLineItem[]
 }
@@ -16,47 +17,47 @@ interface Props {
 export function FormFieldItems({ returnLineItems }: Props): React.JSX.Element {
   const { t } = useTranslation()
 
-  const options: HookedInputCheckboxGroupProps['options'] = useMemo(
+  const options: HookedInputCheckboxGroupProps["options"] = useMemo(
     () =>
       returnLineItems.map((item) => ({
         value: item.id,
         content: (
           <ListItem
-            alignIcon='center'
-            alignItems='center'
-            borderStyle='none'
+            alignIcon="center"
+            alignItems="center"
+            borderStyle="none"
             icon={
               item.image_url != null ? (
                 <Avatar
-                  alt={item.name ?? ''}
-                  size='small'
+                  alt={item.name ?? ""}
+                  size="small"
                   src={item.image_url as `https://${string}`}
                 />
               ) : undefined
             }
-            padding='none'
+            padding="none"
           >
-            <Text size='regular' tag='div' weight='semibold'>
+            <Text size="regular" tag="div" weight="semibold">
               {item.name}
             </Text>
-            <Text size='regular' tag='div' weight='medium' wrap='nowrap'>
+            <Text size="regular" tag="div" weight="medium" wrap="nowrap">
               x {item.quantity}
             </Text>
           </ListItem>
-        )
+        ),
       })),
-    [returnLineItems]
+    [returnLineItems],
   )
 
   if (options.length === 0) {
-    return <div>{t('apps.returns.form.no_items')}</div>
+    return <div>{t("apps.returns.form.no_items")}</div>
   }
 
   return (
     <>
       <HookedInputCheckboxGroup
-        name='items'
-        title={t('apps.returns.form.items')}
+        name="items"
+        title={t("apps.returns.form.items")}
         options={options}
       />
     </>

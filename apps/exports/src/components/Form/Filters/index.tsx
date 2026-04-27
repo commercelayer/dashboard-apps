@@ -1,13 +1,13 @@
-import { type AllowedResourceType } from '@typing/resources.types'
-import { type AllFilters } from '../types'
-import { Coupons } from './Coupons'
-import { InStockSubscriptions } from './InStockSubscriptions'
-import { Orders } from './Orders'
-import { OrderSubscriptions } from './OrderSubscriptions'
-import { Prices } from './Prices'
-import { Returns } from './Returns'
-import { Skus } from './Skus'
-import { StockItems } from './StockItems'
+import type { AllowedResourceType } from "@typing/resources.types"
+import type { AllFilters } from "../types"
+import { Coupons } from "./Coupons"
+import { InStockSubscriptions } from "./InStockSubscriptions"
+import { OrderSubscriptions } from "./OrderSubscriptions"
+import { Orders } from "./Orders"
+import { Prices } from "./Prices"
+import { Returns } from "./Returns"
+import { Skus } from "./Skus"
+import { StockItems } from "./StockItems"
 
 interface Props {
   resourceType: AllowedResourceType
@@ -15,49 +15,49 @@ interface Props {
 }
 
 export const resourcesWithFilters = [
-  'in_stock_subscriptions',
-  'order_subscriptions',
-  'orders',
-  'prices',
-  'coupons',
-  'returns',
-  'skus',
-  'stock_items'
+  "in_stock_subscriptions",
+  "order_subscriptions",
+  "orders",
+  "prices",
+  "coupons",
+  "returns",
+  "skus",
+  "stock_items",
 ]
 
 export function Filters({
   resourceType,
-  onChange
+  onChange,
 }: Props): React.JSX.Element | null {
-  if (resourceType === 'orders') {
+  if (resourceType === "orders") {
     return <Orders onChange={onChange} />
   }
 
-  if (resourceType === 'returns') {
+  if (resourceType === "returns") {
     return <Returns onChange={onChange} />
   }
 
-  if (resourceType === 'in_stock_subscriptions') {
+  if (resourceType === "in_stock_subscriptions") {
     return <InStockSubscriptions onChange={onChange} />
   }
 
-  if (resourceType === 'order_subscriptions') {
+  if (resourceType === "order_subscriptions") {
     return <OrderSubscriptions onChange={onChange} />
   }
 
-  if (resourceType === 'skus') {
+  if (resourceType === "skus") {
     return <Skus onChange={onChange} />
   }
 
-  if (resourceType === 'prices') {
+  if (resourceType === "prices") {
     return <Prices onChange={onChange} />
   }
 
-  if (resourceType === 'coupons') {
+  if (resourceType === "coupons") {
     return <Coupons onChange={onChange} />
   }
 
-  if (resourceType === 'stock_items') {
+  if (resourceType === "stock_items") {
     return <StockItems onChange={onChange} />
   }
 

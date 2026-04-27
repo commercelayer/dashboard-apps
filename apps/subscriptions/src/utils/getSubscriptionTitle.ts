@@ -1,4 +1,4 @@
-import type { OrderSubscription } from '@commercelayer/sdk'
+import type { OrderSubscription } from "@commercelayer/sdk"
 
 /**
  * Generates a standard subscription title suitable for the whole application (eg. `US Market #123`).
@@ -7,11 +7,11 @@ import type { OrderSubscription } from '@commercelayer/sdk'
  */
 
 export const getSubscriptionTitle = (
-  subscription: OrderSubscription
+  subscription: OrderSubscription,
 ): string => {
   const subscriptionTitleMarket =
     subscription.market?.name != null
       ? `${subscription.market.name}`
-      : 'Subscription'
+      : "Subscription"
   return `${subscriptionTitleMarket} #${subscription.number}`
 }

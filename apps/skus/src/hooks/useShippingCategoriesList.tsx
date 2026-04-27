@@ -1,9 +1,9 @@
-import { useCoreApi } from '@commercelayer/app-elements'
+import { useCoreApi } from "@commercelayer/app-elements"
 import type {
   ListResponse,
   QueryPageSize,
-  ShippingCategory
-} from '@commercelayer/sdk'
+  ShippingCategory,
+} from "@commercelayer/sdk"
 
 interface UseShippingCategoriesListSettings {
   pageNumber?: number
@@ -33,20 +33,20 @@ export function useShippingCategoriesList({ hint, settings }: Props): {
   const {
     data: shippingCategories,
     isLoading,
-    error
+    error,
   } = useCoreApi(
-    'shipping_categories',
-    'list',
+    "shipping_categories",
+    "list",
     [
       {
-        fields: ['id', 'name'],
+        fields: ["id", "name"],
         filters: hint != null ? { name_cont: hint } : undefined,
-        sort: ['name'],
+        sort: ["name"],
         pageNumber,
-        pageSize
-      }
+        pageSize,
+      },
     ],
-    {}
+    {},
   )
 
   return { shippingCategories, error, isLoading }

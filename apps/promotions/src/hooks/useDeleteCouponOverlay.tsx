@@ -4,11 +4,11 @@ import {
   PageHeading,
   SkeletonTemplate,
   useCoreSdkProvider,
-  useOverlay
-} from '@commercelayer/app-elements'
-import type { Coupon } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { makeCoupon } from 'src/mocks/resources/coupons'
+  useOverlay,
+} from "@commercelayer/app-elements"
+import type { Coupon } from "@commercelayer/sdk"
+import { useState } from "react"
+import { makeCoupon } from "src/mocks/resources/coupons"
 
 interface Options {
   coupon: Coupon
@@ -24,7 +24,7 @@ export function useDeleteCouponOverlay(): OverlayHook {
   const { sdkClient } = useCoreSdkProvider()
   const [options, setOptions] = useState<Options>({
     coupon: makeCoupon(),
-    deleteRule: false
+    deleteRule: false,
   })
 
   return {
@@ -34,7 +34,7 @@ export function useDeleteCouponOverlay(): OverlayHook {
     },
     Overlay: ({ onDelete }) => {
       return (
-        <OverlayElement backgroundColor='light'>
+        <OverlayElement backgroundColor="light">
           <SkeletonTemplate isLoading={isMockedId(options.coupon.id)}>
             <PageHeading
               title={`Confirm that you want to cancel the coupon with code ${options.coupon.code}`}
@@ -42,17 +42,17 @@ export function useDeleteCouponOverlay(): OverlayHook {
                 onClick: () => {
                   close()
                 },
-                label: 'Close',
-                icon: 'x'
+                label: "Close",
+                icon: "x",
               }}
-              description='This action cannot be undone, proceed with caution.'
+              description="This action cannot be undone, proceed with caution."
             />
 
             <Button
-              variant='danger'
+              variant="danger"
               fullWidth
               onClick={() => {
-                console.log('coupon', options)
+                console.log("coupon", options)
                 void sdkClient.coupons
                   .delete(options.coupon.id)
                   .then(async () => {
@@ -61,7 +61,7 @@ export function useDeleteCouponOverlay(): OverlayHook {
                       options.coupon.promotion_rule?.id != null
                     ) {
                       await sdkClient.coupon_codes_promotion_rules.delete(
-                        options.coupon.promotion_rule.id
+                        options.coupon.promotion_rule.id,
                       )
                     }
                   })
@@ -76,6 +76,6 @@ export function useDeleteCouponOverlay(): OverlayHook {
           </SkeletonTemplate>
         </OverlayElement>
       )
-    }
+    },
   }
 }

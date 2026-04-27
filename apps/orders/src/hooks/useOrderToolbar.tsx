@@ -1,23 +1,23 @@
 import {
-  getTriggerAttributeName,
-  getTriggerAttributes
-} from '#components/OrderSummary/orderDictionary'
-import { appRoutes } from '#data/routes'
-import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
-import { useReturnableList } from '#hooks/useReturnableList'
-import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
-import {
+  type DropdownItemProps,
+  type PageHeadingToolbarProps,
   useTokenProvider,
   useTranslation,
-  type DropdownItemProps,
-  type PageHeadingToolbarProps
-} from '@commercelayer/app-elements'
-import { type Order } from '@commercelayer/sdk'
-import { useMemo } from 'react'
-import { useLocation } from 'wouter'
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { useMemo } from "react"
+import { useLocation } from "wouter"
+import {
+  getTriggerAttributeName,
+  getTriggerAttributes,
+} from "#components/OrderSummary/orderDictionary"
+import { appRoutes } from "#data/routes"
+import { useMarketInventoryModel } from "#hooks/useMarketInventoryModel"
+import { useReturnableList } from "#hooks/useReturnableList"
+import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
 export function useOrderToolbar({
-  order
+  order,
 }: {
   order: Order
 }): PageHeadingToolbarProps {
@@ -29,7 +29,7 @@ export function useOrderToolbar({
   const orderReturnStockLocation =
     inventoryModel?.inventory_return_locations ?? []
   const showReturnDropDownItem =
-    canUser('create', 'returns') &&
+    canUser("create", "returns") &&
     orderReturnStockLocation.length > 0 &&
     returnableLineItems.length > 0
 
@@ -38,10 +38,10 @@ export function useOrderToolbar({
   >(() => {
     return showReturnDropDownItem
       ? {
-          label: t('apps.orders.tasks.request_return'),
+          label: t("apps.orders.tasks.request_return"),
           onClick: () => {
             setLocation(appRoutes.return.makePath({ orderId: order.id }))
-          }
+          },
         }
       : undefined
   }, [order, returnableLineItems, showReturnDropDownItem])
@@ -51,7 +51,7 @@ export function useOrderToolbar({
   const triggerMenuActions = useMemo(() => {
     const triggerAttributes = getTriggerAttributes(order)
     return getTriggerAttributesForUser(canUser).filter((attr) =>
-      triggerAttributes.includes(attr)
+      triggerAttributes.includes(attr),
     )
   }, [order])
 
@@ -60,14 +60,14 @@ export function useOrderToolbar({
       label: getTriggerAttributeName(triggerAttribute),
       onClick: () => {
         // refund action has its own form page
-        if (triggerAttribute === '_refund') {
+        if (triggerAttribute === "_refund") {
           setLocation(appRoutes.refund.makePath({ orderId: order.id }))
           return
         }
 
         void dispatch(triggerAttribute)
-      }
-    })
+      },
+    }),
   )
 
   const dropdownItemsGroup: DropdownItemProps[] =
@@ -82,26 +82,26 @@ export function useOrderToolbar({
             {
               label: dropdownItemsGroup[0].label,
               onClick: dropdownItemsGroup[0].onClick,
-              size: 'small'
-            }
+              size: "small",
+            },
           ]
         : undefined,
     dropdownItems:
-      dropdownItemsGroup.length === 1 ? undefined : [dropdownItemsGroup]
+      dropdownItemsGroup.length === 1 ? undefined : [dropdownItemsGroup],
   }
 }
 
 type UITriggerAttributes = Parameters<typeof getTriggerAttributeName>[0]
 
-type CanUserSignature = ReturnType<typeof useTokenProvider>['canUser']
+type CanUserSignature = ReturnType<typeof useTokenProvider>["canUser"]
 function getTriggerAttributesForUser(
-  canUser: CanUserSignature
+  canUser: CanUserSignature,
 ): UITriggerAttributes[] {
-  const onOrder: UITriggerAttributes[] = canUser('update', 'orders')
-    ? ['_archive', '_unarchive']
+  const onOrder: UITriggerAttributes[] = canUser("update", "orders")
+    ? ["_archive", "_unarchive"]
     : []
-  const onCapture: UITriggerAttributes[] = canUser('update', 'transactions')
-    ? ['_refund']
+  const onCapture: UITriggerAttributes[] = canUser("update", "transactions")
+    ? ["_refund"]
     : []
   return [...onOrder, ...onCapture]
 }

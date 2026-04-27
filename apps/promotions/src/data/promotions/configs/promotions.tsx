@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod"
 
 export const genericPromotionOptions = z.object({
   name: z.string().min(1),
@@ -10,5 +10,5 @@ export const genericPromotionOptions = z.object({
   exclusive: z.boolean().default(false),
   priority: z.preprocess((value) => {
     return Number.isNaN(value) ? null : value
-  }, z.number().min(1).nullish())
+  }, z.number().min(1).nullish()),
 })

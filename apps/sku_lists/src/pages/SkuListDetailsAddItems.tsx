@@ -1,10 +1,8 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemSku } from '#components/ListItemSku'
-import { appRoutes, type PageProps } from '#data/routes'
 import {
   Button,
   Card,
   EmptyState,
+  type FiltersInstructions,
   InputFeedback,
   PageLayout,
   Spacer,
@@ -12,24 +10,26 @@ import {
   useCoreSdkProvider,
   useResourceFilters,
   useTokenProvider,
-  type FiltersInstructions
-} from '@commercelayer/app-elements'
-import { useCallback, useState, type FC } from 'react'
-import { Link, useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+} from "@commercelayer/app-elements"
+import { type FC, useCallback, useState } from "react"
+import { Link, useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemSku } from "#components/ListItemSku"
+import { appRoutes, type PageProps } from "#data/routes"
 
 export const SkuListDetailsAddItems: FC<
   PageProps<typeof appRoutes.details>
 > = ({ params }) => {
   const { canUser } = useTokenProvider()
-  const skuListId = params?.skuListId ?? ''
+  const skuListId = params?.skuListId ?? ""
 
-  const { data: skuListItems } = useCoreApi('sku_list_items', 'list', [
+  const { data: skuListItems } = useCoreApi("sku_list_items", "list", [
     {
       pageSize: 1,
-      fields: ['id'],
-      filters: { sku_list_id_eq: skuListId }
-    }
+      fields: ["id"],
+      filters: { sku_list_id_eq: skuListId },
+    },
   ])
   const totalSkuListItems = skuListItems?.meta.recordCount
 
@@ -37,40 +37,40 @@ export const SkuListDetailsAddItems: FC<
     data: skuList,
     isLoading,
     isValidating,
-    error
+    error,
   } = useCoreApi(
-    'sku_lists',
-    'retrieve',
+    "sku_lists",
+    "retrieve",
     totalSkuListItems == null
       ? null
       : [
           skuListId,
           {
             fields: {
-              sku_lists: ['sku_list_items'],
-              sku_list_items: ['id', 'sku_code']
+              sku_lists: ["sku_list_items"],
+              sku_list_items: ["id", "sku_code"],
             },
-            include: totalSkuListItems < 100 ? ['sku_list_items'] : []
-          }
-        ]
+            include: totalSkuListItems < 100 ? ["sku_list_items"] : [],
+          },
+        ],
   )
 
   // codes of SKUs already in the list we want to exclude from the list of items to add
   // we limit the number of codes to 100 to avoid performance issues and generate a query that is too long
   const excludedCodes = (skuList?.sku_list_items ?? [])
-    ?.map((item) => item?.sku_code ?? '')
+    ?.map((item) => item?.sku_code ?? "")
     .slice(0, 100)
-    .filter((item) => item !== '')
+    .filter((item) => item !== "")
 
-  if (!canUser('update', 'sku_lists') || error != null) {
+  if (!canUser("update", "sku_lists") || error != null) {
     return (
-      <PageLayout title='Not authorized' scrollToTop>
+      <PageLayout title="Not authorized" scrollToTop>
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={appRoutes.list.makePath({})}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -88,7 +88,7 @@ export const SkuListDetailsAddItems: FC<
       skuListId={skuListId}
       excludedCodes={excludedCodes}
       // force component to re-load inner list when excludedCodes change
-      key={excludedCodes.sort().join(',')}
+      key={excludedCodes.sort().join(",")}
     />
   )
 }
@@ -104,34 +104,34 @@ const SkuListAddItemsInner: FC<{
 
   const instructions: FiltersInstructions = [
     {
-      label: 'Already selected items',
-      type: 'options',
+      label: "Already selected items",
+      type: "options",
       sdk: {
-        predicate: 'code_not_in',
-        defaultOptions: excludedCodes
+        predicate: "code_not_in",
+        defaultOptions: excludedCodes,
       },
       render: {
-        component: 'inputToggleButton',
+        component: "inputToggleButton",
         props: {
-          mode: 'single',
-          options: []
-        }
-      }
+          mode: "single",
+          options: [],
+        },
+      },
     },
     {
-      label: 'Search',
-      type: 'textSearch',
+      label: "Search",
+      type: "textSearch",
       sdk: {
-        predicate: ['name', 'code'].join('_or_') + '_cont'
+        predicate: ["name", "code"].join("_or_") + "_cont",
       },
       render: {
-        component: 'searchBar'
-      }
-    }
+        component: "searchBar",
+      },
+    },
   ]
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions
+    instructions,
   })
 
   const [isCreating, setIsCreating] = useState(false)
@@ -142,31 +142,31 @@ const SkuListAddItemsInner: FC<{
         await sdkClient.sku_list_items.create({
           quantity: 1,
           sku_list: sdkClient.sku_lists.relationship(skuListId),
-          sku: sdkClient.skus.relationship(skuId)
+          sku: sdkClient.skus.relationship(skuId),
         })
       }
       setIsCreating(false)
     },
-    [sdkClient, skuListId]
+    [sdkClient, skuListId],
   )
 
   return (
     <PageLayout
-      title=''
-      gap='none'
+      title=""
+      gap="none"
       overlay
       overlayFooter={
         <div>
           {selected.length === 30 && (
-            <Spacer bottom='4'>
+            <Spacer bottom="4">
               <InputFeedback
-                variant='warning'
+                variant="warning"
                 message="You've reached the limit of 30 SKUs per submission."
               />
             </Spacer>
           )}
           <Button
-            variant='primary'
+            variant="primary"
             fullWidth
             onClick={() => {
               void createSkuListItems(selected).then(() => {
@@ -176,7 +176,7 @@ const SkuListAddItemsInner: FC<{
             disabled={selected.length === 0 || isCreating}
           >
             {isCreating ? (
-              'Adding...'
+              "Adding..."
             ) : (
               <>
                 Add SKUs{selected.length > 0 ? ` (${selected.length})` : null}
@@ -186,34 +186,34 @@ const SkuListAddItemsInner: FC<{
         </div>
       }
     >
-      <div className='w-full flex items-center gap-4'>
-        <div className='flex-1'>
+      <div className="w-full flex items-center gap-4">
+        <div className="flex-1">
           <SearchWithNav
             onFilterClick={() => {}}
             onUpdate={(qs) => {
               navigate(`?${qs}`, {
-                replace: true
+                replace: true,
               })
             }}
             queryString={queryString}
             hideFiltersNav
-            searchBarPlaceholder='search...'
+            searchBarPlaceholder="search..."
           />
         </div>
-        <Spacer top='6' bottom='14'>
+        <Spacer top="6" bottom="14">
           <Button
             onClick={() => {
               setLocation(appRoutes.details.makePath({ skuListId }))
             }}
-            variant='link'
+            variant="link"
           >
             Cancel
           </Button>
         </Spacer>
       </div>
-      <Card gap='none'>
+      <Card gap="none">
         <FilteredList
-          type='skus'
+          type="skus"
           ItemTemplate={(props) => {
             const isSelected =
               props?.resource != null && selected.includes(props.resource.id)
@@ -225,7 +225,7 @@ const SkuListAddItemsInner: FC<{
                   }
                   if (isSelected) {
                     setSelected((prev) =>
-                      prev.filter((id) => id !== resource.id)
+                      prev.filter((id) => id !== resource.id),
                     )
                     return
                   }
@@ -240,7 +240,7 @@ const SkuListAddItemsInner: FC<{
           }}
           emptyState={
             <ListEmptyState
-              scope={hasActiveFilter ? 'noSKUsFiltered' : 'noSKUs'}
+              scope={hasActiveFilter ? "noSKUsFiltered" : "noSKUs"}
             />
           }
           hideTitle

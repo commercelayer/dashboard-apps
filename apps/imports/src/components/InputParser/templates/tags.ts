@@ -1,1 +1,1 @@
-export const csvTagsTemplate = ['name']
+export const csvTagsTemplate = ["name"]

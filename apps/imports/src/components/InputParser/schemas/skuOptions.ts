@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { isFalsy } from '#utils/isFalsy'
-import { z } from 'zod'
-import { zodEnforcePositiveInt } from './zodUtils'
+import { z } from "zod"
+import { isFalsy } from "#utils/isFalsy"
+import { zodEnforcePositiveInt } from "./zodUtils"
 
 const makeSchema = (hasParentResourceId: boolean) =>
   z
@@ -14,7 +13,7 @@ const makeSchema = (hasParentResourceId: boolean) =>
       delay_hours: z.optional(zodEnforcePositiveInt),
       sku_code_regex: z.optional(z.string().min(1)),
       reference: z.optional(z.string()),
-      reference_origin: z.optional(z.string())
+      reference_origin: z.optional(z.string()),
     })
     .passthrough()
     .superRefine((data, ctx) => {
@@ -22,15 +21,15 @@ const makeSchema = (hasParentResourceId: boolean) =>
       if (noMarket && isFalsy(data.currency_code)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['currency_code'],
+          path: ["currency_code"],
           message:
-            'currency_code is required if market_id or parent resource is not set'
+            "currency_code is required if market_id or parent resource is not set",
         })
       }
     })
 
 export const csvSkuOptionSchema = ({
-  hasParentResource
+  hasParentResource,
 }: {
   hasParentResource: boolean
 }) => z.array(makeSchema(hasParentResource))

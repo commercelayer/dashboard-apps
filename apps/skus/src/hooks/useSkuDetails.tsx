@@ -1,7 +1,7 @@
-import { makeSku } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { Sku } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { Sku } from "@commercelayer/sdk"
+import type { KeyedMutator } from "swr"
+import { makeSku } from "#mocks"
 
 export function useSkuDetails(id: string): {
   sku: Sku
@@ -13,20 +13,20 @@ export function useSkuDetails(id: string): {
     data: sku,
     isLoading,
     error,
-    mutate: mutateSku
+    mutate: mutateSku,
   } = useCoreApi(
-    'skus',
-    'retrieve',
+    "skus",
+    "retrieve",
     [
       id,
       {
-        include: ['shipping_category']
-      }
+        include: ["shipping_category"],
+      },
     ],
     {
       isPaused: () => isMockedId(id),
-      fallbackData: makeSku()
-    }
+      fallbackData: makeSku(),
+    },
   )
 
   return { sku, error, isLoading, mutateSku }

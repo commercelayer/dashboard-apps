@@ -1,37 +1,37 @@
-import { ZodError } from 'zod'
-import { csvShippingCategorySchema } from './shippingCategory'
+import { ZodError } from "zod"
+import { csvShippingCategorySchema } from "./shippingCategory"
 
-describe('Validate csvShippingCategorySchema', () => {
-  test('received input should have a valid Shipping Category schema', () => {
+describe("Validate csvShippingCategorySchema", () => {
+  test("received input should have a valid Shipping Category schema", () => {
     expect(
       csvShippingCategorySchema.parse([
         {
-          name: 'Merchandise',
-          reference: 'Sample',
-          reference_origin: 'From imports'
+          name: "Merchandise",
+          reference: "Sample",
+          reference_origin: "From imports",
         },
         {
-          name: 'Hoodies'
-        }
-      ])
+          name: "Hoodies",
+        },
+      ]),
     ).toStrictEqual([
       {
-        name: 'Merchandise',
-        reference: 'Sample',
-        reference_origin: 'From imports'
+        name: "Merchandise",
+        reference: "Sample",
+        reference_origin: "From imports",
       },
       {
-        name: 'Hoodies'
-      }
+        name: "Hoodies",
+      },
     ])
   })
 
-  test('Name is required', () => {
+  test("Name is required", () => {
     try {
       csvShippingCategorySchema.parse([
         {
-          reference: 'Sample'
-        }
+          reference: "Sample",
+        },
       ])
     } catch (err) {
       if (err instanceof ZodError) {
@@ -40,12 +40,12 @@ describe('Validate csvShippingCategorySchema', () => {
     }
   })
 
-  test('Name cannot be blank', () => {
+  test("Name cannot be blank", () => {
     try {
       csvShippingCategorySchema.parse([
         {
-          reference: ''
-        }
+          reference: "",
+        },
       ])
     } catch (err) {
       if (err instanceof ZodError) {

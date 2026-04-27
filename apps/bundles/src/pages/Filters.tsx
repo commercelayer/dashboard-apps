@@ -1,30 +1,30 @@
-import { instructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
-import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { useLocation } from 'wouter'
+import { PageLayout, useResourceFilters } from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { useLocation } from "wouter"
+import { instructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
 
 export const Filters: FC = () => {
   const [, setLocation] = useLocation()
   const { FiltersForm, adapters } = useResourceFilters({
-    instructions
+    instructions,
   })
 
   return (
     <PageLayout
-      title='Filters'
+      title="Filters"
       navigationButton={{
         onClick: () => {
           setLocation(
             appRoutes.list.makePath(
               adapters.adaptUrlQueryToUrlQuery({
-                queryString: location.search
-              })
-            )
+                queryString: location.search,
+              }),
+            ),
           )
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
       overlay
     >

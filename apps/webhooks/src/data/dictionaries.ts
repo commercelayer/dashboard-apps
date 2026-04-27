@@ -1,11 +1,11 @@
 import type {
   BadgeProps,
   IconProps,
-  TriggerAttribute
-} from '@commercelayer/app-elements'
-import type { Webhook, WebhookUpdate } from '@commercelayer/sdk'
+  TriggerAttribute,
+} from "@commercelayer/app-elements"
+import type { Webhook, WebhookUpdate } from "@commercelayer/sdk"
 
-type ActionVariant = 'primary' | 'secondary'
+type ActionVariant = "primary" | "secondary"
 
 interface TriggerAction {
   triggerAttribute: UITriggerAttributes
@@ -13,7 +13,7 @@ interface TriggerAction {
   hidden?: true
 }
 
-type WebhookAppStatus = 'disabled' | 'failed' | 'active'
+type WebhookAppStatus = "disabled" | "failed" | "active"
 
 /**
  * Determine if a webhook has ever fired by counting its `last_event_callbacks` relationship items
@@ -34,51 +34,51 @@ export function hasWebhookEverFired(webhook: Webhook): boolean {
  */
 export function getWebhookStatus(webhook: Webhook): WebhookAppStatus {
   if (webhook.disabled_at != null) {
-    return 'disabled'
-  } else if (webhook.circuit_state === 'open') {
-    return 'failed'
+    return "disabled"
+  } else if (webhook.circuit_state === "open") {
+    return "failed"
   }
-  return 'active'
+  return "active"
 }
 
 interface WebhookDisplayStatus {
   label: string
-  variant: BadgeProps['variant']
+  variant: BadgeProps["variant"]
 }
 
 export function getWebhookDisplayStatus(
-  webhook: Webhook
+  webhook: Webhook,
 ): WebhookDisplayStatus {
   const status = getWebhookStatus(webhook)
 
   switch (status) {
-    case 'active':
+    case "active":
       return {
-        label: 'active',
-        variant: 'success'
+        label: "active",
+        variant: "success",
       }
-    case 'disabled':
+    case "disabled":
       return {
-        label: 'disabled',
-        variant: 'secondary'
+        label: "disabled",
+        variant: "secondary",
       }
-    case 'failed':
+    case "failed":
       return {
-        label: 'failed',
-        variant: 'danger'
+        label: "failed",
+        variant: "danger",
       }
   }
 }
 
-export function getWebhookBadgeIcon(webhook: Webhook): IconProps['name'] {
+export function getWebhookBadgeIcon(webhook: Webhook): IconProps["name"] {
   const status = getWebhookStatus(webhook)
   switch (status) {
-    case 'active':
-      return 'pulse'
-    case 'disabled':
-      return 'minusCircle'
-    case 'failed':
-      return 'xCircle'
+    case "active":
+      return "pulse"
+    case "disabled":
+      return "minusCircle"
+    case "failed":
+      return "xCircle"
   }
 }
 
@@ -86,27 +86,27 @@ export function getWebhookTriggerAction(webhook: Webhook): TriggerAction {
   const status = getWebhookStatus(webhook)
 
   switch (status) {
-    case 'active':
-      return { triggerAttribute: '_disable' }
-    case 'disabled':
-      return { triggerAttribute: '_enable' }
-    case 'failed':
-      return { triggerAttribute: '_reset_circuit' }
+    case "active":
+      return { triggerAttribute: "_disable" }
+    case "disabled":
+      return { triggerAttribute: "_enable" }
+    case "failed":
+      return { triggerAttribute: "_reset_circuit" }
   }
 }
 
 type UITriggerAttributes = Extract<
   TriggerAttribute<WebhookUpdate>,
-  '_enable' | '_disable' | '_reset_circuit'
+  "_enable" | "_disable" | "_reset_circuit"
 >
 
 export function getWebhookTriggerActionName(
-  triggerAttribute: UITriggerAttributes
+  triggerAttribute: UITriggerAttributes,
 ): string {
   const dictionary: Record<typeof triggerAttribute, string> = {
-    _enable: 'Enable',
-    _disable: 'Disable',
-    _reset_circuit: 'Reset'
+    _enable: "Enable",
+    _disable: "Disable",
+    _reset_circuit: "Reset",
   }
 
   return dictionary[triggerAttribute]

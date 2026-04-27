@@ -9,28 +9,28 @@ import {
   useTokenProvider,
   useTrackingDetails,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Order, Parcel, Shipment } from '@commercelayer/sdk'
-import type { FC } from 'react'
-import type { SetNonNullable, SetRequired } from 'type-fest'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Order, Parcel, Shipment } from "@commercelayer/sdk"
+import type { FC } from "react"
+import type { SetNonNullable, SetRequired } from "type-fest"
 
 interface Props {
   order: Order
 }
 
 const OrderShipment = ({
-  shipment
+  shipment,
 }: {
   shipment: Shipment
 }): React.JSX.Element => {
   const { canAccess } = useTokenProvider()
   const { navigateTo } = useAppLinking()
 
-  const navigateToShipment = canAccess('shipments')
+  const navigateToShipment = canAccess("shipments")
     ? navigateTo({
-        app: 'shipments',
-        resourceId: shipment.id
+        app: "shipments",
+        resourceId: shipment.id,
       })
     : {}
 
@@ -38,7 +38,7 @@ const OrderShipment = ({
     shipment.parcels?.filter((parcel) => parcel.tracking_number) ?? []
 
   return (
-    <div className='flex items-center'>
+    <div className="flex items-center">
       <ResourceListItem
         key={shipment.id}
         resource={shipment}
@@ -57,25 +57,25 @@ const ShipmentTrackings: FC<{ parcels?: Parcel[] | null }> = ({ parcels }) => {
 
   return (
     <div
-      className='flex items-center border-b border-gray-100'
+      className="flex items-center border-b border-gray-100"
       style={{
-        alignSelf: 'stretch'
+        alignSelf: "stretch",
       }}
     >
       {parcels.length === 1 && parcels[0] != null ? (
-        <ShipmentParcelTrackingItem as='button' parcel={parcels[0]} />
+        <ShipmentParcelTrackingItem as="button" parcel={parcels[0]} />
       ) : (
         <Dropdown
           dropdownLabel={
-            <Button type='button' variant='circle'>
-              <Icon name='dotsThreeVertical' />
+            <Button type="button" variant="circle">
+              <Icon name="dotsThreeVertical" />
             </Button>
           }
           dropdownItems={parcels.map((parcel) => (
             <ShipmentParcelTrackingItem
               key={parcel.id}
               parcel={parcel}
-              as='dropdownItem'
+              as="dropdownItem"
             />
           ))}
         />
@@ -86,7 +86,7 @@ const ShipmentTrackings: FC<{ parcels?: Parcel[] | null }> = ({ parcels }) => {
 
 const ShipmentParcelTrackingItem: FC<{
   parcel: Parcel
-  as: 'button' | 'dropdownItem'
+  as: "button" | "dropdownItem"
 }> = ({ parcel, as }) => {
   const { TrackingDetailsModal, openTrackingDetails } =
     useTrackingDetails(parcel)
@@ -94,11 +94,11 @@ const ShipmentParcelTrackingItem: FC<{
   return (
     <>
       <TrackingDetailsModal />
-      {as === 'button' ? (
+      {as === "button" ? (
         <Button
-          type='button'
-          variant='secondary'
-          size='small'
+          type="button"
+          variant="secondary"
+          size="small"
           onClick={openTrackingDetails}
         >
           Tracking
@@ -114,13 +114,13 @@ const ShipmentParcelTrackingItem: FC<{
 }
 
 function hasShipments(
-  order: Order
-): order is SetRequired<SetNonNullable<Order, 'shipments'>, 'shipments'> {
+  order: Order,
+): order is SetRequired<SetNonNullable<Order, "shipments">, "shipments"> {
   return (
     order.shipments != null &&
     order.shipments.length > 0 &&
     order.shipments.filter((shipment) =>
-      ['draft', 'cancelled'].includes(shipment.status)
+      ["draft", "cancelled"].includes(shipment.status),
     ).length === 0
   )
 }
@@ -134,8 +134,8 @@ export const OrderShipments = withSkeletonTemplate<Props>(({ order }) => {
 
   return (
     <Section
-      title={t('resources.shipments.name', {
-        count: order.shipments.length
+      title={t("resources.shipments.name", {
+        count: order.shipments.length,
       })}
     >
       {order?.shipments?.map((shipment) => (

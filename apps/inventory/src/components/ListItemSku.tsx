@@ -2,17 +2,17 @@ import {
   Avatar,
   Icon,
   ListItem,
+  type ListItemProps,
   Text,
   withSkeletonTemplate,
-  type ListItemProps
-} from '@commercelayer/app-elements'
-import type { Sku } from '@commercelayer/sdk'
-import { makeSku } from 'src/mocks/resources/skus'
+} from "@commercelayer/app-elements"
+import type { Sku } from "@commercelayer/sdk"
+import { makeSku } from "src/mocks/resources/skus"
 
 interface Props {
   resource?: Sku
-  variant: ListItemProps['variant']
-  disabled?: ListItemProps['disabled']
+  variant: ListItemProps["variant"]
+  disabled?: ListItemProps["disabled"]
   onSelect?: (resource: Sku) => void
 }
 
@@ -34,20 +34,20 @@ export const ListItemSku = withSkeletonTemplate<Props>(
         }
         variant={variant}
         disabled={disabled}
-        className={variant === 'boxed' ? 'bg-white hover:bg-white' : ''}
+        className={variant === "boxed" ? "bg-white hover:bg-white" : ""}
       >
         <div>
-          <Text tag='div' variant='info' weight='semibold' size='small'>
+          <Text tag="div" variant="info" weight="semibold" size="small">
             {resource.code}
           </Text>
-          <Text tag='div' weight='bold' size='small'>
+          <Text tag="div" weight="bold" size="small">
             {resource.name}
           </Text>
         </div>
-        {variant === 'boxed' && !disabled && (
-          <Icon name='pencilSimple' size='16' weight='bold' />
+        {variant === "boxed" && !disabled && (
+          <Icon name="pencilSimple" size="16" weight="bold" />
         )}
       </ListItem>
     )
-  }
+  },
 )

@@ -1,15 +1,15 @@
-import { useActiveStockTransfers } from '#hooks/useActiveStockTransfers'
 import {
   Badge,
+  type BadgeProps,
   getShipmentDisplayStatus,
   Spacer,
   Stack,
   Text,
   useTranslation,
   withSkeletonTemplate,
-  type BadgeProps
-} from '@commercelayer/app-elements'
-import type { Shipment } from '@commercelayer/sdk'
+} from "@commercelayer/app-elements"
+import type { Shipment } from "@commercelayer/sdk"
+import { useActiveStockTransfers } from "#hooks/useActiveStockTransfers"
 
 interface Props {
   shipment: Shipment
@@ -24,9 +24,9 @@ export const ShipmentSteps = withSkeletonTemplate<Props>(
     return (
       <Stack>
         <div>
-          <Spacer bottom='2'>
-            <Text size='small' tag='div' variant='info' weight='semibold'>
-              {t('apps.shipments.attributes.status')}
+          <Spacer bottom="2">
+            <Text size="small" tag="div" variant="info" weight="semibold">
+              {t("apps.shipments.attributes.status")}
             </Text>
           </Spacer>
           {shipment.status !== undefined && (
@@ -34,11 +34,11 @@ export const ShipmentSteps = withSkeletonTemplate<Props>(
               <Badge variant={getBadgeVariant(shipment)}>
                 {displayStatus.label.toUpperCase()}
               </Badge>
-              {shipment.status === 'on_hold' &&
+              {shipment.status === "on_hold" &&
                 activeStockTransfers.length > 0 && (
-                  <div className='mt-2'>
-                    <Text variant='warning' size='small' weight='semibold'>
-                      {t('apps.shipments.details.awaiting_stock_transfers')}
+                  <div className="mt-2">
+                    <Text variant="warning" size="small" weight="semibold">
+                      {t("apps.shipments.details.awaiting_stock_transfers")}
                     </Text>
                   </div>
                 )}
@@ -46,33 +46,33 @@ export const ShipmentSteps = withSkeletonTemplate<Props>(
           )}
         </div>
         <div>
-          <Spacer bottom='2'>
-            <Text size='small' tag='div' variant='info' weight='semibold'>
-              {t('resources.shipping_methods.name')}
+          <Spacer bottom="2">
+            <Text size="small" tag="div" variant="info" weight="semibold">
+              {t("resources.shipping_methods.name")}
             </Text>
           </Spacer>
-          <Text weight='semibold' className='text-[18px]'>
+          <Text weight="semibold" className="text-[18px]">
             {shipment.shipping_method?.name}
           </Text>
         </div>
       </Stack>
     )
-  }
+  },
 )
 
-function getBadgeVariant(shipment: Shipment): BadgeProps['variant'] {
+function getBadgeVariant(shipment: Shipment): BadgeProps["variant"] {
   switch (shipment.status) {
-    case 'picking':
-    case 'packing':
-    case 'ready_to_ship':
-    case 'on_hold':
-      return 'warning-solid'
+    case "picking":
+    case "packing":
+    case "ready_to_ship":
+    case "on_hold":
+      return "warning-solid"
 
-    case 'delivered':
-    case 'shipped':
-      return 'success-solid'
+    case "delivered":
+    case "shipped":
+      return "success-solid"
 
     default:
-      return 'secondary-solid'
+      return "secondary-solid"
   }
 }

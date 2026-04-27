@@ -1,6 +1,6 @@
-import { appRoutes } from '#data/routes'
-import { useCallback } from 'react'
-import { useLocation } from 'wouter'
+import { useCallback } from "react"
+import { useLocation } from "wouter"
+import { appRoutes } from "#data/routes"
 
 interface PersistentBackToListItem {
   fullPath: string
@@ -19,7 +19,7 @@ export function useBackToList(): {
   const goBackToList = useCallback(() => {
     let listPath = appRoutes.list.makePath({})
     try {
-      const backTo = JSON.parse(sessionStorage.getItem(itemName) ?? '{}')
+      const backTo = JSON.parse(sessionStorage.getItem(itemName) ?? "{}")
       if (backTo.fullPath != null && backTo.ver === currentVersion) {
         listPath = backTo.fullPath
       } else {
@@ -35,20 +35,20 @@ export function useBackToList(): {
     ({ search }: { search: string }) => {
       const data: PersistentBackToListItem = {
         fullPath: `${appRoutes.list.makePath({})}${search}`,
-        ver: currentVersion
+        ver: currentVersion,
       }
       sessionStorage.setItem(itemName, JSON.stringify(data))
     },
-    [itemName]
+    [itemName],
   )
 
   return {
     goBackToList,
-    setBackToList
+    setBackToList,
   }
 }
 
 function makeStorageItemName(): string {
-  const orgSlug = window.location.hostname.split('.')[0] ?? 'no-org'
+  const orgSlug = window.location.hostname.split(".")[0] ?? "no-org"
   return `orders:${orgSlug}:backToList`
 }

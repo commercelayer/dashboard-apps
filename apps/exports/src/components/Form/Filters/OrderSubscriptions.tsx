@@ -1,30 +1,37 @@
-import { ResourceFinder } from '#components/Form/ResourceFinder'
 import {
+  flatSelectValues,
   InputDateRange,
   InputSelect,
   Spacer,
-  flatSelectValues,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useEffect, useState } from 'react'
-import {
-  type FilterValue,
-  type OrderSubscriptionField,
-  type OrderSubscriptionsFilters
-} from '../types'
-import { parseFilterToDate } from './utils'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useEffect, useState } from "react"
+import { ResourceFinder } from "#components/Form/ResourceFinder"
+import type {
+  FilterValue,
+  OrderSubscriptionField,
+  OrderSubscriptionsFilters,
+} from "../types"
+import { parseFilterToDate } from "./utils"
 
 interface Props {
   onChange: (filters: OrderSubscriptionsFilters) => void
 }
 
 export function OrderSubscriptions({
-  onChange
+  onChange,
 }: Props): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
   const { user } = useTokenProvider()
   const [filters, setFilter] = useState<OrderSubscriptionsFilters>({})
+
+  useEffect(
+    function dispatchFilterChange() {
+      onChange(filters)
+    },
+    [filters],
+  )
 
   if (sdkClient == null) {
     return null
@@ -32,120 +39,113 @@ export function OrderSubscriptions({
 
   const updateFilters = (
     key: OrderSubscriptionField,
-    value: FilterValue
+    value: FilterValue,
   ): void => {
     setFilter((state) => ({
       ...state,
-      [key]: value
+      [key]: value,
     }))
   }
 
-  useEffect(
-    function dispatchFilterChange() {
-      onChange(filters)
-    },
-    [filters]
-  )
-
   return (
     <div>
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <ResourceFinder
-          label='Markets'
-          resourceType='markets'
+          label="Markets"
+          resourceType="markets"
           isMulti
           onSelect={(values) => {
-            updateFilters('market_id_in', flatSelectValues(values))
+            updateFilters("market_id_in", flatSelectValues(values))
           }}
           sdkClient={sdkClient}
         />
       </Spacer>
 
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <InputSelect
-          label='Status'
+          label="Status"
           initialValues={[
             {
-              value: 'draft',
-              label: 'Draft'
+              value: "draft",
+              label: "Draft",
             },
             {
-              value: 'inactive',
-              label: 'Inactive'
+              value: "inactive",
+              label: "Inactive",
             },
             {
-              value: 'active',
-              label: 'Active'
+              value: "active",
+              label: "Active",
             },
             {
-              value: 'cancelled',
-              label: 'Cancelled'
-            }
+              value: "cancelled",
+              label: "Cancelled",
+            },
           ]}
           isMulti
           onSelect={(values) => {
-            updateFilters('status_in', flatSelectValues(values))
+            updateFilters("status_in", flatSelectValues(values))
           }}
         />
       </Spacer>
 
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <InputSelect
-          label='Frequency'
+          label="Frequency"
           initialValues={[
             {
-              value: 'hourly',
-              label: 'Hourly'
+              value: "hourly",
+              label: "Hourly",
             },
             {
-              value: 'daily',
-              label: 'Daily'
+              value: "daily",
+              label: "Daily",
             },
             {
-              value: 'weekly',
-              label: 'Weekly'
+              value: "weekly",
+              label: "Weekly",
             },
             {
-              value: 'monthly',
-              label: 'Monthly'
+              value: "monthly",
+              label: "Monthly",
             },
             {
-              value: 'two-month',
-              label: '2-Month'
+              value: "two-month",
+              label: "2-Month",
             },
             {
-              value: 'three-month',
-              label: '3-Month'
+              value: "three-month",
+              label: "3-Month",
             },
             {
-              value: 'four-month',
-              label: '4-Month'
+              value: "four-month",
+              label: "4-Month",
             },
             {
-              value: 'six-month',
-              label: '6-Month'
+              value: "six-month",
+              label: "6-Month",
             },
             {
-              value: 'yearly',
-              label: 'Yearly'
-            }
+              value: "yearly",
+              label: "Yearly",
+            },
           ]}
           isMulti
           onSelect={(values) => {
-            updateFilters('frequency_in', flatSelectValues(values))
+            updateFilters("frequency_in", flatSelectValues(values))
           }}
         />
       </Spacer>
 
       <InputDateRange
-        label='Date range'
+        label="Date range"
         value={[
           parseFilterToDate(filters.created_at_gteq),
-          parseFilterToDate(filters.created_at_lteq)
+          parseFilterToDate(filters.created_at_lteq),
         ]}
         onChange={([from, to]) => {
-          updateFilters('created_at_gteq', from?.toISOString() ?? null)
-          updateFilters('created_at_lteq', to?.toISOString() ?? null)
+          updateFilters("created_at_gteq", from?.toISOString() ?? null)
+          updateFilters("created_at_lteq", to?.toISOString() ?? null)
         }}
         autoPlaceholder
         isClearable

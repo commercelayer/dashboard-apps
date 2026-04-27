@@ -1,17 +1,17 @@
-import { makeCustomer } from '#mocks'
 import {
   ResourceListItem,
   useAppLinking,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Customer } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Customer } from "@commercelayer/sdk"
+import { makeCustomer } from "#mocks"
 
 interface Props {
   resource?: Customer
 }
 
 function ListItemCustomerComponent({
-  resource = makeCustomer()
+  resource = makeCustomer(),
 }: Props): React.JSX.Element {
   const { navigateTo } = useAppLinking()
 
@@ -19,8 +19,8 @@ function ListItemCustomerComponent({
     <ResourceListItem
       resource={resource}
       {...navigateTo({
-        app: 'customers',
-        resourceId: resource.id
+        app: "customers",
+        resourceId: resource.id,
       })}
     />
   )

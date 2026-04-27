@@ -1,31 +1,30 @@
-import { useCoreApi } from '@commercelayer/app-elements'
+import { useCoreApi } from "@commercelayer/app-elements"
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useGetMarketsCount() {
   const {
     data: markets,
     isLoading,
-    error
+    error,
   } = useCoreApi(
-    'markets',
-    'list',
+    "markets",
+    "list",
     [
       {
-        fields: ['id'],
+        fields: ["id"],
         filters: {
-          disabled_at_null: true
+          disabled_at_null: true,
         },
-        pageSize: 1
-      }
+        pageSize: 1,
+      },
     ],
     {
-      revalidateIfStale: false
-    }
+      revalidateIfStale: false,
+    },
   )
 
   return {
     count: markets?.meta?.recordCount,
     isLoading,
-    error
+    error,
   }
 }

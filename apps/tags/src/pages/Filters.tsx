@@ -1,29 +1,29 @@
-import { instructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
-import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
+import { PageLayout, useResourceFilters } from "@commercelayer/app-elements"
+import { useLocation } from "wouter"
+import { instructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
 
 export function Filters(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { FiltersForm, adapters } = useResourceFilters({
-    instructions
+    instructions,
   })
 
   return (
     <PageLayout
-      title='Filters'
+      title="Filters"
       navigationButton={{
-        label: 'Tags',
-        icon: 'arrowLeft',
+        label: "Tags",
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(
             appRoutes.list.makePath(
               adapters.adaptUrlQueryToUrlQuery({
-                queryString: location.search
-              })
-            )
+                queryString: location.search,
+              }),
+            ),
           )
-        }
+        },
       }}
       overlay
     >

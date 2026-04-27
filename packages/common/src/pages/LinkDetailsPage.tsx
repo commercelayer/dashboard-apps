@@ -2,38 +2,38 @@ import {
   A,
   Button,
   EmptyState,
+  goBack,
   Icon,
   PageLayout,
   SkeletonTemplate,
-  goBack,
   useCoreApi,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { Link as ClayerLink } from '@commercelayer/sdk'
-import { Link, useLocation } from 'wouter'
-import { LinkDetailsCard } from '../components/LinkDetailsCard'
-import { useLinkDetails } from '../hooks/useLinkDetails'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { Link as ClayerLink } from "@commercelayer/sdk"
+import { Link, useLocation } from "wouter"
+import { LinkDetailsCard } from "../components/LinkDetailsCard"
+import { useLinkDetails } from "../hooks/useLinkDetails"
 
 interface Props {
-  linkId: ClayerLink['id']
+  linkId: ClayerLink["id"]
   goBackUrl: string
 }
 
 export const LinkDetailsPage = ({
   linkId,
-  goBackUrl
+  goBackUrl,
 }: Props): React.JSX.Element => {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
 
   const [, setLocation] = useLocation()
 
-  const { data: organization } = useCoreApi('organization', 'retrieve', [])
+  const { data: organization } = useCoreApi("organization", "retrieve", [])
 
   const { link, isLoading, error } = useLinkDetails(linkId)
 
-  const pageTitle = link?.name ?? 'Link'
+  const pageTitle = link?.name ?? "Link"
 
   return (
     <PageLayout
@@ -45,11 +45,11 @@ export const LinkDetailsPage = ({
         onClick: () => {
           goBack({
             setLocation,
-            defaultRelativePath: goBackUrl
+            defaultRelativePath: goBackUrl,
           })
         },
-        label: 'Close',
-        icon: 'x'
+        label: "Close",
+        icon: "x",
       }}
       isLoading={isLoading}
       scrollToTop
@@ -57,10 +57,10 @@ export const LinkDetailsPage = ({
     >
       {error != null ? (
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -70,13 +70,13 @@ export const LinkDetailsPage = ({
             link={link}
             primaryAction={
               <A
-                variant='secondary'
-                size='small'
-                alignItems='center'
-                target='_blank'
-                href={link?.url ?? ''}
+                variant="secondary"
+                size="small"
+                alignItems="center"
+                target="_blank"
+                href={link?.url ?? ""}
               >
-                <Icon name='arrowSquareOut' size={16} />
+                <Icon name="arrowSquareOut" size={16} />
                 Open link
               </A>
             }
@@ -87,11 +87,11 @@ export const LinkDetailsPage = ({
                         please find a curated selection for you:
                         ${link.url}
                         Thank you,
-                        The ${organization?.name} team`.replace(/^\s+/gm, '')
+                        The ${organization?.name} team`.replace(/^\s+/gm, ""),
               },
               whatsapp: {
-                text: `Please find a curated selection for you: ${link.url}`
-              }
+                text: `Please find a curated selection for you: ${link.url}`,
+              },
             }}
             showQR
           />

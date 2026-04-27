@@ -1,19 +1,19 @@
 import {
   type ClAppProps,
   CoreSdkProvider,
+  createApp,
   ErrorBoundary,
   I18NProvider,
   MetaTags,
   ToastContainer,
   TokenProvider,
-  createApp
-} from '@commercelayer/app-elements'
-import { StrictMode } from 'react'
-import { App } from './App'
+} from "@commercelayer/app-elements"
+import { StrictMode } from "react"
+import { App } from "./App"
 
-import '@commercelayer/app-elements/vendor.css'
+import "@commercelayer/app-elements/vendor.css"
 
-import '@commercelayer/app-elements/style.css'
+import "@commercelayer/app-elements/style.css"
 
 const isDev = Boolean(import.meta.env.DEV)
 
@@ -21,8 +21,8 @@ const Main = (props: ClAppProps): React.JSX.Element => (
   <StrictMode>
     <ErrorBoundary hasContainer>
       <TokenProvider
-        kind='exports'
-        appSlug='exports'
+        kind="exports"
+        appSlug="exports"
         devMode={isDev}
         loadingElement={<div />}
         {...props}
@@ -41,4 +41,4 @@ const Main = (props: ClAppProps): React.JSX.Element => (
 
 export default Main
 
-createApp(Main, 'exports')
+createApp(Main, "exports")

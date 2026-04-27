@@ -1,1 +1,1 @@
-export type PriceTierType = 'volume' | 'frequency'
+export type PriceTierType = "volume" | "frequency"

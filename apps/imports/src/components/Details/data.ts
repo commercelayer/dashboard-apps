@@ -1,19 +1,19 @@
-import { makeImport } from '#mocks'
-import {
-  type ImportDetailsContextState,
-  type ImportDetailsContextValue
-} from './types'
+import { makeImport } from "#mocks"
+import type {
+  ImportDetailsContextState,
+  ImportDetailsContextValue,
+} from "./types"
 
 export const initialState: ImportDetailsContextState = {
   isLoading: true,
   isPolling: false,
   isDeleting: false,
   isNotFound: false,
-  data: makeImport()
+  data: makeImport(),
 }
 
 export const initialValues: ImportDetailsContextValue = {
   state: initialState,
   refetch: async () => undefined,
-  deleteImport: async () => false
+  deleteImport: async () => false,
 }

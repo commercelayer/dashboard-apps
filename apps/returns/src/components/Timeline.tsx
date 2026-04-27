@@ -1,12 +1,12 @@
-import { useReturnDetails } from '#hooks/useReturnDetails'
 import {
   Section,
   Spacer,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Return } from '@commercelayer/sdk'
-import { ReturnTimeline } from './ReturnTimeline'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Return } from "@commercelayer/sdk"
+import { useReturnDetails } from "#hooks/useReturnDetails"
+import { ReturnTimeline } from "./ReturnTimeline"
 
 interface Props {
   returnObj: Return
@@ -17,13 +17,13 @@ export const Timeline = withSkeletonTemplate<Props>(({ returnObj }) => {
   const { t } = useTranslation()
 
   return (
-    <Section title={t('common.timeline.name')}>
-      <Spacer top='8'>
+    <Section title={t("common.timeline.name")}>
+      <Spacer top="8">
         <ReturnTimeline
           returnId={returnObj.id}
           refresh={isValidating}
           attachmentOption={{
-            referenceOrigin: 'app-returns--note'
+            referenceOrigin: "app-returns--note",
           }}
         />
       </Spacer>

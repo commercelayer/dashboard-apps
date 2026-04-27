@@ -1,14 +1,14 @@
-import { ResourceFinder } from '#components/Form/ResourceFinder'
 import {
+  flatSelectValues,
   InputDateRange,
   InputToggleButton,
   Spacer,
-  flatSelectValues,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useEffect, useState } from 'react'
-import { type FilterValue, type SkusField, type SkusFilters } from '../types'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useEffect, useState } from "react"
+import { ResourceFinder } from "#components/Form/ResourceFinder"
+import type { FilterValue, SkusField, SkusFilters } from "../types"
 
 interface Props {
   onChange: (filters: SkusFilters) => void
@@ -19,6 +19,13 @@ export function Skus({ onChange }: Props): React.JSX.Element | null {
   const { user } = useTokenProvider()
   const [filters, setFilter] = useState<SkusFilters>({})
 
+  useEffect(
+    function dispatchFilterChange() {
+      onChange(filters)
+    },
+    [filters],
+  )
+
   if (sdkClient == null) {
     return null
   }
@@ -26,62 +33,55 @@ export function Skus({ onChange }: Props): React.JSX.Element | null {
   const updateFilters = (key: SkusField, value: FilterValue): void => {
     setFilter((state) => ({
       ...state,
-      [key]: value
+      [key]: value,
     }))
   }
 
-  useEffect(
-    function dispatchFilterChange() {
-      onChange(filters)
-    },
-    [filters]
-  )
-
   return (
     <div>
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <ResourceFinder
-          label='SKU codes'
-          resourceType='skus'
+          label="SKU codes"
+          resourceType="skus"
           isMulti
           onSelect={(values) => {
-            updateFilters('code_in', flatSelectValues(values))
+            updateFilters("code_in", flatSelectValues(values))
           }}
           sdkClient={sdkClient}
-          fields={['id', 'name', 'code']}
-          fieldForLabel='code'
-          fieldForValue='code'
+          fields={["id", "name", "code"]}
+          fieldForLabel="code"
+          fieldForValue="code"
         />
       </Spacer>
 
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <ResourceFinder
-          label='Shipping categories'
-          resourceType='shipping_categories'
+          label="Shipping categories"
+          resourceType="shipping_categories"
           isMulti
           onSelect={(values) => {
-            updateFilters('shipping_category_id_in', flatSelectValues(values))
+            updateFilters("shipping_category_id_in", flatSelectValues(values))
           }}
           sdkClient={sdkClient}
-          fields={['id', 'name']}
-          fieldForLabel='name'
-          fieldForValue='id'
+          fields={["id", "name"]}
+          fieldForLabel="name"
+          fieldForValue="id"
         />
       </Spacer>
 
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <InputToggleButton
-          label='Product Type'
-          mode='single'
+          label="Product Type"
+          mode="single"
           options={[
             {
-              value: 'true',
-              label: 'Shippable SKU'
+              value: "true",
+              label: "Shippable SKU",
             },
             {
-              value: 'false',
-              label: 'Non-shippable SKU'
-            }
+              value: "false",
+              label: "Non-shippable SKU",
+            },
           ]}
           value={
             filters.do_not_ship_false == null
@@ -89,20 +89,20 @@ export function Skus({ onChange }: Props): React.JSX.Element | null {
               : (filters.do_not_ship_false as string)
           }
           onChange={(value) => {
-            updateFilters('do_not_ship_false', value)
+            updateFilters("do_not_ship_false", value)
           }}
         />
       </Spacer>
 
       <InputDateRange
-        label='Date range'
+        label="Date range"
         value={[
           parseFilterToDate(filters.created_at_gteq),
-          parseFilterToDate(filters.created_at_lteq)
+          parseFilterToDate(filters.created_at_lteq),
         ]}
         onChange={([from, to]) => {
-          updateFilters('created_at_gteq', from?.toISOString() ?? null)
-          updateFilters('created_at_lteq', to?.toISOString() ?? null)
+          updateFilters("created_at_gteq", from?.toISOString() ?? null)
+          updateFilters("created_at_lteq", to?.toISOString() ?? null)
         }}
         autoPlaceholder
         isClearable
@@ -113,7 +113,7 @@ export function Skus({ onChange }: Props): React.JSX.Element | null {
 }
 
 function parseFilterToDate(filterValue?: FilterValue): Date | null {
-  return filterValue != null && typeof filterValue === 'string'
+  return filterValue != null && typeof filterValue === "string"
     ? new Date(filterValue)
     : null
 }

@@ -1,10 +1,10 @@
-import { isFalsy } from '#utils/isFalsy'
-import { z } from 'zod'
+import { z } from "zod"
+import { isFalsy } from "#utils/isFalsy"
 
 type MaybeBoolean = boolean | undefined
 
 export function zodEnforceBoolean({
-  optional
+  optional,
 }: {
   optional?: boolean
 }): z.ZodEffects<
@@ -14,41 +14,41 @@ export function zodEnforceBoolean({
 > {
   return z.preprocess(
     (value) =>
-      value === undefined || value === ''
+      value === undefined || value === ""
         ? undefined
-        : String(value).toLowerCase() === 'true',
-    isFalsy(optional) ? z.boolean() : z.optional(z.boolean())
+        : String(value).toLowerCase() === "true",
+    isFalsy(optional) ? z.boolean() : z.optional(z.boolean()),
   )
 }
 
 export const zodEnforceInt = z.preprocess(
   (value) => parseFloat(String(value)),
-  z.number().int()
+  z.number().int(),
 )
 
 export const zodEnforcePositiveInt = z.preprocess(
   (value) => parseFloat(String(value)),
-  z.number().int().positive()
+  z.number().int().positive(),
 )
 
 export const zodEnforceNonNegativeInt = z.preprocess(
   (value) => parseFloat(String(value)),
-  z.number().int().nonnegative()
+  z.number().int().nonnegative(),
 )
 
 export const zodEnforceFloat = z.preprocess(
   (value) => parseFloat(String(value)),
-  z.number()
+  z.number(),
 )
 
 export const zodEnforcePositiveFloat = z.preprocess(
   (value) => parseFloat(String(value)),
-  z.number().positive()
+  z.number().positive(),
 )
 
 export const zodEnforceNonNegativeFloat = z.preprocess(
   (value) => parseFloat(String(value)),
-  z.number().nonnegative()
+  z.number().nonnegative(),
 )
 
 export const zodEnforceDateString = z.preprocess((value: unknown) => {
@@ -65,10 +65,10 @@ interface DefaultEnumLike {
 }
 
 export function zodCaseInsensitiveNativeEnum<T extends DefaultEnumLike>(
-  enumValue: T
+  enumValue: T,
 ): z.ZodEffects<z.ZodNativeEnum<T>, T[keyof T], unknown> {
   return z.preprocess(
     (enumValue) => String(enumValue).toLowerCase(),
-    z.nativeEnum(enumValue)
+    z.nativeEnum(enumValue),
   )
 }

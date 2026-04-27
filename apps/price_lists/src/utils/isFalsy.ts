@@ -10,6 +10,5 @@
  * isFalsy(null) // true
  */
 export function isFalsy(value: any): boolean {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
   return Boolean(value) === false
 }

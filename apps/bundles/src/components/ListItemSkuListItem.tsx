@@ -1,9 +1,9 @@
-import { makeSkuListItem } from '#mocks'
 import {
   ResourceListItem,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { SkuListItem } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { SkuListItem } from "@commercelayer/sdk"
+import { makeSkuListItem } from "#mocks"
 
 interface Props {
   resource?: SkuListItem
@@ -15,7 +15,7 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
   ({
     resource = makeSkuListItem(),
     isLoading,
-    delayMs
+    delayMs,
   }): React.JSX.Element | null => {
     return (
       <ResourceListItem
@@ -25,5 +25,5 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
         showRightContent
       />
     )
-  }
+  },
 )

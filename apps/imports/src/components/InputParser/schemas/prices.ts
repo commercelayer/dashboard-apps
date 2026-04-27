@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { isFalsy } from '#utils/isFalsy'
-import { z } from 'zod'
-import { zodEnforcePositiveInt, zodEnforceNonNegativeInt } from './zodUtils'
+import { z } from "zod"
+import { isFalsy } from "#utils/isFalsy"
+import { zodEnforceNonNegativeInt, zodEnforcePositiveInt } from "./zodUtils"
 
 const makeSchema = (hasParentResourceId: boolean) =>
   z
@@ -13,47 +12,47 @@ const makeSchema = (hasParentResourceId: boolean) =>
       reference: z.optional(z.string()),
       reference_origin: z.optional(z.string()),
       // price_tiers relationship
-      'price_tiers.type': z.optional(z.literal('PriceVolumeTier')),
-      'price_tiers.name': z.optional(z.string().min(1)),
-      'price_tiers.up_to': z.optional(zodEnforcePositiveInt),
-      'price_tiers.price_amount_cents': z.optional(zodEnforcePositiveInt)
+      "price_tiers.type": z.optional(z.literal("PriceVolumeTier")),
+      "price_tiers.name": z.optional(z.string().min(1)),
+      "price_tiers.up_to": z.optional(zodEnforcePositiveInt),
+      "price_tiers.price_amount_cents": z.optional(zodEnforcePositiveInt),
     })
     .passthrough()
     .superRefine((data, ctx) => {
       if (!hasParentResourceId && isFalsy(data.price_list_id)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['price_list_id'],
-          message: 'price_list_id is required if parent resource is not set'
+          path: ["price_list_id"],
+          message: "price_list_id is required if parent resource is not set",
         })
       }
 
       if (
-        !isFalsy(data['price_tiers.type']) &&
-        isFalsy(data['price_tiers.name'])
+        !isFalsy(data["price_tiers.type"]) &&
+        isFalsy(data["price_tiers.name"])
       ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['price_tiers.name'],
-          message: 'price_tiers.name is required if price_tiers is set'
+          path: ["price_tiers.name"],
+          message: "price_tiers.name is required if price_tiers is set",
         })
       }
 
       if (
-        !isFalsy(data['price_tiers.type']) &&
-        isFalsy(data['price_tiers.price_amount_cents'])
+        !isFalsy(data["price_tiers.type"]) &&
+        isFalsy(data["price_tiers.price_amount_cents"])
       ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['price_tiers.price_amount_cents'],
+          path: ["price_tiers.price_amount_cents"],
           message:
-            'price_tiers.price_amount_cents is required if price_tiers is set'
+            "price_tiers.price_amount_cents is required if price_tiers is set",
         })
       }
     })
 
 export const csvPricesSchema = ({
-  hasParentResource
+  hasParentResource,
 }: {
   hasParentResource: boolean
 }) => z.array(makeSchema(hasParentResource))

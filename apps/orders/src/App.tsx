@@ -1,7 +1,7 @@
-import { Routes } from '@commercelayer/app-elements'
-import { type FC } from 'react'
-import { Router } from 'wouter'
-import { appRoutes } from './data/routes'
+import { Routes } from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Router } from "wouter"
+import { appRoutes } from "./data/routes"
 
 interface AppProps {
   routerBase?: string
@@ -14,33 +14,33 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         routes={appRoutes}
         list={{
           home: {
-            component: async () => await import('#pages/Home')
+            component: async () => await import("#pages/Home"),
           },
           list: {
-            component: async () => await import('#pages/OrderList')
+            component: async () => await import("#pages/OrderList"),
           },
           filters: {
-            component: async () => await import('#pages/Filters')
+            component: async () => await import("#pages/Filters"),
           },
           details: {
-            component: async () => await import('#pages/OrderDetails')
+            component: async () => await import("#pages/OrderDetails"),
           },
           new: {
-            component: async () => await import('#pages/OrderNew'),
-            overlay: true
+            component: async () => await import("#pages/OrderNew"),
+            overlay: true,
           },
           refund: {
-            component: async () => await import('#pages/Refund')
+            component: async () => await import("#pages/Refund"),
           },
           return: {
-            component: async () => await import('#pages/CreateReturn')
+            component: async () => await import("#pages/CreateReturn"),
           },
           linkDetails: {
-            component: async () => await import('#pages/LinkDetails')
+            component: async () => await import("#pages/LinkDetails"),
           },
           linkEdit: {
-            component: async () => await import('#pages/LinkEdit')
-          }
+            component: async () => await import("#pages/LinkEdit"),
+          },
         }}
       />
     </Router>

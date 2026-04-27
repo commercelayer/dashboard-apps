@@ -1,42 +1,42 @@
-import { type Import } from '@commercelayer/sdk'
-import { type ImportDetailsContextState } from './types'
+import type { Import } from "@commercelayer/sdk"
+import type { ImportDetailsContextState } from "./types"
 
 type Action =
-  | { type: 'setLoading'; payload: boolean }
-  | { type: 'setDeleting'; payload: boolean }
-  | { type: 'setNotFound'; payload: boolean }
-  | { type: 'setData'; payload: Import }
-  | { type: 'togglePolling'; payload: boolean }
+  | { type: "setLoading"; payload: boolean }
+  | { type: "setDeleting"; payload: boolean }
+  | { type: "setNotFound"; payload: boolean }
+  | { type: "setData"; payload: Import }
+  | { type: "togglePolling"; payload: boolean }
 
 export const reducer = (
   state: ImportDetailsContextState,
-  action: Action
+  action: Action,
 ): ImportDetailsContextState | never => {
   switch (action.type) {
-    case 'setLoading':
+    case "setLoading":
       return {
         ...state,
-        isLoading: action.payload
+        isLoading: action.payload,
       }
-    case 'setDeleting':
+    case "setDeleting":
       return {
         ...state,
-        isDeleting: action.payload
+        isDeleting: action.payload,
       }
-    case 'setNotFound':
+    case "setNotFound":
       return {
         ...state,
-        isNotFound: action.payload
+        isNotFound: action.payload,
       }
-    case 'setData':
+    case "setData":
       return {
         ...state,
-        data: action.payload
+        data: action.payload,
       }
-    case 'togglePolling':
+    case "togglePolling":
       return {
         ...state,
-        isPolling: action.payload
+        isPolling: action.payload,
       }
     default:
       return state

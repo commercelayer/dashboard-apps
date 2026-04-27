@@ -1,9 +1,9 @@
-import { isDefined } from '#data/isValid'
-import type { Promotion } from '#types'
-import type { CurrencyCode } from '@commercelayer/app-elements'
-import { currencies, isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { CustomPromotionRule, FlexPromotion } from '@commercelayer/sdk'
-import { useEffect, useMemo, useState } from 'react'
+import type { CurrencyCode } from "@commercelayer/app-elements"
+import { currencies, isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { CustomPromotionRule, FlexPromotion } from "@commercelayer/sdk"
+import { useEffect, useMemo, useState } from "react"
+import { isDefined } from "#data/isValid"
+import type { Promotion } from "#types"
 
 export function useCurrencyCodes(promotion: Promotion): CurrencyCode[] {
   const [currencyCodes, setCurrencyCodes] = useState<CurrencyCode[]>([])
@@ -13,29 +13,29 @@ export function useCurrencyCodes(promotion: Promotion): CurrencyCode[] {
     return {
       ruleFilters,
       filterKey: findOneOf(Object.keys(ruleFilters ?? {}), [
-        'market_id_in',
-        'market_id_not_in'
-      ])
+        "market_id_in",
+        "market_id_not_in",
+      ]),
     }
   }, [promotion])
 
   const { data: markets, isLoading } = useCoreApi(
-    'markets',
-    'list',
+    "markets",
+    "list",
     ruleFilters != null && filterKey != null
       ? [
           {
             filters: {
-              [filterKey.replace('market_', '')]: ruleFilters[filterKey]
+              [filterKey.replace("market_", "")]: ruleFilters[filterKey],
             },
-            include: ['price_list'],
+            include: ["price_list"],
             fields: {
-              markets: ['id', 'price_list'],
-              price_lists: ['currency_code']
-            }
-          }
+              markets: ["id", "price_list"],
+              price_lists: ["currency_code"],
+            },
+          },
         ]
-      : null
+      : null,
   )
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export function useCurrencyCodes(promotion: Promotion): CurrencyCode[] {
     }
 
     const fromPromotion =
-      promotion.type !== 'flex_promotions'
+      promotion.type !== "flex_promotions"
         ? extractFromPromotion(promotion)
         : null
 
@@ -71,7 +71,7 @@ export function useCurrencyCodes(promotion: Promotion): CurrencyCode[] {
 }
 
 function extractFromPromotion(
-  promotion: Exclude<Promotion, FlexPromotion>
+  promotion: Exclude<Promotion, FlexPromotion>,
 ): CurrencyCode[] | null {
   const fromPromotion = promotion.currency_code as Nullable<CurrencyCode>
 
@@ -86,7 +86,7 @@ function extractFromPromotion(
 }
 
 function extractFromCustomPromotionRule(
-  promotion: Promotion
+  promotion: Promotion,
 ): CurrencyCode[] | null {
   const ruleFilters = getCustomPromotionRuleFilters(promotion)
 
@@ -95,11 +95,11 @@ function extractFromCustomPromotionRule(
   }
 
   const currencyCodeInList = extractValuesAsArray<CurrencyCode>(
-    ruleFilters.currency_code_in
+    ruleFilters.currency_code_in,
   )
 
   const currencyCodeNotInAsArray = extractValuesAsArray(
-    ruleFilters.currency_code_not_in
+    ruleFilters.currency_code_not_in,
   )
 
   const currencyCodeNotInList = (
@@ -114,16 +114,16 @@ function extractFromCustomPromotionRule(
 }
 
 function extractValuesAsArray<T extends string>(value: any): T[] | null {
-  return value != null && typeof value === 'string'
-    ? (value.split(',') as T[])
+  return value != null && typeof value === "string"
+    ? (value.split(",") as T[])
     : null
 }
 
 function getCustomPromotionRuleFilters(
-  promotion: Promotion
+  promotion: Promotion,
 ): Record<string, any> | null {
   const rule = promotion.promotion_rules?.find(
-    (pr): pr is CustomPromotionRule => pr.type === 'custom_promotion_rules'
+    (pr): pr is CustomPromotionRule => pr.type === "custom_promotion_rules",
   )
 
   return rule?.filters ?? null
@@ -139,7 +139,7 @@ type Nullable<T> = T | null | undefined
  */
 function findOneOf(
   list: string[],
-  searchElements: string[]
+  searchElements: string[],
 ): string | undefined {
   return list.find((str) => searchElements.includes(str))
 }

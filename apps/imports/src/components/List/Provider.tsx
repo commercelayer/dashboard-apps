@@ -1,10 +1,11 @@
-import {
-  type CommerceLayerClient,
-  type Import,
-  type ListResponse,
-  type QueryFilter,
-  type QueryParamsList
-} from '@commercelayer/sdk'
+import { useIsChanged } from "@commercelayer/app-elements"
+import type {
+  CommerceLayerClient,
+  Import,
+  ListResponse,
+  QueryFilter,
+  QueryParamsList,
+} from "@commercelayer/sdk"
 import {
   createContext,
   type ReactNode,
@@ -12,16 +13,11 @@ import {
   useContext,
   useEffect,
   useReducer,
-  useRef
-} from 'react'
-import {
-  type ListImportContextState,
-  type ListImportContextValue
-} from './types'
-
-import { useIsChanged } from '@commercelayer/app-elements'
-import { initialState, initialValues } from './data'
-import { reducer } from './reducer'
+  useRef,
+} from "react"
+import { initialState, initialValues } from "./data"
+import { reducer } from "./reducer"
+import type { ListImportContextState, ListImportContextValue } from "./types"
 
 interface ListImportProviderProps {
   /**
@@ -52,7 +48,7 @@ export function ListImportProvider({
   children,
   pageSize,
   sdkClient,
-  filters
+  filters,
 }: ListImportProviderProps): React.JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
   const intervalId = useRef<number | null>(null)
@@ -62,21 +58,21 @@ export function ListImportProvider({
     value: filters,
     onChange: () => {
       // Set the loading state to the first page
-      dispatch({ type: 'changePage', payload: 1 })
+      dispatch({ type: "changePage", payload: 1 })
       // Refresh the list with the new filters
       void getAllImports({
         cl: sdkClient,
         state,
         pageSize,
-        filters
+        filters,
       }).then((list) => {
-        dispatch({ type: 'loadData', payload: list })
+        dispatch({ type: "loadData", payload: list })
       })
-    }
+    },
   })
 
   const changePage = useCallback((page: number) => {
-    dispatch({ type: 'changePage', payload: page })
+    dispatch({ type: "changePage", payload: page })
   }, [])
 
   const fetchList = useCallback(async () => {
@@ -84,16 +80,16 @@ export function ListImportProvider({
       cl: sdkClient,
       state,
       pageSize,
-      filters
+      filters,
     })
-    dispatch({ type: 'loadData', payload: list })
+    dispatch({ type: "loadData", payload: list })
   }, [state.currentPage])
 
-  const deleteImport: ListImportContextValue['deleteImport'] = useCallback(
+  const deleteImport: ListImportContextValue["deleteImport"] = useCallback(
     async (importId: string) => {
       await sdkClient.imports.delete(importId).then(fetchList)
     },
-    []
+    [],
   )
 
   useEffect(
@@ -102,7 +98,7 @@ export function ListImportProvider({
         void fetchList()
       }
     },
-    [state.currentPage]
+    [state.currentPage],
   )
 
   useEffect(
@@ -122,18 +118,18 @@ export function ListImportProvider({
         }
       }
     },
-    [state.isPolling]
+    [state.isPolling],
   )
 
   const value: ListImportContextValue = {
     state,
     changePage,
-    deleteImport
+    deleteImport,
   }
 
   return (
     <Context.Provider value={value}>
-      {typeof children === 'function' ? children(value) : children}
+      {typeof children === "function" ? children(value) : children}
     </Context.Provider>
   )
 }
@@ -142,7 +138,7 @@ const getAllImports = async ({
   cl,
   state,
   pageSize,
-  filters
+  filters,
 }: {
   cl: CommerceLayerClient
   state: ListImportContextState
@@ -151,8 +147,8 @@ const getAllImports = async ({
 }): Promise<ListResponse<Import>> => {
   return await cl.imports.list({
     pageNumber: state.currentPage,
-    pageSize: pageSize as QueryParamsList<Import>['pageSize'],
-    sort: { created_at: 'desc' },
-    filters
+    pageSize: pageSize as QueryParamsList<Import>["pageSize"],
+    sort: { created_at: "desc" },
+    filters,
   })
 }

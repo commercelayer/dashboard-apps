@@ -1,24 +1,24 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemOrder } from '#components/ListItemOrder'
-import { makeCartsInstructions, makeInstructions } from '#data/filters'
-import { presets } from '#data/lists'
-import { appRoutes } from '#data/routes'
 import {
   PageLayout,
   Spacer,
   useResourceFilters,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { useCallback, type FC } from 'react'
-import { useCountryCodes } from 'src/metricsApi/useCountryCodes'
-import { useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { type FC, useCallback } from "react"
+import { useCountryCodes } from "src/metricsApi/useCountryCodes"
+import { useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemOrder } from "#components/ListItemOrder"
+import { makeCartsInstructions, makeInstructions } from "#data/filters"
+import { presets } from "#data/lists"
+import { appRoutes } from "#data/routes"
 
 const OrderList: FC = () => {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const { t } = useTranslation()
   const { countryCodes } = useCountryCodes()
@@ -26,7 +26,7 @@ const OrderList: FC = () => {
   const [, setLocation] = useLocation()
 
   const isPendingOrdersList =
-    new URLSearchParams(queryString).get('viewTitle') ===
+    new URLSearchParams(queryString).get("viewTitle") ===
     presets.pending.viewTitle
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter, adapters } =
@@ -34,15 +34,15 @@ const OrderList: FC = () => {
       instructions: isPendingOrdersList
         ? makeCartsInstructions()
         : makeInstructions({
-            sortByAttribute: 'placed_at',
-            countryCodes
-          })
+            sortByAttribute: "placed_at",
+            countryCodes,
+          }),
     })
 
   const activeFilters = adapters.adaptUrlQueryToFormValues({ queryString })
   const searchFilterValue = activeFilters?.aggregated_details
   const isMaybeIdSearch =
-    typeof searchFilterValue === 'string' &&
+    typeof searchFilterValue === "string" &&
     /^[a-zA-Z]{10}$/.test(searchFilterValue)
 
   const preProcess = useCallback(
@@ -54,10 +54,10 @@ const OrderList: FC = () => {
 
       // No exact match: drop case-insensitive ID false positives from the API
       return list.filter(
-        (item) => item.id.toLowerCase() !== searchFilterValue.toLowerCase()
+        (item) => item.id.toLowerCase() !== searchFilterValue.toLowerCase(),
       )
     },
-    [isMaybeIdSearch, searchFilterValue]
+    [isMaybeIdSearch, searchFilterValue],
   )
 
   const hideFiltersNav = !(
@@ -70,20 +70,20 @@ const OrderList: FC = () => {
     <PageLayout
       title={viewTitle ?? presets.history.viewTitle}
       mode={mode}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
         },
-        label: t('resources.orders.name_other'),
-        icon: 'arrowLeft'
+        label: t("resources.orders.name_other"),
+        icon: "arrowLeft",
       }}
     >
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -93,19 +93,19 @@ const OrderList: FC = () => {
         searchBarDebounceMs={1000}
       />
 
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <FilteredList
-          type='orders'
+          type="orders"
           ItemTemplate={ListItemOrder}
           metricsQuery={{
             search: {
               limit: 25,
-              sort: 'desc',
+              sort: "desc",
               sort_by: isPendingOrdersList
-                ? 'order.updated_at'
-                : 'order.placed_at',
-              fields: ['order.*', 'billing_address.*', 'market.*']
-            }
+                ? "order.updated_at"
+                : "order.placed_at",
+              fields: ["order.*", "billing_address.*", "market.*"],
+            },
           }}
           preProcess={preProcess}
           hideTitle={viewTitle === presets.pending.viewTitle}
@@ -113,10 +113,10 @@ const OrderList: FC = () => {
             <ListEmptyState
               scope={
                 hasActiveFilter
-                  ? 'userFiltered'
+                  ? "userFiltered"
                   : viewTitle !== presets.history.viewTitle
-                    ? 'presetView'
-                    : 'history'
+                    ? "presetView"
+                    : "history"
               }
             />
           }

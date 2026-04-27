@@ -1,7 +1,7 @@
-import { Routes } from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { Router } from 'wouter'
-import { appRoutes } from './data/routes'
+import { Routes } from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Router } from "wouter"
+import { appRoutes } from "./data/routes"
 
 interface AppProps {
   routerBase?: string
@@ -14,23 +14,23 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         routes={appRoutes}
         list={{
           home: {
-            component: async () => await import('#pages/Home')
+            component: async () => await import("#pages/Home"),
           },
           list: {
-            component: async () => await import('#pages/ShipmentList')
+            component: async () => await import("#pages/ShipmentList"),
           },
           filters: {
-            component: async () => await import('#pages/Filters')
+            component: async () => await import("#pages/Filters"),
           },
           details: {
-            component: async () => await import('#pages/ShipmentDetails')
+            component: async () => await import("#pages/ShipmentDetails"),
           },
           packing: {
-            component: async () => await import('#pages/Packing')
+            component: async () => await import("#pages/Packing"),
           },
           purchase: {
-            component: async () => await import('#pages/Purchase')
-          }
+            component: async () => await import("#pages/Purchase"),
+          },
         }}
       />
     </Router>

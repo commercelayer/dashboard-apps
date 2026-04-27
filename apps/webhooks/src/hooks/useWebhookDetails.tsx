@@ -1,29 +1,28 @@
-import { makeWebhook } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import { makeWebhook } from "#mocks"
 
-export const webhookIncludeAttribute = ['last_event_callbacks']
+export const webhookIncludeAttribute = ["last_event_callbacks"]
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useWebhookDetails(id: string) {
   const {
     data: webhook,
     isLoading,
     mutate: mutateWebhook,
-    isValidating
+    isValidating,
   } = useCoreApi(
-    'webhooks',
-    'retrieve',
+    "webhooks",
+    "retrieve",
     isMockedId(id)
       ? null
       : [
           id,
           {
-            include: webhookIncludeAttribute
-          }
+            include: webhookIncludeAttribute,
+          },
         ],
     {
-      fallbackData: makeWebhook()
-    }
+      fallbackData: makeWebhook(),
+    },
   )
 
   return { webhook, isLoading, mutateWebhook, isValidating }

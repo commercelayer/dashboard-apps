@@ -1,17 +1,17 @@
-import { presets, type ListType } from '#data/lists'
 import {
   makeDateYearsRange,
+  type ParsedScopes,
   useTokenProvider,
-  type ParsedScopes
-} from '@commercelayer/app-elements'
-import useSWR, { type SWRResponse } from 'swr'
-import { metricsApiFetcher } from './fetcher'
+} from "@commercelayer/app-elements"
+import useSWR, { type SWRResponse } from "swr"
+import { type ListType, presets } from "#data/lists"
+import { metricsApiFetcher } from "./fetcher"
 
 const fetchShipmentStats = async ({
   slug,
   accessToken,
   filters,
-  domain
+  domain,
 }: {
   slug: string
   accessToken: string
@@ -19,28 +19,28 @@ const fetchShipmentStats = async ({
   domain: string
 }): Promise<VndApiResponse<MetricsApiShipmentsBreakdownData>> =>
   await metricsApiFetcher<MetricsApiShipmentsBreakdownData>({
-    endpoint: '/orders/breakdown',
+    endpoint: "/orders/breakdown",
     slug,
     accessToken,
     body: {
       breakdown: {
-        by: 'shipments.status',
-        field: 'shipments.id',
-        operator: 'value_count'
+        by: "shipments.status",
+        field: "shipments.id",
+        operator: "value_count",
       },
       filter: {
         order: {
           ...makeDateYearsRange({
             now: new Date(),
             yearsAgo: 5,
-            showMilliseconds: false
+            showMilliseconds: false,
           }),
-          date_field: 'updated_at'
+          date_field: "updated_at",
         },
-        ...filters
-      }
+        ...filters,
+      },
     },
-    domain
+    domain,
   })
 
 interface FetchAllCountersArgs {
@@ -54,7 +54,7 @@ const fetchAllCounters = async ({
   slug,
   accessToken,
   domain,
-  filters
+  filters,
 }: FetchAllCountersArgs): Promise<{
   picking: number
   packing: number
@@ -65,16 +65,16 @@ const fetchAllCounters = async ({
     domain,
     slug,
     accessToken,
-    filters
+    filters,
   })
 
   const stats = allStats.data
 
   return {
-    picking: getShipmentsBreakdownCounterByStatus(stats, 'picking'),
-    packing: getShipmentsBreakdownCounterByStatus(stats, 'packing'),
-    readyToShip: getShipmentsBreakdownCounterByStatus(stats, 'ready_to_ship'),
-    onHold: getShipmentsBreakdownCounterByStatus(stats, 'on_hold')
+    picking: getShipmentsBreakdownCounterByStatus(stats, "picking"),
+    packing: getShipmentsBreakdownCounterByStatus(stats, "packing"),
+    readyToShip: getShipmentsBreakdownCounterByStatus(stats, "ready_to_ship"),
+    onHold: getShipmentsBreakdownCounterByStatus(stats, "on_hold"),
   }
 }
 
@@ -85,7 +85,7 @@ export function useListCounters(): SWRResponse<{
   onHold: number
 }> {
   const {
-    settings: { accessToken, organizationSlug, domain, scopes }
+    settings: { accessToken, organizationSlug, domain, scopes },
   } = useTokenProvider()
 
   const swrResponse = useSWR(
@@ -93,12 +93,12 @@ export function useListCounters(): SWRResponse<{
       slug: organizationSlug,
       domain,
       accessToken,
-      filters: prepareFiltersForCounters({ scopes })
+      filters: prepareFiltersForCounters({ scopes }),
     },
     fetchAllCounters,
     {
-      revalidateOnFocus: false
-    }
+      revalidateOnFocus: false,
+    },
   )
 
   return swrResponse
@@ -106,22 +106,22 @@ export function useListCounters(): SWRResponse<{
 
 function getShipmentsBreakdownCounterByStatus(
   allStats: MetricsApiShipmentsBreakdownData,
-  status: 'picking' | 'packing' | 'on_hold' | 'ready_to_ship'
+  status: "picking" | "packing" | "on_hold" | "ready_to_ship",
 ): number {
-  const stats = allStats['shipments.status']
+  const stats = allStats["shipments.status"]
   return stats?.filter((stat) => stat.label === status)[0]?.value ?? 0
 }
 
 function prepareFiltersForCounters({
-  scopes
+  scopes,
 }: {
   scopes?: ParsedScopes
-}): FetchAllCountersArgs['filters'] {
-  const lists: ListType[] = ['picking', 'packing', 'readyToShip', 'onHold'] // sorted list of views with counters
+}): FetchAllCountersArgs["filters"] {
+  const lists: ListType[] = ["picking", "packing", "readyToShip", "onHold"] // sorted list of views with counters
   const filterStatuses = {
     statuses: {
-      in: lists.map((listType) => presets[listType].status_eq) // status of the single view
-    }
+      in: lists.map((listType) => presets[listType].status_eq), // status of the single view
+    },
   }
   // if there are stock locations in the access token scopes we to restrict the results
   const filterStockLocations =
@@ -130,16 +130,16 @@ function prepareFiltersForCounters({
       ? {
           stock_location: {
             ids: {
-              in: scopes.stock_location.ids
-            }
-          }
+              in: scopes.stock_location.ids,
+            },
+          },
         }
       : {}
 
   return {
     shipments: {
       ...filterStatuses,
-      ...filterStockLocations
-    }
+      ...filterStockLocations,
+    },
   }
 }

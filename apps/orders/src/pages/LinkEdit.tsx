@@ -1,4 +1,3 @@
-import { appRoutes, type PageProps } from '#data/routes'
 import {
   Button,
   EmptyState,
@@ -7,19 +6,20 @@ import {
   Spacer,
   useCoreSdkProvider,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { type Link, type LinkUpdate } from '@commercelayer/sdk'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { Link, LinkUpdate } from "@commercelayer/sdk"
 import {
   LinkForm,
-  type LinkFormValues
-} from 'dashboard-apps-common/src/components/LinkForm'
-import { useLinkDetails } from 'dashboard-apps-common/src/hooks/useLinkDetails'
-import { useState } from 'react'
-import { useLocation } from 'wouter'
+  type LinkFormValues,
+} from "dashboard-apps-common/src/components/LinkForm"
+import { useLinkDetails } from "dashboard-apps-common/src/hooks/useLinkDetails"
+import { useState } from "react"
+import { useLocation } from "wouter"
+import { appRoutes, type PageProps } from "#data/routes"
 
 function LinkEdit(
-  props: PageProps<typeof appRoutes.linkEdit>
+  props: PageProps<typeof appRoutes.linkEdit>,
 ): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
@@ -29,38 +29,38 @@ function LinkEdit(
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const orderId = props.params?.orderId ?? ''
-  const linkId = props.params?.linkId ?? ''
+  const orderId = props.params?.orderId ?? ""
+  const linkId = props.params?.linkId ?? ""
   const goBackUrl = appRoutes.linkDetails.makePath({ orderId })
   const { link, isLoading, mutateLink } = useLinkDetails(linkId)
 
-  if (!canUser('update', 'links')) {
+  if (!canUser("update", "links")) {
     return (
       <PageLayout
-        title={t('common.edit_resource', {
-          resource: t('resources.links.name')
+        title={t("common.edit_resource", {
+          resource: t("resources.links.name"),
         })}
         navigationButton={{
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: t('common.back'),
-          icon: 'x'
+          label: t("common.back"),
+          icon: "x",
         }}
         scrollToTop
         overlay
       >
         <EmptyState
-          title={t('common.not_authorized')}
-          description={t('common.not_authorized_description')}
+          title={t("common.not_authorized")}
+          description={t("common.not_authorized_description")}
           action={
             <Button
-              variant='primary'
+              variant="primary"
               onClick={() => {
                 setLocation(goBackUrl)
               }}
             >
-              {t('common.go_back')}
+              {t("common.go_back")}
             </Button>
           }
         />
@@ -74,22 +74,22 @@ function LinkEdit(
 
   return (
     <PageLayout
-      title={t('common.edit_resource', {
-        resource: t('resources.links.name')
+      title={t("common.edit_resource", {
+        resource: t("resources.links.name"),
       })}
       navigationButton={{
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: t('common.back'),
-        icon: 'arrowLeft'
+        label: t("common.back"),
+        icon: "arrowLeft",
       }}
       scrollToTop
       overlay
     >
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <LinkForm
-          resourceType='orders'
+          resourceType="orders"
           apiError={apiError}
           isSubmitting={isSaving}
           defaultValues={adaptLinkToFormValues(link)}
@@ -118,20 +118,20 @@ function LinkEdit(
 function adaptLinkToFormValues(link?: Link): LinkFormValues {
   return {
     id: link?.id,
-    name: link?.name ?? '',
-    clientId: link?.client_id ?? '',
-    market: link?.scope.replace('market:id:', '') ?? '',
-    startsAt: new Date(link?.starts_at ?? ''),
-    expiresAt: new Date(link?.expires_at ?? '')
+    name: link?.name ?? "",
+    clientId: link?.client_id ?? "",
+    market: link?.scope.replace("market:id:", "") ?? "",
+    startsAt: new Date(link?.starts_at ?? ""),
+    expiresAt: new Date(link?.expires_at ?? ""),
   }
 }
 
 function adaptFormValuesToLink(formValues: LinkFormValues): LinkUpdate {
   return {
-    id: formValues.id ?? '',
+    id: formValues.id ?? "",
     name: formValues.name,
     client_id: formValues.clientId,
-    expires_at: formValues.expiresAt.toJSON()
+    expires_at: formValues.expiresAt.toJSON(),
   }
 }
 

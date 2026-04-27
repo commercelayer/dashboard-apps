@@ -1,7 +1,7 @@
-import { makeBundle } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { Bundle } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { Bundle } from "@commercelayer/sdk"
+import type { KeyedMutator } from "swr"
+import { makeBundle } from "#mocks"
 
 /**
  * Retrieves a `Bundle` resource.
@@ -9,7 +9,7 @@ import type { KeyedMutator } from 'swr'
  * @returns a resolved `Bundle`.
  */
 
-export function useBundleDetails(id: Bundle['id']): {
+export function useBundleDetails(id: Bundle["id"]): {
   bundle: Bundle
   isLoading: boolean
   error: any
@@ -19,21 +19,21 @@ export function useBundleDetails(id: Bundle['id']): {
     data: bundle,
     isLoading,
     error,
-    mutate: mutateBundle
+    mutate: mutateBundle,
   } = useCoreApi(
-    'bundles',
-    'retrieve',
+    "bundles",
+    "retrieve",
     isMockedId(id)
       ? null
       : [
           id,
           {
-            include: ['market', 'sku_list']
-          }
+            include: ["market", "sku_list"],
+          },
         ],
     {
-      fallbackData: makeBundle()
-    }
+      fallbackData: makeBundle(),
+    },
   )
 
   return { bundle, error, isLoading, mutateBundle }

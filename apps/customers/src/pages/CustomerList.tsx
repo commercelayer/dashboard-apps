@@ -1,9 +1,3 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemCustomer } from '#components/ListItemCustomer'
-import { instructions } from '#data/filters'
-import { presets } from '#data/lists'
-import { appRoutes } from '#data/routes'
-import { useCustomerAnonymizedPendingList } from '#hooks/useCustomerAnonymizedPendingList'
 import {
   Alert,
   Button,
@@ -13,10 +7,16 @@ import {
   Text,
   useResourceFilters,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { Link, useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import { Link, useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemCustomer } from "#components/ListItemCustomer"
+import { instructions } from "#data/filters"
+import { presets } from "#data/lists"
+import { appRoutes } from "#data/routes"
+import { useCustomerAnonymizedPendingList } from "#hooks/useCustomerAnonymizedPendingList"
 
 export function CustomerList(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -27,7 +27,7 @@ export function CustomerList(): React.JSX.Element {
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
     useResourceFilters({
-      instructions
+      instructions,
     })
 
   const { customers: customersWithPendingAnonymization } =
@@ -43,12 +43,12 @@ export function CustomerList(): React.JSX.Element {
   )
 
   return (
-    <HomePageLayout title={t('resources.customers.name_other')}>
+    <HomePageLayout title={t("resources.customers.name_other")}>
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -58,13 +58,13 @@ export function CustomerList(): React.JSX.Element {
       />
 
       {hasPendingAnonymization && (
-        <Spacer bottom='14'>
-          <Alert status='warning'>
-            <Text weight='semibold'>Pending anonymization requests:</Text>
-            <Spacer top='2'>
+        <Spacer bottom="14">
+          <Alert status="warning">
+            <Text weight="semibold">Pending anonymization requests:</Text>
+            <Spacer top="2">
               {customersWithPendingAnonymization.map((customer) => (
-                <Spacer key={customer.id} bottom='1'>
-                  <Text color='black' size='small' weight='semibold'>
+                <Spacer key={customer.id} bottom="1">
+                  <Text color="black" size="small" weight="semibold">
                     <Link href={appRoutes.details.makePath(customer.id)}>
                       {customer.email}
                     </Link>
@@ -76,49 +76,49 @@ export function CustomerList(): React.JSX.Element {
         </Spacer>
       )}
 
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <FilteredList
-          type='customers'
+          type="customers"
           ItemTemplate={ListItemCustomer}
           query={{
             fields: {
               customers: [
-                'id',
-                'email',
-                'total_orders_count',
-                'created_at',
-                'updated_at',
-                'customer_group'
-              ]
+                "id",
+                "email",
+                "total_orders_count",
+                "created_at",
+                "updated_at",
+                "customer_group",
+              ],
             },
-            include: ['customer_group'],
+            include: ["customer_group"],
             pageSize: 25,
             sort: {
-              created_at: 'desc'
-            }
+              created_at: "desc",
+            },
           }}
           emptyState={
             <ListEmptyState
               scope={
                 isUserCustomFiltered
-                  ? 'userFiltered'
+                  ? "userFiltered"
                   : viewTitle !== presets.all.viewTitle
-                    ? 'presetView'
-                    : 'history'
+                    ? "presetView"
+                    : "history"
               }
             />
           }
           actionButton={
-            canUser('create', 'customers') ? (
+            canUser("create", "customers") ? (
               <Link href={appRoutes.new.makePath()} asChild>
                 <Button
-                  variant='secondary'
-                  size='mini'
-                  alignItems='center'
-                  aria-label='Add customer'
+                  variant="secondary"
+                  size="mini"
+                  alignItems="center"
+                  aria-label="Add customer"
                 >
-                  <Icon name='plus' />
-                  {t('common.new')}
+                  <Icon name="plus" />
+                  {t("common.new")}
                 </Button>
               </Link>
             ) : undefined

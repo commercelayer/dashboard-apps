@@ -1,18 +1,18 @@
-import { getShipmentStatusName } from '#data/dictionaries'
-import type { FiltersInstructions } from '@commercelayer/app-elements'
-import { t } from '@commercelayer/app-elements'
-import type { Shipment } from '@commercelayer/sdk'
+import type { FiltersInstructions } from "@commercelayer/app-elements"
+import { t } from "@commercelayer/app-elements"
+import type { Shipment } from "@commercelayer/sdk"
+import { getShipmentStatusName } from "#data/dictionaries"
 
-const allowedStatuses: Array<Shipment['status']> = [
-  'picking',
-  'packing',
-  'ready_to_ship',
-  'shipped',
-  'delivered',
-  'on_hold'
+const allowedStatuses: Array<Shipment["status"]> = [
+  "picking",
+  "packing",
+  "ready_to_ship",
+  "shipped",
+  "delivered",
+  "on_hold",
 ]
 
-const textSearchPredicate = ['number', 'reference'].join('_or_') + '_cont'
+const textSearchPredicate = ["number", "reference"].join("_or_") + "_cont"
 
 export const makeFiltersInstructions = (options?: {
   hideFilterStatus?: boolean
@@ -20,81 +20,81 @@ export const makeFiltersInstructions = (options?: {
   const hideFilterStatus = options?.hideFilterStatus ?? false
   return [
     {
-      label: t('resources.stock_locations.name_other'),
-      type: 'options',
+      label: t("resources.stock_locations.name_other"),
+      type: "options",
       sdk: {
-        predicate: 'stock_location_id_in'
+        predicate: "stock_location_id_in",
       },
       render: {
-        component: 'inputResourceGroup',
+        component: "inputResourceGroup",
         props: {
-          resource: 'stock_locations',
-          fieldForLabel: 'name',
-          fieldForValue: 'id',
-          searchBy: 'name_cont',
-          sortBy: { attribute: 'updated_at', direction: 'desc' },
+          resource: "stock_locations",
+          fieldForLabel: "name",
+          fieldForValue: "id",
+          searchBy: "name_cont",
+          sortBy: { attribute: "updated_at", direction: "desc" },
           previewLimit: 5,
-          hideWhenSingleItem: true
-        }
-      }
+          hideWhenSingleItem: true,
+        },
+      },
     },
     {
-      label: t('apps.shipments.attributes.status'),
-      type: 'options',
+      label: t("apps.shipments.attributes.status"),
+      type: "options",
       hidden: hideFilterStatus,
       sdk: {
-        predicate: 'status_in',
-        defaultOptions: allowedStatuses
+        predicate: "status_in",
+        defaultOptions: allowedStatuses,
       },
       render: {
-        component: 'inputToggleButton',
+        component: "inputToggleButton",
         props: {
-          mode: 'multi',
+          mode: "multi",
           options: allowedStatuses.map((status) => ({
             value: status,
-            label: getShipmentStatusName(status)
-          }))
-        }
-      }
+            label: getShipmentStatusName(status),
+          })),
+        },
+      },
     },
     {
-      label: t('common.time_range'),
-      type: 'timeRange',
+      label: t("common.time_range"),
+      type: "timeRange",
       sdk: {
-        predicate: 'updated_at'
+        predicate: "updated_at",
       },
       render: {
-        component: 'dateRangePicker'
-      }
+        component: "dateRangePicker",
+      },
     },
     {
-      label: t('resources.tags.name_other'),
-      type: 'options',
+      label: t("resources.tags.name_other"),
+      type: "options",
       sdk: {
-        predicate: 'tags_id_in'
+        predicate: "tags_id_in",
       },
       render: {
-        component: 'inputResourceGroup',
+        component: "inputResourceGroup",
         props: {
-          fieldForLabel: 'name',
-          fieldForValue: 'id',
-          resource: 'tags',
-          searchBy: 'name_cont',
-          sortBy: { attribute: 'name', direction: 'asc' },
+          fieldForLabel: "name",
+          fieldForValue: "id",
+          resource: "tags",
+          searchBy: "name_cont",
+          sortBy: { attribute: "name", direction: "asc" },
           previewLimit: 5,
-          showCheckboxIcon: false
-        }
-      }
+          showCheckboxIcon: false,
+        },
+      },
     },
     {
-      label: t('common.search'),
-      type: 'textSearch',
+      label: t("common.search"),
+      type: "textSearch",
       sdk: {
-        predicate: textSearchPredicate
+        predicate: textSearchPredicate,
       },
       render: {
-        component: 'searchBar'
-      }
-    }
+        component: "searchBar",
+      },
+    },
   ]
 }

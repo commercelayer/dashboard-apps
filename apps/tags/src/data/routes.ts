@@ -6,26 +6,26 @@ export type AppRoute = keyof typeof appRoutes
 // and `makePath` method to be used to generate the path used in navigation and links
 export const appRoutes = {
   home: {
-    path: '/',
-    makePath: () => `/`
+    path: "/",
+    makePath: () => `/`,
   },
   list: {
-    path: '/list',
+    path: "/list",
     makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/list/?${filters}` : `/list`
+      hasFilterQuery(filters) ? `/list/?${filters}` : `/list`,
   },
   new: {
     path: `/new`,
-    makePath: () => `/new`
+    makePath: () => `/new`,
   },
   edit: {
-    path: '/list/:tagId/edit',
-    makePath: (tagId: string) => `/list/${tagId}/edit`
+    path: "/list/:tagId/edit",
+    makePath: (tagId: string) => `/list/${tagId}/edit`,
   },
   delete: {
-    path: '/list/:tagId/delete',
-    makePath: (tagId: string) => `/list/${tagId}/delete`
-  }
+    path: "/list/:tagId/delete",
+    makePath: (tagId: string) => `/list/${tagId}/delete`,
+  },
 }
 
 function hasFilterQuery(filters?: string): filters is string {

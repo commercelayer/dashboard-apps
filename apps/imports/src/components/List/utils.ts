@@ -1,4 +1,4 @@
-import type { Import, ListResponse } from '@commercelayer/sdk'
+import type { Import, ListResponse } from "@commercelayer/sdk"
 
 /**
  * Checks if list contains some status that represent a progressing/temporary state
@@ -9,6 +9,6 @@ import type { Import, ListResponse } from '@commercelayer/sdk'
 export function listHasProgressingItems(list: ListResponse<Import>): boolean {
   return list.some(
     (job) =>
-      job.status != null && ['pending', 'in_progress'].includes(job.status)
+      job.status != null && ["pending", "in_progress"].includes(job.status),
   )
 }

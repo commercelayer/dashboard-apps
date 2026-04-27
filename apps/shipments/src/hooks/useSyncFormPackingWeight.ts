@@ -1,11 +1,11 @@
-import { type PackingFormDefaultValues } from '#data/packingFormSchema'
-import type { Shipment, Sku } from '@commercelayer/sdk'
-import uniq from 'lodash-es/uniq'
-import { useEffect } from 'react'
-import { useFormContext } from 'react-hook-form'
+import type { Shipment, Sku } from "@commercelayer/sdk"
+import uniq from "lodash-es/uniq"
+import { useEffect } from "react"
+import { useFormContext } from "react-hook-form"
+import type { PackingFormDefaultValues } from "#data/packingFormSchema"
 
 export function useSyncFormPackingWeight({
-  shipment
+  shipment,
 }: {
   shipment: Shipment
 }): void {
@@ -17,9 +17,9 @@ export function useSyncFormPackingWeight({
       unitsOfWeight.length === 1 ? unitsOfWeight[0] : undefined
     const weight = getTotalWeight(shipment, getValues())
 
-    setValue('weight', weight)
-    setValue('unitOfWeight', defaultUnitOfWeight)
-  }, [watch('items')])
+    setValue("weight", weight)
+    setValue("unitOfWeight", defaultUnitOfWeight)
+  }, [watch("items")])
 }
 
 /**
@@ -27,7 +27,7 @@ export function useSyncFormPackingWeight({
  * Otherwise returns the value
  */
 function removeEmptyString<T extends string>(str?: T | null): T | undefined {
-  if (str === '' || str == null) {
+  if (str === "" || str == null) {
     return undefined
   }
   return str
@@ -39,13 +39,13 @@ function removeEmptyString<T extends string>(str?: T | null): T | undefined {
  */
 function getSkuFromSelectItem({
   selectedItem,
-  shipment
+  shipment,
 }: {
-  selectedItem: PackingFormDefaultValues['items'][number]
+  selectedItem: PackingFormDefaultValues["items"][number]
   shipment: Shipment
 }): Sku | undefined | null {
   return shipment.stock_line_items?.find(
-    (stockLineItem) => stockLineItem.id === selectedItem.value
+    (stockLineItem) => stockLineItem.id === selectedItem.value,
   )?.sku
 }
 
@@ -63,14 +63,14 @@ function getSkuFromSelectItem({
  */
 function getAvailableUnitsOfWeight(
   shipment: Shipment,
-  formValues: PackingFormDefaultValues
-): Array<PackingFormDefaultValues['unitOfWeight']> {
+  formValues: PackingFormDefaultValues,
+): Array<PackingFormDefaultValues["unitOfWeight"]> {
   const availableUnitsOfWeight = formValues.items.reduce<
-    Array<PackingFormDefaultValues['unitOfWeight']>
+    Array<PackingFormDefaultValues["unitOfWeight"]>
   >((acc, item) => {
     const sku = getSkuFromSelectItem({
       selectedItem: item,
-      shipment
+      shipment,
     })
 
     return uniq([...acc, removeEmptyString(sku?.unit_of_weight)])
@@ -85,20 +85,20 @@ function getAvailableUnitsOfWeight(
  */
 function getTotalWeight(
   shipment: Shipment,
-  formValues: PackingFormDefaultValues
+  formValues: PackingFormDefaultValues,
 ): string {
   let totalWeight = 0
   const unitsOfWeight = getAvailableUnitsOfWeight(shipment, formValues)
 
   if (unitsOfWeight.length > 1) {
     // can't calculate total weight if there are different units of weight
-    return ''
+    return ""
   }
 
   for (const item of formValues.items) {
     const sku = getSkuFromSelectItem({
       selectedItem: item,
-      shipment
+      shipment,
     })
     if (sku?.weight == null || sku?.weight <= 0) {
       totalWeight = 0
@@ -108,5 +108,5 @@ function getTotalWeight(
     totalWeight += sku.weight * item.quantity
   }
 
-  return totalWeight > 0 ? totalWeight.toString() : ''
+  return totalWeight > 0 ? totalWeight.toString() : ""
 }

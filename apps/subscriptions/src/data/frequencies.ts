@@ -1,5 +1,5 @@
-import cronstrue from 'cronstrue'
-import 'cronstrue/locales/en'
+import cronstrue from "cronstrue"
+import "cronstrue/locales/en"
 
 interface SelectableFrequency {
   label: string
@@ -11,57 +11,57 @@ interface SelectableFrequency {
  */
 export const frequenciesTranslations: SelectableFrequency[] = [
   {
-    value: 'hourly',
-    label: 'Hourly'
+    value: "hourly",
+    label: "Hourly",
   },
   {
-    value: 'daily',
-    label: 'Daily'
+    value: "daily",
+    label: "Daily",
   },
   {
-    value: 'weekly',
-    label: 'Weekly'
+    value: "weekly",
+    label: "Weekly",
   },
   {
-    value: 'monthly',
-    label: 'Monthly'
+    value: "monthly",
+    label: "Monthly",
   },
   {
-    value: 'two-month',
-    label: 'Every two months'
+    value: "two-month",
+    label: "Every two months",
   },
   {
-    value: 'two-months',
-    label: 'Every two months'
+    value: "two-months",
+    label: "Every two months",
   },
   {
-    value: 'three-month',
-    label: 'Every three months'
+    value: "three-month",
+    label: "Every three months",
   },
   {
-    value: 'three-months',
-    label: 'Every three months'
+    value: "three-months",
+    label: "Every three months",
   },
   {
-    value: 'four-month',
-    label: 'Every four months'
+    value: "four-month",
+    label: "Every four months",
   },
   {
-    value: 'four-months',
-    label: 'Every four months'
+    value: "four-months",
+    label: "Every four months",
   },
   {
-    value: 'six-month',
-    label: 'Every six months'
+    value: "six-month",
+    label: "Every six months",
   },
   {
-    value: 'six-months',
-    label: 'Every six months'
+    value: "six-months",
+    label: "Every six months",
   },
   {
-    value: 'yearly',
-    label: 'Yearly'
-  }
+    value: "yearly",
+    label: "Yearly",
+  },
 ]
 
 /**
@@ -75,18 +75,18 @@ export const frequenciesForFilters = (): SelectableFrequency[] => {
       }
       return acc
     },
-    []
+    [],
   )
   return frequencies
 }
 
 export const getFrequencyByValue = (
-  frequencyValue: string
+  frequencyValue: string,
 ): SelectableFrequency => {
   return (
     frequenciesTranslations.find((f) => f.value === frequencyValue) ?? {
       label: frequencyValue,
-      value: frequencyValue
+      value: frequencyValue,
     }
   )
 }

@@ -4,10 +4,10 @@ import {
   InputCheckbox,
   ListItem,
   Text,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Sku } from '@commercelayer/sdk'
-import { makeSku } from 'src/mocks/resources/skus'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Sku } from "@commercelayer/sdk"
+import { makeSku } from "src/mocks/resources/skus"
 
 interface Props {
   resource?: Sku
@@ -24,7 +24,7 @@ export const ListItemSku = withSkeletonTemplate<Props>(
           onSelect?.(resource)
         }}
         icon={
-          <Grid columns='auto' alignItems='center'>
+          <Grid columns="auto" alignItems="center">
             <InputCheckbox
               checked={isSelected}
               onChange={(e) => {
@@ -41,14 +41,14 @@ export const ListItemSku = withSkeletonTemplate<Props>(
         }
       >
         <div>
-          <Text tag='div' variant='info' weight='medium' size='x-small'>
+          <Text tag="div" variant="info" weight="medium" size="x-small">
             {resource.code}
           </Text>
-          <Text tag='div' weight='semibold' size='regular'>
+          <Text tag="div" weight="semibold" size="regular">
             {resource.name}
           </Text>
         </div>
       </ListItem>
     )
-  }
+  },
 )

@@ -1,4 +1,4 @@
-import { type Export } from '@commercelayer/sdk'
+import type { Export } from "@commercelayer/sdk"
 
 export interface ExportDetailsContextValue {
   state: ExportDetailsContextState

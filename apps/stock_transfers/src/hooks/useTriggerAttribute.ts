@@ -1,11 +1,11 @@
-import type { getStockTransferTriggerAttributeName } from '#data/dictionaries'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import { CommerceLayerStatic } from "@commercelayer/sdk"
+import { useCallback, useState } from "react"
+import type { getStockTransferTriggerAttributeName } from "#data/dictionaries"
 import {
   stockTransferIncludeAttribute,
-  useStockTransferDetails
-} from '#hooks/useStockTransferDetails'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import { CommerceLayerStatic } from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
+  useStockTransferDetails,
+} from "#hooks/useStockTransferDetails"
 
 type UITriggerAttributes = Parameters<
   typeof getStockTransferTriggerAttributeName
@@ -18,7 +18,7 @@ interface TriggerAttributeHook {
 }
 
 export function useTriggerAttribute(
-  stockTransferId: string
+  stockTransferId: string,
 ): TriggerAttributeHook {
   const { mutateStockTransfer } = useStockTransferDetails(stockTransferId)
   const { sdkClient } = useCoreSdkProvider()
@@ -34,29 +34,29 @@ export function useTriggerAttribute(
         const updatedStockTransfer = await sdkClient.stock_transfers.update(
           {
             id: stockTransferId,
-            [triggerAttribute]: true
+            [triggerAttribute]: true,
           },
           {
-            include: stockTransferIncludeAttribute
-          }
+            include: stockTransferIncludeAttribute,
+          },
         )
         void mutateStockTransfer(updatedStockTransfer)
       } catch (error) {
         setErrors(
           CommerceLayerStatic.isApiError(error)
             ? error.errors.map(({ detail }) => detail)
-            : ['Could not cancel this stock transfer']
+            : ["Could not cancel this stock transfer"],
         )
       } finally {
         setIsLoading(false)
       }
     },
-    [stockTransferId]
+    [stockTransferId],
   )
 
   return {
     isLoading,
     errors,
-    dispatch
+    dispatch,
   }
 }

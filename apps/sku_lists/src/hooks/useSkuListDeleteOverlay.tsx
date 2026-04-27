@@ -1,13 +1,13 @@
-import { appRoutes } from '#data/routes'
 import {
   Button,
   PageLayout,
   useCoreSdkProvider,
-  useOverlay
-} from '@commercelayer/app-elements'
-import type { SkuList } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { useLocation } from 'wouter'
+  useOverlay,
+} from "@commercelayer/app-elements"
+import type { SkuList } from "@commercelayer/sdk"
+import { useState } from "react"
+import { useLocation } from "wouter"
+import { appRoutes } from "#data/routes"
 
 interface OverlayHook {
   show: () => void
@@ -27,22 +27,22 @@ export function useSkuListDeleteOverlay(skuList: SkuList): OverlayHook {
       const { sdkClient } = useCoreSdkProvider()
 
       return (
-        <OverlayElement backgroundColor='light'>
+        <OverlayElement backgroundColor="light">
           <PageLayout
             title={`Confirm that you want to delete the SKU list (${skuList?.name}).`}
-            description='This action cannot be undone, proceed with caution.'
+            description="This action cannot be undone, proceed with caution."
             minHeight={false}
             navigationButton={{
               onClick: () => {
                 close()
               },
               label: `Cancel`,
-              icon: 'x'
+              icon: "x",
             }}
           >
             <Button
-              variant='danger'
-              size='small'
+              variant="danger"
+              size="small"
               disabled={isDeleting}
               onClick={(e) => {
                 setIsDeleting(true)
@@ -61,6 +61,6 @@ export function useSkuListDeleteOverlay(skuList: SkuList): OverlayHook {
           </PageLayout>
         </OverlayElement>
       )
-    }
+    },
   }
 }

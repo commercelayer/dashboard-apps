@@ -1,10 +1,10 @@
-import type { PriceTierType } from '#types'
+import type { PriceTier } from "@commercelayer/sdk"
 
-import type { PriceTierFormValues } from '#components/PriceTierForm'
-import type { PriceTier } from '@commercelayer/sdk'
-import { getFrequenciesForSelect } from './frequencies'
+import type { PriceTierFormValues } from "#components/PriceTierForm"
+import type { PriceTierType } from "#types"
+import { getFrequenciesForSelect } from "./frequencies"
 
-type UpTo = PriceTier['up_to']
+type UpTo = PriceTier["up_to"]
 
 /**
  * Returns the API resource type of a given price tier type.
@@ -12,9 +12,9 @@ type UpTo = PriceTier['up_to']
  * @returns a valid price tier type
  */
 export const getPriceTierSdkResource = (
-  type: PriceTierType
-): 'price_frequency_tiers' | 'price_volume_tiers' => {
-  return type === 'frequency' ? 'price_frequency_tiers' : 'price_volume_tiers'
+  type: PriceTierType,
+): "price_frequency_tiers" | "price_volume_tiers" => {
+  return type === "frequency" ? "price_frequency_tiers" : "price_volume_tiers"
 }
 
 /**
@@ -26,13 +26,13 @@ export const getUpToFromForm = (formValues: PriceTierFormValues): UpTo => {
   if (formValues.up_to == null) {
     return null
   }
-  if (formValues.type === 'volume') {
-    return typeof formValues.up_to === 'number' ? formValues.up_to : null
+  if (formValues.type === "volume") {
+    return typeof formValues.up_to === "number" ? formValues.up_to : null
   }
   const frequency = formValues.up_to
-  if (frequency === 'unlimited') {
+  if (frequency === "unlimited") {
     return null
-  } else if (frequency === 'custom') {
+  } else if (frequency === "custom") {
     return formValues.up_to_days
   } else {
     return parseInt(formValues.up_to)
@@ -62,10 +62,10 @@ export const getUpToForFrequencyForm = (upTo: UpTo): string => {
   const frequenciesForSelect = getFrequenciesForSelect()
   const upToString = parseUpAsSafeString(upTo)
   const upToInFrequencies = frequenciesForSelect.find(
-    (freq) => freq.value === upToString
+    (freq) => freq.value === upToString,
   )
   if (upTo == null) {
-    return 'unlimited'
+    return "unlimited"
   } else if (upToInFrequencies != null) {
     return upToInFrequencies.value
   } else {
@@ -80,9 +80,9 @@ export const getUpToForFrequencyForm = (upTo: UpTo): string => {
  */
 export const parseUpAsSafeString = (upTo: UpTo): string => {
   return (
-    !isNaN(parseInt(upTo?.toString() ?? ''))
-      ? parseInt(upTo?.toString() ?? '')
-      : ''
+    !Number.isNaN(parseInt(upTo?.toString() ?? ""))
+      ? parseInt(upTo?.toString() ?? "")
+      : ""
   ).toString()
 }
 
@@ -92,10 +92,10 @@ export const parseUpAsSafeString = (upTo: UpTo): string => {
  * @returns the `up_to` value in string
  */
 export const getUpToForFrequencyTable = (upTo: UpTo): string => {
-  const upToAsNumber = parseInt(upTo?.toString() ?? '')
+  const upToAsNumber = parseInt(upTo?.toString() ?? "")
   const frequenciesForSelect = getFrequenciesForSelect()
   const knownFrequency = frequenciesForSelect.find(
-    (freq) => parseInt(freq.value) === upToAsNumber
+    (freq) => parseInt(freq.value) === upToAsNumber,
   )
   if (upTo == null) {
     return `♾️`
@@ -121,7 +121,7 @@ export const getUpToForVolumeTable = (upTo: UpTo): string => {
  * @returns the `up_to` value in string
  */
 export const getUpToForTable = (upTo: UpTo, type: PriceTierType): string => {
-  if (type === 'frequency') {
+  if (type === "frequency") {
     return getUpToForFrequencyTable(upTo)
   } else {
     return getUpToForVolumeTable(upTo)

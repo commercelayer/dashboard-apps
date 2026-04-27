@@ -1,16 +1,16 @@
-import { A, EmptyState } from '@commercelayer/app-elements'
+import { A, EmptyState } from "@commercelayer/app-elements"
 
 interface Props {
-  scope?: 'history' | 'userFiltered' | 'presetView'
+  scope?: "history" | "userFiltered" | "presetView"
 }
 
 export function ListEmptyState({
-  scope = 'history'
+  scope = "history",
 }: Props): React.JSX.Element {
-  if (scope === 'presetView') {
+  if (scope === "presetView") {
     return (
       <EmptyState
-        title='All good here'
+        title="All good here"
         description={
           <div>
             <p>There are no stock transfers for the current list.</p>
@@ -20,10 +20,10 @@ export function ListEmptyState({
     )
   }
 
-  if (scope === 'userFiltered') {
+  if (scope === "userFiltered") {
     return (
       <EmptyState
-        title='No stock transfers found!'
+        title="No stock transfers found!"
         description={
           <div>
             <p>
@@ -38,14 +38,14 @@ export function ListEmptyState({
 
   return (
     <EmptyState
-      title='No stock transfers yet!'
+      title="No stock transfers yet!"
       description={
         <div>
           <p>Add a stock transfer with the API, or use the CLI.</p>
           <A
-            target='_blank'
-            href='https://docs.commercelayer.io/core/v/api-reference/stock_transfers'
-            rel='noreferrer'
+            target="_blank"
+            href="https://docs.commercelayer.io/core/v/api-reference/stock_transfers"
+            rel="noreferrer"
           >
             View API reference.
           </A>

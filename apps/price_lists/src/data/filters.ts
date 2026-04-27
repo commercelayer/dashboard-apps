@@ -1,16 +1,16 @@
-import type { FiltersInstructions } from '@commercelayer/app-elements'
+import type { FiltersInstructions } from "@commercelayer/app-elements"
 
 export const filterInstructions: FiltersInstructions = [
   {
-    label: 'Search',
-    type: 'textSearch',
+    label: "Search",
+    type: "textSearch",
     sdk: {
-      predicate: ['currency_code', 'name'].join('_or_') + '_cont'
+      predicate: ["currency_code", "name"].join("_or_") + "_cont",
     },
     render: {
-      component: 'searchBar'
-    }
-  }
+      component: "searchBar",
+    },
+  },
 ]
 
 interface PricesFilterInstructionsConfig {
@@ -18,33 +18,33 @@ interface PricesFilterInstructionsConfig {
 }
 
 export const pricesFilterInstructions = ({
-  priceListId
+  priceListId,
 }: PricesFilterInstructionsConfig): FiltersInstructions => [
   {
-    label: 'Price list',
-    type: 'options',
+    label: "Price list",
+    type: "options",
     sdk: {
-      predicate: 'price_list_id_in',
-      defaultOptions: [priceListId]
+      predicate: "price_list_id_in",
+      defaultOptions: [priceListId],
     },
     render: {
-      component: 'inputToggleButton',
+      component: "inputToggleButton",
       props: {
-        mode: 'single',
-        options: [{ value: priceListId, label: priceListId }]
-      }
-    }
+        mode: "single",
+        options: [{ value: priceListId, label: priceListId }],
+      },
+    },
   },
   {
-    label: 'Search',
-    type: 'textSearch',
+    label: "Search",
+    type: "textSearch",
     sdk: {
       predicate:
-        ['reference', 'sku_code', 'sku_name', 'sku_reference'].join('_or_') +
-        '_cont'
+        ["reference", "sku_code", "sku_name", "sku_reference"].join("_or_") +
+        "_cont",
     },
     render: {
-      component: 'searchBar'
-    }
-  }
+      component: "searchBar",
+    },
+  },
 ]

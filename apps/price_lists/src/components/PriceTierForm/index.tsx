@@ -1,1 +1,1 @@
-export * from './PriceTierForm'
+export * from "./PriceTierForm"

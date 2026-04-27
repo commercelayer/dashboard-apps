@@ -1,23 +1,23 @@
-import type { SkuListFormValues } from '#components/SkuListForm'
-import type { SkuListCreate, SkuListUpdate } from '@commercelayer/sdk'
+import type { SkuListCreate, SkuListUpdate } from "@commercelayer/sdk"
+import type { SkuListFormValues } from "#components/SkuListForm"
 
 export function adaptFormValuesToSkuListCreate(
-  formValues: SkuListFormValues
+  formValues: SkuListFormValues,
 ): SkuListCreate {
   return {
     name: formValues.name,
     manual: formValues.manual,
-    sku_code_regex: !formValues.manual ? formValues.sku_code_regex : null
+    sku_code_regex: !formValues.manual ? formValues.sku_code_regex : null,
   }
 }
 
 export function adaptFormValuesToSkuListUpdate(
-  formValues: SkuListFormValues
+  formValues: SkuListFormValues,
 ): SkuListUpdate {
   return {
-    id: formValues.id ?? '',
+    id: formValues.id ?? "",
     name: formValues.name,
     manual: formValues.manual,
-    sku_code_regex: !formValues.manual ? formValues.sku_code_regex : null
+    sku_code_regex: !formValues.manual ? formValues.sku_code_regex : null,
   }
 }

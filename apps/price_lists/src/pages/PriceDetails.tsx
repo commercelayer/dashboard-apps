@@ -1,6 +1,7 @@
 import {
   Button,
   EmptyState,
+  type PageHeadingProps,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
@@ -10,31 +11,29 @@ import {
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
-  type PageHeadingProps
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
-
-import { PriceInfo } from '#components/PriceInfo'
-import { PriceTiers } from '#components/PriceTiers'
-import { appRoutes } from '#data/routes'
-import { usePriceDetails } from '#hooks/usePriceDetails'
-import { usePriceListDetails } from '#hooks/usePriceListDetails'
-import { useState } from 'react'
+} from "@commercelayer/app-elements"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { PriceInfo } from "#components/PriceInfo"
+import { PriceTiers } from "#components/PriceTiers"
+import { appRoutes } from "#data/routes"
+import { usePriceDetails } from "#hooks/usePriceDetails"
+import { usePriceListDetails } from "#hooks/usePriceListDetails"
 
 export function PriceDetails(): React.JSX.Element {
   const {
     settings: { mode },
-    canUser
+    canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ priceListId: string; priceId: string }>(
-    appRoutes.priceDetails.path
+    appRoutes.priceDetails.path,
   )
 
-  const priceListId = params?.priceListId ?? ''
-  const priceId = params?.priceId ?? ''
+  const priceListId = params?.priceListId ?? ""
+  const priceId = params?.priceId ?? ""
 
   const { price, isLoading, error, mutatePrice } = usePriceDetails(priceId)
   const { priceList } = usePriceListDetails(priceListId)
@@ -48,21 +47,21 @@ export function PriceDetails(): React.JSX.Element {
   if (error != null) {
     return (
       <PageLayout
-        title='Price lists'
+        title="Price lists"
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.pricesList.makePath({ priceListId }))
           },
-          label: 'Prices',
-          icon: 'arrowLeft'
+          label: "Prices",
+          icon: "arrowLeft",
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.pricesList.makePath({ priceListId })}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -72,30 +71,30 @@ export function PriceDetails(): React.JSX.Element {
 
   const pageTitle = price?.sku?.name
 
-  const pageToolbar: PageHeadingProps['toolbar'] = {
+  const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
-    dropdownItems: []
+    dropdownItems: [],
   }
 
-  if (canUser('update', 'prices')) {
+  if (canUser("update", "prices")) {
     pageToolbar.buttons?.push({
-      label: 'Edit',
-      size: 'small',
-      variant: 'secondary',
+      label: "Edit",
+      size: "small",
+      variant: "secondary",
       onClick: () => {
         setLocation(appRoutes.priceEdit.makePath({ priceListId, priceId }))
-      }
+      },
     })
   }
 
-  if (canUser('destroy', 'prices')) {
+  if (canUser("destroy", "prices")) {
     pageToolbar.dropdownItems?.push([
       {
-        label: 'Delete',
+        label: "Delete",
         onClick: () => {
           open()
-        }
-      }
+        },
+      },
     ])
   }
 
@@ -107,39 +106,39 @@ export function PriceDetails(): React.JSX.Element {
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
-          {price?.sku?.code ?? ''}
+          {price?.sku?.code ?? ""}
         </SkeletonTemplate>
       }
       navigationButton={{
         onClick: () => {
           goBack({
             currentResourceId: priceListId,
-            defaultRelativePath: appRoutes.pricesList.makePath({ priceListId })
+            defaultRelativePath: appRoutes.pricesList.makePath({ priceListId }),
           })
         },
-        label: priceListId !== '' ? priceList.name : 'Prices',
-        icon: 'arrowLeft'
+        label: priceListId !== "" ? priceList.name : "Prices",
+        icon: "arrowLeft",
       }}
       toolbar={pageToolbar}
       scrollToTop
-      gap='only-top'
+      gap="only-top"
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom='4'>
-          <Spacer top='14'>
+        <Spacer bottom="4">
+          <Spacer top="14">
             <PriceInfo price={price} />
           </Spacer>
-          <Spacer top='14'>
-            <PriceTiers price={price} mutatePrice={mutatePrice} type='volume' />
+          <Spacer top="14">
+            <PriceTiers price={price} mutatePrice={mutatePrice} type="volume" />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <PriceTiers
               price={price}
               mutatePrice={mutatePrice}
-              type='frequency'
+              type="frequency"
             />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <ResourceDetails
               resource={price}
               onUpdated={async () => {
@@ -147,34 +146,34 @@ export function PriceDetails(): React.JSX.Element {
               }}
             />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <ResourceMetadata
               resourceId={price.id}
-              resourceType='prices'
+              resourceType="prices"
               overlay={{
-                title: pageTitle ?? ''
+                title: pageTitle ?? "",
               }}
             />
           </Spacer>
         </Spacer>
       </SkeletonTemplate>
-      {canUser('destroy', 'prices') && (
-        <Overlay backgroundColor='light'>
+      {canUser("destroy", "prices") && (
+        <Overlay backgroundColor="light">
           <PageLayout
             title={`Confirm that you want to delete the price related to ${price?.sku?.code} (${price?.sku?.name}) SKU.`}
-            description='This action cannot be undone, proceed with caution.'
+            description="This action cannot be undone, proceed with caution."
             minHeight={false}
             navigationButton={{
               onClick: () => {
                 close()
               },
               label: `Cancel`,
-              icon: 'x'
+              icon: "x",
             }}
           >
             <Button
-              variant='danger'
-              size='small'
+              variant="danger"
+              size="small"
               disabled={isDeleting}
               onClick={(e) => {
                 setIsDeleting(true)

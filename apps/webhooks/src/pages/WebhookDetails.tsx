@@ -1,49 +1,49 @@
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { WebhookCallback } from '#components/WebhookCallback'
-import { WebhookInfos } from '#components/WebhookInfos'
-import { WebhookTopCard } from '#components/WebhookTopCard'
-import { appRoutes } from '#data/routes'
-import { useWebhookDetails } from '#hooks/useWebhookDetails'
 import {
   Button,
   EmptyState,
+  type PageHeadingProps,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   useTokenProvider,
-  type PageHeadingProps
-} from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { ErrorNotFound } from "#components/ErrorNotFound"
+import { WebhookCallback } from "#components/WebhookCallback"
+import { WebhookInfos } from "#components/WebhookInfos"
+import { WebhookTopCard } from "#components/WebhookTopCard"
+import { appRoutes } from "#data/routes"
+import { useWebhookDetails } from "#hooks/useWebhookDetails"
 
 export const WebhookDetails: FC = () => {
   const { settings, canUser } = useTokenProvider()
   const [, params] = useRoute(appRoutes.details.path)
   const [, setLocation] = useLocation()
 
-  const webhookId = params?.webhookId ?? ''
+  const webhookId = params?.webhookId ?? ""
   const { webhook, isLoading, mutateWebhook } = useWebhookDetails(webhookId)
 
-  if (webhookId == null || !canUser('read', 'webhooks')) {
+  if (webhookId == null || !canUser("read", "webhooks")) {
     return (
       <PageLayout
-        title='Webhook details'
+        title="Webhook details"
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
           label: `Webhooks`,
-          icon: 'arrowLeft'
+          icon: "arrowLeft",
         }}
         mode={settings.mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.list.makePath({})}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -52,30 +52,30 @@ export const WebhookDetails: FC = () => {
   }
 
   const pageTitle = webhook.name
-  const pageToolbar: PageHeadingProps['toolbar'] = {
+  const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
-    dropdownItems: []
+    dropdownItems: [],
   }
 
-  if (canUser('update', 'webhooks')) {
+  if (canUser("update", "webhooks")) {
     pageToolbar.buttons?.push({
-      label: 'Edit',
-      size: 'small',
-      variant: 'secondary',
+      label: "Edit",
+      size: "small",
+      variant: "secondary",
       onClick: () => {
         setLocation(appRoutes.editWebhook.makePath({ webhookId }))
-      }
+      },
     })
   }
 
-  if (canUser('destroy', 'webhooks')) {
+  if (canUser("destroy", "webhooks")) {
     pageToolbar.dropdownItems?.push([
       {
-        label: 'Delete',
+        label: "Delete",
         onClick: () => {
           setLocation(appRoutes.deleteWebhook.makePath({ webhookId }))
-        }
-      }
+        },
+      },
     ])
   }
 
@@ -91,18 +91,18 @@ export const WebhookDetails: FC = () => {
             setLocation(appRoutes.list.makePath({}))
           },
           label: `Webhooks`,
-          icon: 'arrowLeft'
+          icon: "arrowLeft",
         }}
         toolbar={pageToolbar}
       >
-        <Spacer bottom='14'>
+        <Spacer bottom="14">
           <WebhookTopCard />
         </Spacer>
-        <Spacer bottom='14'>
+        <Spacer bottom="14">
           <WebhookInfos webhook={webhook} />
         </Spacer>
         <WebhookCallback webhook={webhook} />
-        <Spacer top='14'>
+        <Spacer top="14">
           <ResourceDetails
             resource={webhook}
             onUpdated={async () => {
@@ -110,12 +110,12 @@ export const WebhookDetails: FC = () => {
             }}
           />
         </Spacer>
-        <Spacer top='14'>
+        <Spacer top="14">
           <ResourceMetadata
-            resourceType='webhooks'
+            resourceType="webhooks"
             resourceId={webhook.id}
             overlay={{
-              title: pageTitle ?? ''
+              title: pageTitle ?? "",
             }}
           />
         </Spacer>

@@ -1,6 +1,3 @@
-import { CustomerForm, type CustomerFormValues } from '#components/CustomerForm'
-import { ScrollToTop } from '#components/ScrollToTop'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
@@ -8,11 +5,14 @@ import {
   Spacer,
   useCoreSdkProvider,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { type CustomerCreate } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link, useLocation } from 'wouter'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { CustomerCreate } from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link, useLocation } from "wouter"
+import { CustomerForm, type CustomerFormValues } from "#components/CustomerForm"
+import { ScrollToTop } from "#components/ScrollToTop"
+import { appRoutes } from "#data/routes"
 
 export function CustomerNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -24,28 +24,28 @@ export function CustomerNew(): React.JSX.Element {
   const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl = appRoutes.list.makePath()
-  const pageTitle = t('common.new_resource', {
-    resource: t('resources.customers.name').toLowerCase()
+  const pageTitle = t("common.new_resource", {
+    resource: t("resources.customers.name").toLowerCase(),
   })
 
-  if (!canUser('create', 'customers')) {
+  if (!canUser("create", "customers")) {
     return (
       <PageLayout
         title={pageTitle}
         navigationButton={{
-          label: 'Back',
-          icon: 'arrowLeft',
+          label: "Back",
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(goBackUrl)
-          }
+          },
         }}
       >
         <EmptyState
-          title={t('common.not_authorized')}
-          description={t('common.not_authorized_description')}
+          title={t("common.not_authorized")}
+          description={t("common.not_authorized_description")}
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -57,16 +57,16 @@ export function CustomerNew(): React.JSX.Element {
     <PageLayout
       title={<>{pageTitle}</>}
       navigationButton={{
-        label: t('resources.customers.name_other'),
-        icon: 'arrowLeft',
+        label: t("resources.customers.name_other"),
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(goBackUrl)
-        }
+        },
       }}
       overlay
     >
       <ScrollToTop />
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <CustomerForm
           defaultValues={newCustomerToFormValues()}
           apiError={apiError}
@@ -91,20 +91,20 @@ export function CustomerNew(): React.JSX.Element {
 
 function newCustomerToFormValues(): CustomerFormValues {
   return {
-    email: '',
-    customerGroup: null
+    email: "",
+    customerGroup: null,
   }
 }
 
 function adaptFormValuesToCustomer(
-  formValues: CustomerFormValues
+  formValues: CustomerFormValues,
 ): CustomerCreate {
   return {
     email: formValues.email,
     customer_group: {
       id: formValues.customerGroup ?? null,
-      type: 'customer_groups'
-    }
+      type: "customer_groups",
+    },
   }
 }
 

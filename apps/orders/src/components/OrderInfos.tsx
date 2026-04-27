@@ -1,13 +1,13 @@
 import {
+  isMockedId,
   ListDetailsItem,
   Section,
-  isMockedId,
   useCoreApi,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { languageList } from './NewOrder/languages'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { languageList } from "./NewOrder/languages"
 
 interface Props {
   order: Order
@@ -22,13 +22,13 @@ export const OrderInfos = withSkeletonTemplate<Props>(
     )?.link_id
 
     const { data: link } = useCoreApi(
-      'links',
-      'retrieve',
-      linkId != null && !isMockedId(order.id) ? [linkId] : null
+      "links",
+      "retrieve",
+      linkId != null && !isMockedId(order.id) ? [linkId] : null,
     )
 
     const language = languageList.find(
-      ({ value }) => value === order.language_code
+      ({ value }) => value === order.language_code,
     )?.label
 
     const marketName = order.market?.name
@@ -38,23 +38,23 @@ export const OrderInfos = withSkeletonTemplate<Props>(
     }
 
     return (
-      <Section title={t('common.info')}>
+      <Section title={t("common.info")}>
         {marketName != null && (
-          <ListDetailsItem label={t('resources.markets.name')} gutter='none'>
+          <ListDetailsItem label={t("resources.markets.name")} gutter="none">
             {marketName}
           </ListDetailsItem>
         )}
         {language != null && (
-          <ListDetailsItem label={t('common.language')} gutter='none'>
+          <ListDetailsItem label={t("common.language")} gutter="none">
             {language}
           </ListDetailsItem>
         )}
         {link != null && (
-          <ListDetailsItem label={t('resources.links.name')} gutter='none'>
+          <ListDetailsItem label={t("resources.links.name")} gutter="none">
             {link.name}
           </ListDetailsItem>
         )}
       </Section>
     )
-  }
+  },
 )

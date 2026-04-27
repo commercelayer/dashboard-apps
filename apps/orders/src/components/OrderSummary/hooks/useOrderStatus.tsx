@@ -1,12 +1,11 @@
 import {
+  type CurrencyCode,
   formatCentsToCurrency,
   useTokenProvider,
-  type CurrencyCode
-} from '@commercelayer/app-elements'
-import type { LineItem, Order } from '@commercelayer/sdk'
-import { arrayOf } from '../utils'
+} from "@commercelayer/app-elements"
+import type { LineItem, Order } from "@commercelayer/sdk"
+import { arrayOf } from "../utils"
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useOrderStatus(order: Order) {
   const { canUser } = useTokenProvider()
 
@@ -16,13 +15,13 @@ export function useOrderStatus(order: Order) {
     | undefined
 
   const isPendingWithTransactions =
-    order.payment_status !== 'unpaid' && order.status === 'pending'
+    order.payment_status !== "unpaid" && order.status === "pending"
 
   const isEditing =
-    (order.status === 'editing' ||
-      order.status === 'draft' ||
-      order.status === 'pending') &&
-    canUser('update', 'orders') &&
+    (order.status === "editing" ||
+      order.status === "draft" ||
+      order.status === "pending") &&
+    canUser("update", "orders") &&
     !isPendingWithTransactions
 
   const diffTotalAndPlacedTotal =
@@ -30,14 +29,14 @@ export function useOrderStatus(order: Order) {
     (order.place_total_amount_cents ?? 0)
 
   const isOriginalOrderAmountExceeded =
-    order.status === 'editing' && diffTotalAndPlacedTotal > 0
+    order.status === "editing" && diffTotalAndPlacedTotal > 0
 
   function isGiftCard(
-    item: LineItem
-  ): item is Extract<LineItem, LineItem> & { item_type: 'gift_cards' } {
+    item: LineItem,
+  ): item is Extract<LineItem, LineItem> & { item_type: "gift_cards" } {
     return (
-      item.type === 'line_items' &&
-      item.item_type === 'gift_cards' &&
+      item.type === "line_items" &&
+      item.item_type === "gift_cards" &&
       item.unit_amount_cents != null &&
       item.unit_amount_cents > 0
     )
@@ -46,15 +45,15 @@ export function useOrderStatus(order: Order) {
   const shoppableLineItems =
     order.line_items?.filter(
       (lineItem) =>
-        arrayOf<LineItem['item_type']>(['skus', 'bundles']).includes(
-          lineItem.item_type
-        ) || isGiftCard(lineItem)
+        arrayOf<LineItem["item_type"]>(["skus", "bundles"]).includes(
+          lineItem.item_type,
+        ) || isGiftCard(lineItem),
     ) ?? []
 
   const hasLineItems = shoppableLineItems.length > 0
 
   const shippableLineItems = shoppableLineItems.filter(
-    (lineItem) => lineItem.sku?.do_not_ship !== true
+    (lineItem) => lineItem.sku?.do_not_ship !== true,
   )
 
   const hasShippableLineItems = shippableLineItems.length > 0
@@ -81,6 +80,6 @@ export function useOrderStatus(order: Order) {
     diffTotalAndPlacedTotal:
       isOriginalOrderAmountExceeded && currencyCode != null
         ? formatCentsToCurrency(diffTotalAndPlacedTotal, currencyCode)
-        : null
+        : null,
   }
 }

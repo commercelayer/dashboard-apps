@@ -1,5 +1,5 @@
-import { z } from 'zod'
-import { zodEnforceBoolean, zodEnforcePositiveInt } from './zodUtils'
+import { z } from "zod"
+import { zodEnforceBoolean, zodEnforcePositiveInt } from "./zodUtils"
 
 const schema = z
   .object({
@@ -9,7 +9,7 @@ const schema = z
     customer_single_use: zodEnforceBoolean({ optional: true }),
     recipient_email: z.optional(z.string()),
     reference: z.optional(z.string()),
-    reference_origin: z.optional(z.string())
+    reference_origin: z.optional(z.string()),
   })
   .passthrough()
 

@@ -6,19 +6,19 @@ import {
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { Link, LinkUpdate, Sku, SkuList } from '@commercelayer/sdk'
-import isEmpty from 'lodash-es/isEmpty'
-import { useState } from 'react'
-import { useLocation } from 'wouter'
-import { LinkForm, type LinkFormValues } from '../components/LinkForm'
-import { useLinkDetails } from '../hooks/useLinkDetails'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { Link, LinkUpdate, Sku, SkuList } from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
+import { useState } from "react"
+import { useLocation } from "wouter"
+import { LinkForm, type LinkFormValues } from "../components/LinkForm"
+import { useLinkDetails } from "../hooks/useLinkDetails"
 
 interface Props {
-  resourceId: Sku['id'] | SkuList['id']
-  resourceType: 'skus' | 'sku_lists'
-  linkId: Link['id']
+  resourceId: Sku["id"] | SkuList["id"]
+  resourceType: "skus" | "sku_lists"
+  linkId: Link["id"]
   goBackUrl: string
 }
 
@@ -26,7 +26,7 @@ export const LinkEditPage = ({
   resourceId,
   resourceType,
   linkId,
-  goBackUrl
+  goBackUrl,
 }: Props): React.JSX.Element => {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
@@ -37,7 +37,7 @@ export const LinkEditPage = ({
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const pageTitle = link?.name ?? 'Edit link'
+  const pageTitle = link?.name ?? "Edit link"
 
   if (link == null || isLoading || isMock(link)) {
     return <></>
@@ -50,26 +50,26 @@ export const LinkEditPage = ({
         onClick: () => {
           goBack({
             setLocation,
-            defaultRelativePath: goBackUrl
+            defaultRelativePath: goBackUrl,
           })
         },
-        label: 'Close',
-        icon: 'x'
+        label: "Close",
+        icon: "x",
       }}
       scrollToTop
       overlay
     >
-      {!canUser('update', 'links') ? (
+      {!canUser("update", "links") ? (
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Button
-              variant='primary'
+              variant="primary"
               onClick={() => {
                 goBack({
                   setLocation,
-                  defaultRelativePath: goBackUrl
+                  defaultRelativePath: goBackUrl,
                 })
               }}
             >
@@ -78,9 +78,9 @@ export const LinkEditPage = ({
           }
         />
       ) : (
-        <Spacer bottom='14'>
+        <Spacer bottom="14">
           <LinkForm
-            resourceType='skus'
+            resourceType="skus"
             apiError={apiError}
             isSubmitting={isSaving}
             defaultValues={adaptLinkToFormValues(link)}
@@ -89,7 +89,7 @@ export const LinkEditPage = ({
               const link = adaptFormValuesToLink(
                 formValues,
                 resourceId,
-                resourceType
+                resourceType,
               )
               void sdkClient.links
                 .update(link)
@@ -112,33 +112,33 @@ export const LinkEditPage = ({
 }
 
 function adaptLinkToFormValues(link?: Link): LinkFormValues {
-  let [market, stockLocation] = link?.scope.split(' ') ?? []
-  market = market != null ? market?.replace('market:id:', '') : ''
+  let [market, stockLocation] = link?.scope.split(" ") ?? []
+  market = market != null ? market?.replace("market:id:", "") : ""
   stockLocation =
-    stockLocation != null ? stockLocation.replace('stock_location:id:', '') : ''
+    stockLocation != null ? stockLocation.replace("stock_location:id:", "") : ""
 
   return {
     id: link?.id,
-    name: link?.name ?? '',
-    clientId: link?.client_id ?? '',
+    name: link?.name ?? "",
+    clientId: link?.client_id ?? "",
     market,
     stockLocation,
     language: link?.params?.lang as string | undefined,
-    startsAt: new Date(link?.starts_at ?? ''),
-    expiresAt: new Date(link?.expires_at ?? '')
+    startsAt: new Date(link?.starts_at ?? ""),
+    expiresAt: new Date(link?.expires_at ?? ""),
   }
 }
 
 function adaptFormValuesToLink(
   formValues: LinkFormValues,
-  resourceId: Props['resourceId'],
-  resourceType: Props['resourceType']
+  resourceId: Props["resourceId"],
+  resourceType: Props["resourceType"],
 ): LinkUpdate {
   return {
-    id: formValues.id ?? '',
+    id: formValues.id ?? "",
     name: formValues.name,
     client_id: formValues.clientId,
-    scope: `market:id:${formValues.market}${!isEmpty(formValues.stockLocation) ? ` stock_location:id:${formValues.stockLocation}` : ''}`,
+    scope: `market:id:${formValues.market}${!isEmpty(formValues.stockLocation) ? ` stock_location:id:${formValues.stockLocation}` : ""}`,
     starts_at: formValues.startsAt.toJSON(),
     expires_at: formValues.expiresAt.toJSON(),
     params: !isEmpty(formValues.language)
@@ -146,7 +146,7 @@ function adaptFormValuesToLink(
       : null,
     item: {
       type: resourceType,
-      id: resourceId
-    }
+      id: resourceId,
+    },
   }
 }

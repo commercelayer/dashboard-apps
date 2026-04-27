@@ -1,66 +1,66 @@
-import { type FiltersInstructions } from '@commercelayer/app-elements'
+import type { FiltersInstructions } from "@commercelayer/app-elements"
 
 export const instructions: FiltersInstructions = [
   {
-    label: 'Status',
-    type: 'options',
+    label: "Status",
+    type: "options",
     sdk: {
-      predicate: 'status_in',
+      predicate: "status_in",
       defaultOptions: [
-        'failed',
-        'pending',
-        'in_progress',
-        'interrupted',
-        'completed'
-      ]
+        "failed",
+        "pending",
+        "in_progress",
+        "interrupted",
+        "completed",
+      ],
     },
     render: {
-      component: 'inputToggleButton',
+      component: "inputToggleButton",
       props: {
-        mode: 'multi',
+        mode: "multi",
         options: [
           {
-            value: 'failed',
-            label: 'Failed'
+            value: "failed",
+            label: "Failed",
           },
           {
-            value: 'pending',
-            label: 'Pending'
+            value: "pending",
+            label: "Pending",
           },
           {
-            value: 'in_progress',
-            label: 'In Progress'
+            value: "in_progress",
+            label: "In Progress",
           },
           {
-            value: 'interrupted',
-            label: 'Interrupted'
+            value: "interrupted",
+            label: "Interrupted",
           },
           {
-            value: 'completed',
-            label: 'Completed'
-          }
-        ]
-      }
-    }
+            value: "completed",
+            label: "Completed",
+          },
+        ],
+      },
+    },
   },
   {
-    label: 'Time range',
-    type: 'timeRange',
+    label: "Time range",
+    type: "timeRange",
     sdk: {
-      predicate: 'created_at'
+      predicate: "created_at",
     },
     render: {
-      component: 'dateRangePicker'
-    }
+      component: "dateRangePicker",
+    },
   },
   {
-    label: 'Search',
-    type: 'textSearch',
+    label: "Search",
+    type: "textSearch",
     sdk: {
-      predicate: 'resource_type_cont'
+      predicate: "resource_type_cont",
     },
     render: {
-      component: 'searchBar'
-    }
-  }
+      component: "searchBar",
+    },
+  },
 ]

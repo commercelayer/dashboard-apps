@@ -1,4 +1,4 @@
-import { type AllowedResourceType } from '@typing/resources.types'
+import type { AllowedResourceType } from "@typing/resources.types"
 
 export type AppRoute = keyof typeof appRoutes
 
@@ -8,27 +8,27 @@ export type AppRoute = keyof typeof appRoutes
 // and `makePath` method to be used to generate the path used in navigation and links
 export const appRoutes = {
   list: {
-    path: '/',
+    path: "/",
     makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/?${filters}` : `/`
+      hasFilterQuery(filters) ? `/?${filters}` : `/`,
   },
   filters: {
-    path: '/filters',
+    path: "/filters",
     makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`
+      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`,
   },
   selectResource: {
-    path: '/new',
-    makePath: () => '/new'
+    path: "/new",
+    makePath: () => "/new",
   },
   newImport: {
-    path: '/new/:resourceType',
-    makePath: (resourceType: AllowedResourceType) => `/new/${resourceType}`
+    path: "/new/:resourceType",
+    makePath: (resourceType: AllowedResourceType) => `/new/${resourceType}`,
   },
   details: {
-    path: '/:importId',
-    makePath: (importId: string) => `/${importId}`
-  }
+    path: "/:importId",
+    makePath: (importId: string) => `/${importId}`,
+  },
 }
 
 function hasFilterQuery(filters?: string): filters is string {

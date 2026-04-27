@@ -1,20 +1,20 @@
-import { makeInstructions } from '#data/filters'
-import { presets } from '#data/lists'
 import {
+  type MetricsFilters,
+  type UiFilterValue,
   useResourceFilters,
   useTokenProvider,
-  type MetricsFilters,
-  type UiFilterValue
-} from '@commercelayer/app-elements'
-import type { QueryFilter } from '@commercelayer/sdk'
-import useSWR, { type SWRResponse } from 'swr'
-import { metricsApiFetcher } from './fetcher'
+} from "@commercelayer/app-elements"
+import type { QueryFilter } from "@commercelayer/sdk"
+import useSWR, { type SWRResponse } from "swr"
+import { makeInstructions } from "#data/filters"
+import { presets } from "#data/lists"
+import { metricsApiFetcher } from "./fetcher"
 
 const listPresetsForCounters = [
-  'awaitingApproval',
-  'paymentToCapture',
-  'fulfillmentInProgress',
-  'editing'
+  "awaitingApproval",
+  "paymentToCapture",
+  "fulfillmentInProgress",
+  "editing",
 ] as const
 type ListPreset = (typeof listPresetsForCounters)[number]
 
@@ -22,7 +22,7 @@ const fetchAllCounters = async ({
   domain,
   slug,
   accessToken,
-  metricsFilters
+  metricsFilters,
 }: {
   domain: string
   slug: string
@@ -30,7 +30,7 @@ const fetchAllCounters = async ({
   metricsFilters: Record<ListPreset, MetricsFilters>
 }): Promise<Record<ListPreset, number>> => {
   function fulfillResult(result?: PromiseSettledResult<number>): number {
-    return result?.status === 'fulfilled' ? result.value : 0
+    return result?.status === "fulfilled" ? result.value : 0
   }
 
   const lists = Object.keys(metricsFilters) as ListPreset[]
@@ -38,29 +38,29 @@ const fetchAllCounters = async ({
   const allStats = await Promise.allSettled(
     lists.map(async (listType) => {
       return await metricsApiFetcher<MetricsApiOrdersStatsData>({
-        endpoint: '/orders/stats',
+        endpoint: "/orders/stats",
         domain,
         slug,
         accessToken,
         body: {
           stats: {
-            field: 'order.id',
-            operator: 'value_count'
+            field: "order.id",
+            operator: "value_count",
           },
-          filter: metricsFilters[listType]
-        }
+          filter: metricsFilters[listType],
+        },
       }).then((r) => r.data.value)
-    })
+    }),
   )
 
   const defaultValues = Object.fromEntries(
-    lists.map((listType) => [listType, 0])
+    lists.map((listType) => [listType, 0]),
   ) as Record<ListPreset, number>
 
   return lists.reduce((acc, listType, index) => {
     return {
       ...acc,
-      [listType]: fulfillResult(allStats[index])
+      [listType]: fulfillResult(allStats[index]),
     }
   }, defaultValues)
 }
@@ -72,21 +72,21 @@ export function useListCounters(): SWRResponse<{
   fulfillmentInProgress: number
 }> {
   const {
-    settings: { accessToken, organizationSlug, domain }
+    settings: { accessToken, organizationSlug, domain },
   } = useTokenProvider()
 
   const {
-    adapters: { adaptFormValuesToSdk, adaptSdkToMetrics }
+    adapters: { adaptFormValuesToSdk, adaptSdkToMetrics },
   } = useResourceFilters({
-    instructions: makeInstructions({})
+    instructions: makeInstructions({}),
   })
 
   const sdkFilters = listPresetsForCounters.reduce((acc, listType) => {
     return {
       ...acc,
       [listType]: adaptFormValuesToSdk({
-        formValues: presets[listType] as Record<ListPreset, UiFilterValue>
-      })
+        formValues: presets[listType] as Record<ListPreset, UiFilterValue>,
+      }),
     }
   }, {}) as Record<ListPreset, QueryFilter>
 
@@ -94,9 +94,9 @@ export function useListCounters(): SWRResponse<{
     return {
       ...acc,
       [listType]: adaptSdkToMetrics({
-        resourceType: 'orders',
-        sdkFilters: sdkFilters[listType]
-      })
+        resourceType: "orders",
+        sdkFilters: sdkFilters[listType],
+      }),
     }
   }, {})
 
@@ -105,12 +105,12 @@ export function useListCounters(): SWRResponse<{
       slug: organizationSlug,
       domain,
       accessToken,
-      metricsFilters
+      metricsFilters,
     },
     fetchAllCounters,
     {
-      revalidateOnFocus: false
-    }
+      revalidateOnFocus: false,
+    },
   )
 
   return swrResponse

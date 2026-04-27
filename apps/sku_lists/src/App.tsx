@@ -1,15 +1,15 @@
-import { ErrorNotFound } from '#pages/ErrorNotFound'
-import { LinkDetails } from '#pages/LinkDetails'
-import { LinkEdit } from '#pages/LinkEdit'
-import { LinkNew } from '#pages/LinkNew'
-import { SkuListDetails } from '#pages/SkuListDetails'
-import { SkuListDetailsAddItems } from '#pages/SkuListDetailsAddItems'
-import { SkuListEdit } from '#pages/SkuListEdit'
-import { SkuListNew } from '#pages/SkuListNew'
-import { SkuListsList } from '#pages/SkuListsList'
-import type { FC } from 'react'
-import { Redirect, Route, Router, Switch } from 'wouter'
-import { appRoutes } from './data/routes'
+import type { FC } from "react"
+import { Redirect, Route, Router, Switch } from "wouter"
+import { ErrorNotFound } from "#pages/ErrorNotFound"
+import { LinkDetails } from "#pages/LinkDetails"
+import { LinkEdit } from "#pages/LinkEdit"
+import { LinkNew } from "#pages/LinkNew"
+import { SkuListDetails } from "#pages/SkuListDetails"
+import { SkuListDetailsAddItems } from "#pages/SkuListDetailsAddItems"
+import { SkuListEdit } from "#pages/SkuListEdit"
+import { SkuListNew } from "#pages/SkuListNew"
+import { SkuListsList } from "#pages/SkuListsList"
+import { appRoutes } from "./data/routes"
 
 interface AppProps {
   routerBase?: string

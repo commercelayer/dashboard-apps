@@ -1,19 +1,19 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemSubscription } from '#components/ListItemSubscription'
-import { instructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
-import { useSubscriptionModelsFrequencies } from '#hooks/useSubscriptionModelsFrequencies'
 import {
   EmptyState,
   HomePageLayout,
   PageLayout,
   Spacer,
   useResourceFilters,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useCallback, type FC } from 'react'
-import { useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { type FC, useCallback } from "react"
+import { useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemSubscription } from "#components/ListItemSubscription"
+import { instructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
+import { useSubscriptionModelsFrequencies } from "#hooks/useSubscriptionModelsFrequencies"
 
 export const SubscriptionsList: FC = () => {
   const { settings, canUser } = useTokenProvider()
@@ -24,37 +24,37 @@ export const SubscriptionsList: FC = () => {
 
   const filters = useCallback(() => {
     return useResourceFilters({
-      instructions: instructions(subscriptionModelsFrequencies)
+      instructions: instructions(subscriptionModelsFrequencies),
     })
   }, [subscriptionModelsFrequencies])
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = filters()
 
-  if (!canUser('read', 'order_subscriptions')) {
+  if (!canUser("read", "order_subscriptions")) {
     return (
       <PageLayout
-        title='Subscriptions'
+        title="Subscriptions"
         mode={settings.mode}
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
           label: `Subscriptions`,
-          icon: 'arrowLeft'
+          icon: "arrowLeft",
         }}
       >
-        <EmptyState title='You are not authorized' />
+        <EmptyState title="You are not authorized" />
       </PageLayout>
     )
   }
 
   return (
-    <HomePageLayout title='Subscriptions'>
+    <HomePageLayout title="Subscriptions">
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -63,20 +63,20 @@ export const SubscriptionsList: FC = () => {
         hideFiltersNav={false}
       />
 
-      <Spacer top='14'>
+      <Spacer top="14">
         <FilteredList
-          type='order_subscriptions'
+          type="order_subscriptions"
           ItemTemplate={ListItemSubscription}
           query={{
-            include: ['market'],
+            include: ["market"],
             sort: {
-              updated_at: 'desc'
+              updated_at: "desc",
             },
-            pageSize: 25
+            pageSize: 25,
           }}
           emptyState={
             <ListEmptyState
-              scope={hasActiveFilter ? 'userFiltered' : 'history'}
+              scope={hasActiveFilter ? "userFiltered" : "history"}
             />
           }
         />

@@ -1,32 +1,32 @@
-import { type Import } from '@commercelayer/sdk'
-import { ImportCount } from './ImportCount'
-import { useImportDetailsContext } from './Provider'
-import { Report, withSkeletonTemplate } from '@commercelayer/app-elements'
+import { Report, withSkeletonTemplate } from "@commercelayer/app-elements"
+import type { Import } from "@commercelayer/sdk"
+import { ImportCount } from "./ImportCount"
+import { useImportDetailsContext } from "./Provider"
 
 export const ImportReport = withSkeletonTemplate(({ isLoading }) => {
   const {
-    state: { data }
+    state: { data },
   } = useImportDetailsContext()
 
-  const errorJsonToDownload = getJsonLogToDownload(data, 'errors_log')
+  const errorJsonToDownload = getJsonLogToDownload(data, "errors_log")
 
   return (
     <Report
       isLoading={isLoading}
       items={[
         {
-          label: 'Record imported',
-          count: <ImportCount type='processed_count' />,
+          label: "Record imported",
+          count: <ImportCount type="processed_count" />,
           linkUrl: getSourceFileUrl(data),
-          linkLabel: 'Download file'
+          linkLabel: "Download file",
         },
         {
-          label: 'Errors',
-          count: <ImportCount type='errors_count' />,
+          label: "Errors",
+          count: <ImportCount type="errors_count" />,
           downloadJsonAsFile: errorJsonToDownload?.json,
           downloadJsonFilename: errorJsonToDownload?.filename,
-          linkLabel: 'View logs'
-        }
+          linkLabel: "View logs",
+        },
       ]}
     />
   )
@@ -45,7 +45,7 @@ function getSourceFileUrl(job?: Import): string | undefined {
 
 function getJsonLogToDownload(
   job: Import,
-  logType: 'errors_log' | 'warnings_log'
+  logType: "errors_log" | "warnings_log",
 ): {
   json?: object
   filename?: string
@@ -58,6 +58,6 @@ function getJsonLogToDownload(
 
   return {
     json: log,
-    filename: `${job.id}_${job.created_at}_${logType}.json`
+    filename: `${job.id}_${job.created_at}_${logType}.json`,
   }
 }

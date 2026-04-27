@@ -1,5 +1,6 @@
 import {
   Badge,
+  type BadgeProps,
   Button,
   Dropdown,
   DropdownDivider,
@@ -15,11 +16,10 @@ import {
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
-  type BadgeProps
-} from '@commercelayer/app-elements'
-import type { Link, ListResponse } from '@commercelayer/sdk'
-import { useState } from 'react'
-import type { KeyedMutator } from 'swr'
+} from "@commercelayer/app-elements"
+import type { Link, ListResponse } from "@commercelayer/sdk"
+import { useState } from "react"
+import type { KeyedMutator } from "swr"
 
 interface Props {
   link: Link
@@ -32,7 +32,7 @@ export const LinkListRow = ({
   link,
   onLinkDetailsClick,
   onLinkEditClick,
-  mutateList
+  mutateList,
 }: Props): React.JSX.Element => {
   const { user, canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
@@ -43,45 +43,45 @@ export const LinkListRow = ({
     return <></>
   }
 
-  const linkName = `${link.name.substring(0, 30)}${link.name.length > 30 ? `...` : ''}`
+  const linkName = `${link.name.substring(0, 30)}${link.name.length > 30 ? `...` : ""}`
   const linkStatus = getLinkStatus(link)
 
   return (
     <Tr>
       <Td>
-        <Button variant='link' onClick={onLinkDetailsClick}>
+        <Button variant="link" onClick={onLinkDetailsClick}>
           {linkName}
         </Button>
       </Td>
       <Td>
         <Tooltip
           label={
-            <Text size='small' weight='regular'>
+            <Text size="small" weight="regular">
               {formatDateRange({
-                rangeFrom: link?.starts_at ?? '',
-                rangeTo: link?.expires_at ?? '',
-                timezone: user?.timezone
+                rangeFrom: link?.starts_at ?? "",
+                rangeTo: link?.expires_at ?? "",
+                timezone: user?.timezone,
               })}
             </Text>
           }
           content={
             <>
-              <Text tag='div' size='small'>
-                From:{' '}
+              <Text tag="div" size="small">
+                From:{" "}
                 {formatDate({
                   isoDate: link.starts_at ?? undefined,
                   timezone: user?.timezone,
-                  format: 'full',
-                  showCurrentYear: true
+                  format: "full",
+                  showCurrentYear: true,
                 })}
               </Text>
-              <Text tag='div' size='small'>
-                To:{' '}
+              <Text tag="div" size="small">
+                To:{" "}
                 {formatDate({
                   isoDate: link?.expires_at ?? undefined,
                   timezone: user?.timezone,
-                  format: 'full',
-                  showCurrentYear: true
+                  format: "full",
+                  showCurrentYear: true,
                 })}
               </Text>
             </>
@@ -91,23 +91,23 @@ export const LinkListRow = ({
       <Td>
         <Badge variant={getBadgeVariant(link)}>{getLinkStatus(link)}</Badge>
       </Td>
-      <Td align='right'>
+      <Td align="right">
         <Dropdown
           dropdownItems={
             <>
-              <DropdownItem label='Show QR' onClick={onLinkDetailsClick} />
+              <DropdownItem label="Show QR" onClick={onLinkDetailsClick} />
               <DropdownDivider />
-              {canUser('update', 'links') && (
+              {canUser("update", "links") && (
                 <>
-                  <DropdownItem label='Edit' onClick={onLinkEditClick} />
+                  <DropdownItem label="Edit" onClick={onLinkEditClick} />
                   <DropdownItem
-                    label={linkStatus === 'disabled' ? 'Enable' : 'Disable'}
+                    label={linkStatus === "disabled" ? "Enable" : "Disable"}
                     onClick={() => {
                       void sdkClient.links
                         .update({
                           id: link.id,
-                          _enable: linkStatus === 'disabled',
-                          _disable: linkStatus !== 'disabled'
+                          _enable: linkStatus === "disabled",
+                          _disable: linkStatus !== "disabled",
                         })
                         .then(() => {
                           void mutateList()
@@ -116,9 +116,9 @@ export const LinkListRow = ({
                   />
                 </>
               )}
-              {canUser('destroy', 'links') && (
+              {canUser("destroy", "links") && (
                 <DropdownItem
-                  label='Delete'
+                  label="Delete"
                   onClick={() => {
                     open()
                   }}
@@ -127,29 +127,29 @@ export const LinkListRow = ({
             </>
           }
           dropdownLabel={
-            <Button variant='circle'>
-              <Icon name='dotsThree' size={24} />
+            <Button variant="circle">
+              <Icon name="dotsThree" size={24} />
             </Button>
           }
         />
       </Td>
-      {canUser('destroy', 'links') && (
+      {canUser("destroy", "links") && (
         <Overlay>
           <PageLayout
             title={`Confirm that you want to delete ${link.name}.`}
-            description='This action cannot be undone, proceed with caution.'
+            description="This action cannot be undone, proceed with caution."
             minHeight={false}
             navigationButton={{
-              label: 'Cancel',
-              icon: 'x',
+              label: "Cancel",
+              icon: "x",
               onClick: () => {
                 close()
-              }
+              },
             }}
           >
             <Button
-              variant='danger'
-              size='small'
+              variant="danger"
+              size="small"
               disabled={isDeleteting}
               onClick={(e) => {
                 setIsDeleting(true)
@@ -170,24 +170,23 @@ export const LinkListRow = ({
   )
 }
 
-function getBadgeVariant(link: Link): BadgeProps['variant'] {
+function getBadgeVariant(link: Link): BadgeProps["variant"] {
   const status = getLinkStatus(link)
   switch (status) {
-    case 'pending':
-      return 'warning'
+    case "pending":
+      return "warning"
 
-    case 'active':
-      return 'success'
+    case "active":
+      return "success"
 
-    case 'expired':
     default:
-      return 'secondary'
+      return "secondary"
   }
 }
 
-function getLinkStatus(link: Link): Link['status'] {
+function getLinkStatus(link: Link): Link["status"] {
   if (link.disabled_at != null) {
-    return 'disabled'
+    return "disabled"
   } else {
     return link.status
   }

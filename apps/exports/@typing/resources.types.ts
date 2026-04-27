@@ -1,62 +1,61 @@
- 
-  export type AllowedResourceType =
-    | 'addresses'
-    | 'bundles'
-    | 'coupons'
-    | 'customer_subscriptions'
-    | 'customers'
-    | 'gift_cards'
-    | 'in_stock_subscriptions'
-    | 'line_items'
-    | 'order_subscriptions'
-    | 'orders'
-    | 'payment_methods'
-    | 'prices'
-    | 'returns'
-    | 'shipments'
-    | 'shipping_categories'
-    | 'shipping_methods'
-    | 'sku_list_items'
-    | 'sku_lists'
-    | 'sku_options'
-    | 'skus'
-    | 'stock_items'
-    | 'stock_transfers'
-    | 'tax_categories'
-    | 'transactions'
+export type AllowedResourceType =
+  | "addresses"
+  | "bundles"
+  | "coupons"
+  | "customer_subscriptions"
+  | "customers"
+  | "gift_cards"
+  | "in_stock_subscriptions"
+  | "line_items"
+  | "order_subscriptions"
+  | "orders"
+  | "payment_methods"
+  | "prices"
+  | "returns"
+  | "shipments"
+  | "shipping_categories"
+  | "shipping_methods"
+  | "sku_list_items"
+  | "sku_lists"
+  | "sku_options"
+  | "skus"
+  | "stock_items"
+  | "stock_transfers"
+  | "tax_categories"
+  | "transactions"
 
-  export type ResourceWithRelationship =
-    | 'bundles'
-    | 'coupons'
-    | 'customer_subscriptions'
-    | 'customers'
-    | 'in_stock_subscriptions'
-    | 'order_subscriptions'
-    | 'orders'
-    | 'payment_methods'
-    | 'prices'
-    | 'returns'
-    | 'shipments'
-    | 'shipping_categories'
-    | 'shipping_methods'
-    | 'sku_list_items'
-    | 'sku_lists'
-    | 'skus'
-    | 'stock_items'
-    | 'tax_categories'
-    | 'transactions'
- 
- export interface ApiError {
-    code?: string
-    meta?: unknown
-    source?: unknown
-    status?: string
-    /**
-     * Error message without attribute key (Eg: "Must be set")
-     */
-    title: string
-    /**
-     * Computed error message that also includes attribute key (Eg: "Name - Must be set")
-     */
-    detail: string
-  }
+export type ResourceWithRelationship =
+  | "bundles"
+  | "coupons"
+  | "customer_subscriptions"
+  | "customers"
+  | "in_stock_subscriptions"
+  | "order_subscriptions"
+  | "orders"
+  | "payment_methods"
+  | "prices"
+  | "returns"
+  | "shipments"
+  | "shipping_categories"
+  | "shipping_methods"
+  | "sku_list_items"
+  | "sku_lists"
+  | "skus"
+  | "stock_items"
+  | "tax_categories"
+  | "transactions"
+
+export interface ApiError {
+  code?: string
+  meta?: unknown
+  source?: unknown
+  status?: string
+  /**
+   * Error message without attribute key (Eg: "Must be set")
+   */
+  title: string
+  /**
+   * Computed error message that also includes attribute key (Eg: "Name - Must be set")
+   */
+  detail: string
+}

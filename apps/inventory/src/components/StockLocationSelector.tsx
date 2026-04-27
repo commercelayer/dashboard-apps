@@ -1,32 +1,32 @@
 import {
   HookedInputSelect,
+  type InputSelectValue,
   useCoreApi,
   useCoreSdkProvider,
-  type InputSelectValue
-} from '@commercelayer/app-elements'
-import type { ListResponse, Resource, StockLocation } from '@commercelayer/sdk'
-import isEmpty from 'lodash-es/isEmpty'
-import isString from 'lodash-es/isString'
-import { type FC } from 'react'
-import { useFormContext } from 'react-hook-form'
+} from "@commercelayer/app-elements"
+import type { ListResponse, Resource, StockLocation } from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
+import isString from "lodash-es/isString"
+import type { FC } from "react"
+import { useFormContext } from "react-hook-form"
 
 export const StockLocationSelector: FC = () => {
   const { sdkClient } = useCoreSdkProvider()
   const { setValue } = useFormContext()
   const { data, isLoading: isLoadingInitialValues } = useCoreApi(
-    'stock_locations',
-    'list',
+    "stock_locations",
+    "list",
     [
       {
         fields: {
-          stock_locations: ['name']
+          stock_locations: ["name"],
         },
         pageSize: 25,
         sort: {
-          name: 'asc'
-        }
-      }
-    ]
+          name: "asc",
+        },
+      },
+    ],
   )
 
   const hasMorePages =
@@ -35,27 +35,27 @@ export const StockLocationSelector: FC = () => {
   const initialValues = [
     ...makeSelectInitialValuesWithDefault<StockLocation>({
       resourceList: data,
-      fieldForLabel: 'name'
-    })
+      fieldForLabel: "name",
+    }),
   ]
 
   return (
     <HookedInputSelect
-      name='stockLocation'
-      label='Stock location'
-      placeholder='Select a stock location'
+      name="stockLocation"
+      label="Stock location"
+      placeholder="Select a stock location"
       initialValues={initialValues}
       isLoading={isLoadingInitialValues}
       isClearable={false}
       isSearchable
       onSelect={(selected) => {
         if (isString(selected) && !isEmpty(selected)) {
-          setValue('stockLocation', selected)
+          setValue("stockLocation", selected)
         }
       }}
       menuFooterText={
         hasMorePages
-          ? 'Showing 25 results. Type to search for more options.'
+          ? "Showing 25 results. Type to search for more options."
           : undefined
       }
       loadAsyncValues={
@@ -67,14 +67,14 @@ export const StockLocationSelector: FC = () => {
                   filters: {
                     name_cont: hint,
                     fields: {
-                      stock_locations: ['name']
-                    }
-                  }
+                      stock_locations: ["name"],
+                    },
+                  },
                 })
                 .then((res) => {
                   return res.map((stockLocation) => ({
                     label: stockLocation.name,
-                    value: stockLocation.id
+                    value: stockLocation.id,
                   }))
                 })
             }
@@ -87,7 +87,7 @@ export const StockLocationSelector: FC = () => {
 function makeSelectInitialValuesWithDefault<R extends Resource>({
   resourceList,
   defaultResource,
-  fieldForLabel
+  fieldForLabel,
 }: {
   resourceList?: ListResponse<R>
   defaultResource?: R
@@ -99,14 +99,14 @@ function makeSelectInitialValuesWithDefault<R extends Resource>({
           label: (
             defaultResource[fieldForLabel] ?? defaultResource.id
           ).toString(),
-          value: defaultResource.id
+          value: defaultResource.id,
         }
       : undefined,
     ...(resourceList ?? []).map((item) => ({
       label: (item[fieldForLabel] ?? item.id).toString(),
       value: item.id,
-      meta: item
-    }))
+      meta: item,
+    })),
   ].filter((v) => !isEmpty(v)) as InputSelectValue[]
 
   return options.sort((a, b) => a.label.localeCompare(b.label))

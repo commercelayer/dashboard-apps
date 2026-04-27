@@ -1,17 +1,17 @@
-import { isFalsy } from '#utils/isFalsy'
-import { z } from 'zod'
+import { z } from "zod"
+import { isFalsy } from "#utils/isFalsy"
 
 import {
   zodCaseInsensitiveNativeEnum,
   zodEnforceBoolean,
   zodEnforcePositiveFloat,
-  zodEnforcePositiveInt
-} from './zodUtils'
+  zodEnforcePositiveInt,
+} from "./zodUtils"
 
 const allowedUnitOfWeight = {
-  grams: 'gr',
-  libra: 'lb',
-  ounce: 'oz'
+  grams: "gr",
+  libra: "lb",
+  ounce: "oz",
 } as const
 
 const schema = z
@@ -24,21 +24,21 @@ const schema = z
     pieces_per_pack: z.optional(zodEnforcePositiveInt),
     weight: z.optional(zodEnforcePositiveFloat),
     unit_of_weight: z.optional(
-      zodCaseInsensitiveNativeEnum(allowedUnitOfWeight)
+      zodCaseInsensitiveNativeEnum(allowedUnitOfWeight),
     ),
     hs_tariff_number: z.optional(z.string()),
     do_not_ship: zodEnforceBoolean({ optional: true }),
     do_not_track: zodEnforceBoolean({ optional: true }),
     reference: z.optional(z.string()),
-    reference_origin: z.optional(z.string())
+    reference_origin: z.optional(z.string()),
   })
   .passthrough()
   .superRefine((data, ctx) => {
     if (data.shipping_category_id == null && isFalsy(data.do_not_ship)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['shipping_category_id'],
-        message: 'shipping_category_id is required when SKU is shippable.'
+        path: ["shipping_category_id"],
+        message: "shipping_category_id is required when SKU is shippable.",
       })
     }
   })

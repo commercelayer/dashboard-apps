@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { CustomerForm, type CustomerFormValues } from '#components/CustomerForm'
-import { ScrollToTop } from '#components/ScrollToTop'
-import { appRoutes } from '#data/routes'
-import { useCustomerDetails } from '#hooks/useCustomerDetails'
 import {
   Button,
   EmptyState,
@@ -11,18 +6,22 @@ import {
   Spacer,
   useCoreSdkProvider,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { type Customer, type CustomerUpdate } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { Customer, CustomerUpdate } from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { CustomerForm, type CustomerFormValues } from "#components/CustomerForm"
+import { ScrollToTop } from "#components/ScrollToTop"
+import { appRoutes } from "#data/routes"
+import { useCustomerDetails } from "#hooks/useCustomerDetails"
 
 export function CustomerEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ customerId: string }>(appRoutes.edit.path)
-  const customerId = params?.customerId ?? ''
+  const customerId = params?.customerId ?? ""
   const { t } = useTranslation()
 
   const { customer, isLoading, mutateCustomer } = useCustomerDetails(customerId)
@@ -34,26 +33,26 @@ export function CustomerEdit(): React.JSX.Element {
       ? appRoutes.details.makePath(customerId)
       : appRoutes.list.makePath()
 
-  if (!canUser('update', 'customers')) {
+  if (!canUser("update", "customers")) {
     return (
       <PageLayout
-        title={t('common.edit_resource', {
-          resource: t('resources.customers.name').toLowerCase()
+        title={t("common.edit_resource", {
+          resource: t("resources.customers.name").toLowerCase(),
         })}
         navigationButton={{
-          label: t('common.back'),
-          icon: 'arrowLeft',
+          label: t("common.back"),
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(goBackUrl)
-          }
+          },
         }}
       >
         <EmptyState
-          title={t('common.empty_states.not_found')}
-          description={t('common.routes.invalid_resource_or_not_authorized')}
+          title={t("common.empty_states.not_found")}
+          description={t("common.routes.invalid_resource_or_not_authorized")}
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>{t('common.go_back')}</Button>
+              <Button variant="primary">{t("common.go_back")}</Button>
             </Link>
           }
         />
@@ -65,22 +64,22 @@ export function CustomerEdit(): React.JSX.Element {
     <PageLayout
       title={
         <SkeletonTemplate isLoading={isLoading}>
-          {t('common.edit_resource', {
-            resource: t('resources.customers.name').toLowerCase()
+          {t("common.edit_resource", {
+            resource: t("resources.customers.name").toLowerCase(),
           })}
         </SkeletonTemplate>
       }
       navigationButton={{
-        label: t('common.back'),
-        icon: 'arrowLeft',
+        label: t("common.back"),
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(goBackUrl)
-        }
+        },
       }}
       overlay
     >
       <ScrollToTop />
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         {!isLoading && customer != null ? (
           <CustomerForm
             defaultValues={adaptCustomerToFormValues(customer)}
@@ -108,22 +107,22 @@ export function CustomerEdit(): React.JSX.Element {
 
 function adaptCustomerToFormValues(customer?: Customer): CustomerFormValues {
   return {
-    email: customer?.email ?? '',
-    customerGroup: customer?.customer_group?.id ?? null
+    email: customer?.email ?? "",
+    customerGroup: customer?.customer_group?.id ?? null,
   }
 }
 
 function adaptFormValuesToCustomer(
   formValues: CustomerFormValues,
-  customerId: string
+  customerId: string,
 ): CustomerUpdate {
   return {
     id: customerId,
     email: formValues.email,
     customer_group: {
       id: formValues.customerGroup ?? null,
-      type: 'customer_groups'
-    }
+      type: "customer_groups",
+    },
   }
 }
 

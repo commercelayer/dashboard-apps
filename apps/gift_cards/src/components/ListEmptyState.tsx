@@ -1,23 +1,23 @@
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Link } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { Link } from "wouter"
+import { appRoutes } from "#data/routes"
 
 interface Props {
-  scope?: 'history' | 'userFiltered'
+  scope?: "history" | "userFiltered"
 }
 
 export function ListEmptyState({
-  scope = 'history'
+  scope = "history",
 }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
-  if (scope === 'userFiltered') {
+  if (scope === "userFiltered") {
     return (
       <EmptyState
-        title='No gift card found!'
+        title="No gift card found!"
         description={
           <div>
             <p>
@@ -32,11 +32,11 @@ export function ListEmptyState({
 
   return (
     <EmptyState
-      title='No gift card yet!'
+      title="No gift card yet!"
       action={
-        canUser('create', 'gift_cards') && (
+        canUser("create", "gift_cards") && (
           <Link href={appRoutes.new.makePath({})}>
-            <Button variant='primary'>Add gift card</Button>
+            <Button variant="primary">Add gift card</Button>
           </Link>
         )
       }

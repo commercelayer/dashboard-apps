@@ -1,22 +1,21 @@
+import type { ApiError } from "App"
 import {
   Button,
   HookedForm,
   HookedInput,
   InputFeedback,
   Spacer,
-  useCoreSdkProvider
-} from '@commercelayer/app-elements'
-import type { Webhook } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useLocation } from 'wouter'
-import zod from 'zod'
-
-import { EventSelector } from '#components/Form/EventSelector'
-import { appRoutes } from '#data/routes'
-import { parseApiError } from '#utils/apiErrors'
-import type { ApiError } from 'App'
+  useCoreSdkProvider,
+} from "@commercelayer/app-elements"
+import type { Webhook } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { useLocation } from "wouter"
+import zod from "zod"
+import { EventSelector } from "#components/Form/EventSelector"
+import { appRoutes } from "#data/routes"
+import { parseApiError } from "#utils/apiErrors"
 
 const includeResourcesRegExp = /^[a-z][a-z_.]*[a-z](,[a-z][a-z_.]*[a-z])*$|^$/
 
@@ -27,10 +26,10 @@ const webhookFormSchema = zod
     callback_url: zod
       .string()
       .min(1, { message: `Callback URL can't be blank` })
-      .url({ message: 'Callback URL is invalid' }),
+      .url({ message: "Callback URL is invalid" }),
     include_resources: zod.string().regex(includeResourcesRegExp, {
-      message: 'Include is invalid'
-    })
+      message: "Include is invalid",
+    }),
   })
   .required()
 
@@ -45,23 +44,23 @@ const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
   const [apiError, setApiError] = useState<ApiError[] | undefined>(undefined)
   const [, setLocation] = useLocation()
 
-  const formAction = webhookData !== undefined ? 'update' : 'create'
+  const formAction = webhookData !== undefined ? "update" : "create"
 
   const includeResourcesValue =
     webhookData?.include_resources != null
-      ? webhookData?.include_resources.join(',')
-      : ''
+      ? webhookData?.include_resources.join(",")
+      : ""
 
   const defaultValues = {
-    name: webhookData?.name ?? '',
-    topic: webhookData?.topic ?? '',
-    callback_url: webhookData?.callback_url ?? '',
-    include_resources: includeResourcesValue
+    name: webhookData?.name ?? "",
+    topic: webhookData?.topic ?? "",
+    callback_url: webhookData?.callback_url ?? "",
+    include_resources: includeResourcesValue,
   }
 
   const methods = useForm<WebhookFormValues>({
     defaultValues,
-    resolver: zodResolver(webhookFormSchema)
+    resolver: zodResolver(webhookFormSchema),
   })
 
   const hasApiError = apiError != null && apiError.length > 0
@@ -76,21 +75,21 @@ const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
         setApiError(undefined)
       }
     },
-    [methods?.formState?.isSubmitted]
+    [methods?.formState?.isSubmitted],
   )
 
   const submitWebhookTask = async (
-    values: WebhookFormValues
+    values: WebhookFormValues,
   ): Promise<void> => {
     setApiError(undefined)
 
     try {
       const payload = {
-        id: webhookData?.id ?? '',
+        id: webhookData?.id ?? "",
         name: values.name,
         topic: values.topic,
         callback_url: values.callback_url,
-        include_resources: values.include_resources.split(',')
+        include_resources: values.include_resources.split(","),
       }
       const sdkRequest = await sdkClient.webhooks[formAction](payload)
       methods.reset()
@@ -107,25 +106,25 @@ const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
         void submitWebhookTask(values)
       }}
     >
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <HookedInput
-          label='Name'
-          name='name'
+          label="Name"
+          name="name"
           hint={{
-            text: 'Choose a meaningful name that helps you identify this webhook.'
+            text: "Choose a meaningful name that helps you identify this webhook.",
           }}
         />
       </Spacer>
 
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <EventSelector
-          name='topic'
+          name="topic"
           hintText={
             <>
-              The resource/event that will trigger the webhook.{' '}
+              The resource/event that will trigger the webhook.{" "}
               <a
-                href='https://docs.commercelayer.io/core/real-time-webhooks#supported-events'
-                target='blank'
+                href="https://docs.commercelayer.io/core/real-time-webhooks#supported-events"
+                target="blank"
               >
                 Browse supported events
               </a>
@@ -135,34 +134,34 @@ const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
         />
       </Spacer>
 
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <HookedInput
-          label='Callback URL'
-          name='callback_url'
-          hint={{ text: 'The URL invoked by the webhook.' }}
+          label="Callback URL"
+          name="callback_url"
+          hint={{ text: "The URL invoked by the webhook." }}
         />
       </Spacer>
 
-      <Spacer bottom='12'>
+      <Spacer bottom="12">
         <HookedInput
-          label='Include'
-          name='include_resources'
+          label="Include"
+          name="include_resources"
           hint={{
-            text: 'Comma separated resource names that should be included in the request body.'
+            text: "Comma separated resource names that should be included in the request body.",
           }}
         />
       </Spacer>
 
-      <Spacer bottom='14'>
-        <Button variant='primary' type='submit' fullWidth>
-          {formAction === 'create' ? 'Create webhook' : 'Edit webhook'}
+      <Spacer bottom="14">
+        <Button variant="primary" type="submit" fullWidth>
+          {formAction === "create" ? "Create webhook" : "Edit webhook"}
         </Button>
         {hasApiError ? (
-          <div className='mt-2'>
-            {apiError.map((error, idx) => (
+          <div className="mt-2">
+            {apiError.map((error) => (
               <InputFeedback
-                key={idx}
-                variant='danger'
+                key={error.detail}
+                variant="danger"
                 message={error.detail}
               />
             ))}

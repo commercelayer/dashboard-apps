@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { type Import } from '@commercelayer/sdk'
+import type { Import } from "@commercelayer/sdk"
 
 /**
  * Extract, if available, the progress percentage from the import job object.
@@ -21,16 +20,16 @@ export function getProgressPercentage(job: Import): {
     return value > 100
       ? {
           value: 100,
-          formatted: '100%'
+          formatted: "100%",
         }
       : {
           value,
-          formatted: `${value}%`
+          formatted: `${value}%`,
         }
   }
 
   return {
     value: 0,
-    formatted: '0%'
+    formatted: "0%",
   }
 }

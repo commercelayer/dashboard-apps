@@ -1,22 +1,22 @@
-import { usePickingList } from '#hooks/usePickingList'
-import { Progress } from '@commercelayer/app-elements'
-import type { Shipment } from '@commercelayer/sdk'
-import sumBy from 'lodash-es/sumBy'
-import { useMemo } from 'react'
+import { Progress } from "@commercelayer/app-elements"
+import type { Shipment } from "@commercelayer/sdk"
+import sumBy from "lodash-es/sumBy"
+import { useMemo } from "react"
+import { usePickingList } from "#hooks/usePickingList"
 
 export const ShipmentProgress: React.FC<{ shipment: Shipment }> = ({
-  shipment
+  shipment,
 }) => {
   const pickingList = usePickingList(shipment)
 
   const progress = useMemo(() => {
-    const max = sumBy(shipment.stock_line_items, 'quantity')
-    const value = max - sumBy(pickingList, 'quantity')
+    const max = sumBy(shipment.stock_line_items, "quantity")
+    const value = max - sumBy(pickingList, "quantity")
 
     return {
       value,
       max,
-      percentage: (value / max) * 100
+      percentage: (value / max) * 100,
     }
   }, [shipment])
 

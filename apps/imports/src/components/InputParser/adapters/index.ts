@@ -1,8 +1,8 @@
-import { type ImportCreate } from '@commercelayer/sdk'
-import { type AllowedResourceType } from '@typing/resources.types'
-import { type ZodSchema } from 'zod'
+import type { ImportCreate } from "@commercelayer/sdk"
+import type { AllowedResourceType } from "@typing/resources.types"
+import type { ZodSchema } from "zod"
 
-type ImportInputs = ImportCreate['inputs']
+type ImportInputs = ImportCreate["inputs"]
 
 export const adapters: Record<
   AllowedResourceType,
@@ -26,7 +26,7 @@ export const adapters: Record<
   orders: (...args) => fromCsvSchemaToImportInputs(...args),
   line_items: (...args) => fromCsvSchemaToImportInputs(...args),
   tags: (...args) => fromCsvSchemaToImportInputs(...args),
-  sku_list_items: (...args) => fromCsvSchemaToImportInputs(...args)
+  sku_list_items: (...args) => fromCsvSchemaToImportInputs(...args),
 }
 
 const fromCsvSchemaToImportInputs = (csvSchema: ZodSchema[]): ImportInputs =>

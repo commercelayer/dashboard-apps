@@ -1,7 +1,7 @@
-import type { TriggerAttribute } from '@commercelayer/app-elements'
-import type { StockTransfer, StockTransferUpdate } from '@commercelayer/sdk'
+import type { TriggerAttribute } from "@commercelayer/app-elements"
+import type { StockTransfer, StockTransferUpdate } from "@commercelayer/sdk"
 
-type ActionVariant = 'primary' | 'secondary'
+type ActionVariant = "primary" | "secondary"
 
 interface TriggerAction {
   triggerAttribute: UITriggerAttributes
@@ -10,40 +10,40 @@ interface TriggerAction {
 }
 
 export function getStockTransferTriggerActions(
-  stockTransfer: StockTransfer
+  stockTransfer: StockTransfer,
 ): TriggerAction[] {
   switch (stockTransfer.status) {
-    case 'upcoming':
-    case 'on_hold':
+    case "upcoming":
+    case "on_hold":
       return [
-        { triggerAttribute: '_cancel', variant: 'secondary' },
-        { triggerAttribute: '_picking', variant: 'primary' }
+        { triggerAttribute: "_cancel", variant: "secondary" },
+        { triggerAttribute: "_picking", variant: "primary" },
       ]
-    case 'picking':
+    case "picking":
       return [
         {
-          triggerAttribute: '_cancel',
-          hidden: true
+          triggerAttribute: "_cancel",
+          hidden: true,
         },
         {
-          triggerAttribute: '_on_hold',
-          variant: 'secondary'
+          triggerAttribute: "_on_hold",
+          variant: "secondary",
         },
         {
-          triggerAttribute: '_in_transit',
-          variant: 'primary'
-        }
+          triggerAttribute: "_in_transit",
+          variant: "primary",
+        },
       ]
-    case 'in_transit':
+    case "in_transit":
       return [
         {
-          triggerAttribute: '_cancel',
-          variant: 'secondary'
+          triggerAttribute: "_cancel",
+          variant: "secondary",
         },
         {
-          triggerAttribute: '_complete',
-          variant: 'primary'
-        }
+          triggerAttribute: "_complete",
+          variant: "primary",
+        },
       ]
     default:
       return []
@@ -52,24 +52,24 @@ export function getStockTransferTriggerActions(
 
 type UITriggerAttributes = Extract<
   TriggerAttribute<StockTransferUpdate>,
-  | '_upcoming'
-  | '_on_hold'
-  | '_picking'
-  | '_in_transit'
-  | '_complete'
-  | '_cancel'
+  | "_upcoming"
+  | "_on_hold"
+  | "_picking"
+  | "_in_transit"
+  | "_complete"
+  | "_cancel"
 >
 
 export function getStockTransferTriggerAttributeName(
-  triggerAttribute: UITriggerAttributes
+  triggerAttribute: UITriggerAttributes,
 ): string {
   const dictionary: Record<typeof triggerAttribute, string> = {
-    _upcoming: 'Mark upcoming',
-    _on_hold: 'Put on hold',
-    _picking: 'Start picking',
-    _in_transit: 'Mark in transit',
-    _complete: 'Complete',
-    _cancel: 'Cancel'
+    _upcoming: "Mark upcoming",
+    _on_hold: "Put on hold",
+    _picking: "Start picking",
+    _in_transit: "Mark in transit",
+    _complete: "Complete",
+    _cancel: "Cancel",
   }
 
   return dictionary[triggerAttribute]

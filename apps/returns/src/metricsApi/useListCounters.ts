@@ -1,19 +1,19 @@
-import { presets, type ListType } from '#data/lists'
 import {
-  makeDateYearsRange,
-  useTokenProvider,
   type FormFullValues,
-  type ParsedScopes
-} from '@commercelayer/app-elements'
-import castArray from 'lodash-es/castArray'
-import useSWR, { type SWRResponse } from 'swr'
-import { metricsApiFetcher } from './fetcher'
+  makeDateYearsRange,
+  type ParsedScopes,
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import castArray from "lodash-es/castArray"
+import useSWR, { type SWRResponse } from "swr"
+import { type ListType, presets } from "#data/lists"
+import { metricsApiFetcher } from "./fetcher"
 
 const fetchReturnStats = async ({
   slug,
   accessToken,
   filters,
-  domain
+  domain,
 }: {
   slug: string
   accessToken: string
@@ -21,24 +21,24 @@ const fetchReturnStats = async ({
   domain: string
 }): Promise<VndApiResponse<MetricsApiReturnsStatsData>> =>
   await metricsApiFetcher<MetricsApiReturnsStatsData>({
-    endpoint: '/returns/stats',
+    endpoint: "/returns/stats",
     slug,
     accessToken,
     body: {
       stats: {
-        field: 'return.id',
-        operator: 'value_count'
+        field: "return.id",
+        operator: "value_count",
       },
-      filter: filters
+      filter: filters,
     },
-    domain
+    domain,
   })
 
 const fetchAllCounters = async ({
   slug,
   accessToken,
   domain,
-  scopes
+  scopes,
 }: {
   slug: string
   accessToken: string
@@ -50,11 +50,11 @@ const fetchAllCounters = async ({
   shipped: number
 }> => {
   function fulfillResult(result?: PromiseSettledResult<number>): number {
-    return result?.status === 'fulfilled' ? result.value : 0
+    return result?.status === "fulfilled" ? result.value : 0
   }
 
   // keep proper order since responses will be assigned for each list in the returned object
-  const lists: ListType[] = ['requested', 'approved', 'shipped']
+  const lists: ListType[] = ["requested", "approved", "shipped"]
 
   const allStats = await Promise.allSettled(
     lists.map(async (listType) => {
@@ -62,15 +62,15 @@ const fetchAllCounters = async ({
         slug,
         accessToken,
         filters: fromFormValuesToMetricsApi(presets[listType], scopes),
-        domain
+        domain,
       }).then((r) => r.data.value)
-    })
+    }),
   )
 
   return {
     requested: fulfillResult(allStats[0]),
     approved: fulfillResult(allStats[1]),
-    shipped: fulfillResult(allStats[2])
+    shipped: fulfillResult(allStats[2]),
   }
 }
 
@@ -80,7 +80,7 @@ export function useListCounters(): SWRResponse<{
   shipped: number
 }> {
   const {
-    settings: { accessToken, organizationSlug, domain, scopes }
+    settings: { accessToken, organizationSlug, domain, scopes },
   } = useTokenProvider()
 
   const swrResponse = useSWR(
@@ -88,12 +88,12 @@ export function useListCounters(): SWRResponse<{
       slug: organizationSlug,
       domain,
       accessToken,
-      scopes
+      scopes,
     },
     fetchAllCounters,
     {
-      revalidateOnFocus: false
-    }
+      revalidateOnFocus: false,
+    },
   )
 
   return swrResponse
@@ -105,15 +105,15 @@ export function useListCounters(): SWRResponse<{
  */
 function fromFormValuesToMetricsApi(
   formValues: FormFullValues,
-  scopes?: ParsedScopes
+  scopes?: ParsedScopes,
 ): object {
   const filterStatuses = {
     statuses:
       formValues.status_in != null && castArray(formValues.status_in).length > 0
         ? {
-            in: formValues.status_in
+            in: formValues.status_in,
           }
-        : undefined
+        : undefined,
   }
 
   // if there are stock locations in the access token scopes we to restrict the results
@@ -123,9 +123,9 @@ function fromFormValuesToMetricsApi(
       ? {
           stock_location: {
             ids: {
-              in: scopes.stock_location.ids
-            }
-          }
+              in: scopes.stock_location.ids,
+            },
+          },
         }
       : {}
 
@@ -134,11 +134,11 @@ function fromFormValuesToMetricsApi(
       ...makeDateYearsRange({
         now: new Date(),
         showMilliseconds: false,
-        yearsAgo: 5
+        yearsAgo: 5,
       }),
-      date_field: 'updated_at',
-      ...filterStatuses
+      date_field: "updated_at",
+      ...filterStatuses,
     },
-    ...filterStockLocations
+    ...filterStockLocations,
   }
 }

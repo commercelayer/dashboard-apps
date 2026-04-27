@@ -1,21 +1,21 @@
-import { PromotionForm } from '#components/PromotionForm'
-import type { PageProps } from '#components/Routes'
-import { promotionToFormValues } from '#data/formConverters/promotion'
-import { promotionConfig } from '#data/promotions/config'
-import { appRoutes } from '#data/routes'
-import { usePromotion } from '#hooks/usePromotion'
 import {
   PageLayout,
   SkeletonTemplate,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useLocation } from "wouter"
+import { PromotionForm } from "#components/PromotionForm"
+import type { PageProps } from "#components/Routes"
+import { promotionToFormValues } from "#data/formConverters/promotion"
+import { promotionConfig } from "#data/promotions/config"
+import { appRoutes } from "#data/routes"
+import { usePromotion } from "#hooks/usePromotion"
 
 function Page(
-  props: PageProps<typeof appRoutes.editPromotion>
+  props: PageProps<typeof appRoutes.editPromotion>,
 ): React.JSX.Element {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const [, setLocation] = useLocation()
 
@@ -24,19 +24,19 @@ function Page(
   return (
     <PageLayout
       overlay={props.overlay}
-      title='Edit promotion'
+      title="Edit promotion"
       mode={mode}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
-        label: 'Close',
-        icon: 'x',
+        label: "Close",
+        icon: "x",
         onClick() {
           setLocation(
             appRoutes.promotionDetails.makePath({
-              promotionId: props.params.promotionId
-            })
+              promotionId: props.params.promotionId,
+            }),
           )
-        }
+        },
       }}
     >
       <SkeletonTemplate isLoading={isLoading}>

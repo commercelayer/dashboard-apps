@@ -1,16 +1,16 @@
-import { A, EmptyState } from '@commercelayer/app-elements'
+import { A, EmptyState } from "@commercelayer/app-elements"
 
 interface Props {
-  scope?: 'history' | 'userFiltered'
+  scope?: "history" | "userFiltered"
 }
 
 export function ListEmptyStateStockLocations({
-  scope = 'history'
+  scope = "history",
 }: Props): React.JSX.Element {
-  if (scope === 'userFiltered') {
+  if (scope === "userFiltered") {
     return (
       <EmptyState
-        title='No stock locations found!'
+        title="No stock locations found!"
         description={
           <div>
             <p>
@@ -24,14 +24,14 @@ export function ListEmptyStateStockLocations({
 
   return (
     <EmptyState
-      title='No stock locations yet!'
+      title="No stock locations yet!"
       description={
         <div>
           <p>Add a stock location with the API, or use the CLI.</p>
           <A
-            target='_blank'
-            href='https://docs.commercelayer.io/core/v/api-reference/stock_locations'
-            rel='noreferrer'
+            target="_blank"
+            href="https://docs.commercelayer.io/core/v/api-reference/stock_locations"
+            rel="noreferrer"
           >
             View API reference.
           </A>

@@ -1,7 +1,6 @@
-import { z } from 'zod'
-
-import { zodEnforcePositiveInt } from './zodUtils'
-import { zodEnforceInt } from '#components/InputParser/schemas/zodUtils'
+import { z } from "zod"
+import { zodEnforceInt } from "#components/InputParser/schemas/zodUtils"
+import { zodEnforcePositiveInt } from "./zodUtils"
 
 const schema = z
   .object({
@@ -15,15 +14,15 @@ const schema = z
     frequency: z.optional(z.string().min(1)),
     reference: z.optional(z.string()),
     reference_origin: z.optional(z.string()),
-    order_id: z.string().min(1)
+    order_id: z.string().min(1),
   })
   .passthrough()
   .superRefine((data, ctx) => {
     if (data.sku_code != null && data.bundle_code != null) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['sku_code'],
-        message: 'Only one between `sku_code` and `bundle_code` is allowed'
+        path: ["sku_code"],
+        message: "Only one between `sku_code` and `bundle_code` is allowed",
       })
     }
   })

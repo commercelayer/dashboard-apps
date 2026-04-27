@@ -1,8 +1,8 @@
-import {
-  type AllowedParentResource,
-  type AllowedResourceType,
-  type ResourceWithParent
-} from '@typing/resources.types'
+import type {
+  AllowedParentResource,
+  AllowedResourceType,
+  ResourceWithParent,
+} from "@typing/resources.types"
 
 type VisibleInUI = boolean
 
@@ -28,7 +28,7 @@ const resources: Record<AllowedResourceType, VisibleInUI> = {
   orders: true,
   line_items: true,
   tags: true,
-  sku_list_items: true
+  sku_list_items: true,
 }
 
 /**
@@ -55,17 +55,17 @@ export const isAvailableResource = (resourceType: string): boolean =>
  * To control if a resource has a parent resource to be selected
  */
 const resourcesWithParent: Record<ResourceWithParent, AllowedParentResource> = {
-  bundles: 'markets',
-  orders: 'markets',
-  prices: 'price_lists',
-  sku_options: 'markets',
-  sku_list_items: 'sku_lists',
-  stock_items: 'stock_locations',
-  tax_categories: 'tax_calculators',
+  bundles: "markets",
+  orders: "markets",
+  prices: "price_lists",
+  sku_options: "markets",
+  sku_list_items: "sku_lists",
+  stock_items: "stock_locations",
+  tax_categories: "tax_calculators",
   // direct parent resource for `coupons` is `promotion_rules` but since they don't have a name
   // and won't be searchable for users, we allow to search from `promotions` and implicitly we then provide to
   // api the related `promotion_rules` id.
-  coupons: 'promotions'
+  coupons: "promotions",
 }
 
 /**
@@ -83,7 +83,7 @@ function hasParentResource(resource: string): resource is ResourceWithParent {
  * @returns a valid parent resource  or false in case the resource does not have any parent
  */
 export function getParentResourceIfNeeded(
-  resource: string
+  resource: string,
 ): AllowedParentResource | false {
   if (resource == null || !hasParentResource(resource)) {
     return false

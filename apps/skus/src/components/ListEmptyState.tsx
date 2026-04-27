@@ -1,25 +1,25 @@
-import { appRoutes } from '#data/routes'
 import {
   A,
   Button,
   EmptyState,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Link } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { Link } from "wouter"
+import { appRoutes } from "#data/routes"
 
 interface Props {
-  scope?: 'history' | 'userFiltered'
+  scope?: "history" | "userFiltered"
 }
 
 export function ListEmptyState({
-  scope = 'history'
+  scope = "history",
 }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
 
-  if (scope === 'userFiltered') {
+  if (scope === "userFiltered") {
     return (
       <EmptyState
-        title='No SKUs found!'
+        title="No SKUs found!"
         description={
           <div>
             <p>We didn't find any SKU matching the current search.</p>
@@ -29,14 +29,14 @@ export function ListEmptyState({
     )
   }
 
-  if (canUser('create', 'skus')) {
+  if (canUser("create", "skus")) {
     return (
       <EmptyState
-        title='No SKUs yet!'
-        description='Create your first SKU'
+        title="No SKUs yet!"
+        description="Create your first SKU"
         action={
           <Link href={appRoutes.new.makePath({})}>
-            <Button variant='primary'>New SKU</Button>
+            <Button variant="primary">New SKU</Button>
           </Link>
         }
       />
@@ -45,14 +45,14 @@ export function ListEmptyState({
 
   return (
     <EmptyState
-      title='No SKUs yet!'
+      title="No SKUs yet!"
       description={
         <div>
           <p>Add a SKU with the API, or use the CLI.</p>
           <A
-            target='_blank'
-            href='https://docs.commercelayer.io/core/v/api-reference/skus'
-            rel='noreferrer'
+            target="_blank"
+            href="https://docs.commercelayer.io/core/v/api-reference/skus"
+            rel="noreferrer"
           >
             View API reference.
           </A>

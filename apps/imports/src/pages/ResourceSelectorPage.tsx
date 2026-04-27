@@ -1,7 +1,6 @@
-import { availableResources } from '#data/resources'
-import { appRoutes } from '#data/routes'
 import {
   Card,
+  formatResourceName,
   Icon,
   List,
   ListItem,
@@ -9,16 +8,17 @@ import {
   SearchBar,
   Spacer,
   Text,
-  formatResourceName,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import isEmpty from 'lodash-es/isEmpty'
-import { useState } from 'react'
-import { Link, useLocation } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import isEmpty from "lodash-es/isEmpty"
+import { useState } from "react"
+import { Link, useLocation } from "wouter"
+import { availableResources } from "#data/resources"
+import { appRoutes } from "#data/routes"
 
 export function ResourceSelectorPage(): React.JSX.Element {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [search, setSearch] = useState<string | null>()
@@ -27,40 +27,40 @@ export function ResourceSelectorPage(): React.JSX.Element {
     isEmpty(search) || search == null
       ? availableResources
       : availableResources.filter((resource) =>
-          resource.toLowerCase().includes(search.toLowerCase())
+          resource.toLowerCase().includes(search.toLowerCase()),
         )
 
   return (
     <PageLayout
-      title='Select type'
+      title="Select type"
       mode={mode}
       navigationButton={{
-        label: 'Imports',
-        icon: 'arrowLeft',
+        label: "Imports",
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(appRoutes.list.makePath())
-        }
+        },
       }}
       overlay
-      gap='only-top'
+      gap="only-top"
     >
-      <Spacer top='6' bottom='14'>
+      <Spacer top="6" bottom="14">
         <SearchBar
-          placeholder='Search…'
-          initialValue={search ?? ''}
+          placeholder="Search…"
+          initialValue={search ?? ""}
           onSearch={setSearch}
           onClear={() => {
             setSearch(null)
           }}
         />
       </Spacer>
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         {list.length === 0 ? (
-          <Card overflow='visible' gap='6'>
+          <Card overflow="visible" gap="6">
             <Text>No resources found.</Text>
           </Card>
         ) : (
-          <Card gap='none'>
+          <Card gap="none">
             <List>
               {list.map((resource) => (
                 <Link
@@ -69,14 +69,14 @@ export function ResourceSelectorPage(): React.JSX.Element {
                   asChild
                 >
                   <ListItem>
-                    <Text weight='semibold'>
+                    <Text weight="semibold">
                       {formatResourceName({
                         resource,
-                        count: 'plural',
-                        format: 'title'
+                        count: "plural",
+                        format: "title",
                       })}
                     </Text>
-                    <Icon name='caretRight' />
+                    <Icon name="caretRight" />
                   </ListItem>
                 </Link>
               ))}

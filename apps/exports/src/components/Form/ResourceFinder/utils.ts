@@ -1,20 +1,20 @@
-import type { InputSelectValue } from '@commercelayer/app-elements'
+import type { InputSelectValue } from "@commercelayer/app-elements"
 import type {
   CommerceLayerClient,
   ListResponse,
   QueryArrayFields,
   QueryFilter,
-  Resource
-} from '@commercelayer/sdk'
+  Resource,
+} from "@commercelayer/sdk"
 
 export type SearchableResource =
-  | 'markets'
-  | 'skus'
-  | 'price_lists'
-  | 'promotions'
-  | 'shipping_categories'
-  | 'stock_locations'
-  | 'tags'
+  | "markets"
+  | "skus"
+  | "price_lists"
+  | "promotions"
+  | "shipping_categories"
+  | "stock_locations"
+  | "tags"
 
 export interface SearchParams<ResType extends SearchableResource> {
   /**
@@ -32,11 +32,11 @@ export interface SearchParams<ResType extends SearchableResource> {
   /**
    * resource field to be used as value in option item
    */
-  fieldForValue?: 'code' | 'id'
+  fieldForValue?: "code" | "id"
   /**
    * resource field to be used as label in option item
    */
-  fieldForLabel?: 'code' | 'name'
+  fieldForLabel?: "code" | "name"
   /**
    * filters to apply to the resource search
    */
@@ -44,17 +44,17 @@ export interface SearchParams<ResType extends SearchableResource> {
 }
 
 type ListResource<TResource extends SearchableResource> = Awaited<
-  ReturnType<CommerceLayerClient[TResource]['list']>
+  ReturnType<CommerceLayerClient[TResource]["list"]>
 >
 
 export const fetchResourcesByHint = async <ResType extends SearchableResource>({
   sdkClient,
   hint,
   resourceType,
-  fields = ['name', 'id'],
+  fields = ["name", "id"],
   filters = {},
   fieldForValue,
-  fieldForLabel = 'name'
+  fieldForLabel = "name",
 }: SearchParams<ResType> & {
   hint: string
 }): Promise<InputSelectValue[]> => {
@@ -62,43 +62,44 @@ export const fetchResourcesByHint = async <ResType extends SearchableResource>({
     fields: fields as QueryArrayFields<Resource>,
     filters: {
       ...filters,
-      [`${fieldForLabel}_cont`]: hint
+      [`${fieldForLabel}_cont`]: hint,
     },
-    pageSize: 5
+    pageSize: 5,
   })
   return adaptApiToSuggestions({
     fetchedResources,
     fieldForValue,
-    fieldForLabel
+    fieldForLabel,
   })
 }
 
 export const fetchInitialResources = async <
-  ResType extends SearchableResource
+  ResType extends SearchableResource,
 >({
   sdkClient,
   resourceType,
-  fields = ['name', 'id'],
+  fields = ["name", "id"],
   filters,
   fieldForValue,
-  fieldForLabel
+  fieldForLabel,
 }: SearchParams<ResType>): Promise<InputSelectValue[]> => {
   const fetchedResources = await sdkClient[resourceType].list({
     fields: fields as QueryArrayFields<Resource>,
     pageSize: 25,
-    filters
+    filters,
   })
   return adaptApiToSuggestions({
     fetchedResources,
     fieldForValue,
-    fieldForLabel
+    fieldForLabel,
   })
 }
 
-interface AdaptSuggestionsParams extends Pick<
-  SearchParams<SearchableResource>,
-  'fieldForLabel' | 'fieldForValue'
-> {
+interface AdaptSuggestionsParams
+  extends Pick<
+    SearchParams<SearchableResource>,
+    "fieldForLabel" | "fieldForValue"
+  > {
   fetchedResources: ListResponse<
     Resource & { name?: string; code?: string | null; id: string }
   >
@@ -106,12 +107,12 @@ interface AdaptSuggestionsParams extends Pick<
 
 function adaptApiToSuggestions({
   fetchedResources,
-  fieldForValue = 'id',
-  fieldForLabel = 'name'
+  fieldForValue = "id",
+  fieldForLabel = "name",
 }: AdaptSuggestionsParams): InputSelectValue[] {
   return fetchedResources.map((r) => ({
     value: r[fieldForValue] ?? r.id,
     label: r[fieldForLabel] ?? r.id,
-    meta: r
+    meta: r,
   }))
 }

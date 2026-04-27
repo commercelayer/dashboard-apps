@@ -1,49 +1,49 @@
-import { CouponForm } from '#components/CouponForm'
-import type { PageProps } from '#components/Routes'
-import { couponToFormValues } from '#data/formConverters/coupon'
-import { appRoutes } from '#data/routes'
-import { useCoupon } from '#hooks/useCoupon'
-import { usePromotion } from '#hooks/usePromotion'
 import {
   PageLayout,
   SkeletonTemplate,
   Spacer,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useLocation } from "wouter"
+import { CouponForm } from "#components/CouponForm"
+import type { PageProps } from "#components/Routes"
+import { couponToFormValues } from "#data/formConverters/coupon"
+import { appRoutes } from "#data/routes"
+import { useCoupon } from "#hooks/useCoupon"
+import { usePromotion } from "#hooks/usePromotion"
 
 function Page(
-  props: PageProps<typeof appRoutes.editCoupon>
+  props: PageProps<typeof appRoutes.editCoupon>,
 ): React.JSX.Element {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const [, setLocation] = useLocation()
 
   const { isLoading } = usePromotion(props.params.promotionId)
   const { coupon, isLoading: isLoadingCoupon } = useCoupon(
-    props.params.couponId
+    props.params.couponId,
   )
   const couponListLocation = `${appRoutes.promotionDetails.makePath({
-    promotionId: props.params.promotionId
+    promotionId: props.params.promotionId,
   })}?tab=1`
 
   return (
     <PageLayout
-      title='Edit coupon'
+      title="Edit coupon"
       overlay={props.overlay}
       mode={mode}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
-        label: 'Close',
-        icon: 'x',
+        label: "Close",
+        icon: "x",
         onClick() {
           setLocation(couponListLocation)
-        }
+        },
       }}
     >
       <SkeletonTemplate isLoading={isLoading || isLoadingCoupon}>
-        <Spacer top='10'>
+        <Spacer top="10">
           <CouponForm
             promotionId={props.params.promotionId}
             couponId={props.params.couponId}

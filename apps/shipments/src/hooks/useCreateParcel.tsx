@@ -1,12 +1,12 @@
-import type { PackingFormValues } from '#data/packingFormSchema'
-import { useShipmentDetails } from '#hooks/useShipmentDetails'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
 import type {
   CommerceLayerClient,
   Parcel,
-  ParcelLineItem
-} from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
+  ParcelLineItem,
+} from "@commercelayer/sdk"
+import { useCallback, useState } from "react"
+import type { PackingFormValues } from "#data/packingFormSchema"
+import { useShipmentDetails } from "#hooks/useShipmentDetails"
 
 interface CreateParcelHook {
   isCreatingParcel: boolean
@@ -20,9 +20,9 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
 
   const [isCreatingParcel, setIsCreatingParcel] = useState(false)
   const [createParcelError, setCreateParcelError] =
-    useState<CreateParcelHook['createParcelError']>()
+    useState<CreateParcelHook["createParcelError"]>()
 
-  const createParcelWithItems: CreateParcelHook['createParcelWithItems'] =
+  const createParcelWithItems: CreateParcelHook["createParcelWithItems"] =
     useCallback(
       async (formValues) => {
         setIsCreatingParcel(true)
@@ -35,7 +35,7 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
             weight: parseInt(formValues.weight, 10),
             unit_of_weight: formValues.unitOfWeight,
             package: sdkClient.packages.relationship(
-              formValues.packageId ?? null
+              formValues.packageId ?? null,
             ),
             shipment: sdkClient.shipments.relationship(shipmentId),
 
@@ -51,7 +51,7 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
             restriction_comments: formValues.restriction_comments,
             customs_signer: formValues.customs_signer,
             customs_certify: formValues.customs_certify,
-            customs_info_required: formValues.customs_info_required
+            customs_info_required: formValues.customs_info_required,
           })
 
           await Promise.all(
@@ -61,12 +61,12 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
                   .create({
                     quantity: item.quantity,
                     stock_line_item: sdkClient.stock_line_items.relationship(
-                      item.value
+                      item.value,
                     ),
-                    parcel: sdkClient.parcels.relationship(parcel?.id ?? '')
+                    parcel: sdkClient.parcels.relationship(parcel?.id ?? ""),
                   })
-                  .then((lineItem) => parcelLineItems.push(lineItem))
-            )
+                  .then((lineItem) => parcelLineItems.push(lineItem)),
+            ),
           )
 
           await mutateShipment()
@@ -81,23 +81,23 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
           setIsCreatingParcel(false)
         }
       },
-      [shipmentId]
+      [shipmentId],
     )
 
   return {
     isCreatingParcel,
     createParcelError,
-    createParcelWithItems
+    createParcelWithItems,
   }
 }
 
 async function deleteParcelLineItems(
   lineItems: ParcelLineItem[],
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerClient,
 ): Promise<void> {
   await Promise.all(
     lineItems.map(async (item) => {
       await sdkClient.parcel_line_items.delete(item.id)
-    })
+    }),
   )
 }

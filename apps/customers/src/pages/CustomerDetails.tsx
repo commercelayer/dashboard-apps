@@ -1,6 +1,9 @@
 import {
   Button,
   EmptyState,
+  formatDateWithPredicate,
+  isMockedId,
+  type PageHeadingProps,
   PageLayout,
   ResourceAttachments,
   ResourceDetails,
@@ -8,41 +11,37 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
-  formatDateWithPredicate,
   useAppLinking,
   useCoreApi,
   useTokenProvider,
   useTranslation,
-  type PageHeadingProps
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
-
-import { CustomerAddresses } from '#components/CustomerAddresses'
-import { CustomerAnonymization } from '#components/CustomerAnonymization'
-import { CustomerInfo } from '#components/CustomerInfo'
-import { CustomerLastOrders } from '#components/CustomerLastOrders'
-import { CustomerTimeline } from '#components/CustomerTimeline'
-import { CustomerWallet } from '#components/CustomerWallet'
-import { appRoutes } from '#data/routes'
-import { useCustomerCanBeAnonymized } from '#hooks/useCustomerCanBeAnonymized'
-import { useCustomerCanBeDeleted } from '#hooks/useCustomerCanBeDeleted'
-import { useCustomerDeleteOverlay } from '#hooks/useCustomerDeleteOverlay'
-import { useCustomerDetails } from '#hooks/useCustomerDetails'
-import { useCustomerResetPasswordOverlay } from '#hooks/useCustomerResetPasswordOverlay'
-import { isMockedId } from '@commercelayer/app-elements'
+} from "@commercelayer/app-elements"
+import { Link, useLocation, useRoute } from "wouter"
+import { CustomerAddresses } from "#components/CustomerAddresses"
+import { CustomerAnonymization } from "#components/CustomerAnonymization"
+import { CustomerInfo } from "#components/CustomerInfo"
+import { CustomerLastOrders } from "#components/CustomerLastOrders"
+import { CustomerTimeline } from "#components/CustomerTimeline"
+import { CustomerWallet } from "#components/CustomerWallet"
+import { appRoutes } from "#data/routes"
+import { useCustomerCanBeAnonymized } from "#hooks/useCustomerCanBeAnonymized"
+import { useCustomerCanBeDeleted } from "#hooks/useCustomerCanBeDeleted"
+import { useCustomerDeleteOverlay } from "#hooks/useCustomerDeleteOverlay"
+import { useCustomerDetails } from "#hooks/useCustomerDetails"
+import { useCustomerResetPasswordOverlay } from "#hooks/useCustomerResetPasswordOverlay"
 
 export function CustomerDetails(): React.JSX.Element {
   const {
     settings: { mode },
     user,
-    canUser
+    canUser,
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ customerId: string }>(appRoutes.details.path)
   const { goBack } = useAppLinking()
   const { t } = useTranslation()
 
-  const customerId = params?.customerId ?? ''
+  const customerId = params?.customerId ?? ""
 
   const { customer, isLoading, error, mutateCustomer } =
     useCustomerDetails(customerId)
@@ -53,48 +52,48 @@ export function CustomerDetails(): React.JSX.Element {
   const { ResetPasswordOverlay, showResetPasswordOverlay } =
     useCustomerResetPasswordOverlay(customerId)
 
-  const { data: organization } = useCoreApi('organization', 'retrieve', [])
+  const { data: organization } = useCoreApi("organization", "retrieve", [])
   const enableResetPassword =
     organization?.config?.apps?.customers?.enable_reset_password === true &&
-    canUser('create', 'customer_password_resets')
+    canUser("create", "customer_password_resets")
 
   const pageTitle = `${customer.email}`
 
-  const pageToolbar: PageHeadingProps['toolbar'] = {
+  const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
-    dropdownItems: []
+    dropdownItems: [],
   }
 
-  if (canUser('update', 'customers')) {
+  if (canUser("update", "customers")) {
     pageToolbar.buttons?.push({
-      label: t('common.edit'),
-      size: 'small',
-      variant: 'secondary',
+      label: t("common.edit"),
+      size: "small",
+      variant: "secondary",
       onClick: () => {
         setLocation(appRoutes.edit.makePath(customerId))
-      }
+      },
     })
   }
 
   if (enableResetPassword) {
     pageToolbar.dropdownItems?.push([
       {
-        label: 'Reset Password',
+        label: "Reset Password",
         onClick: () => {
           showResetPasswordOverlay()
-        }
-      }
+        },
+      },
     ])
   }
 
   if (canBeDeleted || canBeAnonymized) {
     pageToolbar.dropdownItems?.push([
       {
-        label: t('common.delete'),
+        label: t("common.delete"),
         onClick: () => {
           show()
-        }
-      }
+        },
+      },
     ])
   }
 
@@ -109,47 +108,47 @@ export function CustomerDetails(): React.JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>
           <div>
             {formatDateWithPredicate({
-              predicate: t('common.created'),
-              isoDate: customer.created_at ?? '',
+              predicate: t("common.created"),
+              isoDate: customer.created_at ?? "",
               timezone: user?.timezone,
-              locale: user?.locale
+              locale: user?.locale,
             })}
           </div>
         </SkeletonTemplate>
       }
       navigationButton={{
-        label: t('common.back'),
-        icon: 'arrowLeft',
+        label: t("common.back"),
+        icon: "arrowLeft",
         onClick: () => {
           goBack({
             currentResourceId: customerId,
-            defaultRelativePath: appRoutes.list.makePath()
+            defaultRelativePath: appRoutes.list.makePath(),
           })
-        }
+        },
       }}
-      gap='only-top'
+      gap="only-top"
       scrollToTop
     >
       {error != null ? (
         <EmptyState
-          title={t('common.not_authorized')}
+          title={t("common.not_authorized")}
           action={
             <Link href={appRoutes.list.makePath()}>
-              <Button variant='primary'>{t('common.go_back')}</Button>
+              <Button variant="primary">{t("common.go_back")}</Button>
             </Link>
           }
         />
       ) : (
         <SkeletonTemplate isLoading={isLoading}>
-          <Spacer bottom='4'>
+          <Spacer bottom="4">
             <CustomerAnonymization customerId={customer.id} />
-            <Spacer top='14'>
+            <Spacer top="14">
               <CustomerInfo customer={customer} />
             </Spacer>
-            <Spacer top='14'>
+            <Spacer top="14">
               <CustomerLastOrders />
             </Spacer>
-            <Spacer top='14'>
+            <Spacer top="14">
               <CustomerWallet
                 customer={customer}
                 onRemovedPaymentSource={() => {
@@ -157,7 +156,7 @@ export function CustomerDetails(): React.JSX.Element {
                 }}
               />
             </Spacer>
-            <Spacer top='14'>
+            <Spacer top="14">
               <CustomerAddresses
                 customer={customer}
                 onRemovedAddress={() => {
@@ -166,7 +165,7 @@ export function CustomerDetails(): React.JSX.Element {
               />
             </Spacer>
 
-            <Spacer top='14'>
+            <Spacer top="14">
               <ResourceDetails
                 resource={customer}
                 onUpdated={async () => {
@@ -177,42 +176,42 @@ export function CustomerDetails(): React.JSX.Element {
 
             {!isMockedId(customer.id) && (
               <>
-                <Spacer top='14'>
+                <Spacer top="14">
                   <ResourceTags
-                    resourceType='customers'
+                    resourceType="customers"
                     resourceId={customer.id}
                     overlay={{ title: pageTitle }}
                     onTagClick={(tagId) => {
                       setLocation(
-                        appRoutes.list.makePath(`tags_id_in=${tagId}`)
+                        appRoutes.list.makePath(`tags_id_in=${tagId}`),
                       )
                     }}
                   />
                 </Spacer>
-                <Spacer top='14'>
+                <Spacer top="14">
                   <ResourceMetadata
-                    resourceType='customers'
+                    resourceType="customers"
                     resourceId={customer.id}
                     overlay={{
-                      title: pageTitle
+                      title: pageTitle,
                     }}
                   />
                 </Spacer>
               </>
             )}
-            <Spacer top='14'>
+            <Spacer top="14">
               <ResourceAttachments
-                resourceType='customers'
+                resourceType="customers"
                 resourceId={customer.id}
               />
             </Spacer>
-            <Spacer top='14'>
+            <Spacer top="14">
               <CustomerTimeline customer={customer} />
             </Spacer>
           </Spacer>
         </SkeletonTemplate>
       )}
-      {canUser('destroy', 'customers') && <DeleteOverlay />}
+      {canUser("destroy", "customers") && <DeleteOverlay />}
       <ResetPasswordOverlay />
     </PageLayout>
   )

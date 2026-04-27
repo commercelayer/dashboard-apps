@@ -1,25 +1,25 @@
-import { Table, Th, Tr } from '@commercelayer/app-elements'
-import type { Sku, SkuList } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
-import { linksRoutes } from '../data/routes'
-import { useLinksList } from '../hooks/useLinksList'
-import { LinkListRow } from './LinkListRow'
+import { Table, Th, Tr } from "@commercelayer/app-elements"
+import type { Sku, SkuList } from "@commercelayer/sdk"
+import { useLocation } from "wouter"
+import { linksRoutes } from "../data/routes"
+import { useLinksList } from "../hooks/useLinksList"
+import { LinkListRow } from "./LinkListRow"
 
 interface Props {
-  resourceId: Sku['id'] | SkuList['id']
-  resourceType: 'skus' | 'sku_lists'
+  resourceId: Sku["id"] | SkuList["id"]
+  resourceType: "skus" | "sku_lists"
 }
 
 export const LinkListTable = ({
   resourceId,
-  resourceType
+  resourceType,
 }: Props): React.JSX.Element | null => {
   const [, setLocation] = useLocation()
 
   const {
     links,
     isLoading,
-    mutate: mutateList
+    mutate: mutateList,
   } = useLinksList({ resourceId, resourceType })
 
   return !isLoading && (links == null || links?.length === 0) ? null : (
@@ -41,16 +41,16 @@ export const LinkListTable = ({
                 setLocation(
                   linksRoutes.linksDetails.makePath({
                     resourceId,
-                    linkId: link.id
-                  })
+                    linkId: link.id,
+                  }),
                 )
               }}
               onLinkEditClick={() => {
                 setLocation(
                   linksRoutes.linksEdit.makePath({
                     resourceId,
-                    linkId: link.id
-                  })
+                    linkId: link.id,
+                  }),
                 )
               }}
               key={link.id}

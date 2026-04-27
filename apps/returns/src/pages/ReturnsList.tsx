@@ -1,22 +1,22 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemReturn } from '#components/ListItemReturn'
-import { instructions } from '#data/filters'
-import { presets } from '#data/lists'
-import { appRoutes } from '#data/routes'
 import {
   PageLayout,
   Spacer,
   useAppLinking,
   useResourceFilters,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import { useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemReturn } from "#components/ListItemReturn"
+import { instructions } from "#data/filters"
+import { presets } from "#data/lists"
+import { appRoutes } from "#data/routes"
 
 function ReturnsList(): React.JSX.Element {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
 
   const queryString = useSearch()
@@ -26,7 +26,7 @@ function ReturnsList(): React.JSX.Element {
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
     useResourceFilters({
-      instructions
+      instructions,
     })
 
   const hideFiltersNav = !(
@@ -37,22 +37,22 @@ function ReturnsList(): React.JSX.Element {
     <PageLayout
       title={viewTitle ?? presets.history.viewTitle}
       mode={mode}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
-        label: t('common.back'),
-        icon: 'arrowLeft',
+        label: t("common.back"),
+        icon: "arrowLeft",
         onClick: () => {
           goBack({
-            defaultRelativePath: appRoutes.home.makePath()
+            defaultRelativePath: appRoutes.home.makePath(),
           })
-        }
+        },
       }}
     >
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -61,30 +61,30 @@ function ReturnsList(): React.JSX.Element {
         hideFiltersNav={hideFiltersNav}
       />
 
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <FilteredList
-          type='returns'
+          type="returns"
           ItemTemplate={ListItemReturn}
           query={{
             fields: {
               returns: [
-                'id',
-                'number',
-                'updated_at',
-                'status',
-                'stock_location'
+                "id",
+                "number",
+                "updated_at",
+                "status",
+                "stock_location",
               ],
-              stock_locations: ['id', 'name']
+              stock_locations: ["id", "name"],
             },
-            include: ['stock_location'],
+            include: ["stock_location"],
             pageSize: 25,
             sort: {
-              updated_at: 'desc'
-            }
+              updated_at: "desc",
+            },
           }}
           emptyState={
             <ListEmptyState
-              scope={hasActiveFilter ? 'userFiltered' : 'history'}
+              scope={hasActiveFilter ? "userFiltered" : "history"}
             />
           }
         />

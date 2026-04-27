@@ -9,17 +9,17 @@ import {
   ResourceLineItems,
   Section,
   Spacer,
-  t,
   Text,
+  t,
   useCoreSdkProvider,
   useOverlay,
-  useTranslation
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { useOrderDetails } from '../../../hooks/useOrderDetails'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { useOrderDetails } from "../../../hooks/useOrderDetails"
 
 interface OverlayHook {
   show: () => void
@@ -29,7 +29,7 @@ interface OverlayHook {
 }
 
 const zodString = z.string({
-  required_error: t('validation.required_field')
+  required_error: t("validation.required_field"),
 })
 
 export function useSelectShippingMethodOverlay(): OverlayHook {
@@ -41,7 +41,7 @@ export function useSelectShippingMethodOverlay(): OverlayHook {
       <Overlay>
         <Form order={order} close={close} />
       </Overlay>
-    )
+    ),
   }
 }
 
@@ -63,16 +63,16 @@ const Form: React.FC<Props> = ({ order, close }) => {
 
           return {
             ...acc,
-            [shipment.id]: shipment.shipping_method?.id
+            [shipment.id]: shipment.shipping_method?.id,
           }
         },
-        {} satisfies Record<string, string>
+        {} satisfies Record<string, string>,
       ) ?? {},
-    resolver: zodResolver(z.object({}).catchall(zodString))
+    resolver: zodResolver(z.object({}).catchall(zodString)),
   })
 
   const {
-    formState: { isSubmitting }
+    formState: { isSubmitting },
   } = formMethods
 
   const { mutateOrder } = useOrderDetails(order.id)
@@ -88,11 +88,11 @@ const Form: React.FC<Props> = ({ order, close }) => {
               await sdkClient.shipments.update({
                 id: shipmentId,
                 shipping_method: {
-                  type: 'shipping_methods',
-                  id: shippingMethodId
-                }
-              })
-          )
+                  type: "shipping_methods",
+                  id: shippingMethodId,
+                },
+              }),
+          ),
         ).then(() => {
           close()
           void mutateOrder()
@@ -100,15 +100,15 @@ const Form: React.FC<Props> = ({ order, close }) => {
       }}
     >
       <PageLayout
-        title={t('common.select_resource', {
-          resource: t('resources.shipping_methods.name').toLowerCase()
+        title={t("common.select_resource", {
+          resource: t("resources.shipping_methods.name").toLowerCase(),
         })}
         navigationButton={{
           onClick: () => {
             close()
           },
-          label: t('common.cancel'),
-          icon: 'x'
+          label: t("common.cancel"),
+          icon: "x",
         }}
       >
         {order.shipments?.map((shipment) => {
@@ -117,15 +117,15 @@ const Form: React.FC<Props> = ({ order, close }) => {
           }
 
           return (
-            <Spacer key={shipment.id} top='14'>
+            <Spacer key={shipment.id} top="14">
               <Section
-                title={`${t('resources.shipments.name')} #${shipment.number}`}
-                border='none'
+                title={`${t("resources.shipments.name")} #${shipment.number}`}
+                border="none"
               >
-                <Card overflow='visible'>
-                  <Spacer bottom='4'>
-                    <Text variant='info'>
-                      {t('resources.shipping_methods.name')}:
+                <Card overflow="visible">
+                  <Spacer bottom="4">
+                    <Text variant="info">
+                      {t("resources.shipping_methods.name")}:
                     </Text>
                   </Spacer>
                   <HookedInputRadioGroup
@@ -134,24 +134,24 @@ const Form: React.FC<Props> = ({ order, close }) => {
                       shipment.available_shipping_methods?.map(
                         (availableShippingMethod) => ({
                           content: (
-                            <ListItem borderStyle='none' padding='none'>
-                              <Text weight='semibold'>
+                            <ListItem borderStyle="none" padding="none">
+                              <Text weight="semibold">
                                 {availableShippingMethod.name}
                               </Text>
-                              <Text weight='semibold'>
+                              <Text weight="semibold">
                                 {availableShippingMethod.formatted_price_amount}
                               </Text>
                             </ListItem>
                           ),
-                          value: availableShippingMethod.id
-                        })
+                          value: availableShippingMethod.id,
+                        }),
                       ) ?? []
                     }
                   />
-                  <Spacer top='6'>
+                  <Spacer top="6">
                     <Hr />
                     <ResourceLineItems
-                      size='small'
+                      size="small"
                       items={shipment.stock_line_items ?? []}
                     />
                   </Spacer>
@@ -160,9 +160,9 @@ const Form: React.FC<Props> = ({ order, close }) => {
             </Spacer>
           )
         })}
-        <Spacer top='14'>
-          <Button type='submit' fullWidth disabled={isSubmitting}>
-            {t('common.continue')}
+        <Spacer top="14">
+          <Button type="submit" fullWidth disabled={isSubmitting}>
+            {t("common.continue")}
           </Button>
         </Spacer>
       </PageLayout>

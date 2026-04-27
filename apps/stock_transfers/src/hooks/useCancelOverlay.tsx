@@ -1,5 +1,5 @@
-import { Button, PageHeading, useOverlay } from '@commercelayer/app-elements'
-import { type StockTransfer } from '@commercelayer/sdk'
+import { Button, PageHeading, useOverlay } from "@commercelayer/app-elements"
+import type { StockTransfer } from "@commercelayer/sdk"
 
 interface OverlayHook {
   show: () => void
@@ -13,23 +13,23 @@ export function useCancelOverlay(): OverlayHook {
     show: open,
     Overlay: ({ stockTransfer, onConfirm }) => {
       return (
-        <OverlayElement backgroundColor='light'>
+        <OverlayElement backgroundColor="light">
           <PageHeading
             title={`Confirm that you want to cancel stock transfer #${
-              stockTransfer.number ?? ''
+              stockTransfer.number ?? ""
             }`}
             navigationButton={{
               onClick: () => {
                 close()
               },
-              label: 'Cancel',
-              icon: 'x'
+              label: "Cancel",
+              icon: "x",
             }}
-            description='This action cannot be undone, proceed with caution.'
+            description="This action cannot be undone, proceed with caution."
           />
 
           <Button
-            variant='danger'
+            variant="danger"
             fullWidth
             onClick={() => {
               onConfirm()
@@ -40,6 +40,6 @@ export function useCancelOverlay(): OverlayHook {
           </Button>
         </OverlayElement>
       )
-    }
+    },
   }
 }

@@ -1,16 +1,16 @@
-import { PriceForm, type PriceFormValues } from '#components/PriceForm'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { type PriceCreate } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { PriceCreate } from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { PriceForm, type PriceFormValues } from "#components/PriceForm"
+import { appRoutes } from "#data/routes"
 
 export function PriceNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -21,13 +21,13 @@ export function PriceNew(): React.JSX.Element {
   const [isSaving, setIsSaving] = useState(false)
 
   const [, params] = useRoute<{ priceListId: string }>(appRoutes.priceNew.path)
-  const priceListId = params?.priceListId ?? ''
+  const priceListId = params?.priceListId ?? ""
 
-  const pageTitle = 'New price'
+  const pageTitle = "New price"
 
   const goBackUrl = appRoutes.pricesList.makePath({ priceListId })
 
-  if (!canUser('create', 'prices')) {
+  if (!canUser("create", "prices")) {
     return (
       <PageLayout
         title={pageTitle}
@@ -35,18 +35,18 @@ export function PriceNew(): React.JSX.Element {
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: 'Cancel',
-          icon: 'x'
+          label: "Cancel",
+          icon: "x",
         }}
         scrollToTop
         overlay
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -61,21 +61,21 @@ export function PriceNew(): React.JSX.Element {
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
-      gap='only-top'
+      gap="only-top"
       scrollToTop
       overlay
     >
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <PriceForm
           defaultValues={{
-            ...(priceListId !== ''
+            ...(priceListId !== ""
               ? {
-                  price_list: priceListId
+                  price_list: priceListId,
                 }
-              : {})
+              : {}),
           }}
           apiError={apiError}
           isSubmitting={isSaving}
@@ -88,8 +88,8 @@ export function PriceNew(): React.JSX.Element {
                 setLocation(
                   appRoutes.priceDetails.makePath({
                     priceListId,
-                    priceId: createdPrice.id
-                  })
+                    priceId: createdPrice.id,
+                  }),
                 )
               })
               .catch((error) => {
@@ -105,18 +105,18 @@ export function PriceNew(): React.JSX.Element {
 
 function adaptFormValuesToPrice(
   formValues: PriceFormValues,
-  priceListId: string
+  priceListId: string,
 ): PriceCreate {
   return {
     amount_cents: formValues.price,
     compare_at_amount_cents: formValues.original_price,
     sku: {
       id: formValues.item ?? null,
-      type: 'skus'
+      type: "skus",
     },
     price_list: {
       id: formValues.price_list ?? priceListId,
-      type: 'price_lists'
-    }
+      type: "price_lists",
+    },
   }
 }

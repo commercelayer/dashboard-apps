@@ -1,7 +1,3 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemBundle } from '#components/ListItemBundle'
-import { instructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
@@ -9,11 +5,15 @@ import {
   Icon,
   Spacer,
   useResourceFilters,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { Link, useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Link, useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemBundle } from "#components/ListItemBundle"
+import { instructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
 
 export const BundlesList: FC = () => {
   const { canUser } = useTokenProvider()
@@ -22,24 +22,24 @@ export const BundlesList: FC = () => {
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions
+    instructions,
   })
 
-  if (!canUser('read', 'bundles')) {
+  if (!canUser("read", "bundles")) {
     return (
-      <HomePageLayout title='Bundles'>
-        <EmptyState title='You are not authorized' />
+      <HomePageLayout title="Bundles">
+        <EmptyState title="You are not authorized" />
       </HomePageLayout>
     )
   }
 
   return (
-    <HomePageLayout title='Bundles'>
+    <HomePageLayout title="Bundles">
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -48,31 +48,31 @@ export const BundlesList: FC = () => {
         hideFiltersNav={false}
       />
 
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <FilteredList
-          type='bundles'
+          type="bundles"
           ItemTemplate={ListItemBundle}
           query={{
             pageSize: 25,
             sort: {
-              code: 'asc'
-            }
+              code: "asc",
+            },
           }}
           emptyState={
             <ListEmptyState
-              scope={hasActiveFilter ? 'userFiltered' : 'history'}
+              scope={hasActiveFilter ? "userFiltered" : "history"}
             />
           }
           actionButton={
-            canUser('create', 'bundles') ? (
+            canUser("create", "bundles") ? (
               <Link href={appRoutes.new.makePath({})} asChild>
                 <Button
-                  variant='secondary'
-                  size='mini'
-                  alignItems='center'
-                  aria-label='Add bundle'
+                  variant="secondary"
+                  size="mini"
+                  alignItems="center"
+                  aria-label="Add bundle"
                 >
-                  <Icon name='plus' />
+                  <Icon name="plus" />
                   New
                 </Button>
               </Link>

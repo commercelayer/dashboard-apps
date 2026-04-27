@@ -1,8 +1,3 @@
-import { Filters } from '#components/Form/Filters'
-import { resourcesWithFilters } from '#components/Form/Filters/index'
-import { InputCode } from '#components/Form/Filters/InputCode'
-import { customFieldsSubset } from '#data/fields'
-import { showResourceNiceName } from '#data/resources'
 import {
   Button,
   HookedForm,
@@ -12,12 +7,17 @@ import {
   Spacer,
   Tab,
   Tabs,
-  Tooltip
-} from '@commercelayer/app-elements'
-import { type AllowedResourceType } from '@typing/resources.types'
-import { Controller, useForm } from 'react-hook-form'
-import { RelationshipSelector } from './RelationshipSelector'
-import { type ExportFormValues } from './types'
+  Tooltip,
+} from "@commercelayer/app-elements"
+import type { AllowedResourceType } from "@typing/resources.types"
+import { Controller, useForm } from "react-hook-form"
+import { Filters } from "#components/Form/Filters"
+import { InputCode } from "#components/Form/Filters/InputCode"
+import { resourcesWithFilters } from "#components/Form/Filters/index"
+import { customFieldsSubset } from "#data/fields"
+import { showResourceNiceName } from "#data/resources"
+import { RelationshipSelector } from "./RelationshipSelector"
+import type { ExportFormValues } from "./types"
 
 interface Props {
   resourceType: AllowedResourceType
@@ -30,26 +30,26 @@ export function Form({
   isLoading,
   resourceType,
   defaultValues,
-  onSubmit
+  onSubmit,
 }: Props): React.JSX.Element {
   const methods = useForm<ExportFormValues>({
-    defaultValues
+    defaultValues,
   })
 
   return (
     <HookedForm {...methods} onSubmit={onSubmit}>
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <Tabs keepAlive>
           {resourcesWithFilters.includes(resourceType) ? (
-            <Tab name='Filters'>
+            <Tab name="Filters">
               <Controller
-                name='filters'
+                name="filters"
                 control={methods.control}
                 render={({ field: { onChange } }) => (
                   <Filters
                     resourceType={resourceType}
                     onChange={(value) => {
-                      methods.setValue('filtersSource', 'ui')
+                      methods.setValue("filtersSource", "ui")
                       onChange(value)
                     }}
                   />
@@ -57,18 +57,18 @@ export function Form({
               />
             </Tab>
           ) : null}
-          <Tab name='Custom rules'>
+          <Tab name="Custom rules">
             <Controller
-              name='filters'
+              name="filters"
               control={methods.control}
               render={({ field: { onChange } }) => (
                 <InputCode
                   onDataReady={(value) => {
-                    methods.setValue('filtersSource', 'custom')
+                    methods.setValue("filtersSource", "custom")
                     onChange(value)
                   }}
                   onDataResetRequest={() => {
-                    methods.setValue('filtersSource', 'custom')
+                    methods.setValue("filtersSource", "custom")
                     onChange(undefined)
                   }}
                 />
@@ -77,65 +77,65 @@ export function Form({
           </Tab>
         </Tabs>
       </Spacer>
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <RelationshipSelector resourceType={resourceType} />
       </Spacer>
 
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <HookedInputSelect
-          label='Format'
-          name='format'
+          label="Format"
+          name="format"
           initialValues={[
-            { label: 'JSON', value: 'json' },
+            { label: "JSON", value: "json" },
             {
-              label: 'CSV',
-              value: 'csv'
-            }
+              label: "CSV",
+              value: "csv",
+            },
           ]}
         />
       </Spacer>
 
-      <Spacer bottom='2'>
+      <Spacer bottom="2">
         {customFieldsSubset[resourceType] != null && (
-          <HookedInputCheckbox name='useCustomFields'>
+          <HookedInputCheckbox name="useCustomFields">
             <div
               style={{
-                display: 'flex',
-                gap: '6px',
-                alignItems: 'center'
+                display: "flex",
+                gap: "6px",
+                alignItems: "center",
               }}
             >
               Simple format
               <Tooltip
-                label={<Icon name='info' />}
-                content='Export a predefined selection of key columns for easier use.'
+                label={<Icon name="info" />}
+                content="Export a predefined selection of key columns for easier use."
               />
             </div>
           </HookedInputCheckbox>
         )}
       </Spacer>
 
-      <Spacer bottom='14'>
-        <HookedInputCheckbox name='dryData'>
+      <Spacer bottom="14">
+        <HookedInputCheckbox name="dryData">
           <div
             style={{
-              display: 'flex',
-              gap: '6px',
-              alignItems: 'center'
+              display: "flex",
+              gap: "6px",
+              alignItems: "center",
             }}
           >
             Importable
             <Tooltip
-              label={<Icon name='info' />}
-              content='Skip IDs, timestamps, and blanks to allow re-import.'
+              label={<Icon name="info" />}
+              content="Skip IDs, timestamps, and blanks to allow re-import."
             />
           </div>
         </HookedInputCheckbox>
       </Spacer>
 
-      <Button variant='primary' type='submit' disabled={isLoading}>
+      <Button variant="primary" type="submit" disabled={isLoading}>
         {isLoading === true
-          ? 'Exporting...'
+          ? "Exporting..."
           : `Export ${showResourceNiceName(resourceType).toLowerCase()}`}
       </Button>
     </HookedForm>

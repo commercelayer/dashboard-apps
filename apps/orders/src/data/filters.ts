@@ -1,365 +1,367 @@
-import { t, type FiltersInstructions } from '@commercelayer/app-elements'
-import isEmpty from 'lodash-es/isEmpty'
+import { type FiltersInstructions, t } from "@commercelayer/app-elements"
+import isEmpty from "lodash-es/isEmpty"
 
 export type CountryCodesFilterOptions = Array<{ label: string; value: string }>
 
 export const makeInstructions = ({
-  sortByAttribute = 'placed_at',
-  countryCodes
+  sortByAttribute = "placed_at",
+  countryCodes,
 }: {
-  sortByAttribute?: 'placed_at' | 'created_at'
+  sortByAttribute?: "placed_at" | "created_at"
   countryCodes?: CountryCodesFilterOptions
 }): FiltersInstructions => [
   {
-    label: t('apps.orders.attributes.status'),
-    type: 'options',
+    label: t("apps.orders.attributes.status"),
+    type: "options",
     sdk: {
-      predicate: 'status_in',
-      defaultOptions: ['placed', 'approved', 'cancelled', 'editing']
+      predicate: "status_in",
+      defaultOptions: ["placed", "approved", "cancelled", "editing"],
     },
     render: {
-      component: 'inputToggleButton',
+      component: "inputToggleButton",
       props: {
-        mode: 'multi',
+        mode: "multi",
         options: [
           {
-            value: 'pending',
-            label: t('resources.orders.attributes.status.pending'),
-            isHidden: true
+            value: "pending",
+            label: t("resources.orders.attributes.status.pending"),
+            isHidden: true,
           },
           {
-            value: 'placed',
-            label: t('resources.orders.attributes.status.placed')
+            value: "placed",
+            label: t("resources.orders.attributes.status.placed"),
           },
           {
-            value: 'approved',
-            label: t('resources.orders.attributes.status.approved')
+            value: "approved",
+            label: t("resources.orders.attributes.status.approved"),
           },
           {
-            value: 'cancelled',
-            label: t('resources.orders.attributes.status.cancelled')
+            value: "cancelled",
+            label: t("resources.orders.attributes.status.cancelled"),
           },
           {
-            value: 'editing',
-            label: t('resources.orders.attributes.status.editing')
-          }
-        ]
-      }
-    }
+            value: "editing",
+            label: t("resources.orders.attributes.status.editing"),
+          },
+        ],
+      },
+    },
   },
   {
-    label: t('apps.orders.attributes.payment_status'),
-    type: 'options',
+    label: t("apps.orders.attributes.payment_status"),
+    type: "options",
     sdk: {
-      predicate: 'payment_status_in'
+      predicate: "payment_status_in",
     },
     render: {
-      component: 'inputToggleButton',
+      component: "inputToggleButton",
       props: {
-        mode: 'multi',
+        mode: "multi",
         options: [
           {
-            value: 'authorized',
-            label: t('resources.orders.attributes.payment_status.authorized')
+            value: "authorized",
+            label: t("resources.orders.attributes.payment_status.authorized"),
           },
           {
-            value: 'paid',
-            label: t('resources.orders.attributes.payment_status.paid')
+            value: "paid",
+            label: t("resources.orders.attributes.payment_status.paid"),
           },
           {
-            value: 'voided',
-            label: t('resources.orders.attributes.payment_status.voided')
+            value: "voided",
+            label: t("resources.orders.attributes.payment_status.voided"),
           },
           {
-            value: 'refunded',
-            label: t('resources.orders.attributes.payment_status.refunded')
+            value: "refunded",
+            label: t("resources.orders.attributes.payment_status.refunded"),
           },
           {
-            value: 'partially_authorized',
+            value: "partially_authorized",
             label: t(
-              'resources.orders.attributes.payment_status.partially_authorized'
-            )
+              "resources.orders.attributes.payment_status.partially_authorized",
+            ),
           },
           {
-            value: 'partially_refunded',
+            value: "partially_refunded",
             label: t(
-              'resources.orders.attributes.payment_status.partially_refunded'
-            )
+              "resources.orders.attributes.payment_status.partially_refunded",
+            ),
           },
           {
-            value: 'free',
-            label: t('resources.orders.attributes.payment_status.free')
+            value: "free",
+            label: t("resources.orders.attributes.payment_status.free"),
           },
           {
-            value: 'unpaid',
-            label: t('resources.orders.attributes.payment_status.unpaid')
-          }
-        ]
-      }
-    }
+            value: "unpaid",
+            label: t("resources.orders.attributes.payment_status.unpaid"),
+          },
+        ],
+      },
+    },
   },
   {
-    label: t('apps.orders.attributes.fulfillment_status'),
-    type: 'options',
+    label: t("apps.orders.attributes.fulfillment_status"),
+    type: "options",
     sdk: {
-      predicate: 'fulfillment_status_in'
+      predicate: "fulfillment_status_in",
     },
     render: {
-      component: 'inputToggleButton',
+      component: "inputToggleButton",
       props: {
-        mode: 'multi',
+        mode: "multi",
         options: [
           {
-            value: 'unfulfilled',
+            value: "unfulfilled",
             label: t(
-              'resources.orders.attributes.fulfillment_status.unfulfilled'
-            )
+              "resources.orders.attributes.fulfillment_status.unfulfilled",
+            ),
           },
           {
-            value: 'in_progress',
+            value: "in_progress",
             label: t(
-              'resources.orders.attributes.fulfillment_status.in_progress'
-            )
+              "resources.orders.attributes.fulfillment_status.in_progress",
+            ),
           },
           {
-            value: 'fulfilled',
-            label: t('resources.orders.attributes.fulfillment_status.fulfilled')
+            value: "fulfilled",
+            label: t(
+              "resources.orders.attributes.fulfillment_status.fulfilled",
+            ),
           },
           {
-            value: 'not_required',
+            value: "not_required",
             label: t(
-              'resources.orders.attributes.fulfillment_status.not_required'
-            )
-          }
-        ]
-      }
-    }
+              "resources.orders.attributes.fulfillment_status.not_required",
+            ),
+          },
+        ],
+      },
+    },
   },
   {
-    label: t('resources.markets.name_other'),
-    type: 'options',
+    label: t("resources.markets.name_other"),
+    type: "options",
     sdk: {
-      predicate: 'market_id_in'
+      predicate: "market_id_in",
     },
     render: {
-      component: 'inputResourceGroup',
+      component: "inputResourceGroup",
       props: {
-        fieldForLabel: 'name',
-        fieldForValue: 'id',
-        resource: 'markets',
-        searchBy: 'name_cont',
-        sortBy: { attribute: 'name', direction: 'asc' },
+        fieldForLabel: "name",
+        fieldForValue: "id",
+        resource: "markets",
+        searchBy: "name_cont",
+        sortBy: { attribute: "name", direction: "asc" },
         previewLimit: 5,
         hideWhenSingleItem: true,
         filters: {
-          disabled_at_null: true
-        }
-      }
-    }
+          disabled_at_null: true,
+        },
+      },
+    },
   },
   {
-    label: 'Countries',
-    type: 'options',
+    label: "Countries",
+    type: "options",
     hidden: countryCodes == null || countryCodes.length === 0,
     sdk: {
-      predicate: 'country_codes_in'
+      predicate: "country_codes_in",
     },
     render: {
-      component: 'inputToggleButton',
+      component: "inputToggleButton",
       props: {
-        mode: 'multi',
-        options: countryCodes ?? []
-      }
-    }
+        mode: "multi",
+        options: countryCodes ?? [],
+      },
+    },
   },
   {
-    label: t('apps.orders.tasks.archived'),
-    type: 'options',
+    label: t("apps.orders.tasks.archived"),
+    type: "options",
     sdk: {
-      predicate: 'archived',
+      predicate: "archived",
       parseFormValue: (value) =>
-        value === 'show' ? undefined : value === 'only'
+        value === "show" ? undefined : value === "only",
     },
     hidden: true,
     render: {
-      component: 'inputToggleButton',
+      component: "inputToggleButton",
       props: {
-        mode: 'single',
+        mode: "single",
         options: [
-          { value: 'only', label: 'Only archived' },
-          { value: 'hide', label: 'Hide archived' },
-          { value: 'show', label: 'Show all, both archived and not' }
-        ]
-      }
-    }
+          { value: "only", label: "Only archived" },
+          { value: "hide", label: "Hide archived" },
+          { value: "show", label: "Show all, both archived and not" },
+        ],
+      },
+    },
   },
   {
-    label: t('common.time_range'),
-    type: 'timeRange',
+    label: t("common.time_range"),
+    type: "timeRange",
     sdk: {
-      predicate: sortByAttribute
+      predicate: sortByAttribute,
     },
     render: {
-      component: 'dateRangePicker'
-    }
+      component: "dateRangePicker",
+    },
   },
   {
-    label: t('common.amount'),
-    type: 'currencyRange',
+    label: t("common.amount"),
+    type: "currencyRange",
     sdk: {
-      predicate: 'total_amount_cents'
+      predicate: "total_amount_cents",
     },
     render: {
-      component: 'inputCurrencyRange',
+      component: "inputCurrencyRange",
       props: {
-        label: t('common.amount')
-      }
-    }
+        label: t("common.amount"),
+      },
+    },
   },
   {
-    label: t('resources.tags.name_other'),
-    type: 'options',
+    label: t("resources.tags.name_other"),
+    type: "options",
     sdk: {
-      predicate: 'tags_id_in'
+      predicate: "tags_id_in",
     },
     render: {
-      component: 'inputResourceGroup',
+      component: "inputResourceGroup",
       props: {
-        fieldForLabel: 'name',
-        fieldForValue: 'id',
-        resource: 'tags',
-        searchBy: 'name_cont',
-        sortBy: { attribute: 'name', direction: 'asc' },
+        fieldForLabel: "name",
+        fieldForValue: "id",
+        resource: "tags",
+        searchBy: "name_cont",
+        sortBy: { attribute: "name", direction: "asc" },
         previewLimit: 5,
-        showCheckboxIcon: false
-      }
-    }
+        showCheckboxIcon: false,
+      },
+    },
   },
   {
-    label: t('common.search'),
-    type: 'textSearch',
+    label: t("common.search"),
+    type: "textSearch",
     sdk: {
-      predicate: 'aggregated_details',
-      parseFormValue: parseTextSearchValue
+      predicate: "aggregated_details",
+      parseFormValue: parseTextSearchValue,
     },
     render: {
-      component: 'searchBar'
-    }
-  }
+      component: "searchBar",
+    },
+  },
 ]
 
 export const makeCartsInstructions = (): FiltersInstructions => [
   {
-    label: t('apps.orders.attributes.status'),
-    type: 'options',
+    label: t("apps.orders.attributes.status"),
+    type: "options",
     sdk: {
-      predicate: 'status_in',
-      defaultOptions: ['pending']
+      predicate: "status_in",
+      defaultOptions: ["pending"],
     },
     render: {
-      component: 'inputToggleButton',
+      component: "inputToggleButton",
       props: {
-        mode: 'multi',
-        options: [{ value: 'pending', label: 'Pending', isHidden: true }]
-      }
+        mode: "multi",
+        options: [{ value: "pending", label: "Pending", isHidden: true }],
+      },
     },
-    hidden: true
+    hidden: true,
   },
   {
-    label: t('apps.orders.attributes.payment_status'),
-    type: 'options',
+    label: t("apps.orders.attributes.payment_status"),
+    type: "options",
     sdk: {
-      predicate: 'payment_status_in'
+      predicate: "payment_status_in",
     },
     render: {
-      component: 'inputToggleButton',
+      component: "inputToggleButton",
       props: {
-        mode: 'multi',
+        mode: "multi",
         options: [
           {
-            value: 'authorized',
-            label: t('resources.orders.attributes.payment_status.authorized')
+            value: "authorized",
+            label: t("resources.orders.attributes.payment_status.authorized"),
           },
           {
-            value: 'paid',
-            label: t('resources.orders.attributes.payment_status.paid')
+            value: "paid",
+            label: t("resources.orders.attributes.payment_status.paid"),
           },
           {
-            value: 'voided',
-            label: t('resources.orders.attributes.payment_status.voided')
+            value: "voided",
+            label: t("resources.orders.attributes.payment_status.voided"),
           },
           {
-            value: 'refunded',
-            label: t('resources.orders.attributes.payment_status.refunded')
+            value: "refunded",
+            label: t("resources.orders.attributes.payment_status.refunded"),
           },
           {
-            value: 'partially_authorized',
+            value: "partially_authorized",
             label: t(
-              'resources.orders.attributes.payment_status.partially_authorized'
-            )
+              "resources.orders.attributes.payment_status.partially_authorized",
+            ),
           },
           {
-            value: 'partially_refunded',
+            value: "partially_refunded",
             label: t(
-              'resources.orders.attributes.payment_status.partially_refunded'
-            )
+              "resources.orders.attributes.payment_status.partially_refunded",
+            ),
           },
           {
-            value: 'free',
-            label: t('resources.orders.attributes.payment_status.free')
+            value: "free",
+            label: t("resources.orders.attributes.payment_status.free"),
           },
           {
-            value: 'unpaid',
-            label: t('resources.orders.attributes.payment_status.unpaid')
-          }
-        ]
-      }
-    }
+            value: "unpaid",
+            label: t("resources.orders.attributes.payment_status.unpaid"),
+          },
+        ],
+      },
+    },
   },
   {
-    label: t('common.amount'),
-    type: 'currencyRange',
+    label: t("common.amount"),
+    type: "currencyRange",
     sdk: {
-      predicate: 'total_amount_cents'
+      predicate: "total_amount_cents",
     },
     render: {
-      component: 'inputCurrencyRange',
+      component: "inputCurrencyRange",
       props: {
-        label: t('common.amount')
-      }
-    }
+        label: t("common.amount"),
+      },
+    },
   },
   {
-    label: t('common.search'),
-    type: 'textSearch',
+    label: t("common.search"),
+    type: "textSearch",
     sdk: {
-      predicate: 'aggregated_details',
-      parseFormValue: parseTextSearchValue
+      predicate: "aggregated_details",
+      parseFormValue: parseTextSearchValue,
     },
     render: {
-      component: 'searchBar'
-    }
-  }
+      component: "searchBar",
+    },
+  },
 ]
 
 export function parseTextSearchValue(value: unknown): string | undefined {
-  if (typeof value !== 'string' || value == null || isEmpty(value.trim())) {
+  if (typeof value !== "string" || value == null || isEmpty(value.trim())) {
     return undefined
   }
   const searchText = value.trim()
 
-  if (searchText.includes('*') || searchText.includes('"')) {
+  if (searchText.includes("*") || searchText.includes('"')) {
     return searchText
   }
 
   // It's not a full or partial email, but text contains a dot, needs to wrap it in double quotes so API won't escape the dot
-  if (searchText.includes('.') && !searchText.includes('@')) {
+  if (searchText.includes(".") && !searchText.includes("@")) {
     return `*"${searchText}"*`
   }
 
   // Could be a partial email, needs to wrap it in double quotes so API won't escape the dot but final @ needs to be removed
-  if (searchText.includes('.') && searchText.at(-1) === '@') {
-    return `*"${searchText.replace('@', '')}"*`
+  if (searchText.includes(".") && searchText.at(-1) === "@") {
+    return `*"${searchText.replace("@", "")}"*`
   }
 
   return `*${wrapEmailInQuotes(searchText)}*`
@@ -368,7 +370,7 @@ export function parseTextSearchValue(value: unknown): string | undefined {
 // If an email is found in a sentence, wrap it in double quotes
 function wrapEmailInQuotes(sentence: string): string {
   const sentenceHasWordsWithMultipleAtSymbols = sentence
-    .split(' ')
+    .split(" ")
     .some((word) => (word.match(/@/g) ?? []).length > 1)
 
   if (sentenceHasWordsWithMultipleAtSymbols) {

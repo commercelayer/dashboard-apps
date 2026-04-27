@@ -1,6 +1,3 @@
-import { couponForm, formValuesToCoupon } from '#data/formConverters/coupon'
-import { useCoupon } from '#hooks/useCoupon'
-import { usePromotion } from '#hooks/usePromotion'
 import {
   Button,
   HookedForm,
@@ -13,12 +10,15 @@ import {
   Text,
   useCoreApi,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { type z } from 'zod'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMemo, useState } from "react"
+import { useForm } from "react-hook-form"
+import type { z } from "zod"
+import { couponForm, formValuesToCoupon } from "#data/formConverters/coupon"
+import { useCoupon } from "#hooks/useCoupon"
+import { usePromotion } from "#hooks/usePromotion"
 
 interface Props {
   promotionId: string
@@ -31,7 +31,7 @@ export function CouponForm({
   promotionId,
   couponId,
   defaultValues,
-  onSuccess
+  onSuccess,
 }: Props): React.JSX.Element {
   const [apiError, setApiError] = useState<any>()
   const { promotion } = usePromotion(promotionId)
@@ -39,18 +39,18 @@ export function CouponForm({
 
   const { sdkClient } = useCoreSdkProvider()
   const { user } = useTokenProvider()
-  const { data: organization } = useCoreApi('organization', 'retrieve', [])
+  const { data: organization } = useCoreApi("organization", "retrieve", [])
   const minCodeLength = useMemo(
     () => organization?.coupons_min_code_length ?? 8,
-    [organization]
+    [organization],
   )
   const maxCodeLength = useMemo(
     () => organization?.coupons_max_code_length ?? 40,
-    [organization]
+    [organization],
   )
   const methods = useForm<z.infer<ReturnType<typeof couponForm>>>({
     defaultValues,
-    resolver: zodResolver(couponForm(minCodeLength, maxCodeLength))
+    resolver: zodResolver(couponForm(minCodeLength, maxCodeLength)),
   })
 
   return (
@@ -62,7 +62,7 @@ export function CouponForm({
           await sdkClient.coupons
             .update({
               id: couponId,
-              ...formValuesToCoupon(values)
+              ...formValuesToCoupon(values),
             })
             .catch((error) => {
               hasError = true
@@ -75,8 +75,8 @@ export function CouponForm({
             ;({ id } = await sdkClient.coupon_codes_promotion_rules.create({
               promotion: {
                 id: promotion.id,
-                type: promotion.type
-              }
+                type: promotion.type,
+              },
             }))
           }
 
@@ -84,9 +84,9 @@ export function CouponForm({
             .create({
               ...formValuesToCoupon(values),
               promotion_rule: {
-                type: 'coupon_codes_promotion_rules',
-                id
-              }
+                type: "coupon_codes_promotion_rules",
+                id,
+              },
             })
             .catch((error) => {
               hasError = true
@@ -102,85 +102,85 @@ export function CouponForm({
         onSuccess()
       }}
     >
-      <Spacer top='14'>
-        <Section title='Basic info'>
-          <Spacer top='6'>
+      <Spacer top="14">
+        <Section title="Basic info">
+          <Spacer top="6">
             <HookedInput
-              name='code'
+              name="code"
               minLength={minCodeLength}
               maxLength={maxCodeLength}
-              label='Coupon code *'
+              label="Coupon code *"
               hint={{
-                text: `${minCodeLength} to ${maxCodeLength} characters.`
+                text: `${minCodeLength} to ${maxCodeLength} characters.`,
               }}
             />
           </Spacer>
 
-          <Spacer top='6'>
+          <Spacer top="6">
             <HookedInputDate
               showTimeSelect
-              name='expires_at'
+              name="expires_at"
               isClearable
-              label='Expires on'
+              label="Expires on"
               hint={{
-                text: 'Optionally set an expiration date for the coupon.'
+                text: "Optionally set an expiration date for the coupon.",
               }}
               timezone={user?.timezone}
             />
           </Spacer>
 
-          <Spacer top='6'>
+          <Spacer top="6">
             <HookedInput
-              type='number'
-              label='Usage limit'
+              type="number"
+              label="Usage limit"
               min={1}
-              name='usage_limit'
+              name="usage_limit"
               hint={{
-                text: 'Optionally limit how many times this coupon can be used.'
+                text: "Optionally limit how many times this coupon can be used.",
               }}
             />
           </Spacer>
         </Section>
       </Spacer>
 
-      <Spacer top='14'>
-        <Section title='Customer options'>
-          <Spacer top='6'>
-            <Spacer bottom='2'>
+      <Spacer top="14">
+        <Section title="Customer options">
+          <Spacer top="6">
+            <Spacer bottom="2">
               <HookedInputCheckbox
-                name='show_recipient_email'
+                name="show_recipient_email"
                 checkedElement={
-                  <Spacer bottom='6'>
+                  <Spacer bottom="6">
                     <HookedInput
-                      type='text'
-                      name='recipient_email'
-                      placeholder='Recipient email'
+                      type="text"
+                      name="recipient_email"
+                      placeholder="Recipient email"
                     />
                   </Spacer>
                 }
               >
-                <Text weight='semibold'>Customer email</Text>
+                <Text weight="semibold">Customer email</Text>
               </HookedInputCheckbox>
             </Spacer>
 
-            <Spacer bottom='2'>
-              <HookedInputCheckbox name='customer_single_use'>
-                <Text weight='semibold'>Single use per customer</Text>
+            <Spacer bottom="2">
+              <HookedInputCheckbox name="customer_single_use">
+                <Text weight="semibold">Single use per customer</Text>
               </HookedInputCheckbox>
             </Spacer>
           </Spacer>
         </Section>
       </Spacer>
 
-      <Spacer top='14'>
+      <Spacer top="14">
         <Button
           fullWidth
-          type='submit'
+          type="submit"
           disabled={methods.formState.isSubmitting}
         >
-          {couponId != null ? 'Update' : 'Create coupon'}
+          {couponId != null ? "Update" : "Create coupon"}
         </Button>
-        <Spacer top='2'>
+        <Spacer top="2">
           <HookedValidationApiError apiError={apiError} />
         </Spacer>
       </Spacer>

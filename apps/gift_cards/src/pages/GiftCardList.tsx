@@ -1,18 +1,18 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemGiftCard } from '#components/ListItemGiftCard'
-import { instructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   HomePageLayout,
   Icon,
   Spacer,
   useResourceFilters,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { Link, useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Link, useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemGiftCard } from "#components/ListItemGiftCard"
+import { instructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
 
 const GiftCardList: FC = () => {
   const { canUser } = useTokenProvider()
@@ -20,16 +20,16 @@ const GiftCardList: FC = () => {
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions
+    instructions,
   })
 
   return (
-    <HomePageLayout title='Gift cards'>
+    <HomePageLayout title="Gift cards">
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -38,30 +38,30 @@ const GiftCardList: FC = () => {
         searchBarDebounceMs={1000}
       />
 
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <FilteredList
-          type='gift_cards'
+          type="gift_cards"
           ItemTemplate={ListItemGiftCard}
           emptyState={
             <ListEmptyState
-              scope={hasActiveFilter ? 'userFiltered' : 'history'}
+              scope={hasActiveFilter ? "userFiltered" : "history"}
             />
           }
           query={{
             sort: {
-              updated_at: 'desc'
-            }
+              updated_at: "desc",
+            },
           }}
           actionButton={
-            canUser('create', 'gift_cards') ? (
+            canUser("create", "gift_cards") ? (
               <Link href={appRoutes.new.makePath({})} asChild>
                 <Button
-                  variant='secondary'
-                  size='mini'
-                  alignItems='center'
-                  aria-label='Add gift card'
+                  variant="secondary"
+                  size="mini"
+                  alignItems="center"
+                  aria-label="Add gift card"
                 >
-                  <Icon name='plus' />
+                  <Icon name="plus" />
                   New
                 </Button>
               </Link>

@@ -1,21 +1,20 @@
-import { useCancelOverlay } from '#hooks/useCancelOverlay'
-import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   type ActionButtonsProps,
   orderTransactionIsAnAsyncCapture,
-  useTranslation
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { useMemo } from 'react'
-import { useCaptureOverlay } from '../../../hooks/useCaptureOverlay'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { useMemo } from "react"
+import { useCancelOverlay } from "#hooks/useCancelOverlay"
+import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
+import { useCaptureOverlay } from "../../../hooks/useCaptureOverlay"
 import {
   getTriggerAttributeName,
-  getTriggerAttributes
-} from '../orderDictionary'
-import { useOrderStatus } from './useOrderStatus'
-import { useSelectShippingMethodOverlay } from './useSelectShippingMethodOverlay'
+  getTriggerAttributes,
+} from "../orderDictionary"
+import { useOrderStatus } from "./useOrderStatus"
+import { useSelectShippingMethodOverlay } from "./useSelectShippingMethodOverlay"
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const useActionButtons = ({ order }: { order: Order }) => {
   const triggerAttributes = getTriggerAttributes(order)
   const { t } = useTranslation()
@@ -28,7 +27,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
   const { show: showCancelOverlay, Overlay: CancelOverlay } = useCancelOverlay()
   const {
     show: showSelectShippingMethodOverlay,
-    Overlay: SelectShippingMethodOverlay
+    Overlay: SelectShippingMethodOverlay,
   } = useSelectShippingMethodOverlay()
 
   const diffTotalAndPlacedTotal =
@@ -36,51 +35,51 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     (order.place_total_amount_cents ?? 0)
 
   const isOriginalOrderAmountExceeded =
-    order.status === 'editing' && diffTotalAndPlacedTotal > 0
+    order.status === "editing" && diffTotalAndPlacedTotal > 0
 
-  const standardFooterActions: ActionButtonsProps['actions'] = useMemo(() => {
+  const standardFooterActions: ActionButtonsProps["actions"] = useMemo(() => {
     return triggerAttributes
       .filter(
         (
-          triggerAttribute
+          triggerAttribute,
         ): triggerAttribute is Exclude<
           typeof triggerAttribute,
-          '_archive' | '_unarchive' | '_refund'
-        > => !['_archive', '_unarchive', '_refund'].includes(triggerAttribute)
+          "_archive" | "_unarchive" | "_refund"
+        > => !["_archive", "_unarchive", "_refund"].includes(triggerAttribute),
       )
       .map((triggerAttribute) => {
         if (
-          triggerAttribute === '_capture' &&
+          triggerAttribute === "_capture" &&
           (order?.transactions ?? []).some(orderTransactionIsAnAsyncCapture)
         ) {
           // Capture has already been triggered and is waiting for success
           return {
-            label: t('apps.orders.details.waiting_for_successful_capture'),
-            variant: 'primary',
+            label: t("apps.orders.details.waiting_for_successful_capture"),
+            variant: "primary",
             disabled: true,
-            onClick: () => {}
+            onClick: () => {},
           }
         }
         return {
           label: getTriggerAttributeName(triggerAttribute),
           variant:
-            triggerAttribute === '_cancel' ||
-            triggerAttribute === '__cancel_transactions'
-              ? 'secondary'
-              : 'primary',
+            triggerAttribute === "_cancel" ||
+            triggerAttribute === "__cancel_transactions"
+              ? "secondary"
+              : "primary",
           disabled: isLoading,
           onClick: () => {
-            if (triggerAttribute === '_capture') {
+            if (triggerAttribute === "_capture") {
               showCaptureOverlay()
               return
             }
-            if (triggerAttribute === '_cancel') {
+            if (triggerAttribute === "_cancel") {
               showCancelOverlay()
               return
             }
 
             void dispatch(triggerAttribute)
-          }
+          },
         }
       })
   }, [
@@ -88,37 +87,37 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     isLoading,
     showCancelOverlay,
     showCaptureOverlay,
-    triggerAttributes
+    triggerAttributes,
   ])
 
-  const editingFooterActions: ActionButtonsProps['actions'] = useMemo(() => {
-    if (order.status !== 'editing') {
+  const editingFooterActions: ActionButtonsProps["actions"] = useMemo(() => {
+    if (order.status !== "editing") {
       return []
     }
 
-    const cancelAction: ActionButtonsProps['actions'][number] = {
-      label: getTriggerAttributeName('_cancel'),
-      variant: 'secondary',
+    const cancelAction: ActionButtonsProps["actions"][number] = {
+      label: getTriggerAttributeName("_cancel"),
+      variant: "secondary",
       disabled: isLoading,
       onClick: () => {
         showCancelOverlay()
-      }
+      },
     }
 
-    const continueAction: ActionButtonsProps['actions'][number] = {
-      label: t('apps.orders.actions.continue_editing'),
+    const continueAction: ActionButtonsProps["actions"][number] = {
+      label: t("apps.orders.actions.continue_editing"),
       disabled: isLoading || !hasLineItems,
       onClick: () => {
         showSelectShippingMethodOverlay()
-      }
+      },
     }
 
-    const finishAction: ActionButtonsProps['actions'][number] = {
-      label: t('apps.orders.actions.finish_editing'),
+    const finishAction: ActionButtonsProps["actions"][number] = {
+      label: t("apps.orders.actions.finish_editing"),
       disabled: isLoading || isOriginalOrderAmountExceeded || !hasLineItems,
       onClick: () => {
-        void dispatch('_stop_editing')
-      }
+        void dispatch("_stop_editing")
+      },
     }
 
     return [cancelAction, hasInvalidShipments ? continueAction : finishAction]
@@ -128,7 +127,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     order,
     showCancelOverlay,
     showSelectShippingMethodOverlay,
-    dispatch
+    dispatch,
   ])
 
   return {
@@ -138,6 +137,6 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     CancelOverlay,
     SelectShippingMethodOverlay,
     errors,
-    dispatch
+    dispatch,
   }
 }

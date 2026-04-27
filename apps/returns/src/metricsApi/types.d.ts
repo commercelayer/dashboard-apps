@@ -2,13 +2,13 @@ type MetricsApiReturnsSearchData = Array<{
   id: string
   created_at: string
   status:
-    | 'requested'
-    | 'approved'
-    | 'shipped'
-    | 'received'
-    | 'cancelled'
-    | 'rejected'
-    | 'refunded'
+    | "requested"
+    | "approved"
+    | "shipped"
+    | "received"
+    | "cancelled"
+    | "rejected"
+    | "refunded"
   market?: {
     name: string
     id: string

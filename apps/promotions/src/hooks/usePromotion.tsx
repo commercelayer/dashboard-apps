@@ -1,34 +1,33 @@
-import { makePercentageDiscountPromotion } from '#mocks'
-import type { Promotion } from '#types'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { KeyedMutator } from "swr"
+import { makePercentageDiscountPromotion } from "#mocks"
+import type { Promotion } from "#types"
 
 export const promotionIncludeAttribute = [
-  'coupon_codes_promotion_rule',
-  'promotion_rules',
-  'sku_list_promotion_rule.sku_list',
-  'sku_list',
-  'market'
+  "coupon_codes_promotion_rule",
+  "promotion_rules",
+  "sku_list_promotion_rule.sku_list",
+  "sku_list",
+  "market",
 ]
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function usePromotion<Id extends string | undefined>(id: Id) {
   const { data, isLoading, mutate, isValidating, error } = useCoreApi(
-    'promotions',
-    'retrieve',
+    "promotions",
+    "retrieve",
     id == null
       ? null
       : [
           id,
           {
-            include: promotionIncludeAttribute
-          }
+            include: promotionIncludeAttribute,
+          },
         ],
     {
       isPaused: () => id != null && isMockedId(id),
       fallbackData:
-        id != null ? (makePercentageDiscountPromotion() as any) : undefined
-    }
+        id != null ? (makePercentageDiscountPromotion() as any) : undefined,
+    },
   )
 
   return {
@@ -38,6 +37,6 @@ export function usePromotion<Id extends string | undefined>(id: Id) {
     isLoading,
     mutatePromotion: mutate as unknown as KeyedMutator<Promotion>,
     isValidating,
-    error
+    error,
   }
 }

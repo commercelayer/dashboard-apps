@@ -1,7 +1,7 @@
-import { makeCustomer } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { Customer } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { Customer } from "@commercelayer/sdk"
+import type { KeyedMutator } from "swr"
+import { makeCustomer } from "#mocks"
 
 export function useCustomerDetails(id: string): {
   customer: Customer
@@ -13,30 +13,30 @@ export function useCustomerDetails(id: string): {
     data: customer,
     isLoading,
     error,
-    mutate: mutateCustomer
+    mutate: mutateCustomer,
   } = useCoreApi(
-    'customers',
-    'retrieve',
+    "customers",
+    "retrieve",
     !isMockedId(id)
       ? [
           id,
           {
             include: [
-              'customer_group',
-              'customer_addresses',
-              'customer_addresses.address',
-              'customer_payment_sources',
-              'customer_payment_sources.payment_source',
-              'customer_subscriptions',
+              "customer_group",
+              "customer_addresses",
+              "customer_addresses.address",
+              "customer_payment_sources",
+              "customer_payment_sources.payment_source",
+              "customer_subscriptions",
               // Timeline
-              'attachments'
-            ]
-          }
+              "attachments",
+            ],
+          },
         ]
       : null,
     {
-      fallbackData: makeCustomer()
-    }
+      fallbackData: makeCustomer(),
+    },
   )
 
   return { customer, error, isLoading, mutateCustomer }

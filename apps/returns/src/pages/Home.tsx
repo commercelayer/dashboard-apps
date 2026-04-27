@@ -1,6 +1,3 @@
-import { instructions } from '#data/filters'
-import { presets } from '#data/lists'
-import { appRoutes } from '#data/routes'
 import {
   HomePageLayout,
   Icon,
@@ -11,11 +8,14 @@ import {
   StatusIcon,
   Text,
   useResourceFilters,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { Link, useLocation } from 'wouter'
-import { useSearch } from 'wouter/use-browser-location'
-import { useListCounters } from '../metricsApi/useListCounters'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import { Link, useLocation } from "wouter"
+import { useSearch } from "wouter/use-browser-location"
+import { instructions } from "#data/filters"
+import { presets } from "#data/lists"
+import { appRoutes } from "#data/routes"
+import { useListCounters } from "../metricsApi/useListCounters"
 
 function Home(): React.JSX.Element {
   const [, setLocation] = useLocation()
@@ -24,11 +24,11 @@ function Home(): React.JSX.Element {
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
   const { adapters, SearchWithNav } = useResourceFilters({
-    instructions
+    instructions,
   })
 
   return (
-    <HomePageLayout title={t('resources.returns.name_other')}>
+    <HomePageLayout title={t("resources.returns.name_other")}>
       <SearchWithNav
         hideFiltersNav
         onFilterClick={() => {}}
@@ -39,116 +39,116 @@ function Home(): React.JSX.Element {
       />
 
       <SkeletonTemplate isLoading={isLoadingCounters}>
-        <Spacer bottom='14'>
-          <List title={t('apps.returns.tasks.open')}>
+        <Spacer bottom="14">
+          <List title={t("apps.returns.tasks.open")}>
             <Link
               href={appRoutes.list.makePath(
                 adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.requested
-                })
+                  formValues: presets.requested,
+                }),
               )}
               asChild
             >
               <ListItem
                 icon={
                   <StatusIcon
-                    name='chatCircle'
-                    background='orange'
-                    gap='small'
+                    name="chatCircle"
+                    background="orange"
+                    gap="small"
                   />
                 }
               >
-                <Text weight='semibold'>
-                  {presets.requested.viewTitle}{' '}
+                <Text weight="semibold">
+                  {presets.requested.viewTitle}{" "}
                   {formatCounter(counters?.requested)}
                 </Text>
-                <Icon name='caretRight' />
+                <Icon name="caretRight" />
               </ListItem>
             </Link>
 
             <Link
               href={appRoutes.list.makePath(
                 adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.approved
-                })
+                  formValues: presets.approved,
+                }),
               )}
               asChild
             >
               <ListItem
                 icon={
-                  <StatusIcon name='check' background='orange' gap='small' />
+                  <StatusIcon name="check" background="orange" gap="small" />
                 }
               >
-                <Text weight='semibold'>
-                  {presets.approved.viewTitle}{' '}
+                <Text weight="semibold">
+                  {presets.approved.viewTitle}{" "}
                   {formatCounter(counters?.approved)}
                 </Text>
-                <Icon name='caretRight' />
+                <Icon name="caretRight" />
               </ListItem>
             </Link>
 
             <Link
               href={appRoutes.list.makePath(
                 adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.shipped
-                })
+                  formValues: presets.shipped,
+                }),
               )}
               asChild
             >
               <ListItem
                 icon={
                   <StatusIcon
-                    name='arrowUpRight'
-                    background='orange'
-                    gap='small'
+                    name="arrowUpRight"
+                    background="orange"
+                    gap="small"
                   />
                 }
               >
-                <Text weight='semibold'>
+                <Text weight="semibold">
                   {presets.shipped.viewTitle} {formatCounter(counters?.shipped)}
                 </Text>
-                <Icon name='caretRight' />
+                <Icon name="caretRight" />
               </ListItem>
             </Link>
           </List>
         </Spacer>
 
-        <Spacer bottom='14'>
-          <List title={t('apps.returns.tasks.browse')}>
+        <Spacer bottom="14">
+          <List title={t("apps.returns.tasks.browse")}>
             <Link
               href={appRoutes.list.makePath(
                 adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.history
-                })
+                  formValues: presets.history,
+                }),
               )}
               asChild
             >
               <ListItem
                 icon={
                   <StatusIcon
-                    name='asteriskSimple'
-                    background='black'
-                    gap='small'
+                    name="asteriskSimple"
+                    background="black"
+                    gap="small"
                   />
                 }
               >
-                <Text weight='semibold'>{presets.history.viewTitle}</Text>
-                <Icon name='caretRight' />
+                <Text weight="semibold">{presets.history.viewTitle}</Text>
+                <Icon name="caretRight" />
               </ListItem>
             </Link>
             <Link
               href={appRoutes.list.makePath(
                 adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.archived
-                })
+                  formValues: presets.archived,
+                }),
               )}
               asChild
             >
               <ListItem
-                icon={<StatusIcon name='minus' background='gray' gap='small' />}
+                icon={<StatusIcon name="minus" background="gray" gap="small" />}
               >
-                <Text weight='semibold'>{presets.archived.viewTitle}</Text>
-                <Icon name='caretRight' />
+                <Text weight="semibold">{presets.archived.viewTitle}</Text>
+                <Icon name="caretRight" />
               </ListItem>
             </Link>
           </List>

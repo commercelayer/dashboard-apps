@@ -5,9 +5,9 @@ import {
   Text,
   useAppLinking,
   useTokenProvider,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { StockTransfer } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { StockTransfer } from "@commercelayer/sdk"
 
 interface Props {
   stockTransfer: StockTransfer
@@ -19,30 +19,30 @@ export const StockTransferInfo = withSkeletonTemplate<Props>(
     const { navigateTo } = useAppLinking()
 
     const orderNumber = `#${stockTransfer?.shipment?.order?.number}`
-    const navigateToOrder = canAccess('orders')
+    const navigateToOrder = canAccess("orders")
       ? navigateTo({
-          app: 'orders',
-          resourceId: stockTransfer?.shipment?.order?.id
+          app: "orders",
+          resourceId: stockTransfer?.shipment?.order?.id,
         })
       : {}
 
     const shipmentNumber = `#${stockTransfer?.shipment?.number}`
-    const navigateToShipment = canAccess('shipments')
+    const navigateToShipment = canAccess("shipments")
       ? navigateTo({
-          app: 'shipments',
-          resourceId: stockTransfer?.shipment?.id
+          app: "shipments",
+          resourceId: stockTransfer?.shipment?.id,
         })
       : {}
 
-    if (orderNumber === '#' && shipmentNumber === '#') return <></>
+    if (orderNumber === "#" && shipmentNumber === "#") return <></>
 
     return (
-      <Section title='Info'>
-        {orderNumber !== '#' && (
-          <ListDetailsItem label='Order' gutter='none'>
-            <Text tag='div' weight='semibold'>
-              {canAccess('orders') ? (
-                <Button variant='link' {...navigateToOrder}>
+      <Section title="Info">
+        {orderNumber !== "#" && (
+          <ListDetailsItem label="Order" gutter="none">
+            <Text tag="div" weight="semibold">
+              {canAccess("orders") ? (
+                <Button variant="link" {...navigateToOrder}>
                   {orderNumber}
                 </Button>
               ) : (
@@ -51,11 +51,11 @@ export const StockTransferInfo = withSkeletonTemplate<Props>(
             </Text>
           </ListDetailsItem>
         )}
-        {shipmentNumber !== '#' && (
-          <ListDetailsItem label='Shipment' gutter='none'>
-            <Text tag='div' weight='semibold'>
-              {canAccess('orders') ? (
-                <Button variant='link' {...navigateToShipment}>
+        {shipmentNumber !== "#" && (
+          <ListDetailsItem label="Shipment" gutter="none">
+            <Text tag="div" weight="semibold">
+              {canAccess("orders") ? (
+                <Button variant="link" {...navigateToShipment}>
                   {shipmentNumber}
                 </Button>
               ) : (
@@ -66,5 +66,5 @@ export const StockTransferInfo = withSkeletonTemplate<Props>(
         )}
       </Section>
     )
-  }
+  },
 )

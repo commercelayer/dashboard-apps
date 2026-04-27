@@ -1,6 +1,8 @@
 import {
   Button,
   EmptyState,
+  isMockedId,
+  type PageHeadingProps,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
@@ -11,29 +13,26 @@ import {
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
-  type PageHeadingProps
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
-
-import { BundleInfo } from '#components/BundleInfo'
-import { BundleSkuList } from '#components/BundleSkuList'
-import { appRoutes } from '#data/routes'
-import { useBundleDetails } from '#hooks/useBundleDetails'
-import { isMockedId } from '@commercelayer/app-elements'
-import { SkuDescription } from 'dashboard-apps-common/src/components/SkuDescription'
-import { useState, type FC } from 'react'
+} from "@commercelayer/app-elements"
+import { SkuDescription } from "dashboard-apps-common/src/components/SkuDescription"
+import { type FC, useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { BundleInfo } from "#components/BundleInfo"
+import { BundleSkuList } from "#components/BundleSkuList"
+import { appRoutes } from "#data/routes"
+import { useBundleDetails } from "#hooks/useBundleDetails"
 
 export const BundleDetails: FC = () => {
   const {
     settings: { mode },
-    canUser
+    canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ bundleId: string }>(appRoutes.details.path)
 
-  const bundleId = params?.bundleId ?? ''
+  const bundleId = params?.bundleId ?? ""
   const goBackUrl = appRoutes.list.makePath({})
 
   const { bundle, isLoading, error, mutateBundle } = useBundleDetails(bundleId)
@@ -43,32 +42,32 @@ export const BundleDetails: FC = () => {
   const { Overlay: DeleteOverlay, open, close } = useOverlay()
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const pageTitle = bundle.name ?? 'Bundles'
+  const pageTitle = bundle.name ?? "Bundles"
 
-  const pageToolbar: PageHeadingProps['toolbar'] = {
+  const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
-    dropdownItems: []
+    dropdownItems: [],
   }
 
-  if (canUser('update', 'bundles')) {
+  if (canUser("update", "bundles")) {
     pageToolbar.buttons?.push({
-      label: 'Edit',
-      size: 'small',
-      variant: 'secondary',
+      label: "Edit",
+      size: "small",
+      variant: "secondary",
       onClick: () => {
         setLocation(appRoutes.edit.makePath({ bundleId }))
-      }
+      },
     })
   }
 
-  if (canUser('destroy', 'bundles')) {
+  if (canUser("destroy", "bundles")) {
     pageToolbar.dropdownItems?.push([
       {
-        label: 'Delete',
+        label: "Delete",
         onClick: () => {
           open()
-        }
-      }
+        },
+      },
     ])
   }
 
@@ -85,39 +84,39 @@ export const BundleDetails: FC = () => {
         onClick: () => {
           goBack({
             currentResourceId: bundleId,
-            defaultRelativePath: appRoutes.list.makePath({})
+            defaultRelativePath: appRoutes.list.makePath({}),
           })
         },
-        label: 'Bundles',
-        icon: 'arrowLeft'
+        label: "Bundles",
+        icon: "arrowLeft",
       }}
       toolbar={pageToolbar}
       scrollToTop
-      gap='only-top'
+      gap="only-top"
     >
       {error != null ? (
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
       ) : (
         <>
           <SkeletonTemplate isLoading={isLoading}>
-            <Spacer bottom='4'>
-              <Spacer top='14'>
+            <Spacer bottom="4">
+              <Spacer top="14">
                 <SkuDescription resource={bundle} />
               </Spacer>
-              <Spacer top='14'>
+              <Spacer top="14">
                 <BundleSkuList bundle={bundle} />
               </Spacer>
-              <Spacer top='14'>
+              <Spacer top="14">
                 <BundleInfo bundle={bundle} />
               </Spacer>
-              <Spacer top='14'>
+              <Spacer top="14">
                 <ResourceDetails
                   resource={bundle}
                   onUpdated={async () => {
@@ -127,24 +126,24 @@ export const BundleDetails: FC = () => {
               </Spacer>
               {!isMockedId(bundle.id) && (
                 <>
-                  <Spacer top='14'>
+                  <Spacer top="14">
                     <ResourceTags
-                      resourceType='bundles'
+                      resourceType="bundles"
                       resourceId={bundle.id}
                       overlay={{ title: pageTitle }}
                       onTagClick={(tagId) => {
                         setLocation(
-                          appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                          appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
                         )
                       }}
                     />
                   </Spacer>
-                  <Spacer top='14'>
+                  <Spacer top="14">
                     <ResourceMetadata
-                      resourceType='bundles'
+                      resourceType="bundles"
                       resourceId={bundle.id}
                       overlay={{
-                        title: pageTitle
+                        title: pageTitle,
                       }}
                     />
                   </Spacer>
@@ -152,23 +151,23 @@ export const BundleDetails: FC = () => {
               )}
             </Spacer>
           </SkeletonTemplate>
-          {canUser('destroy', 'bundles') && (
-            <DeleteOverlay backgroundColor='light'>
+          {canUser("destroy", "bundles") && (
+            <DeleteOverlay backgroundColor="light">
               <PageLayout
                 title={`Confirm that you want to delete the ${bundle.code} (${bundle.name}) bundle.`}
-                description='This action cannot be undone, proceed with caution.'
+                description="This action cannot be undone, proceed with caution."
                 minHeight={false}
                 navigationButton={{
                   onClick: () => {
                     close()
                   },
                   label: `Cancel`,
-                  icon: 'x'
+                  icon: "x",
                 }}
               >
                 <Button
-                  variant='danger'
-                  size='small'
+                  variant="danger"
+                  size="small"
                   disabled={isDeleting}
                   onClick={(e) => {
                     setIsDeleting(true)

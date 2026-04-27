@@ -1,31 +1,31 @@
-import { FormReturn } from '#components/FormReturn'
-import { appRoutes } from '#data/routes'
-import { useCreateReturnLineItems } from '#hooks/useCreateReturnLineItems'
-import { useGetMarketsCount } from '#hooks/useGetMarketsCount'
-import { useMarketInventoryModel } from '#hooks/useMarketInventoryModel'
-import { useOrderDetails } from '#hooks/useOrderDetails'
-import { useReturn } from '#hooks/useReturn'
-import { useReturnableList } from '#hooks/useReturnableList'
-import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
   EmptyState,
   InputSelect,
+  type InputSelectValue,
+  isMock,
+  isSingleValueSelected,
   PageLayout,
   ResourceAddress,
   Section,
   SkeletonTemplate,
   Spacer,
   Stack,
-  isMock,
-  isSingleValueSelected,
   useTokenProvider,
   useTranslation,
-  type InputSelectValue
-} from '@commercelayer/app-elements'
-import type { Address, StockLocation } from '@commercelayer/sdk'
-import { useCallback, useEffect, useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+} from "@commercelayer/app-elements"
+import type { Address, StockLocation } from "@commercelayer/sdk"
+import { useCallback, useEffect, useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { FormReturn } from "#components/FormReturn"
+import { appRoutes } from "#data/routes"
+import { useCreateReturnLineItems } from "#hooks/useCreateReturnLineItems"
+import { useGetMarketsCount } from "#hooks/useGetMarketsCount"
+import { useMarketInventoryModel } from "#hooks/useMarketInventoryModel"
+import { useOrderDetails } from "#hooks/useOrderDetails"
+import { useReturn } from "#hooks/useReturn"
+import { useReturnableList } from "#hooks/useReturnableList"
+import { getOrderTitle } from "#utils/getOrderTitle"
 
 function CreateReturn(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -35,7 +35,7 @@ function CreateReturn(): React.JSX.Element {
   const { count: marketsCount } = useGetMarketsCount()
   const hideMarket = (marketsCount ?? 0) === 1
 
-  const orderId = params?.orderId ?? ''
+  const orderId = params?.orderId ?? ""
   const goBackUrl =
     orderId != null
       ? appRoutes.details.makePath({ orderId })
@@ -49,7 +49,7 @@ function CreateReturn(): React.JSX.Element {
   const {
     createReturnLineItemsError,
     createReturnLineItems,
-    isCreatingReturnLineItems
+    isCreatingReturnLineItems,
   } = useCreateReturnLineItems()
 
   const [stockLocation, setStockLocation] = useState<StockLocation>()
@@ -70,7 +70,6 @@ function CreateReturn(): React.JSX.Element {
   const stockLocations = orderInventoryReturnLocations
     .filter((item) => item.stock_location != null)
     .map((item) => {
-      // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
       return item.stock_location as StockLocation
     })
 
@@ -79,10 +78,10 @@ function CreateReturn(): React.JSX.Element {
       return {
         value: stockLocation.id,
         label: `${stockLocation.name}`,
-        meta: stockLocation
+        meta: stockLocation,
       }
     },
-    []
+    [],
   )
 
   const stockLocationsToSelectOptions = useCallback(
@@ -91,10 +90,10 @@ function CreateReturn(): React.JSX.Element {
         return {
           value: stockLocation.id,
           label: `${stockLocation.name}`,
-          meta: stockLocation
+          meta: stockLocation,
         }
       }),
-    []
+    [],
   )
 
   if (
@@ -106,31 +105,31 @@ function CreateReturn(): React.JSX.Element {
     return <></>
 
   const hasAtLastOneDeliveredShipment = (order.shipments ?? []).some(
-    (s) => s.status === 'delivered'
+    (s) => s.status === "delivered",
   )
   if (
-    (order.fulfillment_status !== 'fulfilled' &&
+    (order.fulfillment_status !== "fulfilled" &&
       !hasAtLastOneDeliveredShipment) ||
     returnableLineItems.length === 0 ||
-    !canUser('create', 'returns')
+    !canUser("create", "returns")
   ) {
     return (
       <PageLayout
-        title={t('apps.orders.tasks.request_return')}
+        title={t("apps.orders.tasks.request_return")}
         navigationButton={{
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: orderId != null ? 'Back' : 'Orders',
-          icon: 'arrowLeft'
+          label: orderId != null ? "Back" : "Orders",
+          icon: "arrowLeft",
         }}
       >
         <EmptyState
-          title={t('common.not_authorized')}
-          description={t('common.not_authorized_description')}
+          title={t("common.not_authorized")}
+          description={t("common.not_authorized_description")}
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>{t('common.go_back')}</Button>
+              <Button variant="primary">{t("common.go_back")}</Button>
             </Link>
           }
         />
@@ -143,7 +142,7 @@ function CreateReturn(): React.JSX.Element {
       overlay
       title={
         <SkeletonTemplate isLoading={isLoading}>
-          {t('apps.orders.tasks.request_return')}
+          {t("apps.orders.tasks.request_return")}
         </SkeletonTemplate>
       }
       navigationButton={{
@@ -153,27 +152,26 @@ function CreateReturn(): React.JSX.Element {
         label:
           orderId != null
             ? getOrderTitle(order, { hideMarket })
-            : t('resources.orders.name_other'),
-        icon: 'arrowLeft'
+            : t("resources.orders.name_other"),
+        icon: "arrowLeft",
       }}
       scrollToTop
     >
       {stockLocations.length > 1 && (
-        <Spacer bottom='12'>
+        <Spacer bottom="12">
           <InputSelect
-            label={t('apps.returns.details.to_destination')}
+            label={t("apps.returns.details.to_destination")}
             isClearable={false}
             initialValues={stockLocationsToSelectOptions(stockLocations)}
             defaultValue={stockLocationToSelectOption(
-              // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-              returnObj.stock_location as StockLocation
+              returnObj.stock_location as StockLocation,
             )}
             onSelect={(selectedOption) => {
               if (isSingleValueSelected(selectedOption)) {
                 if (selectedOption?.meta?.address != null) {
                   setStockLocation(selectedOption?.meta as StockLocation)
                   setDestinationAddress(
-                    selectedOption?.meta?.address as Address
+                    selectedOption?.meta?.address as Address,
                   )
                 }
               }
@@ -183,13 +181,13 @@ function CreateReturn(): React.JSX.Element {
       )}
       {returnableLineItems != null && returnableLineItems.length !== 0 && (
         <>
-          <Spacer bottom='12'>
+          <Spacer bottom="12">
             <FormReturn
               defaultValues={{
                 items: returnableLineItems?.map((item) => ({
                   quantity: item.quantity,
-                  value: item.id
-                }))
+                  value: item.id,
+                })),
               }}
               lineItems={returnableLineItems}
               apiError={createReturnLineItemsError}
@@ -197,7 +195,7 @@ function CreateReturn(): React.JSX.Element {
                 void createReturnLineItems(
                   returnObj,
                   stockLocation,
-                  formValues
+                  formValues,
                 ).then(() => {
                   void mutateOrder().finally(() => {
                     setLocation(goBackUrl)
@@ -208,16 +206,16 @@ function CreateReturn(): React.JSX.Element {
           </Spacer>
           {returnObj.origin_address != null &&
             returnObj?.stock_location?.address != null && (
-              <Spacer bottom='12'>
-                <Section title='Addresses' border='none'>
+              <Spacer bottom="12">
+                <Section title="Addresses" border="none">
                   <Stack>
                     <ResourceAddress
-                      title={t('apps.returns.details.origin')}
+                      title={t("apps.returns.details.origin")}
                       address={returnObj.origin_address}
                       editable
                     />
                     <ResourceAddress
-                      title={t('apps.returns.details.destination')}
+                      title={t("apps.returns.details.destination")}
                       address={destinationAddress}
                     />
                   </Stack>
@@ -225,12 +223,12 @@ function CreateReturn(): React.JSX.Element {
               </Spacer>
             )}
           <Button
-            type='submit'
-            form='return-creation-form'
+            type="submit"
+            form="return-creation-form"
             fullWidth
             disabled={isCreatingReturnLineItems}
           >
-            {t('apps.orders.tasks.request_return')}
+            {t("apps.orders.tasks.request_return")}
           </Button>
         </>
       )}

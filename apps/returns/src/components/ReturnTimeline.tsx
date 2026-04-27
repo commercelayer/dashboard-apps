@@ -1,21 +1,20 @@
-import { isAttachmentValidNote, referenceOrigins } from '#data/attachments'
 import {
   getOrderTransactionName,
   isMockedId,
   Text,
   Timeline,
+  type TimelineEvent,
   Trans,
   useCoreApi,
   useCoreSdkProvider,
   useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
-  type TimelineEvent
-} from '@commercelayer/app-elements'
-
-import type { Attachment, Return, ReturnLineItem } from '@commercelayer/sdk'
-import isEmpty from 'lodash-es/isEmpty'
-import { useCallback, useEffect, useReducer, useState } from 'react'
+} from "@commercelayer/app-elements"
+import type { Attachment, Return, ReturnLineItem } from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
+import { useCallback, useEffect, useReducer, useState } from "react"
+import { isAttachmentValidNote, referenceOrigins } from "#data/attachments"
 
 export const ReturnTimeline = withSkeletonTemplate<{
   returnId?: string
@@ -25,38 +24,38 @@ export const ReturnTimeline = withSkeletonTemplate<{
     referenceOrigin: typeof referenceOrigins.appReturnsNote
   }
 }>(({ returnId, attachmentOption, refresh, isLoading: isExternalLoading }) => {
-  const fakeReturnId = 'fake-NMWYhbGorj'
+  const fakeReturnId = "fake-NMWYhbGorj"
   const {
     data: returnObj,
     isLoading,
-    mutate: mutateReturn
+    mutate: mutateReturn,
   } = useCoreApi(
-    'returns',
-    'retrieve',
+    "returns",
+    "retrieve",
     returnId == null || isEmpty(returnId) || isMockedId(returnId)
       ? null
       : [
           returnId,
           {
             include: [
-              'order',
-              'reference_refund',
-              'customer',
-              'return_line_items',
-              'attachments'
-            ]
-          }
+              "order",
+              "reference_refund",
+              "customer",
+              "return_line_items",
+              "attachments",
+            ],
+          },
         ],
     {
       fallbackData: {
-        type: 'returns',
+        type: "returns",
         id: fakeReturnId,
-        status: 'approved',
-        created_at: '2020-05-16T11:06:02.074Z',
-        updated_at: '2020-05-16T14:18:35.572Z',
-        approved_at: '2020-05-16T14:18:16.775Z'
-      } satisfies Return
-    }
+        status: "approved",
+        created_at: "2020-05-16T11:06:02.074Z",
+        updated_at: "2020-05-16T14:18:35.572Z",
+        approved_at: "2020-05-16T14:18:16.775Z",
+      } satisfies Return,
+    },
   )
 
   const [events] = useTimelineReducer(returnObj)
@@ -69,7 +68,7 @@ export const ReturnTimeline = withSkeletonTemplate<{
         void mutateReturn()
       }
     },
-    [refresh]
+    [refresh],
   )
 
   return (
@@ -80,22 +79,22 @@ export const ReturnTimeline = withSkeletonTemplate<{
       events={events}
       timezone={user?.timezone}
       onKeyDown={(event) => {
-        if (event.code === 'Enter' && event.currentTarget.value !== '') {
+        if (event.code === "Enter" && event.currentTarget.value !== "") {
           if (
             attachmentOption?.referenceOrigin == null ||
             ![referenceOrigins.appReturnsNote].includes(
-              attachmentOption.referenceOrigin
+              attachmentOption.referenceOrigin,
             )
           ) {
             console.warn(
-              `Cannot create the attachment: "referenceOrigin" is not valid.`
+              `Cannot create the attachment: "referenceOrigin" is not valid.`,
             )
             return
           }
 
           if (user?.displayName == null || isEmpty(user.displayName)) {
             console.warn(
-              `Cannot create the attachment: token does not contain a valid "user".`
+              `Cannot create the attachment: token does not contain a valid "user".`,
             )
             return
           }
@@ -105,21 +104,20 @@ export const ReturnTimeline = withSkeletonTemplate<{
               reference_origin: attachmentOption.referenceOrigin,
               name: user.displayName,
               description: event.currentTarget.value,
-              attachable: { type: 'returns', id: returnObj.id }
+              attachable: { type: "returns", id: returnObj.id },
             })
             .then((attachment) => {
               void mutateReturn()
               attachmentOption?.onMessage?.(attachment)
             })
 
-          event.currentTarget.value = ''
+          event.currentTarget.value = ""
         }
       }}
     />
   )
 })
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const useTimelineReducer = (returnObj: Return) => {
   const [returnId, setReturnId] = useState<string>(returnObj.id)
   const { t } = useTranslation()
@@ -128,21 +126,21 @@ const useTimelineReducer = (returnObj: Return) => {
   type Action =
     | [
         {
-          type: 'add'
+          type: "add"
           payload: TimelineEvent
-        }
+        },
       ]
     | [
         {
-          type: 'clear'
-        }
+          type: "clear"
+        },
       ]
 
   const [events, dispatch] = useReducer<State, Action>((state, action) => {
     switch (action.type) {
-      case 'clear':
+      case "clear":
         return []
-      case 'add':
+      case "add":
         if (state.find((s) => s.date === action.payload.date) != null) {
           return state
         }
@@ -156,165 +154,165 @@ const useTimelineReducer = (returnObj: Return) => {
   useEffect(
     function clearState() {
       if (returnObj.id !== returnId) {
-        dispatch({ type: 'clear' })
+        dispatch({ type: "clear" })
         setReturnId(returnObj.id)
       }
     },
-    [returnObj.id]
+    [returnObj.id],
   )
 
   useEffect(
     function addPlaced() {
       if (returnObj.created_at != null) {
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: returnObj.created_at,
-            message: t('apps.returns.details.timeline_requested_return', {
+            message: t("apps.returns.details.timeline_requested_return", {
               email: returnObj.customer?.email,
-              count: returnObj.return_line_items?.length ?? 0
-            })
-          }
+              count: returnObj.return_line_items?.length ?? 0,
+            }),
+          },
         })
       }
     },
-    [returnObj.created_at]
+    [returnObj.created_at],
   )
 
   useEffect(
     function addShipped() {
       if (returnObj.shipped_at != null) {
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: returnObj.shipped_at,
             message: (
               <Trans
-                i18nKey='apps.returns.details.timeline_shipped'
-                components={{ strong: <Text weight='bold' /> }}
+                i18nKey="apps.returns.details.timeline_shipped"
+                components={{ strong: <Text weight="bold" /> }}
               />
-            )
-          }
+            ),
+          },
         })
       }
     },
-    [returnObj.shipped_at]
+    [returnObj.shipped_at],
   )
 
   useEffect(
     function addReceived() {
       if (returnObj.received_at != null) {
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: returnObj.received_at,
             message: (
               <Trans
-                i18nKey='apps.returns.details.timeline_received'
-                components={{ strong: <Text weight='bold' /> }}
+                i18nKey="apps.returns.details.timeline_received"
+                components={{ strong: <Text weight="bold" /> }}
               />
-            )
-          }
+            ),
+          },
         })
       }
     },
-    [returnObj.received_at]
+    [returnObj.received_at],
   )
 
   useEffect(
     function addCancelled() {
       if (returnObj.cancelled_at != null) {
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: returnObj.cancelled_at,
             message: (
               <Trans
-                i18nKey='apps.returns.details.timeline_cancelled'
-                components={{ strong: <Text weight='bold' /> }}
+                i18nKey="apps.returns.details.timeline_cancelled"
+                components={{ strong: <Text weight="bold" /> }}
               />
-            )
-          }
+            ),
+          },
         })
       }
     },
-    [returnObj.cancelled_at]
+    [returnObj.cancelled_at],
   )
 
   useEffect(
     function addArchived() {
       if (returnObj.archived_at != null) {
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: returnObj.archived_at,
             message: (
               <Trans
-                i18nKey='apps.returns.details.timeline_archived'
-                components={{ strong: <Text weight='bold' /> }}
+                i18nKey="apps.returns.details.timeline_archived"
+                components={{ strong: <Text weight="bold" /> }}
               />
-            )
-          }
+            ),
+          },
         })
       }
     },
-    [returnObj.archived_at]
+    [returnObj.archived_at],
   )
 
   useEffect(
     function addApproved() {
       if (returnObj.approved_at != null) {
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: returnObj.approved_at,
 
             message: (
               <Trans
-                i18nKey='apps.returns.details.timeline_approved'
-                components={{ strong: <Text weight='bold' /> }}
+                i18nKey="apps.returns.details.timeline_approved"
+                components={{ strong: <Text weight="bold" /> }}
               />
-            )
-          }
+            ),
+          },
         })
       }
     },
-    [returnObj.approved_at]
+    [returnObj.approved_at],
   )
 
   useEffect(
     function addRefunds() {
       if (returnObj.reference_refund != null) {
-        const name = getOrderTransactionName('refunds')
+        const name = getOrderTransactionName("refunds")
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: returnObj.reference_refund.created_at,
             message: returnObj.reference_refund.succeeded ? (
               <Trans
-                i18nKey='apps.returns.details.timeline_payment_of_amount_was_action'
+                i18nKey="apps.returns.details.timeline_payment_of_amount_was_action"
                 values={{
                   amount: returnObj.reference_refund.formatted_amount,
-                  action: name.pastTense
+                  action: name.pastTense,
                 }}
-                components={{ strong: <Text weight='bold' /> }}
+                components={{ strong: <Text weight="bold" /> }}
               />
             ) : (
               // `Payment capture of xxxx failed` or `Authorization of xxxx failed`, etc...
               <Trans
-                i18nKey='apps.returns.details.timeline_action_of_amount_failed'
+                i18nKey="apps.returns.details.timeline_action_of_amount_failed"
                 values={{
                   action: name.pastTense,
-                  amount: returnObj.reference_refund.formatted_amount
+                  amount: returnObj.reference_refund.formatted_amount,
                 }}
-                components={{ strong: <Text weight='bold' /> }}
+                components={{ strong: <Text weight="bold" /> }}
               />
-            )
-          }
+            ),
+          },
         })
       }
     },
-    [returnObj.reference_refund]
+    [returnObj.reference_refund],
   )
 
   const dispatchRestockedReturnLineItems = useCallback(
@@ -323,26 +321,26 @@ const useTimelineReducer = (returnObj: Return) => {
         returnLineItems.forEach((returnLineItem) => {
           if (returnLineItem.restocked_at != null) {
             dispatch({
-              type: 'add',
+              type: "add",
               payload: {
                 date: returnLineItem.restocked_at,
                 message: (
                   <Trans
-                    i18nKey='apps.returns.details.timeline_item_code_restocked'
+                    i18nKey="apps.returns.details.timeline_item_code_restocked"
                     values={{
                       code:
-                        returnLineItem.sku_code ?? returnLineItem.bundle_code
+                        returnLineItem.sku_code ?? returnLineItem.bundle_code,
                     }}
-                    components={{ strong: <Text weight='bold' /> }}
+                    components={{ strong: <Text weight="bold" /> }}
                   />
-                )
-              }
+                ),
+              },
             })
           }
         })
       }
     },
-    []
+    [],
   )
 
   const dispatchAttachments = useCallback(
@@ -352,11 +350,11 @@ const useTimelineReducer = (returnObj: Return) => {
           if (
             isAttachmentValidNote(attachment, [
               referenceOrigins.appReturnsNote,
-              referenceOrigins.appReturnsRefundNote
+              referenceOrigins.appReturnsRefundNote,
             ])
           ) {
             dispatch({
-              type: 'add',
+              type: "add",
               payload: {
                 date: attachment.updated_at,
                 author: attachment.name,
@@ -364,32 +362,32 @@ const useTimelineReducer = (returnObj: Return) => {
                   <span>
                     {attachment.reference_origin ===
                     referenceOrigins.appReturnsRefundNote
-                      ? t('common.timeline.left_a_refund_note')
-                      : t('common.timeline.left_a_note')}
+                      ? t("common.timeline.left_a_refund_note")
+                      : t("common.timeline.left_a_note")}
                   </span>
                 ),
-                note: attachment.description
-              }
+                note: attachment.description,
+              },
             })
           }
         })
       }
     },
-    []
+    [],
   )
 
   useEffect(
     function addRestockedReturnLineItems() {
       dispatchRestockedReturnLineItems(returnObj.return_line_items)
     },
-    [returnObj.return_line_items]
+    [returnObj.return_line_items],
   )
 
   useEffect(
     function addAttachments() {
       dispatchAttachments(returnObj.attachments)
     },
-    [returnObj.attachments]
+    [returnObj.attachments],
   )
 
   return [events, dispatch] as const

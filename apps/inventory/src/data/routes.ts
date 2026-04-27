@@ -6,30 +6,30 @@ export type AppRoute = keyof typeof appRoutes
 // and `makePath` method to be used to generate the path used in navigation and links
 export const appRoutes = {
   home: {
-    path: '/',
-    makePath: () => '/'
+    path: "/",
+    makePath: () => "/",
   },
   list: {
-    path: '/list',
-    makePath: () => '/list'
+    path: "/list",
+    makePath: () => "/list",
   },
   stockLocation: {
-    path: '/:stockLocationId/list',
-    makePath: (stockLocationId: string) => `/${stockLocationId}/list`
+    path: "/:stockLocationId/list",
+    makePath: (stockLocationId: string) => `/${stockLocationId}/list`,
   },
   stockItem: {
-    path: '/:stockLocationId?/list/:stockItemId',
+    path: "/:stockLocationId?/list/:stockItemId",
     makePath: (stockLocationId: string, stockItemId: string) =>
-      `/${stockLocationId !== '' ? `${stockLocationId}/` : ''}list/${stockItemId}`
+      `/${stockLocationId !== "" ? `${stockLocationId}/` : ""}list/${stockItemId}`,
   },
   newStockItem: {
-    path: '/:stockLocationId?/new',
+    path: "/:stockLocationId?/new",
     makePath: (stockLocationId: string) =>
-      `/${stockLocationId !== '' ? `${stockLocationId}/` : ''}new`
+      `/${stockLocationId !== "" ? `${stockLocationId}/` : ""}new`,
   },
   editStockItem: {
-    path: '/:stockLocationId?/list/:stockItemId/edit',
+    path: "/:stockLocationId?/list/:stockItemId/edit",
     makePath: (stockLocationId: string, stockItemId: string) =>
-      `/${stockLocationId !== '' ? `${stockLocationId}/` : ''}list/${stockItemId}/edit`
-  }
+      `/${stockLocationId !== "" ? `${stockLocationId}/` : ""}list/${stockItemId}/edit`,
+  },
 }
