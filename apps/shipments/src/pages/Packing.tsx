@@ -1,9 +1,3 @@
-import { FormPacking } from '#components/FormPacking'
-import { ShipmentProgress } from '#components/ShipmentProgress'
-import { appRoutes } from '#data/routes'
-import { useCreateParcel } from '#hooks/useCreateParcel'
-import { usePickingList } from '#hooks/usePickingList'
-import { useShipmentDetails } from '#hooks/useShipmentDetails'
 import {
   Button,
   EmptyState,
@@ -11,22 +5,28 @@ import {
   PageLayout,
   Spacer,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { useEffect } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import { useEffect } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { FormPacking } from "#components/FormPacking"
+import { ShipmentProgress } from "#components/ShipmentProgress"
+import { appRoutes } from "#data/routes"
+import { useCreateParcel } from "#hooks/useCreateParcel"
+import { usePickingList } from "#hooks/usePickingList"
+import { useShipmentDetails } from "#hooks/useShipmentDetails"
 
 function Packing(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const [, params] = useRoute<{ shipmentId: string }>(appRoutes.packing.path)
-  const shipmentId = params?.shipmentId ?? ''
+  const shipmentId = params?.shipmentId ?? ""
   const [, setLocation] = useLocation()
   const { shipment, isLoading } = useShipmentDetails(shipmentId)
   const pickingList = usePickingList(shipment)
-  const isValidStatus = shipment?.status === 'packing'
+  const isValidStatus = shipment?.status === "packing"
   const { createParcelError, createParcelWithItems, isCreatingParcel } =
     useCreateParcel(shipmentId)
   const { t } = useTranslation()
@@ -43,31 +43,31 @@ function Packing(): React.JSX.Element {
 
   if (
     shipmentId == null ||
-    !canUser('create', 'parcels') ||
+    !canUser("create", "parcels") ||
     !isValidStatus ||
     shipment.stock_location?.id == null
   ) {
     return (
       <PageLayout
-        title={t('resources.shipments.name_other')}
+        title={t("resources.shipments.name_other")}
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.home.makePath({}))
           },
-          label: t('resources.shipments.name_other'),
-          icon: 'arrowLeft'
+          label: t("resources.shipments.name_other"),
+          icon: "arrowLeft",
         }}
         mode={mode}
       >
         <EmptyState
           title={
             !isValidStatus
-              ? t('apps.shipments.details.not_in_packing')
+              ? t("apps.shipments.details.not_in_packing")
               : shipment.stock_location?.id == null
-                ? t('common.missing_resource', {
-                    resource: t('resources.stock_locations.name')
+                ? t("common.missing_resource", {
+                    resource: t("resources.stock_locations.name"),
                   })
-                : t('common.not_authorized')
+                : t("common.not_authorized")
           }
           action={
             <Link
@@ -77,7 +77,7 @@ function Packing(): React.JSX.Element {
                   : appRoutes.details.makePath({ shipmentId })
               }
             >
-              <Button variant='primary'>{t('common.go_back')}</Button>
+              <Button variant="primary">{t("common.go_back")}</Button>
             </Link>
           }
         />
@@ -88,30 +88,30 @@ function Packing(): React.JSX.Element {
   return (
     <PageLayout
       overlay
-      title={t('apps.shipments.tasks.packing')}
+      title={t("apps.shipments.tasks.packing")}
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.details.makePath({ shipmentId }))
         },
-        label: t('common.cancel'),
-        icon: 'x'
+        label: t("common.cancel"),
+        icon: "x",
       }}
       mode={mode}
-      gap='only-top'
+      gap="only-top"
     >
-      <Spacer bottom='12' top='6'>
+      <Spacer bottom="12" top="6">
         <ShipmentProgress shipment={shipment} />
       </Spacer>
-      <Spacer bottom='12'>
+      <Spacer bottom="12">
         <FormPacking
           defaultValues={{
             items: pickingList.map((item) => ({
               quantity: item.quantity,
-              value: item.id
+              value: item.id,
             })),
             packageId: undefined,
-            weight: '',
-            unitOfWeight: undefined
+            weight: "",
+            unitOfWeight: undefined,
           }}
           stockLineItems={pickingList}
           stockLocationId={shipment.stock_location.id}

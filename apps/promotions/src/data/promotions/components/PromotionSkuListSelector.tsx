@@ -1,18 +1,18 @@
-import type { Promotion } from '#types'
 import {
   HookedInputRadioGroup,
   HookedInputSelect,
+  type InputSelectValue,
   Section,
   Spacer,
   useCoreApi,
   useCoreSdkProvider,
-  type InputSelectValue
-} from '@commercelayer/app-elements'
+} from "@commercelayer/app-elements"
 import type {
   FlexPromotion,
   QueryParamsList,
-  SkuList
-} from '@commercelayer/sdk'
+  SkuList,
+} from "@commercelayer/sdk"
+import type { Promotion } from "#types"
 
 export const PromotionSkuListSelector: React.FC<{
   label?: string
@@ -21,9 +21,9 @@ export const PromotionSkuListSelector: React.FC<{
   optional?: boolean
   placeholder?: string
 }> = ({ hint, label, promotion, placeholder, optional = false }) => {
-  const fieldName = 'sku_list'
+  const fieldName = "sku_list"
 
-  if (promotion?.type === 'flex_promotions') {
+  if (promotion?.type === "flex_promotions") {
     return null
   }
 
@@ -40,23 +40,23 @@ export const PromotionSkuListSelector: React.FC<{
   }
 
   return (
-    <Spacer top='14'>
-      <Section title='Apply the discount to'>
-        <Spacer top='6'>
-          <Spacer top='2'>
+    <Spacer top="14">
+      <Section title="Apply the discount to">
+        <Spacer top="6">
+          <Spacer top="2">
             <HookedInputRadioGroup
-              name='apply_the_discount_to'
-              viewMode='simple'
+              name="apply_the_discount_to"
+              viewMode="simple"
               options={[
                 {
-                  value: 'all',
-                  content: 'All products in the order'
+                  value: "all",
+                  content: "All products in the order",
                 },
                 {
-                  value: 'sku_list',
-                  content: 'Selected products',
+                  value: "sku_list",
+                  content: "Selected products",
                   checkedElement: (
-                    <Spacer bottom='6'>
+                    <Spacer bottom="6">
                       <HookedInternalPromotionSkuListSelector
                         name={fieldName}
                         promotion={promotion}
@@ -64,8 +64,8 @@ export const PromotionSkuListSelector: React.FC<{
                         placeholder={placeholder}
                       />
                     </Spacer>
-                  )
-                }
+                  ),
+                },
               ]}
             />
           </Spacer>
@@ -81,11 +81,11 @@ const HookedInternalPromotionSkuListSelector: React.FC<{
   promotion?: Exclude<Promotion, FlexPromotion>
   placeholder?: string
   name: string
-}> = ({ hint, label, promotion, name, placeholder = 'Search...' }) => {
+}> = ({ hint, label, promotion, name, placeholder = "Search..." }) => {
   const { sdkClient } = useCoreSdkProvider()
 
-  const { data: skuLists = [] } = useCoreApi('sku_lists', 'list', [
-    getParams({ name: '' })
+  const { data: skuLists = [] } = useCoreApi("sku_lists", "list", [
+    getParams({ name: "" }),
   ])
 
   return (
@@ -94,7 +94,7 @@ const HookedInternalPromotionSkuListSelector: React.FC<{
       label={label}
       isClearable
       hint={{
-        text: hint
+        text: hint,
       }}
       placeholder={placeholder}
       initialValues={
@@ -102,8 +102,8 @@ const HookedInternalPromotionSkuListSelector: React.FC<{
           ? [
               {
                 label: promotion.sku_list.name,
-                value: promotion.sku_list.id
-              }
+                value: promotion.sku_list.id,
+              },
             ]
           : toInputSelectValues(skuLists)
       }
@@ -111,13 +111,13 @@ const HookedInternalPromotionSkuListSelector: React.FC<{
         const skuLists = await sdkClient.sku_lists.list({
           pageSize: 25,
           filters: {
-            name_cont: name
-          }
+            name_cont: name,
+          },
         })
 
         return skuLists.map(({ name, id }) => ({
           label: name,
-          value: id
+          value: id,
         }))
       }}
     />
@@ -125,25 +125,25 @@ const HookedInternalPromotionSkuListSelector: React.FC<{
 }
 
 HookedInternalPromotionSkuListSelector.displayName =
-  'HookedInternalPromotionSkuListSelector'
+  "HookedInternalPromotionSkuListSelector"
 
 function getParams({ name }: { name: string }): QueryParamsList<SkuList> {
   return {
     pageSize: 25,
     sort: {
-      name: 'asc'
+      name: "asc",
     },
     filters: {
-      name_cont: name
-    }
+      name_cont: name,
+    },
   }
 }
 
 function toInputSelectValues(
-  items: Array<{ name: string; id: string }>
+  items: Array<{ name: string; id: string }>,
 ): InputSelectValue[] {
   return items.map(({ name, id }) => ({
     label: name,
-    value: id
+    value: id,
   }))
 }

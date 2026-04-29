@@ -1,8 +1,8 @@
 import type {
   CommerceLayerClient,
   ListResponse,
-  SkuList
-} from '@commercelayer/sdk'
+  SkuList,
+} from "@commercelayer/sdk"
 
 interface FetchSkuListsConfig {
   sdkClient: CommerceLayerClient
@@ -17,22 +17,22 @@ interface FetchSkuListsConfig {
 
 export const fetchSkuLists = async ({
   sdkClient,
-  hint
+  hint,
 }: FetchSkuListsConfig): Promise<ListResponse<SkuList>> => {
   const filters: any = {
-    manual_true: true
+    manual_true: true,
   }
   if (hint != null) {
     filters.name_cont = hint
   }
 
   const list = await sdkClient.sku_lists.list({
-    fields: ['id', 'name'],
+    fields: ["id", "name"],
     pageSize: 10,
     filters,
     sort: {
-      name: 'asc'
-    }
+      name: "asc",
+    },
   })
   return list
 }

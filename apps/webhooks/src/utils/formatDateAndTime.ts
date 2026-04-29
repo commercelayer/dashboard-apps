@@ -1,4 +1,4 @@
-import { formatDate } from '@commercelayer/app-elements'
+import { formatDate } from "@commercelayer/app-elements"
 
 /**
  * Get separate formatted date and time starting from a requested datetime string and an optional timezone.
@@ -8,7 +8,7 @@ import { formatDate } from '@commercelayer/app-elements'
  */
 export function formatDateAndTime(
   dateTime: string,
-  timezone?: string
+  timezone?: string,
 ): {
   date: string
   time: string
@@ -16,15 +16,15 @@ export function formatDateAndTime(
   const formattedDate = formatDate({
     isoDate: dateTime,
     timezone,
-    format: 'date'
+    format: "date",
   })
   const formattedTime = formatDate({
     isoDate: dateTime,
     timezone,
-    format: 'timeWithSeconds'
+    format: "timeWithSeconds",
   })
   return {
     date: formattedDate,
-    time: formattedTime
+    time: formattedTime,
   }
 }

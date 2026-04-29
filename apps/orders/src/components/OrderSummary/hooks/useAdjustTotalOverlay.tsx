@@ -1,23 +1,23 @@
 import {
   Button,
+  type CurrencyCode,
   HookedForm,
   HookedInputCurrency,
   HookedInputSelect,
   PageLayout,
   Spacer,
-  t,
   Text,
+  t,
   useCoreSdkProvider,
   useOverlay,
   useTranslation,
-  type CurrencyCode
-} from '@commercelayer/app-elements'
-import type { CommerceLayerClient, Order } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMemo } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { getManualAdjustment, manualAdjustmentReferenceOrigin } from '../utils'
+} from "@commercelayer/app-elements"
+import type { CommerceLayerClient, Order } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMemo } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { getManualAdjustment, manualAdjustmentReferenceOrigin } from "../utils"
 
 interface Props {
   order: Order
@@ -25,10 +25,9 @@ interface Props {
   close: () => void
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useAdjustTotalOverlay(
-  order: Props['order'],
-  onChange?: Props['onChange']
+  order: Props["order"],
+  onChange?: Props["onChange"],
 ) {
   const { Overlay, open, close } = useOverlay()
 
@@ -39,7 +38,7 @@ export function useAdjustTotalOverlay(
       <Overlay>
         <Form order={order} onChange={onChange} close={close} />
       </Overlay>
-    )
+    ),
   }
 }
 
@@ -52,26 +51,26 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
   const validationSchema = useMemo(
     () =>
       z.object({
-        type: z.literal('-').or(z.literal('+')),
+        type: z.literal("-").or(z.literal("+")),
         adjustTotal: z.number({
-          required_error: t('validation.amount_invalid'),
-          invalid_type_error: t('validation.amount_invalid')
-        })
+          required_error: t("validation.amount_invalid"),
+          invalid_type_error: t("validation.amount_invalid"),
+        }),
       }),
-    []
+    [],
   )
   const formMethods = useForm({
     defaultValues: {
-      type: (manualAdjustment?.total_amount_cents ?? -1) > 0 ? '+' : '-',
+      type: (manualAdjustment?.total_amount_cents ?? -1) > 0 ? "+" : "-",
       adjustTotal:
         manualAdjustment?.total_amount_cents != null
           ? Math.abs(manualAdjustment?.total_amount_cents)
-          : null
+          : null,
     },
-    resolver: zodResolver(validationSchema)
+    resolver: zodResolver(validationSchema),
   })
   const {
-    formState: { isSubmitting }
+    formState: { isSubmitting },
   } = formMethods
 
   return (
@@ -82,7 +81,7 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
           await createManualAdjustmentLineItem({
             sdkClient,
             order,
-            amount: (values.adjustTotal ?? 0) * parseInt(`${values.type}1`)
+            amount: (values.adjustTotal ?? 0) * parseInt(`${values.type}1`),
           }).then(() => {
             onChange?.()
             close()
@@ -92,7 +91,7 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
             sdkClient,
             order,
             lineItemId: manualAdjustment.id,
-            amount: (values.adjustTotal ?? 0) * parseInt(`${values.type}1`)
+            amount: (values.adjustTotal ?? 0) * parseInt(`${values.type}1`),
           }).then(() => {
             onChange?.()
             close()
@@ -101,53 +100,53 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
       }}
     >
       <PageLayout
-        title={t('apps.orders.actions.adjust_total')}
+        title={t("apps.orders.actions.adjust_total")}
         navigationButton={{
           onClick: () => {
             close()
           },
-          label: t('common.cancel'),
-          icon: 'x'
+          label: t("common.cancel"),
+          icon: "x",
         }}
       >
-        <div style={{ display: 'flex', width: '100%', gap: '1rem' }}>
-          <div style={{ flexBasis: '6rem' }}>
+        <div style={{ display: "flex", width: "100%", gap: "1rem" }}>
+          <div style={{ flexBasis: "6rem" }}>
             <HookedInputSelect
-              name='type'
-              label='Type'
+              name="type"
+              label="Type"
               initialValues={[
                 {
-                  label: '-',
-                  value: '-'
+                  label: "-",
+                  value: "-",
                 },
                 {
-                  label: '+',
-                  value: '+'
-                }
+                  label: "+",
+                  value: "+",
+                },
               ]}
               isClearable={false}
               isSearchable={false}
             />
           </div>
-          <div style={{ flexGrow: '1' }}>
+          <div style={{ flexGrow: "1" }}>
             <HookedInputCurrency
               isClearable
-              sign='+'
+              sign="+"
               disabled={isSubmitting}
               currencyCode={currencyCode}
-              label={t('common.amount')}
-              name='adjustTotal'
+              label={t("common.amount")}
+              name="adjustTotal"
             />
           </div>
         </div>
-        <Spacer top='2'>
-          <Text variant='info'>
-            {t('apps.orders.form.select_adjustment_amount')}
+        <Spacer top="2">
+          <Text variant="info">
+            {t("apps.orders.form.select_adjustment_amount")}
           </Text>
         </Spacer>
-        <Spacer top='14'>
-          <Button type='submit' fullWidth disabled={isSubmitting}>
-            {t('common.apply')}
+        <Spacer top="14">
+          <Button type="submit" fullWidth disabled={isSubmitting}>
+            {t("common.apply")}
           </Button>
         </Spacer>
       </PageLayout>
@@ -158,7 +157,7 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
 async function createManualAdjustmentLineItem({
   sdkClient,
   amount,
-  order
+  order,
 }: {
   sdkClient: CommerceLayerClient
   amount: number
@@ -169,15 +168,15 @@ async function createManualAdjustmentLineItem({
   const adjustment = await sdkClient.adjustments.create({
     currency_code: currencyCode,
     amount_cents: amount,
-    name: t('apps.orders.form.manual_adjustment_name'),
-    reference_origin: manualAdjustmentReferenceOrigin
+    name: t("apps.orders.form.manual_adjustment_name"),
+    reference_origin: manualAdjustmentReferenceOrigin,
   })
 
   await sdkClient.line_items.create({
     order: sdkClient.orders.relationship(order.id),
     quantity: 1,
     item: adjustment,
-    reference_origin: manualAdjustmentReferenceOrigin
+    reference_origin: manualAdjustmentReferenceOrigin,
   })
 }
 
@@ -185,7 +184,7 @@ async function updateManualAdjustmentLineItem({
   sdkClient,
   amount,
   lineItemId,
-  order
+  order,
 }: {
   sdkClient: CommerceLayerClient
   amount: number
@@ -193,7 +192,7 @@ async function updateManualAdjustmentLineItem({
   order: Order
 }): Promise<void> {
   const lineItem = await sdkClient.line_items.retrieve(lineItemId, {
-    include: ['item']
+    include: ["item"],
   })
 
   if (lineItem.item != null) {
@@ -203,7 +202,7 @@ async function updateManualAdjustmentLineItem({
     } else {
       const adjustment = await sdkClient.adjustments.update({
         id: lineItem.item.id,
-        amount_cents: amount
+        amount_cents: amount,
       })
 
       await sdkClient.line_items.delete(lineItemId)
@@ -211,7 +210,7 @@ async function updateManualAdjustmentLineItem({
         order: sdkClient.orders.relationship(order.id),
         quantity: 1,
         item: adjustment,
-        reference_origin: manualAdjustmentReferenceOrigin
+        reference_origin: manualAdjustmentReferenceOrigin,
       })
     }
   }

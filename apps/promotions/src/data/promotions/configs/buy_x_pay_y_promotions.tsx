@@ -6,12 +6,12 @@ import {
   ListDetailsItem,
   Section,
   Spacer,
-  Text
-} from '@commercelayer/app-elements'
-import { z } from 'zod'
-import { PromotionSkuListSelector } from '../components/PromotionSkuListSelector'
-import type { PromotionConfig } from '../config'
-import { genericPromotionOptions } from './promotions'
+  Text,
+} from "@commercelayer/app-elements"
+import { z } from "zod"
+import { PromotionSkuListSelector } from "../components/PromotionSkuListSelector"
+import type { PromotionConfig } from "../config"
+import { genericPromotionOptions } from "./promotions"
 
 const zodRequiredNumber = z.preprocess(
   (value) => {
@@ -19,56 +19,56 @@ const zodRequiredNumber = z.preprocess(
   },
   z
     .number({
-      message: 'Please enter a valid number',
-      invalid_type_error: 'Please enter a valid number'
+      message: "Please enter a valid number",
+      invalid_type_error: "Please enter a valid number",
     })
-    .positive()
+    .positive(),
 )
 
 export default {
   buy_x_pay_y_promotions: {
-    type: 'buy_x_pay_y_promotions',
-    slug: 'buy-x-pay-y',
-    icon: 'stack',
-    titleList: 'Buy X pay Y',
-    description: 'Offer free products for any X units of the same products.',
-    titleNew: 'buy X pay Y promotion',
+    type: "buy_x_pay_y_promotions",
+    slug: "buy-x-pay-y",
+    icon: "stack",
+    titleList: "Buy X pay Y",
+    description: "Offer free products for any X units of the same products.",
+    titleNew: "buy X pay Y promotion",
     formType: genericPromotionOptions.merge(
       z.object({
         sku_list: z.string(),
         x: zodRequiredNumber,
         y: zodRequiredNumber,
-        cheapest_free: z.boolean().default(false)
-      })
+        cheapest_free: z.boolean().default(false),
+      }),
     ),
     Fields: ({ promotion }) => {
       return (
         <>
-          <Spacer top='6'>
+          <Spacer top="6">
             <PromotionSkuListSelector
               promotion={promotion}
-              label='Promoted products *'
-              hint='Apply the promotion to any SKUs within this list.'
+              label="Promoted products *"
+              hint="Apply the promotion to any SKUs within this list."
             />
           </Spacer>
-          <Spacer top='6'>
-            <Grid columns='2'>
+          <Spacer top="6">
+            <Grid columns="2">
               <HookedInput
-                type='number'
+                type="number"
                 min={1}
-                name='x'
-                label='Buy *'
+                name="x"
+                label="Buy *"
                 hint={{
-                  text: 'Minimum quantity to activate the promo.'
+                  text: "Minimum quantity to activate the promo.",
                 }}
               />
               <HookedInput
-                type='number'
+                type="number"
                 min={1}
-                name='y'
-                label='Pay *'
+                name="y"
+                label="Pay *"
                 hint={{
-                  text: 'Items that will be charged.'
+                  text: "Items that will be charged.",
                 }}
               />
             </Grid>
@@ -78,22 +78,22 @@ export default {
     },
     Options: () => (
       <>
-        <Spacer top='14'>
-          <Section title='Cheapest free'>
-            <Spacer top='4'>
-              <Text variant='info'>
+        <Spacer top="14">
+          <Section title="Cheapest free">
+            <Spacer top="4">
+              <Text variant="info">
                 By activating this mode, the promotion will be applied to
                 product with different prices and the cheapest ones will be
-                free.{' '}
-                <A href='https://docs.commercelayer.io/core/v/api-reference/buy_x_pay_y_promotions#cheapest-free'>
+                free.{" "}
+                <A href="https://docs.commercelayer.io/core/v/api-reference/buy_x_pay_y_promotions#cheapest-free">
                   Learn more
                 </A>
                 .
               </Text>
             </Spacer>
-            <Spacer top='6'>
-              <HookedInputCheckbox name='cheapest_free'>
-                <Text weight='semibold'>Cheapest free</Text>
+            <Spacer top="6">
+              <HookedInputCheckbox name="cheapest_free">
+                <Text weight="semibold">Cheapest free</Text>
               </HookedInputCheckbox>
             </Spacer>
           </Section>
@@ -114,11 +114,11 @@ export default {
           {promotion.y}
         </ListDetailsItem> */}
         {promotion.cheapest_free === true && (
-          <ListDetailsItem label='Mode' gutter='none'>
+          <ListDetailsItem label="Mode" gutter="none">
             Cheapest free
           </ListDetailsItem>
         )}
       </>
-    )
-  }
-} satisfies Pick<PromotionConfig, 'buy_x_pay_y_promotions'>
+    ),
+  },
+} satisfies Pick<PromotionConfig, "buy_x_pay_y_promotions">

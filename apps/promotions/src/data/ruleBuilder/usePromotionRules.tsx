@@ -1,40 +1,40 @@
-import type { Promotion, PromotionRule } from '#types'
 import {
   formatCentsToCurrency,
   isMockedId,
-  useCoreSdkProvider
-} from '@commercelayer/app-elements'
+  useCoreSdkProvider,
+} from "@commercelayer/app-elements"
 import type {
   CommerceLayerClient,
   CustomPromotionRule,
-  SkuListPromotionRule
-} from '@commercelayer/sdk'
-import pMemoize from 'p-memoize'
-import { useEffect, useState } from 'react'
-import type { SetNonNullable } from 'type-fest'
-import { matchers, ruleBuilderConfig, type RuleBuilderConfig } from './config'
-import { useCurrencyCodes } from './currency'
+  SkuListPromotionRule,
+} from "@commercelayer/sdk"
+import pMemoize from "p-memoize"
+import { useEffect, useState } from "react"
+import type { SetNonNullable } from "type-fest"
+import type { Promotion, PromotionRule } from "#types"
+import { matchers, type RuleBuilderConfig, ruleBuilderConfig } from "./config"
+import { useCurrencyCodes } from "./currency"
 
 const fetchRelationship = pMemoize(
   async (
-    rule: SetNonNullable<RawRuleValid, 'rel'>,
-    sdkClient: CommerceLayerClient
+    rule: SetNonNullable<RawRuleValid, "rel">,
+    sdkClient: CommerceLayerClient,
   ): Promise<Rule> => {
     const promise: Promise<Rule> = sdkClient[rule.rel]
       .list({
-        filters: { id_in: rule.rawValues.join(',') }
+        filters: { id_in: rule.rawValues.join(",") },
       })
       .then((data) => data.map((d) => d.name))
       .then((values) => ({
         ...rule,
-        values
+        values,
       }))
 
     return await promise
   },
   {
-    cacheKey: JSON.stringify
-  }
+    cacheKey: JSON.stringify,
+  },
 )
 
 /**
@@ -63,7 +63,7 @@ export function usePromotionRules(promotion: Promotion): {
     ) {
       setOutput({
         isLoading: false,
-        rules: []
+        rules: [],
       })
     } else {
       // The following code resolves the IDs inside `rawValue` when `rel` is set.
@@ -76,35 +76,35 @@ export function usePromotionRules(promotion: Promotion): {
               if (
                 rule.valid &&
                 rule.rel != null &&
-                !rule.rawValues.includes('null')
+                !rule.rawValues.includes("null")
               ) {
                 return await fetchRelationship(
-                  rule as SetNonNullable<RawRuleValid, 'rel'>,
-                  sdkClient
+                  rule as SetNonNullable<RawRuleValid, "rel">,
+                  sdkClient,
                 )
               }
 
               if (
                 currencyCodes.length === 1 &&
                 rule.valid &&
-                (rule.configKey === 'subtotal_amount_cents' ||
-                  rule.configKey === 'total_amount_cents')
+                (rule.configKey === "subtotal_amount_cents" ||
+                  rule.configKey === "total_amount_cents")
               ) {
                 return {
                   ...rule,
                   values: rule.rawValues.map((rawValue) =>
                     formatCentsToCurrency(
                       parseInt(rawValue),
-                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                      currencyCodes[0]!
-                    )
-                  )
+                      // biome-ignore lint/style/noNonNullAssertion: We are sure that `currencyCodes` has at least one element, as it's checked in the condition.
+                      currencyCodes[0]!,
+                    ),
+                  ),
                 } satisfies Rule
               }
 
               return {
                 ...rule,
-                values: rule.rawValues
+                values: rule.rawValues,
               } satisfies Rule
             }) ?? []
           )
@@ -113,7 +113,7 @@ export function usePromotionRules(promotion: Promotion): {
       void Promise.all(resolvedValues).then((data) => {
         setOutput({
           isLoading: false,
-          rules: data
+          rules: data,
         })
       })
     }
@@ -141,11 +141,11 @@ type RawRuleValid = RawRuleBasic & {
   /** Rule builder configuration */
   config: RuleBuilderConfig[keyof RuleBuilderConfig]
   /** Related resource. (e.g. when `markets`, the `rawValue` contains market IDs) */
-  rel: RuleBuilderConfig[keyof RuleBuilderConfig]['rel']
+  rel: RuleBuilderConfig[keyof RuleBuilderConfig]["rel"]
   /** Filter matcher. It represents the condition to be met by the query. */
-  matcherLabel: (typeof matchers)[keyof typeof matchers]['label'] | ''
+  matcherLabel: (typeof matchers)[keyof typeof matchers]["label"] | ""
   /** Type from the associated promotion rule */
-  type: CustomPromotionRule['type'] | SkuListPromotionRule['type']
+  type: CustomPromotionRule["type"] | SkuListPromotionRule["type"]
   /** The associated `PromotionRule`. */
   promotionRule: CustomPromotionRule | SkuListPromotionRule
 
@@ -164,22 +164,22 @@ export type Rule = { values: string[] } & RawRule
 
 function toRawRules(promotionRule: PromotionRule): RawRule[] | null {
   switch (promotionRule.type) {
-    case 'order_amount_promotion_rules': {
+    case "order_amount_promotion_rules": {
       return [
         {
           valid: false,
-          key: 'order_amount_promotion_rules',
-          label: 'Order amount is',
-          rawValues: [promotionRule.formatted_order_amount?.toString() ?? ''],
-          suffixLabel: `${promotionRule.use_subtotal === true ? "(order's subtotal)" : ''}`
-        }
+          key: "order_amount_promotion_rules",
+          label: "Order amount is",
+          rawValues: [promotionRule.formatted_order_amount?.toString() ?? ""],
+          suffixLabel: `${promotionRule.use_subtotal === true ? "(order's subtotal)" : ""}`,
+        },
       ]
     }
 
-    case 'sku_list_promotion_rules': {
-      const configKey = 'skuListPromotionRule'
+    case "sku_list_promotion_rules": {
+      const configKey = "skuListPromotionRule"
       const config = ruleBuilderConfig[configKey]
-      const predicate = 'SKU list'
+      const predicate = "SKU list"
 
       return [
         {
@@ -192,41 +192,41 @@ function toRawRules(promotionRule: PromotionRule): RawRule[] | null {
           configKey,
           config,
           rel: config.rel,
-          matcherLabel: 'is',
-          rawValues: String(promotionRule.sku_list?.id).toString().split(','),
+          matcherLabel: "is",
+          rawValues: String(promotionRule.sku_list?.id).toString().split(","),
           suffixLabel:
             promotionRule.all_skus === true
               ? `(all SKUs)`
               : promotionRule.min_quantity != null
-                ? `(${promotionRule.min_quantity} SKU${promotionRule.min_quantity > 1 ? 's' : ''})`
-                : `(any SKUs)`
-        }
+                ? `(${promotionRule.min_quantity} SKU${promotionRule.min_quantity > 1 ? "s" : ""})`
+                : `(any SKUs)`,
+        },
       ]
     }
 
-    case 'custom_promotion_rules':
+    case "custom_promotion_rules":
       return Object.entries(promotionRule.filters ?? {}).map(
         ([predicate, value]) => {
           const regexp = new RegExp(
             `(?<matcher>${Object.keys(matchers)
               .map((matcher) => `_${matcher}`)
-              .join('|')})`
+              .join("|")})`,
           )
 
           const matcher = predicate
             .match(regexp)
-            ?.groups?.matcher?.replace('_', '') as
+            ?.groups?.matcher?.replace("_", "") as
             | keyof typeof matchers
             | undefined
 
           const configKey = predicate.replace(
             regexp,
-            ''
+            "",
           ) as keyof RuleBuilderConfig
 
           const config: RuleBuilderConfig[keyof RuleBuilderConfig] =
             ruleBuilderConfig[configKey]
-          const matcherLabel = matcher != null ? matchers[matcher].label : ''
+          const matcherLabel = matcher != null ? matchers[matcher].label : ""
 
           return {
             valid: true,
@@ -239,9 +239,9 @@ function toRawRules(promotionRule: PromotionRule): RawRule[] | null {
             config,
             rel: config?.rel ?? null,
             matcherLabel,
-            rawValues: String(value).toString().split(',')
+            rawValues: String(value).toString().split(","),
           } satisfies RawRule
-        }
+        },
       )
 
     default:

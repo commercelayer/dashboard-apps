@@ -1,22 +1,22 @@
-import type { GetParams } from '@commercelayer/app-elements'
+import type { GetParams } from "@commercelayer/app-elements"
 import {
   Button,
   EmptyState,
   PageLayout,
   SkeletonTemplate,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Suspense, lazy } from 'react'
-import type { SetRequired } from 'type-fest'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { lazy, Suspense } from "react"
+import type { SetRequired } from "type-fest"
 import type {
   RouteComponentProps,
-  RouteProps as WouterRouteProps
-} from 'wouter'
-import { Switch, Route as WouterRoute, useLocation } from 'wouter'
+  RouteProps as WouterRouteProps,
+} from "wouter"
+import { Switch, useLocation, Route as WouterRoute } from "wouter"
 
 export function Routes<T extends Record<string, { path: string }>>({
   routes,
-  list
+  list,
 }: {
   routes: T
   list: {
@@ -33,7 +33,7 @@ export function Routes<T extends Record<string, { path: string }>>({
 
         if (route?.path == null) {
           throw new Error(
-            'Missing configuration when defining <Routes routes=".." list=".." />'
+            'Missing configuration when defining <Routes routes=".." list=".." />',
           )
         }
 
@@ -55,14 +55,14 @@ export function Routes<T extends Record<string, { path: string }>>({
 export type PageProps<
   Route extends {
     makePath: (...arg: any[]) => string
-  }
+  },
 > = RouteComponentProps<GetParams<Route>> & { overlay?: boolean }
 
 function Route({
   path,
   component: Component,
   ...rest
-}: SetRequired<WouterRouteProps<any>, 'component'> & {
+}: SetRequired<WouterRouteProps<any>, "component"> & {
   overlay?: boolean
 }): React.ReactNode {
   return (
@@ -79,21 +79,21 @@ function Route({
 }
 
 function LoadingPage({
-  overlay = false
+  overlay = false,
 }: {
   overlay?: boolean
 }): React.JSX.Element {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
 
   return (
-    <div style={overlay ? { backgroundColor: '#F5F5F5' } : undefined}>
+    <div style={overlay ? { backgroundColor: "#F5F5F5" } : undefined}>
       <SkeletonTemplate isLoading>
         <PageLayout
           title={<SkeletonTemplate isLoading>Promotions</SkeletonTemplate>}
           mode={mode}
-          gap='only-top'
+          gap="only-top"
         >
           <div />
         </PageLayout>
@@ -105,15 +105,15 @@ function LoadingPage({
 export function GenericPageNotFound(): React.JSX.Element {
   const [, setLocation] = useLocation()
   return (
-    <PageLayout title=''>
+    <PageLayout title="">
       <EmptyState
-        title='Page Not found'
-        description='We could not find the page you are looking for.'
+        title="Page Not found"
+        description="We could not find the page you are looking for."
         action={
           <Button
-            size='regular'
+            size="regular"
             onClick={() => {
-              setLocation('/')
+              setLocation("/")
             }}
           >
             Go home

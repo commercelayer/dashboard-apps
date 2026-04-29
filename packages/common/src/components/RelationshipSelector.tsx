@@ -1,31 +1,31 @@
 import {
   HookedInputSelect,
+  type InputSelectProps,
+  type InputSelectValue,
   useCoreApi,
   useCoreSdkProvider,
-  type InputSelectProps,
-  type InputSelectValue
-} from '@commercelayer/app-elements'
-import {
-  type CommerceLayerClient,
-  type ListableResourceType,
-  type ListResponse,
-  type QueryFilter
-} from '@commercelayer/sdk'
-import isEmpty from 'lodash-es/isEmpty'
-import { type FC } from 'react'
+} from "@commercelayer/app-elements"
+import type {
+  CommerceLayerClient,
+  ListableResourceType,
+  ListResponse,
+  QueryFilter,
+} from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
+import type { FC } from "react"
 
 type ListResource<TResource extends ListableResourceType> = Awaited<
-  ReturnType<CommerceLayerClient[TResource]['list']>
+  ReturnType<CommerceLayerClient[TResource]["list"]>
 >
 type Resource<TResource extends ListableResourceType> =
   ListResource<TResource>[number]
 
 function makeSelectInitialValuesWithDefault<
-  R extends Resource<ListableResourceType>
+  R extends Resource<ListableResourceType>,
 >({
   resourceList,
   defaultResource,
-  emptyValueLabel
+  emptyValueLabel,
 }: {
   resourceList?: ListResponse<R>
   defaultResource?: R
@@ -35,17 +35,17 @@ function makeSelectInitialValuesWithDefault<
     defaultResource != null
       ? {
           label:
-            'name' in defaultResource && defaultResource.name != null
+            "name" in defaultResource && defaultResource.name != null
               ? defaultResource.name
               : defaultResource.id,
-          value: defaultResource.id
+          value: defaultResource.id,
         }
       : undefined,
     ...(resourceList ?? []).map((item) => ({
-      label: 'name' in item && item.name != null ? item.name : item.id,
+      label: "name" in item && item.name != null ? item.name : item.id,
       value: item.id,
-      meta: item
-    }))
+      meta: item,
+    })),
   ].filter((v) => !isEmpty(v)) as InputSelectValue[]
 
   const sortedOptions = options.sort((a, b) => a.label.localeCompare(b.label))
@@ -55,17 +55,15 @@ function makeSelectInitialValuesWithDefault<
       ? [
           {
             label: emptyValueLabel,
-            value: ''
-          }
+            value: "",
+          },
         ]
       : ([] as InputSelectValue[])
   ).concat(sortedOptions)
 }
 
-interface RelationshipSelectorProps extends Pick<
-  InputSelectProps,
-  'label' | 'hint' | 'isClearable'
-> {
+interface RelationshipSelectorProps
+  extends Pick<InputSelectProps, "label" | "hint" | "isClearable"> {
   /** The field name to use in the form state */
   fieldName: string
   /** The resource type to fetch */
@@ -89,43 +87,43 @@ export const RelationshipSelector: FC<RelationshipSelectorProps> = ({
   hint,
   isClearable,
   emptyValueLabel,
-  filters
+  filters,
 }) => {
   const { sdkClient } = useCoreSdkProvider()
 
   const { data, isLoading: isLoadingInitialValues } = useCoreApi(
     resourceType,
-    'list',
+    "list",
     [
       {
-        fields: ['name'],
+        fields: ["name"],
         filters:
           defaultResourceId == null
             ? filters
             : {
                 ...filters,
-                id_not_eq: defaultResourceId
+                id_not_eq: defaultResourceId,
               },
         pageSize: 25,
         sort: {
-          name: 'asc'
-        }
-      }
-    ]
+          name: "asc",
+        },
+      },
+    ],
   )
 
   const { data: defaultResource, isLoading: isLoadingDefaultResource } =
     useCoreApi(
       resourceType,
-      'retrieve',
+      "retrieve",
       isEmpty(defaultResourceId) || defaultResourceId == null
         ? null
         : [
             defaultResourceId,
             {
-              fields: ['name']
-            }
-          ]
+              fields: ["name"],
+            },
+          ],
     )
 
   const hasMorePages =
@@ -136,7 +134,7 @@ export const RelationshipSelector: FC<RelationshipSelectorProps> = ({
   >({
     resourceList: data,
     defaultResource,
-    emptyValueLabel
+    emptyValueLabel,
   })
 
   return (
@@ -150,7 +148,7 @@ export const RelationshipSelector: FC<RelationshipSelectorProps> = ({
       isClearable={emptyValueLabel == null ? isClearable : false}
       menuFooterText={
         hasMorePages
-          ? 'Showing 25 results. Type to search for more options.'
+          ? "Showing 25 results. Type to search for more options."
           : undefined
       }
       loadAsyncValues={
@@ -160,15 +158,15 @@ export const RelationshipSelector: FC<RelationshipSelectorProps> = ({
                 .list({
                   pageSize: 25,
                   filters: {
-                    name_cont: hint
-                  }
+                    name_cont: hint,
+                  },
                 })
                 .then((res) => {
                   return res.map((item) => ({
                     label:
-                      'name' in item && item.name != null ? item.name : item.id,
+                      "name" in item && item.name != null ? item.name : item.id,
                     value: item.id,
-                    meta: item
+                    meta: item,
                   }))
                 })
             }

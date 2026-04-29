@@ -1,11 +1,11 @@
-import type { WebhookFormContextState, WebhookFormContextValue } from 'App'
+import type { WebhookFormContextState, WebhookFormContextValue } from "App"
 
 export const initialState: WebhookFormContextState = {
   isLoading: true,
-  isNotFound: false
+  isNotFound: false,
 }
 
 export const initialValues: WebhookFormContextValue = {
   state: initialState,
-  refetch: async () => undefined
+  refetch: async () => undefined,
 }

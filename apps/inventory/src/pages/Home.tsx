@@ -1,6 +1,3 @@
-import { ListEmptyStateStockLocations } from '#components/ListEmptyStateStockLocations'
-import { ListItemStockLocation } from '#components/ListItemStockLocation'
-import { appRoutes } from '#data/routes'
 import {
   EmptyState,
   HomePageLayout,
@@ -12,10 +9,13 @@ import {
   StatusIcon,
   Text,
   useResourceList,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useState } from 'react'
-import { Link } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useState } from "react"
+import { Link } from "wouter"
+import { ListEmptyStateStockLocations } from "#components/ListEmptyStateStockLocations"
+import { ListItemStockLocation } from "#components/ListItemStockLocation"
+import { appRoutes } from "#data/routes"
 
 export function Home(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -23,19 +23,19 @@ export function Home(): React.JSX.Element {
   const [searchValue, setSearchValue] = useState<string>()
 
   const { meta, isLoading, isFirstLoading, ResourceList } = useResourceList({
-    type: 'stock_locations',
+    type: "stock_locations",
     query: {
       filters: {
-        ...(searchValue != null ? { name_cont: searchValue } : {})
+        ...(searchValue != null ? { name_cont: searchValue } : {}),
       },
-      sort: ['-updated_at']
-    }
+      sort: ["-updated_at"],
+    },
   })
 
-  if (!canUser('read', 'stock_locations')) {
+  if (!canUser("read", "stock_locations")) {
     return (
-      <HomePageLayout title='Inventory'>
-        <EmptyState title='You are not authorized' />
+      <HomePageLayout title="Inventory">
+        <EmptyState title="You are not authorized" />
       </HomePageLayout>
     )
   }
@@ -45,32 +45,32 @@ export function Home(): React.JSX.Element {
   const showSearchBar = stockLocationCount > 0 || searchValue != null
 
   return (
-    <HomePageLayout title='Inventory'>
+    <HomePageLayout title="Inventory">
       {showSearchBar && (
-        <Spacer top='6'>
+        <Spacer top="6">
           <SearchBar
             initialValue={searchValue}
             onSearch={setSearchValue}
-            placeholder='Search stock locations...'
+            placeholder="Search stock locations..."
             onClear={() => {
-              setSearchValue('')
+              setSearchValue("")
             }}
           />
         </Spacer>
       )}
-      <Spacer top={showSearchBar ? '14' : '6'}>
+      <Spacer top={showSearchBar ? "14" : "6"}>
         {noStockLocations ? (
           <ListEmptyStateStockLocations
-            scope={searchValue != null ? 'userFiltered' : 'history'}
+            scope={searchValue != null ? "userFiltered" : "history"}
           />
         ) : (
           <SkeletonTemplate isLoading={isLoading || isFirstLoading}>
-            <Section title='Browse' titleSize='small'>
+            <Section title="Browse" titleSize="small">
               {(searchValue == null || searchValue?.length === 0) && (
                 <Link href={appRoutes.list.makePath()} asChild>
                   <ListItem>
-                    <Text weight='semibold'>All inventory</Text>
-                    <StatusIcon name='caretRight' />
+                    <Text weight="semibold">All inventory</Text>
+                    <StatusIcon name="caretRight" />
                   </ListItem>
                 </Link>
               )}

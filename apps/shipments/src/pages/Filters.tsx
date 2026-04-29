@@ -1,30 +1,30 @@
-import { makeFiltersInstructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
 import {
   PageLayout,
   useResourceFilters,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
-import { useSearch } from 'wouter/use-browser-location'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import { useLocation } from "wouter"
+import { useSearch } from "wouter/use-browser-location"
+import { makeFiltersInstructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
 
 function Filters(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
   const queryString = useSearch()
   const params = new URLSearchParams(queryString)
-  const viewTitle = params.get('viewTitle') ?? undefined
+  const viewTitle = params.get("viewTitle") ?? undefined
   const isInViewPreset = viewTitle != null
 
   const { FiltersForm, adapters } = useResourceFilters({
     instructions: makeFiltersInstructions({
-      hideFilterStatus: isInViewPreset
-    })
+      hideFilterStatus: isInViewPreset,
+    }),
   })
 
   return (
     <PageLayout
-      title={t('common.filters')}
+      title={t("common.filters")}
       overlay
       navigationButton={{
         onClick: () => {
@@ -32,13 +32,13 @@ function Filters(): React.JSX.Element {
             appRoutes.list.makePath(
               {},
               adapters.adaptUrlQueryToUrlQuery({
-                queryString: location.search
-              })
-            )
+                queryString: location.search,
+              }),
+            ),
           )
         },
-        label: t('common.cancel'),
-        icon: 'x'
+        label: t("common.cancel"),
+        icon: "x",
       }}
     >
       <FiltersForm

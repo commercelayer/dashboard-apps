@@ -1,23 +1,23 @@
-import { useAddItemOverlay } from '#hooks/useAddItemOverlay'
-import { usePriceListDetails } from '#hooks/usePriceListDetails'
 import {
   Button,
   HookedForm,
   HookedInputCurrency,
   HookedInputSelect,
   HookedValidationApiError,
+  type InputCurrencyProps,
   Section,
   Spacer,
   Text,
-  type InputCurrencyProps
-} from '@commercelayer/app-elements'
-import type { Price, Sku } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
-import { useForm, type UseFormSetError } from 'react-hook-form'
-import { z } from 'zod'
-import { ListItemSku } from './ListItemSku'
-import { PriceListSelector } from './PriceListSelector'
+} from "@commercelayer/app-elements"
+import type { Price, Sku } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect, useState } from "react"
+import { type UseFormSetError, useForm } from "react-hook-form"
+import { z } from "zod"
+import { useAddItemOverlay } from "#hooks/useAddItemOverlay"
+import { usePriceListDetails } from "#hooks/usePriceListDetails"
+import { ListItemSku } from "./ListItemSku"
+import { PriceListSelector } from "./PriceListSelector"
 
 const priceFormSchema = z.object({
   id: z.string().optional(),
@@ -25,13 +25,13 @@ const priceFormSchema = z.object({
   price_list: z.string().min(1),
   currency_code: z.string().min(1),
   price: z.number({
-    required_error: 'Required',
-    invalid_type_error: 'Expected number'
+    required_error: "Required",
+    invalid_type_error: "Expected number",
   }),
   original_price: z.number({
-    required_error: 'Required',
-    invalid_type_error: 'Expected number'
-  })
+    required_error: "Required",
+    invalid_type_error: "Expected number",
+  }),
 })
 
 export type PriceFormValues = z.infer<typeof priceFormSchema>
@@ -42,7 +42,7 @@ interface Props {
   isSubmitting: boolean
   onSubmit: (
     formValues: PriceFormValues,
-    setError: UseFormSetError<PriceFormValues>
+    setError: UseFormSetError<PriceFormValues>,
   ) => void
   apiError?: any
 }
@@ -52,11 +52,11 @@ export function PriceForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting
+  isSubmitting,
 }: Props): React.JSX.Element {
   const priceFormMethods = useForm<PriceFormValues>({
     defaultValues,
-    resolver: zodResolver(priceFormSchema)
+    resolver: zodResolver(priceFormSchema),
   })
 
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
@@ -64,13 +64,13 @@ export function PriceForm({
 
   const [selectedItemResource, setSelectedItemResource] = useState<Sku>()
   const sku = resource?.sku != null ? resource?.sku : selectedItemResource
-  const priceFormWatchedItem = priceFormMethods.watch('item')
+  const priceFormWatchedItem = priceFormMethods.watch("item")
 
-  const priceFormWatchedPriceList = priceFormMethods.watch('price_list')
-  const { priceList } = usePriceListDetails(priceFormWatchedPriceList ?? '')
+  const priceFormWatchedPriceList = priceFormMethods.watch("price_list")
+  const { priceList } = usePriceListDetails(priceFormWatchedPriceList ?? "")
   useEffect(() => {
     if (priceList != null) {
-      priceFormMethods.setValue('currency_code', priceList.currency_code)
+      priceFormMethods.setValue("currency_code", priceList.currency_code)
     }
   }, [priceList])
 
@@ -84,39 +84,40 @@ export function PriceForm({
       >
         <Section>
           {defaultValues?.price_list == null && (
-            <Spacer top='12' bottom='4'>
+            <Spacer top="12" bottom="4">
               <PriceListSelector />
             </Spacer>
           )}
           <Spacer
-            top={defaultValues?.price_list != null ? '12' : '6'}
-            bottom='4'
+            top={defaultValues?.price_list != null ? "12" : "6"}
+            bottom="4"
           >
-            <Text weight='semibold' size='small'>
+            <Text weight="semibold" size="small">
               SKU
             </Text>
-            <Spacer top='2'>
+            <Spacer top="2">
               {priceFormWatchedItem == null ? (
-                <div
+                <button
+                  type="button"
                   onClick={() => {
-                    showAddItemOverlay({ type: 'skus' })
+                    showAddItemOverlay({ type: "skus" })
                   }}
                 >
                   <HookedInputSelect
-                    name='item'
+                    name="item"
                     initialValues={[]}
-                    placeholder='Select an SKU'
+                    placeholder="Select an SKU"
                     onSelect={() => {}}
                   />
-                </div>
+                </button>
               ) : (
                 <ListItemSku
                   resource={sku}
                   disabled={defaultValues?.id != null}
-                  variant='boxed'
+                  variant="boxed"
                   onSelect={() => {
                     if (defaultValues?.id == null) {
-                      showAddItemOverlay({ type: 'skus', excludedId: sku?.id })
+                      showAddItemOverlay({ type: "skus", excludedId: sku?.id })
                     }
                   }}
                 />
@@ -124,41 +125,41 @@ export function PriceForm({
               <AddItemOverlay
                 onConfirm={(resource) => {
                   setSelectedItemResource(resource)
-                  priceFormMethods.setValue('item', resource.id)
+                  priceFormMethods.setValue("item", resource.id)
                 }}
               />
             </Spacer>
           </Spacer>
           {priceList != null && (
             <>
-              <Spacer top='6' bottom='4'>
+              <Spacer top="6" bottom="4">
                 <HookedInputCurrency
-                  name='price'
-                  label='Price'
+                  name="price"
+                  label="Price"
                   currencyCode={
                     (priceList?.currency_code ??
-                      'USD') as InputCurrencyProps['currencyCode']
+                      "USD") as InputCurrencyProps["currencyCode"]
                   }
                 />
               </Spacer>
-              <Spacer top='6' bottom='4'>
+              <Spacer top="6" bottom="4">
                 <HookedInputCurrency
-                  name='original_price'
-                  label='Original price'
+                  name="original_price"
+                  label="Original price"
                   currencyCode={
                     (priceList?.currency_code ??
-                      'USD') as InputCurrencyProps['currencyCode']
+                      "USD") as InputCurrencyProps["currencyCode"]
                   }
                 />
               </Spacer>
             </>
           )}
         </Section>
-        <Spacer top='14'>
-          <Button type='submit' disabled={isSubmitting} fullWidth>
-            {defaultValues?.id == null ? 'Create' : 'Update'}
+        <Spacer top="14">
+          <Button type="submit" disabled={isSubmitting} fullWidth>
+            {defaultValues?.id == null ? "Create" : "Update"}
           </Button>
-          <Spacer top='2'>
+          <Spacer top="2">
             <HookedValidationApiError apiError={apiError} />
           </Spacer>
         </Spacer>

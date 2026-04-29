@@ -1,4 +1,4 @@
-export * from './resources/imports'
+export * from "./resources/imports"
 
 export const repeat = <R>(n: number, resource: () => R): R[] => {
   return Array(n)

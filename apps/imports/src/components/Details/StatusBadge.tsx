@@ -1,5 +1,5 @@
-import { Badge, type BadgeProps } from '@commercelayer/app-elements'
-import { type Import } from '@commercelayer/sdk'
+import { Badge, type BadgeProps } from "@commercelayer/app-elements"
+import type { Import } from "@commercelayer/sdk"
 
 interface Props {
   job: Import
@@ -22,48 +22,48 @@ export function StatusBadge({ job }: Props): React.JSX.Element {
 
 function getUiStatusVariant(
   apiStatus?: string,
-  errorsCount?: number
+  errorsCount?: number,
 ): {
-  variant: BadgeProps['variant']
+  variant: BadgeProps["variant"]
   label: string
 } {
-  if (apiStatus === 'in_progress') {
+  if (apiStatus === "in_progress") {
     return {
-      variant: 'primary',
-      label: 'in progress'
+      variant: "primary",
+      label: "in progress",
     }
   }
 
-  if (apiStatus === 'interrupted') {
+  if (apiStatus === "interrupted") {
     return {
-      variant: 'danger',
-      label: 'interrupted'
+      variant: "danger",
+      label: "interrupted",
     }
   }
 
-  if (apiStatus === 'completed' && errorsCount != null) {
+  if (apiStatus === "completed" && errorsCount != null) {
     return {
-      variant: 'warning',
-      label: 'completed with errors'
+      variant: "warning",
+      label: "completed with errors",
     }
   }
 
-  if (apiStatus === 'completed') {
+  if (apiStatus === "completed") {
     return {
-      variant: 'success',
-      label: 'completed'
+      variant: "success",
+      label: "completed",
     }
   }
 
-  if (apiStatus === 'pending') {
+  if (apiStatus === "pending") {
     return {
-      variant: 'secondary',
-      label: 'pending'
+      variant: "secondary",
+      label: "pending",
     }
   }
 
   return {
-    variant: 'secondary',
-    label: apiStatus ?? 'N/A'
+    variant: "secondary",
+    label: apiStatus ?? "N/A",
   }
 }

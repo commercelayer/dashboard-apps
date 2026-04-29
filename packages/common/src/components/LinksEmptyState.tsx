@@ -1,16 +1,16 @@
 import {
   Button,
   EmptyState,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { Sku, SkuList } from '@commercelayer/sdk'
-import { Link } from 'wouter'
-import { linksRoutes } from '../data/routes'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { Sku, SkuList } from "@commercelayer/sdk"
+import { Link } from "wouter"
+import { linksRoutes } from "../data/routes"
 
 interface Props {
-  scope: 'no-sales-channels' | 'no-public-markets' | 'no-links'
-  resourceId: Sku['id'] | SkuList['id']
-  resourceType: 'skus' | 'sku_lists'
+  scope: "no-sales-channels" | "no-public-markets" | "no-links"
+  resourceId: Sku["id"] | SkuList["id"]
+  resourceType: "skus" | "sku_lists"
 }
 
 /**
@@ -38,23 +38,23 @@ interface Props {
 export function LinksEmptyState({
   scope,
   resourceId,
-  resourceType: _resourceType
+  resourceType: _resourceType,
 }: Props): React.JSX.Element {
   const { canUser, role, settings } = useTokenProvider()
 
-  if (scope === 'no-sales-channels') {
+  if (scope === "no-sales-channels") {
     return (
       <EmptyState
-        title='Sales channels required'
-        description='To create shareable links for this resource, your organization needs at least one sales channel configured.'
+        title="Sales channels required"
+        description="To create shareable links for this resource, your organization needs at least one sales channel configured."
         action={
-          role?.kind === 'admin' && (
+          role?.kind === "admin" && (
             <a
               href={`${settings.dashboardUrl}/api-credentials/new`}
-              target='_blank'
-              rel='noreferrer'
+              target="_blank"
+              rel="noreferrer"
             >
-              <Button variant='primary'>Configure sales channels</Button>
+              <Button variant="primary">Configure sales channels</Button>
             </a>
           )
         }
@@ -62,19 +62,19 @@ export function LinksEmptyState({
     )
   }
 
-  if (scope === 'no-public-markets') {
+  if (scope === "no-public-markets") {
     return (
       <EmptyState
-        title='Public market required'
-        description='To create shareable links for this resource, your organization needs at least one public market configured.'
+        title="Public market required"
+        description="To create shareable links for this resource, your organization needs at least one public market configured."
         action={
-          role?.kind === 'admin' && (
+          role?.kind === "admin" && (
             <a
               href={`${settings.dashboardUrl}/settings/markets/new`}
-              target='_blank'
-              rel='noreferrer'
+              target="_blank"
+              rel="noreferrer"
             >
-              <Button variant='primary'>Configure public markets</Button>
+              <Button variant="primary">Configure public markets</Button>
             </a>
           )
         }
@@ -83,23 +83,23 @@ export function LinksEmptyState({
   }
 
   // scope === 'no-links'
-  if (!canUser('create', 'links')) {
+  if (!canUser("create", "links")) {
     return (
       <EmptyState
-        title='No links yet'
-        description='This resource has no shareable links.'
+        title="No links yet"
+        description="This resource has no shareable links."
       />
     )
   }
 
   return (
     <EmptyState
-      title='No links yet'
-      description='Create your first shareable link for this resource.'
+      title="No links yet"
+      description="Create your first shareable link for this resource."
       action={
-        canUser('create', 'links') && (
+        canUser("create", "links") && (
           <Link href={linksRoutes.linksNew.makePath({ resourceId })}>
-            <Button variant='primary'>New link</Button>
+            <Button variant="primary">New link</Button>
           </Link>
         )
       }

@@ -1,10 +1,3 @@
-import { ImportDate } from '#components/Details/ImportDate'
-import { ImportDetails } from '#components/Details/ImportDetails'
-import { ImportedResourceType } from '#components/Details/ImportedResourceType'
-import { ImportReport } from '#components/Details/ImportReport'
-import { ImportDetailsProvider } from '#components/Details/Provider'
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
@@ -14,39 +7,46 @@ import {
   ResourceMetadata,
   SkeletonTemplate,
   Spacer,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { Link, useLocation, useRoute } from "wouter"
+import { ImportDate } from "#components/Details/ImportDate"
+import { ImportDetails } from "#components/Details/ImportDetails"
+import { ImportedResourceType } from "#components/Details/ImportedResourceType"
+import { ImportReport } from "#components/Details/ImportReport"
+import { ImportDetailsProvider } from "#components/Details/Provider"
+import { ErrorNotFound } from "#components/ErrorNotFound"
+import { appRoutes } from "#data/routes"
 
 const DetailsPage = (): React.JSX.Element | null => {
   const {
     canUser,
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const [_, setLocation] = useLocation()
   const [_match, params] = useRoute<{ importId?: string }>(
-    appRoutes.details.path
+    appRoutes.details.path,
   )
   const importId = params == null ? null : params.importId
 
-  if (importId == null || !canUser('read', 'imports')) {
+  if (importId == null || !canUser("read", "imports")) {
     return (
       <PageLayout
-        title='Imports'
+        title="Imports"
         navigationButton={{
-          label: 'Back',
-          icon: 'arrowLeft',
+          label: "Back",
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(appRoutes.list.makePath())
-          }
+          },
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.list.makePath()}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -64,24 +64,24 @@ const DetailsPage = (): React.JSX.Element | null => {
             <PageLayout
               title={<ImportedResourceType />}
               mode={mode}
-              description={<ImportDate atType='created_at' includeTime />}
+              description={<ImportDate atType="created_at" includeTime />}
               navigationButton={{
-                label: 'Imports',
-                icon: 'arrowLeft',
+                label: "Imports",
+                icon: "arrowLeft",
                 onClick: () => {
                   setLocation(appRoutes.list.makePath())
-                }
+                },
               }}
             >
-              <Spacer bottom='14'>
+              <Spacer bottom="14">
                 <ImportReport />
               </Spacer>
 
-              <Spacer bottom='14'>
+              <Spacer bottom="14">
                 <ImportDetails />
               </Spacer>
 
-              <Spacer bottom='14'>
+              <Spacer bottom="14">
                 <ResourceDetails
                   resource={data}
                   onUpdated={async () => {
@@ -91,12 +91,12 @@ const DetailsPage = (): React.JSX.Element | null => {
               </Spacer>
 
               {!isMockedId(data.id) && (
-                <Spacer top='14'>
+                <Spacer top="14">
                   <ResourceMetadata
-                    resourceType='imports'
+                    resourceType="imports"
                     resourceId={data.id}
                     overlay={{
-                      title: 'Back'
+                      title: "Back",
                     }}
                   />
                 </Spacer>

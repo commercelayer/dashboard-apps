@@ -1,18 +1,18 @@
-import { makeSkuListItem } from '#mocks'
 import {
   Avatar,
   Icon,
   InputSpinner,
   ListItem,
+  type ResourceListItemTemplateProps,
   Text,
   useCoreSdkProvider,
   useTokenProvider,
   withSkeletonTemplate,
-  type ResourceListItemTemplateProps
-} from '@commercelayer/app-elements'
-import debounce from 'lodash-es/debounce'
+} from "@commercelayer/app-elements"
+import debounce from "lodash-es/debounce"
+import { makeSkuListItem } from "#mocks"
 
-interface Props extends ResourceListItemTemplateProps<'sku_list_items'> {
+interface Props extends ResourceListItemTemplateProps<"sku_list_items"> {
   hasBundles: boolean
 }
 
@@ -21,7 +21,7 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
     resource = makeSkuListItem(),
     remove,
     hasBundles,
-    isLoading
+    isLoading,
   }): React.JSX.Element | null => {
     const { sdkClient } = useCoreSdkProvider()
     const { canUser } = useTokenProvider()
@@ -30,25 +30,25 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
       <ListItem
         icon={
           <Avatar
-            alt={resource.sku?.name ?? ''}
+            alt={resource.sku?.name ?? ""}
             src={resource.sku?.image_url as `https://${string}`}
           />
         }
-        alignItems='center'
-        className='bg-white'
-        padding='y'
+        alignItems="center"
+        className="bg-white"
+        padding="y"
       >
         <div>
-          <Text tag='div' weight='medium' variant='info' size='x-small'>
+          <Text tag="div" weight="medium" variant="info" size="x-small">
             {resource.sku?.code}
           </Text>
-          <Text tag='div' weight='semibold'>
+          <Text tag="div" weight="semibold">
             {resource.sku?.name}
           </Text>
         </div>
         {isLoading !== true && (
-          <div className='flex items-center gap-4'>
-            {canUser('update', 'sku_list_items') && !hasBundles ? (
+          <div className="flex items-center gap-4">
+            {canUser("update", "sku_list_items") && !hasBundles ? (
               <InputSpinner
                 defaultValue={resource?.quantity ?? 1}
                 min={1}
@@ -56,20 +56,20 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
                   if (resource != null) {
                     void sdkClient.sku_list_items.update({
                       id: resource.id,
-                      quantity: newQuantity
+                      quantity: newQuantity,
                     })
                   }
                 }, 500)}
               />
             ) : (
-              <Text weight='semibold' wrap='nowrap'>
+              <Text weight="semibold" wrap="nowrap">
                 x {resource.quantity}
               </Text>
             )}
-            {canUser('destroy', 'sku_list_items') && !hasBundles && (
+            {canUser("destroy", "sku_list_items") && !hasBundles && (
               <button
-                className='rounded'
-                type='button'
+                className="rounded"
+                type="button"
                 onClick={() => {
                   if (resource != null) {
                     void sdkClient.sku_list_items
@@ -80,12 +80,12 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
                   }
                 }}
               >
-                <Icon name='trash' size='18' className='text-primary' />
+                <Icon name="trash" size="18" className="text-primary" />
               </button>
             )}
           </div>
         )}
       </ListItem>
     )
-  }
+  },
 )

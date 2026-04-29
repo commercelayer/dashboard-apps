@@ -6,35 +6,35 @@ export type AppRoute = keyof typeof appRoutes
 // and `makePath` method to be used to generate the path used in navigation and links
 export const appRoutes = {
   home: {
-    path: '/',
-    makePath: () => `/`
+    path: "/",
+    makePath: () => `/`,
   },
   list: {
-    path: '/list',
+    path: "/list",
     makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/list/?${filters}` : `/list`
+      hasFilterQuery(filters) ? `/list/?${filters}` : `/list`,
   },
   filters: {
-    path: '/filters',
+    path: "/filters",
     makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`
+      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`,
   },
   new: {
     path: `/new`,
-    makePath: () => `/new`
+    makePath: () => `/new`,
   },
   details: {
-    path: '/list/:customerId',
-    makePath: (customerId: string) => `/list/${customerId}`
+    path: "/list/:customerId",
+    makePath: (customerId: string) => `/list/${customerId}`,
   },
   edit: {
-    path: '/list/:customerId/edit',
-    makePath: (customerId: string) => `/list/${customerId}/edit`
+    path: "/list/:customerId/edit",
+    makePath: (customerId: string) => `/list/${customerId}/edit`,
   },
   orders: {
-    path: '/list/:customerId/orders',
-    makePath: (customerId: string) => `/list/${customerId}/orders`
-  }
+    path: "/list/:customerId/orders",
+    makePath: (customerId: string) => `/list/${customerId}/orders`,
+  },
 }
 
 function hasFilterQuery(filters?: string): filters is string {

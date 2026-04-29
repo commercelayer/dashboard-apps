@@ -1,20 +1,19 @@
-import { isAttachmentValidNote, referenceOrigins } from '#data/attachments'
 import {
   isMockedId,
   Section,
   Spacer,
   Text,
   Timeline,
+  type TimelineEvent,
   useCoreApi,
   useCoreSdkProvider,
   useTokenProvider,
   withSkeletonTemplate,
-  type TimelineEvent
-} from '@commercelayer/app-elements'
-
-import type { Attachment, StockTransfer } from '@commercelayer/sdk'
-import isEmpty from 'lodash-es/isEmpty'
-import { useCallback, useEffect, useReducer, useState } from 'react'
+} from "@commercelayer/app-elements"
+import type { Attachment, StockTransfer } from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
+import { useCallback, useEffect, useReducer, useState } from "react"
+import { isAttachmentValidNote, referenceOrigins } from "#data/attachments"
 
 export const StockTransferTimeline = withSkeletonTemplate<{
   stockTransferId?: string
@@ -28,16 +27,16 @@ export const StockTransferTimeline = withSkeletonTemplate<{
     stockTransferId,
     attachmentOption,
     refresh,
-    isLoading: isExternalLoading
+    isLoading: isExternalLoading,
   }) => {
-    const fakeStockTransferId = 'fake-NMWYhbGorj'
+    const fakeStockTransferId = "fake-NMWYhbGorj"
     const {
       data: stockTransfer,
       isLoading,
-      mutate: mutateStockTransfer
+      mutate: mutateStockTransfer,
     } = useCoreApi(
-      'stock_transfers',
-      'retrieve',
+      "stock_transfers",
+      "retrieve",
       stockTransferId == null ||
         isEmpty(stockTransferId) ||
         isMockedId(stockTransferId)
@@ -45,19 +44,19 @@ export const StockTransferTimeline = withSkeletonTemplate<{
         : [
             stockTransferId,
             {
-              include: ['attachments']
-            }
+              include: ["attachments"],
+            },
           ],
       {
         fallbackData: {
-          type: 'stock_transfers',
+          type: "stock_transfers",
           id: fakeStockTransferId,
-          status: 'upcoming',
+          status: "upcoming",
           quantity: 1,
-          created_at: '2020-05-16T11:06:02.074Z',
-          updated_at: '2020-05-16T14:18:35.572Z'
-        } satisfies StockTransfer
-      }
+          created_at: "2020-05-16T11:06:02.074Z",
+          updated_at: "2020-05-16T14:18:35.572Z",
+        } satisfies StockTransfer,
+      },
     )
 
     const [events] = useTimelineReducer(stockTransfer)
@@ -70,12 +69,12 @@ export const StockTransferTimeline = withSkeletonTemplate<{
           void mutateStockTransfer()
         }
       },
-      [refresh]
+      [refresh],
     )
 
     return (
-      <Section title='Timeline'>
-        <Spacer top='8'>
+      <Section title="Timeline">
+        <Spacer top="8">
           <Timeline
             isLoading={
               isExternalLoading === true ||
@@ -85,22 +84,22 @@ export const StockTransferTimeline = withSkeletonTemplate<{
             events={events}
             timezone={user?.timezone}
             onKeyDown={(event) => {
-              if (event.code === 'Enter' && event.currentTarget.value !== '') {
+              if (event.code === "Enter" && event.currentTarget.value !== "") {
                 if (
                   attachmentOption?.referenceOrigin == null ||
                   ![referenceOrigins.appStockTransfersNote].includes(
-                    attachmentOption.referenceOrigin
+                    attachmentOption.referenceOrigin,
                   )
                 ) {
                   console.warn(
-                    `Cannot create the attachment: "referenceOrigin" is not valid.`
+                    `Cannot create the attachment: "referenceOrigin" is not valid.`,
                   )
                   return
                 }
 
                 if (user?.displayName == null || isEmpty(user.displayName)) {
                   console.warn(
-                    `Cannot create the attachment: token does not contain a valid "user".`
+                    `Cannot create the attachment: token does not contain a valid "user".`,
                   )
                   return
                 }
@@ -111,50 +110,49 @@ export const StockTransferTimeline = withSkeletonTemplate<{
                     name: user.displayName,
                     description: event.currentTarget.value,
                     attachable: {
-                      type: 'stock_transfers',
-                      id: stockTransfer.id
-                    }
+                      type: "stock_transfers",
+                      id: stockTransfer.id,
+                    },
                   })
                   .then((attachment) => {
                     void mutateStockTransfer()
                     attachmentOption?.onMessage?.(attachment)
                   })
 
-                event.currentTarget.value = ''
+                event.currentTarget.value = ""
               }
             }}
           />
         </Spacer>
       </Section>
     )
-  }
+  },
 )
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const useTimelineReducer = (stockTransfer: StockTransfer) => {
   const [stockTransferId, setStockTransferId] = useState<string>(
-    stockTransfer.id
+    stockTransfer.id,
   )
 
   type State = TimelineEvent[]
   type Action =
     | [
         {
-          type: 'add'
+          type: "add"
           payload: TimelineEvent
-        }
+        },
       ]
     | [
         {
-          type: 'clear'
-        }
+          type: "clear"
+        },
       ]
 
   const [events, dispatch] = useReducer<State, Action>((state, action) => {
     switch (action.type) {
-      case 'clear':
+      case "clear":
         return []
-      case 'add':
+      case "add":
         if (state.find((s) => s.date === action.payload.date) != null) {
           return state
         }
@@ -168,68 +166,68 @@ const useTimelineReducer = (stockTransfer: StockTransfer) => {
   useEffect(
     function clearState() {
       if (stockTransfer.id !== stockTransferId) {
-        dispatch({ type: 'clear' })
+        dispatch({ type: "clear" })
         setStockTransferId(stockTransfer.id)
       }
     },
-    [stockTransfer.id]
+    [stockTransfer.id],
   )
 
   useEffect(
     function addCreated() {
       if (stockTransfer.created_at != null) {
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: stockTransfer.created_at,
             message: (
               <>
-                Stock transfer was <Text weight='bold'>created</Text>
+                Stock transfer was <Text weight="bold">created</Text>
               </>
-            )
-          }
+            ),
+          },
         })
       }
     },
-    [stockTransfer.created_at]
+    [stockTransfer.created_at],
   )
 
   useEffect(
     function addShipped() {
       if (stockTransfer.completed_at != null) {
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: stockTransfer.completed_at,
             message: (
               <>
-                Stock transfer was <Text weight='bold'>completed</Text>
+                Stock transfer was <Text weight="bold">completed</Text>
               </>
-            )
-          }
+            ),
+          },
         })
       }
     },
-    [stockTransfer.completed_at]
+    [stockTransfer.completed_at],
   )
 
   useEffect(
     function addReceived() {
       if (stockTransfer.cancelled_at != null) {
         dispatch({
-          type: 'add',
+          type: "add",
           payload: {
             date: stockTransfer.cancelled_at,
             message: (
               <>
-                Stock transfer was <Text weight='bold'>cancelled</Text>
+                Stock transfer was <Text weight="bold">cancelled</Text>
               </>
-            )
-          }
+            ),
+          },
         })
       }
     },
-    [stockTransfer.cancelled_at]
+    [stockTransfer.cancelled_at],
   )
 
   const dispatchAttachments = useCallback(
@@ -238,33 +236,33 @@ const useTimelineReducer = (stockTransfer: StockTransfer) => {
         attachments.forEach((attachment) => {
           if (
             isAttachmentValidNote(attachment, [
-              referenceOrigins.appStockTransfersNote
+              referenceOrigins.appStockTransfersNote,
             ])
           ) {
             dispatch({
-              type: 'add',
+              type: "add",
               payload: {
                 date: attachment.updated_at,
                 author: attachment.name,
                 message: <span>left a note</span>,
-                note: attachment.description
-              }
+                note: attachment.description,
+              },
             })
           }
         })
       }
     },
-    []
+    [],
   )
 
   useEffect(
     function addAttachments() {
       dispatchAttachments(stockTransfer.attachments)
     },
-    [stockTransfer.attachments]
+    [stockTransfer.attachments],
   )
 
   return [events, dispatch] as const
 }
 
-StockTransferTimeline.displayName = 'StockTransferTimeline'
+StockTransferTimeline.displayName = "StockTransferTimeline"

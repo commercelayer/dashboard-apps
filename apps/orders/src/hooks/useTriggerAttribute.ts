@@ -1,12 +1,12 @@
-import type { UITriggerAttributes } from '#components/OrderSummary/orderDictionary'
-import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
+  type TriggerAttribute,
   useCoreSdkProvider,
-  type TriggerAttribute
-} from '@commercelayer/app-elements'
-import { CommerceLayerStatic, type OrderUpdate } from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
-import { orderIncludeAttribute } from './useOrderDetails'
+} from "@commercelayer/app-elements"
+import { CommerceLayerStatic, type OrderUpdate } from "@commercelayer/sdk"
+import { useCallback, useState } from "react"
+import type { UITriggerAttributes } from "#components/OrderSummary/orderDictionary"
+import { useOrderDetails } from "#hooks/useOrderDetails"
+import { orderIncludeAttribute } from "./useOrderDetails"
 
 interface TriggerAttributeHook {
   isLoading: boolean
@@ -14,7 +14,7 @@ interface TriggerAttributeHook {
   dispatch: (
     triggerAttribute:
       | TriggerAttribute<OrderUpdate>
-      | Exclude<UITriggerAttributes, TriggerAttribute<OrderUpdate>>
+      | Exclude<UITriggerAttributes, TriggerAttribute<OrderUpdate>>,
   ) => Promise<void>
 }
 
@@ -25,20 +25,20 @@ export function useTriggerAttribute(orderId: string): TriggerAttributeHook {
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<string[] | undefined>()
 
-  const dispatch = useCallback<TriggerAttributeHook['dispatch']>(
+  const dispatch = useCallback<TriggerAttributeHook["dispatch"]>(
     async (triggerAttribute) => {
       setIsLoading(true)
       setErrors(undefined)
       try {
-        if (triggerAttribute === '__cancel_transactions') {
+        if (triggerAttribute === "__cancel_transactions") {
           for (const transaction of order.transactions ?? []) {
             if (
-              transaction.type === 'authorizations' ||
-              transaction.type === 'captures'
+              transaction.type === "authorizations" ||
+              transaction.type === "captures"
             ) {
               await sdkClient[transaction.type].update({
                 id: transaction.id,
-                _cancel: true
+                _cancel: true,
               })
 
               void mutateOrder()
@@ -51,30 +51,30 @@ export function useTriggerAttribute(orderId: string): TriggerAttributeHook {
         const updatedOrder = await sdkClient.orders.update(
           {
             id: orderId,
-            [triggerAttribute]: true
+            [triggerAttribute]: true,
           },
           {
-            include: orderIncludeAttribute
-          }
+            include: orderIncludeAttribute,
+          },
         )
         void mutateOrder(updatedOrder)
       } catch (error) {
         setErrors(
           CommerceLayerStatic.isApiError(error)
             ? error.errors.map(({ detail }) => detail)
-            : ['Could not cancel this order']
+            : ["Could not cancel this order"],
         )
         await Promise.reject(error)
       } finally {
         setIsLoading(false)
       }
     },
-    [orderId]
+    [orderId],
   )
 
   return {
     isLoading,
     errors,
-    dispatch
+    dispatch,
   }
 }

@@ -1,25 +1,24 @@
-import { useImportDetailsContext } from '#components/Details/Provider'
 import {
   formatDateWithPredicate,
   useTokenProvider,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import { useImportDetailsContext } from "#components/Details/Provider"
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {
   atType:
-    | 'completed_at'
-    | 'created_at'
-    | 'interrupted_at'
-    | 'started_at'
-    | 'updated_at'
+    | "completed_at"
+    | "created_at"
+    | "interrupted_at"
+    | "started_at"
+    | "updated_at"
   includeTime?: boolean
 }
 
 export const ImportDate = withSkeletonTemplate<Props>(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ atType, includeTime, isLoading, delayMs, ...props }) => {
     const {
-      state: { data }
+      state: { data },
     } = useImportDetailsContext()
 
     const { user } = useTokenProvider()
@@ -33,12 +32,12 @@ export const ImportDate = withSkeletonTemplate<Props>(
       <span {...props}>
         {dateAt != null &&
           formatDateWithPredicate({
-            predicate: 'Imported',
+            predicate: "Imported",
             isoDate: dateAt,
-            format: includeTime === true ? 'full' : 'date',
-            timezone: user?.timezone
+            format: includeTime === true ? "full" : "date",
+            timezone: user?.timezone,
           })}
       </span>
     )
-  }
+  },
 )

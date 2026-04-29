@@ -1,5 +1,3 @@
-import { ListItemWebhook } from '#components/ListItemWebhook'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
@@ -8,57 +6,59 @@ import {
   PageLayout,
   Spacer,
   useResourceList,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { Link, useLocation } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Link, useLocation } from "wouter"
+import { ListItemWebhook } from "#components/ListItemWebhook"
+import { appRoutes } from "#data/routes"
 
 export const WebhooksList: FC = () => {
   const { settings, canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { ResourceList } = useResourceList({
-    type: 'webhooks',
+    type: "webhooks",
     query: {
-      include: ['last_event_callbacks'],
+      include: ["last_event_callbacks"],
       sort: {
-        created_at: 'desc'
-      }
-    }
+        created_at: "desc",
+      },
+    },
   })
 
-  if (!canUser('read', 'webhooks')) {
+  if (!canUser("read", "webhooks")) {
     return (
       <PageLayout
-        title='Webhooks'
+        title="Webhooks"
         mode={settings.mode}
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
           label: `Webhooks`,
-          icon: 'arrowLeft'
+          icon: "arrowLeft",
         }}
       >
-        <EmptyState title='You are not authorized' />
+        <EmptyState title="You are not authorized" />
       </PageLayout>
     )
   }
 
   return (
-    <HomePageLayout title='Webhooks'>
-      <Spacer top='14'>
+    <HomePageLayout title="Webhooks">
+      <Spacer top="14">
         <ResourceList
-          title='All webhooks'
+          title="All webhooks"
           actionButton={
-            canUser('create', 'webhooks') ? (
+            canUser("create", "webhooks") ? (
               <Link href={appRoutes.newWebhook.makePath({})}>
                 <Button
-                  variant='secondary'
-                  size='mini'
-                  alignItems='center'
-                  aria-label='Add webhook'
+                  variant="secondary"
+                  size="mini"
+                  alignItems="center"
+                  aria-label="Add webhook"
                 >
-                  <Icon name='plus' size={16} />
+                  <Icon name="plus" size={16} />
                   New
                 </Button>
               </Link>
@@ -67,12 +67,12 @@ export const WebhooksList: FC = () => {
           ItemTemplate={ListItemWebhook}
           emptyState={
             <EmptyState
-              title='No webhook yet!'
-              description='Create your first webhook'
+              title="No webhook yet!"
+              description="Create your first webhook"
               action={
-                canUser('create', 'webhooks') ? (
+                canUser("create", "webhooks") ? (
                   <Link href={appRoutes.newWebhook.makePath({})}>
-                    <Button variant='primary' type='button'>
+                    <Button variant="primary" type="button">
                       New webhook
                     </Button>
                   </Link>

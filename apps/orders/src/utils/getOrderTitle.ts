@@ -1,5 +1,5 @@
-import { t } from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
+import { t } from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
 
 /**
  * Generates a standard order title suitable for the whole application (eg. `US Market #1235216`).
@@ -9,12 +9,12 @@ import type { Order } from '@commercelayer/sdk'
 
 export const getOrderTitle = (
   order: Order,
-  options: { hideMarket: boolean } | undefined
+  options: { hideMarket: boolean } | undefined,
 ): string => {
   const orderTitleMarket =
     order.market?.name != null
       ? `${order.market.name}`
-      : t('resources.orders.name')
+      : t("resources.orders.name")
 
   return options?.hideMarket === true
     ? `#${order.number}`

@@ -1,19 +1,19 @@
 import {
-  StockItemForm,
-  type StockItemFormValues
-} from '#components/StockItemForm'
-import { appRoutes } from '#data/routes'
-import {
   Button,
   EmptyState,
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { type StockItemCreate } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { StockItemCreate } from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import {
+  StockItemForm,
+  type StockItemFormValues,
+} from "#components/StockItemForm"
+import { appRoutes } from "#data/routes"
 
 export function StockItemNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -24,36 +24,36 @@ export function StockItemNew(): React.JSX.Element {
   const [isSaving, setIsSaving] = useState(false)
 
   const [, params] = useRoute<{ stockLocationId: string }>(
-    appRoutes.newStockItem.path
+    appRoutes.newStockItem.path,
   )
 
-  const stockLocationId = params?.stockLocationId ?? ''
+  const stockLocationId = params?.stockLocationId ?? ""
 
   const goBackUrl =
-    stockLocationId !== ''
+    stockLocationId !== ""
       ? appRoutes.stockLocation.makePath(stockLocationId)
       : appRoutes.list.makePath()
 
-  if (!canUser('create', 'stock_items')) {
+  if (!canUser("create", "stock_items")) {
     return (
       <PageLayout
-        title='New stock item'
+        title="New stock item"
         navigationButton={{
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: 'Cancel',
-          icon: 'x'
+          label: "Cancel",
+          icon: "x",
         }}
         scrollToTop
         overlay
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -68,20 +68,20 @@ export function StockItemNew(): React.JSX.Element {
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
-      gap='only-top'
+      gap="only-top"
       scrollToTop
       overlay
     >
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <StockItemForm
           defaultValues={{
-            ...(stockLocationId !== ''
+            ...(stockLocationId !== ""
               ? { stockLocation: stockLocationId }
               : {}),
-            quantity: 1
+            quantity: 1,
           }}
           apiError={apiError}
           isSubmitting={isSaving}
@@ -89,7 +89,7 @@ export function StockItemNew(): React.JSX.Element {
             setIsSaving(true)
             const stockItem = adaptFormValuesToStockItem(
               formValues,
-              stockLocationId
+              stockLocationId,
             )
             void sdkClient.stock_items
               .create(stockItem)
@@ -109,20 +109,20 @@ export function StockItemNew(): React.JSX.Element {
 
 function adaptFormValuesToStockItem(
   formValues: StockItemFormValues,
-  stockLocationId: string
+  stockLocationId: string,
 ): StockItemCreate {
   return {
     sku: {
       id: formValues.item ?? null,
-      type: 'skus'
+      type: "skus",
     },
     quantity: formValues.quantity,
     stock_location: {
       id:
-        stockLocationId !== ''
+        stockLocationId !== ""
           ? stockLocationId
-          : (formValues.stockLocation ?? ''),
-      type: 'stock_locations'
-    }
+          : (formValues.stockLocation ?? ""),
+      type: "stock_locations",
+    },
   }
 }

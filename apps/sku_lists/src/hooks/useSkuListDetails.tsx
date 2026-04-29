@@ -1,7 +1,7 @@
-import { makeSkuList } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { SkuList } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { SkuList } from "@commercelayer/sdk"
+import type { KeyedMutator } from "swr"
+import { makeSkuList } from "#mocks"
 
 export function useSkuListDetails(id: string): {
   skuList: SkuList
@@ -13,14 +13,14 @@ export function useSkuListDetails(id: string): {
     data: skuList,
     isLoading,
     error,
-    mutate: mutateSkuList
+    mutate: mutateSkuList,
   } = useCoreApi(
-    'sku_lists',
-    'retrieve',
-    isMockedId(id) ? null : [id, { include: ['bundles'] }],
+    "sku_lists",
+    "retrieve",
+    isMockedId(id) ? null : [id, { include: ["bundles"] }],
     {
-      fallbackData: makeSkuList()
-    }
+      fallbackData: makeSkuList(),
+    },
   )
 
   return { skuList, error, isLoading, mutateSkuList }

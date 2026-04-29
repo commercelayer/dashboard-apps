@@ -1,16 +1,16 @@
-import { appRoutes } from '#data/routes'
 import {
   A,
   Button,
   EmptyState,
   Text,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { useLocation, useRoute } from "wouter"
+import { appRoutes } from "#data/routes"
 
 interface Props {
-  scope?: 'history' | 'userFiltered'
+  scope?: "history" | "userFiltered"
 }
 
 export const ListEmptyStatePrice: FC<Props> = ({ scope }) => {
@@ -18,18 +18,18 @@ export const ListEmptyStatePrice: FC<Props> = ({ scope }) => {
   const [, setLocation] = useLocation()
 
   const [, params] = useRoute<{ priceListId: string }>(
-    appRoutes.pricesList.path
+    appRoutes.pricesList.path,
   )
-  const priceListId = params?.priceListId ?? ''
+  const priceListId = params?.priceListId ?? ""
 
-  if (scope === 'history' && canUser('create', 'prices')) {
+  if (scope === "history" && canUser("create", "prices")) {
     return (
       <EmptyState
-        title='No Prices yet!'
-        description='Create your first Price'
+        title="No Prices yet!"
+        description="Create your first Price"
         action={
           <Button
-            variant='primary'
+            variant="primary"
             onClick={() => {
               setLocation(appRoutes.priceNew.makePath({ priceListId }))
             }}
@@ -41,20 +41,20 @@ export const ListEmptyStatePrice: FC<Props> = ({ scope }) => {
     )
   }
 
-  if (scope === 'userFiltered') {
-    return <Text weight='semibold'>No results found. Try a new search</Text>
+  if (scope === "userFiltered") {
+    return <Text weight="semibold">No results found. Try a new search</Text>
   }
 
   return (
     <EmptyState
-      title='No Prices yet!'
+      title="No Prices yet!"
       description={
         <div>
           <p>Add a price with the API, or use the CLI.</p>
           <A
-            target='_blank'
-            href='https://docs.commercelayer.io/core/v/api-reference/prices'
-            rel='noreferrer'
+            target="_blank"
+            href="https://docs.commercelayer.io/core/v/api-reference/prices"
+            rel="noreferrer"
           >
             View API reference.
           </A>

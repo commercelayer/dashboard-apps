@@ -1,19 +1,19 @@
-import { makeExport } from '#mocks'
-import {
-  type ExportDetailsContextState,
-  type ExportDetailsContextValue
-} from './types'
+import { makeExport } from "#mocks"
+import type {
+  ExportDetailsContextState,
+  ExportDetailsContextValue,
+} from "./types"
 
 export const initialState: ExportDetailsContextState = {
   isLoading: true,
   isPolling: false,
   isDeleting: false,
   isNotFound: false,
-  data: makeExport()
+  data: makeExport(),
 }
 
 export const initialValues: ExportDetailsContextValue = {
   state: initialState,
   refetch: async () => undefined,
-  deleteExport: async () => false
+  deleteExport: async () => false,
 }

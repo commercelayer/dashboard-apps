@@ -3,10 +3,10 @@ import {
   InputFeedback,
   PageHeading,
   Spacer,
-  useOverlay
-} from '@commercelayer/app-elements'
-import { CommerceLayerStatic } from '@commercelayer/sdk'
-import { useState, type FC } from 'react'
+  useOverlay,
+} from "@commercelayer/app-elements"
+import { CommerceLayerStatic } from "@commercelayer/sdk"
+import { type FC, useState } from "react"
 
 interface OverlayHook {
   openDeleteOverlay: () => void
@@ -24,7 +24,7 @@ export function useDeleteOverlay(): OverlayHook {
     closeDeleteOverlay: close,
     DeleteOverlay: ({ title, onDelete }) => {
       return (
-        <OverlayElement backgroundColor='light'>
+        <OverlayElement backgroundColor="light">
           <PageHeading
             title={title}
             navigationButton={{
@@ -32,14 +32,14 @@ export function useDeleteOverlay(): OverlayHook {
                 close()
                 setError(null)
               },
-              label: 'Close',
-              icon: 'x'
+              label: "Close",
+              icon: "x",
             }}
-            description='This action cannot be undone, proceed with caution.'
+            description="This action cannot be undone, proceed with caution."
           />
 
           <Button
-            variant='danger'
+            variant="danger"
             fullWidth
             disabled={isDeleting}
             onClick={() => {
@@ -58,7 +58,7 @@ export function useDeleteOverlay(): OverlayHook {
           <APIError error={error} />
         </OverlayElement>
       )
-    }
+    },
   }
 }
 
@@ -70,9 +70,13 @@ const APIError: FC<{ error: unknown }> = ({ error }) => {
   }
 
   return (
-    <Spacer top='2'>
-      {apiError.map((error, idx) => (
-        <InputFeedback variant='danger' key={idx} message={error.detail} />
+    <Spacer top="2">
+      {apiError.map((error) => (
+        <InputFeedback
+          variant="danger"
+          key={error.detail}
+          message={error.detail}
+        />
       ))}
     </Spacer>
   )
@@ -88,11 +92,11 @@ function parseApiError(err: any): ApiError[] {
   } else {
     return [
       {
-        code: 'Internal server error',
-        detail: err.message ?? 'Something went wrong, please retry later',
-        status: '500',
-        title: err.message ?? 'Internal server error'
-      }
+        code: "Internal server error",
+        detail: err.message ?? "Something went wrong, please retry later",
+        status: "500",
+        title: err.message ?? "Internal server error",
+      },
     ]
   }
 }

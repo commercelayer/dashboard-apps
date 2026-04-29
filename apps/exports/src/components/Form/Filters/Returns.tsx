@@ -1,18 +1,14 @@
 import {
+  flatSelectValues,
   InputDateRange,
   InputSelect,
   Spacer,
-  flatSelectValues,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useEffect, useState } from 'react'
-import {
-  type FilterValue,
-  type ReturnsField,
-  type ReturnsFilters
-} from '../types'
-import { parseFilterToDate } from './utils'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useEffect, useState } from "react"
+import type { FilterValue, ReturnsField, ReturnsFilters } from "../types"
+import { parseFilterToDate } from "./utils"
 
 interface Props {
   onChange: (filters: ReturnsFilters) => void
@@ -30,7 +26,7 @@ export function Returns({ onChange }: Props): React.JSX.Element | null {
   const updateFilters = (key: ReturnsField, value: FilterValue): void => {
     setFilter((state) => ({
       ...state,
-      [key]: value
+      [key]: value,
     }))
   }
 
@@ -38,60 +34,60 @@ export function Returns({ onChange }: Props): React.JSX.Element | null {
     function dispatchFilterChange() {
       onChange(filters)
     },
-    [filters]
+    [filters],
   )
 
   return (
     <div>
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <InputSelect
-          label='Status'
+          label="Status"
           initialValues={[
             {
-              value: 'requested',
-              label: 'Requested'
+              value: "requested",
+              label: "Requested",
             },
             {
-              value: 'approved',
-              label: 'Approved'
+              value: "approved",
+              label: "Approved",
             },
             {
-              value: 'cancelled',
-              label: 'Cancelled'
+              value: "cancelled",
+              label: "Cancelled",
             },
             {
-              value: 'shipped',
-              label: 'Shipped'
+              value: "shipped",
+              label: "Shipped",
             },
             {
-              value: 'rejected',
-              label: 'Rejected'
+              value: "rejected",
+              label: "Rejected",
             },
             {
-              value: 'received',
-              label: 'Received'
+              value: "received",
+              label: "Received",
             },
             {
-              value: 'refunded',
-              label: 'Refunded'
-            }
+              value: "refunded",
+              label: "Refunded",
+            },
           ]}
           isMulti
           onSelect={(values) => {
-            updateFilters('status_in', flatSelectValues(values))
+            updateFilters("status_in", flatSelectValues(values))
           }}
         />
       </Spacer>
 
       <InputDateRange
-        label='Date range'
+        label="Date range"
         value={[
           parseFilterToDate(filters.created_at_gteq),
-          parseFilterToDate(filters.created_at_lteq)
+          parseFilterToDate(filters.created_at_lteq),
         ]}
         onChange={([from, to]) => {
-          updateFilters('created_at_gteq', from?.toISOString() ?? null)
-          updateFilters('created_at_lteq', to?.toISOString() ?? null)
+          updateFilters("created_at_gteq", from?.toISOString() ?? null)
+          updateFilters("created_at_lteq", to?.toISOString() ?? null)
         }}
         autoPlaceholder
         isClearable

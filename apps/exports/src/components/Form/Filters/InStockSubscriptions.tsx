@@ -1,29 +1,36 @@
 import {
+  flatSelectValues,
   InputDateRange,
   InputSelect,
   Spacer,
-  flatSelectValues,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useEffect, useState } from 'react'
-import {
-  type FilterValue,
-  type InStockSubscriptionsField,
-  type InStockSubscriptionsFilters
-} from '../types'
-import { parseFilterToDate } from './utils'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useEffect, useState } from "react"
+import type {
+  FilterValue,
+  InStockSubscriptionsField,
+  InStockSubscriptionsFilters,
+} from "../types"
+import { parseFilterToDate } from "./utils"
 
 interface Props {
   onChange: (filters: InStockSubscriptionsFilters) => void
 }
 
 export function InStockSubscriptions({
-  onChange
+  onChange,
 }: Props): React.JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
   const { user } = useTokenProvider()
   const [filters, setFilter] = useState<InStockSubscriptionsFilters>({})
+
+  useEffect(
+    function dispatchFilterChange() {
+      onChange(filters)
+    },
+    [filters],
+  )
 
   if (sdkClient == null) {
     return null
@@ -31,56 +38,49 @@ export function InStockSubscriptions({
 
   const updateFilters = (
     key: InStockSubscriptionsField,
-    value: FilterValue
+    value: FilterValue,
   ): void => {
     setFilter((state) => ({
       ...state,
-      [key]: value
+      [key]: value,
     }))
   }
 
-  useEffect(
-    function dispatchFilterChange() {
-      onChange(filters)
-    },
-    [filters]
-  )
-
   return (
     <div>
-      <Spacer bottom='6'>
+      <Spacer bottom="6">
         <InputSelect
-          label='Status'
+          label="Status"
           initialValues={[
             {
-              value: 'active',
-              label: 'Active'
+              value: "active",
+              label: "Active",
             },
             {
-              value: 'inactive',
-              label: 'Inactive'
+              value: "inactive",
+              label: "Inactive",
             },
             {
-              value: 'notified',
-              label: 'Notified'
-            }
+              value: "notified",
+              label: "Notified",
+            },
           ]}
           isMulti
           onSelect={(values) => {
-            updateFilters('status_in', flatSelectValues(values))
+            updateFilters("status_in", flatSelectValues(values))
           }}
         />
       </Spacer>
 
       <InputDateRange
-        label='Date range'
+        label="Date range"
         value={[
           parseFilterToDate(filters.created_at_gteq),
-          parseFilterToDate(filters.created_at_lteq)
+          parseFilterToDate(filters.created_at_lteq),
         ]}
         onChange={([from, to]) => {
-          updateFilters('created_at_gteq', from?.toISOString() ?? null)
-          updateFilters('created_at_lteq', to?.toISOString() ?? null)
+          updateFilters("created_at_gteq", from?.toISOString() ?? null)
+          updateFilters("created_at_lteq", to?.toISOString() ?? null)
         }}
         autoPlaceholder
         isClearable

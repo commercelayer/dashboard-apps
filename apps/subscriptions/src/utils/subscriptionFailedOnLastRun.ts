@@ -1,4 +1,4 @@
-import type { OrderSubscription } from '@commercelayer/sdk'
+import type { OrderSubscription } from "@commercelayer/sdk"
 
 /**
  * Determine if a given order subscription failed on last run
@@ -6,7 +6,7 @@ import type { OrderSubscription } from '@commercelayer/sdk'
  * @returns a boolean flag
  */
 export function subscriptionFailedOnLastRun(
-  orderSubscription: OrderSubscription
+  orderSubscription: OrderSubscription,
 ): boolean {
   return (
     orderSubscription.succeeded_on_last_run === false &&

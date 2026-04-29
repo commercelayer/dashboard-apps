@@ -1,8 +1,8 @@
-import { ErrorBoundary, InputJson } from '@commercelayer/app-elements'
-import { type ImportCreate } from '@commercelayer/sdk'
-import { useState } from 'react'
+import { ErrorBoundary, InputJson } from "@commercelayer/app-elements"
+import type { ImportCreate } from "@commercelayer/sdk"
+import { useState } from "react"
 
-type ImportJsonData = ImportCreate['inputs']
+type ImportJsonData = ImportCreate["inputs"]
 
 interface Props {
   onDataReady: (jsonInput: ImportJsonData) => void
@@ -11,15 +11,15 @@ interface Props {
 
 export function InputCode({
   onDataReady,
-  onDataResetRequest
+  onDataResetRequest,
 }: Props): React.JSX.Element {
   const [renderKey, setRenderKey] = useState<number | undefined>(undefined)
 
   return (
     <ErrorBoundary
-      errorDescription='We could not parse your input. Please try again.'
+      errorDescription="We could not parse your input. Please try again."
       onRetry={() => {
-        setRenderKey(new Date().getTime())
+        setRenderKey(Date.now())
       }}
       key={renderKey}
     >
@@ -37,7 +37,7 @@ export function InputCode({
 
 const placeholder = [
   {
-    code: 'ABC',
-    name: 'Foo'
-  }
+    code: "ABC",
+    name: "Foo",
+  },
 ]

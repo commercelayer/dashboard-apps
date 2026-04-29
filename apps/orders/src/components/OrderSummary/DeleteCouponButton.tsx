@@ -1,10 +1,10 @@
 import {
   RemoveButton,
   useCoreSdkProvider,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { useState } from 'react'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { useState } from "react"
 
 export const DeleteCouponButton = withSkeletonTemplate<{
   order: Order
@@ -20,7 +20,7 @@ export const DeleteCouponButton = withSkeletonTemplate<{
         void sdkClient.orders
           .update({
             id: order.id,
-            coupon_code: null
+            coupon_code: null,
           })
           .finally(() => {
             setIsDeleting(false)

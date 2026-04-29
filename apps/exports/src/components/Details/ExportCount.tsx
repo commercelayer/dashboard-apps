@@ -1,7 +1,7 @@
-import { useExportDetailsContext } from '#components/Details/Provider'
+import { useExportDetailsContext } from "#components/Details/Provider"
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {
-  type: 'records_count'
+  type: "records_count"
 }
 
 export function ExportCount({
@@ -9,7 +9,7 @@ export function ExportCount({
   ...props
 }: Props): React.JSX.Element | null {
   const {
-    state: { data }
+    state: { data },
   } = useExportDetailsContext()
 
   if (data == null) {

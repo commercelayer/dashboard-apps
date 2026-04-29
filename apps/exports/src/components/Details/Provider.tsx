@@ -1,5 +1,5 @@
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import { type Export } from '@commercelayer/sdk'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import type { Export } from "@commercelayer/sdk"
 import {
   createContext,
   type ReactNode,
@@ -7,11 +7,11 @@ import {
   useContext,
   useEffect,
   useReducer,
-  useRef
-} from 'react'
-import { initialState, initialValues } from './data'
-import { reducer } from './reducer'
-import { type ExportDetailsContextValue } from './types'
+  useRef,
+} from "react"
+import { initialState, initialValues } from "./data"
+import { reducer } from "./reducer"
+import type { ExportDetailsContextValue } from "./types"
 
 interface ExportDetailsProviderProps {
   exportId: string
@@ -26,7 +26,7 @@ export const useExportDetailsContext = (): ExportDetailsContextValue =>
 
 export function ExportDetailsProvider({
   exportId,
-  children
+  children,
 }: ExportDetailsProviderProps): React.JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { sdkClient } = useCoreSdkProvider()
@@ -34,27 +34,27 @@ export function ExportDetailsProvider({
 
   const fetchJob = useCallback(
     async ({ handleLoadingState }: { handleLoadingState: boolean }) => {
-      handleLoadingState && dispatch({ type: 'setLoading', payload: true })
+      handleLoadingState && dispatch({ type: "setLoading", payload: true })
       try {
         const exportDetails = await sdkClient.exports.retrieve(exportId)
-        dispatch({ type: 'setData', payload: exportDetails })
+        dispatch({ type: "setData", payload: exportDetails })
       } catch {
-        dispatch({ type: 'setNotFound', payload: true })
-        dispatch({ type: 'togglePolling', payload: false })
-        dispatch({ type: 'setLoading', payload: false })
+        dispatch({ type: "setNotFound", payload: true })
+        dispatch({ type: "togglePolling", payload: false })
+        dispatch({ type: "setLoading", payload: false })
       }
-      handleLoadingState && dispatch({ type: 'setLoading', payload: false })
+      handleLoadingState && dispatch({ type: "setLoading", payload: false })
     },
-    [exportId]
+    [exportId],
   )
 
   const deleteExport = useCallback(async (): Promise<boolean> => {
-    dispatch({ type: 'setDeleting', payload: true })
+    dispatch({ type: "setDeleting", payload: true })
     return await sdkClient.exports
       .delete(exportId)
       .then(() => true)
       .catch(() => {
-        dispatch({ type: 'setDeleting', payload: false })
+        dispatch({ type: "setDeleting", payload: false })
         return false
       })
   }, [exportId])
@@ -66,9 +66,9 @@ export function ExportDetailsProvider({
       }
 
       const shouldPoll = statusForPolling.includes(state.data.status)
-      dispatch({ type: 'togglePolling', payload: shouldPoll })
+      dispatch({ type: "togglePolling", payload: shouldPoll })
     },
-    [state.data]
+    [state.data],
   )
 
   useEffect(
@@ -87,7 +87,7 @@ export function ExportDetailsProvider({
         }
       }
     },
-    [state.isPolling]
+    [state.isPolling],
   )
 
   const value: ExportDetailsContextValue = {
@@ -95,14 +95,14 @@ export function ExportDetailsProvider({
     refetch: async () => {
       await fetchJob({ handleLoadingState: false })
     },
-    deleteExport
+    deleteExport,
   }
 
   return (
     <Context.Provider value={value}>
-      {typeof children === 'function' ? children(value) : children}
+      {typeof children === "function" ? children(value) : children}
     </Context.Provider>
   )
 }
 
-const statusForPolling: Array<Export['status']> = ['pending', 'in_progress']
+const statusForPolling: Array<Export["status"]> = ["pending", "in_progress"]

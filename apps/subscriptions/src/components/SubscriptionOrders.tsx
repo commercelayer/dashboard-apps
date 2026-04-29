@@ -1,5 +1,3 @@
-import { ListItemSubscriptionOrder } from '#components/ListItemSubscriptionOrder'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   Icon,
@@ -9,15 +7,17 @@ import {
   Th,
   Tr,
   useResourceList,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Order, OrderSubscription } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Order, OrderSubscription } from "@commercelayer/sdk"
+import { useLocation } from "wouter"
+import { ListItemSubscriptionOrder } from "#components/ListItemSubscriptionOrder"
+import { appRoutes } from "#data/routes"
 
-export const allowedOrderStatuses: Array<Order['status']> = [
-  'pending',
-  'placed',
-  'approved'
+export const allowedOrderStatuses: Array<Order["status"]> = [
+  "pending",
+  "placed",
+  "approved",
 ]
 
 interface Props {
@@ -27,15 +27,15 @@ interface Props {
 export const SubscriptionOrders = withSkeletonTemplate<Props>(
   ({ subscription }) => {
     const { list, meta } = useResourceList({
-      type: 'orders',
+      type: "orders",
       query: {
         filters: {
           order_subscription_id_eq: subscription.id,
-          status_in: allowedOrderStatuses
+          status_in: allowedOrderStatuses,
         },
-        sort: ['-updated_at'],
-        pageSize: 5
-      }
+        sort: ["-updated_at"],
+        pageSize: 5,
+      },
     })
 
     const showAll = meta != null ? meta.pageCount > 1 : false
@@ -45,20 +45,22 @@ export const SubscriptionOrders = withSkeletonTemplate<Props>(
     return (
       <Section
         title={`Recurring orders · ${meta?.recordCount}`}
-        border='none'
+        border="none"
         actionButton={
           showAll && (
             <Button
-              variant='secondary'
-              size='mini'
+              variant="secondary"
+              size="mini"
               onClick={() => {
                 setLocation(
-                  appRoutes.orders.makePath({ subscriptionId: subscription.id })
+                  appRoutes.orders.makePath({
+                    subscriptionId: subscription.id,
+                  }),
                 )
               }}
-              alignItems='center'
+              alignItems="center"
             >
-              <Icon name='eye' size={16} />
+              <Icon name="eye" size={16} />
               See all
             </Button>
           )
@@ -78,13 +80,13 @@ export const SubscriptionOrders = withSkeletonTemplate<Props>(
                 <Td colSpan={3}>no results</Td>
               </Tr>
             ) : (
-              list?.map((order, idx) => (
-                <ListItemSubscriptionOrder resource={order} key={idx} />
+              list?.map((order) => (
+                <ListItemSubscriptionOrder resource={order} key={order.id} />
               ))
             )
           }
         />
       </Section>
     )
-  }
+  },
 )

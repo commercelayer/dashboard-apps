@@ -1,28 +1,28 @@
-import { type Import, type ListResponse } from '@commercelayer/sdk'
-import { type ListImportContextState } from './types'
-import { listHasProgressingItems } from './utils'
+import type { Import, ListResponse } from "@commercelayer/sdk"
+import type { ListImportContextState } from "./types"
+import { listHasProgressingItems } from "./utils"
 
 type Action =
-  | { type: 'loadData'; payload: ListResponse<Import> }
-  | { type: 'changePage'; payload: number }
+  | { type: "loadData"; payload: ListResponse<Import> }
+  | { type: "changePage"; payload: number }
 
 export const reducer = (
   state: ListImportContextState,
-  action: Action
+  action: Action,
 ): ListImportContextState => {
   switch (action.type) {
-    case 'loadData':
+    case "loadData":
       return {
         ...state,
         isLoading: false,
         isPolling: listHasProgressingItems(action.payload),
-        list: action.payload
+        list: action.payload,
       }
-    case 'changePage':
+    case "changePage":
       return {
         ...state,
         isLoading: true,
-        currentPage: action.payload
+        currentPage: action.payload,
       }
     default:
       return state

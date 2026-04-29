@@ -1,9 +1,9 @@
-import { subscriptionFailedOnLastRun } from '#utils/subscriptionFailedOnLastRun'
-import type { OrderSubscription } from '@commercelayer/sdk'
+import type { OrderSubscription } from "@commercelayer/sdk"
+import { subscriptionFailedOnLastRun } from "#utils/subscriptionFailedOnLastRun"
 
 type SubscriptionAppStatus =
-  | Omit<OrderSubscription['status'], 'draft'>
-  | 'failed'
+  | Omit<OrderSubscription["status"], "draft">
+  | "failed"
   | undefined
 
 /**
@@ -12,12 +12,12 @@ type SubscriptionAppStatus =
  * @returns a status string that can be inactive or active or cancelled or failed
  */
 export function getSubscriptionStatus(
-  orderSubscription: OrderSubscription
+  orderSubscription: OrderSubscription,
 ): SubscriptionAppStatus {
   if (subscriptionFailedOnLastRun(orderSubscription)) {
-    return 'failed'
+    return "failed"
   }
-  if (orderSubscription.status !== 'draft') {
+  if (orderSubscription.status !== "draft") {
     return orderSubscription.status
   }
 }

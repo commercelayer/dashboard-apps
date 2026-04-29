@@ -1,6 +1,6 @@
-import { makePercentageDiscountPromotion } from '#mocks'
-import type { Promotion } from '#types'
-import { ResourceListItem, useAppLinking } from '@commercelayer/app-elements'
+import { ResourceListItem, useAppLinking } from "@commercelayer/app-elements"
+import { makePercentageDiscountPromotion } from "#mocks"
+import type { Promotion } from "#types"
 
 interface Props {
   resource?: Promotion
@@ -11,7 +11,7 @@ interface Props {
 export function ListItemPromotion({
   resource = makePercentageDiscountPromotion() as unknown as Promotion,
   isLoading,
-  delayMs
+  delayMs,
 }: Props): React.JSX.Element {
   const { navigateTo } = useAppLinking()
 
@@ -21,10 +21,10 @@ export function ListItemPromotion({
       resource={resource}
       isLoading={isLoading}
       delayMs={delayMs}
-      tag='a'
+      tag="a"
       {...navigateTo({
-        app: 'promotions',
-        resourceId: resource.id
+        app: "promotions",
+        resourceId: resource.id,
       })}
     />
   )

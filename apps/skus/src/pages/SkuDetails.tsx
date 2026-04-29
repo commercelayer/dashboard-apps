@@ -2,6 +2,8 @@ import {
   Button,
   EmptyState,
   Icon,
+  isMockedId,
+  type PageHeadingProps,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
@@ -14,25 +16,22 @@ import {
   useAppLinking,
   useCoreApi,
   useTokenProvider,
-  type PageHeadingProps
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
-
-import { SkuInfo } from '#components/SkuInfo'
-import { appRoutes } from '#data/routes'
-import { useSkuDeleteOverlay } from '#hooks/useSkuDeleteOverlay'
-import { useSkuDetails } from '#hooks/useSkuDetails'
-import { isMockedId } from '@commercelayer/app-elements'
-import { LinkListTable } from 'dashboard-apps-common/src/components/LinkListTable'
-import { LinksEmptyState } from 'dashboard-apps-common/src/components/LinksEmptyState'
-import { SkuDescription } from 'dashboard-apps-common/src/components/SkuDescription'
-import { type FC } from 'react'
-import { useSearch } from 'wouter/use-browser-location'
+} from "@commercelayer/app-elements"
+import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
+import { LinksEmptyState } from "dashboard-apps-common/src/components/LinksEmptyState"
+import { SkuDescription } from "dashboard-apps-common/src/components/SkuDescription"
+import type { FC } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { useSearch } from "wouter/use-browser-location"
+import { SkuInfo } from "#components/SkuInfo"
+import { appRoutes } from "#data/routes"
+import { useSkuDeleteOverlay } from "#hooks/useSkuDeleteOverlay"
+import { useSkuDetails } from "#hooks/useSkuDetails"
 
 export const SkuDetails: FC = () => {
   const {
     settings: { mode, extras },
-    canUser
+    canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
 
@@ -41,7 +40,7 @@ export const SkuDetails: FC = () => {
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ skuId: string }>(appRoutes.details.path)
 
-  const skuId = params?.skuId ?? ''
+  const skuId = params?.skuId ?? ""
 
   const { sku, isLoading, error, mutateSku } = useSkuDetails(skuId)
 
@@ -51,20 +50,20 @@ export const SkuDetails: FC = () => {
     extras?.salesChannels != null && extras?.salesChannels.length > 0
 
   const { data: publicMarkets } = useCoreApi(
-    'markets',
-    'list',
+    "markets",
+    "list",
     [
       {
-        fields: ['id'],
+        fields: ["id"],
         filters: {
           customer_group_null: true,
           private_true: false,
-          disabled_at_null: true
+          disabled_at_null: true,
         },
-        pageSize: 1
-      }
+        pageSize: 1,
+      },
     ],
-    {}
+    {},
   )
   const hasPublicMarkets =
     publicMarkets != null && publicMarkets.meta.recordCount > 0
@@ -72,21 +71,21 @@ export const SkuDetails: FC = () => {
   if (error != null) {
     return (
       <PageLayout
-        title='Skus'
+        title="Skus"
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
-          label: 'SKUs',
-          icon: 'arrowLeft'
+          label: "SKUs",
+          icon: "arrowLeft",
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.list.makePath({})}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -96,46 +95,46 @@ export const SkuDetails: FC = () => {
 
   const pageTitle = sku.name
 
-  const pageToolbar: PageHeadingProps['toolbar'] = {
+  const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
-    dropdownItems: []
+    dropdownItems: [],
   }
 
-  if (canUser('update', 'skus')) {
+  if (canUser("update", "skus")) {
     pageToolbar.buttons?.push({
-      label: 'Edit',
-      size: 'small',
-      variant: 'secondary',
+      label: "Edit",
+      size: "small",
+      variant: "secondary",
       onClick: () => {
         setLocation(appRoutes.edit.makePath({ skuId }))
-      }
+      },
     })
   }
 
-  if (canUser('destroy', 'skus')) {
+  if (canUser("destroy", "skus")) {
     pageToolbar.dropdownItems?.push([
       {
-        label: 'Delete',
+        label: "Delete",
         onClick: () => {
           show()
-        }
-      }
+        },
+      },
     ])
   }
 
-  const tabs = ['info', 'links']
+  const tabs = ["info", "links"]
   const urlParams = new URLSearchParams(queryString)
   const defaultTab =
-    urlParams.get('tab') != null
-      ? (tabs.findIndex((t) => t === urlParams.get('tab')) ?? 0)
+    urlParams.get("tab") != null
+      ? (tabs.indexOf(urlParams.get("tab") ?? "") ?? 0)
       : 0
 
   const SkuInfos = (
     <>
-      <Spacer top='10'>
+      <Spacer top="10">
         <SkuInfo sku={sku} />
       </Spacer>
-      <Spacer top='14'>
+      <Spacer top="14">
         <ResourceDetails
           resource={sku}
           onUpdated={async () => {
@@ -145,9 +144,9 @@ export const SkuDetails: FC = () => {
       </Spacer>
       {!isMockedId(sku.id) && (
         <>
-          <Spacer top='14'>
+          <Spacer top="14">
             <ResourceTags
-              resourceType='skus'
+              resourceType="skus"
               resourceId={sku.id}
               overlay={{ title: pageTitle }}
               onTagClick={(tagId) => {
@@ -155,12 +154,12 @@ export const SkuDetails: FC = () => {
               }}
             />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <ResourceMetadata
-              resourceType='skus'
+              resourceType="skus"
               resourceId={sku.id}
               overlay={{
-                title: pageTitle
+                title: pageTitle,
               }}
             />
           </Spacer>
@@ -171,47 +170,47 @@ export const SkuDetails: FC = () => {
 
   const SkuTabs = (
     <Tabs keepAlive defaultTab={defaultTab}>
-      <Tab name='Info'>{SkuInfos}</Tab>
-      <Tab name='Links'>
-        <Spacer top='10'>
+      <Tab name="Info">{SkuInfos}</Tab>
+      <Tab name="Links">
+        <Spacer top="10">
           <Section
-            title='Links'
-            border={hasSalesChannels && hasPublicMarkets ? 'none' : undefined}
+            title="Links"
+            border={hasSalesChannels && hasPublicMarkets ? "none" : undefined}
             actionButton={
-              canUser('update', 'skus') &&
+              canUser("update", "skus") &&
               hasSalesChannels &&
               hasPublicMarkets && (
                 <Button
-                  size='mini'
-                  variant='secondary'
-                  alignItems='center'
+                  size="mini"
+                  variant="secondary"
+                  alignItems="center"
                   onClick={() => {
                     setLocation(
                       appRoutes.linksNew.makePath({
-                        resourceId: skuId
-                      })
+                        resourceId: skuId,
+                      }),
                     )
                   }}
                 >
-                  <Icon name='lightning' size={16} />
+                  <Icon name="lightning" size={16} />
                   New link
                 </Button>
               )
             }
           >
             {hasSalesChannels && hasPublicMarkets ? (
-              <LinkListTable resourceId={skuId} resourceType='skus' />
+              <LinkListTable resourceId={skuId} resourceType="skus" />
             ) : (
               <LinksEmptyState
                 scope={
                   !hasSalesChannels
-                    ? 'no-sales-channels'
+                    ? "no-sales-channels"
                     : !hasPublicMarkets
-                      ? 'no-public-markets'
-                      : 'no-links'
+                      ? "no-public-markets"
+                      : "no-links"
                 }
                 resourceId={skuId}
-                resourceType='skus'
+                resourceType="skus"
               />
             )}
           </Section>
@@ -233,22 +232,22 @@ export const SkuDetails: FC = () => {
         onClick: () => {
           goBack({
             currentResourceId: skuId,
-            defaultRelativePath: appRoutes.list.makePath({})
+            defaultRelativePath: appRoutes.list.makePath({}),
           })
         },
-        label: 'SKUs',
-        icon: 'arrowLeft'
+        label: "SKUs",
+        icon: "arrowLeft",
       }}
       toolbar={pageToolbar}
       scrollToTop
-      gap='only-top'
+      gap="only-top"
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom='4'>
-          <Spacer top='14'>
+        <Spacer bottom="4">
+          <Spacer top="14">
             <SkuDescription resource={sku} />
           </Spacer>
-          <Spacer top='14'>{SkuTabs}</Spacer>
+          <Spacer top="14">{SkuTabs}</Spacer>
         </Spacer>
       </SkeletonTemplate>
       <SkuDeleteOverlay />

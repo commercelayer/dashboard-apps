@@ -1,13 +1,13 @@
+import { t } from "@commercelayer/app-elements"
+import isEmpty from "lodash-es/isEmpty"
+import { z } from "zod"
 import {
   getContentType,
   getDeliveryConfirmation,
   getIncotermsRule,
   getNonDeliveryOption,
-  getRestrictionType
-} from '#data/customsInfo'
-import { t } from '@commercelayer/app-elements'
-import isEmpty from 'lodash-es/isEmpty'
-import { z } from 'zod'
+  getRestrictionType,
+} from "#data/customsInfo"
 
 export const packingFormSchema = z
   .object({
@@ -17,19 +17,19 @@ export const packingFormSchema = z
       // allow to start with an empty value
       .refine(
         (val) => !isEmpty(val),
-        t('apps.shipments.form.required_package')
+        t("apps.shipments.form.required_package"),
       ),
     weight: z.string().min(1, {
-      message: t('apps.shipments.form.invalid_weight')
+      message: t("apps.shipments.form.invalid_weight"),
     }),
     unitOfWeight: z
-      .enum(['gr', 'lb', 'oz'])
+      .enum(["gr", "lb", "oz"])
       .optional()
       .transform((val, ctx) => {
         if (val === undefined) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: t('apps.shipments.form.invalid_unit_of_weight')
+            message: t("apps.shipments.form.invalid_unit_of_weight"),
           })
 
           return z.NEVER
@@ -40,17 +40,17 @@ export const packingFormSchema = z
       .array(
         z.object({
           value: z.string().min(1),
-          quantity: z.number()
-        })
+          quantity: z.number(),
+        }),
       )
       .superRefine((val, ctx) => {
         if (val.length === 0) {
           ctx.addIssue({
             code: z.ZodIssueCode.too_small,
             minimum: 1,
-            type: 'array',
+            type: "array",
             inclusive: true,
-            message: t('validation.select_one_item')
+            message: t("validation.select_one_item"),
           })
         }
       }),
@@ -70,15 +70,15 @@ export const packingFormSchema = z
     restriction_type: z.enum(getRestrictionType().acceptedValues).nullish(),
     restriction_comments: z.string().optional(),
     customs_signer: z.string().optional(),
-    customs_certify: z.boolean().optional()
+    customs_certify: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
     // customs info: `customs_signer` always required when enabling customs info
     if (data.customs_info_required === true && isEmpty(data.customs_signer)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['customs_signer'],
-        message: t('apps.shipments.form.required_custom_form_value')
+        path: ["customs_signer"],
+        message: t("apps.shipments.form.required_custom_form_value"),
       })
     }
 
@@ -86,30 +86,30 @@ export const packingFormSchema = z
     if (data.customs_info_required === true && data.customs_certify !== true) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['customs_certify'],
-        message: t('apps.shipments.form.required_custom_form_value')
+        path: ["customs_certify"],
+        message: t("apps.shipments.form.required_custom_form_value"),
       })
     }
 
     // customs info: `contents_explanation` required when `contents_type` is `other`
-    if (data.contents_type === 'other' && isEmpty(data.contents_explanation)) {
+    if (data.contents_type === "other" && isEmpty(data.contents_explanation)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['contents_explanation'],
-        message: t('apps.shipments.form.required_if_other_is_selected')
+        path: ["contents_explanation"],
+        message: t("apps.shipments.form.required_if_other_is_selected"),
       })
     }
 
     // customs info: `restriction_comments` required when `restriction_type` different from `none`
     if (
       !isEmpty(data.restriction_type) &&
-      data.restriction_type !== 'none' &&
+      data.restriction_type !== "none" &&
       isEmpty(data.restriction_comments)
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['restriction_comments'],
-        message: t('apps.shipments.form.required_restriction_comments')
+        path: ["restriction_comments"],
+        message: t("apps.shipments.form.required_restriction_comments"),
       })
     }
   })

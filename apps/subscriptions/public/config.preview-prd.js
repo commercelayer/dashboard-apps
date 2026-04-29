@@ -1,3 +1,3 @@
 window.clAppConfig = {
-  domain: 'commercelayer.io'
+  domain: "commercelayer.io",
 }

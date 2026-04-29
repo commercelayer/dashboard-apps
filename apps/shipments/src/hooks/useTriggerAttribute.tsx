@@ -1,16 +1,16 @@
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import type { ShipmentUpdate } from "@commercelayer/sdk"
+import { useCallback, useState } from "react"
 import {
   shipmentIncludeAttribute,
-  useShipmentDetails
-} from '#hooks/useShipmentDetails'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import { type ShipmentUpdate } from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
+  useShipmentDetails,
+} from "#hooks/useShipmentDetails"
 
 interface TriggerAttribute {
   isMutating: boolean
   errors?: string[]
   trigger: (
-    triggerAttribute: Extract<keyof ShipmentUpdate, `_${string}`>
+    triggerAttribute: Extract<keyof ShipmentUpdate, `_${string}`>,
   ) => Promise<void>
 }
 
@@ -29,23 +29,23 @@ export function useTriggerAttribute(id: string): TriggerAttribute {
         const updated = await sdkClient.shipments.update(
           {
             id,
-            [triggerAttribute]: true
+            [triggerAttribute]: true,
           },
           {
-            include: shipmentIncludeAttribute
-          }
+            include: shipmentIncludeAttribute,
+          },
         )
         void mutateShipment(updated)
       } finally {
         setIsMutating(false)
       }
     },
-    [id]
+    [id],
   )
 
   return {
     isMutating,
     errors,
-    trigger
+    trigger,
   }
 }

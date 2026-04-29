@@ -1,10 +1,10 @@
-import { useShippingCategoriesList } from '#hooks/useShippingCategoriesList'
 import {
   A,
   Avatar,
   Button,
   ButtonImageSelect,
   Grid,
+  getUnitsOfWeightForSelect,
   Hint,
   HookedForm,
   HookedInput,
@@ -17,22 +17,22 @@ import {
   Section,
   Spacer,
   Text,
-  getUnitsOfWeightForSelect,
+  type UnitOfWeight,
   useOverlay,
-  type UnitOfWeight
-} from '@commercelayer/app-elements'
-import { zodResolver } from '@hookform/resolvers/zod'
-import isEmpty from 'lodash-es/isEmpty'
-import { useForm, type UseFormSetError } from 'react-hook-form'
-import { z } from 'zod'
-import { ShippingCategorySelect } from './ShippingCategorySelect'
+} from "@commercelayer/app-elements"
+import { zodResolver } from "@hookform/resolvers/zod"
+import isEmpty from "lodash-es/isEmpty"
+import { type UseFormSetError, useForm } from "react-hook-form"
+import { z } from "zod"
+import { useShippingCategoriesList } from "#hooks/useShippingCategoriesList"
+import { ShippingCategorySelect } from "./ShippingCategorySelect"
 
 const unitsOfWeightForSelect = getUnitsOfWeightForSelect()
 
 export function isValidUnitOfWeight(value: string): value is UnitOfWeight {
   return (
     unitsOfWeightForSelect.filter(
-      (unitOfWeight) => unitOfWeight.value === value
+      (unitOfWeight) => unitOfWeight.value === value,
     ).length === 1
   )
 }
@@ -52,14 +52,14 @@ const skuFormSchema = z
     doNotShip: z.boolean().optional(),
     doNotTrack: z.boolean().optional(),
     weight: z.string().length(0).or(z.undefined()).or(z.string().min(1)),
-    unitOfWeight: z.string()
+    unitOfWeight: z.string(),
   })
   .superRefine((values, ctx) => {
     if (values.doNotShip !== true && isEmpty(values.shippingCategory)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ['shippingCategory'],
-        message: 'Please select a shipping category'
+        path: ["shippingCategory"],
+        message: "Please select a shipping category",
       })
     }
   })
@@ -71,7 +71,7 @@ interface Props {
   isSubmitting: boolean
   onSubmit: (
     formValues: SkuFormValues,
-    setError: UseFormSetError<SkuFormValues>
+    setError: UseFormSetError<SkuFormValues>,
   ) => void
   apiError?: any
 }
@@ -80,13 +80,13 @@ export function SkuForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting
+  isSubmitting,
 }: Props): React.JSX.Element {
   const skuFormMethods = useForm<SkuFormValues>({
     defaultValues,
-    resolver: zodResolver(skuFormSchema)
+    resolver: zodResolver(skuFormSchema),
   })
-  const skuFormWatchedImageUrl = skuFormMethods.watch('imageUrl')
+  const skuFormWatchedImageUrl = skuFormMethods.watch("imageUrl")
 
   const { shippingCategories } = useShippingCategoriesList({})
   /*
@@ -99,19 +99,19 @@ export function SkuForm({
 
   const imageFormMethods = useForm({
     defaultValues: {
-      imageUrl: defaultValues?.imageUrl ?? ''
+      imageUrl: defaultValues?.imageUrl ?? "",
     },
     resolver: zodResolver(
       z.object({
-        imageUrl: z.string()
-      })
-    )
+        imageUrl: z.string(),
+      }),
+    ),
   })
 
-  const imageFormWatchedImageUrl = imageFormMethods.watch('imageUrl')
+  const imageFormWatchedImageUrl = imageFormMethods.watch("imageUrl")
 
   const {
-    formState: { isSubmitting: isSubmittingImage }
+    formState: { isSubmitting: isSubmittingImage },
   } = imageFormMethods
 
   return (
@@ -122,61 +122,61 @@ export function SkuForm({
           onSubmit(formValues, skuFormMethods.setError)
         }}
       >
-        <Section title='Basic info'>
-          <Spacer top='6' bottom='4'>
+        <Section title="Basic info">
+          <Spacer top="6" bottom="4">
             <HookedInput
-              name='name'
-              label='Name'
+              name="name"
+              label="Name"
               hint={{
                 text: (
-                  <Text variant='info'>
+                  <Text variant="info">
                     Pick a name that helps you identify it.
                   </Text>
-                )
+                ),
               }}
             />
           </Spacer>
-          <Spacer top='6' bottom='4'>
+          <Spacer top="6" bottom="4">
             <HookedInput
-              name='code'
-              label='SKU code'
+              name="code"
+              label="SKU code"
               hint={{
                 text: (
-                  <Text variant='info'>
-                    A unique code to identify the product variant.{' '}
+                  <Text variant="info">
+                    A unique code to identify the product variant.{" "}
                     <a
-                      href='https://docs.commercelayer.io/core/v/api-reference/skus'
-                      target='_blank'
-                      rel='noreferrer'
+                      href="https://docs.commercelayer.io/core/v/api-reference/skus"
+                      target="_blank"
+                      rel="noreferrer"
                     >
                       Learn more
                     </a>
                   </Text>
-                )
+                ),
               }}
             />
           </Spacer>
-          <Spacer top='6' bottom='12'>
-            <Grid columns='auto'>
+          <Spacer top="6" bottom="12">
+            <Grid columns="auto">
               <HookedInputTextArea
-                name='description'
-                label='Description'
-                placeholder='A brief description'
+                name="description"
+                label="Description"
+                placeholder="A brief description"
                 hint={{
                   text: (
-                    <Text variant='info'>Best suited for internal use.</Text>
-                  )
+                    <Text variant="info">Best suited for internal use.</Text>
+                  ),
                 }}
-                className='h-[96px]'
+                className="h-[96px]"
               />
-              <div className='mt-8'>
+              <div className="mt-8">
                 <ButtonImageSelect
                   img={
                     skuFormWatchedImageUrl != null &&
                     skuFormWatchedImageUrl.length > 0
                       ? {
                           src: skuFormWatchedImageUrl,
-                          alt: defaultValues?.name ?? ''
+                          alt: defaultValues?.name ?? "",
                         }
                       : undefined
                   }
@@ -189,101 +189,101 @@ export function SkuForm({
           </Spacer>
         </Section>
 
-        <Section title='Shipping info'>
+        <Section title="Shipping info">
           {!isLoadingShippingCategories && (
-            <Spacer top='6' bottom='4'>
+            <Spacer top="6" bottom="4">
               <ShippingCategorySelect options={shippingCategories} />
             </Spacer>
           )}
-          <Spacer top='6' bottom='12'>
-            <Grid columns='auto' alignItems='end'>
-              <HookedInput name='weight' label='Weight' />
+          <Spacer top="6" bottom="12">
+            <Grid columns="auto" alignItems="end">
+              <HookedInput name="weight" label="Weight" />
               <HookedInputSelect
-                name='unitOfWeight'
+                name="unitOfWeight"
                 initialValues={unitsOfWeightForSelect.map(
                   ({ value, label }) => ({
                     value,
-                    label
-                  })
+                    label,
+                  }),
                 )}
-                pathToValue='value'
+                pathToValue="value"
               />
             </Grid>
-            <Spacer top='2'>
+            <Spacer top="2">
               <Hint>Used to automatically calculate shipping weight.</Hint>
             </Spacer>
           </Spacer>
         </Section>
 
-        <Section title='Additional info'>
-          <Spacer top='6' bottom='4'>
+        <Section title="Additional info">
+          <Spacer top="6" bottom="4">
             <HookedInput
-              type='number'
-              name='piecesPerPack'
-              label='Pieces per pack'
+              type="number"
+              name="piecesPerPack"
+              label="Pieces per pack"
               hint={{
                 text: (
-                  <Text variant='info'>
+                  <Text variant="info">
                     Manage items with higher quantities per pack.
                   </Text>
-                )
+                ),
               }}
             />
           </Spacer>
-          <Spacer top='6' bottom='12'>
+          <Spacer top="6" bottom="12">
             <HookedInput
-              name='hsTariffNumber'
-              label='HS Code'
+              name="hsTariffNumber"
+              label="HS Code"
               hint={{
                 text: (
-                  <Text variant='info'>
-                    Used by customs authorities to identify products.{' '}
+                  <Text variant="info">
+                    Used by customs authorities to identify products.{" "}
                     <A
-                      href='https://www.trade.gov/harmonized-system-hs-codes'
-                      target='_blank'
-                      rel='noreferrer'
+                      href="https://www.trade.gov/harmonized-system-hs-codes"
+                      target="_blank"
+                      rel="noreferrer"
                     >
                       Learn more
                     </A>
                   </Text>
-                )
+                ),
               }}
             />
           </Spacer>
         </Section>
 
-        <Section title='Options'>
-          <Spacer top='4' bottom='4'>
-            <Text variant='info' size='small'>
+        <Section title="Options">
+          <Spacer top="4" bottom="4">
+            <Text variant="info" size="small">
               Manage different scenarios, such as digital products with no
               shipments, or products with virtually unlimited stock.
             </Text>
           </Spacer>
-          <Spacer top='6' bottom='2'>
-            <HookedInputCheckbox name='doNotShip'>
-              <Text weight='semibold' size='small'>
+          <Spacer top="6" bottom="2">
+            <HookedInputCheckbox name="doNotShip">
+              <Text weight="semibold" size="small">
                 Do not ship
               </Text>
             </HookedInputCheckbox>
           </Spacer>
-          <Spacer top='2' bottom='12'>
-            <HookedInputCheckbox name='doNotTrack'>
-              <Text weight='semibold' size='small'>
+          <Spacer top="2" bottom="12">
+            <HookedInputCheckbox name="doNotTrack">
+              <Text weight="semibold" size="small">
                 Do not track stock
               </Text>
             </HookedInputCheckbox>
           </Spacer>
         </Section>
 
-        <Spacer top='14'>
+        <Spacer top="14">
           <Button
-            type='submit'
+            type="submit"
             disabled={isSubmitting || isLoadingShippingCategories}
-            className='w-full'
+            className="w-full"
           >
-            {defaultValues?.name == null ? 'Create' : 'Update'}
+            {defaultValues?.name == null ? "Create" : "Update"}
           </Button>
-          <Spacer top='2'>
+          <Spacer top="2">
             <HookedValidationApiError apiError={apiError} />
           </Spacer>
         </Spacer>
@@ -292,55 +292,56 @@ export function SkuForm({
         <HookedForm
           {...imageFormMethods}
           onSubmit={async (values) => {
-            skuFormMethods.setValue('imageUrl', values.imageUrl)
+            skuFormMethods.setValue("imageUrl", values.imageUrl)
             close()
           }}
         >
           <PageLayout
-            title='Set Image'
+            title="Set Image"
             minHeight={false}
             navigationButton={{
               onClick: () => {
                 close()
               },
               label: `Back`,
-              icon: 'arrowLeft'
+              icon: "arrowLeft",
             }}
           >
             <Avatar
-              alt={defaultValues?.name ?? ''}
+              alt={defaultValues?.name ?? ""}
               src={imageFormWatchedImageUrl as `https://${string}`}
-              size='large'
+              size="large"
             />
-            <Spacer top='8' bottom='8'>
-              <div className='relative'>
+            <Spacer top="8" bottom="8">
+              <div className="relative">
                 <HookedInput
                   disabled={isSubmittingImage}
-                  label='Image url'
-                  name='imageUrl'
-                  hint={{ text: 'Any valid image URL, hosted anywhere.' }}
+                  label="Image url"
+                  name="imageUrl"
+                  hint={{ text: "Any valid image URL, hosted anywhere." }}
                 />
-                <div
-                  className='block text-black absolute bg-white cursor-pointer'
+                <button
+                  type="button"
+                  className="block text-black absolute bg-white cursor-pointer"
                   style={{
-                    right: '16px',
-                    top: '43px',
-                    paddingLeft: '16px'
+                    right: "16px",
+                    top: "43px",
+                    paddingLeft: "16px",
                   }}
                   onClick={() => {
-                    imageFormMethods.setValue('imageUrl', '')
+                    imageFormMethods.setValue("imageUrl", "")
                   }}
                 >
                   <Icon
-                    name='x'
+                    name="x"
                     size={22}
-                    weight='bold'
-                    className='hover:opacity-80'
+                    weight="bold"
+                    className="hover:opacity-80"
                   />
-                </div>
+                </button>
               </div>
             </Spacer>
-            <Button type='submit' fullWidth disabled={isSubmittingImage}>
+            <Button type="submit" fullWidth disabled={isSubmittingImage}>
               Apply
             </Button>
           </PageLayout>

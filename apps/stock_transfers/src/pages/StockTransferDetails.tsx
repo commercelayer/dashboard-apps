@@ -1,75 +1,50 @@
-import { StockTransferAddresses } from '#components/StockTransferAddresses'
-import { StockTransferInfo } from '#components/StockTransferInfo'
-import { StockTransferSteps } from '#components/StockTransferSteps'
-import { StockTransferSummary } from '#components/StockTransferSummary'
-import { Timeline } from '#components/Timeline'
-import {
-  getStockTransferTriggerActions,
-  getStockTransferTriggerAttributeName
-} from '#data/dictionaries'
-import { appRoutes } from '#data/routes'
-import { useCancelOverlay } from '#hooks/useCancelOverlay'
-import { useStockTransferDetails } from '#hooks/useStockTransferDetails'
-import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
 import {
   Button,
+  type DropdownItemProps,
   EmptyState,
+  formatDateWithPredicate,
+  isMockedId,
+  type PageHeadingProps,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
   SkeletonTemplate,
   Spacer,
-  formatDateWithPredicate,
-  isMockedId,
   useAppLinking,
   useTokenProvider,
-  type DropdownItemProps,
-  type PageHeadingProps
-} from '@commercelayer/app-elements'
-import { useMemo } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+} from "@commercelayer/app-elements"
+import { useMemo } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { StockTransferAddresses } from "#components/StockTransferAddresses"
+import { StockTransferInfo } from "#components/StockTransferInfo"
+import { StockTransferSteps } from "#components/StockTransferSteps"
+import { StockTransferSummary } from "#components/StockTransferSummary"
+import { Timeline } from "#components/Timeline"
+import {
+  getStockTransferTriggerActions,
+  getStockTransferTriggerAttributeName,
+} from "#data/dictionaries"
+import { appRoutes } from "#data/routes"
+import { useCancelOverlay } from "#hooks/useCancelOverlay"
+import { useStockTransferDetails } from "#hooks/useStockTransferDetails"
+import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
 export function StockTransferDetails(): React.JSX.Element {
   const {
     canUser,
     settings: { mode },
-    user
+    user,
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ stockTransferId: string }>(
-    appRoutes.details.path
+    appRoutes.details.path,
   )
   const { goBack } = useAppLinking()
 
-  const stockTransferId = params?.stockTransferId ?? ''
+  const stockTransferId = params?.stockTransferId ?? ""
 
   const { stockTransfer, isLoading, mutateStockTransfer } =
     useStockTransferDetails(stockTransferId)
-
-  if (stockTransferId === '' || !canUser('read', 'stock_transfers')) {
-    return (
-      <PageLayout
-        title='Stock transfers'
-        navigationButton={{
-          onClick: () => {
-            setLocation(appRoutes.home.makePath({}))
-          },
-          label: 'Stock transfers',
-          icon: 'arrowLeft'
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title='Not authorized'
-          action={
-            <Link href={appRoutes.home.makePath({})}>
-              <Button variant='primary'>Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
-    )
-  }
 
   const triggerMenuActions = useMemo(() => {
     return getStockTransferTriggerActions(stockTransfer)
@@ -78,21 +53,46 @@ export function StockTransferDetails(): React.JSX.Element {
   const { show: showCancelOverlay, Overlay: CancelOverlay } = useCancelOverlay()
   const { dispatch } = useTriggerAttribute(stockTransfer.id)
 
+  if (stockTransferId === "" || !canUser("read", "stock_transfers")) {
+    return (
+      <PageLayout
+        title="Stock transfers"
+        navigationButton={{
+          onClick: () => {
+            setLocation(appRoutes.home.makePath({}))
+          },
+          label: "Stock transfers",
+          icon: "arrowLeft",
+        }}
+        mode={mode}
+      >
+        <EmptyState
+          title="Not authorized"
+          action={
+            <Link href={appRoutes.home.makePath({})}>
+              <Button variant="primary">Go back</Button>
+            </Link>
+          }
+        />
+      </PageLayout>
+    )
+  }
+
   const triggerDropDownItems: DropdownItemProps[][] = triggerMenuActions
     .toReversed()
     .reduce<DropdownItemProps[][]>((acc, triggerAction, idx) => {
       const dropdownItem = {
         label: getStockTransferTriggerAttributeName(
-          triggerAction.triggerAttribute
+          triggerAction.triggerAttribute,
         ),
         onClick: () => {
           // cancel action has its own modal
-          if (triggerAction.triggerAttribute === '_cancel') {
+          if (triggerAction.triggerAttribute === "_cancel") {
             showCancelOverlay()
             return
           }
           void dispatch(triggerAction.triggerAttribute)
-        }
+        },
       }
 
       const isLast = idx === triggerMenuActions.length - 1
@@ -111,9 +111,9 @@ export function StockTransferDetails(): React.JSX.Element {
       return acc
     }, [])
 
-  const pageToolbar: PageHeadingProps['toolbar'] = {
+  const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
-    dropdownItems: triggerDropDownItems
+    dropdownItems: triggerDropDownItems,
   }
 
   const pageTitle = `Stock transfer #${stockTransfer.number}`
@@ -130,17 +130,17 @@ export function StockTransferDetails(): React.JSX.Element {
           {stockTransfer.updated_at != null ? (
             <div>
               {formatDateWithPredicate({
-                predicate: 'Updated',
+                predicate: "Updated",
                 isoDate: stockTransfer.updated_at,
-                timezone: user?.timezone
+                timezone: user?.timezone,
               })}
             </div>
           ) : stockTransfer.created_at != null ? (
             <div>
               {formatDateWithPredicate({
-                predicate: 'Created',
+                predicate: "Created",
                 isoDate: stockTransfer.created_at,
-                timezone: user?.timezone
+                timezone: user?.timezone,
               })}
             </div>
           ) : null}
@@ -153,11 +153,11 @@ export function StockTransferDetails(): React.JSX.Element {
         onClick: () => {
           goBack({
             currentResourceId: stockTransfer.id,
-            defaultRelativePath: appRoutes.home.makePath({})
+            defaultRelativePath: appRoutes.home.makePath({}),
           })
         },
-        label: 'Stock transfers',
-        icon: 'arrowLeft'
+        label: "Stock transfers",
+        icon: "arrowLeft",
       }}
       scrollToTop
     >
@@ -165,21 +165,21 @@ export function StockTransferDetails(): React.JSX.Element {
         <CancelOverlay
           stockTransfer={stockTransfer}
           onConfirm={() => {
-            void dispatch('_cancel')
+            void dispatch("_cancel")
           }}
         />
-        <Spacer bottom='4'>
+        <Spacer bottom="4">
           <StockTransferSteps stockTransfer={stockTransfer} />
-          <Spacer top='14'>
+          <Spacer top="14">
             <StockTransferInfo stockTransfer={stockTransfer} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <StockTransferSummary stockTransfer={stockTransfer} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <StockTransferAddresses stockTransfer={stockTransfer} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <ResourceDetails
               resource={stockTransfer}
               onUpdated={async () => {
@@ -188,17 +188,17 @@ export function StockTransferDetails(): React.JSX.Element {
             />
           </Spacer>
           {!isMockedId(stockTransfer.id) && (
-            <Spacer top='14'>
+            <Spacer top="14">
               <ResourceMetadata
-                resourceType='stock_transfers'
+                resourceType="stock_transfers"
                 resourceId={stockTransfer.id}
                 overlay={{
-                  title: pageTitle
+                  title: pageTitle,
                 }}
               />
             </Spacer>
           )}
-          <Spacer top='14'>
+          <Spacer top="14">
             <Timeline stockTransfer={stockTransfer} />
           </Spacer>
         </Spacer>

@@ -1,4 +1,3 @@
-import { useAddItemOverlay } from '#hooks/useAddItemOverlay'
 import {
   Button,
   HookedForm,
@@ -7,21 +6,22 @@ import {
   HookedValidationApiError,
   Section,
   Spacer,
-  Text
-} from '@commercelayer/app-elements'
-import type { Sku, StockItem } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
-import { useForm, type UseFormSetError } from 'react-hook-form'
-import { z } from 'zod'
-import { ListItemSku } from './ListItemSku'
-import { StockLocationSelector } from './StockLocationSelector'
+  Text,
+} from "@commercelayer/app-elements"
+import type { Sku, StockItem } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
+import { type UseFormSetError, useForm } from "react-hook-form"
+import { z } from "zod"
+import { useAddItemOverlay } from "#hooks/useAddItemOverlay"
+import { ListItemSku } from "./ListItemSku"
+import { StockLocationSelector } from "./StockLocationSelector"
 
 const stockItemFormSchema = z.object({
   id: z.string().optional(),
   stockLocation: z.string().min(1),
   item: z.string().min(1),
-  quantity: z.number().min(0)
+  quantity: z.number().min(0),
 })
 
 export type StockItemFormValues = z.infer<typeof stockItemFormSchema>
@@ -32,7 +32,7 @@ interface Props {
   isSubmitting: boolean
   onSubmit: (
     formValues: StockItemFormValues,
-    setError: UseFormSetError<StockItemFormValues>
+    setError: UseFormSetError<StockItemFormValues>,
   ) => void
   apiError?: any
 }
@@ -42,11 +42,11 @@ export function StockItemForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting
+  isSubmitting,
 }: Props): React.JSX.Element {
   const stockItemFormMethods = useForm<StockItemFormValues>({
     defaultValues,
-    resolver: zodResolver(stockItemFormSchema)
+    resolver: zodResolver(stockItemFormSchema),
   })
 
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
@@ -54,7 +54,7 @@ export function StockItemForm({
 
   const [selectedItemResource, setSelectedItemResource] = useState<Sku>()
   const sku = resource?.sku != null ? resource?.sku : selectedItemResource
-  const stockItemFormWatchedItem = stockItemFormMethods.watch('item')
+  const stockItemFormWatchedItem = stockItemFormMethods.watch("item")
 
   return (
     <>
@@ -66,39 +66,40 @@ export function StockItemForm({
       >
         <Section>
           {defaultValues?.stockLocation == null && (
-            <Spacer top='12' bottom='4'>
+            <Spacer top="12" bottom="4">
               <StockLocationSelector />
             </Spacer>
           )}
           <Spacer
-            top={defaultValues?.stockLocation == null ? '6' : '12'}
-            bottom='4'
+            top={defaultValues?.stockLocation == null ? "6" : "12"}
+            bottom="4"
           >
-            <Text weight='semibold' size='small'>
+            <Text weight="semibold" size="small">
               SKU
             </Text>
-            <Spacer top='2'>
+            <Spacer top="2">
               {stockItemFormWatchedItem == null ? (
-                <div
+                <button
+                  type="button"
                   onClick={() => {
-                    showAddItemOverlay({ type: 'skus' })
+                    showAddItemOverlay({ type: "skus" })
                   }}
                 >
                   <HookedInputSelect
-                    name='item'
+                    name="item"
                     initialValues={[]}
-                    placeholder='Select an SKU'
+                    placeholder="Select an SKU"
                     onSelect={() => {}}
                   />
-                </div>
+                </button>
               ) : (
                 <ListItemSku
                   resource={sku}
                   disabled={defaultValues?.id != null}
-                  variant='boxed'
+                  variant="boxed"
                   onSelect={() => {
                     if (defaultValues?.id == null) {
-                      showAddItemOverlay({ type: 'skus', excludedId: sku?.id })
+                      showAddItemOverlay({ type: "skus", excludedId: sku?.id })
                     }
                   }}
                 />
@@ -106,25 +107,25 @@ export function StockItemForm({
               <AddItemOverlay
                 onConfirm={(resource) => {
                   setSelectedItemResource(resource)
-                  stockItemFormMethods.setValue('item', resource.id)
+                  stockItemFormMethods.setValue("item", resource.id)
                 }}
               />
             </Spacer>
           </Spacer>
-          <Spacer top='6' bottom='4'>
+          <Spacer top="6" bottom="4">
             <HookedInput
-              name='quantity'
-              label='Quantity'
-              type='number'
-              min='0'
+              name="quantity"
+              label="Quantity"
+              type="number"
+              min="0"
             />
           </Spacer>
         </Section>
-        <Spacer top='14'>
-          <Button type='submit' disabled={isSubmitting} fullWidth>
-            {defaultValues?.id == null ? 'Create' : 'Update'}
+        <Spacer top="14">
+          <Button type="submit" disabled={isSubmitting} fullWidth>
+            {defaultValues?.id == null ? "Create" : "Update"}
           </Button>
-          <Spacer top='2'>
+          <Spacer top="2">
             <HookedValidationApiError apiError={apiError} />
           </Spacer>
         </Spacer>

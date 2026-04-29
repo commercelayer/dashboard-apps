@@ -1,7 +1,7 @@
-import { useImportDetailsContext } from '#components/Details/Provider'
+import { useImportDetailsContext } from "#components/Details/Provider"
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {
-  type: 'errors_count' | 'inputs_size' | 'processed_count' | 'warnings_count'
+  type: "errors_count" | "inputs_size" | "processed_count" | "warnings_count"
 }
 
 export function ImportCount({
@@ -9,7 +9,7 @@ export function ImportCount({
   ...props
 }: Props): React.JSX.Element | null {
   const {
-    state: { data }
+    state: { data },
   } = useImportDetailsContext()
 
   if (data == null) {

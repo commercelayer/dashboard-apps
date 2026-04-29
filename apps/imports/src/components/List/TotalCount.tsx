@@ -1,8 +1,8 @@
-import { useListContext } from './Provider'
+import { useListContext } from "./Provider"
 
 export function TotalCount(): React.JSX.Element | null {
   const {
-    state: { list }
+    state: { list },
   } = useListContext()
 
   if (list == null) {

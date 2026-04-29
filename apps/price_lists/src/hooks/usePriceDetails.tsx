@@ -1,7 +1,7 @@
-import { makePrice } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { Price } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { Price } from "@commercelayer/sdk"
+import type { KeyedMutator } from "swr"
+import { makePrice } from "#mocks"
 
 export function usePriceDetails(id: string): {
   price: Price
@@ -13,26 +13,26 @@ export function usePriceDetails(id: string): {
     data: price,
     isLoading,
     error,
-    mutate: mutatePrice
+    mutate: mutatePrice,
   } = useCoreApi(
-    'prices',
-    'retrieve',
+    "prices",
+    "retrieve",
     !isMockedId(id)
       ? [
           id,
           {
             include: [
-              'sku',
-              'price_volume_tiers',
-              'price_frequency_tiers',
-              'price_list'
-            ]
-          }
+              "sku",
+              "price_volume_tiers",
+              "price_frequency_tiers",
+              "price_list",
+            ],
+          },
         ]
       : null,
     {
-      fallbackData: makePrice()
-    }
+      fallbackData: makePrice(),
+    },
   )
 
   return { price, error, isLoading, mutatePrice }

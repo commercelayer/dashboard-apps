@@ -1,6 +1,3 @@
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { appRoutes } from '#data/routes'
-import { useWebhookDetails } from '#hooks/useWebhookDetails'
 import {
   Button,
   EmptyState,
@@ -10,17 +7,20 @@ import {
   Spacer,
   Text,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useCallback, type FC } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { type FC, useCallback } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { ErrorNotFound } from "#components/ErrorNotFound"
+import { appRoutes } from "#data/routes"
+import { useWebhookDetails } from "#hooks/useWebhookDetails"
 
 export const WebhookDelete: FC = () => {
   const { settings, canUser } = useTokenProvider()
   const [, params] = useRoute(appRoutes.deleteWebhook.path)
   const [, setLocation] = useLocation()
 
-  const webhookId = params?.webhookId ?? ''
+  const webhookId = params?.webhookId ?? ""
   const { webhook, isLoading } = useWebhookDetails(webhookId)
 
   const { sdkClient } = useCoreSdkProvider()
@@ -34,24 +34,24 @@ export const WebhookDelete: FC = () => {
       })
   }, [webhookId])
 
-  if (webhookId == null || !canUser('destroy', 'webhooks')) {
+  if (webhookId == null || !canUser("destroy", "webhooks")) {
     return (
       <PageLayout
-        title='Delete webhook'
+        title="Delete webhook"
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
           label: `Webhooks`,
-          icon: 'arrowLeft'
+          icon: "arrowLeft",
         }}
         mode={settings.mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.list.makePath({})}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -71,20 +71,20 @@ export const WebhookDelete: FC = () => {
             setLocation(appRoutes.details.makePath({ webhookId }))
           },
           label: `Cancel`,
-          icon: 'x'
+          icon: "x",
         }}
-        gap='only-top'
+        gap="only-top"
         overlay
       >
         <ListDetails>
-          <Spacer bottom='12'>
-            <Text variant='info' weight='medium'>
+          <Spacer bottom="12">
+            <Text variant="info" weight="medium">
               This action cannot be undone, proceed with caution.
             </Text>
           </Spacer>
           <Button
-            variant='danger'
-            size='small'
+            variant="danger"
+            size="small"
             onClick={(e) => {
               e.stopPropagation()
               deleteWebhook()

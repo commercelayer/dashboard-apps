@@ -1,5 +1,5 @@
-import { useCoreApi } from '@commercelayer/app-elements'
-import type { ListResponse, QueryPageSize, SkuList } from '@commercelayer/sdk'
+import { useCoreApi } from "@commercelayer/app-elements"
+import type { ListResponse, QueryPageSize, SkuList } from "@commercelayer/sdk"
 
 interface UseSkuListsListSettings {
   pageNumber?: number
@@ -24,26 +24,26 @@ export function useSkuListsList({ settings }: Props): {
   const pageNumber = settings?.pageNumber ?? 1
   const pageSize = settings?.pageSize ?? 10
   const filters = {
-    manual_true: true
+    manual_true: true,
   }
 
   const {
     data: skuLists,
     isLoading,
-    error
+    error,
   } = useCoreApi(
-    'sku_lists',
-    'list',
+    "sku_lists",
+    "list",
     [
       {
-        fields: ['id', 'name'],
-        sort: ['name'],
+        fields: ["id", "name"],
+        sort: ["name"],
         filters,
         pageNumber,
-        pageSize
-      }
+        pageSize,
+      },
     ],
-    {}
+    {},
   )
 
   return { skuLists, error, isLoading }

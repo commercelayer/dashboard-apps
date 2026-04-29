@@ -1,4 +1,3 @@
-import { hasPaymentMethod } from '#utils/order'
 import {
   Button,
   ListDetails,
@@ -7,9 +6,10 @@ import {
   ResourcePaymentMethod,
   Spacer,
   useOverlay,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { type Order } from '@commercelayer/sdk'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { hasPaymentMethod } from "#utils/order"
 
 interface OverlayHook {
   show: () => void
@@ -23,39 +23,39 @@ export function useCaptureOverlay(): OverlayHook {
   return {
     show: open,
     Overlay: ({ order, onConfirm }) => (
-      <Overlay backgroundColor='light'>
+      <Overlay backgroundColor="light">
         <PageHeading
-          title={t('apps.orders.details.confirm_capture')}
+          title={t("apps.orders.details.confirm_capture")}
           navigationButton={{
             onClick: () => {
               close()
             },
-            label: t('common.cancel'),
-            icon: 'x'
+            label: t("common.cancel"),
+            icon: "x",
           }}
-          description={t('apps.orders.details.irreversible_action')}
+          description={t("apps.orders.details.irreversible_action")}
         />
 
-        <Spacer bottom='14'>
+        <Spacer bottom="14">
           <ListDetails>
-            <ListDetailsItem label={t('resources.orders.name')}>
+            <ListDetailsItem label={t("resources.orders.name")}>
               #{order.number}
             </ListDetailsItem>
-            <ListDetailsItem label={t('resources.customers.name')}>
+            <ListDetailsItem label={t("resources.customers.name")}>
               {order.customer_email}
             </ListDetailsItem>
-            <ListDetailsItem label={t('apps.orders.details.payment_method')}>
+            <ListDetailsItem label={t("apps.orders.details.payment_method")}>
               {hasPaymentMethod(order) ? (
                 <ResourcePaymentMethod
                   resource={order}
-                  variant='plain'
+                  variant="plain"
                   showPaymentResponse
                 />
               ) : (
-                '-'
+                "-"
               )}
             </ListDetailsItem>
-            <ListDetailsItem label={t('common.amount')}>
+            <ListDetailsItem label={t("common.amount")}>
               {order.formatted_total_amount_with_taxes}
             </ListDetailsItem>
           </ListDetails>
@@ -67,10 +67,10 @@ export function useCaptureOverlay(): OverlayHook {
             close()
           }}
         >
-          {t('apps.orders.actions.capture')}{' '}
+          {t("apps.orders.actions.capture")}{" "}
           {order.formatted_total_amount_with_taxes}
         </Button>
       </Overlay>
-    )
+    ),
   }
 }

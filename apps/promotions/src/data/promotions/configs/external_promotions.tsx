@@ -1,22 +1,22 @@
 import {
   HookedInput,
   ListDetailsItem,
-  Spacer
-} from '@commercelayer/app-elements'
-import { z } from 'zod'
-import { PromotionSkuListSelector } from '../components/PromotionSkuListSelector'
-import type { PromotionConfig } from '../config'
-import { genericPromotionOptions } from './promotions'
+  Spacer,
+} from "@commercelayer/app-elements"
+import { z } from "zod"
+import { PromotionSkuListSelector } from "../components/PromotionSkuListSelector"
+import type { PromotionConfig } from "../config"
+import { genericPromotionOptions } from "./promotions"
 
 export default {
   external_promotions: {
-    type: 'external_promotions',
-    slug: 'external',
-    icon: 'linkSimple',
-    titleList: 'External promotion',
+    type: "external_promotions",
+    slug: "external",
+    icon: "linkSimple",
+    titleList: "External promotion",
     description:
-      'Integrate any kind of promotional engine as an external promotion.',
-    titleNew: 'external promotion',
+      "Integrate any kind of promotional engine as an external promotion.",
+    titleNew: "external promotion",
     formType: genericPromotionOptions.merge(
       z.object({
         promotion_url: z.string().url(),
@@ -25,56 +25,56 @@ export default {
           .nullish()
           .refine(
             (value) => {
-              if (value == null || value.trim() === '') {
+              if (value == null || value.trim() === "") {
                 return true
               }
               return parseIncludes(value).every(isValidResourceName)
             },
             {
               message:
-                'Please provide a comma-separated list of valid resource names.'
-            }
+                "Please provide a comma-separated list of valid resource names.",
+            },
           ),
-        sku_list: z.string().nullish()
-      })
+        sku_list: z.string().nullish(),
+      }),
     ),
     Fields: () => (
       <>
-        <Spacer top='6'>
+        <Spacer top="6">
           <HookedInput
-            name='promotion_url'
-            label='External service URL *'
+            name="promotion_url"
+            label="External service URL *"
             hint={{
               text: (
                 <>
-                  Insert your service endpoint and follow the{' '}
-                  <a href='https://docs.commercelayer.io/core/external-resources/external-promotions'>
+                  Insert your service endpoint and follow the{" "}
+                  <a href="https://docs.commercelayer.io/core/external-resources/external-promotions">
                     external promotions guide
-                  </a>{' '}
+                  </a>{" "}
                   for setup.
                 </>
-              )
+              ),
             }}
           />
         </Spacer>
-        <Spacer top='6'>
+        <Spacer top="6">
           <HookedInput
-            name='external_includes'
-            label='External includes'
+            name="external_includes"
+            label="External includes"
             hint={{
               text: (
                 <>
                   Comma-separated resource names for the request payload. Leave
-                  empty for defaults.{' '}
+                  empty for defaults.{" "}
                   <a
-                    href='https://docs.commercelayer.io/core/external-resources#custom-include-list'
-                    target='_blank'
-                    rel='noreferrer'
+                    href="https://docs.commercelayer.io/core/external-resources#custom-include-list"
+                    target="_blank"
+                    rel="noreferrer"
                   >
                     Learn more
                   </a>
                 </>
-              )
+              ),
             }}
           />
         </Spacer>
@@ -86,7 +86,7 @@ export default {
           <PromotionSkuListSelector
             optional
             promotion={promotion}
-            hint='Apply the promotion only to the SKUs within the selected SKU list.'
+            hint="Apply the promotion only to the SKUs within the selected SKU list."
           />
         </>
       )
@@ -94,31 +94,31 @@ export default {
     StatusDescription: () => <>External</>,
     DetailsSectionInfo: ({ promotion }) => (
       <>
-        <ListDetailsItem label='External service URL' gutter='none'>
+        <ListDetailsItem label="External service URL" gutter="none">
           {promotion.promotion_url}
         </ListDetailsItem>
         {promotion.external_includes != null && (
-          <ListDetailsItem label='Includes' gutter='none'>
+          <ListDetailsItem label="Includes" gutter="none">
             <div>
               {promotion.external_includes
                 .map((item) => item.trim())
-                .join(', ')}
+                .join(", ")}
             </div>
           </ListDetailsItem>
         )}
       </>
-    )
-  }
-} satisfies Pick<PromotionConfig, 'external_promotions'>
+    ),
+  },
+} satisfies Pick<PromotionConfig, "external_promotions">
 
 export function parseIncludes(value: string): string[] {
   return [
     ...new Set(
       value
-        .split(',')
+        .split(",")
         .map((s) => s.trim().toLowerCase())
-        .filter(Boolean)
-    )
+        .filter(Boolean),
+    ),
   ]
 }
 

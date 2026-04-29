@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { isFalsy } from '#utils/isFalsy'
-import { z } from 'zod'
-import { zodCaseInsensitiveNativeEnum, zodEnforceBoolean } from './zodUtils'
+import { z } from "zod"
+import { isFalsy } from "#utils/isFalsy"
+import { zodCaseInsensitiveNativeEnum, zodEnforceBoolean } from "./zodUtils"
 
 const allowedStatus = {
-  draft: 'draft',
-  pending: 'pending',
-  placed: 'placed',
-  approved: 'approved',
-  cancelled: 'cancelled'
+  draft: "draft",
+  pending: "pending",
+  placed: "placed",
+  approved: "approved",
+  cancelled: "cancelled",
 } as const
 
 const makeSchema = (hasParentResourceId: boolean) =>
@@ -33,15 +32,15 @@ const makeSchema = (hasParentResourceId: boolean) =>
       // some custom definitions to handle importing of orders with status
       // to do so we need to import them as archived
       status: z.optional(zodCaseInsensitiveNativeEnum(allowedStatus)),
-      _archive: zodEnforceBoolean({ optional: true })
+      _archive: zodEnforceBoolean({ optional: true }),
     })
     .passthrough()
     .superRefine((data, ctx) => {
       if (!hasParentResourceId && isFalsy(data.market_id)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['market_id'],
-          message: 'market_id is required if parent resource is not set'
+          path: ["market_id"],
+          message: "market_id is required if parent resource is not set",
         })
       }
 
@@ -49,14 +48,14 @@ const makeSchema = (hasParentResourceId: boolean) =>
       if (data.status != null && data._archive !== true) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['status'],
-          message: 'To import a status set `_archive` as true'
+          path: ["status"],
+          message: "To import a status set `_archive` as true",
         })
       }
     })
 
 export const csvOrdersSchema = ({
-  hasParentResource
+  hasParentResource,
 }: {
   hasParentResource: boolean
 }) => z.array(makeSchema(hasParentResource))

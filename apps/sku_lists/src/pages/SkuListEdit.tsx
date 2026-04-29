@@ -1,23 +1,23 @@
-import { SkuListForm } from '#components/SkuListForm'
-import { appRoutes } from '#data/routes'
-import { useSkuListDetails } from '#hooks/useSkuListDetails'
-import { useUpdateSkuList } from '#hooks/useUpdateSkuList'
 import {
   Button,
   EmptyState,
   PageLayout,
   SkeletonTemplate,
   Spacer,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { Link, useLocation, useRoute } from "wouter"
+import { SkuListForm } from "#components/SkuListForm"
+import { appRoutes } from "#data/routes"
+import { useSkuListDetails } from "#hooks/useSkuListDetails"
+import { useUpdateSkuList } from "#hooks/useUpdateSkuList"
 
 export function SkuListEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
 
   const [, params] = useRoute<{ skuListId: string }>(appRoutes.edit.path)
-  const skuListId = params?.skuListId ?? ''
+  const skuListId = params?.skuListId ?? ""
 
   const { skuList, isLoading, mutateSkuList } = useSkuListDetails(skuListId)
 
@@ -26,25 +26,25 @@ export function SkuListEdit(): React.JSX.Element {
 
   const goBackUrl = appRoutes.details.makePath({ skuListId })
 
-  if (!canUser('update', 'sku_lists')) {
+  if (!canUser("update", "sku_lists")) {
     return (
       <PageLayout
-        title='Edit SKU list'
+        title="Edit SKU list"
         navigationButton={{
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: 'Cancel',
-          icon: 'x'
+          label: "Cancel",
+          icon: "x",
         }}
         scrollToTop
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -61,25 +61,25 @@ export function SkuListEdit(): React.JSX.Element {
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
-      gap='only-top'
+      gap="only-top"
       scrollToTop
       overlay
     >
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         {!isLoading && skuList != null ? (
           <SkuListForm
             defaultValues={{
               id: skuList.id,
               name: skuList.name,
               manual: Boolean(skuList.manual),
-              manualString: skuList.manual === true ? 'manual' : 'auto',
+              manualString: skuList.manual === true ? "manual" : "auto",
               sku_code_regex:
                 skuList.manual === false
-                  ? (skuList.sku_code_regex ?? '')
-                  : undefined
+                  ? (skuList.sku_code_regex ?? "")
+                  : undefined,
             }}
             apiError={updateSkuListError}
             isSubmitting={isUpdatingSkuList}

@@ -2,49 +2,50 @@ import {
   Avatar,
   HookedValidationError,
   InputCheckboxGroup,
+  type InputCheckboxGroupProps,
   ListItem,
   Text,
   useTranslation,
-  type InputCheckboxGroupProps
-} from '@commercelayer/app-elements'
-import type { StockLineItem } from '@commercelayer/sdk'
-import { useMemo } from 'react'
-import { Controller } from 'react-hook-form'
+} from "@commercelayer/app-elements"
+import type { StockLineItem } from "@commercelayer/sdk"
+import { useMemo } from "react"
+import { Controller } from "react-hook-form"
+
 interface Props {
   stockLineItems: StockLineItem[]
 }
 
 export function FormPackingFieldItems({
-  stockLineItems
+  stockLineItems,
 }: Props): React.JSX.Element {
   const { t } = useTranslation()
 
-  const options: InputCheckboxGroupProps['options'] = useMemo(
+  const options: InputCheckboxGroupProps["options"] = useMemo(
     () =>
       stockLineItems.map((item) => ({
         value: item.id,
         content: (
           <ListItem
-            alignIcon='center'
-            alignItems='center'
-            borderStyle='none'
+            alignIcon="center"
+            alignItems="center"
+            borderStyle="none"
             icon={
               item.image_url != null ? (
                 <Avatar
-                  alt={item.name ?? ''}
-                  size='small'
+                  alt={item.name ?? ""}
+                  size="small"
                   src={item.image_url as `https://${string}`}
                 />
               ) : undefined
             }
-            padding='none'
+            padding="none"
           >
             <div>
-              <Text size='regular' tag='div' weight='semibold'>
+              <Text size="regular" tag="div" weight="semibold">
                 {item.name}
               </Text>
               {item.sku?.weight != null ? (
-                <Text size='small' tag='div' variant='info'>
+                <Text size="small" tag="div" variant="info">
                   {item.sku?.weight}
                   {item.sku?.unit_of_weight}
                 </Text>
@@ -54,10 +55,10 @@ export function FormPackingFieldItems({
         ),
         quantity: {
           min: 1,
-          max: item.quantity
-        }
+          max: item.quantity,
+        },
       })),
-    [stockLineItems]
+    [stockLineItems],
   )
 
   if (options.length === 0) {
@@ -67,17 +68,17 @@ export function FormPackingFieldItems({
   return (
     <>
       <Controller
-        name='items'
+        name="items"
         render={({ field: { onChange, value } }) => (
           <InputCheckboxGroup
-            title={t('apps.shipments.form.packing_items')}
+            title={t("apps.shipments.form.packing_items")}
             defaultValues={value}
             options={options}
             onChange={onChange}
           />
         )}
       />
-      <HookedValidationError name='items' />
+      <HookedValidationError name="items" />
     </>
   )
 }

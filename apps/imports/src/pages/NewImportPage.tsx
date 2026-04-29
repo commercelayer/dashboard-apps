@@ -1,67 +1,67 @@
-import { ImportPreview } from '#components/ImportPreview'
-import { InputCode } from '#components/InputCode'
-import { InputParser } from '#components/InputParser'
-import { ResourceFinder } from '#components/ResourceFinder'
-import { getParentResourceIfNeeded, isAvailableResource } from '#data/resources'
-import { appRoutes } from '#data/routes'
-import { validateParentResource } from '#utils/validateParentResource'
 import {
   Button,
   EmptyState,
+  formatResourceName,
   InputFeedback,
   PageError,
   PageLayout,
   Spacer,
   Tab,
   Tabs,
-  formatResourceName,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { CommerceLayerStatic, type ImportCreate } from '@commercelayer/sdk'
-import { type AllowedResourceType } from '@typing/resources.types'
-import { unparse } from 'papaparse'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { CommerceLayerStatic, type ImportCreate } from "@commercelayer/sdk"
+import type { AllowedResourceType } from "@typing/resources.types"
+import { unparse } from "papaparse"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { ImportPreview } from "#components/ImportPreview"
+import { InputCode } from "#components/InputCode"
+import { InputParser } from "#components/InputParser"
+import { ResourceFinder } from "#components/ResourceFinder"
+import { getParentResourceIfNeeded, isAvailableResource } from "#data/resources"
+import { appRoutes } from "#data/routes"
+import { validateParentResource } from "#utils/validateParentResource"
 
 function NewImportPage(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 
   const [_match, params] = useRoute<{ resourceType?: AllowedResourceType }>(
-    appRoutes.newImport.path
+    appRoutes.newImport.path,
   )
   const [_location, setLocation] = useLocation()
 
   const [isLoading, setIsLoading] = useState(false)
   const [apiError, setApiError] = useState<string | undefined>()
   const [parentResourceId, setParentResourceId] = useState<string | null>()
-  const [format, setFormat] = useState<'csv' | 'json'>()
+  const [format, setFormat] = useState<"csv" | "json">()
   const [importCreateValue, setImportCreateValue] = useState<
-    ImportCreate['inputs'] | undefined
+    ImportCreate["inputs"] | undefined
   >(undefined)
 
-  if (!canUser('create', 'imports')) {
+  if (!canUser("create", "imports")) {
     return (
       <PageLayout
-        title='Imports'
+        title="Imports"
         mode={mode}
         navigationButton={{
-          label: 'Back',
-          icon: 'arrowLeft',
+          label: "Back",
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(appRoutes.list.makePath())
-          }
+          },
         }}
       >
         <EmptyState
-          title='You are not authorized'
+          title="You are not authorized"
           action={
             <Link href={appRoutes.list.makePath()}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -72,17 +72,17 @@ function NewImportPage(): React.JSX.Element {
   const resourceType = params?.resourceType
 
   if (resourceType == null) {
-    return <PageError errorName='Missing param' errorDescription='' />
+    return <PageError errorName="Missing param" errorDescription="" />
   }
 
   if (!isAvailableResource(resourceType)) {
     return (
       <PageError
-        errorName='Invalid resource type'
-        errorDescription='Resource not allowed or not enabled'
+        errorName="Invalid resource type"
+        errorDescription="Resource not allowed or not enabled"
         actionButton={
           <Link href={appRoutes.list.makePath()}>
-            <Button variant='primary'>Go back</Button>
+            <Button variant="primary">Go back</Button>
           </Link>
         }
       />
@@ -90,7 +90,7 @@ function NewImportPage(): React.JSX.Element {
   }
 
   const createImportTask = async (
-    selectedParentResourceId?: string
+    selectedParentResourceId?: string,
   ): Promise<void> => {
     if (importCreateValue == null) {
       return
@@ -102,7 +102,7 @@ function NewImportPage(): React.JSX.Element {
       const parentResourceId = await validateParentResource({
         sdkClient,
         resourceType,
-        parentResourceId: selectedParentResourceId
+        parentResourceId: selectedParentResourceId,
       })
 
       await sdkClient.imports.create({
@@ -110,16 +110,16 @@ function NewImportPage(): React.JSX.Element {
         parent_resource_id: parentResourceId,
         format,
         inputs:
-          format === 'csv'
+          format === "csv"
             ? // This forced cast need to be removed once sdk updates input type to accept string values
               (unparse(importCreateValue) as unknown as object[])
-            : importCreateValue
+            : importCreateValue,
       })
       setLocation(appRoutes.list.makePath())
     } catch (e) {
       const errorMessage = CommerceLayerStatic.isApiError(e)
-        ? e.errors.map(({ detail }) => detail).join(', ')
-        : 'Could not create import'
+        ? e.errors.map(({ detail }) => detail).join(", ")
+        : "Could not create import"
       setApiError(errorMessage)
       setIsLoading(false)
     }
@@ -133,40 +133,40 @@ function NewImportPage(): React.JSX.Element {
     <PageLayout
       title={`Import ${formatResourceName({
         resource: resourceType,
-        count: 'plural'
+        count: "plural",
       })}`}
       mode={mode}
       navigationButton={{
-        label: 'Select type',
-        icon: 'arrowLeft',
+        label: "Select type",
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(appRoutes.selectResource.makePath())
-        }
+        },
       }}
       overlay
     >
       {parentResource !== false && (
-        <Spacer bottom='14'>
+        <Spacer bottom="14">
           <ResourceFinder
             label={formatResourceName({
               resource: parentResource,
-              count: 'plural',
-              format: 'title'
+              count: "plural",
+              format: "title",
             })}
-            placeholder='Type to search parent resource'
+            placeholder="Type to search parent resource"
             resourceType={parentResource}
             sdkClient={sdkClient}
             onSelect={setParentResourceId}
             hint={{
-              text: 'Required when creating new records. Can also be specified in the import data, for each single record.'
+              text: "Required when creating new records. Can also be specified in the import data, for each single record.",
             }}
           />
         </Spacer>
       )}
 
-      <Spacer bottom='14'>
-        <Tabs id='tab-import-input' keepAlive>
-          <Tab name='Upload file'>
+      <Spacer bottom="14">
+        <Tabs id="tab-import-input" keepAlive>
+          <Tab name="Upload file">
             <InputParser
               resourceType={resourceType}
               onDataReady={(input, format) => {
@@ -179,11 +179,11 @@ function NewImportPage(): React.JSX.Element {
               hasParentResource={Boolean(parentResource)}
             />
           </Tab>
-          <Tab name='Paste code'>
+          <Tab name="Paste code">
             <InputCode
               onDataReady={(input) => {
                 setImportCreateValue(input)
-                setFormat('json')
+                setFormat("json")
               }}
               onDataResetRequest={() => {
                 setImportCreateValue(undefined)
@@ -194,18 +194,18 @@ function NewImportPage(): React.JSX.Element {
       </Spacer>
 
       {importCreateValue != null && importCreateValue.length > 0 ? (
-        <Spacer bottom='14'>
+        <Spacer bottom="14">
           <ImportPreview
-            title='Preview'
+            title="Preview"
             data={importCreateValue as []}
             limit={5}
           />
         </Spacer>
       ) : null}
 
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <Button
-          variant='primary'
+          variant="primary"
           onClick={() => {
             if (!canCreateImport) {
               return
@@ -215,15 +215,15 @@ function NewImportPage(): React.JSX.Element {
           disabled={isLoading}
         >
           {isLoading
-            ? 'Importing...'
+            ? "Importing..."
             : `Import ${formatResourceName({
                 resource: resourceType,
-                count: 'plural',
-                format: 'lower'
+                count: "plural",
+                format: "lower",
               })}`}
         </Button>
         {apiError != null ? (
-          <InputFeedback variant='danger' message={apiError} />
+          <InputFeedback variant="danger" message={apiError} />
         ) : null}
       </Spacer>
     </PageLayout>

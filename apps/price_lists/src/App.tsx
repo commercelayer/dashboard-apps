@@ -1,14 +1,14 @@
-import { ErrorNotFound } from '#pages/ErrorNotFound'
-import { Home } from '#pages/Home'
-import { PriceDetails } from '#pages/PriceDetails'
-import { PriceEdit } from '#pages/PriceEdit'
-import { PriceNew } from '#pages/PriceNew'
-import { PriceTierEdit } from '#pages/PriceTierEdit'
-import { PriceTierNew } from '#pages/PriceTierNew'
-import { PricesList } from '#pages/PricesList'
-import type { FC } from 'react'
-import { Route, Router, Switch } from 'wouter'
-import { appRoutes } from './data/routes'
+import type { FC } from "react"
+import { Route, Router, Switch } from "wouter"
+import { ErrorNotFound } from "#pages/ErrorNotFound"
+import { Home } from "#pages/Home"
+import { PriceDetails } from "#pages/PriceDetails"
+import { PriceEdit } from "#pages/PriceEdit"
+import { PriceNew } from "#pages/PriceNew"
+import { PricesList } from "#pages/PricesList"
+import { PriceTierEdit } from "#pages/PriceTierEdit"
+import { PriceTierNew } from "#pages/PriceTierNew"
+import { appRoutes } from "./data/routes"
 
 interface AppProps {
   routerBase?: string

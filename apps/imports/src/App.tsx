@@ -1,12 +1,12 @@
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { appRoutes } from '#data/routes'
-import { type FC } from 'react'
-import { Route, Router, Switch } from 'wouter'
-import DetailsPage from './pages/DetailsPage'
-import Filters from './pages/Filters'
-import ListPage from './pages/ListPage'
-import NewImportPage from './pages/NewImportPage'
-import { ResourceSelectorPage } from './pages/ResourceSelectorPage'
+import type { FC } from "react"
+import { Route, Router, Switch } from "wouter"
+import { ErrorNotFound } from "#components/ErrorNotFound"
+import { appRoutes } from "#data/routes"
+import DetailsPage from "./pages/DetailsPage"
+import Filters from "./pages/Filters"
+import ListPage from "./pages/ListPage"
+import NewImportPage from "./pages/NewImportPage"
+import { ResourceSelectorPage } from "./pages/ResourceSelectorPage"
 
 interface AppProps {
   routerBase?: string

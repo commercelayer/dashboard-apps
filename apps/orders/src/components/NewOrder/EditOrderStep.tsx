@@ -1,6 +1,3 @@
-import { OrderLineItems } from '#components/OrderSummary/OrderLineItems'
-import { appRoutes } from '#data/routes'
-import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   Button,
   Card,
@@ -10,25 +7,28 @@ import {
   HookedInputSelect,
   HookedValidationApiError,
   PageLayout,
+  type PageProps,
   Section,
   SkeletonTemplate,
   Spacer,
   t,
   useCoreSdkProvider,
   useTranslation,
-  type PageProps
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useLocation } from 'wouter'
-import { z } from 'zod'
-import { SelectCustomerComponent } from './SelectCustomerComponent'
-import { groupedLanguageList, languageList } from './languages'
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { useLocation } from "wouter"
+import { z } from "zod"
+import { OrderLineItems } from "#components/OrderSummary/OrderLineItems"
+import { appRoutes } from "#data/routes"
+import { useOrderDetails } from "#hooks/useOrderDetails"
+import { groupedLanguageList, languageList } from "./languages"
+import { SelectCustomerComponent } from "./SelectCustomerComponent"
 
 export const EditOrderStep: React.FC<
-  Pick<PageProps<typeof appRoutes.new>, 'overlay'> & {
+  Pick<PageProps<typeof appRoutes.new>, "overlay"> & {
     orderId: string
   }
 > = ({ overlay, orderId }) => {
@@ -41,41 +41,41 @@ export const EditOrderStep: React.FC<
 
   const methods = useForm<z.infer<typeof orderSchema>>({
     defaultValues: {
-      language_code: 'en',
-      at_least_one_sku: orderIsValid(order)
+      language_code: "en",
+      at_least_one_sku: orderIsValid(order),
     },
-    resolver: zodResolver(orderSchema)
+    resolver: zodResolver(orderSchema),
   })
 
   useEffect(() => {
-    methods.setValue('at_least_one_sku', orderIsValid(order), {
-      shouldValidate: methods.formState.isSubmitted
+    methods.setValue("at_least_one_sku", orderIsValid(order), {
+      shouldValidate: methods.formState.isSubmitted,
     })
 
     if (order?.customer_email != null) {
-      methods.resetField('customer_email', {
-        defaultValue: order.customer_email
+      methods.resetField("customer_email", {
+        defaultValue: order.customer_email,
       })
     }
   }, [methods, order])
 
-  if (order.status !== 'draft' && order.status !== 'pending') {
+  if (order.status !== "draft" && order.status !== "pending") {
     return (
       <PageLayout
-        title=''
+        title=""
         overlay={overlay}
-        gap='only-top'
+        gap="only-top"
         navigationButton={{
-          label: t('common.close'),
-          icon: 'x',
+          label: t("common.close"),
+          icon: "x",
           onClick() {
             setLocation(appRoutes.home.makePath({}))
-          }
+          },
         }}
       >
         <EmptyState
-          title={t('common.empty_states.not_found')}
-          description={t('common.empty_states.generic_not_found')}
+          title={t("common.empty_states.not_found")}
+          description={t("common.empty_states.generic_not_found")}
         />
       </PageLayout>
     )
@@ -86,25 +86,25 @@ export const EditOrderStep: React.FC<
       title={
         <span>
           <SkeletonTemplate isLoading={isLoading}>
-            {t('common.new')} {t('resources.orders.name').toLowerCase()}{' '}
+            {t("common.new")} {t("resources.orders.name").toLowerCase()}{" "}
             {order.market?.name}
           </SkeletonTemplate>
         </span>
       }
       overlay={overlay}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
-        label: t('common.close'),
-        icon: 'x',
+        label: t("common.close"),
+        icon: "x",
         onClick() {
           setLocation(appRoutes.home.makePath({}))
-        }
+        },
       }}
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer top='14'>
-          <Card overflow='visible'>
-            <OrderLineItems title={t('apps.orders.tasks.cart')} order={order} />
+        <Spacer top="14">
+          <Card overflow="visible">
+            <OrderLineItems title={t("apps.orders.tasks.cart")} order={order} />
           </Card>
         </Spacer>
 
@@ -116,9 +116,9 @@ export const EditOrderStep: React.FC<
                 errors: [
                   {
                     code: 42,
-                    title: t('apps.orders.form.error_create_order')
-                  }
-                ]
+                    title: t("apps.orders.form.error_create_order"),
+                  },
+                ],
               })
             } else {
               // All good!
@@ -126,52 +126,52 @@ export const EditOrderStep: React.FC<
                 .update({
                   id: order.id,
                   customer_email: formValues.customer_email,
-                  language_code: formValues.language_code
+                  language_code: formValues.language_code,
                 })
                 .then(() => {
                   setLocation(
                     appRoutes.details.makePath({
-                      orderId: order.id
-                    })
+                      orderId: order.id,
+                    }),
                   )
                 })
             }
           }}
         >
           <HookedInputCheckbox
-            name='at_least_one_sku'
-            style={{ display: 'none' }}
+            name="at_least_one_sku"
+            style={{ display: "none" }}
           />
 
-          <Spacer top='14'>
-            <Section title={t('resources.customers.name')}>
-              <Spacer top='6'>
+          <Spacer top="14">
+            <Section title={t("resources.customers.name")}>
+              <Spacer top="6">
                 <SelectCustomerComponent />
               </Spacer>
 
-              <Spacer top='6'>
+              <Spacer top="6">
                 <HookedInputSelect
-                  name='language_code'
-                  label={`${t('apps.orders.form.language')} *`}
+                  name="language_code"
+                  label={`${t("apps.orders.form.language")} *`}
                   initialValues={groupedLanguageList}
-                  hint={{ text: t('apps.orders.form.language_hint') }}
+                  hint={{ text: t("apps.orders.form.language_hint") }}
                 />
               </Spacer>
             </Section>
           </Spacer>
 
-          <Spacer top='14'>
-            <Spacer top='8'>
+          <Spacer top="14">
+            <Spacer top="8">
               <Button
-                type='submit'
+                type="submit"
                 fullWidth
                 disabled={methods.formState.isSubmitting}
               >
-                {t('common.create_resource', {
-                  resource: t('resources.orders.name').toLowerCase()
+                {t("common.create_resource", {
+                  resource: t("resources.orders.name").toLowerCase(),
                 })}
               </Button>
-              <Spacer top='2'>
+              <Spacer top="2">
                 <HookedValidationApiError apiError={apiError} />
               </Spacer>
             </Spacer>
@@ -185,14 +185,14 @@ export const EditOrderStep: React.FC<
 const orderSchema = z.object({
   at_least_one_sku: z
     .boolean()
-    .refine((value) => value, t('apps.orders.form.error_create_order')),
+    .refine((value) => value, t("apps.orders.form.error_create_order")),
   customer_email: z.string().email(),
   language_code: z
     .string()
     .refine(
       (value) => languageList.map((l) => l.value as string).includes(value),
-      'Invalid language'
-    )
+      "Invalid language",
+    ),
 })
 
 function orderIsValid(order: Order): boolean {
@@ -200,9 +200,9 @@ function orderIsValid(order: Order): boolean {
     (
       order.line_items?.filter((item) => {
         return (
-          item.item_type === 'adjustments' ||
-          item.item_type === 'bundles' ||
-          item.item_type === 'skus'
+          item.item_type === "adjustments" ||
+          item.item_type === "bundles" ||
+          item.item_type === "skus"
         )
       }) ?? []
     ).length > 0

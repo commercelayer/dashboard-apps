@@ -1,13 +1,13 @@
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { appRoutes } from '#data/routes'
-import { EventCallbacksList } from '#pages/EventCallbacksList'
-import { WebhookCreate } from '#pages/WebhookCreate'
-import { WebhookDelete } from '#pages/WebhookDelete'
-import { WebhookDetails } from '#pages/WebhookDetails'
-import { WebhookEdit } from '#pages/WebhookEdit'
-import { WebhooksList } from '#pages/WebhooksList'
-import type { FC } from 'react'
-import { Route, Router, Switch } from 'wouter'
+import type { FC } from "react"
+import { Route, Router, Switch } from "wouter"
+import { ErrorNotFound } from "#components/ErrorNotFound"
+import { appRoutes } from "#data/routes"
+import { EventCallbacksList } from "#pages/EventCallbacksList"
+import { WebhookCreate } from "#pages/WebhookCreate"
+import { WebhookDelete } from "#pages/WebhookDelete"
+import { WebhookDetails } from "#pages/WebhookDetails"
+import { WebhookEdit } from "#pages/WebhookEdit"
+import { WebhooksList } from "#pages/WebhooksList"
 
 interface AppProps {
   routerBase?: string

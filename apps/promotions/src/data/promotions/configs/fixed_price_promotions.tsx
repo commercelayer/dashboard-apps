@@ -1,69 +1,69 @@
 import {
+  type CurrencyCode,
+  currencies,
+  formatCentsToCurrency,
   HookedInputCurrency,
   HookedInputSelect,
   ListItem,
   Spacer,
-  currencies,
-  formatCentsToCurrency,
-  type CurrencyCode
-} from '@commercelayer/app-elements'
-import { useFormContext } from 'react-hook-form'
-import { z } from 'zod'
-import { PromotionSkuListSelector } from '../components/PromotionSkuListSelector'
-import type { PromotionConfig } from '../config'
-import { genericPromotionOptions } from './promotions'
+} from "@commercelayer/app-elements"
+import { useFormContext } from "react-hook-form"
+import { z } from "zod"
+import { PromotionSkuListSelector } from "../components/PromotionSkuListSelector"
+import type { PromotionConfig } from "../config"
+import { genericPromotionOptions } from "./promotions"
 
 export default {
   fixed_price_promotions: {
-    type: 'fixed_price_promotions',
-    slug: 'fixed-price',
-    icon: 'pushPin',
-    titleList: 'Fixed price',
+    type: "fixed_price_promotions",
+    slug: "fixed-price",
+    icon: "pushPin",
+    titleList: "Fixed price",
     description:
-      'Impose a fixed price for products belonging to a specific list.',
-    titleNew: 'fixed price promotion',
+      "Impose a fixed price for products belonging to a specific list.",
+    titleNew: "fixed price promotion",
     formType: genericPromotionOptions.merge(
       z.object({
         sku_list: z.string(),
         fixed_amount_cents: z.number(),
-        currency_code: z.string()
-      })
+        currency_code: z.string(),
+      }),
     ),
     Fields: ({ promotion }) => {
       const { watch } = useFormContext()
-      const watchedCurrencyCode = watch('currency_code')
+      const watchedCurrencyCode = watch("currency_code")
 
       const currencyCode: CurrencyCode =
         watchedCurrencyCode ??
         (promotion?.currency_code as CurrencyCode) ??
-        'USD'
+        "USD"
 
       return (
         <>
-          <Spacer top='6'>
+          <Spacer top="6">
             <PromotionSkuListSelector
               promotion={promotion}
-              label='Promoted products *'
-              hint='Impose a fixed price to any SKUs within this list.'
+              label="Promoted products *"
+              hint="Impose a fixed price to any SKUs within this list."
             />
           </Spacer>
-          <Spacer top='6'>
-            <ListItem padding='none' borderStyle='none' alignItems='top'>
+          <Spacer top="6">
+            <ListItem padding="none" borderStyle="none" alignItems="top">
               <HookedInputCurrency
-                name='fixed_amount_cents'
+                name="fixed_amount_cents"
                 currencyCode={currencyCode}
-                label='Fixed price *'
+                label="Fixed price *"
                 hint={{
-                  text: 'The price of the SKUs in the list.'
+                  text: "The price of the SKUs in the list.",
                 }}
               />
               <HookedInputSelect
-                name='currency_code'
-                label='&nbsp;'
-                placeholder=''
+                name="currency_code"
+                label="&nbsp;"
+                placeholder=""
                 initialValues={Object.entries(currencies).map(([code]) => ({
                   label: code.toUpperCase(),
-                  value: code.toUpperCase()
+                  value: code.toUpperCase(),
                 }))}
               />
             </ListItem>
@@ -76,10 +76,10 @@ export default {
       <>
         {formatCentsToCurrency(
           promotion.fixed_amount_cents,
-          promotion.currency_code as CurrencyCode
+          promotion.currency_code as CurrencyCode,
         )}
       </>
     ),
-    DetailsSectionInfo: () => <></>
-  }
-} satisfies Pick<PromotionConfig, 'fixed_price_promotions'>
+    DetailsSectionInfo: () => <></>,
+  },
+} satisfies Pick<PromotionConfig, "fixed_price_promotions">

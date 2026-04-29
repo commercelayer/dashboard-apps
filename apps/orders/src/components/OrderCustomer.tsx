@@ -1,4 +1,3 @@
-import { useOrderDetails } from '#hooks/useOrderDetails'
 import {
   Button,
   Icon,
@@ -9,11 +8,12 @@ import {
   useAppLinking,
   useTokenProvider,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import { useEditCustomerOverlay } from './NewOrder/hooks/useEditCustomerOverlay'
-import { useOrderStatus } from './OrderSummary/hooks/useOrderStatus'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import { useOrderDetails } from "#hooks/useOrderDetails"
+import { useEditCustomerOverlay } from "./NewOrder/hooks/useEditCustomerOverlay"
+import { useOrderStatus } from "./OrderSummary/hooks/useOrderStatus"
 
 interface Props {
   order: Order
@@ -35,10 +35,10 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
       return null
     }
 
-    const navigateToCustomer = canAccess('customers')
+    const navigateToCustomer = canAccess("customers")
       ? navigateTo({
-          app: 'customers',
-          resourceId: order.customer.id
+          app: "customers",
+          resourceId: order.customer.id,
         })
       : {}
 
@@ -46,43 +46,43 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
       <>
         <EditCustomerOverlay />
         <Section
-          title={t('resources.customers.name')}
+          title={t("resources.customers.name")}
           actionButton={
-            (order.status === 'draft' || order.status === 'pending') &&
+            (order.status === "draft" || order.status === "pending") &&
             isEditing ? (
               <Button
-                alignItems='center'
-                variant='secondary'
-                size='mini'
+                alignItems="center"
+                variant="secondary"
+                size="mini"
                 onClick={() => {
                   openEditCustomerOverlay()
                 }}
               >
-                <Icon name='pencilSimple' />
-                {t('common.edit')}
+                <Icon name="pencilSimple" />
+                {t("common.edit")}
               </Button>
             ) : null
           }
         >
           <ListItem
-            icon={<StatusIcon name='user' background='teal' gap='large' />}
+            icon={<StatusIcon name="user" background="teal" gap="large" />}
             {...navigateToCustomer}
           >
             <div>
-              <Text tag='div' weight='semibold'>
+              <Text tag="div" weight="semibold">
                 {order.customer.email}
               </Text>
-              <Text size='small' tag='div' variant='info' weight='medium'>
-                {order.customer.total_orders_count}{' '}
-                {t('resources.orders.name', {
-                  count: order.customer.total_orders_count ?? 0
+              <Text size="small" tag="div" variant="info" weight="medium">
+                {order.customer.total_orders_count}{" "}
+                {t("resources.orders.name", {
+                  count: order.customer.total_orders_count ?? 0,
                 }).toLowerCase()}
               </Text>
             </div>
-            {canAccess('customers') && <StatusIcon name='caretRight' />}
+            {canAccess("customers") && <StatusIcon name="caretRight" />}
           </ListItem>
         </Section>
       </>
     )
-  }
+  },
 )

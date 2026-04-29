@@ -1,5 +1,5 @@
-import { CommerceLayerStatic } from '@commercelayer/sdk'
-import { type ApiError } from '@typing/resources.types'
+import { CommerceLayerStatic } from "@commercelayer/sdk"
+import type { ApiError } from "@typing/resources.types"
 
 export function parseApiError(err: any): ApiError[] {
   if (CommerceLayerStatic.isApiError(err) && Array.isArray(err.errors)) {
@@ -8,9 +8,9 @@ export function parseApiError(err: any): ApiError[] {
   } else {
     return [
       {
-        title: err.message ?? 'Could not create the export task',
-        detail: err.message ?? 'Could not create the export task'
-      }
+        title: err.message ?? "Could not create the export task",
+        detail: err.message ?? "Could not create the export task",
+      },
     ]
   }
 }

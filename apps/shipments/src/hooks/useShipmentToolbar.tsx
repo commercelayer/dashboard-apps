@@ -1,8 +1,8 @@
-import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
-import { useViewStatus } from '#hooks/useViewStatus'
-import type { PageHeadingToolbarProps } from '@commercelayer/app-elements'
-import type { Shipment } from '@commercelayer/sdk'
-import type { FC } from 'react'
+import type { PageHeadingToolbarProps } from "@commercelayer/app-elements"
+import type { Shipment } from "@commercelayer/sdk"
+import type { FC } from "react"
+import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
+import { useViewStatus } from "#hooks/useViewStatus"
 
 export function useShipmentToolbar({ shipment }: { shipment: Shipment }): {
   props: PageHeadingToolbarProps
@@ -16,18 +16,18 @@ export function useShipmentToolbar({ shipment }: { shipment: Shipment }): {
     viewStatus.contextActions?.map((action) => ({
       label: action.label,
       onClick: () => {
-        if (action.triggerAttribute === '_create_parcel') {
+        if (action.triggerAttribute === "_create_parcel") {
           return
         }
 
         void trigger(action.triggerAttribute)
-      }
+      },
     })) ?? []
 
   return {
     Components: () => <></>,
     props: {
-      dropdownItems: [dropdownItems]
-    }
+      dropdownItems: [dropdownItems],
+    },
   }
 }

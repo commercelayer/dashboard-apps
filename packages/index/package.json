@@ -8,8 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "check": "pnpm biome check",
+    "check:fix": "pnpm biome check --write",
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "@commercelayer/app-builder": "workspace:*",
-    "@commercelayer/eslint-config-ts-react": "^2.8.2",
     "@commercelayer/js-auth": "^6.7.2",
     "@types/js-cookie": "^3.0.6",
     "@types/js-yaml": "^4.0.9",
@@ -30,7 +29,6 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.2.0",
-    "eslint": "^8.57.1",
     "js-cookie": "^3.0.5",
     "js-yaml": "^4.1.1",
     "jsdom": "^27.4.0",

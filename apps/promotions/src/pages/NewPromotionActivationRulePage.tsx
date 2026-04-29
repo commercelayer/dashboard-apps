@@ -1,21 +1,21 @@
-import type { PageProps } from '#components/Routes'
-import { appRoutes } from '#data/routes'
-import { RuleBuilderForm } from '#data/ruleBuilder/form/RuleBuilderForm'
-import { usePromotion } from '#hooks/usePromotion'
 import {
   EmptyState,
   PageLayout,
   SkeletonTemplate,
   Spacer,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useLocation } from "wouter"
+import type { PageProps } from "#components/Routes"
+import { appRoutes } from "#data/routes"
+import { RuleBuilderForm } from "#data/ruleBuilder/form/RuleBuilderForm"
+import { usePromotion } from "#hooks/usePromotion"
 
 function Page(
-  props: PageProps<typeof appRoutes.newPromotionActivationRule>
+  props: PageProps<typeof appRoutes.newPromotionActivationRule>,
 ): React.JSX.Element {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const [, setLocation] = useLocation()
 
@@ -23,39 +23,39 @@ function Page(
 
   return (
     <PageLayout
-      title='New activation rule'
+      title="New activation rule"
       overlay={props.overlay}
       mode={mode}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
-        label: 'Close',
-        icon: 'x',
+        label: "Close",
+        icon: "x",
         onClick() {
           setLocation(
             appRoutes.promotionDetails.makePath({
-              promotionId: props.params.promotionId
-            })
+              promotionId: props.params.promotionId,
+            }),
           )
-        }
+        },
       }}
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer top='10'>
-          {promotion.type !== 'flex_promotions' ? (
+        <Spacer top="10">
+          {promotion.type !== "flex_promotions" ? (
             <RuleBuilderForm
               promotion={promotion}
               onSuccess={() => {
                 setLocation(
                   appRoutes.promotionDetails.makePath({
-                    promotionId: props.params.promotionId
-                  })
+                    promotionId: props.params.promotionId,
+                  }),
                 )
               }}
             />
           ) : (
             <EmptyState
-              title='Action denied!'
-              description='Activation rules cannot be defined for a Flex promotion.'
+              title="Action denied!"
+              description="Activation rules cannot be defined for a Flex promotion."
             />
           )}
         </Spacer>

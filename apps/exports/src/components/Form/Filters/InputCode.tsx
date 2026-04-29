@@ -1,5 +1,5 @@
-import { ErrorBoundary, InputJson } from '@commercelayer/app-elements'
-import { useState } from 'react'
+import { ErrorBoundary, InputJson } from "@commercelayer/app-elements"
+import { useState } from "react"
 
 type ExportJsonFilters = object
 
@@ -10,15 +10,15 @@ interface Props {
 
 export function InputCode({
   onDataReady,
-  onDataResetRequest
+  onDataResetRequest,
 }: Props): React.JSX.Element {
   const [renderKey, setRenderKey] = useState<number | undefined>(undefined)
 
   return (
     <ErrorBoundary
-      errorDescription='We could not parse your input. Please try again.'
+      errorDescription="We could not parse your input. Please try again."
       onRetry={() => {
-        setRenderKey(new Date().getTime())
+        setRenderKey(Date.now())
       }}
       key={renderKey}
     >
@@ -33,7 +33,7 @@ export function InputCode({
 }
 
 const placeholder = {
-  status_in: ['placed', 'approved'],
-  placed_at_gteq: '2018-01-01T12:00:00.000Z',
-  country_code_eq: 'IT'
+  status_in: ["placed", "approved"],
+  placed_at_gteq: "2018-01-01T12:00:00.000Z",
+  country_code_eq: "IT",
 }

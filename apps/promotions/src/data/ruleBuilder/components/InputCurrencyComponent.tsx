@@ -1,9 +1,9 @@
-import type { Promotion } from '#types'
-import { HookedInputCurrency } from '@commercelayer/app-elements'
-import { useCurrencyCodes } from '../currency'
+import { HookedInputCurrency } from "@commercelayer/app-elements"
+import type { Promotion } from "#types"
+import { useCurrencyCodes } from "../currency"
 
 export function InputCurrencyComponent({
-  promotion
+  promotion,
 }: {
   promotion: Promotion
 }): React.ReactNode {
@@ -14,5 +14,5 @@ export function InputCurrencyComponent({
     return null
   }
 
-  return <HookedInputCurrency name='value' currencyCode={currencyCode} />
+  return <HookedInputCurrency name="value" currencyCode={currencyCode} />
 }

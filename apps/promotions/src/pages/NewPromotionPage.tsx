@@ -1,15 +1,15 @@
-import { PromotionForm } from '#components/PromotionForm'
-import { GenericPageNotFound, type PageProps } from '#components/Routes'
-import { promotionConfig } from '#data/promotions/config'
-import { appRoutes } from '#data/routes'
-import { PageLayout, useTokenProvider } from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
+import { PageLayout, useTokenProvider } from "@commercelayer/app-elements"
+import { useLocation } from "wouter"
+import { PromotionForm } from "#components/PromotionForm"
+import { GenericPageNotFound, type PageProps } from "#components/Routes"
+import { promotionConfig } from "#data/promotions/config"
+import { appRoutes } from "#data/routes"
 
 function Page(
-  props: PageProps<typeof appRoutes.newPromotion>
+  props: PageProps<typeof appRoutes.newPromotion>,
 ): React.JSX.Element {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const [, setLocation] = useLocation()
 
@@ -25,27 +25,27 @@ function Page(
       // description='Enter basic details to create the promotion, then set activation rules or coupons to limit its reach after creation.'
       overlay={props.overlay}
       mode={mode}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
-        label: 'Back',
+        label: "Back",
         onClick() {
           setLocation(appRoutes.newSelectType.makePath({}))
-        }
+        },
       }}
     >
       <PromotionForm
         promotionConfig={config}
         defaultValues={{
-          currency_code: 'USD',
+          currency_code: "USD",
           max_quantity: 1,
-          apply_the_discount_to: 'all',
+          apply_the_discount_to: "all",
           rules: JSON.stringify(
             {
-              rules: []
+              rules: [],
             },
             undefined,
-            2
-          ).concat('\n')
+            2,
+          ).concat("\n"),
         }}
       />
     </PageLayout>

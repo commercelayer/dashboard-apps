@@ -1,9 +1,9 @@
 import {
   ResourcePaymentMethod,
   Section,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { OrderSubscription } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { OrderSubscription } from "@commercelayer/sdk"
 
 interface Props {
   subscription: OrderSubscription
@@ -16,7 +16,7 @@ export const SubscriptionPayment = withSkeletonTemplate<Props>(
     }
 
     return (
-      <Section title='Payment method' border='none'>
+      <Section title="Payment method" border="none">
         <ResourcePaymentMethod
           // @ts-expect-error type mismatch for CustomerPaymentSource resource
           resource={subscription.customer_payment_source}
@@ -24,5 +24,5 @@ export const SubscriptionPayment = withSkeletonTemplate<Props>(
         />
       </Section>
     )
-  }
+  },
 )

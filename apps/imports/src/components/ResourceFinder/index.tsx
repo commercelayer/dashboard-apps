@@ -1,19 +1,19 @@
 import {
   InputSelect,
-  Label,
-  isSingleValueSelected,
   type InputSelectProps,
-  type InputSelectValue
-} from '@commercelayer/app-elements'
-import { type CommerceLayerClient } from '@commercelayer/sdk'
-import {
-  type AllowedParentResource,
-  type AllowedResourceType
-} from '@typing/resources.types'
-import { useEffect, useRef, useState } from 'react'
-import { fetchResources } from './utils'
+  type InputSelectValue,
+  isSingleValueSelected,
+  Label,
+} from "@commercelayer/app-elements"
+import type { CommerceLayerClient } from "@commercelayer/sdk"
+import type {
+  AllowedParentResource,
+  AllowedResourceType,
+} from "@typing/resources.types"
+import { useEffect, useRef, useState } from "react"
+import { fetchResources } from "./utils"
 
-interface Props extends Pick<InputSelectProps, 'feedback' | 'hint'> {
+interface Props extends Pick<InputSelectProps, "feedback" | "hint"> {
   /**
    * Text to show above the input
    */
@@ -43,7 +43,7 @@ export function ResourceFinder({
   sdkClient,
   feedback,
   hint,
-  onSelect
+  onSelect,
 }: Props): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true)
   const [initialValues, setInitialValues] = useState<InputSelectValue[]>([])
@@ -64,19 +64,19 @@ export function ResourceFinder({
   useEffect(() => {
     if (
       feedback != null &&
-      feedback.variant === 'danger' &&
+      feedback.variant === "danger" &&
       element.current != null
     ) {
       element.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
+        behavior: "smooth",
+        block: "center",
       })
     }
   }, [feedback])
 
   return (
     <div ref={element}>
-      <Label gap htmlFor='parent-resource'>
+      <Label gap htmlFor="parent-resource">
         {label}
       </Label>
       <InputSelect
@@ -89,7 +89,7 @@ export function ResourceFinder({
         onSelect={(selected) => {
           if (onSelect != null) {
             onSelect(
-              isSingleValueSelected(selected) ? `${selected.value}` : null
+              isSingleValueSelected(selected) ? `${selected.value}` : null,
             )
           }
         }}

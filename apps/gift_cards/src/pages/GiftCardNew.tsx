@@ -1,17 +1,17 @@
-import { Form } from '#components/Form'
-import { appRoutes } from '#data/routes'
 import {
   PageLayout,
   useAppLinking,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import isEmpty from 'lodash-es/isEmpty'
-import type { FC } from 'react'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import isEmpty from "lodash-es/isEmpty"
+import type { FC } from "react"
+import { Form } from "#components/Form"
+import { appRoutes } from "#data/routes"
 
 const GiftCardNew: FC = () => {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const { goBack } = useAppLinking()
@@ -20,15 +20,15 @@ const GiftCardNew: FC = () => {
     <PageLayout
       mode={mode}
       overlay
-      title='New gift card'
+      title="New gift card"
       navigationButton={{
         onClick: () => {
           goBack({
-            defaultRelativePath: appRoutes.list.makePath({})
+            defaultRelativePath: appRoutes.list.makePath({}),
           })
         },
-        label: 'Back',
-        icon: 'arrowLeft'
+        label: "Back",
+        icon: "arrowLeft",
       }}
       scrollToTop
     >
@@ -41,8 +41,8 @@ const GiftCardNew: FC = () => {
             market: sdkClient.markets.relationship(
               formValues.market != null && !isEmpty(formValues.market)
                 ? formValues.market
-                : null
-            )
+                : null,
+            ),
           })
           await sdkClient.gift_cards._purchase(newGiftCard.id)
           return newGiftCard

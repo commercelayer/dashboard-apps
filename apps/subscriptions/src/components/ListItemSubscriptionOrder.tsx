@@ -1,42 +1,42 @@
-import { makeOrder } from '#mocks'
 import {
   Badge,
+  type BadgeProps,
   formatDate,
+  type ResourceListItemTemplateProps,
   Td,
   Text,
   Tr,
   useAppLinking,
   useTokenProvider,
   withSkeletonTemplate,
-  type BadgeProps,
-  type ResourceListItemTemplateProps
-} from '@commercelayer/app-elements'
-import type { Order } from '@commercelayer/sdk'
-import capitalize from 'lodash-es/capitalize'
+} from "@commercelayer/app-elements"
+import type { Order } from "@commercelayer/sdk"
+import capitalize from "lodash-es/capitalize"
+import { makeOrder } from "#mocks"
 
 export const ListItemSubscriptionOrder = withSkeletonTemplate<
-  ResourceListItemTemplateProps<'orders'>
+  ResourceListItemTemplateProps<"orders">
 >(({ resource = makeOrder() }): React.JSX.Element | null => {
   const { user, canAccess } = useTokenProvider()
   const { navigateTo } = useAppLinking()
 
   const orderDate = formatDate({
-    isoDate: resource.updated_at ?? '',
-    format: 'full',
+    isoDate: resource.updated_at ?? "",
+    format: "full",
     timezone: user?.timezone,
-    showCurrentYear: true
+    showCurrentYear: true,
   })
 
   const orderNumber = `#${resource?.number}`
-  const navigateToOrder = canAccess('orders')
+  const navigateToOrder = canAccess("orders")
     ? navigateTo({
-        app: 'orders',
-        resourceId: resource?.id
+        app: "orders",
+        resourceId: resource?.id,
       })
     : {}
 
   const paymentStatus = capitalize(
-    resource?.payment_status.replace(/_|-/gm, ' ')
+    resource?.payment_status.replace(/_|-/gm, " "),
   )
   const paymentStatusVariant = getPaymentStatusVariant(resource?.payment_status)
 
@@ -46,7 +46,7 @@ export const ListItemSubscriptionOrder = withSkeletonTemplate<
         <Text>{orderDate}</Text>
       </Td>
       <Td>
-        {canAccess('orders') ? (
+        {canAccess("orders") ? (
           <a {...navigateToOrder}>{`${orderNumber}`}</a>
         ) : (
           `${orderNumber}`
@@ -60,14 +60,14 @@ export const ListItemSubscriptionOrder = withSkeletonTemplate<
 })
 
 const getPaymentStatusVariant = (
-  status: Order['payment_status']
-): BadgeProps['variant'] => {
+  status: Order["payment_status"],
+): BadgeProps["variant"] => {
   switch (status) {
-    case 'paid':
-      return 'success'
-    case 'unpaid':
-      return 'danger'
+    case "paid":
+      return "success"
+    case "unpaid":
+      return "danger"
     default:
-      return 'secondary'
+      return "secondary"
   }
 }

@@ -1,6 +1,7 @@
 import {
   Button,
   EmptyState,
+  type PageHeadingProps,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
@@ -10,29 +11,27 @@ import {
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
-  type PageHeadingProps
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
-
-import { StockItemInfo } from '#components/StockItemInfo'
-import { appRoutes } from '#data/routes'
-import { useStockItemDetails } from '#hooks/useStockItemDetails'
-import { useState, type FC } from 'react'
+} from "@commercelayer/app-elements"
+import { type FC, useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { StockItemInfo } from "#components/StockItemInfo"
+import { appRoutes } from "#data/routes"
+import { useStockItemDetails } from "#hooks/useStockItemDetails"
 
 export const StockItemDetails: FC = () => {
   const {
     settings: { mode },
-    canUser
+    canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ stockLocationId: string; stockItemId: string }>(
-    appRoutes.stockItem.path
+    appRoutes.stockItem.path,
   )
 
-  const stockLocationId = params?.stockLocationId ?? ''
-  const stockItemId = params?.stockItemId ?? ''
+  const stockLocationId = params?.stockLocationId ?? ""
+  const stockItemId = params?.stockItemId ?? ""
 
   const { stockItem, isLoading, error, mutateStockItem } =
     useStockItemDetails(stockItemId)
@@ -44,28 +43,28 @@ export const StockItemDetails: FC = () => {
   const [isDeleting, setIsDeleting] = useState(false)
 
   const backLink =
-    stockLocationId !== ''
+    stockLocationId !== ""
       ? appRoutes.stockLocation.makePath(stockLocationId)
       : appRoutes.list.makePath()
 
   if (error != null) {
     return (
       <PageLayout
-        title='Stock items'
+        title="Stock items"
         navigationButton={{
           onClick: () => {
             setLocation(backLink)
           },
-          label: 'Stock location',
-          icon: 'arrowLeft'
+          label: "Stock location",
+          icon: "arrowLeft",
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={backLink}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -75,32 +74,32 @@ export const StockItemDetails: FC = () => {
 
   const pageTitle = stockItem?.sku?.name
 
-  const pageToolbar: PageHeadingProps['toolbar'] = {
+  const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
-    dropdownItems: []
+    dropdownItems: [],
   }
 
-  if (canUser('update', 'stock_items')) {
+  if (canUser("update", "stock_items")) {
     pageToolbar.buttons?.push({
-      label: 'Edit',
-      size: 'small',
-      variant: 'secondary',
+      label: "Edit",
+      size: "small",
+      variant: "secondary",
       onClick: () => {
         setLocation(
-          appRoutes.editStockItem.makePath(stockLocationId, stockItemId)
+          appRoutes.editStockItem.makePath(stockLocationId, stockItemId),
         )
-      }
+      },
     })
   }
 
-  if (canUser('destroy', 'stock_items')) {
+  if (canUser("destroy", "stock_items")) {
     pageToolbar.dropdownItems?.push([
       {
-        label: 'Delete',
+        label: "Delete",
         onClick: () => {
           open()
-        }
-      }
+        },
+      },
     ])
   }
 
@@ -112,29 +111,29 @@ export const StockItemDetails: FC = () => {
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
-          {stockItem?.sku?.code ?? ''}
+          {stockItem?.sku?.code ?? ""}
         </SkeletonTemplate>
       }
       navigationButton={{
         onClick: () => {
           goBack({
             currentResourceId: stockItemId,
-            defaultRelativePath: backLink
+            defaultRelativePath: backLink,
           })
         },
-        label: stockLocationId !== '' ? 'Stock location' : 'All inventory',
-        icon: 'arrowLeft'
+        label: stockLocationId !== "" ? "Stock location" : "All inventory",
+        icon: "arrowLeft",
       }}
       toolbar={pageToolbar}
       scrollToTop
-      gap='only-top'
+      gap="only-top"
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom='4'>
-          <Spacer top='14'>
+        <Spacer bottom="4">
+          <Spacer top="14">
             <StockItemInfo stockItem={stockItem} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <ResourceDetails
               resource={stockItem}
               onUpdated={async () => {
@@ -142,34 +141,34 @@ export const StockItemDetails: FC = () => {
               }}
             />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <ResourceMetadata
               resourceId={stockItem.id}
-              resourceType='stock_items'
+              resourceType="stock_items"
               overlay={{
-                title: pageTitle ?? ''
+                title: pageTitle ?? "",
               }}
             />
           </Spacer>
         </Spacer>
       </SkeletonTemplate>
-      {canUser('destroy', 'stock_items') && (
-        <Overlay backgroundColor='light'>
+      {canUser("destroy", "stock_items") && (
+        <Overlay backgroundColor="light">
           <PageLayout
             title={`Confirm that you want to cancel the stock item related to ${stockItem?.sku?.code} (${stockItem?.sku?.name}) SKU.`}
-            description='This action cannot be undone, proceed with caution.'
+            description="This action cannot be undone, proceed with caution."
             minHeight={false}
             navigationButton={{
               onClick: () => {
                 close()
               },
               label: `Cancel`,
-              icon: 'x'
+              icon: "x",
             }}
           >
             <Button
-              variant='danger'
-              size='small'
+              variant="danger"
+              size="small"
               disabled={isDeleting}
               onClick={(e) => {
                 setIsDeleting(true)

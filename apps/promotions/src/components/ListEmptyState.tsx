@@ -1,21 +1,21 @@
-import { appRoutes } from '#data/routes'
-import { usePromotionPermission } from '#hooks/usePromotionPermission'
-import { Button, EmptyState } from '@commercelayer/app-elements'
-import { Link } from 'wouter'
+import { Button, EmptyState } from "@commercelayer/app-elements"
+import { Link } from "wouter"
+import { appRoutes } from "#data/routes"
+import { usePromotionPermission } from "#hooks/usePromotionPermission"
 
 interface Props {
-  scope?: 'history' | 'userFiltered'
+  scope?: "history" | "userFiltered"
 }
 
 export function ListEmptyState({
-  scope = 'history'
+  scope = "history",
 }: Props): React.JSX.Element {
   const { canUserManagePromotions } = usePromotionPermission()
 
-  if (scope === 'userFiltered') {
+  if (scope === "userFiltered") {
     return (
       <EmptyState
-        title='No promotions found!'
+        title="No promotions found!"
         description={
           <div>
             <p>
@@ -30,11 +30,11 @@ export function ListEmptyState({
 
   return (
     <EmptyState
-      title='No promotions yet!'
+      title="No promotions yet!"
       action={
-        canUserManagePromotions('create', 'atLeastOne') && (
+        canUserManagePromotions("create", "atLeastOne") && (
           <Link href={appRoutes.newSelectType.makePath({})}>
-            <Button variant='primary'>Add promo</Button>
+            <Button variant="primary">Add promo</Button>
           </Link>
         )
       }

@@ -1,6 +1,3 @@
-import { makeFiltersInstructions } from '#data/filters'
-import { presets } from '#data/lists'
-import { appRoutes } from '#data/routes'
 import {
   HomePageLayout,
   List,
@@ -10,12 +7,15 @@ import {
   StatusIcon,
   Text,
   useResourceFilters,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { useCallback } from 'react'
-import { Link, useLocation } from 'wouter'
-import { useSearch } from 'wouter/use-browser-location'
-import { useListCounters } from '../metricsApi/useListCounters'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import { useCallback } from "react"
+import { Link, useLocation } from "wouter"
+import { useSearch } from "wouter/use-browser-location"
+import { makeFiltersInstructions } from "#data/filters"
+import { presets } from "#data/lists"
+import { appRoutes } from "#data/routes"
+import { useListCounters } from "../metricsApi/useListCounters"
 
 function Home(): React.JSX.Element {
   const search = useSearch()
@@ -25,7 +25,7 @@ function Home(): React.JSX.Element {
   const { data: counters, isLoading: isLoadingCounters } = useListCounters()
 
   const { SearchWithNav, adapters } = useResourceFilters({
-    instructions: makeFiltersInstructions()
+    instructions: makeFiltersInstructions(),
   })
 
   const getPresetUrl = useCallback(
@@ -36,16 +36,16 @@ function Home(): React.JSX.Element {
         adapters.adaptFormValuesToUrlQuery({
           formValues: {
             status_in: [preset.status_eq as string],
-            viewTitle: preset.viewTitle
-          }
-        })
+            viewTitle: preset.viewTitle,
+          },
+        }),
       )
     },
-    []
+    [],
   )
 
   return (
-    <HomePageLayout title={t('resources.shipments.name_other')}>
+    <HomePageLayout title={t("resources.shipments.name_other")}>
       <SearchWithNav
         hideFiltersNav
         onFilterClick={() => {}}
@@ -56,99 +56,99 @@ function Home(): React.JSX.Element {
       />
 
       <SkeletonTemplate isLoading={isLoadingCounters}>
-        <Spacer bottom='14'>
-          <List title={t('apps.shipments.tasks.pending')}>
-            <Link href={getPresetUrl('picking')} asChild>
+        <Spacer bottom="14">
+          <List title={t("apps.shipments.tasks.pending")}>
+            <Link href={getPresetUrl("picking")} asChild>
               <ListItem
                 icon={
                   <StatusIcon
-                    name='arrowDown'
-                    background='orange'
-                    gap='small'
+                    name="arrowDown"
+                    background="orange"
+                    gap="small"
                   />
                 }
               >
-                <Text weight='semibold'>
-                  {t('apps.shipments.tasks.picking')}{' '}
+                <Text weight="semibold">
+                  {t("apps.shipments.tasks.picking")}{" "}
                   {formatCounter(counters?.picking)}
                 </Text>
-                <StatusIcon name='caretRight' />
+                <StatusIcon name="caretRight" />
               </ListItem>
             </Link>
 
-            <Link href={getPresetUrl('packing')} asChild>
+            <Link href={getPresetUrl("packing")} asChild>
               <ListItem
                 icon={
                   <StatusIcon
-                    name='packageIcon'
-                    background='orange'
-                    gap='small'
+                    name="packageIcon"
+                    background="orange"
+                    gap="small"
                   />
                 }
               >
-                <Text weight='semibold'>
-                  {t('apps.shipments.tasks.packing')}{' '}
+                <Text weight="semibold">
+                  {t("apps.shipments.tasks.packing")}{" "}
                   {formatCounter(counters?.packing)}
                 </Text>
-                <StatusIcon name='caretRight' />
+                <StatusIcon name="caretRight" />
               </ListItem>
             </Link>
 
-            <Link href={getPresetUrl('readyToShip')} asChild>
+            <Link href={getPresetUrl("readyToShip")} asChild>
               <ListItem
                 icon={
                   <StatusIcon
-                    name='arrowUpRight'
-                    background='orange'
-                    gap='small'
+                    name="arrowUpRight"
+                    background="orange"
+                    gap="small"
                   />
                 }
               >
-                <Text weight='semibold'>
-                  {t('apps.shipments.tasks.ready_to_ship')}{' '}
+                <Text weight="semibold">
+                  {t("apps.shipments.tasks.ready_to_ship")}{" "}
                   {formatCounter(counters?.readyToShip)}
                 </Text>
-                <StatusIcon name='caretRight' />
+                <StatusIcon name="caretRight" />
               </ListItem>
             </Link>
 
-            <Link href={getPresetUrl('onHold')} asChild>
+            <Link href={getPresetUrl("onHold")} asChild>
               <ListItem
                 icon={
                   <StatusIcon
-                    name='hourglass'
-                    background='orange'
-                    gap='small'
+                    name="hourglass"
+                    background="orange"
+                    gap="small"
                   />
                 }
               >
-                <Text weight='semibold'>
-                  {t('apps.shipments.tasks.on_hold')}{' '}
+                <Text weight="semibold">
+                  {t("apps.shipments.tasks.on_hold")}{" "}
                   {formatCounter(counters?.onHold)}
                 </Text>
-                <StatusIcon name='caretRight' />
+                <StatusIcon name="caretRight" />
               </ListItem>
             </Link>
           </List>
         </Spacer>
       </SkeletonTemplate>
 
-      <Spacer bottom='14'>
-        <List title={t('apps.shipments.tasks.browse')}>
+      <Spacer bottom="14">
+        <List title={t("apps.shipments.tasks.browse")}>
           <Link href={appRoutes.list.makePath({})} asChild>
             <ListItem
               icon={
                 <StatusIcon
-                  name='asteriskSimple'
-                  background='black'
-                  gap='small'
+                  name="asteriskSimple"
+                  background="black"
+                  gap="small"
                 />
               }
             >
-              <Text weight='semibold'>
-                {t('apps.shipments.tasks.all_shipments')}
+              <Text weight="semibold">
+                {t("apps.shipments.tasks.all_shipments")}
               </Text>
-              <StatusIcon name='caretRight' />
+              <StatusIcon name="caretRight" />
             </ListItem>
           </Link>
         </List>

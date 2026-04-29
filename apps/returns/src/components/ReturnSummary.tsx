@@ -1,12 +1,4 @@
 import {
-  getReturnTriggerAttributeName,
-  getReturnTriggerAttributes
-} from '#data/dictionaries'
-import { appRoutes } from '#data/routes'
-import { useCancelOverlay } from '#hooks/useCancelOverlay'
-import { useRestockableList } from '#hooks/useRestockableList'
-import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
-import {
   ActionButtons,
   Button,
   ResourceLineItems,
@@ -15,10 +7,18 @@ import {
   Text,
   useTokenProvider,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Return } from '@commercelayer/sdk'
-import { useLocation } from 'wouter'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Return } from "@commercelayer/sdk"
+import { useLocation } from "wouter"
+import {
+  getReturnTriggerAttributeName,
+  getReturnTriggerAttributes,
+} from "#data/dictionaries"
+import { appRoutes } from "#data/routes"
+import { useCancelOverlay } from "#hooks/useCancelOverlay"
+import { useRestockableList } from "#hooks/useRestockableList"
+import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
 interface Props {
   returnObj: Return
@@ -39,7 +39,7 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
     const restockableList = useRestockableList(returnObj)
 
     const capture = returnObj.order?.captures?.find(
-      (capture) => capture.succeeded
+      (capture) => capture.succeeded,
     )
     const isRefundable =
       capture?.refund_balance_cents != null && capture.refund_balance_cents > 0
@@ -48,19 +48,19 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
 
     return (
       <Section
-        title={t('apps.returns.form.items')}
+        title={t("apps.returns.form.items")}
         actionButton={
-          returnObj.status === 'received' &&
+          returnObj.status === "received" &&
           restockableList.length > 0 &&
-          canUser('update', 'return_line_items') && (
+          canUser("update", "return_line_items") && (
             <Button
-              variant='secondary'
-              size='mini'
+              variant="secondary"
+              size="mini"
               onClick={() => {
                 setLocation(appRoutes.restock.makePath(returnObj.id))
               }}
             >
-              {t('apps.returns.actions.restock')}
+              {t("apps.returns.actions.restock")}
             </Button>
           )
         }
@@ -69,37 +69,37 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
           editable={false}
           items={returnObj.return_line_items ?? []}
         />
-        {canUser('update', 'returns') && (
+        {canUser("update", "returns") && (
           <ActionButtons
             actions={triggerAttributes
               .filter((triggerAttributes) => {
                 return (
-                  triggerAttributes !== '_refund' ||
-                  (isRefundable && canUser('update', 'transactions'))
+                  triggerAttributes !== "_refund" ||
+                  (isRefundable && canUser("update", "transactions"))
                 )
               })
               .map((triggerAttribute) => {
                 return {
                   label: getReturnTriggerAttributeName(triggerAttribute),
                   variant:
-                    triggerAttribute === '_cancel' ||
-                    triggerAttribute === '_reject'
-                      ? 'secondary'
-                      : 'primary',
+                    triggerAttribute === "_cancel" ||
+                    triggerAttribute === "_reject"
+                      ? "secondary"
+                      : "primary",
                   disabled: isLoading,
                   onClick: () => {
-                    if (triggerAttribute === '_cancel') {
+                    if (triggerAttribute === "_cancel") {
                       showCancelOverlay()
                       return
                     }
 
-                    if (triggerAttribute === '_refund') {
+                    if (triggerAttribute === "_refund") {
                       setLocation(appRoutes.refund.makePath(returnObj.id))
                       return
                     }
 
                     void dispatch(triggerAttribute)
-                  }
+                  },
                 }
               })}
           />
@@ -108,19 +108,19 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
         <CancelOverlay
           returnObj={returnObj}
           onConfirm={() => {
-            void dispatch('_cancel')
+            void dispatch("_cancel")
           }}
         />
       </Section>
     )
-  }
+  },
 )
 
 function renderErrorMessages(errors?: string[]): React.JSX.Element {
   return errors != null && errors.length > 0 ? (
-    <Spacer top='4'>
-      {errors.map((message, idx) => (
-        <Text key={idx} variant='danger'>
+    <Spacer top="4">
+      {errors.map((message) => (
+        <Text key={message} variant="danger">
           {message}
         </Text>
       ))}

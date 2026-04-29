@@ -1,14 +1,14 @@
-import { useSyncFormPackingWeight } from '#hooks/useSyncFormPackingWeight'
 import {
   HookedInput,
   HookedInputSelect,
-  useTranslation
-} from '@commercelayer/app-elements'
-import type { Shipment } from '@commercelayer/sdk'
-import { useFormContext } from 'react-hook-form'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { Shipment } from "@commercelayer/sdk"
+import { useFormContext } from "react-hook-form"
+import { useSyncFormPackingWeight } from "#hooks/useSyncFormPackingWeight"
 
 export function FormPackingFieldWeight({
-  shipment
+  shipment,
 }: {
   shipment: Shipment
 }): React.JSX.Element {
@@ -18,33 +18,33 @@ export function FormPackingFieldWeight({
 
   return (
     <div
-      style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '2.5fr 1fr' }}
+      style={{ display: "grid", gap: "1rem", gridTemplateColumns: "2.5fr 1fr" }}
     >
-      <HookedInput label={t('apps.shipments.details.weight')} name='weight' />
+      <HookedInput label={t("apps.shipments.details.weight")} name="weight" />
       <HookedInputSelect
-        name='unitOfWeight'
+        name="unitOfWeight"
         label={`\u00A0`} // empty white space to keep field alignment
-        aria-label={t('apps.shipments.form.unit_of_weight')}
-        key={watch('unitOfWeight')}
+        aria-label={t("apps.shipments.form.unit_of_weight")}
+        key={watch("unitOfWeight")}
         initialValues={[
           {
-            value: 'gr',
+            value: "gr",
             label: t(
-              'resources.parcels.attributes.unit_of_weight.gr'
-            ).toLowerCase()
+              "resources.parcels.attributes.unit_of_weight.gr",
+            ).toLowerCase(),
           },
           {
-            value: 'lb',
+            value: "lb",
             label: t(
-              'resources.parcels.attributes.unit_of_weight.lb'
-            ).toLowerCase()
+              "resources.parcels.attributes.unit_of_weight.lb",
+            ).toLowerCase(),
           },
           {
-            value: 'oz',
+            value: "oz",
             label: t(
-              'resources.parcels.attributes.unit_of_weight.oz'
-            ).toLowerCase()
-          }
+              "resources.parcels.attributes.unit_of_weight.oz",
+            ).toLowerCase(),
+          },
         ]}
       />
     </div>

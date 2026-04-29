@@ -1,39 +1,38 @@
-import { makeOrderSubscription } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import { makeOrderSubscription } from "#mocks"
 
 export const orderSubscriptionIncludeAttribute = [
-  'market',
-  'customer',
-  'source_order',
-  'source_order.billing_address',
-  'source_order.shipping_address',
-  'order_subscription_items',
-  'order_subscription_items.sku',
-  'order_subscription_items.bundle',
-  'customer_payment_source.payment_source'
+  "market",
+  "customer",
+  "source_order",
+  "source_order.billing_address",
+  "source_order.shipping_address",
+  "order_subscription_items",
+  "order_subscription_items.sku",
+  "order_subscription_items.bundle",
+  "customer_payment_source.payment_source",
 ]
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useSubscriptionDetails(id: string) {
   const {
     data: subscription,
     isLoading,
     error,
-    mutate: mutateSubscription
+    mutate: mutateSubscription,
   } = useCoreApi(
-    'order_subscriptions',
-    'retrieve',
+    "order_subscriptions",
+    "retrieve",
     isMockedId(id)
       ? null
       : [
           id,
           {
-            include: orderSubscriptionIncludeAttribute
-          }
+            include: orderSubscriptionIncludeAttribute,
+          },
         ],
     {
-      fallbackData: makeOrderSubscription()
-    }
+      fallbackData: makeOrderSubscription(),
+    },
   )
 
   return { subscription, isLoading, error, mutateSubscription }

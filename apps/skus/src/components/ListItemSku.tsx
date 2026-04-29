@@ -1,13 +1,13 @@
-import { makeSku } from '#mocks'
 import {
   Avatar,
   ListItem,
   StatusIcon,
   Text,
   useAppLinking,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Sku } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Sku } from "@commercelayer/sdk"
+import { makeSku } from "#mocks"
 
 interface Props {
   resource?: Sku
@@ -27,24 +27,24 @@ export const ListItemSku = withSkeletonTemplate<Props>(
             src={resource.image_url as `https://${string}`}
           />
         }
-        alignItems='center'
+        alignItems="center"
         {...navigateTo({
-          app: 'skus',
-          resourceId: resource.id
+          app: "skus",
+          resourceId: resource.id,
         })}
       >
         <div>
-          <Text tag='div' weight='medium' size='x-small' variant='info'>
+          <Text tag="div" weight="medium" size="x-small" variant="info">
             {resource.code}
           </Text>
-          <Text tag='div' weight='semibold' size='regular'>
+          <Text tag="div" weight="semibold" size="regular">
             {resource.name}
           </Text>
         </div>
         <div>
-          <StatusIcon name='caretRight' />
+          <StatusIcon name="caretRight" />
         </div>
       </ListItem>
     )
-  }
+  },
 )

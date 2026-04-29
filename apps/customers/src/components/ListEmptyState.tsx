@@ -3,41 +3,41 @@ import {
   Button,
   EmptyState,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { Link } from 'wouter'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import { Link } from "wouter"
 
-import { appRoutes } from '#data/routes'
+import { appRoutes } from "#data/routes"
 
 interface Props {
-  scope?: 'history' | 'userFiltered' | 'presetView'
+  scope?: "history" | "userFiltered" | "presetView"
 }
 
 export function ListEmptyState({
-  scope = 'history'
+  scope = "history",
 }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { t } = useTranslation()
 
-  if (scope === 'history') {
+  if (scope === "history") {
     return (
       <EmptyState
-        title={t('common.empty_states.no_resource_yet', {
-          resource: t('resources.customers.name').toLowerCase()
+        title={t("common.empty_states.no_resource_yet", {
+          resource: t("resources.customers.name").toLowerCase(),
         })}
         description={
-          canUser('create', 'customers')
-            ? t('common.empty_states.create_the_first_resource', {
-                resource: t('resources.customers.name').toLowerCase()
+          canUser("create", "customers")
+            ? t("common.empty_states.create_the_first_resource", {
+                resource: t("resources.customers.name").toLowerCase(),
               })
             : undefined
         }
         action={
-          canUser('create', 'customers') && (
+          canUser("create", "customers") && (
             <Link href={appRoutes.new.makePath()}>
-              <Button variant='primary'>
-                {t('common.add_resource', {
-                  resource: t('resources.customers.name').toLowerCase()
+              <Button variant="primary">
+                {t("common.add_resource", {
+                  resource: t("resources.customers.name").toLowerCase(),
                 })}
               </Button>
             </Link>
@@ -47,17 +47,17 @@ export function ListEmptyState({
     )
   }
 
-  if (scope === 'userFiltered') {
+  if (scope === "userFiltered") {
     return (
       <EmptyState
-        title={t('common.empty_states.no_resource_found', {
-          resource: t('resources.customers.name').toLowerCase()
+        title={t("common.empty_states.no_resource_found", {
+          resource: t("resources.customers.name").toLowerCase(),
         })}
         description={
           <div>
             <p>
-              {t('common.empty_states.no_resources_found_for_filters', {
-                resources: t('resources.customers.name').toLowerCase()
+              {t("common.empty_states.no_resources_found_for_filters", {
+                resources: t("resources.customers.name").toLowerCase(),
               })}
             </p>
           </div>
@@ -68,22 +68,22 @@ export function ListEmptyState({
 
   return (
     <EmptyState
-      title={t('common.empty_states.no_resource_yet', {
-        resource: t('resources.customers.name').toLowerCase()
+      title={t("common.empty_states.no_resource_yet", {
+        resource: t("resources.customers.name").toLowerCase(),
       })}
       description={
         <div>
           <p>
-            {t('common.empty_states.create_the_first_resource', {
-              resource: t('resources.customers.name').toLowerCase()
+            {t("common.empty_states.create_the_first_resource", {
+              resource: t("resources.customers.name").toLowerCase(),
             })}
           </p>
           <A
-            target='_blank'
-            href='https://docs.commercelayer.io/core/v/api-reference/customers'
-            rel='noreferrer'
+            target="_blank"
+            href="https://docs.commercelayer.io/core/v/api-reference/customers"
+            rel="noreferrer"
           >
-            {t('common.view_api_docs')}
+            {t("common.view_api_docs")}
           </A>
         </div>
       }

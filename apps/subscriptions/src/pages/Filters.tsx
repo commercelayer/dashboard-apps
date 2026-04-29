@@ -1,9 +1,9 @@
-import { instructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
-import { useSubscriptionModelsFrequencies } from '#hooks/useSubscriptionModelsFrequencies'
-import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
-import { useCallback, type FC } from 'react'
-import { useLocation } from 'wouter'
+import { PageLayout, useResourceFilters } from "@commercelayer/app-elements"
+import { type FC, useCallback } from "react"
+import { useLocation } from "wouter"
+import { instructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
+import { useSubscriptionModelsFrequencies } from "#hooks/useSubscriptionModelsFrequencies"
 
 export const Filters: FC = () => {
   const [, setLocation] = useLocation()
@@ -11,7 +11,7 @@ export const Filters: FC = () => {
 
   const filters = useCallback(() => {
     return useResourceFilters({
-      instructions: instructions(subscriptionModelsFrequencies)
+      instructions: instructions(subscriptionModelsFrequencies),
     })
   }, [subscriptionModelsFrequencies])
 
@@ -19,19 +19,19 @@ export const Filters: FC = () => {
 
   return (
     <PageLayout
-      title='Filters'
+      title="Filters"
       navigationButton={{
         onClick: () => {
           setLocation(
             appRoutes.list.makePath(
               adapters.adaptUrlQueryToUrlQuery({
-                queryString: location.search
-              })
-            )
+                queryString: location.search,
+              }),
+            ),
           )
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
       overlay
     >

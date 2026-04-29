@@ -1,14 +1,14 @@
-import { getAllEventsForSelect } from '#data/events'
-import { HookedInputSelect, type HintProps } from '@commercelayer/app-elements'
+import { type HintProps, HookedInputSelect } from "@commercelayer/app-elements"
+import { getAllEventsForSelect } from "#data/events"
 
 interface Props {
   name: string
-  hintText?: HintProps['children']
+  hintText?: HintProps["children"]
 }
 
 export function EventSelector({
   name,
-  hintText
+  hintText,
 }: Props): React.JSX.Element | null {
   const events = getAllEventsForSelect()
 
@@ -17,7 +17,7 @@ export function EventSelector({
       name={name}
       initialValues={events}
       isClearable
-      label='Topic'
+      label="Topic"
       hint={{ text: hintText }}
     />
   )

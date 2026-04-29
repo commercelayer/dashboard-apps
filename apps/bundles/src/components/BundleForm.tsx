@@ -1,39 +1,39 @@
-import { ListItemSkuListItem } from '#components/ListItemSkuListItem'
-import { MarketWithCurrencySelector } from '#components/MarketWithCurrencySelector'
-import { SkuListsSelect } from '#components/SkuListsSelect'
-import { useSkuListItems } from '#hooks/useSkuListItems'
-import { useSkuListsList } from '#hooks/useSkuListsList'
 import {
   Avatar,
   Button,
   ButtonImageSelect,
   Card,
   Grid,
+  getUnitsOfWeightForSelect,
   HookedForm,
   HookedInput,
   HookedInputCurrency,
   HookedInputTextArea,
   HookedValidationApiError,
   Icon,
+  type InputCurrencyProps,
   PageLayout,
   Section,
   Spacer,
   Text,
-  getUnitsOfWeightForSelect,
+  type UnitOfWeight,
   useOverlay,
-  type InputCurrencyProps,
-  type UnitOfWeight
-} from '@commercelayer/app-elements'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, type UseFormSetError } from 'react-hook-form'
-import { z } from 'zod'
+} from "@commercelayer/app-elements"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { type UseFormSetError, useForm } from "react-hook-form"
+import { z } from "zod"
+import { ListItemSkuListItem } from "#components/ListItemSkuListItem"
+import { MarketWithCurrencySelector } from "#components/MarketWithCurrencySelector"
+import { SkuListsSelect } from "#components/SkuListsSelect"
+import { useSkuListItems } from "#hooks/useSkuListItems"
+import { useSkuListsList } from "#hooks/useSkuListsList"
 
 const unitsOfWeightForSelect = getUnitsOfWeightForSelect()
 
 export function isValidUnitOfWeight(value: string): value is UnitOfWeight {
   return (
     unitsOfWeightForSelect.filter(
-      (unitOfWeight) => unitOfWeight.value === value
+      (unitOfWeight) => unitOfWeight.value === value,
     ).length === 1
   )
 }
@@ -48,7 +48,7 @@ const bundleFormSchema = z.object({
   market: z.string().optional(),
   currency_code: z.string().min(1),
   price: z.number(),
-  original_price: z.number()
+  original_price: z.number(),
 })
 
 export type BundleFormValues = z.infer<typeof bundleFormSchema>
@@ -58,7 +58,7 @@ interface Props {
   isSubmitting: boolean
   onSubmit: (
     formValues: BundleFormValues,
-    setError: UseFormSetError<BundleFormValues>
+    setError: UseFormSetError<BundleFormValues>,
   ) => void
   apiError?: any
 }
@@ -67,19 +67,19 @@ export function BundleForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting
+  isSubmitting,
 }: Props): React.JSX.Element {
   const bundleFormMethods = useForm<BundleFormValues>({
     defaultValues,
-    resolver: zodResolver(bundleFormSchema)
+    resolver: zodResolver(bundleFormSchema),
   })
 
-  const bundleFormWatchedImageUrl = bundleFormMethods.watch('image_url')
+  const bundleFormWatchedImageUrl = bundleFormMethods.watch("image_url")
   const bundleFormWatchedCurrenctyCode =
-    bundleFormMethods.watch('currency_code')
-  const bundleFormWatchedSkuList = bundleFormMethods.watch('sku_list')
+    bundleFormMethods.watch("currency_code")
+  const bundleFormWatchedSkuList = bundleFormMethods.watch("sku_list")
 
-  const { skuListItems } = useSkuListItems(bundleFormWatchedSkuList ?? '')
+  const { skuListItems } = useSkuListItems(bundleFormWatchedSkuList ?? "")
 
   const { skuLists } = useSkuListsList({})
 
@@ -89,19 +89,19 @@ export function BundleForm({
 
   const imageFormMethods = useForm({
     defaultValues: {
-      image_url: defaultValues?.image_url ?? ''
+      image_url: defaultValues?.image_url ?? "",
     },
     resolver: zodResolver(
       z.object({
-        image_url: z.string()
-      })
-    )
+        image_url: z.string(),
+      }),
+    ),
   })
 
-  const imageFormWatchedImageUrl = imageFormMethods.watch('image_url')
+  const imageFormWatchedImageUrl = imageFormMethods.watch("image_url")
 
   const {
-    formState: { isSubmitting: isSubmittingImage }
+    formState: { isSubmitting: isSubmittingImage },
   } = imageFormMethods
 
   return (
@@ -112,61 +112,61 @@ export function BundleForm({
           onSubmit(formValues, bundleFormMethods.setError)
         }}
       >
-        <Section title='Basic info'>
-          <Spacer top='6' bottom='4'>
+        <Section title="Basic info">
+          <Spacer top="6" bottom="4">
             <HookedInput
-              name='name'
-              label='Name'
+              name="name"
+              label="Name"
               hint={{
                 text: (
-                  <Text variant='info'>
+                  <Text variant="info">
                     Pick a name that helps you identify it.
                   </Text>
-                )
+                ),
               }}
             />
           </Spacer>
-          <Spacer top='6' bottom='4'>
+          <Spacer top="6" bottom="4">
             <HookedInput
-              name='code'
-              label='Bundle code'
+              name="code"
+              label="Bundle code"
               hint={{
                 text: (
-                  <Text variant='info'>
-                    A unique code to identify the product variant.{' '}
+                  <Text variant="info">
+                    A unique code to identify the product variant.{" "}
                     <a
-                      href='https://docs.commercelayer.io/core/v/api-reference/bundles'
-                      target='_blank'
-                      rel='noreferrer'
+                      href="https://docs.commercelayer.io/core/v/api-reference/bundles"
+                      target="_blank"
+                      rel="noreferrer"
                     >
                       Learn more.
                     </a>
                   </Text>
-                )
+                ),
               }}
             />
           </Spacer>
-          <Spacer top='6' bottom='12'>
-            <Grid columns='auto'>
+          <Spacer top="6" bottom="12">
+            <Grid columns="auto">
               <HookedInputTextArea
-                name='description'
-                label='Description'
-                placeholder='A brief description'
+                name="description"
+                label="Description"
+                placeholder="A brief description"
                 hint={{
                   text: (
-                    <Text variant='info'>Best suited for internal use.</Text>
-                  )
+                    <Text variant="info">Best suited for internal use.</Text>
+                  ),
                 }}
-                className='h-[96px]'
+                className="h-[96px]"
               />
-              <div className='mt-8'>
+              <div className="mt-8">
                 <ButtonImageSelect
                   img={
                     bundleFormWatchedImageUrl != null &&
                     bundleFormWatchedImageUrl.length > 0
                       ? {
                           src: bundleFormWatchedImageUrl,
-                          alt: defaultValues?.name ?? ''
+                          alt: defaultValues?.name ?? "",
                         }
                       : undefined
                   }
@@ -179,17 +179,17 @@ export function BundleForm({
           </Spacer>
         </Section>
         {defaultValues?.id == null && (
-          <Section title='Bundle items'>
-            <Spacer top='4' bottom='4'>
-              <Text variant='info'>
+          <Section title="Bundle items">
+            <Spacer top="4" bottom="4">
+              <Text variant="info">
                 Select the manual SKU list containing the bundle items.
               </Text>
             </Spacer>
-            <Spacer top='4' bottom='12'>
+            <Spacer top="4" bottom="12">
               {!isLoadingSkuLists && <SkuListsSelect options={skuLists} />}
               {bundleFormWatchedSkuList != null && (
-                <Spacer top='4' bottom='2'>
-                  <Card gap='none'>
+                <Spacer top="4" bottom="2">
+                  <Card gap="none">
                     {skuListItems != null
                       ? skuListItems.map((item) => (
                           <ListItemSkuListItem
@@ -205,46 +205,46 @@ export function BundleForm({
           </Section>
         )}
 
-        <Section title='Selling info'>
-          <Spacer top='6'>
+        <Section title="Selling info">
+          <Spacer top="6">
             <MarketWithCurrencySelector
-              defaultMarketId={defaultValues?.market ?? ''}
-              defaultCurrencyCode={defaultValues?.currency_code ?? 'USD'}
-              hint='The market where this bundle is available.'
+              defaultMarketId={defaultValues?.market ?? ""}
+              defaultCurrencyCode={defaultValues?.currency_code ?? "USD"}
+              hint="The market where this bundle is available."
               isDisabled={defaultValues?.id != null}
             />
           </Spacer>
-          <Spacer top='6'>
-            <Grid columns='2'>
+          <Spacer top="6">
+            <Grid columns="2">
               <HookedInputCurrency
-                name='price'
-                label='Price'
+                name="price"
+                label="Price"
                 currencyCode={
-                  bundleFormWatchedCurrenctyCode as InputCurrencyProps['currencyCode']
+                  bundleFormWatchedCurrenctyCode as InputCurrencyProps["currencyCode"]
                 }
-                hint={{ text: 'The cost of the complete bundle.' }}
+                hint={{ text: "The cost of the complete bundle." }}
               />
               <HookedInputCurrency
-                name='original_price'
-                label='Original price'
+                name="original_price"
+                label="Original price"
                 currencyCode={
-                  bundleFormWatchedCurrenctyCode as InputCurrencyProps['currencyCode']
+                  bundleFormWatchedCurrenctyCode as InputCurrencyProps["currencyCode"]
                 }
-                hint={{ text: 'The regular cost of the bundle.' }}
+                hint={{ text: "The regular cost of the bundle." }}
               />
             </Grid>
           </Spacer>
         </Section>
 
-        <Spacer top='14'>
+        <Spacer top="14">
           <Button
-            type='submit'
+            type="submit"
             disabled={isSubmitting || isLoadingSkuLists}
-            className='w-full'
+            className="w-full"
           >
-            {defaultValues?.name == null ? 'Create' : 'Update'}
+            {defaultValues?.name == null ? "Create" : "Update"}
           </Button>
-          <Spacer top='2'>
+          <Spacer top="2">
             <HookedValidationApiError apiError={apiError} />
           </Spacer>
         </Spacer>
@@ -253,55 +253,56 @@ export function BundleForm({
         <HookedForm
           {...imageFormMethods}
           onSubmit={async (values) => {
-            bundleFormMethods.setValue('image_url', values.image_url)
+            bundleFormMethods.setValue("image_url", values.image_url)
             close()
           }}
         >
           <PageLayout
-            title='Set Image'
+            title="Set Image"
             minHeight={false}
             navigationButton={{
               onClick: () => {
                 close()
               },
               label: `Back`,
-              icon: 'arrowLeft'
+              icon: "arrowLeft",
             }}
           >
             <Avatar
-              alt={defaultValues?.name ?? ''}
+              alt={defaultValues?.name ?? ""}
               src={imageFormWatchedImageUrl as `https://${string}`}
-              size='large'
+              size="large"
             />
-            <Spacer top='8' bottom='8'>
-              <div className='relative'>
+            <Spacer top="8" bottom="8">
+              <div className="relative">
                 <HookedInput
                   disabled={isSubmittingImage}
-                  label='Image url'
-                  name='image_url'
-                  hint={{ text: 'Any valid image URL, hosted anywhere.' }}
+                  label="Image url"
+                  name="image_url"
+                  hint={{ text: "Any valid image URL, hosted anywhere." }}
                 />
-                <div
-                  className='block text-black absolute bg-white cursor-pointer'
+                <button
+                  type="button"
+                  className="block text-black absolute bg-white cursor-pointer"
                   style={{
-                    right: '16px',
-                    top: '43px',
-                    paddingLeft: '16px'
+                    right: "16px",
+                    top: "43px",
+                    paddingLeft: "16px",
                   }}
                   onClick={() => {
-                    imageFormMethods.setValue('image_url', '')
+                    imageFormMethods.setValue("image_url", "")
                   }}
                 >
                   <Icon
-                    name='x'
+                    name="x"
                     size={22}
-                    weight='bold'
-                    className='hover:opacity-80'
+                    weight="bold"
+                    className="hover:opacity-80"
                   />
-                </div>
+                </button>
               </div>
             </Spacer>
-            <Button type='submit' fullWidth disabled={isSubmittingImage}>
+            <Button type="submit" fullWidth disabled={isSubmittingImage}>
               Apply
             </Button>
           </PageLayout>

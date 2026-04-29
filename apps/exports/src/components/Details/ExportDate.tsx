@@ -1,21 +1,20 @@
-import { useExportDetailsContext } from '#components/Details/Provider'
 import {
   formatDate,
   useTokenProvider,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import { useExportDetailsContext } from "#components/Details/Provider"
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {
-  atType: 'started_at' | 'completed_at' | 'interrupted_at'
+  atType: "started_at" | "completed_at" | "interrupted_at"
   prefixText?: string
   includeTime?: boolean
 }
 
 export const ExportDate = withSkeletonTemplate<Props>(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ atType, prefixText, includeTime, isLoading, delayMs, ...props }) => {
     const {
-      state: { data }
+      state: { data },
     } = useExportDetailsContext()
 
     const { user } = useTokenProvider()
@@ -27,14 +26,14 @@ export const ExportDate = withSkeletonTemplate<Props>(
     const dateAt = data[atType]
     return (
       <span {...props}>
-        {prefixText}{' '}
+        {prefixText}{" "}
         {dateAt != null &&
           formatDate({
             isoDate: dateAt,
-            format: includeTime === true ? 'full' : 'date',
-            timezone: user?.timezone
+            format: includeTime === true ? "full" : "date",
+            timezone: user?.timezone,
           })}
       </span>
     )
-  }
+  },
 )

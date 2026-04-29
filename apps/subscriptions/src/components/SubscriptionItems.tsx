@@ -3,9 +3,9 @@ import {
   Spacer,
   Text,
   useResourceList,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import { ListItemSubscriptionItem } from './ListItemSubscriptionItem'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import { ListItemSubscriptionItem } from "./ListItemSubscriptionItem"
 
 interface Props {
   subscriptionId: string
@@ -14,31 +14,31 @@ interface Props {
 export const SubscriptionItems = withSkeletonTemplate<Props>(
   ({ subscriptionId }): React.JSX.Element | null => {
     const { ResourceList } = useResourceList({
-      type: 'order_subscription_items',
+      type: "order_subscription_items",
       query: {
         filters: {
-          order_subscription_id_eq: subscriptionId
+          order_subscription_id_eq: subscriptionId,
         },
-        include: ['sku']
-      }
+        include: ["sku"],
+      },
     })
 
     return (
       <>
-        <Spacer top='14'>
-          <Section title='Items'>
+        <Spacer top="14">
+          <Section title="Items">
             <ResourceList
               emptyState={
-                <Spacer top='4'>
-                  <Text variant='info'>No items.</Text>
+                <Spacer top="4">
+                  <Text variant="info">No items.</Text>
                 </Spacer>
               }
-              titleSize='normal'
+              titleSize="normal"
               ItemTemplate={ListItemSubscriptionItem}
             />
           </Section>
         </Spacer>
       </>
     )
-  }
+  },
 )

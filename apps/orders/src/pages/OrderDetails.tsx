@@ -1,22 +1,8 @@
-import { OrderAddresses } from '#components/OrderAddresses'
-import { OrderCustomer } from '#components/OrderCustomer'
-import { OrderInfos } from '#components/OrderInfos'
-import { OrderPayment } from '#components/OrderPayment'
-import { OrderReturns } from '#components/OrderReturns'
-import { OrderShipments } from '#components/OrderShipments'
-import { OrderSteps } from '#components/OrderSteps'
-import { OrderSummary } from '#components/OrderSummary'
-import { useOrderStatus } from '#components/OrderSummary/hooks/useOrderStatus'
-import { Timeline } from '#components/Timeline'
-import { appRoutes } from '#data/routes'
-import { useGetMarketsCount } from '#hooks/useGetMarketsCount'
-import { useOrderDetails } from '#hooks/useOrderDetails'
-import { useOrderReturns } from '#hooks/useOrderReturns'
-import { useOrderToolbar } from '#hooks/useOrderToolbar'
-import { getOrderTitle } from '#utils/getOrderTitle'
 import {
   Button,
   EmptyState,
+  formatDateWithPredicate,
+  isMockedId,
   PageLayout,
   ResourceAttachments,
   ResourceDetails,
@@ -24,32 +10,46 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
-  formatDateWithPredicate,
-  isMockedId,
+  type ToolbarItem,
   useAppLinking,
   useTokenProvider,
   useTranslation,
-  type ToolbarItem
-} from '@commercelayer/app-elements'
-import { useLocation, useRoute } from 'wouter'
+} from "@commercelayer/app-elements"
+import { useLocation, useRoute } from "wouter"
+import { OrderAddresses } from "#components/OrderAddresses"
+import { OrderCustomer } from "#components/OrderCustomer"
+import { OrderInfos } from "#components/OrderInfos"
+import { OrderPayment } from "#components/OrderPayment"
+import { OrderReturns } from "#components/OrderReturns"
+import { OrderShipments } from "#components/OrderShipments"
+import { OrderSteps } from "#components/OrderSteps"
+import { OrderSummary } from "#components/OrderSummary"
+import { useOrderStatus } from "#components/OrderSummary/hooks/useOrderStatus"
+import { Timeline } from "#components/Timeline"
+import { appRoutes } from "#data/routes"
+import { useGetMarketsCount } from "#hooks/useGetMarketsCount"
+import { useOrderDetails } from "#hooks/useOrderDetails"
+import { useOrderReturns } from "#hooks/useOrderReturns"
+import { useOrderToolbar } from "#hooks/useOrderToolbar"
+import { getOrderTitle } from "#utils/getOrderTitle"
 
 function OrderDetails(): React.JSX.Element {
   const {
     canUser,
     settings: { mode, extras },
-    user
+    user,
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
   const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path)
 
-  const orderId = params?.orderId ?? ''
+  const orderId = params?.orderId ?? ""
 
   const {
     order,
     isLoading: isLoadingOrder,
     error,
-    mutateOrder
+    mutateOrder,
   } = useOrderDetails(orderId)
   const { isPendingWithTransactions } = useOrderStatus(order)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
@@ -60,22 +60,22 @@ function OrderDetails(): React.JSX.Element {
 
   const { goBack } = useAppLinking()
 
-  if (canUser('update', 'orders')) {
+  if (canUser("update", "orders")) {
     if (
-      order.status === 'pending' &&
+      order.status === "pending" &&
       !isPendingWithTransactions &&
       extras?.salesChannels != null &&
       extras?.salesChannels.length > 0 &&
       order.market?.private === false
     ) {
       const checkoutLinkButton: ToolbarItem = {
-        label: 'Checkout',
-        icon: 'lightning',
-        size: 'small',
-        variant: 'secondary',
+        label: "Checkout",
+        icon: "lightning",
+        size: "small",
+        variant: "secondary",
         onClick: () => {
           setLocation(appRoutes.linkDetails.makePath({ orderId }))
-        }
+        },
       }
 
       if (toolbar.buttons != null) {
@@ -86,30 +86,30 @@ function OrderDetails(): React.JSX.Element {
     }
   }
 
-  if (orderId === undefined || !canUser('read', 'orders') || error != null) {
+  if (orderId === undefined || !canUser("read", "orders") || error != null) {
     return (
       <PageLayout
-        title={t('resources.orders.name_other')}
+        title={t("resources.orders.name_other")}
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.home.makePath({}))
           },
-          label: t('common.back'),
-          icon: 'arrowLeft'
+          label: t("common.back"),
+          icon: "arrowLeft",
         }}
         mode={mode}
         scrollToTop
       >
         <EmptyState
-          title={t('common.not_authorized')}
+          title={t("common.not_authorized")}
           action={
             <Button
-              variant='primary'
+              variant="primary"
               onClick={() => {
                 setLocation(appRoutes.home.makePath({}))
               }}
             >
-              {t('common.go_back')}
+              {t("common.go_back")}
             </Button>
           }
         />
@@ -133,19 +133,19 @@ function OrderDetails(): React.JSX.Element {
           {order.placed_at != null ? (
             <div>
               {formatDateWithPredicate({
-                predicate: t('resources.orders.attributes.status.placed'),
-                isoDate: order.placed_at ?? '',
+                predicate: t("resources.orders.attributes.status.placed"),
+                isoDate: order.placed_at ?? "",
                 timezone: user?.timezone,
-                locale: user?.locale
+                locale: user?.locale,
               })}
             </div>
           ) : order.updated_at != null ? (
             <div>
               {formatDateWithPredicate({
-                predicate: t('common.updated'),
-                isoDate: order.updated_at ?? '',
+                predicate: t("common.updated"),
+                isoDate: order.updated_at ?? "",
                 timezone: user?.timezone,
-                locale: user?.locale
+                locale: user?.locale,
               })}
             </div>
           ) : null}
@@ -156,44 +156,44 @@ function OrderDetails(): React.JSX.Element {
         onClick: () => {
           goBack({
             defaultRelativePath: appRoutes.list.makePath({}),
-            currentResourceId: orderId
+            currentResourceId: orderId,
           })
         },
-        label: t('common.back'),
-        icon: 'arrowLeft'
+        label: t("common.back"),
+        icon: "arrowLeft",
       }}
-      gap='only-top'
+      gap="only-top"
       scrollToTop
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom='4'>
-          <Spacer top='14'>
+        <Spacer bottom="4">
+          <Spacer top="14">
             <OrderSteps order={order} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <OrderSummary order={order} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <OrderPayment order={order} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <OrderCustomer order={order} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <OrderAddresses order={order} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <OrderShipments order={order} />
           </Spacer>
           {!isLoadingReturns && (
-            <Spacer top='14'>
+            <Spacer top="14">
               <OrderReturns returns={returns} />
             </Spacer>
           )}
-          <Spacer top='14'>
+          <Spacer top="14">
             <OrderInfos order={order} />
           </Spacer>
-          <Spacer top='14'>
+          <Spacer top="14">
             <ResourceDetails
               resource={order}
               onUpdated={async () => {
@@ -203,34 +203,34 @@ function OrderDetails(): React.JSX.Element {
           </Spacer>
           {!isMockedId(order.id) && (
             <>
-              <Spacer top='14'>
+              <Spacer top="14">
                 <ResourceTags
-                  resourceType='orders'
+                  resourceType="orders"
                   resourceId={order.id}
                   overlay={{ title: pageTitle }}
                   onTagClick={(tagId) => {
                     setLocation(
-                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`)
+                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
                     )
                   }}
                 />
               </Spacer>
-              <Spacer top='14'>
+              <Spacer top="14">
                 <ResourceMetadata
-                  resourceType='orders'
+                  resourceType="orders"
                   resourceId={order.id}
                   overlay={{
-                    title: pageTitle
+                    title: pageTitle,
                   }}
                 />
               </Spacer>
             </>
           )}
-          <Spacer top='14'>
-            <ResourceAttachments resourceType='orders' resourceId={order.id} />
+          <Spacer top="14">
+            <ResourceAttachments resourceType="orders" resourceId={order.id} />
           </Spacer>
-          {!['draft'].includes(order.status) && (
-            <Spacer top='14'>
+          {!["draft"].includes(order.status) && (
+            <Spacer top="14">
               <Timeline order={order} />
             </Spacer>
           )}

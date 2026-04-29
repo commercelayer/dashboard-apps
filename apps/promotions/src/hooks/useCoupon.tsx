@@ -1,27 +1,26 @@
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { Coupon } from '@commercelayer/sdk'
-import { makeCoupon } from 'src/mocks/resources/coupons'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { Coupon } from "@commercelayer/sdk"
+import { makeCoupon } from "src/mocks/resources/coupons"
+import type { KeyedMutator } from "swr"
 
 export const includeAttribute = []
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useCoupon<Id extends string | undefined>(id: Id) {
   const { data, isLoading, mutate, isValidating, error } = useCoreApi(
-    'coupons',
-    'retrieve',
+    "coupons",
+    "retrieve",
     id == null
       ? null
       : [
           id,
           {
-            include: includeAttribute
-          }
+            include: includeAttribute,
+          },
         ],
     {
       isPaused: () => id != null && isMockedId(id),
-      fallbackData: id != null ? (makeCoupon() as any) : undefined
-    }
+      fallbackData: id != null ? (makeCoupon() as any) : undefined,
+    },
   )
 
   return {
@@ -31,6 +30,6 @@ export function useCoupon<Id extends string | undefined>(id: Id) {
     isLoading,
     mutateCoupon: mutate as unknown as KeyedMutator<Coupon>,
     isValidating,
-    error
+    error,
   }
 }

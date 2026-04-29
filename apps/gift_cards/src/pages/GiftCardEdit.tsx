@@ -1,21 +1,21 @@
-import { Form } from '#components/Form'
-import { appRoutes } from '#data/routes'
-import { useGiftCardDetails } from '#hooks/useGiftCardDetails'
 import {
   GenericPageNotFound,
   PageLayout,
+  type PageProps,
   SkeletonTemplate,
   useAppLinking,
   useCoreSdkProvider,
   useTokenProvider,
-  type PageProps
-} from '@commercelayer/app-elements'
-import isEmpty from 'lodash-es/isEmpty'
-import type { FC } from 'react'
+} from "@commercelayer/app-elements"
+import isEmpty from "lodash-es/isEmpty"
+import type { FC } from "react"
+import { Form } from "#components/Form"
+import { appRoutes } from "#data/routes"
+import { useGiftCardDetails } from "#hooks/useGiftCardDetails"
 
 const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const giftCardId = params?.giftCardId
@@ -38,12 +38,12 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
           goBack({
             currentResourceId: giftCardId,
             defaultRelativePath: appRoutes.details.makePath({
-              giftCardId
-            })
+              giftCardId,
+            }),
           })
         },
-        label: 'Back',
-        icon: 'arrowLeft'
+        label: "Back",
+        icon: "arrowLeft",
       }}
       scrollToTop
     >
@@ -66,8 +66,8 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
               market: sdkClient.markets.relationship(
                 formValues.market != null && !isEmpty(formValues.market)
                   ? formValues.market
-                  : null
-              )
+                  : null,
+              ),
             })
           }}
         />

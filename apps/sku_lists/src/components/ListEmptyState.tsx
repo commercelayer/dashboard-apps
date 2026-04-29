@@ -1,18 +1,18 @@
-import { appRoutes } from '#data/routes'
-import { A, Button, EmptyState } from '@commercelayer/app-elements'
-import { Link, useRoute } from 'wouter'
+import { A, Button, EmptyState } from "@commercelayer/app-elements"
+import { Link, useRoute } from "wouter"
+import { appRoutes } from "#data/routes"
 
 interface Props {
-  scope?: 'noSKUListItems' | 'noSKUs' | 'noSKUsFiltered'
+  scope?: "noSKUListItems" | "noSKUs" | "noSKUsFiltered"
 }
 
 export function ListEmptyState({
-  scope = 'noSKUListItems'
+  scope = "noSKUListItems",
 }: Props): React.JSX.Element {
-  if (scope === 'noSKUsFiltered') {
+  if (scope === "noSKUsFiltered") {
     return (
       <EmptyState
-        title='No SKUs found!'
+        title="No SKUs found!"
         description={
           <div>
             <p>
@@ -20,21 +20,21 @@ export function ListEmptyState({
             </p>
           </div>
         }
-        className='bg-white'
+        className="bg-white"
       />
     )
   }
-  if (scope === 'noSKUs') {
+  if (scope === "noSKUs") {
     return (
       <EmptyState
-        title='No SKUS yet!'
+        title="No SKUS yet!"
         description={
-          <div className='bg-white'>
+          <div className="bg-white">
             <p>Add a SKU with the API, or use the CLI.</p>
             <A
-              target='_blank'
-              href='https://docs.commercelayer.io/core/v/api-reference/skus'
-              rel='noreferrer'
+              target="_blank"
+              href="https://docs.commercelayer.io/core/v/api-reference/skus"
+              rel="noreferrer"
             >
               View API reference.
             </A>
@@ -45,14 +45,14 @@ export function ListEmptyState({
   }
 
   const [, params] = useRoute<{ skuListId: string }>(appRoutes.edit.path)
-  const skuListId = params?.skuListId ?? ''
+  const skuListId = params?.skuListId ?? ""
 
   return (
     <EmptyState
-      title='No items found in the selected SKU list!'
+      title="No items found in the selected SKU list!"
       action={
         <Link href={appRoutes.edit.makePath({ skuListId })}>
-          <Button variant='primary'>Add a SKU</Button>
+          <Button variant="primary">Add a SKU</Button>
         </Link>
       }
     />

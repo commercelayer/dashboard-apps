@@ -1,5 +1,5 @@
-import { useCoreApi } from '@commercelayer/app-elements'
-import type { Customer, ListResponse, QueryPageSize } from '@commercelayer/sdk'
+import { useCoreApi } from "@commercelayer/app-elements"
+import type { Customer, ListResponse, QueryPageSize } from "@commercelayer/sdk"
 
 interface UseCustomerAnonymizedPendingListSettings {
   pageNumber?: number
@@ -27,18 +27,18 @@ export function useCustomerAnonymizedPendingList({ settings }: Props): {
   const {
     data: customers,
     isLoading,
-    error
+    error,
   } = useCoreApi(
-    'customers',
-    'list',
+    "customers",
+    "list",
     [
       {
-        filters: { anonymization_status_eq: 'requested' },
+        filters: { anonymization_status_eq: "requested" },
         pageNumber,
-        pageSize
-      }
+        pageSize,
+      },
     ],
-    {}
+    {},
   )
 
   return { customers, error, isLoading }

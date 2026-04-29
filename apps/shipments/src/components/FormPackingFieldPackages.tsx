@@ -1,21 +1,21 @@
-import { type PackingFormValues } from '#data/packingFormSchema'
-import { repeat } from '#mocks'
 import {
   HookedInputRadioGroup,
   HookedInputSelect,
   InputFeedback,
+  type InputSelectValue,
   isMock,
   Spacer,
   Text,
   useCoreApi,
   useCoreSdkProvider,
   useTranslation,
-  type InputSelectValue
-} from '@commercelayer/app-elements'
-import type { ListResponse, Package } from '@commercelayer/sdk'
-import { useCallback, useEffect } from 'react'
-import { useFormContext } from 'react-hook-form'
-import { makePackage } from 'src/mocks/resources/packages'
+} from "@commercelayer/app-elements"
+import type { ListResponse, Package } from "@commercelayer/sdk"
+import { useCallback, useEffect } from "react"
+import { useFormContext } from "react-hook-form"
+import { makePackage } from "src/mocks/resources/packages"
+import type { PackingFormValues } from "#data/packingFormSchema"
+import { repeat } from "#mocks"
 
 interface Props {
   /**
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export function FormPackingFieldPackages({
-  stockLocationId
+  stockLocationId,
 }: Props): React.JSX.Element {
   const { setValue, watch } = useFormContext<PackingFormValues>()
   const { packages, isLoading } = usePackages(stockLocationId)
@@ -36,19 +36,19 @@ export function FormPackingFieldPackages({
       const isMockedData = packages.every(isMock)
       const firstPackageId = packages[0]?.id
       if (!isLoading && !isMockedData && firstPackageId != null) {
-        setValue('packageId', firstPackageId)
+        setValue("packageId", firstPackageId)
       }
     },
-    [packages, isLoading]
+    [packages, isLoading],
   )
 
   if (packages.length === 0) {
     return (
-      <InputFeedback message={t('apps.shipments.form.no_packages_found')} />
+      <InputFeedback message={t("apps.shipments.form.no_packages_found")} />
     )
   }
 
-  const selectedPackageId = watch('packageId')
+  const selectedPackageId = watch("packageId")
 
   // render a select when too many packages are found, since radio buttons will take too much space
   if (packages.length > 4) {
@@ -60,22 +60,22 @@ export function FormPackingFieldPackages({
     <HookedInputRadioGroup
       isLoading={isLoading}
       delayMs={0}
-      name='packageId'
-      viewMode='grid'
+      name="packageId"
+      viewMode="grid"
       showInput={false}
       key={isLoading ? undefined : selectedPackageId}
       options={packages.map((item) => ({
         value: item.id,
         content: (
           <>
-            <Spacer bottom='2'>
-              <Text weight='bold' tag='div'>
+            <Spacer bottom="2">
+              <Text weight="bold" tag="div">
                 {item.name}
               </Text>
             </Spacer>
-            <Text variant='info'>{makeSizeString(item)}</Text>
+            <Text variant="info">{makeSizeString(item)}</Text>
           </>
-        )
+        ),
       }))}
     />
   )
@@ -85,7 +85,7 @@ export function FormPackingFieldPackages({
  * InputSelect component to be used when multiple packages are found
  */
 function InputSelectPackages({
-  stockLocationId
+  stockLocationId,
 }: {
   stockLocationId: string
 }): React.JSX.Element {
@@ -101,20 +101,20 @@ function InputSelectPackages({
     (packages: Package[]): InputSelectValue[] =>
       packages.map((item) => ({
         value: item.id,
-        label: `${item.name} - ${makeSizeString(item)}`
+        label: `${item.name} - ${makeSizeString(item)}`,
       })),
-    []
+    [],
   )
 
   return (
     <HookedInputSelect
-      name='packageId'
-      label={t('resources.packages.name')}
-      placeholder={t('apps.shipments.form.select_package')}
+      name="packageId"
+      label={t("resources.packages.name")}
+      placeholder={t("apps.shipments.form.select_package")}
       isLoading={isLoading}
       isSearchable
       menuFooterText={
-        hasMorePages ? t('common.forms.type_to_search_for_more') : undefined
+        hasMorePages ? t("common.forms.type_to_search_for_more") : undefined
       }
       loadAsyncValues={
         hasMorePages
@@ -124,8 +124,8 @@ function InputSelectPackages({
                   pageSize: 25,
                   filters: {
                     stock_location_id_eq: stockLocationId,
-                    name_cont: hint
-                  }
+                    name_cont: hint,
+                  },
                 })
                 .then(packagesToSelectOptions)
             }
@@ -144,37 +144,37 @@ function usePackages(stockLocationId?: string): {
   const {
     data: packages,
     isLoading,
-    isValidating
+    isValidating,
   } = useCoreApi(
-    'packages',
-    'list',
+    "packages",
+    "list",
     stockLocationId == null
       ? null
       : [
           {
             fields: [
-              'id',
-              'name',
-              'width',
-              'length',
-              'height',
-              'unit_of_length'
+              "id",
+              "name",
+              "width",
+              "length",
+              "height",
+              "unit_of_length",
             ],
             filters: {
-              stock_location_id_eq: stockLocationId
+              stock_location_id_eq: stockLocationId,
             },
-            pageSize: 25
-          }
+            pageSize: 25,
+          },
         ],
     {
       fallbackData: repeat(2, () => makePackage()) as ListResponse<Package>,
-      revalidateOnFocus: false
-    }
+      revalidateOnFocus: false,
+    },
   )
 
   return {
     packages,
-    isLoading: isLoading || isValidating
+    isLoading: isLoading || isValidating,
   }
 }
 
@@ -187,7 +187,7 @@ function makeSizeString({
   width,
   length,
   height,
-  unit_of_length: unit
+  unit_of_length: unit,
 }: Package): string {
   function roundIfInteger(value: string | number): string {
     const float = parseFloat(`${value}`)
@@ -195,6 +195,6 @@ function makeSizeString({
   }
 
   return `${roundIfInteger(width)} × ${roundIfInteger(
-    length
+    length,
   )} × ${roundIfInteger(height)} ${unit}`
 }

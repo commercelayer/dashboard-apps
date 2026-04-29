@@ -1,23 +1,23 @@
-import { A, EmptyState, useTranslation } from '@commercelayer/app-elements'
+import { A, EmptyState, useTranslation } from "@commercelayer/app-elements"
 
 interface Props {
-  scope?: 'history' | 'userFiltered' | 'presetView'
+  scope?: "history" | "userFiltered" | "presetView"
 }
 
 export function ListEmptyState({
-  scope = 'history'
+  scope = "history",
 }: Props): React.JSX.Element {
   const { t } = useTranslation()
 
-  if (scope === 'presetView') {
+  if (scope === "presetView") {
     return (
       <EmptyState
-        title={t('common.empty_states.all_good_here')}
+        title={t("common.empty_states.all_good_here")}
         description={
           <div>
             <p>
-              {t('common.empty_states.no_resources_found_for_list', {
-                resources: t('resources.returns.name_other').toLowerCase()
+              {t("common.empty_states.no_resources_found_for_list", {
+                resources: t("resources.returns.name_other").toLowerCase(),
               })}
             </p>
           </div>
@@ -26,15 +26,15 @@ export function ListEmptyState({
     )
   }
 
-  if (scope === 'userFiltered') {
+  if (scope === "userFiltered") {
     return (
       <EmptyState
-        title='No returns found!'
+        title="No returns found!"
         description={
           <div>
             <p>
-              {t('common.empty_states.no_resources_found_for_filters', {
-                resources: t('resources.returns.name_other')
+              {t("common.empty_states.no_resources_found_for_filters", {
+                resources: t("resources.returns.name_other"),
               })}
             </p>
           </div>
@@ -45,22 +45,22 @@ export function ListEmptyState({
 
   return (
     <EmptyState
-      title={t('common.empty_states.no_resource_yet', {
-        resource: t('resources.returns.name').toLowerCase()
+      title={t("common.empty_states.no_resource_yet", {
+        resource: t("resources.returns.name").toLowerCase(),
       })}
       description={
         <div>
           <p>
-            {t('common.empty_states.create_the_first_resource', {
-              resource: t('resources.returns.name').toLowerCase()
+            {t("common.empty_states.create_the_first_resource", {
+              resource: t("resources.returns.name").toLowerCase(),
             })}
           </p>
           <A
-            target='_blank'
-            href='https://docs.commercelayer.io/core/v/api-reference/returns'
-            rel='noreferrer'
+            target="_blank"
+            href="https://docs.commercelayer.io/core/v/api-reference/returns"
+            rel="noreferrer"
           >
-            {t('common.view_api_docs')}
+            {t("common.view_api_docs")}
           </A>
         </div>
       }

@@ -4,7 +4,7 @@ interface MetricsApiShipmentsBreakdownItem {
 }
 
 interface MetricsApiShipmentsBreakdownData {
-  'shipments.status': MetricsApiShipmentsBreakdownItem[]
+  "shipments.status": MetricsApiShipmentsBreakdownItem[]
 }
 
 interface VndApiResponse<Data> {

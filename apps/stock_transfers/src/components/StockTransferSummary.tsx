@@ -1,18 +1,18 @@
 import {
-  getStockTransferTriggerActions,
-  getStockTransferTriggerAttributeName
-} from '#data/dictionaries'
-import { useCancelOverlay } from '#hooks/useCancelOverlay'
-import { useTriggerAttribute } from '#hooks/useTriggerAttribute'
-import {
   ActionButtons,
   ResourceLineItems,
   Section,
   Spacer,
   Text,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { StockTransfer } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { StockTransfer } from "@commercelayer/sdk"
+import {
+  getStockTransferTriggerActions,
+  getStockTransferTriggerAttributeName,
+} from "#data/dictionaries"
+import { useCancelOverlay } from "#hooks/useCancelOverlay"
+import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
 interface Props {
   stockTransfer: StockTransfer
@@ -21,11 +21,11 @@ interface Props {
 export const StockTransferSummary = withSkeletonTemplate<Props>(
   ({ stockTransfer }): React.JSX.Element => {
     const triggerActions = getStockTransferTriggerActions(stockTransfer).filter(
-      (action) => action.hidden == null
+      (action) => action.hidden == null,
     )
 
     const { isLoading, errors, dispatch } = useTriggerAttribute(
-      stockTransfer.id
+      stockTransfer.id,
     )
 
     const { show: showCancelOverlay, Overlay: CancelOverlay } =
@@ -39,24 +39,24 @@ export const StockTransferSummary = withSkeletonTemplate<Props>(
     lineItem.quantity = stockTransfer.quantity
 
     return (
-      <Section title='Stock items'>
+      <Section title="Stock items">
         <ResourceLineItems editable={false} items={[lineItem]} />
         <ActionButtons
           actions={triggerActions.map((triggerAction) => {
             return {
               label: getStockTransferTriggerAttributeName(
-                triggerAction.triggerAttribute
+                triggerAction.triggerAttribute,
               ),
               variant: triggerAction.variant,
               disabled: isLoading,
               onClick: () => {
-                if (triggerAction.triggerAttribute === '_cancel') {
+                if (triggerAction.triggerAttribute === "_cancel") {
                   showCancelOverlay()
                   return
                 }
 
                 void dispatch(triggerAction.triggerAttribute)
-              }
+              },
             }
           })}
         />
@@ -64,19 +64,19 @@ export const StockTransferSummary = withSkeletonTemplate<Props>(
         <CancelOverlay
           stockTransfer={stockTransfer}
           onConfirm={() => {
-            void dispatch('_cancel')
+            void dispatch("_cancel")
           }}
         />
       </Section>
     )
-  }
+  },
 )
 
 function renderErrorMessages(errors?: string[]): React.JSX.Element {
   return errors != null && errors.length > 0 ? (
-    <Spacer top='4'>
-      {errors.map((message, idx) => (
-        <Text key={idx} variant='danger'>
+    <Spacer top="4">
+      {errors.map((message) => (
+        <Text key={message} variant="danger">
           {message}
         </Text>
       ))}

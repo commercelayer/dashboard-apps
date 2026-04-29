@@ -1,7 +1,3 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemSku } from '#components/ListItemSku'
-import { instructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
@@ -9,11 +5,15 @@ import {
   Icon,
   Spacer,
   useResourceFilters,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { Link, useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Link, useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemSku } from "#components/ListItemSku"
+import { instructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
 
 export const SkusList: FC = () => {
   const { canUser } = useTokenProvider()
@@ -22,24 +22,24 @@ export const SkusList: FC = () => {
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions
+    instructions,
   })
 
-  if (!canUser('read', 'skus')) {
+  if (!canUser("read", "skus")) {
     return (
-      <HomePageLayout title='SKUs'>
-        <EmptyState title='You are not authorized' />
+      <HomePageLayout title="SKUs">
+        <EmptyState title="You are not authorized" />
       </HomePageLayout>
     )
   }
 
   return (
-    <HomePageLayout title='SKUs'>
+    <HomePageLayout title="SKUs">
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -48,31 +48,31 @@ export const SkusList: FC = () => {
         hideFiltersNav={false}
       />
 
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <FilteredList
-          type='skus'
+          type="skus"
           ItemTemplate={ListItemSku}
           query={{
             pageSize: 25,
             sort: {
-              code: 'asc'
-            }
+              code: "asc",
+            },
           }}
           emptyState={
             <ListEmptyState
-              scope={hasActiveFilter ? 'userFiltered' : 'history'}
+              scope={hasActiveFilter ? "userFiltered" : "history"}
             />
           }
           actionButton={
-            canUser('create', 'skus') ? (
+            canUser("create", "skus") ? (
               <Link href={appRoutes.new.makePath({})} asChild>
                 <Button
-                  variant='secondary'
-                  size='mini'
-                  alignItems='center'
-                  aria-label='Add SKU'
+                  variant="secondary"
+                  size="mini"
+                  alignItems="center"
+                  aria-label="Add SKU"
                 >
-                  <Icon name='plus' />
+                  <Icon name="plus" />
                   New
                 </Button>
               </Link>

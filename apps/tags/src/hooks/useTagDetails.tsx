@@ -1,7 +1,7 @@
-import { makeTag } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { Tag } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { Tag } from "@commercelayer/sdk"
+import type { KeyedMutator } from "swr"
+import { makeTag } from "#mocks"
 
 export function useTagDetails(id: string): {
   tag: Tag
@@ -13,10 +13,10 @@ export function useTagDetails(id: string): {
     data: tag,
     isLoading,
     error,
-    mutate: mutateTag
-  } = useCoreApi('tags', 'retrieve', [id], {
+    mutate: mutateTag,
+  } = useCoreApi("tags", "retrieve", [id], {
     isPaused: () => isMockedId(id),
-    fallbackData: makeTag()
+    fallbackData: makeTag(),
   })
 
   return { tag, error, isLoading, mutateTag }

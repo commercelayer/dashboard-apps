@@ -1,11 +1,11 @@
-import { Report, withSkeletonTemplate } from '@commercelayer/app-elements'
-import { type Export } from '@commercelayer/sdk'
-import { ExportCount } from './ExportCount'
-import { useExportDetailsContext } from './Provider'
+import { Report, withSkeletonTemplate } from "@commercelayer/app-elements"
+import type { Export } from "@commercelayer/sdk"
+import { ExportCount } from "./ExportCount"
+import { useExportDetailsContext } from "./Provider"
 
 export const ExportReport = withSkeletonTemplate(({ isLoading }) => {
   const {
-    state: { data }
+    state: { data },
   } = useExportDetailsContext()
 
   if (data == null) {
@@ -13,18 +13,18 @@ export const ExportReport = withSkeletonTemplate(({ isLoading }) => {
   }
 
   const linkLabel =
-    data.format === 'csv' ? 'Download CSV file' : 'Download JSON file'
+    data.format === "csv" ? "Download CSV file" : "Download JSON file"
 
   return (
     <Report
       isLoading={isLoading}
       items={[
         {
-          label: 'Records',
-          count: <ExportCount type='records_count' />,
+          label: "Records",
+          count: <ExportCount type="records_count" />,
           linkUrl: getSourceFileUrl(data),
-          linkLabel
-        }
+          linkLabel,
+        },
       ]}
     />
   )

@@ -1,5 +1,5 @@
-import { CommerceLayerStatic } from '@commercelayer/sdk'
-import type { ApiError } from 'App'
+import type { ApiError } from "App"
+import { CommerceLayerStatic } from "@commercelayer/sdk"
 
 export function parseApiError(err: any): ApiError[] {
   if (CommerceLayerStatic.isApiError(err) && Array.isArray(err.errors)) {
@@ -8,9 +8,9 @@ export function parseApiError(err: any): ApiError[] {
   } else {
     return [
       {
-        title: err.message ?? 'Could not save the webhook',
-        detail: err.message ?? 'Could not save the webhook'
-      }
+        title: err.message ?? "Could not save the webhook",
+        detail: err.message ?? "Could not save the webhook",
+      },
     ]
   }
 }

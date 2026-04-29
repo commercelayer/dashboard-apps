@@ -1,10 +1,3 @@
-import { Form } from '#components/Form'
-import { adaptFormFiltersToSdk } from '#components/Form/Filters/utils'
-import { type ExportFormValues } from '#components/Form/types'
-import { customFieldsSubset } from '#data/fields'
-import { isAvailableResource, showResourceNiceName } from '#data/resources'
-import { appRoutes } from '#data/routes'
-import { parseApiError } from '#utils/apiErrors'
 import {
   Button,
   EmptyState,
@@ -13,22 +6,29 @@ import {
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { type ApiError } from '@typing/resources.types'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { ApiError } from "@typing/resources.types"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { Form } from "#components/Form"
+import { adaptFormFiltersToSdk } from "#components/Form/Filters/utils"
+import type { ExportFormValues } from "#components/Form/types"
+import { customFieldsSubset } from "#data/fields"
+import { isAvailableResource, showResourceNiceName } from "#data/resources"
+import { appRoutes } from "#data/routes"
+import { parseApiError } from "#utils/apiErrors"
 
 const NewExportPage = (): React.JSX.Element | null => {
   const {
     canUser,
     settings: { mode },
-    user
+    user,
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 
   const [_match, params] = useRoute<{ resourceType?: string }>(
-    appRoutes.newExport.path
+    appRoutes.newExport.path,
   )
   const [_location, setLocation] = useLocation()
 
@@ -37,27 +37,27 @@ const NewExportPage = (): React.JSX.Element | null => {
 
   const resourceType = params?.resourceType
   if (!isAvailableResource(resourceType)) {
-    return <PageError errorName='Invalid resource' errorDescription='' />
+    return <PageError errorName="Invalid resource" errorDescription="" />
   }
 
-  if (!canUser('create', 'exports')) {
+  if (!canUser("create", "exports")) {
     return (
       <PageLayout
-        title='Exports'
+        title="Exports"
         mode={mode}
         navigationButton={{
-          label: 'Back',
-          icon: 'arrowLeft',
+          label: "Back",
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(appRoutes.list.makePath())
-          }
+          },
         }}
       >
         <EmptyState
-          title='You are not authorized'
+          title="You are not authorized"
           action={
             <Link href={appRoutes.list.makePath()}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -71,7 +71,7 @@ const NewExportPage = (): React.JSX.Element | null => {
 
     try {
       const filters =
-        values.filtersSource === 'custom'
+        values.filtersSource === "custom"
           ? values.filters
           : adaptFormFiltersToSdk(values.filters, user?.timezone)
 
@@ -84,10 +84,10 @@ const NewExportPage = (): React.JSX.Element | null => {
           values.useCustomFields === true
             ? customFieldsSubset[resourceType]?.concat(
                 // we need to add all includes as fields or they will be ignored
-                (values.includes ?? []).map((res) => `${res}.*`)
+                (values.includes ?? []).map((res) => `${res}.*`),
               )
             : undefined,
-        filters
+        filters,
       })
       setLocation(appRoutes.list.makePath())
     } catch (error) {
@@ -103,34 +103,34 @@ const NewExportPage = (): React.JSX.Element | null => {
       title={`Export ${showResourceNiceName(resourceType).toLowerCase()}`}
       mode={mode}
       navigationButton={{
-        label: 'Select type',
-        icon: 'arrowLeft',
+        label: "Select type",
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(appRoutes.selectResource.makePath())
-        }
+        },
       }}
       overlay
     >
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <Form
           resourceType={resourceType}
           isLoading={isLoading}
           defaultValues={{
             dryData: false,
-            format: 'json',
+            format: "json",
             useCustomFields: false,
-            includes: []
+            includes: [],
           }}
           onSubmit={(values) => {
             void createExportTask(values)
           }}
         />
         {hasApiError ? (
-          <Spacer top='2'>
-            {apiError.map((error, idx) => (
+          <Spacer top="2">
+            {apiError.map((error) => (
               <InputFeedback
-                variant='danger'
-                key={idx}
+                variant="danger"
+                key={error.detail}
                 message={error.detail}
               />
             ))}

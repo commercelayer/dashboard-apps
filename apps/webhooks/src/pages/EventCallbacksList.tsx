@@ -1,14 +1,14 @@
-import { ListItemEvenCallback } from '#components/ListItemEventCallback'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
   PageLayout,
   useResourceList,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { ListItemEvenCallback } from "#components/ListItemEventCallback"
+import { appRoutes } from "#data/routes"
 
 export const EventCallbacksList: FC = () => {
   const { settings, canUser } = useTokenProvider()
@@ -19,26 +19,26 @@ export const EventCallbacksList: FC = () => {
 
   if (
     webhookId == null ||
-    !canUser('read', 'webhooks') ||
-    !canUser('read', 'event_callbacks')
+    !canUser("read", "webhooks") ||
+    !canUser("read", "event_callbacks")
   ) {
     return (
       <PageLayout
-        title='Event callbacks'
+        title="Event callbacks"
         mode={settings.mode}
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
           label: `Webhooks`,
-          icon: 'arrowLeft'
+          icon: "arrowLeft",
         }}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.list.makePath({})}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -48,14 +48,14 @@ export const EventCallbacksList: FC = () => {
 
   return (
     <PageLayout
-      title='Event Callbacks'
+      title="Event Callbacks"
       mode={settings.mode}
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.details.makePath({ webhookId }))
         },
         label: `Cancel`,
-        icon: 'x'
+        icon: "x",
       }}
     >
       <EventList webhookId={webhookId} />
@@ -66,18 +66,18 @@ export const EventCallbacksList: FC = () => {
 
 const EventList: FC<{ webhookId: string }> = ({ webhookId }) => {
   const { ResourceList } = useResourceList({
-    type: 'event_callbacks',
+    type: "event_callbacks",
     query: {
       filters: { webhook_id_eq: webhookId },
       pageSize: 25,
-      sort: ['-updated_at']
-    }
+      sort: ["-updated_at"],
+    },
   })
 
   return (
     <ResourceList
-      title='All event callbacks'
-      emptyState={<EmptyState title='No event callbacks yet!' />}
+      title="All event callbacks"
+      emptyState={<EmptyState title="No event callbacks yet!" />}
       ItemTemplate={ListItemEvenCallback}
     />
   )

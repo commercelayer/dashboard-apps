@@ -1,10 +1,10 @@
-import { makeShipment } from '#mocks'
 import {
   ResourceListItem,
   useAppLinking,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import { type Shipment } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Shipment } from "@commercelayer/sdk"
+import { makeShipment } from "#mocks"
 
 export const ListItemShipment = withSkeletonTemplate<{
   resource?: Shipment
@@ -17,8 +17,8 @@ export const ListItemShipment = withSkeletonTemplate<{
       isLoading={isLoading}
       delayMs={delayMs}
       {...navigateTo({
-        app: 'shipments',
-        resourceId: resource.id
+        app: "shipments",
+        resourceId: resource.id,
       })}
     />
   )

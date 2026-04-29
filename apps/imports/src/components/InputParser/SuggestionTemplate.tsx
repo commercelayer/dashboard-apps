@@ -1,6 +1,6 @@
-import { Button, Hint } from '@commercelayer/app-elements'
-import { type AllowedResourceType } from '@typing/resources.types'
-import { downloadTemplateAsCsvFile } from './templates'
+import { Button, Hint } from "@commercelayer/app-elements"
+import type { AllowedResourceType } from "@typing/resources.types"
+import { downloadTemplateAsCsvFile } from "./templates"
 
 interface Props {
   resourceType: AllowedResourceType
@@ -8,19 +8,19 @@ interface Props {
 
 export function SuggestionTemplate({ resourceType }: Props): React.JSX.Element {
   return (
-    <Hint icon='lightbulbFilament'>
-      Use our{' '}
+    <Hint icon="lightbulbFilament">
+      Use our{" "}
       <Button
-        type='button'
-        variant='link'
+        type="button"
+        variant="link"
         onClick={() => {
           downloadTemplateAsCsvFile({
-            resourceType
+            resourceType,
           })
         }}
       >
         CSV template
-      </Button>{' '}
+      </Button>{" "}
       to avoid formatting errors.
     </Hint>
   )

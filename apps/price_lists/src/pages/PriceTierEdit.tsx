@@ -1,40 +1,40 @@
 import {
-  PriceTierForm,
-  type PriceTierFormValues
-} from '#components/PriceTierForm'
-import { appRoutes } from '#data/routes'
-import { usePriceListDetails } from '#hooks/usePriceListDetails'
-import { usePriceTierDetails } from '#hooks/usePriceTierDetails'
-import type { PriceTierType } from '#types'
-import {
-  getPriceTierSdkResource,
-  getUpToFromForm,
-  isUpToForFrequencyFormCustom,
-  parseUpAsSafeString
-} from '#utils/priceTiers'
-import {
   Button,
   EmptyState,
   PageLayout,
   SkeletonTemplate,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type {
+  PriceFrequencyTier,
+  PriceFrequencyTierUpdate,
+  PriceList,
+  PriceVolumeTier,
+  PriceVolumeTierUpdate,
+} from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
 import {
-  type PriceFrequencyTier,
-  type PriceFrequencyTierUpdate,
-  type PriceList,
-  type PriceVolumeTier,
-  type PriceVolumeTierUpdate
-} from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  PriceTierForm,
+  type PriceTierFormValues,
+} from "#components/PriceTierForm"
+import { appRoutes } from "#data/routes"
+import { usePriceListDetails } from "#hooks/usePriceListDetails"
+import { usePriceTierDetails } from "#hooks/usePriceTierDetails"
+import type { PriceTierType } from "#types"
+import {
+  getPriceTierSdkResource,
+  getUpToFromForm,
+  isUpToForFrequencyFormCustom,
+  parseUpAsSafeString,
+} from "#utils/priceTiers"
 
 export function PriceTierEdit(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [location, setLocation] = useLocation()
@@ -42,10 +42,10 @@ export function PriceTierEdit(): React.JSX.Element {
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const tierType = location.includes('frequency') ? 'frequency' : 'volume'
+  const tierType = location.includes("frequency") ? "frequency" : "volume"
 
   const pathName =
-    tierType === 'frequency' ? 'priceFrequencyTierEdit' : 'priceVolumeTierEdit'
+    tierType === "frequency" ? "priceFrequencyTierEdit" : "priceVolumeTierEdit"
   const sdkResource = getPriceTierSdkResource(tierType)
 
   const [, params] = useRoute<{
@@ -54,22 +54,22 @@ export function PriceTierEdit(): React.JSX.Element {
     tierId: string
   }>(appRoutes[pathName].path)
 
-  const priceListId = params?.priceListId ?? ''
-  const priceId = params?.priceId ?? ''
-  const tierId = params?.tierId ?? ''
+  const priceListId = params?.priceListId ?? ""
+  const priceId = params?.priceId ?? ""
+  const tierId = params?.tierId ?? ""
   const {
     priceList,
     error,
-    isLoading: isLoadingPriceList
+    isLoading: isLoadingPriceList,
   } = usePriceListDetails(priceListId)
   const {
     tier,
     isLoading: isLoadingTier,
     error: errorTier,
-    mutateTier
+    mutateTier,
   } = usePriceTierDetails(tierId, tierType)
 
-  const pageTitle = 'Edit tier'
+  const pageTitle = "Edit tier"
 
   if (error != null || errorTier != null) {
     return (
@@ -78,21 +78,21 @@ export function PriceTierEdit(): React.JSX.Element {
         navigationButton={{
           onClick: () => {
             setLocation(
-              appRoutes.priceDetails.makePath({ priceListId, priceId })
+              appRoutes.priceDetails.makePath({ priceListId, priceId }),
             )
           },
           label: pageTitle,
-          icon: 'arrowLeft'
+          icon: "arrowLeft",
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link
               href={appRoutes.priceDetails.makePath({ priceListId, priceId })}
             >
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -102,7 +102,7 @@ export function PriceTierEdit(): React.JSX.Element {
 
   const goBackUrl = appRoutes.priceDetails.makePath({ priceListId, priceId })
 
-  if (!canUser('update', sdkResource)) {
+  if (!canUser("update", sdkResource)) {
     return (
       <PageLayout
         title={pageTitle}
@@ -110,18 +110,18 @@ export function PriceTierEdit(): React.JSX.Element {
           onClick: () => {
             setLocation(goBackUrl)
           },
-          label: 'Cancel',
-          icon: 'x'
+          label: "Cancel",
+          icon: "x",
         }}
         scrollToTop
         overlay
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -136,20 +136,20 @@ export function PriceTierEdit(): React.JSX.Element {
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
-      gap='only-top'
+      gap="only-top"
       scrollToTop
       overlay
     >
       <SkeletonTemplate isLoading={isLoadingPriceList || isLoadingTier}>
-        <Spacer bottom='14'>
+        <Spacer bottom="14">
           <PriceTierForm
             defaultValues={adaptPriceTierToFormValues(
               tier,
               priceList,
-              tierType
+              tierType,
             )}
             apiError={apiError}
             isSubmitting={isSaving}
@@ -163,8 +163,8 @@ export function PriceTierEdit(): React.JSX.Element {
                   setLocation(
                     appRoutes.priceDetails.makePath({
                       priceListId,
-                      priceId
-                    })
+                      priceId,
+                    }),
                   )
                 })
                 .catch((error) => {
@@ -182,46 +182,46 @@ export function PriceTierEdit(): React.JSX.Element {
 function adaptPriceTierToFormValues(
   tier: PriceFrequencyTier | PriceVolumeTier,
   priceList: PriceList,
-  type: PriceTierType
+  type: PriceTierType,
 ): PriceTierFormValues {
   const isFrequencyCustom = isUpToForFrequencyFormCustom(tier.up_to)
 
   const defaultValuesVolume: PriceTierFormValues = {
     id: tier.id,
-    name: tier.name ?? '',
+    name: tier.name ?? "",
     up_to: tier.up_to != null ? parseInt(`${tier.up_to}`) : null,
-    currency_code: priceList.currency_code ?? '',
+    currency_code: priceList.currency_code ?? "",
     price: tier.price_amount_cents,
-    type: 'volume'
+    type: "volume",
   }
   const defaultValuesFrequency: PriceTierFormValues = {
     id: tier.id,
-    name: tier.name ?? '',
-    up_to: isFrequencyCustom ? 'custom' : parseUpAsSafeString(tier.up_to),
+    name: tier.name ?? "",
+    up_to: isFrequencyCustom ? "custom" : parseUpAsSafeString(tier.up_to),
     up_to_days:
       isFrequencyCustom && tier.up_to != null
         ? parseInt(`${tier.up_to}`)
         : null,
-    currency_code: priceList.currency_code ?? '',
+    currency_code: priceList.currency_code ?? "",
     price: tier.price_amount_cents,
-    type: 'frequency'
+    type: "frequency",
   }
 
-  return type === 'volume' ? defaultValuesVolume : defaultValuesFrequency
+  return type === "volume" ? defaultValuesVolume : defaultValuesFrequency
 }
 
 function adaptFormValuesToPriceTier(
   formValues: PriceTierFormValues,
-  priceId: string
+  priceId: string,
 ): PriceFrequencyTierUpdate | PriceVolumeTierUpdate {
   return {
-    id: formValues.id ?? '',
+    id: formValues.id ?? "",
     name: formValues.name,
     up_to: getUpToFromForm(formValues),
     price_amount_cents: formValues.price,
     price: {
       id: priceId,
-      type: 'prices'
-    }
+      type: "prices",
+    },
   }
 }

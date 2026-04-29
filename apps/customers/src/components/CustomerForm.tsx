@@ -7,20 +7,18 @@ import {
   Spacer,
   Text,
   useCoreSdkProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, type UseFormSetError } from 'react-hook-form'
-import { z } from 'zod'
-
-import { useCustomerGroupsList } from '#hooks/useCustomerGroupsList'
-import { fetchCustomerGroups } from '#utils/fetchCustomerGroups'
-
-import type { CustomerGroup } from '@commercelayer/sdk'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { CustomerGroup } from "@commercelayer/sdk"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { type UseFormSetError, useForm } from "react-hook-form"
+import { z } from "zod"
+import { useCustomerGroupsList } from "#hooks/useCustomerGroupsList"
+import { fetchCustomerGroups } from "#utils/fetchCustomerGroups"
 
 const customerFormSchema = z.object({
   email: z.string().email(),
-  customerGroup: z.string().nullable()
+  customerGroup: z.string().nullable(),
 })
 
 export type CustomerFormValues = z.infer<typeof customerFormSchema>
@@ -30,7 +28,7 @@ interface Props {
   isSubmitting: boolean
   onSubmit: (
     formValues: CustomerFormValues,
-    setError: UseFormSetError<CustomerFormValues>
+    setError: UseFormSetError<CustomerFormValues>,
   ) => void
   apiError?: any
 }
@@ -39,12 +37,12 @@ export function CustomerForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting
+  isSubmitting,
 }: Props): React.JSX.Element {
   const { t } = useTranslation()
   const methods = useForm({
     defaultValues,
-    resolver: zodResolver(customerFormSchema)
+    resolver: zodResolver(customerFormSchema),
   })
 
   const { customerGroups } = useCustomerGroupsList({})
@@ -61,40 +59,40 @@ export function CustomerForm({
         onSubmit(formValues, methods.setError)
       }}
     >
-      <Spacer bottom='8'>
+      <Spacer bottom="8">
         <HookedInput
-          name='email'
-          label={t('resources.customers.attributes.email')}
+          name="email"
+          label={t("resources.customers.attributes.email")}
           hint={{
             text: (
-              <Text variant='info'>{t('apps.customers.form.email_hint')}</Text>
-            )
+              <Text variant="info">{t("apps.customers.form.email_hint")}</Text>
+            ),
           }}
-          autoComplete='off'
+          autoComplete="off"
         />
       </Spacer>
 
       {!isLoadingCustomerGroups && (
-        <Spacer bottom='8'>
+        <Spacer bottom="8">
           <Select options={customerGroups} />
         </Spacer>
       )}
 
-      <Spacer top='14'>
+      <Spacer top="14">
         <Button
-          type='submit'
+          type="submit"
           disabled={isSubmitting || isLoadingCustomerGroups}
-          className='w-full'
+          className="w-full"
         >
           {defaultValues.email.length === 0
-            ? t('common.create_resource', {
-                resource: t('resources.customers.name').toLowerCase()
+            ? t("common.create_resource", {
+                resource: t("resources.customers.name").toLowerCase(),
               })
-            : t('common.update_resource', {
-                resource: t('resources.customers.name').toLowerCase()
+            : t("common.update_resource", {
+                resource: t("resources.customers.name").toLowerCase(),
               })}
         </Button>
-        <Spacer top='2'>
+        <Spacer top="2">
           <HookedValidationApiError apiError={apiError} />
         </Spacer>
       </Spacer>
@@ -103,7 +101,7 @@ export function CustomerForm({
 }
 
 function Select({
-  options
+  options,
 }: {
   options: CustomerGroup[]
 }): React.JSX.Element | null {
@@ -112,27 +110,27 @@ function Select({
 
   return (
     <HookedInputSelect
-      label={t('apps.customers.form.customer_group_label')}
-      name='customerGroup'
+      label={t("apps.customers.form.customer_group_label")}
+      name="customerGroup"
       initialValues={options.map(({ id, name }) => ({
         value: id,
-        label: name
+        label: name,
       }))}
       isClearable
-      pathToValue='value'
+      pathToValue="value"
       loadAsyncValues={async (hint) => {
         const list = await fetchCustomerGroups({ sdkClient, hint })
         return list.map(({ id, name }) => ({
           value: id,
-          label: name
+          label: name,
         }))
       }}
       hint={{
         text: (
-          <Text variant='info'>
-            {t('apps.customers.form.customer_group_hint')}
+          <Text variant="info">
+            {t("apps.customers.form.customer_group_hint")}
           </Text>
-        )
+        ),
       }}
     />
   )

@@ -1,6 +1,6 @@
-import { makeReturn } from '#mocks'
-import { ResourceListItem, useAppLinking } from '@commercelayer/app-elements'
-import type { Return } from '@commercelayer/sdk'
+import { ResourceListItem, useAppLinking } from "@commercelayer/app-elements"
+import type { Return } from "@commercelayer/sdk"
+import { makeReturn } from "#mocks"
 
 interface Props {
   resource?: Return
@@ -11,7 +11,7 @@ interface Props {
 export function ListItemReturn({
   resource = makeReturn(),
   isLoading,
-  delayMs
+  delayMs,
 }: Props): React.JSX.Element {
   const { navigateTo } = useAppLinking()
 
@@ -21,8 +21,8 @@ export function ListItemReturn({
       isLoading={isLoading}
       delayMs={delayMs}
       {...navigateTo({
-        app: 'returns',
-        resourceId: resource.id
+        app: "returns",
+        resourceId: resource.id,
       })}
     />
   )

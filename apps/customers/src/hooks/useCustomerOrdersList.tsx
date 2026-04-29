@@ -1,5 +1,5 @@
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { ListResponse, Order, QueryPageSize } from '@commercelayer/sdk'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { ListResponse, Order, QueryPageSize } from "@commercelayer/sdk"
 
 interface UseCustomerOrdersListSettings {
   pageNumber?: number
@@ -28,8 +28,8 @@ export function useCustomerOrdersList({ id, settings }: Props): {
   const isFiltered = settings?.isFiltered ?? true
 
   const { data: orders, isLoading } = useCoreApi(
-    'customers',
-    'orders',
+    "customers",
+    "orders",
     isMockedId(id)
       ? null
       : [
@@ -38,17 +38,17 @@ export function useCustomerOrdersList({ id, settings }: Props): {
             ...(isFiltered
               ? {
                   filters: {
-                    status_matches_any: 'placed,approved,editing,cancelled'
+                    status_matches_any: "placed,approved,editing,cancelled",
                   },
-                  include: ['billing_address', 'market']
+                  include: ["billing_address", "market"],
                 }
               : undefined),
-            sort: ['-placed_at'],
+            sort: ["-placed_at"],
             pageNumber,
-            pageSize
+            pageSize,
           },
-          {}
-        ]
+          {},
+        ],
   )
 
   return { orders, isLoading }

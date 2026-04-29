@@ -1,5 +1,3 @@
-import { getFrequencyLabelByValue } from '#data/frequencies'
-import { useSubscriptionModelsFrequencies } from '#hooks/useSubscriptionModelsFrequencies'
 import {
   Button,
   HookedForm,
@@ -7,16 +5,18 @@ import {
   HookedInputSelect,
   HookedValidationApiError,
   Spacer,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, type UseFormSetError } from 'react-hook-form'
-import { z } from 'zod'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { type UseFormSetError, useForm } from "react-hook-form"
+import { z } from "zod"
+import { getFrequencyLabelByValue } from "#data/frequencies"
+import { useSubscriptionModelsFrequencies } from "#hooks/useSubscriptionModelsFrequencies"
 
 const subscriptionFormSchema = z.object({
   id: z.string(),
   frequency: z.string().nullable(),
-  nextRunAt: z.date()
+  nextRunAt: z.date(),
 })
 
 export type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>
@@ -26,7 +26,7 @@ interface Props {
   isSubmitting: boolean
   onSubmit: (
     formValues: SubscriptionFormValues,
-    setError: UseFormSetError<SubscriptionFormValues>
+    setError: UseFormSetError<SubscriptionFormValues>,
   ) => void
   apiError?: any
 }
@@ -35,11 +35,11 @@ export function SubscriptionForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting
+  isSubmitting,
 }: Props): React.JSX.Element {
   const methods = useForm({
     defaultValues,
-    resolver: zodResolver(subscriptionFormSchema)
+    resolver: zodResolver(subscriptionFormSchema),
   })
   const { user } = useTokenProvider()
 
@@ -52,38 +52,38 @@ export function SubscriptionForm({
         onSubmit(formValues, methods.setError)
       }}
     >
-      <Spacer bottom='8'>
+      <Spacer bottom="8">
         <HookedInputSelect
-          name='frequency'
-          label='Frequency'
+          name="frequency"
+          label="Frequency"
           initialValues={frequencies.map((f) => {
             return {
               label: getFrequencyLabelByValue(f),
-              value: f
+              value: f,
             }
           })}
           hint={{
-            text: `The frequency at which the subscription should run.`
+            text: `The frequency at which the subscription should run.`,
           }}
         />
       </Spacer>
-      <Spacer bottom='8'>
+      <Spacer bottom="8">
         <HookedInputDate
-          name='nextRunAt'
-          label='Next run'
+          name="nextRunAt"
+          label="Next run"
           showTimeSelect
           isClearable
           hint={{
-            text: `The date and time of the subscription's next run.`
+            text: `The date and time of the subscription's next run.`,
           }}
           timezone={user?.timezone}
         />
       </Spacer>
-      <Spacer top='14'>
-        <Button type='submit' disabled={isSubmitting} className='w-full'>
+      <Spacer top="14">
+        <Button type="submit" disabled={isSubmitting} className="w-full">
           Update
         </Button>
-        <Spacer top='2'>
+        <Spacer top="2">
           <HookedValidationApiError apiError={apiError} />
         </Spacer>
       </Spacer>

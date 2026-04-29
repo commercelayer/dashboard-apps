@@ -4,19 +4,19 @@ import {
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
 
-import type { LinkCreate, Sku, SkuList } from '@commercelayer/sdk'
-import isEmpty from 'lodash-es/isEmpty'
-import { useState } from 'react'
-import { Link, useLocation } from 'wouter'
-import { LinkForm, type LinkFormValues } from '../components/LinkForm'
-import { linksRoutes } from '../data/routes'
+import type { LinkCreate, Sku, SkuList } from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
+import { useState } from "react"
+import { Link, useLocation } from "wouter"
+import { LinkForm, type LinkFormValues } from "../components/LinkForm"
+import { linksRoutes } from "../data/routes"
 
 interface Props {
-  resourceId: Sku['id'] | SkuList['id']
-  resourceType: 'skus' | 'sku_lists'
+  resourceId: Sku["id"] | SkuList["id"]
+  resourceType: "skus" | "sku_lists"
   goBackUrl: string
   pageDescription?: string
   defaultName?: string
@@ -26,8 +26,8 @@ export const LinkNewPage = ({
   resourceId,
   resourceType,
   goBackUrl,
-  pageDescription = 'Share the link with your customers and sell directly your products online.',
-  defaultName
+  pageDescription = "Share the link with your customers and sell directly your products online.",
+  defaultName,
 }: Props): React.JSX.Element => {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
@@ -36,7 +36,7 @@ export const LinkNewPage = ({
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const pageTitle = 'New link'
+  const pageTitle = "New link"
 
   return (
     <PageLayout
@@ -46,37 +46,37 @@ export const LinkNewPage = ({
         onClick: () => {
           setLocation(goBackUrl)
         },
-        label: 'Cancel',
-        icon: 'x'
+        label: "Cancel",
+        icon: "x",
       }}
       scrollToTop
       overlay
     >
-      {!canUser('create', 'links') ? (
+      {!canUser("create", "links") ? (
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
       ) : (
-        <Spacer bottom='14'>
+        <Spacer bottom="14">
           <LinkForm
-            resourceType='skus'
+            resourceType="skus"
             apiError={apiError}
             isSubmitting={isSaving}
             defaultValues={{
-              name: defaultName
+              name: defaultName,
             }}
             onSubmit={(formValues) => {
               setIsSaving(true)
               const link = adaptFormValuesToLink(
                 formValues,
                 resourceId,
-                resourceType
+                resourceType,
               )
               void sdkClient.links
                 .create(link)
@@ -85,8 +85,8 @@ export const LinkNewPage = ({
                     setLocation(
                       linksRoutes.linksDetails.makePath({
                         linkId: createdLink.id,
-                        resourceId
-                      })
+                        resourceId,
+                      }),
                     )
                   }
                 })
@@ -104,21 +104,21 @@ export const LinkNewPage = ({
 
 function adaptFormValuesToLink(
   formValues: LinkFormValues,
-  resourceId: Props['resourceId'],
-  resourceType: Props['resourceType']
+  resourceId: Props["resourceId"],
+  resourceType: Props["resourceType"],
 ): LinkCreate {
   return {
     name: formValues.name,
     client_id: formValues.clientId,
-    scope: `market:id:${formValues.market}${!isEmpty(formValues.stockLocation) ? ` stock_location:id:${formValues.stockLocation}` : ''}`,
+    scope: `market:id:${formValues.market}${!isEmpty(formValues.stockLocation) ? ` stock_location:id:${formValues.stockLocation}` : ""}`,
     starts_at: formValues.startsAt.toJSON(),
     expires_at: formValues.expiresAt.toJSON(),
     ...(!isEmpty(formValues.language) && {
-      params: { lang: formValues.language }
+      params: { lang: formValues.language },
     }),
     item: {
       type: resourceType,
-      id: resourceId
-    }
+      id: resourceId,
+    },
   }
 }

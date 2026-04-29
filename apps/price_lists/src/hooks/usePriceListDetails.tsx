@@ -1,7 +1,7 @@
-import { makePriceList } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { PriceList } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { PriceList } from "@commercelayer/sdk"
+import type { KeyedMutator } from "swr"
+import { makePriceList } from "#mocks"
 
 export function usePriceListDetails(id: string): {
   priceList: PriceList
@@ -13,14 +13,14 @@ export function usePriceListDetails(id: string): {
     data: priceList,
     isLoading,
     error,
-    mutate: mutatePriceList
+    mutate: mutatePriceList,
   } = useCoreApi(
-    'price_lists',
-    'retrieve',
-    id !== '' && !isMockedId(id) ? [id] : null,
+    "price_lists",
+    "retrieve",
+    id !== "" && !isMockedId(id) ? [id] : null,
     {
-      fallbackData: makePriceList()
-    }
+      fallbackData: makePriceList(),
+    },
   )
 
   return { priceList, error, isLoading, mutatePriceList }

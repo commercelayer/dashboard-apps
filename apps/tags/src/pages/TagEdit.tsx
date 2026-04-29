@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { ScrollToTop } from '#components/ScrollToTop'
-import { TagForm, type TagFormValues } from '#components/TagForm'
-import { appRoutes } from '#data/routes'
-import { useTagDetails } from '#hooks/useTagDetails'
 import {
   Button,
   EmptyState,
@@ -10,18 +5,22 @@ import {
   SkeletonTemplate,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { type Tag, type TagUpdate } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { Tag, TagUpdate } from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { ScrollToTop } from "#components/ScrollToTop"
+import { TagForm, type TagFormValues } from "#components/TagForm"
+import { appRoutes } from "#data/routes"
+import { useTagDetails } from "#hooks/useTagDetails"
 
 export function TagEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ tagId: string }>(appRoutes.edit.path)
-  const tagId = params?.tagId ?? ''
+  const tagId = params?.tagId ?? ""
 
   const { tag, isLoading, mutateTag } = useTagDetails(tagId)
   const [apiError, setApiError] = useState<any>()
@@ -29,24 +28,24 @@ export function TagEdit(): React.JSX.Element {
 
   const goBackUrl = appRoutes.list.makePath()
 
-  if (!canUser('update', 'tags')) {
+  if (!canUser("update", "tags")) {
     return (
       <PageLayout
-        title='Edit tag'
+        title="Edit tag"
         navigationButton={{
-          label: 'Back',
-          icon: 'arrowLeft',
+          label: "Back",
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(goBackUrl)
-          }
+          },
         }}
       >
         <EmptyState
-          title='Not found'
-          description='Tag is invalid or you are not authorized to access this page.'
+          title="Not found"
+          description="Tag is invalid or you are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -60,16 +59,16 @@ export function TagEdit(): React.JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>Edit tag</SkeletonTemplate>
       }
       navigationButton={{
-        label: 'Back',
-        icon: 'arrowLeft',
+        label: "Back",
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(goBackUrl)
-        }
+        },
       }}
       overlay
     >
       <ScrollToTop />
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         {!isLoading && tag != null ? (
           <TagForm
             defaultValues={adaptTagToFormValues(tag)}
@@ -97,16 +96,16 @@ export function TagEdit(): React.JSX.Element {
 
 function adaptTagToFormValues(tag?: Tag): TagFormValues {
   return {
-    name: tag?.name ?? ''
+    name: tag?.name ?? "",
   }
 }
 
 function adaptFormValuesToTag(
   formValues: TagFormValues,
-  tagId: string
+  tagId: string,
 ): TagUpdate {
   return {
     id: tagId,
-    name: formValues.name
+    name: formValues.name,
   }
 }

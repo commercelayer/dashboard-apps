@@ -1,48 +1,46 @@
 import {
   A,
+  formatDate,
   Icon,
   PageLayout,
   SkeletonTemplate,
-  formatDate,
   useAppLinking,
   useCoreApi,
   useTokenProvider,
-  useTranslation
-} from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
-
-import { appRoutes, type PageProps } from '#data/routes'
-import { useGetCheckoutLink } from '#hooks/useGetCheckoutLink'
-import { useOrderDetails } from '#hooks/useOrderDetails'
-import { LinkDetailsCard } from 'dashboard-apps-common/src/components/LinkDetailsCard'
-import { useMemo } from 'react'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import { LinkDetailsCard } from "dashboard-apps-common/src/components/LinkDetailsCard"
+import { useMemo } from "react"
+import { Link } from "wouter"
+import { appRoutes, type PageProps } from "#data/routes"
+import { useGetCheckoutLink } from "#hooks/useGetCheckoutLink"
+import { useOrderDetails } from "#hooks/useOrderDetails"
 
 function phoneNumberForWhatsapp(
-  phoneNumber?: string | null
+  phoneNumber?: string | null,
 ): string | undefined | null {
   if (phoneNumber == null) {
     return phoneNumber
   }
 
   return phoneNumber
-    .replace(/\s+/g, '') // Replace all spaces
-    .replace(/\D+/g, '') // Remove all non-number chars
+    .replace(/\s+/g, "") // Replace all spaces
+    .replace(/\D+/g, "") // Remove all non-number chars
 }
 
 function LinkDetails(
-  props: PageProps<typeof appRoutes.linkDetails>
+  props: PageProps<typeof appRoutes.linkDetails>,
 ): React.JSX.Element {
   const {
     settings: { mode, extras },
-    user
+    user,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
   const { t } = useTranslation()
 
-  const { data: organization } = useCoreApi('organization', 'retrieve', [])
+  const { data: organization } = useCoreApi("organization", "retrieve", [])
 
-  const [, setLocation] = useLocation()
-  const orderId = props.params?.orderId ?? ''
+  const orderId = props.params?.orderId ?? ""
 
   const { order } = useOrderDetails(orderId)
 
@@ -55,44 +53,41 @@ function LinkDetails(
   const { link, isLoading } = useGetCheckoutLink({
     orderId,
     clientId: extras?.salesChannels?.[0]?.client_id,
-    scope: linkScope
+    scope: linkScope,
   })
 
   const linkSalesChannel = useMemo(() => {
     return (
       extras?.salesChannels?.find((sc) => sc.client_id === link?.client_id) ?? {
-        name: 'Sales channel',
-        client_id: link?.client_id
+        name: "Sales channel",
+        client_id: link?.client_id,
       }
     )
   }, [extras?.salesChannels, link?.client_id])
 
-  const pageTitle = t('common.links.checkout_link_status', {
-    status: link?.status
+  const pageTitle = t("common.links.checkout_link_status", {
+    status: link?.status,
   })
 
   const expiresIn = formatDate({
     isoDate: link?.expires_at ?? undefined,
     timezone: user?.timezone,
     locale: user?.locale,
-    format: 'full'
+    format: "full",
   })
 
   const linkHint: React.ReactNode = (
     <>
-      Sales channel: {linkSalesChannel?.name}. Expiry: {expiresIn}. You can{' '}
-      <a
-        onClick={() => {
-          setLocation(
-            appRoutes.linkEdit.makePath({
-              orderId,
-              linkId: link?.id ?? ''
-            })
-          )
-        }}
+      Sales channel: {linkSalesChannel?.name}. Expiry: {expiresIn}. You can{" "}
+      <Link
+        href={appRoutes.linkEdit.makePath({
+          orderId,
+          linkId: link?.id ?? "",
+        })}
+        asChild
       >
         <b>edit settings here</b>
-      </a>
+      </Link>
       .
     </>
   )
@@ -111,11 +106,11 @@ function LinkDetails(
         onClick: () => {
           goBack({
             currentResourceId: orderId,
-            defaultRelativePath: appRoutes.details.makePath({ orderId })
+            defaultRelativePath: appRoutes.details.makePath({ orderId }),
           })
         },
-        label: t('common.close'),
-        icon: 'x'
+        label: t("common.close"),
+        icon: "x",
       }}
       isLoading={isLoading}
       scrollToTop
@@ -127,37 +122,37 @@ function LinkDetails(
           linkHint={linkHint}
           primaryAction={
             <A
-              variant='secondary'
-              size='small'
-              alignItems='center'
-              target='_blank'
-              href={link?.url ?? ''}
+              variant="secondary"
+              size="small"
+              alignItems="center"
+              target="_blank"
+              href={link?.url ?? ""}
             >
-              <Icon name='arrowSquareOut' size={16} />
-              {t('common.links.open_checkout')}
+              <Icon name="arrowSquareOut" size={16} />
+              {t("common.links.open_checkout")}
             </A>
           }
           share={{
             email: {
               to: order.customer_email,
-              subject: t('common.links.share_email_subject', {
-                number: order.number
+              subject: t("common.links.share_email_subject", {
+                number: order.number,
               }),
-              body: t('common.links.share_email_body', {
+              body: t("common.links.share_email_body", {
                 number: order.number,
                 url: link.url,
                 organization: organization?.name,
-                interpolation: { escapeValue: false }
-              })
+                interpolation: { escapeValue: false },
+              }),
             },
             whatsapp: {
               number: phoneNumberForWhatsapp(order.billing_address?.phone),
-              text: t('common.links.share_whatsapp_text', {
+              text: t("common.links.share_whatsapp_text", {
                 number: order.number,
                 url: link.url,
-                interpolation: { escapeValue: false }
-              })
-            }
+                interpolation: { escapeValue: false },
+              }),
+            },
           }}
         />
       </SkeletonTemplate>

@@ -1,12 +1,12 @@
-import { type QueryParamsList } from '@commercelayer/sdk'
-import { endOfDay, startOfDay } from 'date-fns'
-import { fromZonedTime, toZonedTime } from 'date-fns-tz'
-import { type AllFilters, type FilterValue } from '../types'
+import type { QueryParamsList } from "@commercelayer/sdk"
+import { endOfDay, startOfDay } from "date-fns"
+import { fromZonedTime, toZonedTime } from "date-fns-tz"
+import type { AllFilters, FilterValue } from "../types"
 
 export function adaptFormFiltersToSdk(
   filters?: AllFilters,
-  timezone?: string
-): QueryParamsList['filters'] {
+  timezone?: string,
+): QueryParamsList["filters"] {
   if (filters == null) {
     return
   }
@@ -26,34 +26,34 @@ export function adaptFormFiltersToSdk(
     }
 
     // dates `grater than` should always have 00:00:00 time
-    if (filterKey.includes('at_gteq') && typeof value === 'string') {
+    if (filterKey.includes("at_gteq") && typeof value === "string") {
       value = isoDateToDayEdge({
         isoString: value,
-        edge: 'startOfTheDay',
-        timezone
+        edge: "startOfTheDay",
+        timezone,
       })
     }
 
     // dates `lower than` should always have 23:59:59 time
-    if (filterKey.includes('at_lteq') && typeof value === 'string') {
+    if (filterKey.includes("at_lteq") && typeof value === "string") {
       value = isoDateToDayEdge({
         isoString: value,
-        edge: 'endOfTheDay',
-        timezone
+        edge: "endOfTheDay",
+        timezone,
       })
     }
 
     // parsing string as boolean
-    if (value === 'true') {
+    if (value === "true") {
       value = true
     }
-    if (value === 'false') {
+    if (value === "false") {
       value = false
     }
 
     return {
       ...skdFilters,
-      [filterKey]: value
+      [filterKey]: value,
     }
   }, {})
 
@@ -64,10 +64,10 @@ type IsoDate = string
 export function isoDateToDayEdge({
   isoString,
   edge,
-  timezone = 'UTC'
+  timezone = "UTC",
 }: {
   isoString: IsoDate
-  edge: 'startOfTheDay' | 'endOfTheDay'
+  edge: "startOfTheDay" | "endOfTheDay"
   timezone?: string
 }): string | undefined {
   try {
@@ -78,11 +78,11 @@ export function isoDateToDayEdge({
 
     const zonedDate = toZonedTime(date, timezone)
 
-    if (edge === 'startOfTheDay') {
+    if (edge === "startOfTheDay") {
       return fromZonedTime(startOfDay(zonedDate), timezone).toISOString()
     }
 
-    if (edge === 'endOfTheDay') {
+    if (edge === "endOfTheDay") {
       return fromZonedTime(endOfDay(zonedDate), timezone).toISOString()
     }
 
@@ -93,7 +93,7 @@ export function isoDateToDayEdge({
 }
 
 export function parseFilterToDate(filterValue?: FilterValue): Date | null {
-  return filterValue != null && typeof filterValue === 'string'
+  return filterValue != null && typeof filterValue === "string"
     ? new Date(filterValue)
     : null
 }

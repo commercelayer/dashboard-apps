@@ -1,17 +1,16 @@
-import { useImportDetailsContext } from '#components/Details/Provider'
 import {
   formatResourceName,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { ListableResourceType } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { ListableResourceType } from "@commercelayer/sdk"
+import { useImportDetailsContext } from "#components/Details/Provider"
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {}
 
 export const ImportedResourceType = withSkeletonTemplate<Props>(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ isLoading, delayMs, ...props }) => {
     const {
-      state: { data }
+      state: { data },
     } = useImportDetailsContext()
 
     if (data == null) {
@@ -23,11 +22,11 @@ export const ImportedResourceType = withSkeletonTemplate<Props>(
         {data?.resource_type != null
           ? formatResourceName({
               resource: data.resource_type as ListableResourceType,
-              count: 'plural',
-              format: 'title'
+              count: "plural",
+              format: "title",
             })
-          : '-'}
+          : "-"}
       </span>
     )
-  }
+  },
 )

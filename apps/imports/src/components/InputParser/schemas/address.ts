@@ -1,7 +1,7 @@
-import { z, type ZodTypeAny } from 'zod'
+import { type ZodTypeAny, z } from "zod"
 
-import { isFalsy } from '#utils/isFalsy'
-import { zodEnforceBoolean } from './zodUtils'
+import { isFalsy } from "#utils/isFalsy"
+import { zodEnforceBoolean } from "./zodUtils"
 
 const makeSchema = (): ZodTypeAny =>
   z
@@ -23,29 +23,29 @@ const makeSchema = (): ZodTypeAny =>
       lng: z.optional(z.number()),
       billing_info: z.optional(z.string()),
       reference: z.optional(z.string()),
-      reference_origin: z.optional(z.string())
+      reference_origin: z.optional(z.string()),
     })
     .passthrough()
     .superRefine((data, ctx) => {
       if (isFalsy(data.business) && isFalsy(data.first_name)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['first_name'],
-          message: 'first_name is required if business is false'
+          path: ["first_name"],
+          message: "first_name is required if business is false",
         })
       }
       if (isFalsy(data.business) && isFalsy(data.last_name)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['last_name'],
-          message: 'last_name is required if business is false'
+          path: ["last_name"],
+          message: "last_name is required if business is false",
         })
       }
       if (data.business === true && isFalsy(data.company)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['company'],
-          message: 'company is required if business is true'
+          path: ["company"],
+          message: "company is required if business is true",
         })
       }
     })

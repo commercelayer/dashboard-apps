@@ -1,4 +1,4 @@
-import type { Import, ListResponse } from '@commercelayer/sdk'
+import type { Import, ListResponse } from "@commercelayer/sdk"
 
 export interface ListImportContextValue {
   state: ListImportContextState

@@ -1,31 +1,31 @@
-import { instructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
-import { PageLayout, useResourceFilters } from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
+import { PageLayout, useResourceFilters } from "@commercelayer/app-elements"
+import { useLocation } from "wouter"
+import { instructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
 
 function Filters(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { FiltersForm, adapters } = useResourceFilters({
-    instructions
+    instructions,
   })
 
   return (
     <PageLayout
       overlay
-      title='Filters'
+      title="Filters"
       navigationButton={{
         onClick: () => {
           setLocation(
             appRoutes.list.makePath(
               {},
               adapters.adaptUrlQueryToUrlQuery({
-                queryString: location.search
-              })
-            )
+                queryString: location.search,
+              }),
+            ),
           )
         },
-        label: 'Gift cards',
-        icon: 'arrowLeft'
+        label: "Gift cards",
+        icon: "arrowLeft",
       }}
     >
       <FiltersForm

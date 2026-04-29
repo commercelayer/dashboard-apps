@@ -1,16 +1,16 @@
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { WebhookFormProvider } from '#components/Form/Provider'
-import WebhookForm from '#components/Form/WebhookForm'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
   PageLayout,
   SkeletonTemplate,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import type { FC } from 'react'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Link, useLocation, useRoute } from "wouter"
+import { ErrorNotFound } from "#components/ErrorNotFound"
+import { WebhookFormProvider } from "#components/Form/Provider"
+import WebhookForm from "#components/Form/WebhookForm"
+import { appRoutes } from "#data/routes"
 
 export const WebhookEdit: FC = () => {
   const { settings, canUser } = useTokenProvider()
@@ -19,24 +19,24 @@ export const WebhookEdit: FC = () => {
 
   const webhookId = params == null ? null : params.webhookId
 
-  if (webhookId == null || !canUser('update', 'webhooks')) {
+  if (webhookId == null || !canUser("update", "webhooks")) {
     return (
       <PageLayout
-        title='Edit webhook'
+        title="Edit webhook"
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
           label: `Webhooks`,
-          icon: 'arrowLeft'
+          icon: "arrowLeft",
         }}
         mode={settings.mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.list.makePath({})}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -52,14 +52,14 @@ export const WebhookEdit: FC = () => {
         ) : (
           <SkeletonTemplate>
             <PageLayout
-              title='Edit webhook'
+              title="Edit webhook"
               mode={settings.mode}
               navigationButton={{
                 onClick: () => {
                   setLocation(appRoutes.details.makePath({ webhookId }))
                 },
-                label: 'Cancel',
-                icon: 'x'
+                label: "Cancel",
+                icon: "x",
               }}
               overlay
             >

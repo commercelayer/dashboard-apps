@@ -1,10 +1,3 @@
-import { ExportDate } from '#components/Details/ExportDate'
-import { ExportDetails } from '#components/Details/ExportDetails'
-import { ExportedResourceType } from '#components/Details/ExportedResourceType'
-import { ExportReport } from '#components/Details/ExportReport'
-import { ExportDetailsProvider } from '#components/Details/Provider'
-import { ErrorNotFound } from '#components/ErrorNotFound'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
@@ -14,40 +7,47 @@ import {
   ResourceMetadata,
   SkeletonTemplate,
   Spacer,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { Link, useLocation, useRoute } from "wouter"
+import { ExportDate } from "#components/Details/ExportDate"
+import { ExportDetails } from "#components/Details/ExportDetails"
+import { ExportedResourceType } from "#components/Details/ExportedResourceType"
+import { ExportReport } from "#components/Details/ExportReport"
+import { ExportDetailsProvider } from "#components/Details/Provider"
+import { ErrorNotFound } from "#components/ErrorNotFound"
+import { appRoutes } from "#data/routes"
 
 const DetailsPage = (): React.JSX.Element | null => {
   const {
     canUser,
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
   const [_match, params] = useRoute<{ exportId?: string }>(
-    appRoutes.details.path
+    appRoutes.details.path,
   )
   const [_, setLocation] = useLocation()
 
   const exportId = params == null ? null : params.exportId
 
-  if (exportId == null || !canUser('read', 'exports')) {
+  if (exportId == null || !canUser("read", "exports")) {
     return (
       <PageLayout
-        title='Exports'
+        title="Exports"
         navigationButton={{
-          label: 'Back',
-          icon: 'arrowLeft',
+          label: "Back",
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(appRoutes.list.makePath())
-          }
+          },
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.list.makePath()}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -68,31 +68,31 @@ const DetailsPage = (): React.JSX.Element | null => {
               description={
                 <ExportDate
                   atType={
-                    data.status === 'completed' ? 'completed_at' : 'started_at'
+                    data.status === "completed" ? "completed_at" : "started_at"
                   }
                   prefixText={
-                    data.status === 'completed' ? 'Exported on ' : 'Started on'
+                    data.status === "completed" ? "Exported on " : "Started on"
                   }
                   includeTime
                 />
               }
               navigationButton={{
-                label: 'Exports',
-                icon: 'arrowLeft',
+                label: "Exports",
+                icon: "arrowLeft",
                 onClick: () => {
                   setLocation(appRoutes.list.makePath())
-                }
+                },
               }}
             >
-              <Spacer bottom='14'>
+              <Spacer bottom="14">
                 <ExportReport />
               </Spacer>
 
-              <Spacer bottom='14'>
+              <Spacer bottom="14">
                 <ExportDetails />
               </Spacer>
 
-              <Spacer top='14'>
+              <Spacer top="14">
                 <ResourceDetails
                   resource={data}
                   onUpdated={async () => {
@@ -101,12 +101,12 @@ const DetailsPage = (): React.JSX.Element | null => {
                 />
               </Spacer>
               {!isMockedId(data.id) && (
-                <Spacer top='14'>
+                <Spacer top="14">
                   <ResourceMetadata
-                    resourceType='exports'
+                    resourceType="exports"
                     resourceId={data.id}
                     overlay={{
-                      title: 'Back'
+                      title: "Back",
                     }}
                   />
                 </Spacer>

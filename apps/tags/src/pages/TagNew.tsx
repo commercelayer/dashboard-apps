@@ -1,17 +1,17 @@
-import { ScrollToTop } from '#components/ScrollToTop'
-import { TagForm, type TagFormValues } from '#components/TagForm'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
   PageLayout,
   Spacer,
   useCoreSdkProvider,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { type TagCreate } from '@commercelayer/sdk'
-import { useState } from 'react'
-import { Link, useLocation } from 'wouter'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { TagCreate } from "@commercelayer/sdk"
+import { useState } from "react"
+import { Link, useLocation } from "wouter"
+import { ScrollToTop } from "#components/ScrollToTop"
+import { TagForm, type TagFormValues } from "#components/TagForm"
+import { appRoutes } from "#data/routes"
 
 export function TagNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -23,24 +23,24 @@ export function TagNew(): React.JSX.Element {
 
   const goBackUrl = appRoutes.list.makePath()
 
-  if (!canUser('create', 'tags')) {
+  if (!canUser("create", "tags")) {
     return (
       <PageLayout
-        title='New tag'
+        title="New tag"
         navigationButton={{
-          label: 'Back',
-          icon: 'arrowLeft',
+          label: "Back",
+          icon: "arrowLeft",
           onClick: () => {
             setLocation(goBackUrl)
-          }
+          },
         }}
       >
         <EmptyState
-          title='Permission Denied'
-          description='You are not authorized to access this page.'
+          title="Permission Denied"
+          description="You are not authorized to access this page."
           action={
             <Link href={goBackUrl}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -52,16 +52,16 @@ export function TagNew(): React.JSX.Element {
     <PageLayout
       title={<>New tag</>}
       navigationButton={{
-        label: 'Tags',
-        icon: 'arrowLeft',
+        label: "Tags",
+        icon: "arrowLeft",
         onClick: () => {
           setLocation(goBackUrl)
-        }
+        },
       }}
       overlay
     >
       <ScrollToTop />
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <TagForm
           defaultValues={newTagToFormValues()}
           apiError={apiError}
@@ -86,12 +86,12 @@ export function TagNew(): React.JSX.Element {
 
 function newTagToFormValues(): TagFormValues {
   return {
-    name: ''
+    name: "",
   }
 }
 
 function adaptFormValuesToTag(formValues: TagFormValues): TagCreate {
   return {
-    name: formValues.name
+    name: formValues.name,
   }
 }

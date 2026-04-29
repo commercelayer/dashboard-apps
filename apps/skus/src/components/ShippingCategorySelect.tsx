@@ -1,13 +1,13 @@
-import { fetchShippingCategories } from '#utils/fetchShippingCategories'
 import {
   HookedInputSelect,
   Text,
-  useCoreSdkProvider
-} from '@commercelayer/app-elements'
-import type { ShippingCategory } from '@commercelayer/sdk'
+  useCoreSdkProvider,
+} from "@commercelayer/app-elements"
+import type { ShippingCategory } from "@commercelayer/sdk"
+import { fetchShippingCategories } from "#utils/fetchShippingCategories"
 
 export function ShippingCategorySelect({
-  options
+  options,
 }: {
   options: ShippingCategory[]
 }): React.JSX.Element | null {
@@ -15,35 +15,35 @@ export function ShippingCategorySelect({
 
   return (
     <HookedInputSelect
-      label='Shipping category'
-      name='shippingCategory'
+      label="Shipping category"
+      name="shippingCategory"
       initialValues={options.map(({ id, name }) => ({
         value: id,
-        label: name
+        label: name,
       }))}
       isClearable
-      pathToValue='value'
+      pathToValue="value"
       loadAsyncValues={async (hint) => {
         const list = await fetchShippingCategories({ sdkClient, hint })
         return list.map(({ id, name }) => ({
           value: id,
-          label: name
+          label: name,
         }))
       }}
       hint={{
         text: (
-          <Text variant='info'>
-            Used to manage different{' '}
+          <Text variant="info">
+            Used to manage different{" "}
             <a
-              href='https://docs.commercelayer.io/core/v/api-reference/shipping_methods'
-              target='_blank'
-              rel='noreferrer'
+              href="https://docs.commercelayer.io/core/v/api-reference/shipping_methods"
+              target="_blank"
+              rel="noreferrer"
             >
               shipping methods
             </a>
             . Optional for 'Do not ship'.
           </Text>
-        )
+        ),
       }}
     />
   )

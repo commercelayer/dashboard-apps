@@ -3,9 +3,9 @@ import {
   Section,
   Stack,
   useTranslation,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Return } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Return } from "@commercelayer/sdk"
 
 interface Props {
   returnObj: Return
@@ -24,19 +24,19 @@ export const ReturnAddresses = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <Section title={t('resources.addresses.name_other')} border='none'>
+        <Section title={t("resources.addresses.name_other")} border="none">
           <Stack>
             <ResourceAddress
               address={returnObj.origin_address}
-              title={t('apps.returns.details.origin')}
+              title={t("apps.returns.details.origin")}
             />
             <ResourceAddress
               address={returnObj.destination_address}
-              title={t('apps.returns.details.destination')}
+              title={t("apps.returns.details.destination")}
             />
           </Stack>
         </Section>
       </>
     )
-  }
+  },
 )

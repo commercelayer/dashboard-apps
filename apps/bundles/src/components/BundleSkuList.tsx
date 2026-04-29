@@ -1,9 +1,9 @@
-import { ListItemSkuListItem } from '#components/ListItemSkuListItem'
-import { useSkuListItems } from '#hooks/useSkuListItems'
-import { makeBundle } from '#mocks'
-import { Section, SkeletonTemplate } from '@commercelayer/app-elements'
-import type { Bundle } from '@commercelayer/sdk'
-import type { FC } from 'react'
+import { Section, SkeletonTemplate } from "@commercelayer/app-elements"
+import type { Bundle } from "@commercelayer/sdk"
+import type { FC } from "react"
+import { ListItemSkuListItem } from "#components/ListItemSkuListItem"
+import { useSkuListItems } from "#hooks/useSkuListItems"
+import { makeBundle } from "#mocks"
 
 interface Props {
   bundle: Bundle
@@ -12,7 +12,7 @@ interface Props {
 export const BundleSkuList: FC<Props> = ({ bundle = makeBundle() }) => {
   const skuListId = bundle.sku_list?.id
 
-  const { skuListItems, isLoadingItems } = useSkuListItems(skuListId ?? '')
+  const { skuListItems, isLoadingItems } = useSkuListItems(skuListId ?? "")
   let totalQuantity = 0
   skuListItems?.forEach((item) => {
     totalQuantity += item?.quantity ?? 0

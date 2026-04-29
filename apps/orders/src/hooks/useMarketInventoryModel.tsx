@@ -1,19 +1,18 @@
-import { useCoreApi } from '@commercelayer/app-elements'
-import isEmpty from 'lodash-es/isEmpty'
+import { useCoreApi } from "@commercelayer/app-elements"
+import isEmpty from "lodash-es/isEmpty"
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useMarketInventoryModel(marketId?: string) {
   const { data: inventoryModel, isLoading } = useCoreApi(
-    'markets',
-    'inventory_model',
+    "markets",
+    "inventory_model",
     marketId != null && !isEmpty(marketId)
       ? [
           marketId,
           {
-            include: ['inventory_return_locations.stock_location.address']
-          }
+            include: ["inventory_return_locations.stock_location.address"],
+          },
         ]
-      : null
+      : null,
   )
 
   return { inventoryModel, isLoading }

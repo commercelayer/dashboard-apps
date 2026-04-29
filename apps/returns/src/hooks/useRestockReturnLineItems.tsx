@@ -1,14 +1,14 @@
-import { type RestockFormValues } from '#components/FormRestock'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import type { Return } from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import type { Return } from "@commercelayer/sdk"
+import { useCallback, useState } from "react"
+import type { RestockFormValues } from "#components/FormRestock"
 
 interface RestockReturnLineItemsHook {
   isRestockingReturnLineItems: boolean
   restockReturnLineItemsError?: any
   restockReturnLineItems: (
     returnObj: Return,
-    formValues: RestockFormValues
+    formValues: RestockFormValues,
   ) => Promise<void>
 }
 
@@ -18,9 +18,9 @@ export function useRestockReturnLineItems(): RestockReturnLineItemsHook {
   const [isRestockingReturnLineItems, setIsRestockingReturnLineItems] =
     useState(false)
   const [restockReturnLineItemsError, setRestockReturnLineItemsError] =
-    useState<RestockReturnLineItemsHook['restockReturnLineItemsError']>()
+    useState<RestockReturnLineItemsHook["restockReturnLineItemsError"]>()
 
-  const restockReturnLineItems: RestockReturnLineItemsHook['restockReturnLineItems'] =
+  const restockReturnLineItems: RestockReturnLineItemsHook["restockReturnLineItems"] =
     useCallback(async (returnObj, formValues) => {
       setIsRestockingReturnLineItems(true)
       setRestockReturnLineItemsError(undefined)
@@ -33,14 +33,14 @@ export function useRestockReturnLineItems(): RestockReturnLineItemsHook {
               if (returnLineItemIds.includes(item.id)) {
                 return await sdkClient.return_line_items.update({
                   id: item.id,
-                  _restock: true
+                  _restock: true,
                 })
               }
-            })
+            }),
           )
           await sdkClient.returns.update({
             id: returnObj.id,
-            _request: true
+            _request: true,
           })
         } catch (err) {
           setRestockReturnLineItemsError(err)
@@ -53,6 +53,6 @@ export function useRestockReturnLineItems(): RestockReturnLineItemsHook {
   return {
     isRestockingReturnLineItems,
     restockReturnLineItemsError,
-    restockReturnLineItems
+    restockReturnLineItems,
   }
 }

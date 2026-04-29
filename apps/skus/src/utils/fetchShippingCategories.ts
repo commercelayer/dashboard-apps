@@ -1,8 +1,8 @@
 import type {
   CommerceLayerClient,
   ListResponse,
-  ShippingCategory
-} from '@commercelayer/sdk'
+  ShippingCategory,
+} from "@commercelayer/sdk"
 
 interface FetchShippingCategoriesConfig {
   sdkClient: CommerceLayerClient
@@ -17,20 +17,20 @@ interface FetchShippingCategoriesConfig {
 
 export const fetchShippingCategories = async ({
   sdkClient,
-  hint
+  hint,
 }: FetchShippingCategoriesConfig): Promise<ListResponse<ShippingCategory>> => {
   const list = await sdkClient.shipping_categories.list({
-    fields: ['id', 'name'],
+    fields: ["id", "name"],
     pageSize: 10,
     filters:
       hint != null
         ? {
-            name_cont: hint
+            name_cont: hint,
           }
         : undefined,
     sort: {
-      name: 'asc'
-    }
+      name: "asc",
+    },
   })
   return list
 }

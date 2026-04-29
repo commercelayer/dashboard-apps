@@ -2,20 +2,16 @@ import {
   currencyInputSelectOptions,
   flatSelectValues,
   HookedInputSelect,
+  type HookedInputSelectProps,
+  type InputSelectValue,
   useCoreApi,
   useCoreSdkProvider,
-  type HookedInputSelectProps,
-  type InputSelectValue
-} from '@commercelayer/app-elements'
-import {
-  type ListResponse,
-  type Market,
-  type Resource
-} from '@commercelayer/sdk'
-import isEmpty from 'lodash-es/isEmpty'
-import isString from 'lodash-es/isString'
-import { type FC } from 'react'
-import { useFormContext } from 'react-hook-form'
+} from "@commercelayer/app-elements"
+import type { ListResponse, Market, Resource } from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
+import isString from "lodash-es/isString"
+import type { FC } from "react"
+import { useFormContext } from "react-hook-form"
 
 /**
  * Render a select input to choose a market as relationship with an empty option to choose "All markets with currency".
@@ -26,29 +22,29 @@ export const MarketWithCurrencySelector: FC<{
   defaultMarketId: string
   defaultCurrencyCode: string
   hint: string
-  isDisabled?: HookedInputSelectProps['isDisabled']
+  isDisabled?: HookedInputSelectProps["isDisabled"]
 }> = ({ defaultMarketId, defaultCurrencyCode, hint, isDisabled = false }) => {
   const { sdkClient } = useCoreSdkProvider()
   const { watch, setValue } = useFormContext()
   const { data, isLoading: isLoadingInitialValues } = useCoreApi(
-    'markets',
-    'list',
+    "markets",
+    "list",
     [
       {
         fields: {
-          markets: ['name', 'price_list'],
-          price_lists: ['currency_code']
+          markets: ["name", "price_list"],
+          price_lists: ["currency_code"],
         },
-        include: ['price_list'],
+        include: ["price_list"],
         pageSize: 25,
         filters: {
-          id_not_eq: defaultMarketId
+          id_not_eq: defaultMarketId,
         },
         sort: {
-          name: 'asc'
-        }
-      }
-    ]
+          name: "asc",
+        },
+      },
+    ],
   )
 
   const hasMorePages =
@@ -56,44 +52,44 @@ export const MarketWithCurrencySelector: FC<{
 
   const { data: defaultResource, isLoading: isLoadingDefaultResource } =
     useCoreApi(
-      'markets',
-      'retrieve',
+      "markets",
+      "retrieve",
       isEmpty(defaultMarketId)
         ? null
         : [
             defaultMarketId,
             {
               fields: {
-                markets: ['name', 'price_list'],
-                price_lists: ['currency_code']
+                markets: ["name", "price_list"],
+                price_lists: ["currency_code"],
               },
-              include: ['price_list']
-            }
-          ]
+              include: ["price_list"],
+            },
+          ],
     )
 
   const initialValues = [
     {
-      label: 'All markets with currency',
-      value: ''
+      label: "All markets with currency",
+      value: "",
     },
     ...makeSelectInitialValuesWithDefault<Market>({
       resourceList: data,
       defaultResource,
-      fieldForLabel: 'name'
-    })
+      fieldForLabel: "name",
+    }),
   ]
 
-  const selectedMarket = watch('market')
+  const selectedMarket = watch("market")
 
   return (
-    <div className='flex gap-4'>
-      <div className='flex-1'>
+    <div className="flex gap-4">
+      <div className="flex-1">
         <HookedInputSelect
-          name='market'
-          label='Market'
+          name="market"
+          label="Market"
           hint={{
-            text: hint
+            text: hint,
           }}
           isLoading={isLoadingInitialValues || isLoadingDefaultResource}
           isClearable={false}
@@ -103,21 +99,21 @@ export const MarketWithCurrencySelector: FC<{
           onSelect={(selected) => {
             const relatedCurrencyCode = flatSelectValues(
               selected,
-              'meta.price_list.currency_code'
+              "meta.price_list.currency_code",
             )
             if (
               isString(relatedCurrencyCode) &&
               !isEmpty(relatedCurrencyCode)
             ) {
               setValue(
-                'currency_code',
-                relatedCurrencyCode ?? defaultCurrencyCode
+                "currency_code",
+                relatedCurrencyCode ?? defaultCurrencyCode,
               )
             }
           }}
           menuFooterText={
             hasMorePages
-              ? 'Showing 25 results. Type to search for more options.'
+              ? "Showing 25 results. Type to search for more options."
               : undefined
           }
           loadAsyncValues={
@@ -129,17 +125,17 @@ export const MarketWithCurrencySelector: FC<{
                       filters: {
                         name_cont: hint,
                         fields: {
-                          markets: ['name', 'price_list'],
-                          price_lists: ['currency_code']
+                          markets: ["name", "price_list"],
+                          price_lists: ["currency_code"],
                         },
-                        include: ['price_list']
-                      }
+                        include: ["price_list"],
+                      },
                     })
                     .then((res) => {
                       return res.map((market) => ({
                         label: market.name,
                         value: market.id,
-                        meta: market
+                        meta: market,
                       }))
                     })
                 }
@@ -149,8 +145,8 @@ export const MarketWithCurrencySelector: FC<{
       </div>
       {isEmpty(selectedMarket) && (
         <HookedInputSelect
-          name='currency_code'
-          label='&nbsp;'
+          name="currency_code"
+          label="&nbsp;"
           isDisabled={isDisabled}
           initialValues={currencyInputSelectOptions}
         />
@@ -162,7 +158,7 @@ export const MarketWithCurrencySelector: FC<{
 function makeSelectInitialValuesWithDefault<R extends Resource>({
   resourceList,
   defaultResource,
-  fieldForLabel
+  fieldForLabel,
 }: {
   resourceList?: ListResponse<R>
   defaultResource?: R
@@ -174,14 +170,14 @@ function makeSelectInitialValuesWithDefault<R extends Resource>({
           label: (
             defaultResource[fieldForLabel] ?? defaultResource.id
           ).toString(),
-          value: defaultResource.id
+          value: defaultResource.id,
         }
       : undefined,
     ...(resourceList ?? []).map((item) => ({
       label: (item[fieldForLabel] ?? item.id).toString(),
       value: item.id,
-      meta: item
-    }))
+      meta: item,
+    })),
   ].filter((v) => !isEmpty(v)) as InputSelectValue[]
 
   return options.sort((a, b) => a.label.localeCompare(b.label))

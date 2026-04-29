@@ -6,31 +6,31 @@ export type AppRoute = keyof typeof appRoutes
 // and `makePath` method to be used to generate the path used in navigation and links
 export const appRoutes = {
   home: {
-    path: '/',
-    makePath: () => '/'
+    path: "/",
+    makePath: () => "/",
   },
   list: {
-    path: '/list',
+    path: "/list",
     makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/list/?${filters}` : `/list`
+      hasFilterQuery(filters) ? `/list/?${filters}` : `/list`,
   },
   filters: {
-    path: '/filters',
+    path: "/filters",
     makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`
+      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`,
   },
   details: {
-    path: '/list/:returnId',
-    makePath: (returnId: string) => `/list/${returnId}`
+    path: "/list/:returnId",
+    makePath: (returnId: string) => `/list/${returnId}`,
   },
   restock: {
-    path: '/list/:returnId/restock',
-    makePath: (returnId: string) => `/list/${returnId}/restock`
+    path: "/list/:returnId/restock",
+    makePath: (returnId: string) => `/list/${returnId}/restock`,
   },
   refund: {
-    path: '/list/:returnId/refund',
-    makePath: (returnId: string) => `/list/${returnId}/refund`
-  }
+    path: "/list/:returnId/refund",
+    makePath: (returnId: string) => `/list/${returnId}/refund`,
+  },
 }
 
 function hasFilterQuery(filters?: string): filters is string {

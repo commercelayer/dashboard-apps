@@ -1,8 +1,3 @@
-import { ListEmptyStatePrice } from '#components/ListEmptyStatePrice'
-import { ListItemPrice } from '#components/ListItemPrice'
-import { pricesFilterInstructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
-import { usePriceListDetails } from '#hooks/usePriceListDetails'
 import {
   Button,
   EmptyState,
@@ -10,22 +5,27 @@ import {
   PageLayout,
   SkeletonTemplate,
   useResourceFilters,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Link, useLocation, useRoute } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { Link, useLocation, useRoute } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyStatePrice } from "#components/ListEmptyStatePrice"
+import { ListItemPrice } from "#components/ListItemPrice"
+import { pricesFilterInstructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
+import { usePriceListDetails } from "#hooks/usePriceListDetails"
 
 export function PricesList(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
 
   const [, params] = useRoute<{ priceListId: string }>(
-    appRoutes.pricesList.path
+    appRoutes.pricesList.path,
   )
 
-  const priceListId = params?.priceListId ?? ''
+  const priceListId = params?.priceListId ?? ""
 
   const { priceList, isLoading, error } = usePriceListDetails(priceListId)
 
@@ -33,27 +33,27 @@ export function PricesList(): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions: pricesFilterInstructions({ priceListId })
+    instructions: pricesFilterInstructions({ priceListId }),
   })
 
   if (error != null) {
     return (
       <PageLayout
-        title='Price lists'
+        title="Price lists"
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.home.makePath({}))
           },
-          label: 'Price lists',
-          icon: 'arrowLeft'
+          label: "Price lists",
+          icon: "arrowLeft",
         }}
         mode={mode}
       >
         <EmptyState
-          title='Not authorized'
+          title="Not authorized"
           action={
             <Link href={appRoutes.home.makePath({})}>
-              <Button variant='primary'>Go back</Button>
+              <Button variant="primary">Go back</Button>
             </Link>
           }
         />
@@ -61,12 +61,12 @@ export function PricesList(): React.JSX.Element {
     )
   }
 
-  const pageTitle = priceListId !== '' ? priceList.name : 'All prices'
+  const pageTitle = priceListId !== "" ? priceList.name : "All prices"
 
-  if (!canUser('read', 'price_lists') || !canUser('read', 'prices')) {
+  if (!canUser("read", "price_lists") || !canUser("read", "prices")) {
     return (
-      <PageLayout title='Price lists' mode={mode}>
-        <EmptyState title='You are not authorized' />
+      <PageLayout title="Price lists" mode={mode}>
+        <EmptyState title="You are not authorized" />
       </PageLayout>
     )
   }
@@ -77,13 +77,13 @@ export function PricesList(): React.JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
       }
       mode={mode}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
         },
-        label: 'Price lists',
-        icon: 'arrowLeft'
+        label: "Price lists",
+        icon: "arrowLeft",
       }}
       scrollToTop
     >
@@ -91,7 +91,7 @@ export function PricesList(): React.JSX.Element {
         queryString={queryString}
         onUpdate={(qs: any) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={() => {}}
@@ -99,28 +99,28 @@ export function PricesList(): React.JSX.Element {
       />
 
       <FilteredList
-        type='prices'
+        type="prices"
         query={{
           include: [
-            'sku',
-            'price_volume_tiers',
-            'price_frequency_tiers',
-            'price_list'
+            "sku",
+            "price_volume_tiers",
+            "price_frequency_tiers",
+            "price_list",
           ],
           sort: {
-            created_at: 'desc'
-          }
+            created_at: "desc",
+          },
         }}
         actionButton={
-          canUser('create', 'prices') && (
+          canUser("create", "prices") && (
             <Link href={appRoutes.priceNew.makePath({ priceListId })} asChild>
               <Button
-                variant='secondary'
-                size='mini'
-                alignItems='center'
-                aria-label='Add price'
+                variant="secondary"
+                size="mini"
+                alignItems="center"
+                aria-label="Add price"
               >
-                <Icon name='plus' />
+                <Icon name="plus" />
                 Price
               </Button>
             </Link>
@@ -129,7 +129,7 @@ export function PricesList(): React.JSX.Element {
         ItemTemplate={ListItemPrice}
         emptyState={
           <ListEmptyStatePrice
-            scope={hasActiveFilter ? 'userFiltered' : 'history'}
+            scope={hasActiveFilter ? "userFiltered" : "history"}
           />
         }
       />

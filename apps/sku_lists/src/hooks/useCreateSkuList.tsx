@@ -1,8 +1,8 @@
-import type { SkuListFormValues } from '#components/SkuListForm'
-import { adaptFormValuesToSkuListCreate } from '#components/SkuListForm/utils'
-import { useCoreSdkProvider } from '@commercelayer/app-elements'
-import type { SkuList } from '@commercelayer/sdk'
-import { useCallback, useState } from 'react'
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
+import type { SkuList } from "@commercelayer/sdk"
+import { useCallback, useState } from "react"
+import type { SkuListFormValues } from "#components/SkuListForm"
+import { adaptFormValuesToSkuListCreate } from "#components/SkuListForm/utils"
 
 interface CreateSkuListHook {
   isCreatingSkuList: boolean
@@ -15,9 +15,9 @@ export function useCreateSkuList(): CreateSkuListHook {
 
   const [isCreatingSkuList, setIsCreatingSkuList] = useState(false)
   const [createSkuListError, setCreateSkuListError] =
-    useState<CreateSkuListHook['createSkuListError']>()
+    useState<CreateSkuListHook["createSkuListError"]>()
 
-  const createSkuList: CreateSkuListHook['createSkuList'] = useCallback(
+  const createSkuList: CreateSkuListHook["createSkuList"] = useCallback(
     async (formValues) => {
       setIsCreatingSkuList(true)
       setCreateSkuListError(undefined)
@@ -32,12 +32,12 @@ export function useCreateSkuList(): CreateSkuListHook {
         setIsCreatingSkuList(false)
       }
     },
-    []
+    [],
   )
 
   return {
     isCreatingSkuList,
     createSkuListError,
-    createSkuList
+    createSkuList,
   }
 }

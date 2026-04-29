@@ -1,19 +1,19 @@
 import {
+  type ClAppProps,
   CoreSdkProvider,
+  createApp,
   ErrorBoundary,
   I18NProvider,
   MetaTags,
   TokenProvider,
-  createApp,
-  type ClAppProps
-} from '@commercelayer/app-elements'
-import { StrictMode } from 'react'
-import { SWRConfig } from 'swr'
-import { App } from './App'
+} from "@commercelayer/app-elements"
+import { StrictMode } from "react"
+import { SWRConfig } from "swr"
+import { App } from "./App"
 
-import '@commercelayer/app-elements/vendor.css'
+import "@commercelayer/app-elements/vendor.css"
 
-import '@commercelayer/app-elements/style.css'
+import "@commercelayer/app-elements/style.css"
 
 const isDev = Boolean(import.meta.env.DEV)
 
@@ -22,12 +22,12 @@ const Main = (props: ClAppProps): React.JSX.Element => (
     <ErrorBoundary hasContainer>
       <SWRConfig
         value={{
-          revalidateOnFocus: false
+          revalidateOnFocus: false,
         }}
       >
         <TokenProvider
-          kind='gift_cards'
-          appSlug='gift_cards'
+          kind="gift_cards"
+          appSlug="gift_cards"
           devMode={isDev}
           loadingElement={<div />}
           {...props}
@@ -46,4 +46,4 @@ const Main = (props: ClAppProps): React.JSX.Element => (
 
 export default Main
 
-createApp(Main, 'gift_cards')
+createApp(Main, "gift_cards")

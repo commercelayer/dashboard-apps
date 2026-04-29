@@ -1,16 +1,16 @@
+import { HookedInputSelect } from "@commercelayer/app-elements"
+import type { AllowedResourceType } from "@typing/resources.types"
 import {
   getRelationshipsByResourceType,
-  isResourceWithRelationship
-} from '#data/relationships'
-import { HookedInputSelect } from '@commercelayer/app-elements'
-import { type AllowedResourceType } from '@typing/resources.types'
+  isResourceWithRelationship,
+} from "#data/relationships"
 
 interface Props {
   resourceType: AllowedResourceType
 }
 
 export function RelationshipSelector({
-  resourceType
+  resourceType,
 }: Props): React.JSX.Element | null {
   if (!isResourceWithRelationship(resourceType)) {
     return null
@@ -22,14 +22,14 @@ export function RelationshipSelector({
     <HookedInputSelect
       initialValues={relationships.map((r) => ({
         value: r,
-        label: r
+        label: r,
       }))}
-      name='includes'
+      name="includes"
       isClearable
       isMulti
-      hint={{ text: 'List of relationships to be included in the export.' }}
-      label='Include'
-      pathToValue='value'
+      hint={{ text: "List of relationships to be included in the export." }}
+      label="Include"
+      pathToValue="value"
     />
   )
 }

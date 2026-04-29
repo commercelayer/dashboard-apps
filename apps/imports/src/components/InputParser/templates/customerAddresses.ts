@@ -1,5 +1,5 @@
-import { csvAddressColumns, type CsvAddressColumn } from './_address'
+import { type CsvAddressColumn, csvAddressColumns } from "./_address"
 
 export const csvCustomerAddressesTemplate: Array<
-  'customer.email' | 'address.id' | CsvAddressColumn
-> = ['customer.email', ...csvAddressColumns, 'address.id']
+  "customer.email" | "address.id" | CsvAddressColumn
+> = ["customer.email", ...csvAddressColumns, "address.id"]

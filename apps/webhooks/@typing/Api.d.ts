@@ -1,4 +1,4 @@
-declare module 'App' {
+declare module "App" {
   export interface ApiError {
     code?: string
     detail: string

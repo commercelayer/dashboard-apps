@@ -1,20 +1,20 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemStockTransfer } from '#components/ListItemStockTransfer'
-import { instructions } from '#data/filters'
-import { presets } from '#data/lists'
-import { appRoutes } from '#data/routes'
 import {
   PageLayout,
   Spacer,
   useResourceFilters,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemStockTransfer } from "#components/ListItemStockTransfer"
+import { instructions } from "#data/filters"
+import { presets } from "#data/lists"
+import { appRoutes } from "#data/routes"
 
 export function StockTransfersList(): React.JSX.Element {
   const {
-    settings: { mode }
+    settings: { mode },
   } = useTokenProvider()
 
   const queryString = useSearch()
@@ -22,7 +22,7 @@ export function StockTransfersList(): React.JSX.Element {
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
     useResourceFilters({
-      instructions
+      instructions,
     })
 
   const hideFiltersNav = !(
@@ -33,20 +33,20 @@ export function StockTransfersList(): React.JSX.Element {
     <PageLayout
       title={viewTitle ?? presets.history.viewTitle}
       mode={mode}
-      gap='only-top'
+      gap="only-top"
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
         },
-        label: 'Stock transfers',
-        icon: 'arrowLeft'
+        label: "Stock transfers",
+        icon: "arrowLeft",
       }}
     >
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -55,35 +55,35 @@ export function StockTransfersList(): React.JSX.Element {
         hideFiltersNav={hideFiltersNav}
       />
 
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <FilteredList
-          type='stock_transfers'
+          type="stock_transfers"
           ItemTemplate={ListItemStockTransfer}
           query={{
             fields: {
               stock_transfers: [
-                'id',
-                'number',
-                'updated_at',
-                'status',
-                'origin_stock_location',
-                'destination_stock_location'
-              ]
+                "id",
+                "number",
+                "updated_at",
+                "status",
+                "origin_stock_location",
+                "destination_stock_location",
+              ],
             },
-            include: ['origin_stock_location', 'destination_stock_location'],
+            include: ["origin_stock_location", "destination_stock_location"],
             pageSize: 25,
             sort: {
-              updated_at: 'desc'
-            }
+              updated_at: "desc",
+            },
           }}
           emptyState={
             <ListEmptyState
               scope={
                 hasActiveFilter
-                  ? 'userFiltered'
+                  ? "userFiltered"
                   : viewTitle !== presets.history.viewTitle
-                    ? 'presetView'
-                    : 'history'
+                    ? "presetView"
+                    : "history"
               }
             />
           }

@@ -1,7 +1,7 @@
-import { makeStockItem } from '#mocks'
-import { isMockedId, useCoreApi } from '@commercelayer/app-elements'
-import type { StockItem } from '@commercelayer/sdk'
-import type { KeyedMutator } from 'swr'
+import { isMockedId, useCoreApi } from "@commercelayer/app-elements"
+import type { StockItem } from "@commercelayer/sdk"
+import type { KeyedMutator } from "swr"
+import { makeStockItem } from "#mocks"
 
 export function useStockItemDetails(id: string): {
   stockItem: StockItem
@@ -13,21 +13,21 @@ export function useStockItemDetails(id: string): {
     data: stockItem,
     isLoading,
     error,
-    mutate: mutateStockItem
+    mutate: mutateStockItem,
   } = useCoreApi(
-    'stock_items',
-    'retrieve',
+    "stock_items",
+    "retrieve",
     !isMockedId(id)
       ? [
           id,
           {
-            include: ['stock_location', 'sku', 'reserved_stock']
-          }
+            include: ["stock_location", "sku", "reserved_stock"],
+          },
         ]
       : null,
     {
-      fallbackData: makeStockItem()
-    }
+      fallbackData: makeStockItem(),
+    },
   )
 
   return { stockItem, error, isLoading, mutateStockItem }

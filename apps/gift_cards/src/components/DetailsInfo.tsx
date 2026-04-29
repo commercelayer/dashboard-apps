@@ -1,13 +1,13 @@
 import {
   Badge,
+  formatDate,
   ListDetails,
   ListDetailsItem,
-  formatDate,
   useAppLinking,
   useTokenProvider,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { GiftCard } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { GiftCard } from "@commercelayer/sdk"
 
 export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
   ({ giftCard }) => {
@@ -15,25 +15,25 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
     const { navigateTo } = useAppLinking()
 
     return (
-      <ListDetails title='Info'>
-        <ListDetailsItem label='Code' gutter='none'>
+      <ListDetails title="Info">
+        <ListDetailsItem label="Code" gutter="none">
           {giftCard.code}
         </ListDetailsItem>
-        <ListDetailsItem label='Market' gutter='none'>
+        <ListDetailsItem label="Market" gutter="none">
           {giftCard.market?.name ?? `All markets in ${giftCard.currency_code}`}
         </ListDetailsItem>
         {giftCard.balance_max_cents != null && (
-          <ListDetailsItem label='Max balance' gutter='none'>
+          <ListDetailsItem label="Max balance" gutter="none">
             {giftCard.formatted_balance_max}
           </ListDetailsItem>
         )}
         {giftCard.gift_card_recipient != null && (
-          <ListDetailsItem label='Customer' gutter='none'>
+          <ListDetailsItem label="Customer" gutter="none">
             {giftCard.gift_card_recipient.customer?.id != null ? (
               <a
                 {...navigateTo({
-                  app: 'customers',
-                  resourceId: giftCard.gift_card_recipient.customer.id
+                  app: "customers",
+                  resourceId: giftCard.gift_card_recipient.customer.id,
                 })}
               >
                 {giftCard.gift_card_recipient.customer.email}
@@ -44,12 +44,12 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
           </ListDetailsItem>
         )}
         {giftCard.expires_at != null && (
-          <ListDetailsItem label='Expiration date' gutter='none'>
+          <ListDetailsItem label="Expiration date" gutter="none">
             {formatDate({
               isoDate: giftCard.expires_at,
-              format: 'fullWithSeconds',
+              format: "fullWithSeconds",
               timezone: user?.timezone,
-              showCurrentYear: true
+              showCurrentYear: true,
             })}
           </ListDetailsItem>
         )}
@@ -57,21 +57,21 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
         {giftCard.rechargeable === true ||
         giftCard.single_use === true ||
         giftCard.distribute_discount === true ? (
-          <ListDetailsItem label='Options' gutter='none'>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <ListDetailsItem label="Options" gutter="none">
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
               {giftCard.rechargeable === true && (
-                <Badge variant='teal'>Rechargeable</Badge>
+                <Badge variant="teal">Rechargeable</Badge>
               )}
               {giftCard.single_use === true && (
-                <Badge variant='teal'>Single use</Badge>
+                <Badge variant="teal">Single use</Badge>
               )}
               {giftCard.distribute_discount === true && (
-                <Badge variant='teal'>Distribute discount</Badge>
+                <Badge variant="teal">Distribute discount</Badge>
               )}
             </div>
           </ListDetailsItem>
         ) : null}
       </ListDetails>
     )
-  }
+  },
 )

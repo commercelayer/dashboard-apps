@@ -1,13 +1,13 @@
-import { presets } from '#data/lists'
+import { presets } from "#data/lists"
 
-describe('filtersByListType', () => {
-  test('should have the correct keys', () => {
+describe("filtersByListType", () => {
+  test("should have the correct keys", () => {
     expect(Object.keys(presets)).toEqual([
-      'requested',
-      'approved',
-      'shipped',
-      'history',
-      'archived'
+      "requested",
+      "approved",
+      "shipped",
+      "history",
+      "archived",
     ])
   })
 })

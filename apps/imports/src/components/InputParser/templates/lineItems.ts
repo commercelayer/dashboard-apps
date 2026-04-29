@@ -1,17 +1,17 @@
+import type { LineItemCreate } from "@commercelayer/sdk"
 import {
+  type CsvTagsColumn,
   csvTagsColumns,
-  type CsvTagsColumn
-} from '#components/InputParser/templates/_tags'
-import { type LineItemCreate } from '@commercelayer/sdk'
+} from "#components/InputParser/templates/_tags"
 
 export const csvLineItemsTemplate: Array<
-  keyof LineItemCreate | 'order_id' | CsvTagsColumn
+  keyof LineItemCreate | "order_id" | CsvTagsColumn
 > = [
-  'item_type',
-  'name',
-  'unit_amount_cents',
-  'sku_code',
-  'quantity',
-  'order_id',
-  ...csvTagsColumns
+  "item_type",
+  "name",
+  "unit_amount_cents",
+  "sku_code",
+  "quantity",
+  "order_id",
+  ...csvTagsColumns,
 ]

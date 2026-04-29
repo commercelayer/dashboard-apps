@@ -1,20 +1,20 @@
-import type { Promotion } from '#types'
-import { type IconProps } from '@commercelayer/app-elements'
-import type { ResourceTypeLock } from '@commercelayer/sdk'
-import type { UseFormReturn } from 'react-hook-form'
-import type { Replace } from 'type-fest'
-import { type z } from 'zod'
-import buy_x_pay_y_promotions from './configs/buy_x_pay_y_promotions'
-import external_promotions from './configs/external_promotions'
-import fixed_amount_promotions from './configs/fixed_amount_promotions'
-import fixed_price_promotions from './configs/fixed_price_promotions'
-import flex_promotions from './configs/flex_promotions'
-import free_gift_promotions from './configs/free_gift_promotions'
-import free_shipping_promotions from './configs/free_shipping_promotions'
-import percentage_discount_promotions from './configs/percentage_discount_promotions'
+import type { IconProps } from "@commercelayer/app-elements"
+import type { ResourceTypeLock } from "@commercelayer/sdk"
+import type { UseFormReturn } from "react-hook-form"
+import type { Replace } from "type-fest"
+import type { z } from "zod"
+import type { Promotion } from "#types"
+import buy_x_pay_y_promotions from "./configs/buy_x_pay_y_promotions"
+import external_promotions from "./configs/external_promotions"
+import fixed_amount_promotions from "./configs/fixed_amount_promotions"
+import fixed_price_promotions from "./configs/fixed_price_promotions"
+import flex_promotions from "./configs/flex_promotions"
+import free_gift_promotions from "./configs/free_gift_promotions"
+import free_shipping_promotions from "./configs/free_shipping_promotions"
+import percentage_discount_promotions from "./configs/percentage_discount_promotions"
 
 /** The attribute `reference_origin: "app-promotions"` identifies a promotion directly created from the App. */
-export const appPromotionsReferenceOrigin = 'app-promotions'
+export const appPromotionsReferenceOrigin = "app-promotions"
 
 export const promotionConfig: PromotionConfig = {
   ...percentage_discount_promotions,
@@ -24,19 +24,19 @@ export const promotionConfig: PromotionConfig = {
   ...fixed_price_promotions,
   ...buy_x_pay_y_promotions,
   ...external_promotions,
-  ...flex_promotions
+  ...flex_promotions,
 }
 
 type Sanitize<PT extends PromotionType> = Replace<
-  Replace<PT, '_promotions', ''>,
-  '_',
-  '-',
+  Replace<PT, "_promotions", "">,
+  "_",
+  "-",
   { all: true }
 >
 
 export type PromotionType =
   | Extract<ResourceTypeLock, `${string}_promotions`>
-  | 'flex_promotions'
+  | "flex_promotions"
 
 export type PromotionConfig = {
   [type in PromotionType]: {
@@ -45,12 +45,12 @@ export type PromotionConfig = {
     titleList: string
     description: string
     titleNew: string
-    icon: IconProps['name']
+    icon: IconProps["name"]
     /** This is the text shown in the CardStatus (promotion detail page) */
     StatusDescription: React.FC<{
       promotion: Extract<Promotion, { type: type }>
     }>
-    formType: z.ZodObject<z.ZodRawShape, 'strip', z.ZodTypeAny>
+    formType: z.ZodObject<z.ZodRawShape, "strip", z.ZodTypeAny>
     Fields: React.FC<{
       promotion?: Extract<Promotion, { type: type }>
       hookFormReturn: UseFormReturn<

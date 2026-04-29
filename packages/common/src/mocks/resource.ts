@@ -1,4 +1,4 @@
-import type { ResourceTypeLock } from '@commercelayer/sdk'
+import type { ResourceTypeLock } from "@commercelayer/sdk"
 
 interface GenericResource<T> {
   readonly type: T
@@ -8,12 +8,12 @@ interface GenericResource<T> {
 }
 
 export const makeResource = <T extends ResourceTypeLock>(
-  type: T
+  type: T,
 ): GenericResource<T> => {
   return {
     type,
     id: `fake-${Math.random()}`,
     created_at: new Date().toJSON(),
-    updated_at: new Date().toJSON()
+    updated_at: new Date().toJSON(),
   }
 }

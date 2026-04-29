@@ -1,25 +1,25 @@
-import { appRoutes } from '#data/routes'
-import { useDeleteCouponOverlay } from '#hooks/useDeleteCouponOverlay'
 import {
   Button,
   Dropdown,
   DropdownDivider,
   DropdownItem,
+  formatDate,
   Icon,
+  type ResourceListItemTemplateProps,
   Table,
   Td,
   Text,
   Th,
   Tooltip,
   Tr,
-  formatDate,
   useTokenProvider,
   withSkeletonTemplate,
-  type ResourceListItemTemplateProps
-} from '@commercelayer/app-elements'
-import type { Coupon } from '@commercelayer/sdk'
-import { makeCoupon } from 'src/mocks/resources/coupons'
-import { useLocation } from 'wouter'
+} from "@commercelayer/app-elements"
+import type { Coupon } from "@commercelayer/sdk"
+import { makeCoupon } from "src/mocks/resources/coupons"
+import { useLocation } from "wouter"
+import { appRoutes } from "#data/routes"
+import { useDeleteCouponOverlay } from "#hooks/useDeleteCouponOverlay"
 
 interface Props {
   coupons: Coupon[]
@@ -34,14 +34,14 @@ export const CouponTable = ({
   onDelete,
   promotionId,
   boxed = false,
-  isLoading = false
+  isLoading = false,
 }: Props): React.JSX.Element => {
   const isFirstLoading = false
 
   return (
     <>
       <Table
-        variant={boxed ? 'boxed' : undefined}
+        variant={boxed ? "boxed" : undefined}
         thead={
           <Tr>
             <Th>Code</Th>
@@ -72,7 +72,10 @@ export const CouponTable = ({
               Array(isFirstLoading ? 8 : 2) // we want more elements as skeleton on first mount
                 .fill(null)
                 .map((_, idx) => (
-                  <CouponRow key={idx} promotionId={promotionId} />
+                  <CouponRow
+                    key={[promotionId, idx].join("-")}
+                    promotionId={promotionId}
+                  />
                 ))}
           </>
         }
@@ -82,7 +85,7 @@ export const CouponTable = ({
 }
 
 export const CouponRow = withSkeletonTemplate<
-  ResourceListItemTemplateProps<'coupons'> & {
+  ResourceListItemTemplateProps<"coupons"> & {
     promotionId: string
     deleteRule?: boolean
   }
@@ -91,7 +94,7 @@ export const CouponRow = withSkeletonTemplate<
     resource: coupon = makeCoupon(),
     promotionId,
     remove,
-    deleteRule = false
+    deleteRule = false,
   }) => {
     const [, setLocation] = useLocation()
     const { user } = useTokenProvider()
@@ -110,27 +113,27 @@ export const CouponRow = withSkeletonTemplate<
         <Tr key={coupon.id}>
           <Td>
             <Text
-              weight='semibold'
+              weight="semibold"
               style={{
-                display: 'flex',
-                gap: '8px',
-                alignItems: 'center'
+                display: "flex",
+                gap: "8px",
+                alignItems: "center",
               }}
             >
               {coupon.code}
               {coupon.customer_single_use === true && (
                 <Tooltip
                   content={<>Single use per customer</>}
-                  label={<Icon name='userRectangle' size={16} />}
+                  label={<Icon name="userRectangle" size={16} />}
                 />
               )}
             </Text>
             {coupon.recipient_email != null && (
               <Text
-                tag='div'
-                weight='semibold'
-                variant='info'
-                style={{ fontSize: '11px' }}
+                tag="div"
+                weight="semibold"
+                variant="info"
+                style={{ fontSize: "11px" }}
               >
                 To: {coupon.recipient_email}
               </Text>
@@ -138,47 +141,47 @@ export const CouponRow = withSkeletonTemplate<
           </Td>
           <Td>
             {coupon.usage_count}
-            {coupon.usage_limit != null ? ` / ${coupon.usage_limit}` : ''}
+            {coupon.usage_limit != null ? ` / ${coupon.usage_limit}` : ""}
           </Td>
           <Td>
             {coupon.expires_at == null
-              ? 'Never'
+              ? "Never"
               : formatDate({
-                  format: 'distanceToNow',
+                  format: "distanceToNow",
                   isoDate: coupon.expires_at,
-                  timezone: user?.timezone
+                  timezone: user?.timezone,
                 })}
           </Td>
-          <Td align='right'>
+          <Td align="right">
             <Dropdown
               dropdownItems={
                 <>
                   <DropdownItem
-                    label='Edit'
+                    label="Edit"
                     onClick={() => {
                       setLocation(
                         appRoutes.editCoupon.makePath({
                           promotionId,
-                          couponId: coupon.id
-                        })
+                          couponId: coupon.id,
+                        }),
                       )
                     }}
                   />
                   <DropdownDivider />
                   <DropdownItem
-                    label='Delete'
+                    label="Delete"
                     onClick={() => {
                       showDeleteCouponOverlay({
                         coupon,
-                        deleteRule: deleteRule ?? false
+                        deleteRule: deleteRule ?? false,
                       })
                     }}
                   />
                 </>
               }
               dropdownLabel={
-                <Button variant='circle'>
-                  <Icon name='dotsThree' size={24} />
+                <Button variant="circle">
+                  <Icon name="dotsThree" size={24} />
                 </Button>
               }
             />
@@ -186,5 +189,5 @@ export const CouponRow = withSkeletonTemplate<
         </Tr>
       </>
     )
-  }
+  },
 )

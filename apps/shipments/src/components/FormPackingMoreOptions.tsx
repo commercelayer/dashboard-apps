@@ -1,12 +1,4 @@
 import {
-  getContentType,
-  getDeliveryConfirmation,
-  getIncotermsRule,
-  getNonDeliveryOption,
-  getRestrictionType
-} from '#data/customsInfo'
-import type { PackingFormValues } from '#data/packingFormSchema'
-import {
   Card,
   HookedInput,
   HookedInputCheckbox,
@@ -14,12 +6,20 @@ import {
   Legend,
   Spacer,
   Text,
-  useTranslation
-} from '@commercelayer/app-elements'
-import type { Shipment } from '@commercelayer/sdk'
-import isEmpty from 'lodash-es/isEmpty'
-import { useEffect, type FC, type ReactNode } from 'react'
-import { useFormContext } from 'react-hook-form'
+  useTranslation,
+} from "@commercelayer/app-elements"
+import type { Shipment } from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
+import { type FC, type ReactNode, useEffect } from "react"
+import { useFormContext } from "react-hook-form"
+import {
+  getContentType,
+  getDeliveryConfirmation,
+  getIncotermsRule,
+  getNonDeliveryOption,
+  getRestrictionType,
+} from "#data/customsInfo"
+import type { PackingFormValues } from "#data/packingFormSchema"
 
 /**
  * This component renders the "More options" section of the packing form.
@@ -29,7 +29,7 @@ import { useFormContext } from 'react-hook-form'
  * - CustomsInfo
  */
 export function FormPackingMoreOptions({
-  shipment
+  shipment,
 }: {
   shipment: Shipment
 }): React.JSX.Element {
@@ -39,8 +39,8 @@ export function FormPackingMoreOptions({
     shipment?.origin_address?.country_code
   return (
     <>
-      <Spacer bottom='4'>
-        <Legend>{t('apps.shipments.form.more_options')}</Legend>
+      <Spacer bottom="4">
+        <Legend>{t("apps.shipments.form.more_options")}</Legend>
       </Spacer>
 
       <IncotermsRules />
@@ -54,14 +54,14 @@ const IncotermsRules: FC = () => {
   const { t } = useTranslation()
   return (
     <OptionsGroup
-      label={t('apps.shipments.form.incoterms_rules')}
-      fieldsToReset={['incoterm']}
-      name='incotermOptionsGroup'
+      label={t("apps.shipments.form.incoterms_rules")}
+      fieldsToReset={["incoterm"]}
+      name="incotermOptionsGroup"
     >
       <HookedInputSelect
-        name='incoterm'
+        name="incoterm"
         initialValues={getIncotermsRule().selectOptions}
-        placeholder={t('apps.shipments.form.select_option')}
+        placeholder={t("apps.shipments.form.select_option")}
         isClearable
       />
     </OptionsGroup>
@@ -73,14 +73,14 @@ const DeliveryConfirmation: FC = () => {
 
   return (
     <OptionsGroup
-      label={t('apps.shipments.form.delivery_confirmation')}
-      fieldsToReset={['delivery_confirmation']}
-      name='deliveryOptionsGroup'
+      label={t("apps.shipments.form.delivery_confirmation")}
+      fieldsToReset={["delivery_confirmation"]}
+      name="deliveryOptionsGroup"
     >
       <HookedInputSelect
-        name='delivery_confirmation'
+        name="delivery_confirmation"
         initialValues={getDeliveryConfirmation().selectOptions}
-        placeholder={t('apps.shipments.form.select_option')}
+        placeholder={t("apps.shipments.form.select_option")}
         isClearable
       />
     </OptionsGroup>
@@ -98,94 +98,94 @@ const CustomsInfo: FC = () => {
   const { watch, setValue } = useFormContext<PackingFormValues>()
   const { t } = useTranslation()
 
-  const contentTypeValue = watch('contents_type')
-  const restrictionTypeValue = watch('restriction_type')
+  const contentTypeValue = watch("contents_type")
+  const restrictionTypeValue = watch("restriction_type")
 
   useEffect(
     function emptyOtherExplanation() {
-      if (contentTypeValue !== 'other') {
-        setValue('contents_explanation', undefined)
+      if (contentTypeValue !== "other") {
+        setValue("contents_explanation", undefined)
       }
-      if (restrictionTypeValue !== 'other') {
-        setValue('restriction_comments', undefined)
+      if (restrictionTypeValue !== "other") {
+        setValue("restriction_comments", undefined)
       }
     },
-    [contentTypeValue, restrictionTypeValue]
+    [contentTypeValue, restrictionTypeValue],
   )
 
   return (
     <OptionsGroup
-      label={t('apps.shipments.form.require_custom_forms')}
-      name='customs_info_required'
+      label={t("apps.shipments.form.require_custom_forms")}
+      name="customs_info_required"
       fieldsToReset={[
-        'eel_pfc',
-        'contents_type',
-        'contents_explanation',
-        'non_delivery_option',
-        'restriction_type',
-        'restriction_comments',
-        'customs_signer'
+        "eel_pfc",
+        "contents_type",
+        "contents_explanation",
+        "non_delivery_option",
+        "restriction_type",
+        "restriction_comments",
+        "customs_signer",
       ]}
     >
-      <Card overflow='visible' backgroundColor='light'>
-        <Spacer bottom='4'>
-          <HookedInput name='eel_pfc' label='EEL/PFC' />
+      <Card overflow="visible" backgroundColor="light">
+        <Spacer bottom="4">
+          <HookedInput name="eel_pfc" label="EEL/PFC" />
         </Spacer>
 
-        <Spacer bottom='4'>
+        <Spacer bottom="4">
           <HookedInputSelect
-            name='contents_type'
-            label={t('apps.shipments.form.customs_info_type')}
+            name="contents_type"
+            label={t("apps.shipments.form.customs_info_type")}
             initialValues={getContentType().selectOptions}
             isClearable
           />
         </Spacer>
 
-        {contentTypeValue === 'other' && (
-          <Spacer bottom='4'>
+        {contentTypeValue === "other" && (
+          <Spacer bottom="4">
             <HookedInput
-              name='contents_explanation'
-              placeholder={t('apps.shipments.form.content_explanation_hint')}
+              name="contents_explanation"
+              placeholder={t("apps.shipments.form.content_explanation_hint")}
             />
           </Spacer>
         )}
 
-        <Spacer bottom='4'>
+        <Spacer bottom="4">
           <HookedInputSelect
-            name='non_delivery_option'
-            label={t('apps.shipments.form.customs_info_failed_delivery_label')}
+            name="non_delivery_option"
+            label={t("apps.shipments.form.customs_info_failed_delivery_label")}
             initialValues={getNonDeliveryOption().selectOptions}
             isClearable
           />
         </Spacer>
 
-        <Spacer bottom='4'>
+        <Spacer bottom="4">
           <HookedInputSelect
-            name='restriction_type'
-            label={t('apps.shipments.form.customs_info_restriction_type_label')}
+            name="restriction_type"
+            label={t("apps.shipments.form.customs_info_restriction_type_label")}
             initialValues={getRestrictionType().selectOptions}
             isClearable
           />
         </Spacer>
-        {!isEmpty(restrictionTypeValue) && restrictionTypeValue !== 'none' && (
-          <Spacer bottom='4'>
+        {!isEmpty(restrictionTypeValue) && restrictionTypeValue !== "none" && (
+          <Spacer bottom="4">
             <HookedInput
-              name='restriction_comments'
-              placeholder={t('apps.shipments.form.content_explanation_hint')}
+              name="restriction_comments"
+              placeholder={t("apps.shipments.form.content_explanation_hint")}
             />
           </Spacer>
         )}
 
-        <Spacer bottom='4'>
+        <Spacer bottom="4">
           <HookedInput
-            name='customs_signer'
-            label={t('apps.shipments.form.customs_info_customs_signer_label')}
+            name="customs_signer"
+            label={t("apps.shipments.form.customs_info_customs_signer_label")}
           />
         </Spacer>
 
-        <HookedInputCheckbox name='customs_certify'>
-          <Text weight='semibold'>
-            {t('apps.shipments.form.customs_info_confirm_checkbox_label')}
+        <HookedInputCheckbox name="customs_certify">
+          <Text weight="semibold">
+            {t("apps.shipments.form.customs_info_confirm_checkbox_label")}
           </Text>
         </HookedInputCheckbox>
       </Card>
@@ -219,7 +219,7 @@ const OptionsGroup: FC<{
         setValue(name, true)
       }
     },
-    [formState.errors]
+    [formState.errors],
   )
 
   useEffect(
@@ -230,18 +230,18 @@ const OptionsGroup: FC<{
         })
       }
     },
-    [isActive]
+    [isActive],
   )
 
   return (
-    <Spacer bottom='2'>
+    <Spacer bottom="2">
       <fieldset>
         <HookedInputCheckbox name={name}>
-          <Text weight='semibold'>{label}</Text>
+          <Text weight="semibold">{label}</Text>
         </HookedInputCheckbox>
 
         {isActive && (
-          <Spacer top='4' left='8' bottom='2'>
+          <Spacer top="4" left="8" bottom="2">
             {children}
           </Spacer>
         )}

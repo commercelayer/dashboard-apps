@@ -1,4 +1,4 @@
-import type { Shipment, StockTransfer } from '@commercelayer/sdk'
+import type { Shipment, StockTransfer } from "@commercelayer/sdk"
 
 /**
  * This hook verifies if given shipment has active stock transfers
@@ -9,9 +9,9 @@ export function useActiveStockTransfers(shipment: Shipment): StockTransfer[] {
   return (
     shipment.stock_transfers?.filter(
       (stockTransfer) =>
-        stockTransfer.status !== 'completed' &&
-        stockTransfer.status !== 'cancelled' &&
-        stockTransfer.status !== 'draft'
+        stockTransfer.status !== "completed" &&
+        stockTransfer.status !== "cancelled" &&
+        stockTransfer.status !== "draft",
     ) ?? []
   )
 }

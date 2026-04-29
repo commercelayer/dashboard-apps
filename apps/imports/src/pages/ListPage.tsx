@@ -1,7 +1,3 @@
-import { Item } from '#components/List/Item'
-import { ListImportProvider } from '#components/List/Provider'
-import { instructions } from '#data/filters'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
@@ -10,11 +6,15 @@ import {
   List,
   useCoreSdkProvider,
   useResourceFilters,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { type FC } from 'react'
-import { Link, useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import type { FC } from "react"
+import { Link, useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { Item } from "#components/List/Item"
+import { ListImportProvider } from "#components/List/Provider"
+import { instructions } from "#data/filters"
+import { appRoutes } from "#data/routes"
 
 const ListPage: FC = () => {
   const { canUser } = useTokenProvider()
@@ -23,7 +23,7 @@ const ListPage: FC = () => {
   const [, setLocation] = useLocation()
 
   const { sdkFilters, SearchWithNav, hasActiveFilter } = useResourceFilters({
-    instructions
+    instructions,
   })
 
   if (sdkFilters == null) {
@@ -31,12 +31,12 @@ const ListPage: FC = () => {
   }
 
   return (
-    <HomePageLayout title='Imports'>
+    <HomePageLayout title="Imports">
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -58,7 +58,7 @@ const ListPage: FC = () => {
           if (list == null) {
             return (
               <div>
-                <EmptyState title='Unable to load list' />
+                <EmptyState title="Unable to load list" />
               </div>
             )
           }
@@ -68,17 +68,17 @@ const ListPage: FC = () => {
               <div>
                 <EmptyState
                   title={
-                    hasActiveFilter ? 'No imports found!' : 'No imports yet!'
+                    hasActiveFilter ? "No imports found!" : "No imports yet!"
                   }
                   description={
                     hasActiveFilter
                       ? "We didn't find any import matching the current filters selection."
-                      : 'Create your first import'
+                      : "Create your first import"
                   }
                   action={
-                    canUser('create', 'imports') && !hasActiveFilter ? (
+                    canUser("create", "imports") && !hasActiveFilter ? (
                       <Link href={appRoutes.selectResource.makePath()}>
-                        <Button variant='primary'>New import</Button>
+                        <Button variant="primary">New import</Button>
                       </Link>
                     ) : undefined
                   }
@@ -93,16 +93,16 @@ const ListPage: FC = () => {
           return (
             <List
               isDisabled={isRefetching}
-              title='All Imports'
+              title="All Imports"
               actionButton={
                 <Link href={appRoutes.selectResource.makePath()} asChild>
                   <Button
-                    variant='secondary'
-                    size='mini'
-                    alignItems='center'
-                    aria-label='Add import'
+                    variant="secondary"
+                    size="mini"
+                    alignItems="center"
+                    aria-label="Add import"
                   >
-                    <Icon name='plus' />
+                    <Icon name="plus" />
                     New
                   </Button>
                 </Link>
@@ -112,7 +112,7 @@ const ListPage: FC = () => {
                 recordCount,
                 currentPage,
                 onChangePageRequest: changePage,
-                pageCount
+                pageCount,
               }}
             >
               {list.map((job) => (

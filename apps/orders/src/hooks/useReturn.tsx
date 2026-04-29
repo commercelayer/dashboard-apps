@@ -1,11 +1,11 @@
 import {
   isMockedId,
   useCoreApi,
-  useCoreSdkProvider
-} from '@commercelayer/app-elements'
-import type { Order, Return } from '@commercelayer/sdk'
-import { useEffect, useState } from 'react'
-import { useOrderReturns } from './useOrderReturns'
+  useCoreSdkProvider,
+} from "@commercelayer/app-elements"
+import type { Order, Return } from "@commercelayer/sdk"
+import { useEffect, useState } from "react"
+import { useOrderReturns } from "./useOrderReturns"
 
 /**
  * This hook is used to obtain a `Return` resource suitable for return creation procedure.
@@ -20,22 +20,22 @@ export function useReturn(order: Order): Return | undefined {
 
   const { sdkClient } = useCoreSdkProvider()
   const { data: createdReturnObj } = useCoreApi(
-    'returns',
-    'create',
+    "returns",
+    "create",
     returnNeedsCreation && !isMockedId(order.id)
       ? [
           {
-            order: sdkClient.orders.relationship(order.id)
+            order: sdkClient.orders.relationship(order.id),
           },
           {
             include: [
-              'origin_address',
-              'stock_location',
-              'stock_location.address'
-            ]
-          }
+              "origin_address",
+              "stock_location",
+              "stock_location.address",
+            ],
+          },
         ]
-      : null
+      : null,
   )
 
   const { returns } = useOrderReturns(order.id)
@@ -44,8 +44,8 @@ export function useReturn(order: Order): Return | undefined {
     if (returns != null) {
       const draftReturnObject = returns?.filter(
         (returnObj) =>
-          returnObj.status === 'draft' &&
-          (returnObj.return_line_items ?? []).length === 0
+          returnObj.status === "draft" &&
+          (returnObj.return_line_items ?? []).length === 0,
       )[0]
       if (draftReturnObject != null) {
         setReturnObj(draftReturnObject)

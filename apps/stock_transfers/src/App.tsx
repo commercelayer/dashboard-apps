@@ -1,11 +1,11 @@
-import { ErrorNotFound } from '#pages/ErrorNotFound'
-import { Filters } from '#pages/Filters'
-import { Home } from '#pages/Home'
-import { StockTransferDetails } from '#pages/StockTransferDetails'
-import { StockTransfersList } from '#pages/StockTransfersList'
-import type { FC } from 'react'
-import { Route, Router, Switch } from 'wouter'
-import { appRoutes } from './data/routes'
+import type { FC } from "react"
+import { Route, Router, Switch } from "wouter"
+import { ErrorNotFound } from "#pages/ErrorNotFound"
+import { Filters } from "#pages/Filters"
+import { Home } from "#pages/Home"
+import { StockTransferDetails } from "#pages/StockTransferDetails"
+import { StockTransfersList } from "#pages/StockTransfersList"
+import { appRoutes } from "./data/routes"
 
 interface AppProps {
   routerBase?: string

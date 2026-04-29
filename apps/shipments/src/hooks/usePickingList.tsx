@@ -1,5 +1,5 @@
-import type { Parcel, Shipment, StockLineItem } from '@commercelayer/sdk'
-import { useMemo } from 'react'
+import type { Parcel, Shipment, StockLineItem } from "@commercelayer/sdk"
+import { useMemo } from "react"
 
 function parcelsToStockLineItems(parcels: Parcel[]): StockLineItem[] {
   const stockLineItems: Record<string, StockLineItem> = {}
@@ -17,8 +17,8 @@ function parcelsToStockLineItems(parcels: Parcel[]): StockLineItem[] {
       } else {
         stockLineItems[parcelLineItem.sku_code] = {
           ...parcelLineItem,
-          type: 'stock_line_items',
-          quantity: parcelLineItem.quantity ?? 0
+          type: "stock_line_items",
+          quantity: parcelLineItem.quantity ?? 0,
         }
       }
     }
@@ -38,20 +38,20 @@ export function usePickingList(shipment: Shipment): StockLineItem[] {
       shipment.stock_line_items
         ?.map((stockLineItem) => {
           const stockLineItemsFromParcels = parcelsToStockLineItems(
-            shipment.parcels ?? []
+            shipment.parcels ?? [],
           )
 
           const parcelQuantity: number =
             stockLineItemsFromParcels.find(
-              (item) => item.sku_code === stockLineItem.sku_code
+              (item) => item.sku_code === stockLineItem.sku_code,
             )?.quantity ?? 0
 
           return {
             ...stockLineItem,
-            quantity: stockLineItem.quantity - parcelQuantity
+            quantity: stockLineItem.quantity - parcelQuantity,
           }
         })
         .filter((stockLineItem) => stockLineItem.quantity > 0) ?? [],
-    [shipment.stock_line_items, shipment.parcels]
+    [shipment.stock_line_items, shipment.parcels],
   )
 }

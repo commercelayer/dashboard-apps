@@ -1,19 +1,18 @@
 import {
-  type SearchParams,
-  type SearchableResource
-} from '#components/Form/ResourceFinder/utils'
-import {
   InputSelect,
-  Label,
   type InputSelectValue,
-  type PossibleSelectValue
-} from '@commercelayer/app-elements'
-import { useEffect, useState } from 'react'
-import { fetchInitialResources, fetchResourcesByHint } from './utils'
+  Label,
+  type PossibleSelectValue,
+} from "@commercelayer/app-elements"
+import { useEffect, useState } from "react"
+import type {
+  SearchableResource,
+  SearchParams,
+} from "#components/Form/ResourceFinder/utils"
+import { fetchInitialResources, fetchResourcesByHint } from "./utils"
 
-interface Props<
-  ResType extends SearchableResource
-> extends SearchParams<ResType> {
+interface Props<ResType extends SearchableResource>
+  extends SearchParams<ResType> {
   /**
    * Text to show above the input
    */
@@ -34,7 +33,7 @@ interface Props<
 
 export function ResourceFinder<ResType extends SearchableResource>({
   label,
-  placeholder = 'Type to search or select from the list...',
+  placeholder = "Type to search or select from the list...",
   resourceType,
   sdkClient,
   isMulti,
@@ -42,7 +41,7 @@ export function ResourceFinder<ResType extends SearchableResource>({
   fields,
   filters,
   fieldForValue,
-  fieldForLabel
+  fieldForLabel,
 }: Props<ResType>): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true)
   const [initialValues, setInitialValues] = useState<InputSelectValue[]>([])
@@ -57,7 +56,7 @@ export function ResourceFinder<ResType extends SearchableResource>({
       fields,
       filters,
       fieldForValue,
-      fieldForLabel
+      fieldForLabel,
     })
       .then(setInitialValues)
       .finally(() => {
@@ -82,7 +81,7 @@ export function ResourceFinder<ResType extends SearchableResource>({
             fields,
             filters,
             fieldForValue,
-            fieldForLabel
+            fieldForLabel,
           })
         }}
       />

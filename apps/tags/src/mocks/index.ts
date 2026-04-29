@@ -1,4 +1,4 @@
-export * from './resources/tags'
+export * from "./resources/tags"
 
 export const repeat = <R>(n: number, resource: () => R): R[] => {
   return Array(n)

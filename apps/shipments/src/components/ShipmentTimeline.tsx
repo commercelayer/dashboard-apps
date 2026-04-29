@@ -1,11 +1,11 @@
-import { useShipmentDetails } from '#hooks/useShipmentDetails'
 import {
   ResourceOrderTimeline,
   Section,
   Spacer,
-  withSkeletonTemplate
-} from '@commercelayer/app-elements'
-import type { Shipment } from '@commercelayer/sdk'
+  withSkeletonTemplate,
+} from "@commercelayer/app-elements"
+import type { Shipment } from "@commercelayer/sdk"
+import { useShipmentDetails } from "#hooks/useShipmentDetails"
 
 interface Props {
   shipment: Shipment
@@ -14,13 +14,13 @@ interface Props {
 export const ShipmentTimeline = withSkeletonTemplate<Props>(({ shipment }) => {
   const { isValidating } = useShipmentDetails(shipment.id)
   return (
-    <Section title='Timeline'>
-      <Spacer top='8'>
+    <Section title="Timeline">
+      <Spacer top="8">
         <ResourceOrderTimeline
           orderId={shipment.order?.id}
           refresh={isValidating}
           attachmentOption={{
-            referenceOrigin: 'app-shipments--note'
+            referenceOrigin: "app-shipments--note",
           }}
         />
       </Spacer>

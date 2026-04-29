@@ -1,18 +1,18 @@
-import { ListEmptyState } from '#components/ListEmptyState'
-import { ListItemTag } from '#components/ListItemTag'
-import { instructions } from '#data/filters'
-import { presets } from '#data/lists'
-import { appRoutes } from '#data/routes'
 import {
   Button,
   HomePageLayout,
   Icon,
   Spacer,
   useResourceFilters,
-  useTokenProvider
-} from '@commercelayer/app-elements'
-import { Link, useLocation } from 'wouter'
-import { navigate, useSearch } from 'wouter/use-browser-location'
+  useTokenProvider,
+} from "@commercelayer/app-elements"
+import { Link, useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { ListItemTag } from "#components/ListItemTag"
+import { instructions } from "#data/filters"
+import { presets } from "#data/lists"
+import { appRoutes } from "#data/routes"
 
 export function TagList(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -22,19 +22,19 @@ export function TagList(): React.JSX.Element {
 
   const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
     useResourceFilters({
-      instructions
+      instructions,
     })
 
   const isUserCustomFiltered =
     hasActiveFilter && viewTitle === presets.all.viewTitle
 
   return (
-    <HomePageLayout title='Tags'>
+    <HomePageLayout title="Tags">
       <SearchWithNav
         queryString={queryString}
         onUpdate={(qs) => {
           navigate(`?${qs}`, {
-            replace: true
+            replace: true,
           })
         }}
         onFilterClick={(queryString) => {
@@ -43,40 +43,40 @@ export function TagList(): React.JSX.Element {
         hideFiltersNav
       />
 
-      <Spacer bottom='14'>
+      <Spacer bottom="14">
         <FilteredList
-          type='tags'
+          type="tags"
           ItemTemplate={ListItemTag}
           query={{
             fields: {
-              tags: ['id', 'name', 'created_at', 'updated_at']
+              tags: ["id", "name", "created_at", "updated_at"],
             },
             pageSize: 25,
             sort: {
-              updated_at: 'desc'
-            }
+              updated_at: "desc",
+            },
           }}
           emptyState={
             <ListEmptyState
               scope={
                 isUserCustomFiltered
-                  ? 'userFiltered'
+                  ? "userFiltered"
                   : viewTitle !== presets.all.viewTitle
-                    ? 'presetView'
-                    : 'history'
+                    ? "presetView"
+                    : "history"
               }
             />
           }
           actionButton={
-            canUser('create', 'tags') ? (
+            canUser("create", "tags") ? (
               <Link href={appRoutes.new.makePath()} asChild>
                 <Button
-                  variant='secondary'
-                  size='mini'
-                  alignItems='center'
-                  aria-label='Add tag'
+                  variant="secondary"
+                  size="mini"
+                  alignItems="center"
+                  aria-label="Add tag"
                 >
-                  <Icon name='plus' />
+                  <Icon name="plus" />
                   New
                 </Button>
               </Link>

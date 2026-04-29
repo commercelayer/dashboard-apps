@@ -1,17 +1,17 @@
-import { A, EmptyState } from '@commercelayer/app-elements'
+import { A, EmptyState } from "@commercelayer/app-elements"
 
 interface Props {
-  scope?: 'history' | 'userFiltered'
+  scope?: "history" | "userFiltered"
 }
 
 export function ListEmptyStateSKUs({
-  scope = 'history'
+  scope = "history",
 }: Props): React.JSX.Element {
-  if (scope === 'userFiltered') {
+  if (scope === "userFiltered") {
     return (
       <EmptyState
-        className='bg-white'
-        title='No SKUs found!'
+        className="bg-white"
+        title="No SKUs found!"
         description={
           <div>
             <p>We didn't find any SKU matching the current search.</p>
@@ -23,15 +23,15 @@ export function ListEmptyStateSKUs({
 
   return (
     <EmptyState
-      className='bg-white'
-      title='No SKUs yet!'
+      className="bg-white"
+      title="No SKUs yet!"
       description={
         <div>
           <p>Add a SKU with the API, or use the CLI.</p>
           <A
-            target='_blank'
-            href='https://docs.commercelayer.io/core/v/api-reference/skus'
-            rel='noreferrer'
+            target="_blank"
+            href="https://docs.commercelayer.io/core/v/api-reference/skus"
+            rel="noreferrer"
           >
             View API reference.
           </A>
