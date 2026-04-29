@@ -1,3 +1,5 @@
+import "./styles/app.css"
+
 import {
   type ClAppProps,
   CoreSdkProvider,
