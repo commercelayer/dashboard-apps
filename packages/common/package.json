@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "dashboard-apps-common",
-  "version": "3.23.0",
+  "version": "4.0.0",
   "type": "module",
   "scripts": {
     "check": "pnpm biome check",
