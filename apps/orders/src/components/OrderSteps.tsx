@@ -4,10 +4,6 @@ import {
   getOrderFulfillmentStatusName,
   getOrderPaymentStatusName,
   getOrderStatusName,
-  Spacer,
-  Stack,
-  Text,
-  useTranslation,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
@@ -21,7 +17,7 @@ function getOrderStatusBadgeVariant(
 ): BadgeProps["variant"] {
   switch (status) {
     case "approved":
-      return "success-solid"
+      return "success"
     case "cancelled":
     case "draft":
     case "pending":
@@ -29,7 +25,7 @@ function getOrderStatusBadgeVariant(
     case "placed":
     case "placing":
     case "editing":
-      return "warning-solid"
+      return "warning"
   }
 }
 
@@ -39,7 +35,7 @@ function getPaymentStatusBadgeVariant(
   switch (status) {
     case "paid":
     case "free":
-      return "success-solid"
+      return "success"
     case "unpaid":
     case "partially_paid":
     case "refunded":
@@ -49,7 +45,7 @@ function getPaymentStatusBadgeVariant(
       return "secondary"
     case "authorized":
     case "partially_authorized":
-      return "warning-solid"
+      return "warning"
   }
 }
 
@@ -58,65 +54,46 @@ function getFulfillmentStatusBadgeVariant(
 ): BadgeProps["variant"] {
   switch (status) {
     case "fulfilled":
-      return "success-solid"
+      return "success"
     case "unfulfilled":
     case "not_required":
       return "secondary"
     case "in_progress":
-      return "warning-solid"
+      return "warning"
   }
 }
 
 export const OrderSteps = withSkeletonTemplate<Props>(
   ({ order }): React.JSX.Element => {
-    const { t } = useTranslation()
-
     return (
-      <Stack>
-        <div>
-          <Spacer bottom="2">
-            <Text size="small" tag="div" variant="info" weight="semibold">
-              {t("resources.orders.name")}
-            </Text>
-          </Spacer>
-          {order.status !== undefined && (
-            <Badge variant={getOrderStatusBadgeVariant(order.status)}>
-              {getOrderStatusName(order.status).toUpperCase()}
-            </Badge>
-          )}
-        </div>
-        <div>
-          <Spacer bottom="2">
-            <Text size="small" tag="div" variant="info" weight="semibold">
-              {t("apps.orders.details.payment")}
-            </Text>
-          </Spacer>
-          {order.payment_status !== undefined && (
-            <Badge variant={getPaymentStatusBadgeVariant(order.payment_status)}>
-              {getOrderPaymentStatusName(order.payment_status).toUpperCase()}
-            </Badge>
-          )}
-        </div>
+      <>
+        {order.status !== undefined && (
+          <Badge
+            variant={getOrderStatusBadgeVariant(order.status)}
+            className="inline-block align-middle ml-2"
+          >
+            {getOrderStatusName(order.status)}
+          </Badge>
+        )}
 
-        <div>
-          <Spacer bottom="2">
-            <Text size="small" tag="div" variant="info" weight="semibold">
-              {t("apps.orders.details.fulfillment")}
-            </Text>
-          </Spacer>
-          {order.fulfillment_status !== undefined && (
-            <Badge
-              variant={getFulfillmentStatusBadgeVariant(
-                order.fulfillment_status,
-              )}
-            >
-              {getOrderFulfillmentStatusName(
-                order.fulfillment_status,
-              ).toUpperCase()}
-            </Badge>
-          )}
-        </div>
-      </Stack>
+        {order.payment_status !== undefined && (
+          <Badge
+            variant={getPaymentStatusBadgeVariant(order.payment_status)}
+            className="inline-block align-middle ml-2"
+          >
+            {getOrderPaymentStatusName(order.payment_status)}
+          </Badge>
+        )}
+
+        {order.fulfillment_status !== undefined && (
+          <Badge
+            variant={getFulfillmentStatusBadgeVariant(order.fulfillment_status)}
+            className="inline-block align-middle ml-2"
+          >
+            {getOrderFulfillmentStatusName(order.fulfillment_status)}
+          </Badge>
+        )}
+      </>
     )
   },
 )

@@ -126,7 +126,9 @@ function OrderDetails(): React.JSX.Element {
       mode={mode}
       toolbar={toolbar}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle} <OrderSteps order={order} />
+        </SkeletonTemplate>
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
@@ -167,9 +169,6 @@ function OrderDetails(): React.JSX.Element {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
-          <Spacer top="14">
-            <OrderSteps order={order} />
-          </Spacer>
           <Spacer top="14">
             <OrderSummary order={order} />
           </Spacer>
