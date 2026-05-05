@@ -255,7 +255,8 @@ export const SkuDetails: FC = () => {
       </SkeletonTemplate>
       <ConfirmDialog
         icon="trash"
-        title={`Delete SKU ${sku.code} (${sku.name})?`}
+        title={`Delete SKU ${sku.name}?`}
+        description={sku.code}
         confirm={{
           label: "Delete",
           variant: "danger",
