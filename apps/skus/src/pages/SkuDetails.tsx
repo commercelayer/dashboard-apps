@@ -14,7 +14,9 @@ import {
   Tab,
   Tabs,
   useAppLinking,
+  useConfirmDialog,
   useCoreApi,
+  useCoreSdkProvider,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
@@ -25,7 +27,6 @@ import { Link, useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { SkuInfo } from "#components/SkuInfo"
 import { appRoutes } from "#data/routes"
-import { useSkuDeleteOverlay } from "#hooks/useSkuDeleteOverlay"
 import { useSkuDetails } from "#hooks/useSkuDetails"
 
 export const SkuDetails: FC = () => {
@@ -34,6 +35,7 @@ export const SkuDetails: FC = () => {
     canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
+  const { sdkClient } = useCoreSdkProvider()
 
   const queryString = useSearch()
 
@@ -44,7 +46,8 @@ export const SkuDetails: FC = () => {
 
   const { sku, isLoading, error, mutateSku } = useSkuDetails(skuId)
 
-  const { Overlay: SkuDeleteOverlay, show } = useSkuDeleteOverlay(sku)
+  // const { Overlay: SkuDeleteOverlay, show } = useSkuDeleteOverlay(sku)
+  const { show, ConfirmDialog } = useConfirmDialog()
 
   const hasSalesChannels =
     extras?.salesChannels != null && extras?.salesChannels.length > 0
@@ -250,7 +253,20 @@ export const SkuDetails: FC = () => {
           <Spacer top="14">{SkuTabs}</Spacer>
         </Spacer>
       </SkeletonTemplate>
-      <SkuDeleteOverlay />
+      <ConfirmDialog
+        icon="trash"
+        title={`Delete SKU ${sku.code} (${sku.name})?`}
+        confirm={{
+          label: "Delete",
+          variant: "danger",
+          onClick: async () => {
+            await sdkClient.skus.delete(sku.id).then(() => {
+              setLocation(appRoutes.list.makePath({}))
+            })
+          },
+        }}
+        successMessage={`SKU ${sku.code} deleted`}
+      />
     </PageLayout>
   )
 }

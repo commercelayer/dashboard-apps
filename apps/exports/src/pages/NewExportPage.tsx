@@ -4,6 +4,7 @@ import {
   InputFeedback,
   PageError,
   PageLayout,
+  parseApiError,
   Spacer,
   useCoreSdkProvider,
   useTokenProvider,
@@ -17,7 +18,6 @@ import type { ExportFormValues } from "#components/Form/types"
 import { customFieldsSubset } from "#data/fields"
 import { isAvailableResource, showResourceNiceName } from "#data/resources"
 import { appRoutes } from "#data/routes"
-import { parseApiError } from "#utils/apiErrors"
 
 const NewExportPage = (): React.JSX.Element | null => {
   const {

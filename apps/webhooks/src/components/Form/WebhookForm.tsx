@@ -4,6 +4,7 @@ import {
   HookedForm,
   HookedInput,
   InputFeedback,
+  parseApiError,
   Spacer,
   useCoreSdkProvider,
 } from "@commercelayer/app-elements"
@@ -15,7 +16,6 @@ import { useLocation } from "wouter"
 import zod from "zod"
 import { EventSelector } from "#components/Form/EventSelector"
 import { appRoutes } from "#data/routes"
-import { parseApiError } from "#utils/apiErrors"
 
 const includeResourcesRegExp = /^[a-z][a-z_.]*[a-z](,[a-z][a-z_.]*[a-z])*$|^$/
 
@@ -95,7 +95,7 @@ const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
       methods.reset()
       setLocation(appRoutes.details.makePath({ webhookId: sdkRequest?.id }))
     } catch (error) {
-      setApiError(parseApiError(error))
+      setApiError(parseApiError(error, "Could not save the webhook"))
     }
   }
 
