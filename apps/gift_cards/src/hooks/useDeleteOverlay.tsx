@@ -2,10 +2,10 @@ import {
   Button,
   InputFeedback,
   PageHeading,
+  parseApiError,
   Spacer,
   useOverlay,
 } from "@commercelayer/app-elements"
-import { CommerceLayerStatic } from "@commercelayer/sdk"
 import { type FC, useState } from "react"
 
 interface OverlayHook {
@@ -80,30 +80,4 @@ const APIError: FC<{ error: unknown }> = ({ error }) => {
       ))}
     </Spacer>
   )
-}
-
-function parseApiError(err: any): ApiError[] {
-  if (err == null) {
-    return []
-  }
-
-  if (CommerceLayerStatic.isApiError(err) && Array.isArray(err.errors)) {
-    return err.errors
-  } else {
-    return [
-      {
-        code: "Internal server error",
-        detail: err.message ?? "Something went wrong, please retry later",
-        status: "500",
-        title: err.message ?? "Internal server error",
-      },
-    ]
-  }
-}
-
-interface ApiError {
-  code: string
-  detail: string
-  status: string
-  title: string
 }
