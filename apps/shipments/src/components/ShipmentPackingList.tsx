@@ -3,12 +3,15 @@ import {
   Alert,
   Hr,
   isAllStockTransfersCancelled,
+  parseApiError,
   ResourceLineItems,
   ResourceShipmentParcels,
   Section,
   Spacer,
   Text,
+  toast,
   useCoreSdkProvider,
+  useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
@@ -114,8 +117,30 @@ const ParcelList = withSkeletonTemplate<{
   showTitle: boolean
 }>(({ shipment, showTitle }) => {
   const { sdkClient } = useCoreSdkProvider()
+  const { canUser } = useTokenProvider()
   const { mutateShipment } = useShipmentDetails(shipment.id)
   const { t } = useTranslation()
+
+  const updateTrackingNumber = async (
+    parcelId: string,
+    trackingNumber: string,
+  ) => {
+    await sdkClient.parcels
+      .update({
+        id: parcelId,
+        tracking_number: trackingNumber,
+      })
+      .then(async () => {
+        await mutateShipment()
+        toast("Tracking number updated")
+      })
+      .catch((error) =>
+        toast(
+          parseApiError(error, "Failed to update tracking number").join(". "),
+          { type: "error" },
+        ),
+      )
+  }
 
   if ((shipment.parcels ?? []).length <= 0) {
     return null
@@ -135,6 +160,9 @@ const ParcelList = withSkeletonTemplate<{
               .delete(id)
               .then(async () => await mutateShipment())
           }}
+          onTrackingNumberUpdate={
+            canUser("update", "parcels") ? updateTrackingNumber : undefined
+          }
         />
       </Section>
     </Spacer>
