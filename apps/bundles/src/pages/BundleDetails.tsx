@@ -71,6 +71,35 @@ export const BundleDetails: FC = () => {
     ])
   }
 
+  if (error != null) {
+    return (
+      <PageLayout
+        mode={mode}
+        title="Bundles"
+        navigationButton={{
+          onClick: () => {
+            goBack({
+              currentResourceId: bundleId,
+              defaultRelativePath: appRoutes.list.makePath({}),
+            })
+          },
+          label: "Bundles",
+          icon: "arrowLeft",
+        }}
+        scrollToTop
+      >
+        <EmptyState
+          title="Not authorized"
+          action={
+            <Link href={goBackUrl}>
+              <Button variant="primary">Go back</Button>
+            </Link>
+          }
+        />
+      </PageLayout>
+    )
+  }
+
   return (
     <PageLayout
       mode={mode}
@@ -94,100 +123,89 @@ export const BundleDetails: FC = () => {
       scrollToTop
       gap="only-top"
     >
-      {error != null ? (
-        <EmptyState
-          title="Not authorized"
-          action={
-            <Link href={goBackUrl}>
-              <Button variant="primary">Go back</Button>
-            </Link>
-          }
-        />
-      ) : (
-        <>
-          <SkeletonTemplate isLoading={isLoading}>
-            <Spacer bottom="4">
-              <Spacer top="14">
-                <SkuDescription resource={bundle} />
-              </Spacer>
-              <Spacer top="14">
-                <BundleSkuList bundle={bundle} />
-              </Spacer>
-              <Spacer top="14">
-                <BundleInfo bundle={bundle} />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceDetails
-                  resource={bundle}
-                  onUpdated={async () => {
-                    void mutateBundle()
-                  }}
-                />
-              </Spacer>
-              {!isMockedId(bundle.id) && (
-                <>
-                  <Spacer top="14">
-                    <ResourceTags
-                      resourceType="bundles"
-                      resourceId={bundle.id}
-                      overlay={{ title: pageTitle }}
-                      onTagClick={(tagId) => {
-                        setLocation(
-                          appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                        )
-                      }}
-                    />
-                  </Spacer>
-                  <Spacer top="14">
-                    <ResourceMetadata
-                      resourceType="bundles"
-                      resourceId={bundle.id}
-                      overlay={{
-                        title: pageTitle,
-                      }}
-                    />
-                  </Spacer>
-                </>
-              )}
+      <>
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer bottom="4">
+            <Spacer top="14">
+              <SkuDescription resource={bundle} />
             </Spacer>
-          </SkeletonTemplate>
-          {canUser("destroy", "bundles") && (
-            <DeleteOverlay backgroundColor="light">
-              <PageLayout
-                title={`Confirm that you want to delete the ${bundle.code} (${bundle.name}) bundle.`}
-                description="This action cannot be undone, proceed with caution."
-                minHeight={false}
-                navigationButton={{
-                  onClick: () => {
-                    close()
-                  },
-                  label: `Cancel`,
-                  icon: "x",
+            <Spacer top="14">
+              <BundleSkuList bundle={bundle} />
+            </Spacer>
+            <Spacer top="14">
+              <BundleInfo bundle={bundle} />
+            </Spacer>
+            <Spacer top="14">
+              <ResourceDetails
+                resource={bundle}
+                onUpdated={async () => {
+                  void mutateBundle()
                 }}
+              />
+            </Spacer>
+            {!isMockedId(bundle.id) && (
+              <>
+                <Spacer top="14">
+                  <ResourceTags
+                    resourceType="bundles"
+                    resourceId={bundle.id}
+                    overlay={{ title: pageTitle }}
+                    onTagClick={(tagId) => {
+                      setLocation(
+                        appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
+                      )
+                    }}
+                  />
+                </Spacer>
+                <Spacer top="14">
+                  <ResourceMetadata
+                    resourceType="bundles"
+                    resourceId={bundle.id}
+                    overlay={{
+                      title: pageTitle,
+                    }}
+                  />
+                </Spacer>
+              </>
+            )}
+          </Spacer>
+        </SkeletonTemplate>
+        {canUser("destroy", "bundles") && (
+          <DeleteOverlay backgroundColor="light">
+            <PageLayout
+              title={`Confirm that you want to delete the ${bundle.code} (${bundle.name}) bundle.`}
+              description="This action cannot be undone, proceed with caution."
+              minHeight={false}
+              navigationButton={{
+                onClick: () => {
+                  close()
+                },
+                label: `Cancel`,
+                icon: "x",
+              }}
+            >
+              <Button
+                variant="danger"
+                size="small"
+                disabled={isDeleting}
+                onClick={(e) => {
+                  setIsDeleting(true)
+                  e.stopPropagation()
+                  void sdkClient.bundles
+                    .delete(bundle.id)
+                    .then(() => {
+                      setLocation(appRoutes.list.makePath({}))
+                    })
+                    .catch(() => {})
+                }}
+                fullWidth
               >
-                <Button
-                  variant="danger"
-                  size="small"
-                  disabled={isDeleting}
-                  onClick={(e) => {
-                    setIsDeleting(true)
-                    e.stopPropagation()
-                    void sdkClient.bundles
-                      .delete(bundle.id)
-                      .then(() => {
-                        setLocation(appRoutes.list.makePath({}))
-                      })
-                      .catch(() => {})
-                  }}
-                  fullWidth
-                >
-                  Delete bundle
-                </Button>
-              </PageLayout>
-            </DeleteOverlay>
-          )}
-        </>
-      )}
+                Delete bundle
+              </Button>
+            </PageLayout>
+          </DeleteOverlay>
+        )}
+      </>
     </PageLayout>
   )
 }

@@ -97,6 +97,35 @@ export function CustomerDetails(): React.JSX.Element {
     ])
   }
 
+  if (error != null) {
+    return (
+      <PageLayout
+        mode={mode}
+        title="Customers"
+        navigationButton={{
+          label: t("common.back"),
+          icon: "arrowLeft",
+          onClick: () => {
+            goBack({
+              currentResourceId: customerId,
+              defaultRelativePath: appRoutes.list.makePath(),
+            })
+          },
+        }}
+        scrollToTop
+      >
+        <EmptyState
+          title={t("common.not_authorized")}
+          action={
+            <Link href={appRoutes.list.makePath()}>
+              <Button variant="primary">{t("common.go_back")}</Button>
+            </Link>
+          }
+        />
+      </PageLayout>
+    )
+  }
+
   return (
     <PageLayout
       mode={mode}
@@ -129,88 +158,76 @@ export function CustomerDetails(): React.JSX.Element {
       gap="only-top"
       scrollToTop
     >
-      {error != null ? (
-        <EmptyState
-          title={t("common.not_authorized")}
-          action={
-            <Link href={appRoutes.list.makePath()}>
-              <Button variant="primary">{t("common.go_back")}</Button>
-            </Link>
-          }
-        />
-      ) : (
-        <SkeletonTemplate isLoading={isLoading}>
-          <Spacer bottom="4">
-            <CustomerAnonymization customerId={customer.id} />
-            <Spacer top="14">
-              <CustomerInfo customer={customer} />
-            </Spacer>
-            <Spacer top="14">
-              <CustomerLastOrders />
-            </Spacer>
-            <Spacer top="14">
-              <CustomerWallet
-                customer={customer}
-                onRemovedPaymentSource={() => {
-                  void mutateCustomer()
-                }}
-              />
-            </Spacer>
-            <Spacer top="14">
-              <CustomerAddresses
-                customer={customer}
-                onRemovedAddress={() => {
-                  void mutateCustomer()
-                }}
-              />
-            </Spacer>
-
-            <Spacer top="14">
-              <ResourceDetails
-                resource={customer}
-                onUpdated={async () => {
-                  void mutateCustomer()
-                }}
-              />
-            </Spacer>
-
-            {!isMockedId(customer.id) && (
-              <>
-                <Spacer top="14">
-                  <ResourceTags
-                    resourceType="customers"
-                    resourceId={customer.id}
-                    overlay={{ title: pageTitle }}
-                    onTagClick={(tagId) => {
-                      setLocation(
-                        appRoutes.list.makePath(`tags_id_in=${tagId}`),
-                      )
-                    }}
-                  />
-                </Spacer>
-                <Spacer top="14">
-                  <ResourceMetadata
-                    resourceType="customers"
-                    resourceId={customer.id}
-                    overlay={{
-                      title: pageTitle,
-                    }}
-                  />
-                </Spacer>
-              </>
-            )}
-            <Spacer top="14">
-              <ResourceAttachments
-                resourceType="customers"
-                resourceId={customer.id}
-              />
-            </Spacer>
-            <Spacer top="14">
-              <CustomerTimeline customer={customer} />
-            </Spacer>
+      <SkeletonTemplate isLoading={isLoading}>
+        <Spacer bottom="4">
+          <CustomerAnonymization customerId={customer.id} />
+          <Spacer top="14">
+            <CustomerInfo customer={customer} />
           </Spacer>
-        </SkeletonTemplate>
-      )}
+          <Spacer top="14">
+            <CustomerLastOrders />
+          </Spacer>
+          <Spacer top="14">
+            <CustomerWallet
+              customer={customer}
+              onRemovedPaymentSource={() => {
+                void mutateCustomer()
+              }}
+            />
+          </Spacer>
+          <Spacer top="14">
+            <CustomerAddresses
+              customer={customer}
+              onRemovedAddress={() => {
+                void mutateCustomer()
+              }}
+            />
+          </Spacer>
+
+          <Spacer top="14">
+            <ResourceDetails
+              resource={customer}
+              onUpdated={async () => {
+                void mutateCustomer()
+              }}
+            />
+          </Spacer>
+
+          {!isMockedId(customer.id) && (
+            <>
+              <Spacer top="14">
+                <ResourceTags
+                  resourceType="customers"
+                  resourceId={customer.id}
+                  overlay={{ title: pageTitle }}
+                  onTagClick={(tagId) => {
+                    setLocation(appRoutes.list.makePath(`tags_id_in=${tagId}`))
+                  }}
+                />
+              </Spacer>
+              <Spacer top="14">
+                <ResourceMetadata
+                  resourceType="customers"
+                  resourceId={customer.id}
+                  overlay={{
+                    title: pageTitle,
+                  }}
+                />
+              </Spacer>
+            </>
+          )}
+          <Spacer top="14">
+            <ResourceAttachments
+              resourceType="customers"
+              resourceId={customer.id}
+            />
+          </Spacer>
+          <Spacer top="14">
+            <CustomerTimeline customer={customer} />
+          </Spacer>
+        </Spacer>
+      </SkeletonTemplate>
+
       {canUser("destroy", "customers") && <DeleteOverlay />}
       <ResetPasswordOverlay />
     </PageLayout>

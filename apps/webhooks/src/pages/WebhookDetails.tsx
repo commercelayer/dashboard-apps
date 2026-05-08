@@ -24,9 +24,10 @@ export const WebhookDetails: FC = () => {
   const [, setLocation] = useLocation()
 
   const webhookId = params?.webhookId ?? ""
-  const { webhook, isLoading, mutateWebhook } = useWebhookDetails(webhookId)
+  const { webhook, isLoading, mutateWebhook, error } =
+    useWebhookDetails(webhookId)
 
-  if (webhookId == null || !canUser("read", "webhooks")) {
+  if (webhookId == null || !canUser("read", "webhooks") || error != null) {
     return (
       <PageLayout
         title="Webhook details"

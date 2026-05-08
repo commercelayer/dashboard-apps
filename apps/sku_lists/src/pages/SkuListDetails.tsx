@@ -70,7 +70,7 @@ export const SkuListDetails = (
   if (error != null) {
     return (
       <PageLayout
-        title={skuList?.name}
+        title="SKU List"
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))

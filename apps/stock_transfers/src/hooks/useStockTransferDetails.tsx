@@ -17,6 +17,7 @@ export function useStockTransferDetails(id: string) {
     isLoading,
     mutate: mutateStockTransfer,
     isValidating,
+    error,
   } = useCoreApi(
     "stock_transfers",
     "retrieve",
@@ -33,5 +34,5 @@ export function useStockTransferDetails(id: string) {
     },
   )
 
-  return { stockTransfer, isLoading, mutateStockTransfer, isValidating }
+  return { stockTransfer, isLoading, mutateStockTransfer, isValidating, error }
 }

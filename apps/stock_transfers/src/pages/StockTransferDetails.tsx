@@ -43,7 +43,7 @@ export function StockTransferDetails(): React.JSX.Element {
 
   const stockTransferId = params?.stockTransferId ?? ""
 
-  const { stockTransfer, isLoading, mutateStockTransfer } =
+  const { stockTransfer, isLoading, mutateStockTransfer, error } =
     useStockTransferDetails(stockTransferId)
 
   const triggerMenuActions = useMemo(() => {
@@ -53,7 +53,11 @@ export function StockTransferDetails(): React.JSX.Element {
   const { show: showCancelOverlay, Overlay: CancelOverlay } = useCancelOverlay()
   const { dispatch } = useTriggerAttribute(stockTransfer.id)
 
-  if (stockTransferId === "" || !canUser("read", "stock_transfers")) {
+  if (
+    stockTransferId === "" ||
+    !canUser("read", "stock_transfers") ||
+    error != null
+  ) {
     return (
       <PageLayout
         title="Stock transfers"

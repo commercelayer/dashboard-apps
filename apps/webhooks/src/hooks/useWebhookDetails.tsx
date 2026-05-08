@@ -9,6 +9,7 @@ export function useWebhookDetails(id: string) {
     isLoading,
     mutate: mutateWebhook,
     isValidating,
+    error,
   } = useCoreApi(
     "webhooks",
     "retrieve",
@@ -25,5 +26,5 @@ export function useWebhookDetails(id: string) {
     },
   )
 
-  return { webhook, isLoading, mutateWebhook, isValidating }
+  return { webhook, isLoading, mutateWebhook, isValidating, error }
 }
