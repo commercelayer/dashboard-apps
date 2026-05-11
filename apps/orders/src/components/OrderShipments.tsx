@@ -43,7 +43,11 @@ const OrderShipment = ({
         key={shipment.id}
         resource={shipment}
         {...navigateToShipment}
-        rightContentOverride={parcelsWithTracking.length > 0 ? null : undefined}
+        rightContentOverride={
+          // hide caret icon if there are parcels with tracking,
+          // as the tracking button (<ShipmentTrackings>) will be the main cta
+          parcelsWithTracking.length > 0 ? <div /> : undefined
+        }
       />
       <ShipmentTrackings parcels={parcelsWithTracking} />
     </div>
