@@ -14,51 +14,51 @@ import {
   useAppLinking,
   useTokenProvider,
   useTranslation,
-} from "@commercelayer/app-elements";
-import { useLocation, useRoute } from "wouter";
-import { OrderAddresses } from "#components/OrderAddresses";
-import { OrderCustomer } from "#components/OrderCustomer";
-import { OrderInfos } from "#components/OrderInfos";
-import { OrderPayment } from "#components/OrderPayment";
-import { OrderReturns } from "#components/OrderReturns";
-import { OrderShipments } from "#components/OrderShipments";
-import { OrderSteps } from "#components/OrderSteps";
-import { OrderSummary } from "#components/OrderSummary";
-import { useOrderStatus } from "#components/OrderSummary/hooks/useOrderStatus";
-import { Timeline } from "#components/Timeline";
-import { appRoutes } from "#data/routes";
-import { useGetMarketsCount } from "#hooks/useGetMarketsCount";
-import { useOrderDetails } from "#hooks/useOrderDetails";
-import { useOrderReturns } from "#hooks/useOrderReturns";
-import { useOrderToolbar } from "#hooks/useOrderToolbar";
-import { getOrderTitle } from "#utils/getOrderTitle";
+} from "@commercelayer/app-elements"
+import { useLocation, useRoute } from "wouter"
+import { OrderAddresses } from "#components/OrderAddresses"
+import { OrderCustomer } from "#components/OrderCustomer"
+import { OrderInfos } from "#components/OrderInfos"
+import { OrderPayment } from "#components/OrderPayment"
+import { OrderReturns } from "#components/OrderReturns"
+import { OrderShipments } from "#components/OrderShipments"
+import { OrderSteps } from "#components/OrderSteps"
+import { OrderSummary } from "#components/OrderSummary"
+import { useOrderStatus } from "#components/OrderSummary/hooks/useOrderStatus"
+import { Timeline } from "#components/Timeline"
+import { appRoutes } from "#data/routes"
+import { useGetMarketsCount } from "#hooks/useGetMarketsCount"
+import { useOrderDetails } from "#hooks/useOrderDetails"
+import { useOrderReturns } from "#hooks/useOrderReturns"
+import { useOrderToolbar } from "#hooks/useOrderToolbar"
+import { getOrderTitle } from "#utils/getOrderTitle"
 
 function OrderDetails(): React.JSX.Element {
   const {
     canUser,
     settings: { mode, extras },
     user,
-  } = useTokenProvider();
-  const [, setLocation] = useLocation();
-  const { t } = useTranslation();
-  const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path);
+  } = useTokenProvider()
+  const [, setLocation] = useLocation()
+  const { t } = useTranslation()
+  const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path)
 
-  const orderId = params?.orderId ?? "";
+  const orderId = params?.orderId ?? ""
 
   const {
     order,
     isLoading: isLoadingOrder,
     error,
     mutateOrder,
-  } = useOrderDetails(orderId);
-  const { isPendingWithTransactions } = useOrderStatus(order);
-  const { returns, isLoadingReturns } = useOrderReturns(orderId);
-  const toolbar = useOrderToolbar({ order });
+  } = useOrderDetails(orderId)
+  const { isPendingWithTransactions } = useOrderStatus(order)
+  const { returns, isLoadingReturns } = useOrderReturns(orderId)
+  const toolbar = useOrderToolbar({ order })
 
   const { count: marketsCount, isLoading: isLoadingMarkets } =
-    useGetMarketsCount();
+    useGetMarketsCount()
 
-  const { goBack } = useAppLinking();
+  const { goBack } = useAppLinking()
 
   if (canUser("update", "orders")) {
     if (
@@ -74,14 +74,14 @@ function OrderDetails(): React.JSX.Element {
         size: "small",
         variant: "secondary",
         onClick: () => {
-          setLocation(appRoutes.linkDetails.makePath({ orderId }));
+          setLocation(appRoutes.linkDetails.makePath({ orderId }))
         },
-      };
+      }
 
       if (toolbar.buttons != null) {
-        toolbar.buttons.push(checkoutLinkButton);
+        toolbar.buttons.push(checkoutLinkButton)
       } else {
-        toolbar.buttons = [checkoutLinkButton];
+        toolbar.buttons = [checkoutLinkButton]
       }
     }
   }
@@ -92,7 +92,7 @@ function OrderDetails(): React.JSX.Element {
         title={t("resources.orders.name_other")}
         navigationButton={{
           onClick: () => {
-            setLocation(appRoutes.home.makePath({}));
+            setLocation(appRoutes.home.makePath({}))
           },
           label: t("common.back"),
           icon: "arrowLeft",
@@ -106,7 +106,7 @@ function OrderDetails(): React.JSX.Element {
             <Button
               variant="primary"
               onClick={() => {
-                setLocation(appRoutes.home.makePath({}));
+                setLocation(appRoutes.home.makePath({}))
               }}
             >
               {t("common.go_back")}
@@ -114,12 +114,12 @@ function OrderDetails(): React.JSX.Element {
           }
         />
       </PageLayout>
-    );
+    )
   }
 
-  const isLoading = isLoadingMarkets || isLoadingOrder;
-  const hideMarket = (marketsCount ?? 0) === 1;
-  const pageTitle = getOrderTitle(order, { hideMarket });
+  const isLoading = isLoadingMarkets || isLoadingOrder
+  const hideMarket = (marketsCount ?? 0) === 1
+  const pageTitle = getOrderTitle(order, { hideMarket })
 
   return (
     <PageLayout
@@ -159,7 +159,7 @@ function OrderDetails(): React.JSX.Element {
           goBack({
             defaultRelativePath: appRoutes.list.makePath({}),
             currentResourceId: orderId,
-          });
+          })
         },
         label: t("common.back"),
         icon: "arrowLeft",
@@ -201,7 +201,7 @@ function OrderDetails(): React.JSX.Element {
               <ResourceDetails
                 resource={order}
                 onUpdated={async () => {
-                  void mutateOrder();
+                  void mutateOrder()
                 }}
               />
             </Spacer>
@@ -215,7 +215,7 @@ function OrderDetails(): React.JSX.Element {
                     onTagClick={(tagId) => {
                       setLocation(
                         appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                      );
+                      )
                     }}
                   />
                 </Spacer>
@@ -247,7 +247,7 @@ function OrderDetails(): React.JSX.Element {
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>
-  );
+  )
 }
 
-export default OrderDetails;
+export default OrderDetails

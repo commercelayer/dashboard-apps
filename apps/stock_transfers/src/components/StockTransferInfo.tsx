@@ -6,35 +6,35 @@ import {
   useAppLinking,
   useTokenProvider,
   withSkeletonTemplate,
-} from "@commercelayer/app-elements";
-import type { StockTransfer } from "@commercelayer/sdk";
+} from "@commercelayer/app-elements"
+import type { StockTransfer } from "@commercelayer/sdk"
 
 interface Props {
-  stockTransfer: StockTransfer;
+  stockTransfer: StockTransfer
 }
 
 export const StockTransferInfo = withSkeletonTemplate<Props>(
   ({ stockTransfer }): React.JSX.Element => {
-    const { canAccess } = useTokenProvider();
-    const { navigateTo } = useAppLinking();
+    const { canAccess } = useTokenProvider()
+    const { navigateTo } = useAppLinking()
 
-    const orderNumber = `#${stockTransfer?.shipment?.order?.number}`;
+    const orderNumber = `#${stockTransfer?.shipment?.order?.number}`
     const navigateToOrder = canAccess("orders")
       ? navigateTo({
           app: "orders",
           resourceId: stockTransfer?.shipment?.order?.id,
         })
-      : {};
+      : {}
 
-    const shipmentNumber = `#${stockTransfer?.shipment?.number}`;
+    const shipmentNumber = `#${stockTransfer?.shipment?.number}`
     const navigateToShipment = canAccess("shipments")
       ? navigateTo({
           app: "shipments",
           resourceId: stockTransfer?.shipment?.id,
         })
-      : {};
+      : {}
 
-    if (orderNumber === "#" && shipmentNumber === "#") return <></>;
+    if (orderNumber === "#" && shipmentNumber === "#") return <></>
 
     return (
       <Section title="Info">
@@ -67,6 +67,6 @@ export const StockTransferInfo = withSkeletonTemplate<Props>(
           </div>
         )}
       </Section>
-    );
+    )
   },
-);
+)
