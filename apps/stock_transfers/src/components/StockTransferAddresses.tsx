@@ -21,7 +21,11 @@ export const StockTransferAddresses = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <Section title="Addresses" border="none">
+        <Section
+          title="Addresses"
+          border="none"
+          className="print:break-inside-avoid"
+        >
           <Stack>
             <ResourceAddress
               address={stockTransfer.origin_stock_location?.address}

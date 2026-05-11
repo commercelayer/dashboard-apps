@@ -52,17 +52,19 @@ export const StockTransferInfo = withSkeletonTemplate<Props>(
           </ListDetailsItem>
         )}
         {shipmentNumber !== "#" && (
-          <ListDetailsItem label="Shipment" gutter="none">
-            <Text tag="div" weight="semibold">
-              {canAccess("orders") ? (
-                <Button variant="link" {...navigateToShipment}>
-                  {shipmentNumber}
-                </Button>
-              ) : (
-                shipmentNumber
-              )}
-            </Text>
-          </ListDetailsItem>
+          <div className="print:hidden">
+            <ListDetailsItem label="Shipment" gutter="none">
+              <Text tag="div" weight="semibold">
+                {canAccess("orders") ? (
+                  <Button variant="link" {...navigateToShipment}>
+                    {shipmentNumber}
+                  </Button>
+                ) : (
+                  shipmentNumber
+                )}
+              </Text>
+            </ListDetailsItem>
+          </div>
         )}
       </Section>
     )

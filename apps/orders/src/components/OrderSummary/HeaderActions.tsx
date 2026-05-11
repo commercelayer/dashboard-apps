@@ -44,20 +44,22 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
 
   if (editFeature && canEdit) {
     return (
-      <Button
-        variant="secondary"
-        size="mini"
-        alignItems="center"
-        onClick={(e) => {
-          e.preventDefault()
-          void dispatch("_start_editing").catch(() => {
-            void mutateOrder()
-          })
-        }}
-      >
-        <Icon name="pencilSimple" size={16} />
-        {t("common.edit")}
-      </Button>
+      <div className="print:hidden">
+        <Button
+          variant="secondary"
+          size="mini"
+          alignItems="center"
+          onClick={(e) => {
+            e.preventDefault()
+            void dispatch("_start_editing").catch(() => {
+              void mutateOrder()
+            })
+          }}
+        >
+          <Icon name="pencilSimple" size={16} />
+          {t("common.edit")}
+        </Button>
+      </div>
     )
   }
 
