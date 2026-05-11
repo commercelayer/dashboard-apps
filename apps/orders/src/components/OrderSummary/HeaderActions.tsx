@@ -8,57 +8,59 @@ import {
   useCoreSdkProvider,
   useTokenProvider,
   useTranslation,
-} from "@commercelayer/app-elements"
-import type { Order } from "@commercelayer/sdk"
-import { isEmpty } from "lodash-es"
-import { useOrderDetails } from "#hooks/useOrderDetails"
-import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
-import { useAddItemOverlay } from "./hooks/useAddItemOverlay"
-import { useOrderStatus } from "./hooks/useOrderStatus"
-import { arrayOf } from "./utils"
+} from "@commercelayer/app-elements";
+import type { Order } from "@commercelayer/sdk";
+import { isEmpty } from "lodash-es";
+import { useOrderDetails } from "#hooks/useOrderDetails";
+import { useTriggerAttribute } from "#hooks/useTriggerAttribute";
+import { useAddItemOverlay } from "./hooks/useAddItemOverlay";
+import { useOrderStatus } from "./hooks/useOrderStatus";
+import { arrayOf } from "./utils";
 
 export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
-  const { sdkClient } = useCoreSdkProvider()
-  const { canUser } = useTokenProvider()
-  const { dispatch } = useTriggerAttribute(order.id)
-  const { mutateOrder } = useOrderDetails(order.id)
-  const { isEditing } = useOrderStatus(order)
+  const { sdkClient } = useCoreSdkProvider();
+  const { canUser } = useTokenProvider();
+  const { dispatch } = useTriggerAttribute(order.id);
+  const { mutateOrder } = useOrderDetails(order.id);
+  const { isEditing } = useOrderStatus(order);
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
-    useAddItemOverlay(order)
-  const { t } = useTranslation()
+    useAddItemOverlay(order);
+  const { t } = useTranslation();
 
-  const { data: organization } = useCoreApi("organization", "retrieve", [])
+  const { data: organization } = useCoreApi("organization", "retrieve", []);
   const hasExternalPrices =
     !isEmpty(order.market?.external_prices_url) &&
-    organization?.config?.apps?.orders?.external_price === true
+    organization?.config?.apps?.orders?.external_price === true;
 
   const canEdit =
     order.status === "placed" &&
     arrayOf<Order["payment_status"]>(["free", "authorized", "paid"]).includes(
       order.payment_status,
     ) &&
-    canUser("update", "orders")
+    canUser("update", "orders");
 
   /** Define whether the `editing` feature is on or off. */
-  const editFeature = true
+  const editFeature = true;
 
   if (editFeature && canEdit) {
     return (
-      <Button
-        variant="secondary"
-        size="mini"
-        alignItems="center"
-        onClick={(e) => {
-          e.preventDefault()
-          void dispatch("_start_editing").catch(() => {
-            void mutateOrder()
-          })
-        }}
-      >
-        <Icon name="pencilSimple" size={16} />
-        {t("common.edit")}
-      </Button>
-    )
+      <div className="print:hidden">
+        <Button
+          variant="secondary"
+          size="mini"
+          alignItems="center"
+          onClick={(e) => {
+            e.preventDefault();
+            void dispatch("_start_editing").catch(() => {
+              void mutateOrder();
+            });
+          }}
+        >
+          <Icon name="pencilSimple" size={16} />
+          {t("common.edit")}
+        </Button>
+      </div>
+    );
   }
 
   if (isEditing) {
@@ -80,13 +82,13 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
                   : {}),
               })
               .then(async () => {
-                void mutateOrder()
+                void mutateOrder();
               })
               .catch(() => {
                 toast("Could not add item to order", {
                   type: "error",
-                })
-              })
+                });
+              });
           }}
         />
         <Dropdown
@@ -103,7 +105,7 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
                   resource: t("resources.skus.name"),
                 })}
                 onClick={() => {
-                  showAddItemOverlay("skus")
+                  showAddItemOverlay("skus");
                 }}
               />
               <DropdownItem
@@ -111,15 +113,15 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
                   resource: t("resources.bundles.name").toLowerCase(),
                 })}
                 onClick={() => {
-                  showAddItemOverlay("bundles")
+                  showAddItemOverlay("bundles");
                 }}
               />
             </>
           }
         />
       </>
-    )
+    );
   }
 
-  return null
-}
+  return null;
+};

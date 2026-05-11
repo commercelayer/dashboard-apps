@@ -7,56 +7,59 @@ import {
   useCoreSdkProvider,
   useTranslation,
   withSkeletonTemplate,
-} from "@commercelayer/app-elements"
-import type { Order } from "@commercelayer/sdk"
-import { useOrderDetails } from "#hooks/useOrderDetails"
-import { useCustomerAddressOverlay } from "./NewOrder/hooks/useCustomerAddressOverlay"
-import { useOrderStatus } from "./OrderSummary/hooks/useOrderStatus"
+} from "@commercelayer/app-elements";
+import type { Order } from "@commercelayer/sdk";
+import { useOrderDetails } from "#hooks/useOrderDetails";
+import { useCustomerAddressOverlay } from "./NewOrder/hooks/useCustomerAddressOverlay";
+import { useOrderStatus } from "./OrderSummary/hooks/useOrderStatus";
 
 interface Props {
-  order: Order
+  order: Order;
 }
 
 export const OrderAddresses = withSkeletonTemplate<Props>(
   ({ order }): React.JSX.Element | null => {
-    const { sdkClient } = useCoreSdkProvider()
-    const { t } = useTranslation()
-    const { isEditing } = useOrderStatus(order)
-    const { mutateOrder } = useOrderDetails(order.id)
+    const { sdkClient } = useCoreSdkProvider();
+    const { t } = useTranslation();
+    const { isEditing } = useOrderStatus(order);
+    const { mutateOrder } = useOrderDetails(order.id);
     const isEditable =
       isEditing ||
-      (order.status !== "draft" && order.fulfillment_status !== "fulfilled")
+      (order.status !== "draft" && order.fulfillment_status !== "fulfilled");
     const { Overlay: AssignAddressOverlay, open: openAssignAddressOverlay } =
       useCustomerAddressOverlay(order, () => {
-        void mutateOrder()
-      })
+        void mutateOrder();
+      });
 
     if (order.customer == null) {
-      return null
+      return null;
     }
 
     return (
       <>
         <AssignAddressOverlay />
         <Section
+          className="print:break-inside-avoid"
           border="none"
           title={t("resources.addresses.name_other")}
           actionButton={
             isEditable &&
             (order.customer?.customer_addresses ?? []).length > 0 && (
-              <Button
-                alignItems="center"
-                variant="secondary"
-                size="mini"
-                onClick={() => {
-                  openAssignAddressOverlay()
-                }}
-              >
-                <Icon name="plus" />
-                {t("common.select_resource", {
-                  resource: t("resources.addresses.name").toLowerCase(),
-                })}
-              </Button>
+              <div className="print:hidden">
+                <Button
+                  alignItems="center"
+                  variant="secondary"
+                  size="mini"
+                  onClick={() => {
+                    openAssignAddressOverlay();
+                  }}
+                >
+                  <Icon name="plus" />
+                  {t("common.select_resource", {
+                    resource: t("resources.addresses.name").toLowerCase(),
+                  })}
+                </Button>
+              </div>
             )
           }
         >
@@ -72,7 +75,7 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
                     type: "addresses",
                     id: address.id,
                   },
-                })
+                });
               }}
               showBillingInfo
               requiresBillingInfo={order.requires_billing_info ?? undefined}
@@ -88,12 +91,12 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
                     type: "addresses",
                     id: address.id,
                   },
-                })
+                });
               }}
             />
           </Stack>
         </Section>
       </>
-    )
+    );
   },
-)
+);

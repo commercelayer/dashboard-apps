@@ -9,30 +9,30 @@ import {
   useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
-} from "@commercelayer/app-elements"
-import type { Order } from "@commercelayer/sdk"
-import { useOrderDetails } from "#hooks/useOrderDetails"
-import { useEditCustomerOverlay } from "./NewOrder/hooks/useEditCustomerOverlay"
-import { useOrderStatus } from "./OrderSummary/hooks/useOrderStatus"
+} from "@commercelayer/app-elements";
+import type { Order } from "@commercelayer/sdk";
+import { useOrderDetails } from "#hooks/useOrderDetails";
+import { useEditCustomerOverlay } from "./NewOrder/hooks/useEditCustomerOverlay";
+import { useOrderStatus } from "./OrderSummary/hooks/useOrderStatus";
 
 interface Props {
-  order: Order
+  order: Order;
 }
 
 export const OrderCustomer = withSkeletonTemplate<Props>(
   ({ order }): React.JSX.Element | null => {
-    const { canAccess } = useTokenProvider()
-    const { t } = useTranslation()
-    const { mutateOrder } = useOrderDetails(order.id)
-    const { isEditing } = useOrderStatus(order)
+    const { canAccess } = useTokenProvider();
+    const { t } = useTranslation();
+    const { mutateOrder } = useOrderDetails(order.id);
+    const { isEditing } = useOrderStatus(order);
     const { Overlay: EditCustomerOverlay, open: openEditCustomerOverlay } =
       useEditCustomerOverlay(order, () => {
-        void mutateOrder()
-      })
-    const { navigateTo } = useAppLinking()
+        void mutateOrder();
+      });
+    const { navigateTo } = useAppLinking();
 
     if (order.customer == null) {
-      return null
+      return null;
     }
 
     const navigateToCustomer = canAccess("customers")
@@ -40,7 +40,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
           app: "customers",
           resourceId: order.customer.id,
         })
-      : {}
+      : {};
 
     return (
       <>
@@ -55,7 +55,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
                 variant="secondary"
                 size="mini"
                 onClick={() => {
-                  openEditCustomerOverlay()
+                  openEditCustomerOverlay();
                 }}
               >
                 <Icon name="pencilSimple" />
@@ -83,6 +83,6 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
           </ListItem>
         </Section>
       </>
-    )
+    );
   },
-)
+);

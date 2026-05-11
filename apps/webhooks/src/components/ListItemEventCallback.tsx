@@ -6,29 +6,29 @@ import {
   Text,
   useTokenProvider,
   withSkeletonTemplate,
-} from "@commercelayer/app-elements"
-import type { EventCallback } from "@commercelayer/sdk"
-import { ArrowCircleDown } from "phosphor-react"
-import { makeEventCallback } from "#mocks"
-import { eventCallbackStatusVariant } from "#utils/eventCallbackStatusVariant"
-import { formatDateAndTime } from "#utils/formatDateAndTime"
+} from "@commercelayer/app-elements";
+import type { EventCallback } from "@commercelayer/sdk";
+import { ArrowCircleDown } from "phosphor-react";
+import { makeEventCallback } from "#mocks";
+import { eventCallbackStatusVariant } from "#utils/eventCallbackStatusVariant";
+import { formatDateAndTime } from "#utils/formatDateAndTime";
 
 interface ListItemEventCallbackProps {
-  resource?: EventCallback
-  isLoading?: boolean
-  delayMs?: number
+  resource?: EventCallback;
+  isLoading?: boolean;
+  delayMs?: number;
 }
 
 export const ListItemEvenCallback =
   withSkeletonTemplate<ListItemEventCallbackProps>(
     ({ resource = makeEventCallback() }) => {
-      const { user } = useTokenProvider()
+      const { user } = useTokenProvider();
       const eventCallbackStatusVariantVariant =
-        eventCallbackStatusVariant(resource)
+        eventCallbackStatusVariant(resource);
 
       const firedAt = ` · ${
         formatDateAndTime(resource.created_at, user?.timezone).date
-      } · ${formatDateAndTime(resource.created_at, user?.timezone).time}`
+      } · ${formatDateAndTime(resource.created_at, user?.timezone).time}`;
 
       return (
         <ListItem alignItems="center">
@@ -38,7 +38,7 @@ export const ListItemEvenCallback =
                 {resource.response_code ?? ""}
               </Badge>
             </Spacer>
-            <Text weight="bold" size="small">
+            <Text weight="semibold" size="small">
               {resource.response_message}
             </Text>
             <Text weight="medium" size="small" variant="info">
@@ -52,13 +52,13 @@ export const ListItemEvenCallback =
                 downloadJsonAsFile({
                   json: resource.payload ?? undefined,
                   filename: `${resource.id}.json`,
-                })
+                });
               }}
             >
               <ArrowCircleDown size={22} />
             </button>
           </div>
         </ListItem>
-      )
+      );
     },
-  )
+  );

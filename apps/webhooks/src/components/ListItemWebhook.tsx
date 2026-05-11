@@ -6,13 +6,13 @@ import {
   Text,
   useTokenProvider,
   withSkeletonTemplate,
-} from "@commercelayer/app-elements"
-import type { Webhook } from "@commercelayer/sdk"
-import { useLocation } from "wouter"
-import { getWebhookStatus, hasWebhookEverFired } from "#data/dictionaries"
-import { appRoutes } from "#data/routes"
-import { makeWebhook } from "#mocks"
-import { getWebhookPredicateByStatus } from "#utils/getWebhookPredicateByStatus"
+} from "@commercelayer/app-elements";
+import type { Webhook } from "@commercelayer/sdk";
+import { useLocation } from "wouter";
+import { getWebhookStatus, hasWebhookEverFired } from "#data/dictionaries";
+import { appRoutes } from "#data/routes";
+import { makeWebhook } from "#mocks";
+import { getWebhookPredicateByStatus } from "#utils/getWebhookPredicateByStatus";
 
 /**
  * Get the relative status based on webhook's circuit state {@link https://docs.commercelayer.io/core/v/api-reference/webhooks/object}
@@ -20,54 +20,54 @@ import { getWebhookPredicateByStatus } from "#utils/getWebhookPredicateByStatus"
  * @returns a valid StatusUI to be used in the StatusIcon component.
  */
 function getListUiIcon(webhook: Webhook): React.JSX.Element {
-  const everFired = hasWebhookEverFired(webhook)
-  const status = getWebhookStatus(webhook)
+  const everFired = hasWebhookEverFired(webhook);
+  const status = getWebhookStatus(webhook);
   if (!everFired && status !== "disabled") {
-    return <RadialProgress />
+    return <RadialProgress />;
   }
   switch (status) {
     case "active":
-      return <StatusIcon name="pulse" gap="large" background="green" />
+      return <StatusIcon name="pulse" gap="large" background="green" />;
 
     case "disabled":
-      return <StatusIcon name="minus" gap="large" background="gray" />
+      return <StatusIcon name="minus" gap="large" background="gray" />;
 
     case "failed":
-      return <StatusIcon name="x" gap="large" background="red" />
+      return <StatusIcon name="x" gap="large" background="red" />;
   }
 }
 
 interface ListItemWebhookProps {
-  resource?: Webhook
-  isLoading?: boolean
-  delayMs?: number
+  resource?: Webhook;
+  isLoading?: boolean;
+  delayMs?: number;
 }
 
 export const ListItemWebhook = withSkeletonTemplate<ListItemWebhookProps>(
   ({ resource = makeWebhook() }) => {
-    const [, setLocation] = useLocation()
-    const { user } = useTokenProvider()
+    const [, setLocation] = useLocation();
+    const { user } = useTokenProvider();
     const webhookPredicate = getWebhookPredicateByStatus(
       resource,
       user?.timezone,
-    )
+    );
 
     return (
       <ListItem
         alignItems="center"
         icon={getListUiIcon(resource)}
         onClick={() => {
-          setLocation(appRoutes.details.makePath({ webhookId: resource.id }))
+          setLocation(appRoutes.details.makePath({ webhookId: resource.id }));
         }}
       >
         <div>
-          <Text weight="bold">{resource.name}</Text>
+          <Text weight="semibold">{resource.name}</Text>
           <Text tag="div" variant="info" weight="medium" size="small">
             {resource.topic} · {webhookPredicate}
           </Text>
         </div>
         <Icon name="caretRight" />
       </ListItem>
-    )
+    );
   },
-)
+);

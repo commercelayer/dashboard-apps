@@ -1,15 +1,15 @@
-import type { BadgeProps } from "@commercelayer/app-elements"
+import type { BadgeProps } from "@commercelayer/app-elements";
 import {
   Badge,
   getOrderFulfillmentStatusName,
   getOrderPaymentStatusName,
   getOrderStatusName,
   withSkeletonTemplate,
-} from "@commercelayer/app-elements"
-import type { Order } from "@commercelayer/sdk"
+} from "@commercelayer/app-elements";
+import type { Order } from "@commercelayer/sdk";
 
 interface Props {
-  order: Order
+  order: Order;
 }
 
 function getOrderStatusBadgeVariant(
@@ -17,15 +17,15 @@ function getOrderStatusBadgeVariant(
 ): BadgeProps["variant"] {
   switch (status) {
     case "approved":
-      return "success"
+      return "success";
     case "cancelled":
     case "draft":
     case "pending":
-      return "secondary"
+      return "secondary";
     case "placed":
     case "placing":
     case "editing":
-      return "warning"
+      return "warning";
   }
 }
 
@@ -35,17 +35,17 @@ function getPaymentStatusBadgeVariant(
   switch (status) {
     case "paid":
     case "free":
-      return "success"
+      return "success";
     case "unpaid":
     case "partially_paid":
     case "refunded":
     case "voided":
     case "partially_refunded":
     case "partially_voided":
-      return "secondary"
+      return "secondary";
     case "authorized":
     case "partially_authorized":
-      return "warning"
+      return "warning";
   }
 }
 
@@ -54,12 +54,12 @@ function getFulfillmentStatusBadgeVariant(
 ): BadgeProps["variant"] {
   switch (status) {
     case "fulfilled":
-      return "success"
+      return "success";
     case "unfulfilled":
     case "not_required":
-      return "secondary"
+      return "secondary";
     case "in_progress":
-      return "warning"
+      return "warning";
   }
 }
 
@@ -70,7 +70,7 @@ export const OrderSteps = withSkeletonTemplate<Props>(
         {order.status !== undefined && (
           <Badge
             variant={getOrderStatusBadgeVariant(order.status)}
-            className="inline-block align-middle ml-2"
+            className="inline-block align-middle ml-2 print:hidden"
           >
             {getOrderStatusName(order.status)}
           </Badge>
@@ -79,7 +79,7 @@ export const OrderSteps = withSkeletonTemplate<Props>(
         {order.payment_status !== undefined && (
           <Badge
             variant={getPaymentStatusBadgeVariant(order.payment_status)}
-            className="inline-block align-middle ml-2"
+            className="inline-block align-middle ml-2 print:hidden"
           >
             {getOrderPaymentStatusName(order.payment_status)}
           </Badge>
@@ -88,12 +88,12 @@ export const OrderSteps = withSkeletonTemplate<Props>(
         {order.fulfillment_status !== undefined && (
           <Badge
             variant={getFulfillmentStatusBadgeVariant(order.fulfillment_status)}
-            className="inline-block align-middle ml-2"
+            className="inline-block align-middle ml-2 print:hidden"
           >
             {getOrderFulfillmentStatusName(order.fulfillment_status)}
           </Badge>
         )}
       </>
-    )
+    );
   },
-)
+);

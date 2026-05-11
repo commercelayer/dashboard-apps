@@ -3,11 +3,11 @@ import {
   Section,
   Stack,
   withSkeletonTemplate,
-} from "@commercelayer/app-elements"
-import type { StockTransfer } from "@commercelayer/sdk"
+} from "@commercelayer/app-elements";
+import type { StockTransfer } from "@commercelayer/sdk";
 
 interface Props {
-  stockTransfer: StockTransfer
+  stockTransfer: StockTransfer;
 }
 
 export const StockTransferAddresses = withSkeletonTemplate<Props>(
@@ -16,12 +16,16 @@ export const StockTransferAddresses = withSkeletonTemplate<Props>(
       stockTransfer.origin_stock_location?.address == null ||
       stockTransfer.destination_stock_location?.address == null
     ) {
-      return null
+      return null;
     }
 
     return (
       <>
-        <Section title="Addresses" border="none">
+        <Section
+          title="Addresses"
+          border="none"
+          className="print:break-inside-avoid"
+        >
           <Stack>
             <ResourceAddress
               address={stockTransfer.origin_stock_location?.address}
@@ -34,6 +38,6 @@ export const StockTransferAddresses = withSkeletonTemplate<Props>(
           </Stack>
         </Section>
       </>
-    )
+    );
   },
-)
+);
