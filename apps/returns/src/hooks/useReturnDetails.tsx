@@ -18,6 +18,7 @@ export function useReturnDetails(id: string) {
     isLoading,
     mutate: mutateReturn,
     isValidating,
+    error,
   } = useCoreApi(
     "returns",
     "retrieve",
@@ -34,5 +35,5 @@ export function useReturnDetails(id: string) {
     },
   )
 
-  return { returnObj, isLoading, mutateReturn, isValidating }
+  return { returnObj, isLoading, mutateReturn, isValidating, error }
 }

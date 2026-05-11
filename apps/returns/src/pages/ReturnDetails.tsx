@@ -35,9 +35,10 @@ function ReturnDetails(): React.JSX.Element {
 
   const returnId = params?.returnId ?? ""
 
-  const { returnObj, isLoading, mutateReturn } = useReturnDetails(returnId)
+  const { returnObj, isLoading, mutateReturn, error } =
+    useReturnDetails(returnId)
 
-  if (returnId === undefined || !canUser("read", "returns")) {
+  if (returnId === undefined || !canUser("read", "returns") || error != null) {
     return (
       <PageLayout
         title={t("resources.returns.name_other")}
