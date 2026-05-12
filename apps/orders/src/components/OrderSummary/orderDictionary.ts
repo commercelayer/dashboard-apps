@@ -100,7 +100,7 @@ export function getTriggerAttributeName(
     _refund: t("apps.orders.actions.refund"),
     _unarchive: t("apps.orders.actions.unarchive"),
     _place: t("apps.orders.actions.place"),
-    _fulfill: "Fulfill",
+    _fulfill: "Mark as fulfilled",
     __cancel_transactions: t("apps.orders.actions.cancel_transactions"),
   }
 
