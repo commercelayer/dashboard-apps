@@ -1,6 +1,7 @@
 import {
   type DropdownItemProps,
   type PageHeadingToolbarProps,
+  useConfirmDialog,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
@@ -8,6 +9,7 @@ import type { Order } from "@commercelayer/sdk"
 import { useMemo } from "react"
 import { useLocation } from "wouter"
 import {
+  getTriggerAttributeIcon,
   getTriggerAttributeName,
   getTriggerAttributes,
 } from "#components/OrderSummary/orderDictionary"
@@ -16,11 +18,12 @@ import { useMarketInventoryModel } from "#hooks/useMarketInventoryModel"
 import { useReturnableList } from "#hooks/useReturnableList"
 import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
-export function useOrderToolbar({
-  order,
-}: {
-  order: Order
-}): PageHeadingToolbarProps {
+interface OrderToolbar {
+  toolbar: PageHeadingToolbarProps
+  confirmDialogs: React.ReactElement[]
+}
+
+export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
@@ -47,9 +50,12 @@ export function useOrderToolbar({
   }, [order, returnableLineItems, showReturnDropDownItem])
 
   const { dispatch } = useTriggerAttribute(order.id)
+  const { show: showFulfillConfirm, ConfirmDialog: FulfillConfirmDialogBase } =
+    useConfirmDialog()
 
   const triggerMenuActions = useMemo(() => {
     const triggerAttributes = getTriggerAttributes(order)
+
     return getTriggerAttributesForUser(canUser).filter((attr) =>
       triggerAttributes.includes(attr),
     )
@@ -58,6 +64,7 @@ export function useOrderToolbar({
   const triggerDropDownItems: DropdownItemProps[] = triggerMenuActions.map(
     (triggerAttribute) => ({
       label: getTriggerAttributeName(triggerAttribute),
+      icon: getTriggerAttributeIcon(triggerAttribute),
       onClick: () => {
         // refund action has its own form page
         if (triggerAttribute === "_refund") {
@@ -70,24 +77,49 @@ export function useOrderToolbar({
     }),
   )
 
+  const fulfillDropdownitem: DropdownItemProps[] =
+    order.status === "approved" &&
+    order.fulfillment_status === "in_progress" &&
+    canUser("update", "orders")
+      ? [
+          {
+            label: getTriggerAttributeName("_fulfill"),
+            icon: getTriggerAttributeIcon("_fulfill"),
+            onClick: () => {
+              showFulfillConfirm()
+            },
+          },
+        ]
+      : []
+
   const dropdownItemsGroup: DropdownItemProps[] =
     createReturnDropDownItem != null
-      ? [createReturnDropDownItem, ...triggerDropDownItems]
-      : [...triggerDropDownItems]
+      ? [
+          createReturnDropDownItem,
+          ...triggerDropDownItems,
+          ...fulfillDropdownitem,
+        ]
+      : [...triggerDropDownItems, ...fulfillDropdownitem]
 
   return {
-    buttons:
-      dropdownItemsGroup.length === 1 && dropdownItemsGroup[0] != null
-        ? [
-            {
-              label: dropdownItemsGroup[0].label,
-              onClick: dropdownItemsGroup[0].onClick,
-              size: "small",
-            },
-          ]
-        : undefined,
-    dropdownItems:
-      dropdownItemsGroup.length === 1 ? undefined : [dropdownItemsGroup],
+    toolbar: {
+      dropdownItems: [dropdownItemsGroup],
+    },
+    confirmDialogs: [
+      <FulfillConfirmDialogBase
+        key="fulfill"
+        icon="packageIcon"
+        title="Fulfill order?"
+        description="This action can't be undone."
+        successMessage="Order fulfillled"
+        confirm={{
+          label: "Fulfill order",
+          onClick: async () => {
+            await dispatch("_fulfill")
+          },
+        }}
+      />,
+    ],
   }
 }
 

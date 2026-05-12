@@ -1,4 +1,8 @@
-import { type TriggerAttribute, t } from "@commercelayer/app-elements"
+import {
+  type DropdownItemProps,
+  type TriggerAttribute,
+  t,
+} from "@commercelayer/app-elements"
 import type { Order, OrderUpdate } from "@commercelayer/sdk"
 
 export type UITriggerAttributes =
@@ -11,6 +15,7 @@ export type UITriggerAttributes =
       | "_archive"
       | "_unarchive"
       | "_place"
+      | "_fulfill"
     >
   | "__cancel_transactions"
 
@@ -95,7 +100,28 @@ export function getTriggerAttributeName(
     _refund: t("apps.orders.actions.refund"),
     _unarchive: t("apps.orders.actions.unarchive"),
     _place: t("apps.orders.actions.place"),
+    _fulfill: "Fulfill",
     __cancel_transactions: t("apps.orders.actions.cancel_transactions"),
+  }
+
+  return dictionary[triggerAttribute]
+}
+
+export function getTriggerAttributeIcon(
+  triggerAttribute: UITriggerAttributes,
+): DropdownItemProps["icon"] {
+  const dictionary: Record<UITriggerAttributes, DropdownItemProps["icon"]> = {
+    _archive: "eyeSlash",
+    _unarchive: "eye",
+    _refund: "creditCard",
+    _fulfill: "packageIcon",
+
+    // not shown in dropdown, no need for icons
+    _cancel: "keep-space",
+    _capture: "keep-space",
+    _approve: "keep-space",
+    _place: "keep-space",
+    __cancel_transactions: "keep-space",
   }
 
   return dictionary[triggerAttribute]

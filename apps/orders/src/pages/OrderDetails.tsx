@@ -53,7 +53,7 @@ function OrderDetails(): React.JSX.Element {
   } = useOrderDetails(orderId)
   const { isPendingWithTransactions } = useOrderStatus(order)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
-  const toolbar = useOrderToolbar({ order })
+  const { toolbar, confirmDialogs } = useOrderToolbar({ order })
 
   const { count: marketsCount, isLoading: isLoadingMarkets } =
     useGetMarketsCount()
@@ -236,6 +236,7 @@ function OrderDetails(): React.JSX.Element {
           )}
         </Spacer>
       </SkeletonTemplate>
+      {confirmDialogs}
     </PageLayout>
   )
 }
