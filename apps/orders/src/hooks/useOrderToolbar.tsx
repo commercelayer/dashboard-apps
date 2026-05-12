@@ -109,11 +109,11 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
       <FulfillConfirmDialogBase
         key="fulfill"
         icon="packageIcon"
-        title="Fulfill order?"
-        description="This action can't be undone."
+        title="Mark orders as fulfilled?"
+        description="This will update the fulfillment status and mark all shipments as shipped."
         successMessage="Order fulfillled"
         confirm={{
-          label: "Fulfill order",
+          label: "Mark as fulfilled",
           onClick: async () => {
             await dispatch("_fulfill")
           },
