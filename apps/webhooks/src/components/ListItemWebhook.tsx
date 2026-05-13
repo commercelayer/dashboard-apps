@@ -61,7 +61,7 @@ export const ListItemWebhook = withSkeletonTemplate<ListItemWebhookProps>(
         }}
       >
         <div>
-          <Text weight="bold">{resource.name}</Text>
+          <Text weight="semibold">{resource.name}</Text>
           <Text tag="div" variant="info" weight="medium" size="small">
             {resource.topic} · {webhookPredicate}
           </Text>

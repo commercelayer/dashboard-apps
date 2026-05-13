@@ -38,7 +38,7 @@ export const ListItemEvenCallback =
                 {resource.response_code ?? ""}
               </Badge>
             </Spacer>
-            <Text weight="bold" size="small">
+            <Text weight="semibold" size="small">
               {resource.response_message}
             </Text>
             <Text weight="medium" size="small" variant="info">
