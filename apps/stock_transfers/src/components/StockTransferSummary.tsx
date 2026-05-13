@@ -41,25 +41,27 @@ export const StockTransferSummary = withSkeletonTemplate<Props>(
     return (
       <Section title="Stock items">
         <ResourceLineItems editable={false} items={[lineItem]} />
-        <ActionButtons
-          actions={triggerActions.map((triggerAction) => {
-            return {
-              label: getStockTransferTriggerAttributeName(
-                triggerAction.triggerAttribute,
-              ),
-              variant: triggerAction.variant,
-              disabled: isLoading,
-              onClick: () => {
-                if (triggerAction.triggerAttribute === "_cancel") {
-                  showCancelOverlay()
-                  return
-                }
+        <div className="print:hidden">
+          <ActionButtons
+            actions={triggerActions.map((triggerAction) => {
+              return {
+                label: getStockTransferTriggerAttributeName(
+                  triggerAction.triggerAttribute,
+                ),
+                variant: triggerAction.variant,
+                disabled: isLoading,
+                onClick: () => {
+                  if (triggerAction.triggerAttribute === "_cancel") {
+                    showCancelOverlay()
+                    return
+                  }
 
-                void dispatch(triggerAction.triggerAttribute)
-              },
-            }
-          })}
-        />
+                  void dispatch(triggerAction.triggerAttribute)
+                },
+              }
+            })}
+          />
+        </div>
         {renderErrorMessages(errors)}
         <CancelOverlay
           stockTransfer={stockTransfer}

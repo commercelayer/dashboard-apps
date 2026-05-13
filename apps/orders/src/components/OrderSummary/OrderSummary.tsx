@@ -29,7 +29,11 @@ export const OrderSummary = withSkeletonTemplate<Props>(
 
     return (
       <OrderLineItems title={t("apps.orders.details.summary")} order={order}>
-        {canUser("update", "orders") && <ActionButtons actions={actions} />}
+        {canUser("update", "orders") && (
+          <div className="print:hidden">
+            <ActionButtons actions={actions} />
+          </div>
+        )}
 
         {renderErrorMessages(errors)}
 

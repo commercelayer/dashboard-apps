@@ -173,7 +173,9 @@ export function StockTransferDetails(): React.JSX.Element {
           }}
         />
         <Spacer bottom="4">
-          <StockTransferSteps stockTransfer={stockTransfer} />
+          <div className="print:hidden">
+            <StockTransferSteps stockTransfer={stockTransfer} />
+          </div>
           <Spacer top="14">
             <StockTransferInfo stockTransfer={stockTransfer} />
           </Spacer>
@@ -183,28 +185,30 @@ export function StockTransferDetails(): React.JSX.Element {
           <Spacer top="14">
             <StockTransferAddresses stockTransfer={stockTransfer} />
           </Spacer>
-          <Spacer top="14">
-            <ResourceDetails
-              resource={stockTransfer}
-              onUpdated={async () => {
-                void mutateStockTransfer()
-              }}
-            />
-          </Spacer>
-          {!isMockedId(stockTransfer.id) && (
+          <div className="print:hidden">
             <Spacer top="14">
-              <ResourceMetadata
-                resourceType="stock_transfers"
-                resourceId={stockTransfer.id}
-                overlay={{
-                  title: pageTitle,
+              <ResourceDetails
+                resource={stockTransfer}
+                onUpdated={async () => {
+                  void mutateStockTransfer()
                 }}
               />
             </Spacer>
-          )}
-          <Spacer top="14">
-            <Timeline stockTransfer={stockTransfer} />
-          </Spacer>
+            {!isMockedId(stockTransfer.id) && (
+              <Spacer top="14">
+                <ResourceMetadata
+                  resourceType="stock_transfers"
+                  resourceId={stockTransfer.id}
+                  overlay={{
+                    title: pageTitle,
+                  }}
+                />
+              </Spacer>
+            )}
+            <Spacer top="14">
+              <Timeline stockTransfer={stockTransfer} />
+            </Spacer>
+          </div>
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>

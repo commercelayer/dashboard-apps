@@ -126,7 +126,9 @@ function OrderDetails(): React.JSX.Element {
       mode={mode}
       toolbar={toolbar}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle} <OrderSteps order={order} />
+        </SkeletonTemplate>
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
@@ -168,72 +170,80 @@ function OrderDetails(): React.JSX.Element {
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
           <Spacer top="14">
-            <OrderSteps order={order} />
-          </Spacer>
-          <Spacer top="14">
             <OrderSummary order={order} />
           </Spacer>
-          <Spacer top="14">
-            <OrderPayment order={order} />
-          </Spacer>
+          <div className="print:hidden">
+            <Spacer top="14">
+              <OrderPayment order={order} />
+            </Spacer>
+          </div>
           <Spacer top="14">
             <OrderCustomer order={order} />
           </Spacer>
           <Spacer top="14">
             <OrderAddresses order={order} />
           </Spacer>
-          <Spacer top="14">
-            <OrderShipments order={order} />
-          </Spacer>
-          {!isLoadingReturns && (
+          <div className="print:hidden">
             <Spacer top="14">
-              <OrderReturns returns={returns} />
+              <OrderShipments order={order} />
             </Spacer>
-          )}
-          <Spacer top="14">
-            <OrderInfos order={order} />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceDetails
-              resource={order}
-              onUpdated={async () => {
-                void mutateOrder()
-              }}
-            />
-          </Spacer>
-          {!isMockedId(order.id) && (
-            <>
+            {!isLoadingReturns && (
               <Spacer top="14">
-                <ResourceTags
-                  resourceType="orders"
-                  resourceId={order.id}
-                  overlay={{ title: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(
-                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                    )
-                  }}
-                />
+                <OrderReturns returns={returns} />
               </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="orders"
-                  resourceId={order.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
-          <Spacer top="14">
-            <ResourceAttachments resourceType="orders" resourceId={order.id} />
-          </Spacer>
-          {!["draft"].includes(order.status) && (
+            )}
             <Spacer top="14">
-              <Timeline order={order} />
+              <OrderInfos order={order} />
             </Spacer>
-          )}
+          </div>
+          <div className="print:hidden">
+            <Spacer top="14">
+              <ResourceDetails
+                resource={order}
+                onUpdated={async () => {
+                  void mutateOrder()
+                }}
+              />
+            </Spacer>
+            {!isMockedId(order.id) && (
+              <>
+                <Spacer top="14">
+                  <ResourceTags
+                    resourceType="orders"
+                    resourceId={order.id}
+                    overlay={{ title: pageTitle }}
+                    onTagClick={(tagId) => {
+                      setLocation(
+                        appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
+                      )
+                    }}
+                  />
+                </Spacer>
+                <Spacer top="14">
+                  <ResourceMetadata
+                    resourceType="orders"
+                    resourceId={order.id}
+                    overlay={{
+                      title: pageTitle,
+                    }}
+                  />
+                </Spacer>
+              </>
+            )}
+          </div>
+          <div className="print:hidden">
+            <Spacer top="14">
+              <ResourceAttachments
+                resourceType="orders"
+                resourceId={order.id}
+              />
+            </Spacer>
+            {!["draft"].includes(order.status) && (
+              <Spacer top="14">
+                <Timeline order={order} />
+              </Spacer>
+            )}
+          </div>
         </Spacer>
       </SkeletonTemplate>
       {confirmDialogs}

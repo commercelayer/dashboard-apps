@@ -39,24 +39,27 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
       <>
         <AssignAddressOverlay />
         <Section
+          className="print:break-inside-avoid"
           border="none"
           title={t("resources.addresses.name_other")}
           actionButton={
             isEditable &&
             (order.customer?.customer_addresses ?? []).length > 0 && (
-              <Button
-                alignItems="center"
-                variant="secondary"
-                size="mini"
-                onClick={() => {
-                  openAssignAddressOverlay()
-                }}
-              >
-                <Icon name="plus" />
-                {t("common.select_resource", {
-                  resource: t("resources.addresses.name").toLowerCase(),
-                })}
-              </Button>
+              <div className="print:hidden">
+                <Button
+                  alignItems="center"
+                  variant="secondary"
+                  size="mini"
+                  onClick={() => {
+                    openAssignAddressOverlay()
+                  }}
+                >
+                  <Icon name="plus" />
+                  {t("common.select_resource", {
+                    resource: t("resources.addresses.name").toLowerCase(),
+                  })}
+                </Button>
+              </div>
             )
           }
         >
