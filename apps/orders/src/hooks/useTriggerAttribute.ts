@@ -1,8 +1,9 @@
 import {
+  parseApiError,
   type TriggerAttribute,
   useCoreSdkProvider,
 } from "@commercelayer/app-elements"
-import { CommerceLayerStatic, type OrderUpdate } from "@commercelayer/sdk"
+import type { OrderUpdate } from "@commercelayer/sdk"
 import { useCallback, useState } from "react"
 import type { UITriggerAttributes } from "#components/OrderSummary/orderDictionary"
 import { useOrderDetails } from "#hooks/useOrderDetails"
@@ -60,9 +61,9 @@ export function useTriggerAttribute(orderId: string): TriggerAttributeHook {
         void mutateOrder(updatedOrder)
       } catch (error) {
         setErrors(
-          CommerceLayerStatic.isApiError(error)
-            ? error.errors.map(({ detail }) => detail)
-            : ["Could not cancel this order"],
+          parseApiError(error, "Could perform the requested action")?.map(
+            ({ detail }) => detail,
+          ),
         )
         await Promise.reject(error)
       } finally {
