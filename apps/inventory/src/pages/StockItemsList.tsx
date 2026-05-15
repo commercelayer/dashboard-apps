@@ -96,10 +96,14 @@ export function StockItemsList(): React.JSX.Element {
             replace: true,
           })
         }}
-        onFilterClick={() => {}}
-        hideFiltersNav
+        onFilterClick={(qs) => {
+          setLocation(
+            stockLocationId !== ""
+              ? appRoutes.stockLocationFilters.makePath(stockLocationId, qs)
+              : appRoutes.filters.makePath(qs),
+          )
+        }}
       />
-
       <FilteredList
         type="stock_items"
         query={{
