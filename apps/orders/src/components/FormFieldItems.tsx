@@ -130,10 +130,10 @@ const OptionInputReason: FC<{
             ? selected.value
             : ""
         setReason(value)
-        setValue(
-          `items.${items.findIndex(({ value }) => value === item.id)}.reason`,
-          value,
-        )
+        const itemIndex = items.findIndex(({ value }) => value === item.id)
+        if (itemIndex !== -1) {
+          setValue(`items.${itemIndex}.reason`, value)
+        }
       }}
     />
   ) : (
@@ -142,10 +142,10 @@ const OptionInputReason: FC<{
       placeholder="Add a reason (optional)"
       onChange={(e) => {
         setReason(e.target.value)
-        setValue(
-          `items.${items.findIndex(({ value }) => value === item.id)}.reason`,
-          e.target.value,
-        )
+        const itemIndex = items.findIndex(({ value }) => value === item.id)
+        if (itemIndex !== -1) {
+          setValue(`items.${itemIndex}.reason`, e.target.value)
+        }
       }}
     />
   )
