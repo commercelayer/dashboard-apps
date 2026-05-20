@@ -21,9 +21,8 @@ export const OrderSummary = withSkeletonTemplate<Props>(
     const {
       actions,
       errors,
-      dispatch,
-      CancelOverlay,
-      CaptureOverlay,
+      CancelDialog,
+      CaptureDialog,
       SelectShippingMethodOverlay,
     } = useActionButtons({ order })
 
@@ -37,19 +36,9 @@ export const OrderSummary = withSkeletonTemplate<Props>(
 
         {renderErrorMessages(errors)}
 
-        <CaptureOverlay
-          order={order}
-          onConfirm={() => {
-            void dispatch("_capture")
-          }}
-        />
+        {CaptureDialog}
 
-        <CancelOverlay
-          order={order}
-          onConfirm={() => {
-            void dispatch("_cancel")
-          }}
-        />
+        {CancelDialog}
 
         <SelectShippingMethodOverlay order={order} />
       </OrderLineItems>

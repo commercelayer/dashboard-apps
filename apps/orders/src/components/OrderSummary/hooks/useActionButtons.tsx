@@ -1,13 +1,14 @@
 import {
   type ActionButtonsProps,
+  getPaymentInstrumentDetails,
   orderTransactionIsAnAsyncCapture,
+  useConfirmDialog,
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
 import { useMemo } from "react"
-import { useCancelOverlay } from "#hooks/useCancelOverlay"
 import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
-import { useCaptureOverlay } from "../../../hooks/useCaptureOverlay"
+import { hasPaymentMethod } from "#utils/order"
 import {
   getTriggerAttributeName,
   getTriggerAttributes,
@@ -22,9 +23,10 @@ export const useActionButtons = ({ order }: { order: Order }) => {
   const { isLoading, errors, dispatch } = useTriggerAttribute(order.id)
   const { hasInvalidShipments, hasLineItems } = useOrderStatus(order)
 
-  const { show: showCaptureOverlay, Overlay: CaptureOverlay } =
-    useCaptureOverlay()
-  const { show: showCancelOverlay, Overlay: CancelOverlay } = useCancelOverlay()
+  const { show: showCaptureDialog, ConfirmDialog: CaptureConfirmDialog } =
+    useConfirmDialog()
+  const { show: showCancelDialog, ConfirmDialog: CancelConfirmDialog } =
+    useConfirmDialog()
   const {
     show: showSelectShippingMethodOverlay,
     Overlay: SelectShippingMethodOverlay,
@@ -70,11 +72,11 @@ export const useActionButtons = ({ order }: { order: Order }) => {
           disabled: isLoading,
           onClick: () => {
             if (triggerAttribute === "_capture") {
-              showCaptureOverlay()
+              showCaptureDialog()
               return
             }
             if (triggerAttribute === "_cancel") {
-              showCancelOverlay()
+              showCancelDialog()
               return
             }
 
@@ -85,8 +87,8 @@ export const useActionButtons = ({ order }: { order: Order }) => {
   }, [
     dispatch,
     isLoading,
-    showCancelOverlay,
-    showCaptureOverlay,
+    showCancelDialog,
+    showCaptureDialog,
     triggerAttributes,
   ])
 
@@ -100,7 +102,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
       variant: "secondary",
       disabled: isLoading,
       onClick: () => {
-        showCancelOverlay()
+        showCancelDialog()
       },
     }
 
@@ -125,16 +127,64 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     isLoading,
     hasLineItems,
     order,
-    showCancelOverlay,
+    showCancelDialog,
     showSelectShippingMethodOverlay,
     dispatch,
   ])
 
+  const CancelDialog = (
+    <CancelConfirmDialog
+      icon="warningCircle"
+      title="Cancel order?"
+      description="This will cancel the order and void any payment authorizations."
+      confirm={{
+        label: "Cancel order",
+        variant: "danger",
+        onClick: async () => {
+          await dispatch("_cancel")
+        },
+      }}
+      cancelLabel="Close"
+      errorMessage="Could not cancel this order."
+      successMessage="Order cancelled successfully."
+    />
+  )
+  const {
+    paymentMethodName,
+    cardExpiry,
+    issuerType,
+    cardType,
+    cardLastDigits,
+  } = hasPaymentMethod(order) ? getPaymentInstrumentDetails(order) : {}
+  const CaptureDialog = (
+    <CaptureConfirmDialog
+      icon="bank"
+      title="Capture payment?"
+      description={
+        hasPaymentMethod(order) ? (
+          <div>
+            <p>
+              {cardType ?? issuerType} {cardLastDigits}{" "}
+              {cardExpiry != null ? `expires ${cardExpiry}` : ""}
+            </p>
+            <p>{paymentMethodName}</p>
+          </div>
+        ) : undefined
+      }
+      confirm={{
+        label: `${t("apps.orders.actions.capture")} ${order.formatted_total_amount_with_taxes}`,
+        onClick: async () => {
+          await dispatch("_capture")
+        },
+      }}
+    />
+  )
+
   return {
     actions: [...standardFooterActions, ...editingFooterActions],
     hasInvalidShipments,
-    CaptureOverlay,
-    CancelOverlay,
+    CaptureDialog,
+    CancelDialog,
     SelectShippingMethodOverlay,
     errors,
     dispatch,
