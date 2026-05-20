@@ -1,6 +1,7 @@
 import type { FC } from "react"
 import { Route, Router, Switch } from "wouter"
 import { ErrorNotFound } from "#pages/ErrorNotFound"
+import { Filters } from "#pages/Filters"
 import { Home } from "#pages/Home"
 import { StockItemDetails } from "#pages/StockItemDetails"
 import { StockItemEdit } from "#pages/StockItemEdit"
@@ -22,8 +23,14 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         <Route path={appRoutes.list.path}>
           <StockItemsList />
         </Route>
+        <Route path={appRoutes.filters.path}>
+          <Filters />
+        </Route>
         <Route path={appRoutes.stockLocation.path}>
           <StockItemsList />
+        </Route>
+        <Route path={appRoutes.stockLocationFilters.path}>
+          <Filters />
         </Route>
         <Route path={appRoutes.stockItem.path}>
           <StockItemDetails />

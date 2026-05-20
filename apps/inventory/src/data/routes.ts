@@ -11,11 +11,27 @@ export const appRoutes = {
   },
   list: {
     path: "/list",
-    makePath: () => "/list",
+    makePath: (filters?: string) =>
+      hasFilterQuery(filters) ? `/list/?${filters}` : `/list`,
+  },
+  filters: {
+    path: "/filters",
+    makePath: (filters?: string) =>
+      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`,
   },
   stockLocation: {
     path: "/:stockLocationId/list",
-    makePath: (stockLocationId: string) => `/${stockLocationId}/list`,
+    makePath: (stockLocationId: string, filters?: string) =>
+      hasFilterQuery(filters)
+        ? `/${stockLocationId}/list/?${filters}`
+        : `/${stockLocationId}/list`,
+  },
+  stockLocationFilters: {
+    path: "/:stockLocationId/filters",
+    makePath: (stockLocationId: string, filters?: string) =>
+      hasFilterQuery(filters)
+        ? `/${stockLocationId}/filters/?${filters}`
+        : `/${stockLocationId}/filters`,
   },
   stockItem: {
     path: "/:stockLocationId?/list/:stockItemId",
@@ -32,4 +48,8 @@ export const appRoutes = {
     makePath: (stockLocationId: string, stockItemId: string) =>
       `/${stockLocationId !== "" ? `${stockLocationId}/` : ""}list/${stockItemId}/edit`,
   },
+}
+
+function hasFilterQuery(filters?: string): filters is string {
+  return Array.from(new URLSearchParams(filters)).length > 0
 }
