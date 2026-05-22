@@ -60,7 +60,13 @@ const BalanceLogVirtualTable: FC<{
 
   useLayoutEffect(() => {
     const measure = (): void => {
-      setScrollMargin(tbodyRef.current?.offsetTop ?? 0)
+      const el = tbodyRef.current
+      // getBoundingClientRect().top + scrollY gives the absolute distance from
+      // the document top to the tbody — correct regardless of current scroll
+      // position, unlike offsetTop which is only relative to offsetParent.
+      setScrollMargin(
+        el != null ? el.getBoundingClientRect().top + window.scrollY : 0,
+      )
     }
 
     measure()
@@ -93,70 +99,81 @@ const BalanceLogVirtualTable: FC<{
   const firstItem = virtualItems[0]
   const lastItem = virtualItems[virtualItems.length - 1]
 
-  // Spacer rows above/below the rendered items make the table as tall as the
-  // full dataset would be, keeping the page scrollbar accurate. This is the
-  // table-compatible equivalent of the `height: getTotalSize()` wrapper div
-  // used in div-based virtualizers, where `position: absolute` is not an option.
+  // Plain <tr><td> spacers (not app-elements Tr/Td) so they carry no bg-white,
+  // no border, and no padding — completely invisible. This keeps the scrollbar
+  // accurate without introducing a white gap or clipping borders via translateY.
   const paddingTop =
     firstItem != null ? firstItem.start - virtualizer.options.scrollMargin : 0
   const paddingBottom = lastItem != null ? totalSize - lastItem.end : 0
 
   return (
-    <table className="w-full">
-      <thead>
-        <Tr>
-          <Th>DATE</Th>
-          <Th>TYPE</Th>
-          <Th>ORDER</Th>
-          <Th align="right">AMOUNT</Th>
-        </Tr>
-      </thead>
-      <tbody ref={tbodyRef}>
-        {paddingTop > 0 && (
-          <tr>
-            <td style={{ height: paddingTop }} />
-          </tr>
-        )}
-        {virtualItems.map((virtualRow) => {
-          const item = rows[virtualRow.index]
-          if (item == null) return null
-          return (
-            <Tr key={virtualRow.key}>
-              <Td>
-                {formatDate({
-                  isoDate: item.isoDate,
-                  format: "full",
-                  timezone,
-                  showCurrentYear: true,
-                })}
-              </Td>
-              <Td>{item.type}</Td>
-              <Td>
-                {item.orderId != null ? (
-                  <a
-                    {...navigateTo({
-                      app: "orders",
-                      resourceId: item.orderId,
-                    })}
-                  >
-                    {item.orderNumber ?? item.orderId}
-                  </a>
-                ) : (
-                  "—"
-                )}
-              </Td>
-              <Td align="right">
-                {formatCentsToCurrency(item.amountCents, currencyCode)}
-              </Td>
-            </Tr>
-          )
-        })}
-        {paddingBottom > 0 && (
-          <tr>
-            <td style={{ height: paddingBottom }} />
-          </tr>
-        )}
-      </tbody>
-    </table>
+    <div>
+      <table className="w-full">
+        <thead>
+          <Tr>
+            <Th>DATE</Th>
+            <Th>TYPE</Th>
+            <Th>ORDER</Th>
+            <Th align="right">AMOUNT</Th>
+          </Tr>
+        </thead>
+        <tbody ref={tbodyRef}>
+          {paddingTop > 0 && (
+            <tr>
+              <td
+                colSpan={4}
+                style={{ height: paddingTop, padding: 0, border: "none" }}
+              >
+                <div style={{ height: paddingTop }} />
+              </td>
+            </tr>
+          )}
+          {virtualItems.map((virtualRow) => {
+            const item = rows[virtualRow.index]
+            if (item == null) return null
+            return (
+              <Tr key={virtualRow.key}>
+                <Td>
+                  {formatDate({
+                    isoDate: item.isoDate,
+                    format: "full",
+                    timezone,
+                    showCurrentYear: true,
+                  })}
+                </Td>
+                <Td>{item.type}</Td>
+                <Td>
+                  {item.orderId != null ? (
+                    <a
+                      {...navigateTo({
+                        app: "orders",
+                        resourceId: item.orderId,
+                      })}
+                    >
+                      {item.orderNumber ?? item.orderId}
+                    </a>
+                  ) : (
+                    "—"
+                  )}
+                </Td>
+                <Td align="right">
+                  {formatCentsToCurrency(item.amountCents, currencyCode)}
+                </Td>
+              </Tr>
+            )
+          })}
+          {paddingBottom > 0 && (
+            <tr>
+              <td
+                colSpan={4}
+                style={{ height: paddingBottom, padding: 0, border: "none" }}
+              >
+                <div style={{ height: paddingBottom }} />
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
   )
 }
