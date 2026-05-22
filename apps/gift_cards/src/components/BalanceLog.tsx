@@ -1,5 +1,7 @@
 import {
   type CurrencyCode,
+  formatCentsToCurrency,
+  formatDate,
   Td,
   Th,
   Tr,
@@ -9,7 +11,7 @@ import {
 } from "@commercelayer/app-elements"
 import type { GiftCard } from "@commercelayer/sdk"
 import { useWindowVirtualizer } from "@tanstack/react-virtual"
-import { type FC, useLayoutEffect, useRef } from "react"
+import { type FC, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { normalizeLogs } from "#utils/normalizeLogs"
 
 export const BalanceLog = withSkeletonTemplate<{ giftCard: GiftCard }>(
@@ -20,18 +22,26 @@ export const BalanceLog = withSkeletonTemplate<{ giftCard: GiftCard }>(
       typeof normalizeLogs
     >[0]["balanceLog"]
 
-    const tableRows = normalizeLogs({
-      timezone: user?.timezone,
-      currencyCode: giftCard.currency_code as CurrencyCode,
-      usageLog: giftCard.usage_log,
-      balanceLog,
-    })
+    const tableRows = useMemo(
+      () =>
+        normalizeLogs({
+          usageLog: giftCard.usage_log,
+          balanceLog,
+        }),
+      [giftCard.usage_log, balanceLog],
+    )
 
     if (tableRows.length === 0) {
       return null
     }
 
-    return <BalanceLogVirtualTable rows={tableRows} />
+    return (
+      <BalanceLogVirtualTable
+        rows={tableRows}
+        timezone={user?.timezone}
+        currencyCode={giftCard.currency_code as CurrencyCode}
+      />
+    )
   },
 )
 
@@ -41,20 +51,40 @@ const ROW_ESTIMATE_PX = 54
 
 const BalanceLogVirtualTable: FC<{
   rows: TableRow[]
-}> = ({ rows }) => {
+  timezone?: string
+  currencyCode: CurrencyCode
+}> = ({ rows, timezone, currencyCode }) => {
   const { navigateTo } = useAppLinking()
   const tbodyRef = useRef<HTMLTableSectionElement>(null)
-  const scrollMarginRef = useRef(0)
+  const [scrollMargin, setScrollMargin] = useState(0)
 
   useLayoutEffect(() => {
-    scrollMarginRef.current = tbodyRef.current?.offsetTop ?? 0
+    const measure = (): void => {
+      setScrollMargin(tbodyRef.current?.offsetTop ?? 0)
+    }
+
+    measure()
+
+    // Re-measure when anything above the table shifts its position: font
+    // loading, sticky-header height changes, or container reflows all alter
+    // offsetTop without changing the tbody's own size. Observing document.body
+    // covers those cases; the window "resize" listener covers pure viewport
+    // changes where body dimensions may stay fixed (e.g. max-width layouts).
+    const resizeObserver = new ResizeObserver(measure)
+    resizeObserver.observe(document.body)
+    window.addEventListener("resize", measure)
+
+    return () => {
+      resizeObserver.disconnect()
+      window.removeEventListener("resize", measure)
+    }
   }, [])
 
   const virtualizer = useWindowVirtualizer({
     count: rows.length,
     estimateSize: () => ROW_ESTIMATE_PX,
-    overscan: 10,
-    scrollMargin: scrollMarginRef.current,
+    overscan: 5,
+    scrollMargin,
   })
 
   const virtualItems = virtualizer.getVirtualItems()
@@ -92,7 +122,14 @@ const BalanceLogVirtualTable: FC<{
           if (item == null) return null
           return (
             <Tr key={virtualRow.key}>
-              <Td>{item.date}</Td>
+              <Td>
+                {formatDate({
+                  isoDate: item.isoDate,
+                  format: "full",
+                  timezone,
+                  showCurrentYear: true,
+                })}
+              </Td>
               <Td>{item.type}</Td>
               <Td>
                 {item.orderId != null ? (
@@ -108,7 +145,9 @@ const BalanceLogVirtualTable: FC<{
                   "—"
                 )}
               </Td>
-              <Td align="right">{item.amount}</Td>
+              <Td align="right">
+                {formatCentsToCurrency(item.amountCents, currencyCode)}
+              </Td>
             </Tr>
           )
         })}
