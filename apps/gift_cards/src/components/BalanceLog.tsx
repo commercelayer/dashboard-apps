@@ -1,6 +1,5 @@
 import {
   type CurrencyCode,
-  Section,
   Table,
   Td,
   Th,
@@ -33,39 +32,37 @@ export const BalanceLog = withSkeletonTemplate<{ giftCard: GiftCard }>(
     }
 
     return (
-      <Section title="Balance log" border="none">
-        <Table
-          thead={
-            <Tr>
-              <Th>DATE</Th>
-              <Th>TYPE</Th>
-              <Th>ORDER</Th>
-              <Th align="right">AMOUNT</Th>
-            </Tr>
-          }
-          tbody={tableRows.map((item, idx) => (
-            <Tr key={[item.type, idx].join("-")}>
-              <Td>{item.date}</Td>
-              <Td>{item.type}</Td>
-              <Td>
-                {item.orderId != null ? (
-                  <a
-                    {...navigateTo({
-                      app: "orders",
-                      resourceId: item.orderId,
-                    })}
-                  >
-                    {item.orderNumber ?? item.orderId}
-                  </a>
-                ) : (
-                  "—"
-                )}
-              </Td>
-              <Td align="right">{item.amount}</Td>
-            </Tr>
-          ))}
-        />
-      </Section>
+      <Table
+        thead={
+          <Tr>
+            <Th>DATE</Th>
+            <Th>TYPE</Th>
+            <Th>ORDER</Th>
+            <Th align="right">AMOUNT</Th>
+          </Tr>
+        }
+        tbody={tableRows.map((item, idx) => (
+          <Tr key={[item.type, idx].join("-")}>
+            <Td>{item.date}</Td>
+            <Td>{item.type}</Td>
+            <Td>
+              {item.orderId != null ? (
+                <a
+                  {...navigateTo({
+                    app: "orders",
+                    resourceId: item.orderId,
+                  })}
+                >
+                  {item.orderNumber ?? item.orderId}
+                </a>
+              ) : (
+                "—"
+              )}
+            </Td>
+            <Td align="right">{item.amount}</Td>
+          </Tr>
+        ))}
+      />
     )
   },
 )
