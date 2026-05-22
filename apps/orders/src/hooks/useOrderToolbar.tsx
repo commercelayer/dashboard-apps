@@ -42,6 +42,7 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
     return showReturnDropDownItem
       ? {
           label: t("apps.orders.tasks.request_return"),
+          icon: "arrowUUpLeft",
           onClick: () => {
             setLocation(appRoutes.return.makePath({ orderId: order.id }))
           },
