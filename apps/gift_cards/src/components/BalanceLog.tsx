@@ -111,10 +111,22 @@ const BalanceLogVirtualTable: FC<{
       <table className="w-full">
         <thead>
           <Tr>
-            <Th>DATE</Th>
+            <Th
+              style={{
+                width: "25%",
+              }}
+            >
+              AMOUNT
+            </Th>
             <Th>TYPE</Th>
             <Th>ORDER</Th>
-            <Th align="right">AMOUNT</Th>
+            <Th
+              style={{
+                width: "30%",
+              }}
+            >
+              DATE
+            </Th>
           </Tr>
         </thead>
         <tbody ref={tbodyRef}>
@@ -133,14 +145,7 @@ const BalanceLogVirtualTable: FC<{
             if (item == null) return null
             return (
               <Tr key={virtualRow.key}>
-                <Td>
-                  {formatDate({
-                    isoDate: item.isoDate,
-                    format: "full",
-                    timezone,
-                    showCurrentYear: true,
-                  })}
-                </Td>
+                <Td>{formatCentsToCurrency(item.amountCents, currencyCode)}</Td>
                 <Td>{item.type}</Td>
                 <Td>
                   {item.orderId != null ? (
@@ -156,8 +161,13 @@ const BalanceLogVirtualTable: FC<{
                     "—"
                   )}
                 </Td>
-                <Td align="right">
-                  {formatCentsToCurrency(item.amountCents, currencyCode)}
+                <Td>
+                  {formatDate({
+                    isoDate: item.isoDate,
+                    format: "full",
+                    timezone,
+                    showCurrentYear: true,
+                  })}
                 </Td>
               </Tr>
             )
