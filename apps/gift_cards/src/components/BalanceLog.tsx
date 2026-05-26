@@ -2,21 +2,38 @@ import {
   type CurrencyCode,
   formatCentsToCurrency,
   formatDate,
+  SkeletonTemplate,
   Td,
   Th,
   Tr,
   useAppLinking,
+  useCoreApi,
   useTokenProvider,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
-import type { GiftCard } from "@commercelayer/sdk"
 import { useWindowVirtualizer } from "@tanstack/react-virtual"
 import { type FC, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { makeGiftCard } from "#mocks"
 import { normalizeLogs } from "#utils/normalizeLogs"
 
-export const BalanceLog = withSkeletonTemplate<{ giftCard: GiftCard }>(
-  ({ giftCard }) => {
+export const BalanceLog = withSkeletonTemplate<{ giftCardId: string }>(
+  ({ giftCardId }) => {
     const { user } = useTokenProvider()
+
+    const { data: giftCard, isLoading } = useCoreApi(
+      "gift_cards",
+      "retrieve",
+      [
+        giftCardId,
+        {
+          fields: ["balance_log", "usage_log", "currency_code"],
+        },
+      ],
+      {
+        fallbackData: makeGiftCard(),
+        revalidateOnFocus: false,
+      },
+    )
 
     const balanceLog = giftCard.balance_log as Parameters<
       typeof normalizeLogs
@@ -31,8 +48,37 @@ export const BalanceLog = withSkeletonTemplate<{ giftCard: GiftCard }>(
       [giftCard.usage_log, balanceLog],
     )
 
+    if (isLoading) {
+      return (
+        <table className="w-full">
+          <BalanceLogTableHeadings />
+          <tbody>
+            {["r1", "r2"].map((i) => (
+              <tr key={i}>
+                {["c1", "c2", "c3", "c4"].map((j) => (
+                  <Td key={`${i}-${j}`}>
+                    <SkeletonTemplate delayMs={0} isLoading>
+                      Loading...
+                    </SkeletonTemplate>
+                  </Td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )
+    }
+
     if (tableRows.length === 0) {
-      return null
+      return (
+        <table className="w-full">
+          <tbody>
+            <tr>
+              <td colSpan={4}>No balance log entries found.</td>
+            </tr>
+          </tbody>
+        </table>
+      )
     }
 
     return (
@@ -109,26 +155,7 @@ const BalanceLogVirtualTable: FC<{
   return (
     <div>
       <table className="w-full">
-        <thead>
-          <Tr>
-            <Th
-              style={{
-                width: "25%",
-              }}
-            >
-              AMOUNT
-            </Th>
-            <Th>TYPE</Th>
-            <Th>ORDER</Th>
-            <Th
-              style={{
-                width: "30%",
-              }}
-            >
-              DATE
-            </Th>
-          </Tr>
-        </thead>
+        <BalanceLogTableHeadings />
         <tbody ref={tbodyRef}>
           {paddingTop > 0 && (
             <tr>
@@ -143,6 +170,7 @@ const BalanceLogVirtualTable: FC<{
           {virtualItems.map((virtualRow) => {
             const item = rows[virtualRow.index]
             if (item == null) return null
+
             return (
               <Tr key={virtualRow.key}>
                 <Td>{formatCentsToCurrency(item.amountCents, currencyCode)}</Td>
@@ -185,5 +213,30 @@ const BalanceLogVirtualTable: FC<{
         </tbody>
       </table>
     </div>
+  )
+}
+
+const BalanceLogTableHeadings: FC = () => {
+  return (
+    <thead>
+      <Tr>
+        <Th
+          style={{
+            width: "25%",
+          }}
+        >
+          AMOUNT
+        </Th>
+        <Th>TYPE</Th>
+        <Th>ORDER</Th>
+        <Th
+          style={{
+            width: "30%",
+          }}
+        >
+          DATE
+        </Th>
+      </Tr>
+    </thead>
   )
 }

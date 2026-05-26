@@ -219,7 +219,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
             </Tab>
             <Tab name="Balance log">
               <Spacer top="6">
-                <BalanceLog giftCard={giftCard} />
+                <BalanceLog giftCardId={giftCard.id} />
               </Spacer>
             </Tab>
           </Tabs>
