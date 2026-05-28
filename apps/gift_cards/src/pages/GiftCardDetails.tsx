@@ -10,6 +10,8 @@ import {
   ResourceTags,
   SkeletonTemplate,
   Spacer,
+  Tab,
+  Tabs,
   useAppLinking,
   useCoreSdkProvider,
   useTokenProvider,
@@ -173,46 +175,54 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
           <DetailsRecap giftCard={giftCard} />
         </Spacer>
         <Spacer top="14">
-          <DetailsInfo giftCard={giftCard} />
-        </Spacer>
-        <Spacer top="14">
-          <DetailsImage giftCard={giftCard} />
-        </Spacer>
-        <Spacer top="14">
-          <BalanceLog giftCard={giftCard} />
-        </Spacer>
-        <Spacer top="14">
-          <ResourceDetails
-            resource={giftCard}
-            onUpdated={async () => {
-              void mutateGiftCard()
-            }}
-          />
-        </Spacer>
-        {!isMockedId(giftCard.id) && (
-          <>
-            <Spacer top="14">
-              <ResourceTags
-                resourceType="gift_cards"
-                resourceId={giftCard.id}
-                overlay={{
-                  title: `Gift card ${giftCard?.formatted_initial_balance}`,
-                }}
-              />
-            </Spacer>
-            <Spacer top="14">
-              <ResourceMetadata
-                resourceType="gift_cards"
-                resourceId={giftCard.id}
-                overlay={{
-                  title: `Gift card ${giftCard?.formatted_initial_balance}`,
-                }}
-              />
-            </Spacer>
-          </>
-        )}
-        <Spacer top="14">
-          <GiftCardTimeline giftCard={giftCard} />
+          <Tabs>
+            <Tab name="Overview">
+              <Spacer top="6">
+                <DetailsInfo giftCard={giftCard} />
+              </Spacer>
+              <Spacer top="14">
+                <DetailsImage giftCard={giftCard} />
+              </Spacer>
+              <Spacer top="14">
+                <ResourceDetails
+                  resource={giftCard}
+                  onUpdated={async () => {
+                    void mutateGiftCard()
+                  }}
+                />
+              </Spacer>
+              {!isMockedId(giftCard.id) && (
+                <>
+                  <Spacer top="14">
+                    <ResourceTags
+                      resourceType="gift_cards"
+                      resourceId={giftCard.id}
+                      overlay={{
+                        title: `Gift card ${giftCard?.formatted_initial_balance}`,
+                      }}
+                    />
+                  </Spacer>
+                  <Spacer top="14">
+                    <ResourceMetadata
+                      resourceType="gift_cards"
+                      resourceId={giftCard.id}
+                      overlay={{
+                        title: `Gift card ${giftCard?.formatted_initial_balance}`,
+                      }}
+                    />
+                  </Spacer>
+                </>
+              )}
+              <Spacer top="14">
+                <GiftCardTimeline giftCard={giftCard} />
+              </Spacer>
+            </Tab>
+            <Tab name="Balance log">
+              <Spacer top="6">
+                <BalanceLog giftCardId={giftCard.id} />
+              </Spacer>
+            </Tab>
+          </Tabs>
         </Spacer>
       </SkeletonTemplate>
 

@@ -1,16 +1,11 @@
-import {
-  type CurrencyCode,
-  formatCentsToCurrency,
-  formatDate,
-} from "@commercelayer/app-elements"
 import capitalize from "lodash-es/capitalize"
 
-interface NormalizedLogItem {
-  date: string
+export interface NormalizedLogItem {
+  isoDate: string
   type: string
   orderId?: string
   orderNumber?: string
-  amount: string
+  amountCents: number
 }
 
 interface UsageLogItem {
@@ -31,58 +26,51 @@ interface BalanceLogItem {
 export function normalizeLogs({
   usageLog,
   balanceLog,
-  timezone,
-  currencyCode,
 }: {
   usageLog?: Record<OrderId, UsageLogItem[]> | null
   balanceLog?: BalanceLogItem[] | null
-  timezone?: string
-  currencyCode: CurrencyCode
 }): NormalizedLogItem[] {
   const normalizedUsage = Object.entries(usageLog ?? {}).flatMap(
     ([orderId, items]) =>
       items.map((item) => ({
-        date: item.datetime,
+        isoDate: item.datetime,
         type: capitalize(item.action),
         orderId,
         orderNumber: item.order_number,
-        amount: formatCentsToCurrency(item.amount_cents, currencyCode),
+        amountCents: item.amount_cents,
       })),
+  )
+
+  // Build a Set of "dateWithoutMs:amountCents" keys for O(1) dedup lookup
+  // instead of the O(n²) Array.find() approach.
+  const usageKeys = new Set(
+    normalizedUsage.map(
+      (o) => `${removeMilliseconds(o.isoDate)}:${o.amountCents}`,
+    ),
   )
 
   const normalizedBalance = (balanceLog ?? [])
     .map((item) => ({
-      date: item.datetime,
+      isoDate: item.datetime,
       type: "Change",
       orderId: undefined,
       orderNumber: undefined,
-      amount: formatCentsToCurrency(item.balance_change_cents, currencyCode),
+      amountCents: item.balance_change_cents,
     }))
-    // remove duplicates from balance already present in usage, by considering same amount and date without milliseconds
-    .filter((item) => {
-      const dup = normalizedUsage.find(
-        (o) =>
-          removeMilliseconds(o.date) === removeMilliseconds(item.date) &&
-          o.amount === item.amount,
-      )
-      return dup == null
-    })
+    // Remove duplicates already present in usage (same timestamp and amount).
+    .filter(
+      (item) =>
+        !usageKeys.has(
+          `${removeMilliseconds(item.isoDate)}:${item.amountCents}`,
+        ),
+    )
 
-  return [...normalizedUsage, ...normalizedBalance]
-    .sort((a, b) => {
-      return new Date(b.date).getTime() > new Date(a.date).getTime() ? 1 : -1
-    })
-    .map((item) => ({
-      ...item,
-      date: formatDate({
-        isoDate: item.date,
-        format: "full",
-        timezone,
-        showCurrentYear: true,
-      }),
-    }))
+  // ISO 8601 strings are lexicographically sortable — no Date object needed.
+  return [...normalizedUsage, ...normalizedBalance].sort((a, b) =>
+    a.isoDate < b.isoDate ? 1 : a.isoDate > b.isoDate ? -1 : 0,
+  )
 }
 
 function removeMilliseconds(date: string): string {
-  return date.split(".")[0] ?? ""
+  return date.replace(/\.\d+/, "")
 }

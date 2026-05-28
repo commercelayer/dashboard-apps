@@ -24,6 +24,27 @@ export function useGiftCardDetails(id: string) {
       ? [
           id,
           {
+            fields: [
+              "id",
+              "status",
+              "code",
+              "currency_code",
+              "formatted_balance",
+              "formatted_initial_balance",
+              "balance_max_cents",
+              "formatted_balance_max",
+              "expires_at",
+              "rechargeable",
+              "single_use",
+              "distribute_discount",
+              "image_url",
+              "created_at",
+              "updated_at",
+              // Relationships (must be listed for sparse fieldsets to sideload them)
+              "market",
+              "gift_card_recipient",
+              "attachments",
+            ],
             include: giftCardIncludeAttribute,
           },
         ]

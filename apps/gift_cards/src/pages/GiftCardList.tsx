@@ -51,6 +51,15 @@ const GiftCardList: FC = () => {
             sort: {
               updated_at: "desc",
             },
+            fields: [
+              "id",
+              "code",
+              "status",
+              "image_url",
+              "formatted_initial_balance",
+              "currency_code",
+              "formatted_balance",
+            ],
           }}
           actionButton={
             canUser("create", "gift_cards") ? (
@@ -58,7 +67,6 @@ const GiftCardList: FC = () => {
                 <Button
                   variant="secondary"
                   size="mini"
-                  alignItems="center"
                   aria-label="Add gift card"
                 >
                   <Icon name="plus" />
