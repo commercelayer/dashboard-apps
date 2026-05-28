@@ -194,17 +194,19 @@ export function StockTransferDetails(): React.JSX.Element {
                 }}
               />
             </Spacer>
-            {!isMockedId(stockTransfer.id) && (
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="stock_transfers"
-                  resourceId={stockTransfer.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            )}
+          </div>
+          {!isMockedId(stockTransfer.id) && (
+            <Spacer top="14">
+              <ResourceMetadata
+                resourceType="stock_transfers"
+                resourceId={stockTransfer.id}
+                overlay={{
+                  title: pageTitle,
+                }}
+              />
+            </Spacer>
+          )}
+          <div className="print:hidden">
             <Spacer top="14">
               <Timeline stockTransfer={stockTransfer} />
             </Spacer>

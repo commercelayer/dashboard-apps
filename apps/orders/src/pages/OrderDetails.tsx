@@ -205,32 +205,32 @@ function OrderDetails(): React.JSX.Element {
                 }}
               />
             </Spacer>
-            {!isMockedId(order.id) && (
-              <>
-                <Spacer top="14">
-                  <ResourceTags
-                    resourceType="orders"
-                    resourceId={order.id}
-                    overlay={{ title: pageTitle }}
-                    onTagClick={(tagId) => {
-                      setLocation(
-                        appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                      )
-                    }}
-                  />
-                </Spacer>
-                <Spacer top="14">
-                  <ResourceMetadata
-                    resourceType="orders"
-                    resourceId={order.id}
-                    overlay={{
-                      title: pageTitle,
-                    }}
-                  />
-                </Spacer>
-              </>
-            )}
           </div>
+          {!isMockedId(order.id) && (
+            <>
+              <Spacer top="14">
+                <ResourceTags
+                  resourceType="orders"
+                  resourceId={order.id}
+                  overlay={{ title: pageTitle }}
+                  onTagClick={(tagId) => {
+                    setLocation(
+                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
+                    )
+                  }}
+                />
+              </Spacer>
+              <Spacer top="14">
+                <ResourceMetadata
+                  resourceType="orders"
+                  resourceId={order.id}
+                  overlay={{
+                    title: pageTitle,
+                  }}
+                />
+              </Spacer>
+            </>
+          )}
           <div className="print:hidden">
             <Spacer top="14">
               <ResourceAttachments
