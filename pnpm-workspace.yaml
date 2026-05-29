@@ -5,3 +5,7 @@ packages:
 ignoredBuiltDependencies:
   - esbuild
   - nx
+
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@commercelayer/app-elements'
