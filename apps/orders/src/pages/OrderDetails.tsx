@@ -55,8 +55,7 @@ function OrderDetails(): React.JSX.Element {
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
   const { toolbar, confirmDialogs } = useOrderToolbar({ order })
 
-  const { count: marketsCount, isLoading: isLoadingMarkets } =
-    useGetMarketsCount()
+  const { isLoading: isLoadingMarkets } = useGetMarketsCount()
 
   const { goBack } = useAppLinking()
 
@@ -117,9 +116,8 @@ function OrderDetails(): React.JSX.Element {
     )
   }
 
-  const isLoading = isLoadingMarkets || isLoadingOrder
-  const hideMarket = (marketsCount ?? 0) === 1
-  const pageTitle = getOrderTitle(order, { hideMarket })
+  const isLoading = isLoadingOrder
+  const pageTitle = getOrderTitle(order)
 
   return (
     <PageLayout
@@ -132,25 +130,28 @@ function OrderDetails(): React.JSX.Element {
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
-          {order.placed_at != null ? (
-            <div>
-              {formatDateWithPredicate({
-                predicate: t("resources.orders.attributes.status.placed"),
-                isoDate: order.placed_at ?? "",
-                timezone: user?.timezone,
-                locale: user?.locale,
-              })}
-            </div>
-          ) : order.updated_at != null ? (
-            <div>
-              {formatDateWithPredicate({
-                predicate: t("common.updated"),
-                isoDate: order.updated_at ?? "",
-                timezone: user?.timezone,
-                locale: user?.locale,
-              })}
-            </div>
-          ) : null}
+          <div className="flex gap-1">
+            {order.placed_at != null ? (
+              <div>
+                {formatDateWithPredicate({
+                  predicate: t("resources.orders.attributes.status.placed"),
+                  isoDate: order.placed_at ?? "",
+                  timezone: user?.timezone,
+                  locale: user?.locale,
+                })}
+              </div>
+            ) : order.updated_at != null ? (
+              <div>
+                {formatDateWithPredicate({
+                  predicate: t("common.updated"),
+                  isoDate: order.updated_at ?? "",
+                  timezone: user?.timezone,
+                  locale: user?.locale,
+                })}
+              </div>
+            ) : null}{" "}
+            <div>in {order.market?.name} market</div>
+          </div>
           {order.reference != null && <div>Ref. {order.reference}</div>}
         </SkeletonTemplate>
       }

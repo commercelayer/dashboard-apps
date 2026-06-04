@@ -70,7 +70,7 @@ export const OrderSteps = withSkeletonTemplate<Props>(
         {order.status !== undefined && (
           <Badge
             variant={getOrderStatusBadgeVariant(order.status)}
-            className="inline-block align-middle ml-2 print:hidden"
+            className="inline-block align-middle ml-1 print:hidden"
           >
             {getOrderStatusName(order.status)}
           </Badge>
@@ -79,7 +79,7 @@ export const OrderSteps = withSkeletonTemplate<Props>(
         {order.payment_status !== undefined && (
           <Badge
             variant={getPaymentStatusBadgeVariant(order.payment_status)}
-            className="inline-block align-middle ml-2 print:hidden"
+            className="inline-block align-middle ml-1 print:hidden"
           >
             {getOrderPaymentStatusName(order.payment_status)}
           </Badge>
@@ -88,7 +88,7 @@ export const OrderSteps = withSkeletonTemplate<Props>(
         {order.fulfillment_status !== undefined && (
           <Badge
             variant={getFulfillmentStatusBadgeVariant(order.fulfillment_status)}
-            className="inline-block align-middle ml-2 print:hidden"
+            className="inline-block align-middle ml-1 print:hidden"
           >
             {getOrderFulfillmentStatusName(order.fulfillment_status)}
           </Badge>
