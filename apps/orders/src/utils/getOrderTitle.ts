@@ -1,4 +1,3 @@
-import { t } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
 
 /**

@@ -27,7 +27,6 @@ import { OrderSummary } from "#components/OrderSummary"
 import { useOrderStatus } from "#components/OrderSummary/hooks/useOrderStatus"
 import { Timeline } from "#components/Timeline"
 import { appRoutes } from "#data/routes"
-import { useGetMarketsCount } from "#hooks/useGetMarketsCount"
 import { useOrderDetails } from "#hooks/useOrderDetails"
 import { useOrderReturns } from "#hooks/useOrderReturns"
 import { useOrderToolbar } from "#hooks/useOrderToolbar"
@@ -54,8 +53,6 @@ function OrderDetails(): React.JSX.Element {
   const { isPendingWithTransactions } = useOrderStatus(order)
   const { returns, isLoadingReturns } = useOrderReturns(orderId)
   const { toolbar, confirmDialogs } = useOrderToolbar({ order })
-
-  const { isLoading: isLoadingMarkets } = useGetMarketsCount()
 
   const { goBack } = useAppLinking()
 
