@@ -81,6 +81,25 @@ function OrderDetails(): React.JSX.Element {
     }
   }
 
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton: ToolbarItem = {
+      icon: "code",
+      size: "small",
+      variant: "secondary",
+      onClick: () => {
+        extras?.openResourceModal?.({
+          resourceType: "orders",
+          resourceId: orderId,
+        })
+      },
+    }
+    if (toolbar.buttons != null) {
+      toolbar.buttons?.push(resourceInspectorButton)
+    } else {
+      toolbar.buttons = [resourceInspectorButton]
+    }
+  }
+
   if (orderId === undefined || !canUser("read", "orders") || error != null) {
     return (
       <PageLayout
