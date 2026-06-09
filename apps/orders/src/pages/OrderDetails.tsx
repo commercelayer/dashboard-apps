@@ -18,7 +18,6 @@ import {
 import { useLocation, useRoute } from "wouter"
 import { OrderAddresses } from "#components/OrderAddresses"
 import { OrderCustomer } from "#components/OrderCustomer"
-import { OrderInfos } from "#components/OrderInfos"
 import { OrderPayment } from "#components/OrderPayment"
 import { OrderReturns } from "#components/OrderReturns"
 import { OrderShipments } from "#components/OrderShipments"
@@ -192,9 +191,6 @@ function OrderDetails(): React.JSX.Element {
                 <OrderReturns returns={returns} />
               </Spacer>
             )}
-            <Spacer top="14">
-              <OrderInfos order={order} />
-            </Spacer>
           </div>
           <div className="print:hidden">
             <Spacer top="14">
