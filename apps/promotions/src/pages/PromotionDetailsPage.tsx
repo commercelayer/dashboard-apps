@@ -27,6 +27,7 @@ import {
   Tab,
   Tabs,
   Text,
+  type ToolbarItem,
   useAppLinking,
   useCoreSdkProvider,
   useResourceList,
@@ -55,7 +56,7 @@ function Page(
   props: PageProps<typeof appRoutes.promotionDetails>,
 ): React.JSX.Element {
   const {
-    settings: { mode },
+    settings: { mode, extras },
   } = useTokenProvider()
   const { goBack } = useAppLinking()
 
@@ -120,6 +121,21 @@ function Page(
         },
       ],
     ],
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton: ToolbarItem = {
+      icon: "code",
+      size: "small",
+      variant: "secondary",
+      onClick: () => {
+        extras?.openResourceModal?.({
+          resourceType: promotion.type,
+          resourceId: promotion.id,
+        })
+      },
+    }
+    toolbar.buttons?.push(resourceInspectorButton)
   }
 
   if (promotion.type === "flex_promotions") {
