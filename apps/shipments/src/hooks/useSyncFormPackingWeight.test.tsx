@@ -10,27 +10,25 @@ const formState: PackingFormDefaultValues = {
   weight: "",
 }
 
-describe("useSyncFormPackingWeight", () => {
-  beforeEach(() => {
-    vi.mock("react-hook-form", () => {
-      return {
-        useFormContext: () => ({
-          watch: (key?: keyof PackingFormDefaultValues) => {
-            if (key != null) {
-              return formState[key]
-            }
-            return formState
-          },
-          setValue: (key: keyof PackingFormDefaultValues, value: any) => {
-            // @ts-expect-error - this is a mock
-            formState[key] = value
-          },
-          getValues: (): PackingFormDefaultValues => formState,
-        }),
-      }
-    })
-  })
+vi.mock("react-hook-form", () => {
+  return {
+    useFormContext: () => ({
+      watch: (key?: keyof PackingFormDefaultValues) => {
+        if (key != null) {
+          return formState[key]
+        }
+        return formState
+      },
+      setValue: (key: keyof PackingFormDefaultValues, value: any) => {
+        // @ts-expect-error - this is a mock
+        formState[key] = value
+      },
+      getValues: (): PackingFormDefaultValues => formState,
+    }),
+  }
+})
 
+describe("useSyncFormPackingWeight", () => {
   afterEach(() => {
     vi.resetAllMocks()
   })
