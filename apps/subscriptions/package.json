@@ -2,7 +2,7 @@
   "private": true,
   "name": "app-subscriptions",
   "description": "A Commerce Layer Single Page Application to manage subscriptions with a nice GUI.",
-  "version": "4.4.1",
+  "version": "4.5.0",
   "license": "MIT",
   "keywords": [
     "reactjs",
