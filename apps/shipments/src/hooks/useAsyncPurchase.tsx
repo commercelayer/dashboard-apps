@@ -15,7 +15,7 @@ export function useAsyncPurchase(shipmentId: string): {
   const [, setLocation] = useLocation()
   const [isPolling, setIsPolling] = useState<boolean>(false)
   const [isPurchaseStarted, setIsPurchaseStarted] = useState<boolean>(false)
-  const intervalId = useRef<NodeJS.Timeout | null>(null)
+  const intervalId = useRef<ReturnType<typeof window.setInterval> | null>(null)
 
   const { shipment, mutateShipment, isPurchasing } = useShipmentDetails(
     shipmentId,
