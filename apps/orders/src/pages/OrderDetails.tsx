@@ -15,6 +15,7 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { OrderAddresses } from "#components/OrderAddresses"
 import { OrderCustomer } from "#components/OrderCustomer"
@@ -82,17 +83,11 @@ function OrderDetails(): React.JSX.Element {
   }
 
   if (extras?.openResourceModal != null) {
-    const resourceInspectorButton: ToolbarItem = {
-      icon: "code",
-      size: "small",
-      variant: "secondary",
-      onClick: () => {
-        extras?.openResourceModal?.({
-          resourceType: "orders",
-          resourceId: orderId,
-        })
-      },
-    }
+    const resourceInspectorButton = getResourceModalButton(
+      "orders",
+      orderId,
+      extras,
+    )
     if (toolbar.buttons != null) {
       toolbar.buttons?.push(resourceInspectorButton)
     } else {

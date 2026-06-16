@@ -9,6 +9,7 @@ import {
   Spacer,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import type { FC } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { ErrorNotFound } from "#components/ErrorNotFound"
@@ -19,7 +20,10 @@ import { appRoutes } from "#data/routes"
 import { useWebhookDetails } from "#hooks/useWebhookDetails"
 
 export const WebhookDetails: FC = () => {
-  const { settings, canUser } = useTokenProvider()
+  const {
+    settings: { extras, mode },
+    canUser,
+  } = useTokenProvider()
   const [, params] = useRoute(appRoutes.details.path)
   const [, setLocation] = useLocation()
 
@@ -38,7 +42,7 @@ export const WebhookDetails: FC = () => {
           label: `Webhooks`,
           icon: "arrowLeft",
         }}
-        mode={settings.mode}
+        mode={mode}
       >
         <EmptyState
           title="Not authorized"
@@ -80,13 +84,22 @@ export const WebhookDetails: FC = () => {
     ])
   }
 
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "webhooks",
+      webhook.id,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
+  }
+
   return webhook == null ? (
     <ErrorNotFound />
   ) : (
     <SkeletonTemplate isLoading={isLoading}>
       <PageLayout
         title={pageTitle}
-        mode={settings.mode}
+        mode={mode}
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))

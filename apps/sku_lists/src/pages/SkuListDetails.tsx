@@ -20,6 +20,7 @@ import {
 } from "@commercelayer/app-elements"
 import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
 import { LinksEmptyState } from "dashboard-apps-common/src/components/LinksEmptyState"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { Link, useLocation } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { SkuListManualItems } from "#components/SkuListManualItems"
@@ -133,6 +134,15 @@ export const SkuListDetails = (
         },
       },
     ])
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "sku_lists",
+      skuList.id,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
   }
 
   return (

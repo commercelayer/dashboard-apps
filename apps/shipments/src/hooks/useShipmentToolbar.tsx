@@ -27,6 +27,7 @@ export function useShipmentToolbar({ shipment }: { shipment: Shipment }): {
   return {
     Components: () => <></>,
     props: {
+      buttons: [],
       dropdownItems: [dropdownItems],
     },
   }

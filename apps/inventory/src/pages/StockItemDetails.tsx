@@ -12,6 +12,7 @@ import {
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { type FC, useState } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { StockItemInfo } from "#components/StockItemInfo"
@@ -20,7 +21,7 @@ import { useStockItemDetails } from "#hooks/useStockItemDetails"
 
 export const StockItemDetails: FC = () => {
   const {
-    settings: { mode },
+    settings: { mode, extras },
     canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
@@ -101,6 +102,15 @@ export const StockItemDetails: FC = () => {
         },
       },
     ])
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "stock_items",
+      stockItem.id,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
   }
 
   return (

@@ -2,6 +2,7 @@ import {
   Button,
   EmptyState,
   isMockedId,
+  type PageHeadingProps,
   PageLayout,
   ResourceAttachments,
   ResourceDetails,
@@ -13,6 +14,7 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { Link, useLocation, useRoute } from "wouter"
 import { ReturnAddresses } from "#components/ReturnAddresses"
 import { ReturnInfo } from "#components/ReturnInfo"
@@ -26,7 +28,7 @@ import { useReturnDetails } from "#hooks/useReturnDetails"
 function ReturnDetails(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode },
+    settings: { mode, extras },
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
@@ -66,6 +68,20 @@ function ReturnDetails(): React.JSX.Element {
 
   const pageTitle = `${t("resources.returns.name")} #${returnObj.number}`
 
+  const pageToolbar: PageHeadingProps["toolbar"] = {
+    buttons: [],
+    dropdownItems: [],
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "returns",
+      returnObj.id,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
+  }
+
   return (
     <PageLayout
       mode={mode}
@@ -82,6 +98,7 @@ function ReturnDetails(): React.JSX.Element {
           })
         },
       }}
+      toolbar={pageToolbar}
     >
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>

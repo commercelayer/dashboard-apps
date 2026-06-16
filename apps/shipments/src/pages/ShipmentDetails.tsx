@@ -16,6 +16,7 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import isEmpty from "lodash-es/isEmpty"
 import { useRoute } from "wouter"
 import { ShipmentAddresses } from "#components/ShipmentAddresses"
@@ -30,7 +31,7 @@ import { useShipmentToolbar } from "#hooks/useShipmentToolbar"
 function ShipmentDetails(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode },
+    settings: { mode, extras },
     user,
   } = useTokenProvider()
   const [, params] = useRoute<{ shipmentId: string }>(appRoutes.details.path)
@@ -79,6 +80,15 @@ function ShipmentDetails(): React.JSX.Element {
   }
 
   const pageTitle = `${t("resources.shipments.name")} #${shipment.number}`
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "shipments",
+      shipment.id,
+      extras,
+    )
+    pageToolbar.props.buttons?.push(resourceInspectorButton)
+  }
 
   return (
     <PageLayout
