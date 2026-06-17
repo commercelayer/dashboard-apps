@@ -23,9 +23,7 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
     const { t } = useTranslation()
     const { isEditing } = useOrderStatus(order)
     const { mutateOrder } = useOrderDetails(order.id)
-    const isEditable =
-      isEditing ||
-      (order.status !== "draft" && order.fulfillment_status !== "fulfilled")
+    const isEditable = isEditing || order.status !== "draft"
     const { Overlay: AssignAddressOverlay, open: openAssignAddressOverlay } =
       useCustomerAddressOverlay(order, () => {
         void mutateOrder()
