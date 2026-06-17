@@ -12,6 +12,7 @@ import {
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useState } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { PriceInfo } from "#components/PriceInfo"
@@ -22,7 +23,7 @@ import { usePriceListDetails } from "#hooks/usePriceListDetails"
 
 export function PriceDetails(): React.JSX.Element {
   const {
-    settings: { mode },
+    settings: { mode, extras },
     canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
@@ -96,6 +97,15 @@ export function PriceDetails(): React.JSX.Element {
         },
       },
     ])
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "prices",
+      price.id,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
   }
 
   return (

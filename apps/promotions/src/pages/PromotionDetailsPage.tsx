@@ -27,7 +27,6 @@ import {
   Tab,
   Tabs,
   Text,
-  type ToolbarItem,
   useAppLinking,
   useCoreSdkProvider,
   useResourceList,
@@ -35,6 +34,7 @@ import {
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import type { FlexPromotion } from "@commercelayer/sdk"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { type Ref, useMemo, useRef, useState } from "react"
 import { Link, useLocation, useSearch } from "wouter"
 import { navigate } from "wouter/use-browser-location"
@@ -124,17 +124,11 @@ function Page(
   }
 
   if (extras?.openResourceModal != null) {
-    const resourceInspectorButton: ToolbarItem = {
-      icon: "code",
-      size: "small",
-      variant: "secondary",
-      onClick: () => {
-        extras?.openResourceModal?.({
-          resourceType: promotion.type,
-          resourceId: promotion.id,
-        })
-      },
-    }
+    const resourceInspectorButton = getResourceModalButton(
+      promotion.type,
+      promotion.id,
+      extras,
+    )
     toolbar.buttons?.push(resourceInspectorButton)
   }
 

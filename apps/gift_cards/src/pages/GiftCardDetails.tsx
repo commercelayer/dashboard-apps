@@ -16,6 +16,7 @@ import {
   useCoreSdkProvider,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { type FC, useMemo, useState } from "react"
 import { useLocation } from "wouter"
 import { BalanceLog } from "#components/BalanceLog"
@@ -34,7 +35,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
   params,
 }) => {
   const {
-    settings: { mode },
+    settings: { mode, extras },
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { sdkClient } = useCoreSdkProvider()
@@ -51,8 +52,18 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
   const toolbarButtons = useMemo<
     NonNullable<PageLayoutProps["toolbar"]>["buttons"]
   >(() => {
+    const otherToolbarButtons = []
+    if (extras?.openResourceModal != null) {
+      const resourceInspectorButton = getResourceModalButton(
+        "gift_cards",
+        giftCardId,
+        extras,
+      )
+      otherToolbarButtons.push(resourceInspectorButton)
+    }
+
     if (!canUser("update", "gift_cards")) {
-      return []
+      return [...otherToolbarButtons]
     }
 
     if (["inactive"].includes(giftCard.status)) {
@@ -73,6 +84,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
               })
           },
         },
+        ...otherToolbarButtons,
       ]
     }
 
@@ -94,6 +106,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
               })
           },
         },
+        ...otherToolbarButtons,
       ]
     }
 
@@ -115,6 +128,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
               })
           },
         },
+        ...otherToolbarButtons,
       ]
     }
 

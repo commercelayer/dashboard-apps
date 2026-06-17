@@ -16,6 +16,7 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { Link, useLocation, useRoute } from "wouter"
 import { CustomerAddresses } from "#components/CustomerAddresses"
 import { CustomerAnonymization } from "#components/CustomerAnonymization"
@@ -32,7 +33,7 @@ import { useCustomerResetPasswordOverlay } from "#hooks/useCustomerResetPassword
 
 export function CustomerDetails(): React.JSX.Element {
   const {
-    settings: { mode },
+    settings: { mode, extras },
     user,
     canUser,
   } = useTokenProvider()
@@ -84,6 +85,15 @@ export function CustomerDetails(): React.JSX.Element {
         },
       },
     ])
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "customers",
+      customer.id,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
   }
 
   if (canBeDeleted || canBeAnonymized) {

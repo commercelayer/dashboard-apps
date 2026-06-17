@@ -15,6 +15,7 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { SkuDescription } from "dashboard-apps-common/src/components/SkuDescription"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { type FC, useState } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { BundleInfo } from "#components/BundleInfo"
@@ -34,6 +35,10 @@ export const BundleDetails: FC = () => {
 
   const bundleId = params?.bundleId ?? ""
   const goBackUrl = appRoutes.list.makePath({})
+
+  const {
+    settings: { extras },
+  } = useTokenProvider()
 
   const { bundle, isLoading, error, mutateBundle } = useBundleDetails(bundleId)
 
@@ -69,6 +74,15 @@ export const BundleDetails: FC = () => {
         },
       },
     ])
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "bundles",
+      bundle.id,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
   }
 
   if (error != null) {

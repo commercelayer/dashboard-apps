@@ -13,6 +13,7 @@ import {
   useAppLinking,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { SubscriptionAddresses } from "#components/SubscriptionAddresses"
 import { SubscriptionInfo } from "#components/SubscriptionInfo"
@@ -32,7 +33,7 @@ import { getSubscriptionTitle } from "#utils/getSubscriptionTitle"
 function SubscriptionDetails(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode },
+    settings: { mode, extras },
     user,
   } = useTokenProvider()
   const [, setLocation] = useLocation()
@@ -142,6 +143,15 @@ function SubscriptionDetails(): React.JSX.Element {
         },
       },
     ])
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "order_subscriptions",
+      subscription.id,
+      extras,
+    )
+    pageToolbar?.buttons?.push(resourceInspectorButton)
   }
 
   return (

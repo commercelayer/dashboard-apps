@@ -22,6 +22,7 @@ import {
 import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
 import { LinksEmptyState } from "dashboard-apps-common/src/components/LinksEmptyState"
 import { SkuDescription } from "dashboard-apps-common/src/components/SkuDescription"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import type { FC } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
@@ -123,6 +124,15 @@ export const SkuDetails: FC = () => {
         },
       },
     ])
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "skus",
+      sku.id,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
   }
 
   const tabs = ["info", "links"]

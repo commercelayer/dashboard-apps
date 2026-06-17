@@ -13,6 +13,7 @@ import {
   useAppLinking,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useMemo } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { StockTransferAddresses } from "#components/StockTransferAddresses"
@@ -32,7 +33,7 @@ import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 export function StockTransferDetails(): React.JSX.Element {
   const {
     canUser,
-    settings: { mode },
+    settings: { mode, extras },
     user,
   } = useTokenProvider()
   const [, setLocation] = useLocation()
@@ -118,6 +119,15 @@ export function StockTransferDetails(): React.JSX.Element {
   const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
     dropdownItems: triggerDropDownItems,
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "stock_transfers",
+      stockTransfer.id,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
   }
 
   const pageTitle = `Stock transfer #${stockTransfer.number}`

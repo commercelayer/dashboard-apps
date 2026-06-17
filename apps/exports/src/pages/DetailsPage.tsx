@@ -2,6 +2,7 @@ import {
   Button,
   EmptyState,
   isMockedId,
+  type PageHeadingProps,
   PageLayout,
   ResourceDetails,
   ResourceMetadata,
@@ -9,6 +10,7 @@ import {
   Spacer,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { Link, useLocation, useRoute } from "wouter"
 import { ExportDate } from "#components/Details/ExportDate"
 import { ExportDetails } from "#components/Details/ExportDetails"
@@ -21,7 +23,7 @@ import { appRoutes } from "#data/routes"
 const DetailsPage = (): React.JSX.Element | null => {
   const {
     canUser,
-    settings: { mode },
+    settings: { mode, extras },
   } = useTokenProvider()
   const [_match, params] = useRoute<{ exportId?: string }>(
     appRoutes.details.path,
@@ -55,6 +57,20 @@ const DetailsPage = (): React.JSX.Element | null => {
     )
   }
 
+  const pageToolbar: PageHeadingProps["toolbar"] = {
+    buttons: [],
+    dropdownItems: [],
+  }
+
+  if (extras?.openResourceModal != null) {
+    const resourceInspectorButton = getResourceModalButton(
+      "exports",
+      exportId,
+      extras,
+    )
+    pageToolbar.buttons?.push(resourceInspectorButton)
+  }
+
   return (
     <ExportDetailsProvider exportId={exportId}>
       {({ state: { isLoading, data, isNotFound }, refetch }) =>
@@ -83,6 +99,7 @@ const DetailsPage = (): React.JSX.Element | null => {
                   setLocation(appRoutes.list.makePath())
                 },
               }}
+              toolbar={pageToolbar}
             >
               <Spacer bottom="14">
                 <ExportReport />
