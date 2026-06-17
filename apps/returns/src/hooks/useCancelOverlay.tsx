@@ -23,6 +23,7 @@ export function useCancelOverlay(): OverlayHook {
           <PageHeading
             title={t("apps.returns.details.confirm_return_cancellation", {
               number: returnObj.number,
+              interpolation: { escapeValue: false },
             })}
             navigationButton={{
               label: t("common.close"),
