@@ -65,7 +65,7 @@ export const StockLocationSelector: FC = () => {
                 .list({
                   pageSize: 25,
                   filters: {
-                    name_cont: hint,
+                    name_i_cont: hint,
                     fields: {
                       stock_locations: ["name"],
                     },

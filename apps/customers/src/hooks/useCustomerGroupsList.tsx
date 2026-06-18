@@ -40,7 +40,7 @@ export function useCustomerGroupsList({ hint, settings }: Props): {
     [
       {
         fields: ["id", "name"],
-        filters: hint != null ? { name_cont: hint } : undefined,
+        filters: hint != null ? { name_i_cont: hint } : undefined,
         sort: ["name"],
         pageNumber,
         pageSize,

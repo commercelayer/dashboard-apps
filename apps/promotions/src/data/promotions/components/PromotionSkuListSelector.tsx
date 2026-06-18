@@ -111,7 +111,7 @@ const HookedInternalPromotionSkuListSelector: React.FC<{
         const skuLists = await sdkClient.sku_lists.list({
           pageSize: 25,
           filters: {
-            name_cont: name,
+            name_i_cont: name,
           },
         })
 
@@ -134,7 +134,7 @@ function getParams({ name }: { name: string }): QueryParamsList<SkuList> {
       name: "asc",
     },
     filters: {
-      name_cont: name,
+      name_i_cont: name,
     },
   }
 }

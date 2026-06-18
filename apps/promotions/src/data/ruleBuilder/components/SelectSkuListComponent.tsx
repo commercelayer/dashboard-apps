@@ -39,7 +39,7 @@ function getParams({ name }: { name: string }): QueryParamsList<SkuList> {
       name: "asc",
     },
     filters: {
-      name_cont: name,
+      name_i_cont: name,
     },
   }
 }

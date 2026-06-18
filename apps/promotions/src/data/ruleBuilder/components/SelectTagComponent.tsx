@@ -38,7 +38,7 @@ function getParams({ name }: { name: string }): QueryParamsList<Tag> {
       name: "asc",
     },
     filters: {
-      name_cont: name,
+      name_i_cont: name,
     },
   }
 }

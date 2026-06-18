@@ -162,7 +162,7 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
           fieldForLabel: "name",
           fieldForValue: "id",
           resource: "tags",
-          searchBy: "name_cont",
+          searchBy: "name_i_cont",
           sortBy: { attribute: "name", direction: "asc" },
           previewLimit: 5,
           showCheckboxIcon: false,
@@ -174,7 +174,7 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
       label: "Search",
       type: "textSearch",
       sdk: {
-        predicate: ["name", "coupons_code"].join("_or_") + "_cont",
+        predicate: ["name", "coupons_code"].join("_or_") + "_i_cont",
       },
       render: {
         component: "searchBar",

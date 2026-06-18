@@ -30,7 +30,7 @@ export const SkuListManualItems = withSkeletonTemplate<Props>(
         filters: {
           sku_list_id_eq: skuListId,
           ...(searchValue != null
-            ? { sku_code_or_sku_name_cont: searchValue }
+            ? { sku_code_or_sku_name_i_cont: searchValue }
             : {}),
         },
         include: ["sku"],

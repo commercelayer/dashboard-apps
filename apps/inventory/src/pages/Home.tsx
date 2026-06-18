@@ -26,7 +26,7 @@ export function Home(): React.JSX.Element {
     type: "stock_locations",
     query: {
       filters: {
-        ...(searchValue != null ? { name_cont: searchValue } : {}),
+        ...(searchValue != null ? { name_i_cont: searchValue } : {}),
       },
       sort: ["-updated_at"],
     },
