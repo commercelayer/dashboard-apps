@@ -25,7 +25,7 @@ export const fetchCustomerGroups = async ({
     filters:
       hint != null
         ? {
-            name_cont: hint,
+            name_i_cont: hint,
           }
         : undefined,
     sort: {

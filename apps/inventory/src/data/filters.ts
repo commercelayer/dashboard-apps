@@ -56,7 +56,7 @@ export const stockItemsInstructions = ({
     label: "Search",
     type: "textSearch",
     sdk: {
-      predicate: ["sku_code", "sku_name"].join("_or_") + "_cont",
+      predicate: ["sku_code", "sku_name"].join("_or_") + "_i_cont",
     },
     render: {
       component: "searchBar",

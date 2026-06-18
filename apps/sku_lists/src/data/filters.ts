@@ -5,7 +5,7 @@ export const instructions: FiltersInstructions = [
     label: "Search",
     type: "textSearch",
     sdk: {
-      predicate: ["slug", "name"].join("_or_") + "_cont",
+      predicate: ["slug", "name"].join("_or_") + "_i_cont",
     },
     render: {
       component: "searchBar",

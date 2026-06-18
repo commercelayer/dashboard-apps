@@ -122,7 +122,7 @@ const SkuListAddItemsInner: FC<{
       label: "Search",
       type: "textSearch",
       sdk: {
-        predicate: ["name", "code"].join("_or_") + "_cont",
+        predicate: ["name", "code"].join("_or_") + "_i_cont",
       },
       render: {
         component: "searchBar",

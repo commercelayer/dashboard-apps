@@ -13,7 +13,7 @@ export const instructions: FiltersInstructions = [
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "shipping_categories",
-        searchBy: "name_cont",
+        searchBy: "name_i_cont",
         sortBy: { attribute: "name", direction: "asc" },
         previewLimit: 5,
         filters: {
@@ -34,7 +34,7 @@ export const instructions: FiltersInstructions = [
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "tags",
-        searchBy: "name_cont",
+        searchBy: "name_i_cont",
         sortBy: { attribute: "name", direction: "asc" },
         previewLimit: 5,
         showCheckboxIcon: false,
@@ -46,7 +46,7 @@ export const instructions: FiltersInstructions = [
     label: "Search",
     type: "textSearch",
     sdk: {
-      predicate: ["code", "name"].join("_or_") + "_cont",
+      predicate: ["code", "name"].join("_or_") + "_i_cont",
     },
     render: {
       component: "searchBar",

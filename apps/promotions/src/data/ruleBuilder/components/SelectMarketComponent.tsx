@@ -57,7 +57,7 @@ function getParams({
       name: "asc",
     },
     filters: {
-      name_cont: name,
+      name_i_cont: name,
       price_list_currency_code_in: currencyCodes.join(","),
     },
   }

@@ -53,7 +53,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
       filters: {
         promotion_rule_promotion_id_eq: promotion.id,
         ...(searchValue != null
-          ? { code_or_coupon_recipient_email_cont: searchValue }
+          ? { code_or_coupon_recipient_email_i_cont: searchValue }
           : {}),
         ...(filterStatusPredicate[filterStatus] ?? {}),
       },
