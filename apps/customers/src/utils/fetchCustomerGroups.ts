@@ -1,11 +1,8 @@
-import type {
-  CommerceLayerClient,
-  CustomerGroup,
-  ListResponse,
-} from "@commercelayer/sdk"
+import type { CustomerGroup, ListResponse } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 
 interface FetchCustomerGroupsConfig {
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   hint?: string
 }
 

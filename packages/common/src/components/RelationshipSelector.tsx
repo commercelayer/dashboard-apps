@@ -6,16 +6,18 @@ import {
   useCoreSdkProvider,
 } from "@commercelayer/app-elements"
 import type {
-  CommerceLayerClient,
   ListableResourceType,
   ListResponse,
   QueryFilter,
 } from "@commercelayer/sdk"
+
+import type {CommerceLayerBundle} from "@commercelayer/sdk/bundle"
+
 import isEmpty from "lodash-es/isEmpty"
 import type { FC } from "react"
 
 type ListResource<TResource extends ListableResourceType> = Awaited<
-  ReturnType<CommerceLayerClient[TResource]["list"]>
+  ReturnType<CommerceLayerBundle[TResource]["list"]>
 >
 type Resource<TResource extends ListableResourceType> =
   ListResource<TResource>[number]

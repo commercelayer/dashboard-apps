@@ -1,9 +1,6 @@
 import type { InputSelectValue } from "@commercelayer/app-elements"
-import type {
-  CommerceLayerClient,
-  ListResponse,
-  Resource,
-} from "@commercelayer/sdk"
+import type { ListResponse, Resource } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 import type {
   AllowedParentResource,
   AllowedResourceType,
@@ -21,7 +18,7 @@ export const fetchResources = async ({
   resourceType,
   hint,
 }: {
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   resourceType: AllowedResourceType | AllowedParentResource
   hint?: string
 }): Promise<InputSelectValue[]> => {

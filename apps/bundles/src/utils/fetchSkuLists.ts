@@ -1,11 +1,9 @@
-import type {
-  CommerceLayerClient,
-  ListResponse,
-  SkuList,
-} from "@commercelayer/sdk"
+import type { ListResponse, SkuList } from "@commercelayer/sdk"
+
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 
 interface FetchSkuListsConfig {
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   hint?: string
 }
 

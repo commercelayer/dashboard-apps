@@ -1,11 +1,9 @@
-import type {
-  CommerceLayerClient,
-  ListResponse,
-  ShippingCategory,
-} from "@commercelayer/sdk"
+import type { ListResponse, ShippingCategory } from "@commercelayer/sdk"
+
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 
 interface FetchShippingCategoriesConfig {
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   hint?: string
 }
 

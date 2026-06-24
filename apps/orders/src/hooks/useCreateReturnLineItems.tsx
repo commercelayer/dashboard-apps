@@ -3,12 +3,8 @@ import {
   useCoreSdkProvider,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import type {
-  CommerceLayerClient,
-  Return,
-  ReturnLineItem,
-  StockLocation,
-} from "@commercelayer/sdk"
+import type { Return, ReturnLineItem, StockLocation } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 import { isEmpty } from "lodash-es"
 import { useCallback, useState } from "react"
 import type { ReturnFormValues } from "#components/FormReturn"
@@ -95,7 +91,7 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
 
 async function deleteReturnLineItems(
   lineItems: ReturnLineItem[],
-  sdkClient: CommerceLayerClient,
+  sdkClient: CommerceLayerBundle,
 ): Promise<void> {
   await Promise.all(
     lineItems.map(async (item) => {

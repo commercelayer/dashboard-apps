@@ -5,7 +5,7 @@ import {
   isSingleValueSelected,
   Label,
 } from "@commercelayer/app-elements"
-import type { CommerceLayerClient } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 import type {
   AllowedParentResource,
   AllowedResourceType,
@@ -29,7 +29,7 @@ interface Props extends Pick<InputSelectProps, "feedback" | "hint"> {
   /**
    * A signed SDK client
    */
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   /**
    * callback function fired when the resource is selected from the list
    */

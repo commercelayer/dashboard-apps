@@ -1,4 +1,5 @@
-import type { CommerceLayerClient, SkuUpdate } from "@commercelayer/sdk"
+import type { SkuUpdate } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 import { isValidUnitOfWeight, type SkuFormValues } from "#components/SkuForm"
 
 /**
@@ -9,7 +10,7 @@ import { isValidUnitOfWeight, type SkuFormValues } from "#components/SkuForm"
 
 export const getSkuFromFormValues = (
   formValues: SkuFormValues,
-  sdkClient: CommerceLayerClient,
+  sdkClient: CommerceLayerBundle,
 ): SkuUpdate => {
   /*
    * Note: `unit of weight` field will be sent as `undefined` if the `weight` field is not a positive number

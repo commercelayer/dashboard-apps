@@ -1,8 +1,8 @@
 import type {
-  CommerceLayerClient,
   CouponCodesPromotionRuleCreate,
   Promotion,
 } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 import type { AllowedResourceType } from "@typing/resources.types"
 
 export async function validateParentResource({
@@ -12,7 +12,7 @@ export async function validateParentResource({
 }: {
   resourceType: AllowedResourceType
   parentResourceId?: string
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
 }): Promise<string | undefined> {
   if (parentResourceId == null) {
     return undefined
@@ -35,7 +35,7 @@ export async function validateParentResource({
 }
 
 async function fetchPromotionWithCouponPromotionRule(
-  sdkClient: CommerceLayerClient,
+  sdkClient: CommerceLayerBundle,
   promotionId: string,
 ): Promise<Promotion> {
   return await sdkClient.promotions.retrieve(promotionId, {
@@ -49,7 +49,7 @@ async function fetchPromotionWithCouponPromotionRule(
 }
 
 async function getOrCreateCouponCodePromotionRuleId(
-  sdkClient: CommerceLayerClient,
+  sdkClient: CommerceLayerBundle,
   promotion: Promotion,
 ): Promise<string> {
   const existingPromotionRuleId = promotion.coupon_codes_promotion_rule?.id

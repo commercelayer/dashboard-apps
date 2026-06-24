@@ -1,11 +1,11 @@
 import type { InputSelectValue } from "@commercelayer/app-elements"
 import type {
-  CommerceLayerClient,
   ListResponse,
-  QueryArrayFields,
+  QueryFields,
   QueryFilter,
   Resource,
 } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 
 export type SearchableResource =
   | "markets"
@@ -20,7 +20,7 @@ export interface SearchParams<ResType extends SearchableResource> {
   /**
    * signed sdk client
    */
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   /**
    * the resource we are requesting
    */
@@ -28,7 +28,7 @@ export interface SearchParams<ResType extends SearchableResource> {
   /**
    * fields to return in search results
    */
-  fields?: QueryArrayFields<ListResource<ResType>[number]>
+  fields?: QueryFields<ListResource<ResType>[number]>
   /**
    * resource field to be used as value in option item
    */
@@ -44,7 +44,7 @@ export interface SearchParams<ResType extends SearchableResource> {
 }
 
 type ListResource<TResource extends SearchableResource> = Awaited<
-  ReturnType<CommerceLayerClient[TResource]["list"]>
+  ReturnType<CommerceLayerBundle[TResource]["list"]>
 >
 
 export const fetchResourcesByHint = async <ResType extends SearchableResource>({
@@ -59,7 +59,7 @@ export const fetchResourcesByHint = async <ResType extends SearchableResource>({
   hint: string
 }): Promise<InputSelectValue[]> => {
   const fetchedResources = await sdkClient[resourceType].list({
-    fields: fields as QueryArrayFields<Resource>,
+    fields: fields as QueryFields<Resource>,
     filters: {
       ...filters,
       [`${fieldForLabel}_cont`]: hint,
@@ -84,7 +84,7 @@ export const fetchInitialResources = async <
   fieldForLabel,
 }: SearchParams<ResType>): Promise<InputSelectValue[]> => {
   const fetchedResources = await sdkClient[resourceType].list({
-    fields: fields as QueryArrayFields<Resource>,
+    fields: fields as QueryFields<Resource>,
     pageSize: 25,
     filters,
   })

@@ -1,9 +1,6 @@
 import { useCoreSdkProvider } from "@commercelayer/app-elements"
-import type {
-  CommerceLayerClient,
-  Parcel,
-  ParcelLineItem,
-} from "@commercelayer/sdk"
+import type { Parcel, ParcelLineItem } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 import { useCallback, useState } from "react"
 import type { PackingFormValues } from "#data/packingFormSchema"
 import { useShipmentDetails } from "#hooks/useShipmentDetails"
@@ -93,7 +90,7 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
 
 async function deleteParcelLineItems(
   lineItems: ParcelLineItem[],
-  sdkClient: CommerceLayerClient,
+  sdkClient: CommerceLayerBundle,
 ): Promise<void> {
   await Promise.all(
     lineItems.map(async (item) => {

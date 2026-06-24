@@ -1,11 +1,11 @@
 import { toast, useIsChanged } from "@commercelayer/app-elements"
 import type {
-  CommerceLayerClient,
   Export,
   ListResponse,
   QueryFilter,
   QueryParamsList,
 } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 import {
   createContext,
   type ReactNode,
@@ -27,7 +27,7 @@ interface ListExportProviderProps {
   /**
    * a valid SDK client
    */
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   /**
    * Inner content where context exists
    */
@@ -167,7 +167,7 @@ const getAllExports = async ({
   pageSize,
   filters,
 }: {
-  cl: CommerceLayerClient
+  cl: CommerceLayerBundle
   state: ListExportContextState
   pageSize: number
   filters?: QueryFilter

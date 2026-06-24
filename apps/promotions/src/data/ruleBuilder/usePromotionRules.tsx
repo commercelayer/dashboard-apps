@@ -4,10 +4,10 @@ import {
   useCoreSdkProvider,
 } from "@commercelayer/app-elements"
 import type {
-  CommerceLayerClient,
   CustomPromotionRule,
   SkuListPromotionRule,
 } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 import pMemoize from "p-memoize"
 import { useEffect, useState } from "react"
 import type { SetNonNullable } from "type-fest"
@@ -18,7 +18,7 @@ import { useCurrencyCodes } from "./currency"
 const fetchRelationship = pMemoize(
   async (
     rule: SetNonNullable<RawRuleValid, "rel">,
-    sdkClient: CommerceLayerClient,
+    sdkClient: CommerceLayerBundle,
   ): Promise<Rule> => {
     const promise: Promise<Rule> = sdkClient[rule.rel]
       .list({

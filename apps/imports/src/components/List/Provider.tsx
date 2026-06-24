@@ -1,11 +1,11 @@
 import { useIsChanged } from "@commercelayer/app-elements"
 import type {
-  CommerceLayerClient,
   Import,
   ListResponse,
   QueryFilter,
   QueryParamsList,
 } from "@commercelayer/sdk"
+import type { CommerceLayerBundle } from "@commercelayer/sdk/bundle"
 import {
   createContext,
   type ReactNode,
@@ -27,7 +27,7 @@ interface ListImportProviderProps {
   /**
    * a valid SDK client
    */
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   /**
    * Inner content where context exists
    */
@@ -140,7 +140,7 @@ const getAllImports = async ({
   pageSize,
   filters,
 }: {
-  cl: CommerceLayerClient
+  cl: CommerceLayerBundle
   state: ListImportContextState
   pageSize: number
   filters?: QueryFilter
