@@ -66,6 +66,7 @@ export default {
                 <>
                   Comma-separated resource names for the request payload. Leave
                   empty for defaults.{" "}
+                  {/** biome-ignore lint/a11y/noAmbiguousAnchorText: The link text "Learn more" is clear in the context of the surrounding text. */}
                   <a
                     href="https://docs.commercelayer.io/core/external-resources#custom-include-list"
                     target="_blank"

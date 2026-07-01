@@ -2,9 +2,9 @@ packages:
   - packages/*
   - apps/*
 
-ignoredBuiltDependencies:
-  - esbuild
-  - nx
+allowBuilds:
+  esbuild: true
+  nx: true
 
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
