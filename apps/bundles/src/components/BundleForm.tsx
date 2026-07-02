@@ -134,6 +134,7 @@ export function BundleForm({
                 text: (
                   <Text variant="info">
                     A unique code to identify the product variant.{" "}
+                    {/** biome-ignore lint/a11y/noAmbiguousAnchorText: The link text "Learn more" is clear in the context of the surrounding text. */}
                     <a
                       href="https://docs.commercelayer.io/core/v/api-reference/bundles"
                       target="_blank"

@@ -8,8 +8,7 @@
   "keywords": [],
   "license": "MIT",
   "engines": {
-    "node": ">=20",
-    "pnpm": ">=8"
+    "node": ">=22.22"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.2.0",
