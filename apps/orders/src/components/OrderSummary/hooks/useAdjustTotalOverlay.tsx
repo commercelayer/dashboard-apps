@@ -12,7 +12,7 @@ import {
   useOverlay,
   useTranslation,
 } from "@commercelayer/app-elements"
-import type { CommerceLayerClient, Order } from "@commercelayer/sdk"
+import type { CommerceLayerBundle, Order } from "@commercelayer/sdk"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMemo } from "react"
 import { useForm } from "react-hook-form"
@@ -159,7 +159,7 @@ async function createManualAdjustmentLineItem({
   amount,
   order,
 }: {
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   amount: number
   order: Order
 }): Promise<void> {
@@ -186,7 +186,7 @@ async function updateManualAdjustmentLineItem({
   lineItemId,
   order,
 }: {
-  sdkClient: CommerceLayerClient
+  sdkClient: CommerceLayerBundle
   amount: number
   lineItemId: string
   order: Order

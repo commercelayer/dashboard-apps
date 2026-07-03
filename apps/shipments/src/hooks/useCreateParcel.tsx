@@ -1,6 +1,6 @@
 import { useCoreSdkProvider } from "@commercelayer/app-elements"
 import type {
-  CommerceLayerClient,
+  CommerceLayerBundle,
   Parcel,
   ParcelLineItem,
 } from "@commercelayer/sdk"
@@ -93,7 +93,7 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
 
 async function deleteParcelLineItems(
   lineItems: ParcelLineItem[],
-  sdkClient: CommerceLayerClient,
+  sdkClient: CommerceLayerBundle,
 ): Promise<void> {
   await Promise.all(
     lineItems.map(async (item) => {
