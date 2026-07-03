@@ -17,11 +17,9 @@ export function ListItemPromotion({
 
   return (
     <ResourceListItem
-      // @ts-expect-error // TODO: fix Promotion type in the sdk
       resource={resource}
       isLoading={isLoading}
       delayMs={delayMs}
-      tag="a"
       {...navigateTo({
         app: "promotions",
         resourceId: resource.id,

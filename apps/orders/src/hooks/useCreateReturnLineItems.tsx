@@ -4,7 +4,7 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type {
-  CommerceLayerClient,
+  CommerceLayerBundle,
   Return,
   ReturnLineItem,
   StockLocation,
@@ -95,7 +95,7 @@ export function useCreateReturnLineItems(): CreateReturnLineItemsHook {
 
 async function deleteReturnLineItems(
   lineItems: ReturnLineItem[],
-  sdkClient: CommerceLayerClient,
+  sdkClient: CommerceLayerBundle,
 ): Promise<void> {
   await Promise.all(
     lineItems.map(async (item) => {
