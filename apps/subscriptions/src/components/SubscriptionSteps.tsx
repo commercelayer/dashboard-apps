@@ -22,6 +22,9 @@ function getSubscriptionStatusBadgeVariant(
     case "active":
     case "running":
       return "success"
+    // @ts-expect-error `pending` is not yet in the SDK status union (beta.9)
+    case "pending":
+      return "warning"
     case "inactive":
     case "draft":
     case "cancelled":
@@ -37,6 +40,9 @@ function getSubscriptionStatusName(
       return "Active"
     case "running":
       return "Running"
+    // @ts-expect-error `pending` is not yet in the SDK status union (beta.9)
+    case "pending":
+      return "Pending"
     case "inactive":
       return "Inactive"
     case "draft":

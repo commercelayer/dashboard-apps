@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   EmptyState,
   formatDateWithPredicate,
@@ -92,6 +93,12 @@ function SubscriptionDetails(): React.JSX.Element {
 
   const pageTitle = getSubscriptionTitle(subscription)
 
+  // A subscription becomes `pending` when its payment method requires a saved
+  // wallet for renewals but none is available (see core-api#3292). It resolves
+  // to `active` once a payment source is attached and activation is triggered.
+  // @ts-expect-error `pending` is not yet in the SDK status union (beta.9)
+  const isPending = subscription.status === "pending"
+
   const pageToolbar: PageHeadingProps["toolbar"] = canUser(
     "update",
     "order_subscriptions",
@@ -108,7 +115,10 @@ function SubscriptionDetails(): React.JSX.Element {
   ) {
     const triggerAction = getOrderSubscriptionTriggerAction(subscription)
     const showMainAction =
-      subscription.status === "active" || subscription.status === "inactive"
+      subscription.status === "active" ||
+      subscription.status === "inactive" ||
+      // @ts-expect-error `pending` is not yet in the SDK status union (beta.9)
+      subscription.status === "pending"
 
     if (showMainAction) {
       pageToolbar?.buttons?.push({
@@ -187,6 +197,15 @@ function SubscriptionDetails(): React.JSX.Element {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
+          {isPending && (
+            <Spacer top="14">
+              <Alert status="warning">
+                This subscription is <b>pending</b> because it has no usable
+                payment method for renewals. Attach a payment source, then
+                activate it to resume.
+              </Alert>
+            </Spacer>
+          )}
           <Spacer top="14">
             <SubscriptionSteps subscription={subscription} />
           </Spacer>

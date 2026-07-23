@@ -26,6 +26,8 @@ function getListUiIcon(
   switch (status) {
     case "active":
       return <StatusIcon name="pulse" gap="large" background="green" />
+    case "pending":
+      return <StatusIcon name="warning" gap="large" background="orange" />
     case "inactive":
       return <StatusIcon name="minus" gap="large" background="gray" />
     case "cancelled":
@@ -49,8 +51,14 @@ export const ListItemSubscription =
       const { user } = useTokenProvider()
       const { navigateTo } = useAppLinking()
 
+      // A `pending` subscription can also carry a failed last run; `pending`
+      // takes precedence so it isn't masked as "Last run failed".
+      // @ts-expect-error `pending` is not yet in the SDK status union (beta.9)
+      const isPending = resource.status === "pending"
       const lastRunFailed =
-        resource.succeeded_on_last_run === false && resource.last_run_at != null
+        !isPending &&
+        resource.succeeded_on_last_run === false &&
+        resource.last_run_at != null
       const status = lastRunFailed ? "Last run failed" : resource.status
       const date = formatDate({
         isoDate: resource.updated_at,

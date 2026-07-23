@@ -47,6 +47,7 @@ export const instructions = (
           options: [
             { value: "draft", label: "Draft" },
             { value: "active", label: "Active" },
+            { value: "pending", label: "Pending" },
             { value: "inactive", label: "Inactive" },
             { value: "cancelled", label: "Cancelled" },
           ],
