@@ -17,6 +17,8 @@ export function getOrderSubscriptionTriggerAction(
 ): TriggerAction | undefined {
   const status = orderSubscription.status
   switch (status) {
+    // @ts-expect-error `pending` is not yet in the SDK status union (beta.9)
+    case "pending":
     case "inactive":
       return { triggerAttribute: "_activate" }
     case "active":
