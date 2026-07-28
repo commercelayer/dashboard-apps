@@ -3,6 +3,7 @@ import {
   Icon,
   List,
   ListItem,
+  RadialProgress,
   SkeletonTemplate,
   Spacer,
   StatusIcon,
@@ -147,6 +148,20 @@ export function Home(): React.JSX.Element {
                 }
               >
                 <Text weight="semibold">{presets.history.viewTitle}</Text>
+                <Icon name="caretRight" />
+              </ListItem>
+            </Link>
+            <Link
+              href={appRoutes.list.makePath(
+                {},
+                adapters.adaptFormValuesToUrlQuery({
+                  formValues: presets.upcoming,
+                }),
+              )}
+              asChild
+            >
+              <ListItem icon={<RadialProgress size="small" />}>
+                <Text weight="semibold">{presets.upcoming.viewTitle}</Text>
                 <Icon name="caretRight" />
               </ListItem>
             </Link>
