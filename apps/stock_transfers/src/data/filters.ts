@@ -54,6 +54,7 @@ export const instructions: FiltersInstructions = [
         "completed",
         "cancelled",
         "on_hold",
+        "upcoming",
       ],
     },
     render: {
@@ -66,6 +67,7 @@ export const instructions: FiltersInstructions = [
           { value: "completed", label: "Completed" },
           { value: "cancelled", label: "Cancelled" },
           { value: "on_hold", label: "On hold" },
+          { value: "upcoming", label: "Upcoming" },
         ],
       },
     },
