@@ -14,8 +14,8 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "7.9.1",
-    "@commercelayer/sdk": "8.0.0-beta.9",
+    "@commercelayer/app-elements": "7.11.1",
+    "@commercelayer/sdk": "8.0.0-beta.11",
     "@hookform/resolvers": "^3.10.0",
     "@tanstack/react-virtual": "^3.14.2",
     "dashboard-apps-common": "workspace:*",
