@@ -98,17 +98,30 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
 
     {
       label: "Coupons",
-      type: "options",
-      sdk: {
-        predicate: "coupons_code_present",
-      },
+      type: "groupedPredicates",
+      urlParamKey: "filter_coupons", // a key to match the value in query string, not for API
       render: {
         component: "inputToggleButton",
         props: {
           mode: "single",
           options: [
-            { value: "true", label: "With coupons" },
-            { value: "false", label: "Without coupons" },
+            {
+              value: "with_coupons", // value to identify the UI selection, won't be passed to API
+              label: "With coupons",
+              sdk: {
+                // predicate and value for API
+                predicate: "promotion_rules_type_eq",
+                value: "CouponCodesPromotionRule",
+              },
+            },
+            {
+              value: "without_coupons",
+              label: "Without coupons",
+              sdk: {
+                predicate: "promotion_rules_type_not_eq",
+                value: "CouponCodesPromotionRule",
+              },
+            },
           ],
         },
       },
