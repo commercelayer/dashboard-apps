@@ -346,7 +346,7 @@ function SectionCheck({
                     : "So sad, it doesn't match 😢"}
               </Spacer>
             </Text>
-            {results.data.map((rule: any, index: number) => (
+            {results.data?.map((rule: any, index: number) => (
               <CheckItem key={rule.id} index={index} rule={rule} />
             ))}
           </Spacer>
