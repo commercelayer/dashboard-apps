@@ -6,6 +6,7 @@ import {
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import isEmpty from "lodash-es/isEmpty"
+import { FiltersPreview } from "./FiltersPreview"
 import { useExportDetailsContext } from "./Provider"
 
 export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
@@ -30,7 +31,7 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
       </ListDetailsItem>
 
       <ListDetailsItem label="Filters" gutter="none">
-        <JsonPreview json={data.filters} />
+        <FiltersPreview filters={data.filters} />
       </ListDetailsItem>
 
       <ListDetailsItem label="Options" gutter="none">
@@ -52,23 +53,3 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
     </ListDetails>
   )
 })
-
-function JsonPreview({ json }: { json?: object | null }): React.JSX.Element {
-  return (
-    <pre
-      style={{
-        backgroundColor: "#f8f8f8", // .bg-gray-50
-        overflowX: "auto", // .overflow-x-auto
-        padding: "1rem", // .p-4
-        fontSize: ".75rem", // .text-xs
-        borderRadius: "5px", // .rounded
-      }}
-    >
-      {json != null && Object.keys(json).length > 0 ? (
-        <>{JSON.stringify(json, null, 2)}</>
-      ) : (
-        <>-</>
-      )}
-    </pre>
-  )
-}
