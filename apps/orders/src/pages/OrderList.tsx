@@ -1,6 +1,7 @@
 import {
   PageLayout,
   Spacer,
+  useAppLinking,
   useResourceFilters,
   useTokenProvider,
   useTranslation,
@@ -11,7 +12,7 @@ import { useCountryCodes } from "src/metricsApi/useCountryCodes"
 import { useLocation } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
-import { ListItemOrder } from "#components/ListItemOrder"
+import { useOrdersTableColumns } from "#components/ordersTableColumns"
 import { makeCartsInstructions, makeInstructions } from "#data/filters"
 import { presets } from "#data/lists"
 import { appRoutes } from "#data/routes"
@@ -24,12 +25,19 @@ const OrderList: FC = () => {
   const { countryCodes } = useCountryCodes()
   const queryString = useSearch()
   const [, setLocation] = useLocation()
+  const { navigateTo } = useAppLinking()
 
   const isPendingOrdersList =
     new URLSearchParams(queryString).get("viewTitle") ===
     presets.pending.viewTitle
 
-  const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter, adapters } =
+  // carts are sorted by last update, placed orders by placement date.
+  // Metrics attributes are namespaced, unlike the filters' date predicate.
+  const metricsSortAttribute = isPendingOrdersList
+    ? "order.updated_at"
+    : "order.placed_at"
+
+  const { SearchWithNav, FilteredTable, viewTitle, hasActiveFilter, adapters } =
     useResourceFilters({
       instructions: isPendingOrdersList
         ? makeCartsInstructions()
@@ -66,11 +74,15 @@ const OrderList: FC = () => {
     isPendingOrdersList
   )
 
+  const columns = useOrdersTableColumns(metricsSortAttribute)
+
   return (
     <PageLayout
       title={viewTitle ?? presets.history.viewTitle}
       mode={mode}
       gap="only-top"
+      // the table is data-dense: let it use all the width available
+      fullWidth
       navigationButton={{
         onClick: () => {
           setLocation(appRoutes.home.makePath({}))
@@ -94,21 +106,33 @@ const OrderList: FC = () => {
       />
 
       <Spacer bottom="14">
-        <FilteredList
+        <FilteredTable
           type="orders"
-          ItemTemplate={ListItemOrder}
+          columns={columns}
           metricsQuery={{
             search: {
               limit: 25,
-              sort: "desc",
-              sort_by: isPendingOrdersList
-                ? "order.updated_at"
-                : "order.placed_at",
-              fields: ["order.*", "billing_address.*", "market.*"],
+              fields: [
+                "order.*",
+                "billing_address.*",
+                "market.*",
+                "customer.*",
+              ],
             },
           }}
+          defaultSort={`-${metricsSortAttribute}`}
           preProcess={preProcess}
           hideTitle={viewTitle === presets.pending.viewTitle}
+          getRowHref={(order) =>
+            navigateTo({ app: "orders", resourceId: order.id })?.href
+          }
+          onRowClick={(order, event) => {
+            // the row's click target is the stretched anchor; `navigateTo` types
+            // its handler against the specific elements it supports
+            navigateTo({ app: "orders", resourceId: order.id })?.onClick(
+              event as React.MouseEvent<HTMLAnchorElement>,
+            )
+          }}
           emptyState={
             <ListEmptyState
               scope={
