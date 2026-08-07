@@ -1,8 +1,7 @@
 import {
-  Badge,
+  Card,
   ListDetails,
-  ListDetailsItem,
-  Tag,
+  Text,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import isEmpty from "lodash-es/isEmpty"
@@ -20,36 +19,48 @@ export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
 
   return (
     <ListDetails title="Info" isLoading={isLoading}>
-      <ListDetailsItem label="Includes" gutter="none">
-        {data.includes != null && data.includes.length > 0 ? (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-            {data.includes.map((inc) => (
-              <Tag key={inc}>{inc}</Tag>
-            ))}
-          </div>
-        ) : null}
-      </ListDetailsItem>
-
-      <ListDetailsItem label="Filters" gutter="none">
+      <Card
+        gap="6"
+        overflow="visible"
+        backgroundColor="light"
+        className="flex flex-col gap-2 mt-6 print:p-4 print:rounded-sm"
+      >
         <FiltersPreview filters={data.filters} />
-      </ListDetailsItem>
 
-      <ListDetailsItem label="Options" gutter="none">
-        {data.dry_data === true || !isEmpty(data.fields) ? (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-            {data.dry_data === true && (
-              <Badge variant="teal" icon="check">
-                Importable
-              </Badge>
+        <div className="flex flex-wrap items-center gap-2 px-1">
+          <Text size="small" variant="info" className="font-mono">
+            Includes:
+          </Text>
+          <Text size="small" className="font-mono ">
+            {data.includes != null && data.includes.length > 0 ? (
+              data.includes.map((inc, idx) => (
+                <span key={inc} className="mr-2">
+                  {inc}
+                  {idx < (data.includes ?? []).length - 1 ? "," : ""}
+                </span>
+              ))
+            ) : (
+              <Text variant="disabled">&#8212;</Text>
             )}
-            {!isEmpty(data.fields) && (
-              <Badge variant="teal" icon="check">
-                Simple format
-              </Badge>
+          </Text>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 px-1">
+          <Text size="small" variant="info" className="font-mono">
+            Options:
+          </Text>
+          <Text size="small" className="font-mono ">
+            {data.dry_data === true && <span>importable</span>}
+            {data.dry_data === true && !isEmpty(data.fields) && (
+              <span className="mr-2">,</span>
             )}
-          </div>
-        ) : null}
-      </ListDetailsItem>
+            {!isEmpty(data.fields) && <span>simple format</span>}
+            {data.dry_data !== true && isEmpty(data.fields) && (
+              <Text variant="disabled">&#8212;</Text>
+            )}
+          </Text>
+        </div>
+      </Card>
     </ListDetails>
   )
 })
