@@ -72,7 +72,7 @@ export function FiltersPreview({ filters }: Props): React.JSX.Element {
   }, [sdkClient, idsByResourceTypeKey])
 
   if (filters == null || Object.keys(filters).length === 0) {
-    return <Text variant="disabled">&#8212;</Text>
+    return <></>
   }
 
   const rows = buildFilterRows(filters, namesByResourceType, user?.timezone)
