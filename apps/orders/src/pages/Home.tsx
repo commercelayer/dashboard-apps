@@ -1,5 +1,5 @@
 import {
-  HomePageLayout,
+  PageLayout,
   Spacer,
   Tab,
   Tabs,
@@ -63,13 +63,24 @@ const Home: FC = () => {
   /**
    * Landing without a tab in the url (e.g. `/orders`) would show the first tab
    * as active while none of its filters are applied, so they are written once.
+   *
+   * Filters already present in the url take precedence: an inbound link such as
+   * `/orders?tags_id_in=xxx` (from an order detail, or from another app) must keep
+   * filtering by what it asked for, and only get the tab's filters on top.
    */
   const hasTabInUrl = new URLSearchParams(queryString).get("viewTitle") != null
   useEffect(() => {
     if (!hasTabInUrl) {
+      const incomingFilters = Object.entries(
+        adapters.adaptUrlQueryToFormValues({ queryString }),
+      ).filter(([, value]) => hasFilterValue(value))
+
       navigate(
         `?${adapters.adaptFormValuesToUrlQuery({
-          formValues: activeTab.formValues,
+          formValues: {
+            ...activeTab.formValues,
+            ...Object.fromEntries(incomingFilters),
+          },
         })}`,
         { replace: true },
       )
@@ -105,7 +116,7 @@ const Home: FC = () => {
   )
 
   return (
-    <HomePageLayout
+    <PageLayout
       title={t("resources.orders.name_other")}
       fullWidth
       toolbar={{
@@ -185,8 +196,19 @@ const Home: FC = () => {
       </Tabs>
 
       <FiltersDrawer onUpdate={handleFiltersUpdate} />
-    </HomePageLayout>
+    </PageLayout>
   )
+}
+
+/**
+ * Whether a filter value is actually set. Not `lodash/isEmpty`, which reports
+ * booleans and numbers as empty and would drop them.
+ */
+function hasFilterValue(value: unknown): boolean {
+  if (Array.isArray(value)) {
+    return value.length > 0
+  }
+  return value != null && value !== ""
 }
 
 export default Home
