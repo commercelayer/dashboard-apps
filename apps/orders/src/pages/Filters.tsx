@@ -38,7 +38,7 @@ const Filters: FC = () => {
       navigationButton={{
         onClick: () => {
           setLocation(
-            appRoutes.list.makePath(
+            appRoutes.home.makePath(
               {},
               adapters.adaptUrlQueryToUrlQuery({
                 queryString: location.search,
@@ -54,7 +54,7 @@ const Filters: FC = () => {
     >
       <FiltersForm
         onSubmit={(filtersQueryString) => {
-          setLocation(appRoutes.list.makePath({}, filtersQueryString))
+          setLocation(appRoutes.home.makePath({}, filtersQueryString))
         }}
       />
     </PageLayout>

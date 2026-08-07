@@ -20,6 +20,11 @@ export type PageProps<
 // and `makePath` method to be used to generate the path used in navigation and links
 export const appRoutes = {
   home: createRoute("/"),
+  /**
+   * Legacy path of the orders list, now a redirect to `home`.
+   * Kept because `useAppLinking` still points here when linking to this app
+   * without a resource id. Do not link to it from within the app.
+   */
   list: createRoute("/list/"),
   filters: createRoute("/filters/"),
   new: createRoute("/new/:orderId?/"),
