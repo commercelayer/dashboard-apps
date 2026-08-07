@@ -72,7 +72,13 @@ export function FiltersPreview({ filters }: Props): React.JSX.Element {
   }, [sdkClient, idsByResourceTypeKey])
 
   if (filters == null || Object.keys(filters).length === 0) {
-    return <></>
+    return (
+      <div className="flex flex-wrap items-center gap-2 px-1">
+        <Text size="small" variant="info" className="font-mono">
+          No filters set for this export
+        </Text>
+      </div>
+    )
   }
 
   const rows = buildFilterRows(filters, namesByResourceType, user?.timezone)
