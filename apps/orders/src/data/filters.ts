@@ -144,14 +144,13 @@ export const makeInstructions = ({
       predicate: "market_id_in",
     },
     render: {
-      component: "inputResourceGroup",
+      component: "inputSelect",
       props: {
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "markets",
         searchBy: "name_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        previewLimit: 5,
         hideWhenSingleItem: true,
         filters: {
           disabled_at_null: true,
@@ -225,14 +224,13 @@ export const makeInstructions = ({
       predicate: "tags_id_in",
     },
     render: {
-      component: "inputResourceGroup",
+      component: "inputSelect",
       props: {
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "tags",
         searchBy: "name_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        previewLimit: 5,
         showCheckboxIcon: false,
       },
     },
