@@ -1,5 +1,4 @@
 import {
-  Card,
   formatDate,
   Text,
   useCoreSdkProvider,
@@ -79,25 +78,23 @@ export function FiltersPreview({ filters }: Props): React.JSX.Element {
   const rows = buildFilterRows(filters, namesByResourceType, user?.timezone)
 
   return (
-    <Card
-      gap="6"
-      overflow="visible"
-      backgroundColor="light"
-      className="flex flex-col gap-2 print:p-4 print:rounded-sm"
-    >
+    <>
       {rows.map((row) => (
         <div key={row.label} className="flex flex-wrap items-center gap-2 px-1">
           <Text size="small" variant="info" className="font-mono">
             {row.label}:
           </Text>
-          {row.values.map((value) => (
-            <Text key={value} size="small" className="font-mono">
-              {value}
-            </Text>
-          ))}
+          <Text size="small" className="font-mono">
+            {row.values.map((value, idx) => (
+              <span key={value} className="mr-2">
+                {value}
+                {idx < row.values.length - 1 ? "," : ""}
+              </span>
+            ))}
+          </Text>
         </div>
       ))}
-    </Card>
+    </>
   )
 }
 
@@ -116,7 +113,7 @@ function getIdsByResourceType(
       continue
     }
 
-    const ids = Array.isArray(value) ? value.map(String) : [String(value)]
+    const ids = splitValues(value)
     const set = idsByResourceType[resourceType] ?? new Set<string>()
     ids.forEach((id) => set.add(id))
     idsByResourceType[resourceType] = set
@@ -138,7 +135,11 @@ function buildFilterRows(
   return Object.entries(filters)
     .filter(([, value]) => value != null && value !== "")
     .map(([field, value]) => {
-      const values = Array.isArray(value) ? value.map(String) : [String(value)]
+      if (isMetadataFilterField(field)) {
+        return { label: filterFieldLabel(field), values: [String(value)] }
+      }
+
+      const values = splitValues(value)
 
       const resourceType = RESOURCE_FILTER_FIELDS[field]
       if (resourceType != null) {
@@ -162,29 +163,30 @@ function buildFilterRows(
         }
       }
 
-      if (isMetadataFilterField(field)) {
-        return { label: filterFieldLabel(field), values }
-      }
-
       const valueLabels = VALUE_LABELS[field]
       if (valueLabels != null) {
         return {
           label: filterFieldLabel(field),
-          values: values.map((v) => valueLabels[v] ?? capitalize(v)),
+          values: values.map((v) => valueLabels[v] ?? v),
         }
       }
 
-      return {
-        label: filterFieldLabel(field),
-        values: values.map(capitalize),
-      }
+      return { label: filterFieldLabel(field), values }
     })
 }
 
-function capitalize(text: string): string {
-  return text
-    .split(/[_-]/)
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ")
+/** Splits a filter value into individual values, handling both arrays and comma-separated strings (Ransack `_in`-style filters). */
+function splitValues(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.map(String)
+  }
+
+  if (typeof value === "string") {
+    return value
+      .split(",")
+      .map((v) => v.trim())
+      .filter(Boolean)
+  }
+
+  return [String(value)]
 }
