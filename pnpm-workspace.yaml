@@ -12,3 +12,5 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@commercelayer/app-elements'
   - '@commercelayer/sdk'
+  - '@tanstack/react-table@9.0.0'
+  - '@tanstack/table-core@9.0.0'

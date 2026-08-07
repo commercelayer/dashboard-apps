@@ -1,5 +1,6 @@
 import {
   Button,
+  Card,
   EmptyState,
   formatDateWithPredicate,
   isMockedId,
@@ -98,6 +99,7 @@ function OrderDetails(): React.JSX.Element {
   if (orderId === undefined || !canUser("read", "orders") || error != null) {
     return (
       <PageLayout
+        fullWidth
         title={t("resources.orders.name_other")}
         navigationButton={{
           onClick: () => {
@@ -131,6 +133,7 @@ function OrderDetails(): React.JSX.Element {
 
   return (
     <PageLayout
+      fullWidth
       mode={mode}
       toolbar={toolbar}
       title={
@@ -177,6 +180,57 @@ function OrderDetails(): React.JSX.Element {
       }}
       gap="only-top"
       scrollToTop
+      // supporting information sits beside the order itself, see detail.png
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14">
+            <Card overflow="visible">
+              <OrderCustomer order={order} />
+              <Spacer top="10">
+                <OrderAddresses order={order} />
+              </Spacer>
+              {!isMockedId(order.id) && (
+                <>
+                  <Spacer top="10">
+                    <ResourceTags
+                      resourceType="orders"
+                      resourceId={order.id}
+                      overlay={{ title: pageTitle }}
+                      onTagClick={(tagId) => {
+                        setLocation(
+                          appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
+                        )
+                      }}
+                    />
+                  </Spacer>
+                  <Spacer top="10">
+                    <ResourceMetadata
+                      resourceType="orders"
+                      resourceId={order.id}
+                      overlay={{
+                        title: pageTitle,
+                      }}
+                    />
+                  </Spacer>
+                </>
+              )}
+            </Card>
+          </Spacer>
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+      afterSidebar={
+        !["draft"].includes(order.status) && (
+          <SkeletonTemplate isLoading={isLoading}>
+            <div className="print:hidden">
+              <Spacer top="14" bottom="4">
+                <Timeline order={order} />
+              </Spacer>
+            </div>
+          </SkeletonTemplate>
+        )
+      }
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
@@ -188,12 +242,6 @@ function OrderDetails(): React.JSX.Element {
               <OrderPayment order={order} />
             </Spacer>
           </div>
-          <Spacer top="14">
-            <OrderCustomer order={order} />
-          </Spacer>
-          <Spacer top="14">
-            <OrderAddresses order={order} />
-          </Spacer>
           <div className="print:hidden">
             <Spacer top="14">
               <OrderShipments order={order} />
@@ -214,31 +262,6 @@ function OrderDetails(): React.JSX.Element {
               />
             </Spacer>
           </div>
-          {!isMockedId(order.id) && (
-            <>
-              <Spacer top="14">
-                <ResourceTags
-                  resourceType="orders"
-                  resourceId={order.id}
-                  overlay={{ title: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(
-                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                    )
-                  }}
-                />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="orders"
-                  resourceId={order.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
           <div className="print:hidden">
             <Spacer top="14">
               <ResourceAttachments
@@ -246,11 +269,6 @@ function OrderDetails(): React.JSX.Element {
                 resourceId={order.id}
               />
             </Spacer>
-            {!["draft"].includes(order.status) && (
-              <Spacer top="14">
-                <Timeline order={order} />
-              </Spacer>
-            )}
           </div>
         </Spacer>
       </SkeletonTemplate>
