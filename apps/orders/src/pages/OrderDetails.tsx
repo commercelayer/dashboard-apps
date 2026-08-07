@@ -171,7 +171,7 @@ function OrderDetails(): React.JSX.Element {
       navigationButton={{
         onClick: () => {
           goBack({
-            defaultRelativePath: appRoutes.list.makePath({}),
+            defaultRelativePath: appRoutes.home.makePath({}),
             currentResourceId: orderId,
           })
         },
@@ -198,7 +198,7 @@ function OrderDetails(): React.JSX.Element {
                       overlay={{ title: pageTitle }}
                       onTagClick={(tagId) => {
                         setLocation(
-                          appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
+                          appRoutes.home.makePath({}, `tags_id_in=${tagId}`),
                         )
                       }}
                     />
