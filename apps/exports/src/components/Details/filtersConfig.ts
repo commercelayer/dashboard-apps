@@ -6,6 +6,7 @@ import type { SearchableResource } from "#components/Form/ResourceFinder/utils"
  */
 export const RESOURCE_FILTER_FIELDS: Record<string, SearchableResource> = {
   market_in: "markets",
+  market_id_in: "markets",
   tags_id_in: "tags",
   shipping_category_id_in: "shipping_categories",
   price_list_id_eq: "price_lists",
