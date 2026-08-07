@@ -62,7 +62,7 @@ export function useOrdersTableColumns(
 
           return (
             <div>
-              <Text tag="div" weight="semibold">
+              <Text tag="div" weight="medium">
                 {isEmpty(title) ? "-" : title}
                 {!isEmpty(countryCode) ? ` (${countryCode})` : ""}
               </Text>
