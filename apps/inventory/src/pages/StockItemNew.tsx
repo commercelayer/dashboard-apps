@@ -8,7 +8,7 @@ import {
 } from "@commercelayer/app-elements"
 import type { StockItemCreate } from "@commercelayer/sdk"
 import { useState } from "react"
-import { Link, useLocation, useRoute } from "wouter"
+import { Link, useLocation } from "wouter"
 import {
   StockItemForm,
   type StockItemFormValues,
@@ -23,16 +23,7 @@ export function StockItemNew(): React.JSX.Element {
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const [, params] = useRoute<{ stockLocationId: string }>(
-    appRoutes.newStockItem.path,
-  )
-
-  const stockLocationId = params?.stockLocationId ?? ""
-
-  const goBackUrl =
-    stockLocationId !== ""
-      ? appRoutes.stockLocation.makePath(stockLocationId)
-      : appRoutes.list.makePath()
+  const goBackUrl = appRoutes.home.makePath()
 
   if (!canUser("create", "stock_items")) {
     return (
@@ -78,19 +69,13 @@ export function StockItemNew(): React.JSX.Element {
       <Spacer bottom="14">
         <StockItemForm
           defaultValues={{
-            ...(stockLocationId !== ""
-              ? { stockLocation: stockLocationId }
-              : {}),
             quantity: 1,
           }}
           apiError={apiError}
           isSubmitting={isSaving}
           onSubmit={(formValues) => {
             setIsSaving(true)
-            const stockItem = adaptFormValuesToStockItem(
-              formValues,
-              stockLocationId,
-            )
+            const stockItem = adaptFormValuesToStockItem(formValues)
             void sdkClient.stock_items
               .create(stockItem)
               .then(() => {
@@ -109,7 +94,6 @@ export function StockItemNew(): React.JSX.Element {
 
 function adaptFormValuesToStockItem(
   formValues: StockItemFormValues,
-  stockLocationId: string,
 ): StockItemCreate {
   return {
     sku: {
@@ -118,10 +102,8 @@ function adaptFormValuesToStockItem(
     },
     quantity: formValues.quantity,
     stock_location: {
-      id:
-        stockLocationId !== ""
-          ? stockLocationId
-          : (formValues.stockLocation ?? ""),
+      // required by the form schema, so the selector always provides it
+      id: formValues.stockLocation,
       type: "stock_locations",
     },
   }

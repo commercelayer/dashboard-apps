@@ -68,7 +68,7 @@ export function useCustomerDeleteOverlay(customerId: string): OverlayHook {
                   void sdkClient.customers
                     .delete(customer.id)
                     .then(() => {
-                      setLocation(appRoutes.list.makePath())
+                      setLocation(appRoutes.home.makePath())
                     })
                     .catch(() => {})
                 }}

@@ -6,7 +6,7 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { FC } from "react"
-import { useLocation, useRoute } from "wouter"
+import { useLocation } from "wouter"
 import { appRoutes } from "#data/routes"
 
 interface Props {
@@ -17,11 +17,6 @@ export const ListEmptyStatePrice: FC<Props> = ({ scope }) => {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
 
-  const [, params] = useRoute<{ priceListId: string }>(
-    appRoutes.pricesList.path,
-  )
-  const priceListId = params?.priceListId ?? ""
-
   if (scope === "history" && canUser("create", "prices")) {
     return (
       <EmptyState
@@ -31,7 +26,7 @@ export const ListEmptyStatePrice: FC<Props> = ({ scope }) => {
           <Button
             variant="primary"
             onClick={() => {
-              setLocation(appRoutes.priceNew.makePath({ priceListId }))
+              setLocation(appRoutes.priceNew.makePath({}))
             }}
           >
             New Price

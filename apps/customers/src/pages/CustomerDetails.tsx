@@ -1,7 +1,10 @@
 import {
+  Badge,
   Button,
+  Card,
   EmptyState,
   formatDateWithPredicate,
+  getCustomerStatusName,
   isMockedId,
   type PageHeadingProps,
   PageLayout,
@@ -118,7 +121,7 @@ export function CustomerDetails(): React.JSX.Element {
           onClick: () => {
             goBack({
               currentResourceId: customerId,
-              defaultRelativePath: appRoutes.list.makePath(),
+              defaultRelativePath: appRoutes.home.makePath(),
             })
           },
         }}
@@ -127,7 +130,7 @@ export function CustomerDetails(): React.JSX.Element {
         <EmptyState
           title={t("common.not_authorized")}
           action={
-            <Link href={appRoutes.list.makePath()}>
+            <Link href={appRoutes.home.makePath()}>
               <Button variant="primary">{t("common.go_back")}</Button>
             </Link>
           }
@@ -141,7 +144,12 @@ export function CustomerDetails(): React.JSX.Element {
       mode={mode}
       toolbar={pageToolbar}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle}{" "}
+          <Badge variant="secondary">
+            {getCustomerStatusName(customer.status)}
+          </Badge>
+        </SkeletonTemplate>
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
@@ -161,11 +169,65 @@ export function CustomerDetails(): React.JSX.Element {
         onClick: () => {
           goBack({
             currentResourceId: customerId,
-            defaultRelativePath: appRoutes.list.makePath(),
+            defaultRelativePath: appRoutes.home.makePath(),
           })
         },
       }}
-      gap="only-top"
+      fullWidth
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14">
+            <Card overflow="visible">
+              <CustomerAddresses
+                customer={customer}
+                onRemovedAddress={() => {
+                  void mutateCustomer()
+                }}
+              />
+              {!isMockedId(customer.id) && (
+                <>
+                  <Spacer top="10">
+                    <ResourceTags
+                      resourceType="customers"
+                      resourceId={customer.id}
+                      overlay={{ title: pageTitle }}
+                      onTagClick={(tagId) => {
+                        setLocation(
+                          appRoutes.home.makePath(`tags_id_in=${tagId}`),
+                        )
+                      }}
+                    />
+                  </Spacer>
+                  <Spacer top="10">
+                    <ResourceMetadata
+                      resourceType="customers"
+                      resourceId={customer.id}
+                      overlay={{ title: pageTitle }}
+                    />
+                  </Spacer>
+                </>
+              )}
+              <Spacer top="10">
+                <ResourceDetails
+                  resource={customer}
+                  onUpdated={async () => {
+                    void mutateCustomer()
+                  }}
+                />
+              </Spacer>
+            </Card>
+          </Spacer>
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+      afterSidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14" bottom="4">
+            <CustomerTimeline customer={customer} />
+          </Spacer>
+        </SkeletonTemplate>
+      }
       scrollToTop
     >
       <SkeletonTemplate isLoading={isLoading}>
@@ -186,54 +248,10 @@ export function CustomerDetails(): React.JSX.Element {
             />
           </Spacer>
           <Spacer top="14">
-            <CustomerAddresses
-              customer={customer}
-              onRemovedAddress={() => {
-                void mutateCustomer()
-              }}
-            />
-          </Spacer>
-
-          <Spacer top="14">
-            <ResourceDetails
-              resource={customer}
-              onUpdated={async () => {
-                void mutateCustomer()
-              }}
-            />
-          </Spacer>
-
-          {!isMockedId(customer.id) && (
-            <>
-              <Spacer top="14">
-                <ResourceTags
-                  resourceType="customers"
-                  resourceId={customer.id}
-                  overlay={{ title: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(appRoutes.list.makePath(`tags_id_in=${tagId}`))
-                  }}
-                />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="customers"
-                  resourceId={customer.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
-          <Spacer top="14">
             <ResourceAttachments
               resourceType="customers"
               resourceId={customer.id}
             />
-          </Spacer>
-          <Spacer top="14">
-            <CustomerTimeline customer={customer} />
           </Spacer>
         </Spacer>
       </SkeletonTemplate>

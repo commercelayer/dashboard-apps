@@ -1,6 +1,7 @@
 import {
   Alert,
   Button,
+  Card,
   EmptyState,
   formatDateWithPredicate,
   isMockedId,
@@ -125,7 +126,54 @@ function ShipmentDetails(): React.JSX.Element {
         label: t("common.back"),
         icon: "arrowLeft",
       }}
-      gap="only-top"
+      fullWidth
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14">
+            <Card overflow="visible">
+              <ShipmentAddresses shipment={shipment} />
+              <Spacer top="10">
+                <ShipmentInfo shipment={shipment} />
+              </Spacer>
+              <Spacer top="10">
+                <ResourceDetails
+                  resource={shipment}
+                  onUpdated={async () => {
+                    void mutateShipment()
+                  }}
+                />
+              </Spacer>
+              {!isMockedId(shipment.id) && (
+                <>
+                  <Spacer top="10">
+                    <ResourceTags
+                      resourceType="shipments"
+                      resourceId={shipment.id}
+                      overlay={{ title: pageTitle }}
+                    />
+                  </Spacer>
+                  <Spacer top="10">
+                    <ResourceMetadata
+                      resourceType="shipments"
+                      resourceId={shipment.id}
+                      overlay={{ title: pageTitle }}
+                    />
+                  </Spacer>
+                </>
+              )}
+            </Card>
+          </Spacer>
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+      afterSidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14" bottom="4">
+            <ShipmentTimeline shipment={shipment} />
+          </Spacer>
+        </SkeletonTemplate>
+      }
     >
       <SkeletonTemplate isLoading={isLoading}>
         <pageToolbar.Components />
@@ -142,49 +190,10 @@ function ShipmentDetails(): React.JSX.Element {
             <ShipmentPackingList shipment={shipment} />
           </Spacer>
           <Spacer top="14">
-            <ShipmentAddresses shipment={shipment} />
-          </Spacer>
-          <Spacer top="14">
-            <ShipmentInfo shipment={shipment} />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceDetails
-              resource={shipment}
-              onUpdated={async () => {
-                void mutateShipment()
-              }}
-            />
-          </Spacer>
-          {!isMockedId(shipment.id) && (
-            <>
-              <Spacer top="14">
-                <ResourceTags
-                  resourceType="shipments"
-                  resourceId={shipment.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="shipments"
-                  resourceId={shipment.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
-          <Spacer top="14">
             <ResourceAttachments
               resourceType="shipments"
               resourceId={shipment.id}
             />
-          </Spacer>
-          <Spacer top="14">
-            <ShipmentTimeline shipment={shipment} />
           </Spacer>
         </Spacer>
       </SkeletonTemplate>

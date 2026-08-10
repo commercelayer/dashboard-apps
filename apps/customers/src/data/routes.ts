@@ -7,17 +7,13 @@ export type AppRoute = keyof typeof appRoutes
 export const appRoutes = {
   home: {
     path: "/",
-    makePath: () => `/`,
+    makePath: (filters?: string) =>
+      hasFilterQuery(filters) ? `/?${filters}` : `/`,
   },
   list: {
     path: "/list",
     makePath: (filters?: string) =>
       hasFilterQuery(filters) ? `/list/?${filters}` : `/list`,
-  },
-  filters: {
-    path: "/filters",
-    makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`,
   },
   new: {
     path: `/new`,

@@ -77,9 +77,7 @@ export function PriceTierEdit(): React.JSX.Element {
         title={pageTitle}
         navigationButton={{
           onClick: () => {
-            setLocation(
-              appRoutes.priceDetails.makePath({ priceListId, priceId }),
-            )
+            setLocation(appRoutes.priceDetails.makePath({ priceId }))
           },
           label: pageTitle,
           icon: "arrowLeft",
@@ -89,9 +87,7 @@ export function PriceTierEdit(): React.JSX.Element {
         <EmptyState
           title="Not authorized"
           action={
-            <Link
-              href={appRoutes.priceDetails.makePath({ priceListId, priceId })}
-            >
+            <Link href={appRoutes.priceDetails.makePath({ priceId })}>
               <Button variant="primary">Go back</Button>
             </Link>
           }
@@ -100,7 +96,7 @@ export function PriceTierEdit(): React.JSX.Element {
     )
   }
 
-  const goBackUrl = appRoutes.priceDetails.makePath({ priceListId, priceId })
+  const goBackUrl = appRoutes.priceDetails.makePath({ priceId })
 
   if (!canUser("update", sdkResource)) {
     return (
@@ -162,7 +158,6 @@ export function PriceTierEdit(): React.JSX.Element {
                   void mutateTier({ ...updatedTier })
                   setLocation(
                     appRoutes.priceDetails.makePath({
-                      priceListId,
                       priceId,
                     }),
                   )

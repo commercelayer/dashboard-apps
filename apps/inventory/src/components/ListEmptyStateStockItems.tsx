@@ -4,7 +4,7 @@ import {
   EmptyState,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import { Link, useRoute } from "wouter"
+import { Link } from "wouter"
 import { appRoutes } from "#data/routes"
 
 interface Props {
@@ -15,18 +15,6 @@ export function ListEmptyStateStockItems({
   scope = "history",
 }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
-
-  const [, paramsNewStockItem] = useRoute<{ stockLocationId: string }>(
-    appRoutes.newStockItem.path,
-  )
-  const [, paramsNewStockLocation] = useRoute<{ stockLocationId: string }>(
-    appRoutes.stockLocation.path,
-  )
-
-  const stockLocationId =
-    paramsNewStockItem?.stockLocationId ??
-    paramsNewStockLocation?.stockLocationId ??
-    ""
 
   if (scope === "userFiltered") {
     return (
@@ -47,7 +35,7 @@ export function ListEmptyStateStockItems({
         title="No stock items yet!"
         description="Create your first stock item"
         action={
-          <Link href={appRoutes.newStockItem.makePath(stockLocationId)}>
+          <Link href={appRoutes.newStockItem.makePath()}>
             <Button variant="primary">New stock item</Button>
           </Link>
         }

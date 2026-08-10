@@ -24,16 +24,15 @@ export function StockItemEdit(): React.JSX.Element {
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const [, params] = useRoute<{ stockLocationId: string; stockItemId: string }>(
+  const [, params] = useRoute<{ stockItemId: string }>(
     appRoutes.editStockItem.path,
   )
-  const stockLocationId = params?.stockLocationId ?? ""
   const stockItemId = params?.stockItemId ?? ""
 
   const { stockItem, isLoading, mutateStockItem } =
     useStockItemDetails(stockItemId)
 
-  const goBackUrl = appRoutes.stockItem.makePath(stockLocationId, stockItemId)
+  const goBackUrl = appRoutes.stockItem.makePath(stockItemId)
 
   if (!canUser("update", "stock_items")) {
     return (
