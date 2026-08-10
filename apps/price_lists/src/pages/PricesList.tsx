@@ -1,71 +1,52 @@
 import {
-  Button,
   EmptyState,
-  Icon,
   PageLayout,
-  SkeletonTemplate,
+  Spacer,
   useResourceFilters,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import { Link, useLocation, useRoute } from "wouter"
+import { useLocation, useRouter } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyStatePrice } from "#components/ListEmptyStatePrice"
-import { ListItemPrice } from "#components/ListItemPrice"
-import { pricesFilterInstructions } from "#data/filters"
+import { usePricesTableColumns } from "#components/pricesTableColumns"
+import { filterInstructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
-import { usePriceListDetails } from "#hooks/usePriceListDetails"
 
 export function PricesList(): React.JSX.Element {
-  const {
-    canUser,
-    settings: { mode },
-  } = useTokenProvider()
-
-  const [, params] = useRoute<{ priceListId: string }>(
-    appRoutes.pricesList.path,
-  )
-
-  const priceListId = params?.priceListId ?? ""
-
-  const { priceList, isLoading, error } = usePriceListDetails(priceListId)
+  const { canUser } = useTokenProvider()
 
   const queryString = useSearch()
   const [, setLocation] = useLocation()
+  const { base } = useRouter()
 
-  const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions: pricesFilterInstructions({ priceListId }),
-  })
+  const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
+    useResourceFilters({
+      instructions: filterInstructions,
+    })
 
-  if (error != null) {
-    return (
-      <PageLayout
-        title="Price lists"
-        navigationButton={{
-          onClick: () => {
-            setLocation(appRoutes.home.makePath({}))
-          },
-          label: "Price lists",
-          icon: "arrowLeft",
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title="Not authorized"
-          action={
-            <Link href={appRoutes.home.makePath({})}>
-              <Button variant="primary">Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
-    )
+  const columns = usePricesTableColumns()
+
+  const handleFiltersUpdate = (queryString: string): void => {
+    navigate(`?${queryString}`, { replace: true })
   }
 
-  const pageTitle = priceListId !== "" ? priceList.name : "All prices"
+  /**
+   * The details drawer opens over this list, which stays mounted, so the active
+   * filters have to travel with the url — otherwise the table behind the drawer
+   * would reload unfiltered and the filters would be lost on close.
+   */
+  const detailsPath = (priceId: string): string => {
+    // `useSearch` returns the search including its leading `?`, so it is
+    // normalized rather than concatenated
+    const search = new URLSearchParams(queryString).toString()
+    return `${appRoutes.priceDetails.makePath({ priceId })}${
+      search !== "" ? `?${search}` : ""
+    }`
+  }
 
   if (!canUser("read", "price_lists") || !canUser("read", "prices")) {
     return (
-      <PageLayout title="Price lists" mode={mode}>
+      <PageLayout title="Prices">
         <EmptyState title="You are not authorized" />
       </PageLayout>
     )
@@ -73,66 +54,50 @@ export function PricesList(): React.JSX.Element {
 
   return (
     <PageLayout
-      title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
-      }
-      mode={mode}
-      gap="only-top"
-      navigationButton={{
-        onClick: () => {
-          setLocation(appRoutes.home.makePath({}))
-        },
-        label: "Price lists",
-        icon: "arrowLeft",
+      title="Prices"
+      fullWidth
+      toolbar={{
+        buttons: canUser("create", "prices")
+          ? [
+              {
+                icon: "plus",
+                label: "New price",
+                size: "small",
+                onClick: () => {
+                  setLocation(appRoutes.priceNew.makePath({}))
+                },
+              },
+            ]
+          : undefined,
       }}
-      scrollToTop
     >
-      <SearchWithNav
-        queryString={queryString}
-        onUpdate={(qs: any) => {
-          navigate(`?${qs}`, {
-            replace: true,
-          })
-        }}
-        onFilterClick={() => {}}
-        hideFiltersNav
-      />
+      <FiltersBar queryString={queryString} onUpdate={handleFiltersUpdate} />
 
-      <FilteredList
-        type="prices"
-        query={{
-          include: [
-            "sku",
-            "price_volume_tiers",
-            "price_frequency_tiers",
-            "price_list",
-          ],
-          sort: {
-            created_at: "desc",
-          },
-        }}
-        actionButton={
-          canUser("create", "prices") && (
-            <Link href={appRoutes.priceNew.makePath({ priceListId })} asChild>
-              <Button
-                variant="secondary"
-                size="mini"
-                alignItems="center"
-                aria-label="Add price"
-              >
-                <Icon name="plus" />
-                Price
-              </Button>
-            </Link>
-          )
-        }
-        ItemTemplate={ListItemPrice}
-        emptyState={
-          <ListEmptyStatePrice
-            scope={hasActiveFilter ? "userFiltered" : "history"}
-          />
-        }
-      />
+      <Spacer bottom="14">
+        <FilteredTable
+          type="prices"
+          columns={columns}
+          query={{
+            pageSize: 25,
+            // the SKU and Price list columns read these relationships
+            include: ["sku", "price_list"],
+          }}
+          defaultSort="-updated_at"
+          hideTitle
+          // a real href keeps cmd/middle-click opening the price in a new tab
+          getRowHref={(price) => `${base}${detailsPath(price.id)}`}
+          onRowClick={(price) => {
+            setLocation(detailsPath(price.id))
+          }}
+          emptyState={
+            <ListEmptyStatePrice
+              scope={hasActiveFilter ? "userFiltered" : "history"}
+            />
+          }
+        />
+      </Spacer>
+
+      <FiltersDrawer onUpdate={handleFiltersUpdate} />
     </PageLayout>
   )
 }

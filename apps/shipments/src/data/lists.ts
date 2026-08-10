@@ -1,36 +1,79 @@
 import type { FormFullValues } from "@commercelayer/app-elements"
-import { t } from "@commercelayer/app-elements"
 
-export type ListType =
-  | "picking"
-  | "packing"
-  | "readyToShip"
-  | "onHold"
-  | "history"
-
-export const presets: Record<ListType, FormFullValues> = {
-  picking: {
-    status_eq: "picking",
-    archived_at_null: "show",
-    viewTitle: t("apps.shipments.tasks.picking"),
-  },
-  packing: {
-    status_eq: "packing",
-    archived_at_null: "show",
-    viewTitle: t("apps.shipments.tasks.packing"),
-  },
-  readyToShip: {
-    status_eq: "ready_to_ship",
-    archived_at_null: "show",
-    viewTitle: t("apps.shipments.tasks.ready_to_ship"),
-  },
-  onHold: {
-    status_eq: "on_hold",
-    archived_at_null: "show",
-    viewTitle: t("apps.shipments.tasks.on_hold"),
-  },
-  history: {
-    archived_at_null: "hide",
-    viewTitle: t("apps.shipments.tasks.all_shipments"),
-  },
+export interface ShipmentTab {
+  /** Tab label, intentionally not localized */
+  label: string
+  /**
+   * Filters for the tab, as form values. They are written to the url query so
+   * the active tab survives a refresh and can be shared.
+   */
+  formValues: FormFullValues
 }
+
+/** Statuses a shipment can be listed under, mirroring the status filter. */
+const listableStatuses = [
+  "picking",
+  "packing",
+  "ready_to_ship",
+  "shipped",
+  "delivered",
+  "on_hold",
+]
+
+/**
+ * The tabs of the shipments entry page, replacing the task links that used to be
+ * on the home page.
+ *
+ * Every tab hides archived shipments, as the previous "all shipments" view did;
+ * `Closed` groups the two terminal statuses, which have no task of their own.
+ */
+export const shipmentTabs: ShipmentTab[] = [
+  {
+    label: "All",
+    formValues: {
+      status_in: listableStatuses,
+      archived_at_null: "hide",
+      viewTitle: "All",
+    },
+  },
+  {
+    label: "Picking",
+    formValues: {
+      status_in: ["picking"],
+      archived_at_null: "hide",
+      viewTitle: "Picking",
+    },
+  },
+  {
+    label: "Packing",
+    formValues: {
+      status_in: ["packing"],
+      archived_at_null: "hide",
+      viewTitle: "Packing",
+    },
+  },
+  {
+    label: "Ready",
+    formValues: {
+      status_in: ["ready_to_ship"],
+      archived_at_null: "hide",
+      viewTitle: "Ready",
+    },
+  },
+  {
+    label: "On hold",
+    formValues: {
+      status_in: ["on_hold"],
+      archived_at_null: "hide",
+      viewTitle: "On hold",
+    },
+  },
+  {
+    label: "Closed",
+    formValues: {
+      status_in: ["shipped", "delivered"],
+      archived_at_null: "hide",
+      viewTitle: "Closed",
+    },
+  },
+]

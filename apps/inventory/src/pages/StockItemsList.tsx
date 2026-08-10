@@ -1,74 +1,52 @@
 import {
-  A,
-  Button,
   EmptyState,
-  Icon,
   PageLayout,
-  SkeletonTemplate,
+  Spacer,
   useResourceFilters,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import { Link, useLocation, useRoute } from "wouter"
+import { useLocation, useRouter } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyStateStockItems } from "#components/ListEmptyStateStockItems"
-import { ListItemStockItem } from "#components/ListItemStockItem"
+import { useStockItemsTableColumns } from "#components/stockItemsTableColumns"
 import { stockItemsInstructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
-import { useStockLocationDetails } from "#hooks/useStockLocationDetails"
 
 export function StockItemsList(): React.JSX.Element {
-  const {
-    canUser,
-    settings: { mode },
-  } = useTokenProvider()
-
-  const [, params] = useRoute<{ stockLocationId?: string }>(
-    appRoutes.stockLocation.path,
-  )
-
-  const stockLocationId = params?.stockLocationId ?? ""
-
-  const stockLocationDetails = useStockLocationDetails(stockLocationId)
-  const { stockLocation, isLoading, error } = stockLocationDetails ?? null
+  const { canUser } = useTokenProvider()
 
   const queryString = useSearch()
   const [, setLocation] = useLocation()
+  const { base } = useRouter()
 
-  const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions: stockItemsInstructions({ stockLocationId }),
-  })
+  const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
+    useResourceFilters({
+      instructions: stockItemsInstructions,
+    })
 
-  if (error != null) {
-    return (
-      <PageLayout
-        title="Inventory"
-        navigationButton={{
-          onClick: () => {
-            setLocation(appRoutes.home.makePath())
-          },
-          label: "Inventory",
-          icon: "arrowLeft",
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title="Not authorized"
-          action={
-            <Link href={appRoutes.home.makePath()}>
-              <Button variant="primary">Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
-    )
+  const columns = useStockItemsTableColumns()
+
+  const handleFiltersUpdate = (queryString: string): void => {
+    navigate(`?${queryString}`, { replace: true })
   }
 
-  const pageTitle =
-    stockLocationId !== "" ? stockLocation.name : "All inventory"
+  /**
+   * The details drawer opens over this list, which stays mounted, so the active
+   * filters have to travel with the url — otherwise the table behind the drawer
+   * would reload unfiltered and the filters would be lost on close.
+   */
+  const detailsPath = (stockItemId: string): string => {
+    // `useSearch` returns the search including its leading `?`, so it is
+    // normalized rather than concatenated
+    const search = new URLSearchParams(queryString).toString()
+    return `${appRoutes.stockItem.makePath(stockItemId)}${
+      search !== "" ? `?${search}` : ""
+    }`
+  }
 
   if (!canUser("read", "stock_locations")) {
     return (
-      <PageLayout title="Inventory" mode={mode}>
+      <PageLayout title="Inventory">
         <EmptyState title="You are not authorized" />
       </PageLayout>
     )
@@ -76,68 +54,50 @@ export function StockItemsList(): React.JSX.Element {
 
   return (
     <PageLayout
-      title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
-      }
-      mode={mode}
-      gap="only-top"
-      navigationButton={{
-        onClick: () => {
-          setLocation(appRoutes.home.makePath())
-        },
-        label: "Inventory",
-        icon: "arrowLeft",
+      title="Inventory"
+      fullWidth
+      toolbar={{
+        buttons: canUser("create", "stock_items")
+          ? [
+              {
+                icon: "plus",
+                label: "New stock item",
+                size: "small",
+                onClick: () => {
+                  setLocation(appRoutes.newStockItem.makePath())
+                },
+              },
+            ]
+          : undefined,
       }}
     >
-      <SearchWithNav
-        queryString={queryString}
-        onUpdate={(qs: any) => {
-          navigate(`?${qs}`, {
-            replace: true,
-          })
-        }}
-        onFilterClick={(qs) => {
-          setLocation(
-            stockLocationId !== ""
-              ? appRoutes.stockLocationFilters.makePath(stockLocationId, qs)
-              : appRoutes.filters.makePath(qs),
-          )
-        }}
-      />
-      <FilteredList
-        type="stock_items"
-        query={{
-          include: ["sku", "reserved_stock", "stock_location"],
-          sort: {
-            created_at: "desc",
-          },
-        }}
-        actionButton={
-          canUser("create", "stock_items") ? (
-            <Link
-              href={appRoutes.newStockItem.makePath(stockLocationId)}
-              asChild
-            >
-              <A
-                href=""
-                variant="secondary"
-                size="mini"
-                alignItems="center"
-                aria-label="Add stock item"
-              >
-                <Icon name="plus" />
-                Stock item
-              </A>
-            </Link>
-          ) : undefined
-        }
-        ItemTemplate={ListItemStockItem}
-        emptyState={
-          <ListEmptyStateStockItems
-            scope={hasActiveFilter ? "userFiltered" : "history"}
-          />
-        }
-      />
+      <FiltersBar queryString={queryString} onUpdate={handleFiltersUpdate} />
+
+      <Spacer bottom="14">
+        <FilteredTable
+          type="stock_items"
+          columns={columns}
+          query={{
+            pageSize: 25,
+            // the SKU, Stock location and Quantity columns read these
+            include: ["sku", "reserved_stock", "stock_location"],
+          }}
+          defaultSort="-updated_at"
+          hideTitle
+          // a real href keeps cmd/middle-click opening the stock item in a new tab
+          getRowHref={(stockItem) => `${base}${detailsPath(stockItem.id)}`}
+          onRowClick={(stockItem) => {
+            setLocation(detailsPath(stockItem.id))
+          }}
+          emptyState={
+            <ListEmptyStateStockItems
+              scope={hasActiveFilter ? "userFiltered" : "history"}
+            />
+          }
+        />
+      </Spacer>
+
+      <FiltersDrawer onUpdate={handleFiltersUpdate} />
     </PageLayout>
   )
 }

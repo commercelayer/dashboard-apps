@@ -12,7 +12,7 @@ import {
 import type { Price } from "@commercelayer/sdk"
 import type { FC } from "react"
 import type { KeyedMutator } from "swr"
-import { Link, useLocation, useRoute } from "wouter"
+import { Link, useLocation } from "wouter"
 import { appRoutes } from "#data/routes"
 import { makePrice } from "#mocks"
 import type { PriceTierType } from "#types"
@@ -54,10 +54,6 @@ export const PriceTiers: FC<Props> = ({
   type,
 }) => {
   const [, setLocation] = useLocation()
-  const [, params] = useRoute<{ priceListId: string; priceId: string }>(
-    appRoutes.priceDetails.path,
-  )
-  const priceListId = params?.priceListId ?? ""
   const tierLabel = `${type.charAt(0).toUpperCase()}${type.slice(1)}`
   const sectionTitle = `${tierLabel} pricing`
   const sdkResource = getPriceTierSdkResource(type)
@@ -73,7 +69,6 @@ export const PriceTiers: FC<Props> = ({
         priceTiers.length > 0 && (
           <Link
             href={appRoutes[buttonCardCtaPathName].makePath({
-              priceListId,
               priceId: price.id,
             })}
             asChild
@@ -106,7 +101,6 @@ export const PriceTiers: FC<Props> = ({
             onClick={() => {
               setLocation(
                 appRoutes[buttonCardCtaPathName].makePath({
-                  priceListId,
                   priceId: price.id,
                 }),
               )

@@ -34,10 +34,9 @@ interface Props {
 
 export const TableItemPriceTier = withSkeletonTemplate<Props>(
   ({ type, resource = makePriceTier(type), mutatePrice }) => {
-    const [, params] = useRoute<{ priceListId: string; priceId: string }>(
+    const [, params] = useRoute<{ priceId: string }>(
       appRoutes.priceDetails.path,
     )
-    const priceListId = params?.priceListId ?? ""
     const priceId = params?.priceId ?? ""
 
     const [, setLocation] = useLocation()
@@ -59,7 +58,6 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
           onClick={() => {
             setLocation(
               appRoutes[appRoutesPath].makePath({
-                priceListId,
                 priceId,
                 tierId: resource.id,
               }),
