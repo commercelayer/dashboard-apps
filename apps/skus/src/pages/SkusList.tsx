@@ -1,17 +1,15 @@
 import {
-  Button,
   EmptyState,
   HomePageLayout,
-  Icon,
   Spacer,
   useResourceFilters,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { FC } from "react"
-import { Link, useLocation } from "wouter"
+import { useLocation, useRouter } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
-import { ListItemSku } from "#components/ListItemSku"
+import { useSkusTableColumns } from "#components/skusTableColumns"
 import { instructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
 
@@ -20,10 +18,32 @@ export const SkusList: FC = () => {
 
   const queryString = useSearch()
   const [, setLocation] = useLocation()
+  const { base } = useRouter()
 
-  const { SearchWithNav, FilteredList, hasActiveFilter } = useResourceFilters({
-    instructions,
-  })
+  /**
+   * The details drawer opens over this list, which stays mounted, so the active
+   * filters have to travel with the url — otherwise the table behind the drawer
+   * would reload unfiltered and the filters would be lost on close.
+   */
+  const detailsPath = (skuId: string): string => {
+    // `useSearch` returns the search including its leading `?`, so it is
+    // normalized rather than concatenated
+    const search = new URLSearchParams(queryString).toString()
+    return `${appRoutes.details.makePath({ skuId })}${
+      search !== "" ? `?${search}` : ""
+    }`
+  }
+
+  const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
+    useResourceFilters({
+      instructions,
+    })
+
+  const columns = useSkusTableColumns()
+
+  const handleFiltersUpdate = (queryString: string): void => {
+    navigate(`?${queryString}`, { replace: true })
+  }
 
   if (!canUser("read", "skus")) {
     return (
@@ -34,52 +54,51 @@ export const SkusList: FC = () => {
   }
 
   return (
-    <HomePageLayout title="SKUs">
-      <SearchWithNav
-        queryString={queryString}
-        onUpdate={(qs) => {
-          navigate(`?${qs}`, {
-            replace: true,
-          })
-        }}
-        onFilterClick={(queryString) => {
-          setLocation(appRoutes.filters.makePath({}, queryString))
-        }}
-        hideFiltersNav={false}
-      />
+    <HomePageLayout
+      title="SKUs"
+      fullWidth
+      toolbar={{
+        buttons: canUser("create", "skus")
+          ? [
+              {
+                icon: "plus",
+                label: "New SKU",
+                size: "small",
+                onClick: () => {
+                  setLocation(appRoutes.new.makePath({}))
+                },
+              },
+            ]
+          : undefined,
+      }}
+    >
+      <FiltersBar queryString={queryString} onUpdate={handleFiltersUpdate} />
 
       <Spacer bottom="14">
-        <FilteredList
+        <FilteredTable
           type="skus"
-          ItemTemplate={ListItemSku}
+          columns={columns}
           query={{
             pageSize: 25,
-            sort: {
-              code: "asc",
-            },
+            // the `Shipping category` column reads this relationship
+            include: ["shipping_category"],
+          }}
+          defaultSort="code"
+          hideTitle
+          // a real href keeps cmd/middle-click opening the SKU in a new tab
+          getRowHref={(sku) => `${base}${detailsPath(sku.id)}`}
+          onRowClick={(sku) => {
+            setLocation(detailsPath(sku.id))
           }}
           emptyState={
             <ListEmptyState
               scope={hasActiveFilter ? "userFiltered" : "history"}
             />
           }
-          actionButton={
-            canUser("create", "skus") ? (
-              <Link href={appRoutes.new.makePath({})} asChild>
-                <Button
-                  variant="secondary"
-                  size="mini"
-                  alignItems="center"
-                  aria-label="Add SKU"
-                >
-                  <Icon name="plus" />
-                  New
-                </Button>
-              </Link>
-            ) : undefined
-          }
         />
       </Spacer>
+
+      <FiltersDrawer onUpdate={handleFiltersUpdate} />
     </HomePageLayout>
   )
 }
