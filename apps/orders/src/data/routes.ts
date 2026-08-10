@@ -26,7 +26,6 @@ export const appRoutes = {
    * without a resource id. Do not link to it from within the app.
    */
   list: createRoute("/list/"),
-  filters: createRoute("/filters/"),
   new: createRoute("/new/:orderId?/"),
   details: createRoute("/list/:orderId/"),
   refund: createRoute("/list/:orderId/refund/"),
