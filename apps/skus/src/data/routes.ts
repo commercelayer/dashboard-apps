@@ -17,7 +17,6 @@ export type PageProps<
 export const appRoutes = {
   home: createRoute("/"),
   list: createRoute("/list/"),
-  filters: createRoute("/filters/"),
   new: createRoute("/new/"),
   details: createRoute("/list/:skuId/"),
   edit: createRoute("/list/:skuId/edit/"),
