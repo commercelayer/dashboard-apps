@@ -29,8 +29,8 @@ importers:
   apps/bundles:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -111,8 +111,8 @@ importers:
   apps/customers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -190,8 +190,8 @@ importers:
   apps/exports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -275,8 +275,8 @@ importers:
   apps/gift_cards:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -357,8 +357,8 @@ importers:
   apps/imports:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -445,8 +445,8 @@ importers:
   apps/inventory:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -527,8 +527,8 @@ importers:
   apps/my_sample_app:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -606,8 +606,8 @@ importers:
   apps/orders:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -688,8 +688,8 @@ importers:
   apps/price_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -770,8 +770,8 @@ importers:
   apps/promotions:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -855,8 +855,8 @@ importers:
   apps/returns:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -934,8 +934,8 @@ importers:
   apps/shipments:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -1016,8 +1016,8 @@ importers:
   apps/sku_lists:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -1098,8 +1098,8 @@ importers:
   apps/skus:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -1183,8 +1183,8 @@ importers:
   apps/stock_transfers:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -1262,8 +1262,8 @@ importers:
   apps/subscriptions:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -1344,8 +1344,8 @@ importers:
   apps/tags:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -1420,8 +1420,8 @@ importers:
   apps/webhooks:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -1523,8 +1523,8 @@ importers:
   packages/common:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       '@commercelayer/sdk':
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
@@ -1575,8 +1575,8 @@ importers:
   packages/index:
     dependencies:
       '@commercelayer/app-elements':
-        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764
-        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
+        specifier: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc
+        version: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))
       lodash-es:
         specifier: ^4.18.1
         version: 4.18.1
@@ -1803,8 +1803,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@commercelayer/app-elements@https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764':
-    resolution: {integrity: sha512-GvVSGg2n49I3mUOMFwjvjlQkcC19UgieiqhJsi2fVODq3q2E4qSCCmgoBhyXOH+Y+5hBWdwYLBJyyCoqOiOK4A==, tarball: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764}
+  '@commercelayer/app-elements@https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc':
+    resolution: {integrity: sha512-9j9xVDOL5Dq4lqGKdtIdC62y0L+9behbJ9L2/ml+KnOIr71liTiufUPE2tC3pXVZywHkuTxHQRTDF7hmeoiNdA==, tarball: https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc}
     version: 7.12.0
     engines: {node: '>=22.22'}
     peerDependencies:
@@ -2084,23 +2084,32 @@ packages:
   '@floating-ui/core@1.7.5':
     resolution: {integrity: sha512-1Ih4WTWyw0+lKyFMcBHGbb5U5FtuHJuujoyyr5zTaWS5EYMeT6Jb2AuDeftsCsEuchO+mM2ij5+q9crhydzLhQ==}
 
+  '@floating-ui/core@1.8.0':
+    resolution: {integrity: sha512-0CIZ5itps/8x7BG8dEIhs53BvCUH2PCoogtakwRTut+Arm58sJooJ0AuZhLw2HJYIR5cMLNPBSS728sPho2khQ==}
+
   '@floating-ui/dom@1.7.6':
     resolution: {integrity: sha512-9gZSAI5XM36880PPMm//9dfiEngYoC6Am2izES1FF406YFsjvyBMmeJ2g4SAju3xWwtuynNRFL2s9hgxpLI5SQ==}
 
-  '@floating-ui/react-dom@2.1.8':
-    resolution: {integrity: sha512-cC52bHwM/n/CxS87FH0yWdngEZrjdtLW/qVruo68qg+prK7ZQ4YGdut2GyDVpoGeAYe/h899rVeOVm6Oi40k2A==}
+  '@floating-ui/dom@1.8.0':
+    resolution: {integrity: sha512-yXSrzeHZBTZadLOlfyhCkJHNeLJnHRnRInwdZ40L7ZiaAtrBwoYlsDrX3v5zB1Utk7CLfzcOVnVVWoXEky7Ceg==}
+
+  '@floating-ui/react-dom@2.1.9':
+    resolution: {integrity: sha512-JDjEFGCpImxDCA7JJKviA0M9+RtmJdj0m/NVU5IMgBK+AmZouAQQ7/+2GLH0GXXY0YMw9oXPB8hKdbPYg5QLYg==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
 
-  '@floating-ui/react@0.27.19':
-    resolution: {integrity: sha512-31B8h5mm8YxotlE7/AU/PhNAl8eWxAmjL/v2QOxroDNkTFLk3Uu82u63N3b6TXa4EGJeeZLVcd/9AlNlVqzeog==}
+  '@floating-ui/react@0.27.20':
+    resolution: {integrity: sha512-CMqMy7OaXl9W0eq1Uy7L7i2Y/anPvHmFmESd2CEw0t5YvZhcVCeo4MBevAmswRllX7Y2dEidA4ozGPunLSTQpw==}
     peerDependencies:
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
+
+  '@floating-ui/utils@0.2.12':
+    resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
 
   '@gar/promise-retry@1.0.3':
     resolution: {integrity: sha512-GmzA9ckNokPypTg10pgpeHNQe7ph+iIKKmhKu3Ob9ANkswreCx7R3cKmY781K8QK3AqVL3xVh9A42JvIAbkkSA==}
@@ -2692,8 +2701,8 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@tanstack/react-table@9.0.0':
-    resolution: {integrity: sha512-Q/Z49MQcdMwge67U+LTjSEQJCnQE9/tNWK5IpiYex9JFDzfjNkLIi7yzGA4dfW4UpuMBrtqbSnSzn7oPr60T+w==}
+  '@tanstack/react-table@9.1.2':
+    resolution: {integrity: sha512-YQPZFJ1nIi/bjjwsPZVouABgahDcl7Gdm33CdTStUJBn0DjEVJ2uhSTVmIoWt9MVKdQziXGAsXipSzy949Hygg==}
     engines: {node: '>=20'}
     peerDependencies:
       react: '>=18'
@@ -2707,8 +2716,8 @@ packages:
   '@tanstack/store@0.11.1':
     resolution: {integrity: sha512-mzTOBhypOuDJAy/D8n2MfUZ1HFkXnmSETviRyhqEC8LUE7/IZQExOTxMANj3KjTofYTkFNpBY67qaVrT41YccA==}
 
-  '@tanstack/table-core@9.0.0':
-    resolution: {integrity: sha512-IyKCc4D7d/+I9euQntlVDQ7lnilmFRKpIROBeI5/866adFy+65xWvCFPz76NZ5j2lXe/RFDvFVV7bfETmwHEMA==}
+  '@tanstack/table-core@9.1.2':
+    resolution: {integrity: sha512-ONpWQeass1sfg80CWF1NSwQ8r3GiqxA2lT/EdqIcrDEPZ0Z+0mM94eQoFYLPN0Kztzj8TQVb2+PrSZSItqA61g==}
     engines: {node: '>=20'}
 
   '@tanstack/virtual-core@3.17.1':
@@ -3272,8 +3281,8 @@ packages:
   decimal.js@10.6.0:
     resolution: {integrity: sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==}
 
-  decode-uri-component@0.4.1:
-    resolution: {integrity: sha512-+8VxcR21HhTy8nOt6jf20w0c9CADrw1O8d+VZ/YzzCt4bJ3uBjw+D1q2osAB8RnpwwaeYBxy0HyKQxD5JBMuuQ==}
+  decode-uri-component@0.5.0:
+    resolution: {integrity: sha512-1BiQVoK8C9gUbQU6NzAtO/tkz2qOFpEObMWpcFvhx4fYnj4Oc5yzaJN/LD36ihkVUdXyh5ZekzX+yM+ty/SrPg==}
     engines: {node: '>=14.16'}
 
   dedent@1.5.3:
@@ -3633,8 +3642,8 @@ packages:
     resolution: {integrity: sha512-CV9TW3Y3f8/wT0BRFc1/KAVQ3TUHiXmaAb6VW9vtiMFf7SLoMd1PdAc4W3KFOFETBJUb90KatHqlsZMWV+R9Gg==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
 
-  html-parse-stringify@3.0.1:
-    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+  html-parse-stringify@3.1.0:
+    resolution: {integrity: sha512-E0oAXcELOtsXe+BmpJ2EZyedbldPpriV5vICzEuo6xjC/D1lDukOI7KrpfQGF2Qc4wWEy0nk3bFORS2K5ZAhFQ==}
 
   http-cache-semantics@4.2.0:
     resolution: {integrity: sha512-dTxcvPXqPvXBQpq5dUr6mEMJX4oIEFv6bwom3FDwKRDsuIjjJGANqhBuoAn9c1RQJIdAKav33ED65E2ys+87QQ==}
@@ -3656,8 +3665,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  i18next-resources-to-backend@1.2.1:
-    resolution: {integrity: sha512-okHbVA+HZ7n1/76MsfhPqDou0fptl2dAlhRDu2ideXloRRduzHsqDOznJBef+R3DFZnbvWoBW+KxJ7fnFjd6Yw==}
+  i18next-resources-to-backend@1.2.3:
+    resolution: {integrity: sha512-8Y/LLAm5fqZc2ckQxtTWbu75ndjNLzF7mcYl6rhc4g+WBopIsG3YhdYqF5qhJy64tlYhlU2KSSnEgW3gGHLqwg==}
 
   i18next@25.10.10:
     resolution: {integrity: sha512-cqUW2Z3EkRx7NqSyywjkgCLK7KLCL6IFVFcONG7nVYIJ3ekZ1/N5jUsihHV6Bq37NfhgtczxJcxduELtjTwkuQ==}
@@ -4470,8 +4479,8 @@ packages:
   qrcode-generator@2.0.4:
     resolution: {integrity: sha512-mZSiP6RnbHl4xL2Ap5HfkjLnmxfKcPWpWe/c+5XxCuetEenqmNFf1FH/ftXPCtFG5/TDobjsjz6sSNL0Sr8Z9g==}
 
-  query-string@9.4.0:
-    resolution: {integrity: sha512-ivvWyHqU9K1Log4hJFhqVIIMoEi0nzmlRhvk2pPcTuQH/Y0K5iTTMxEx7R0PRHD2Z1hMVbWnjfsEWbIKIK+3IA==}
+  query-string@9.5.0:
+    resolution: {integrity: sha512-YlJmwNyi0RGYjlxYcuDncMsxFU7YyutbuI7gTm8ySxIGBlwx5yiBCOD5ig9ZNoHkawk/1Dey0N5mEfcUybMVAA==}
     engines: {node: '>=18'}
 
   quick-lru@4.0.1:
@@ -5487,26 +5496,26 @@ snapshots:
   '@biomejs/cli-win32-x64@2.5.1':
     optional: true
 
-  '@commercelayer/app-elements@https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8e93764(query-string@9.4.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))':
+  '@commercelayer/app-elements@https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@8c818cc(query-string@9.5.0)(react-dom@19.2.4(react@19.2.4))(react-gtm-module@2.0.11)(react-hook-form@7.62.0(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(wouter@3.10.0(react@19.2.4))':
     dependencies:
       '@commercelayer/js-auth': 7.4.2
       '@commercelayer/sdk': 8.0.0-beta.11
       '@date-fns/tz': 1.5.0
       '@monaco-editor/react': 4.7.0(monaco-editor@0.53.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@tanstack/react-table': 9.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@tanstack/react-table': 9.1.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@types/lodash-es': 4.17.12
       '@types/react': 19.2.13
       '@types/react-datepicker': 7.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@types/react-dom': 19.2.3(@types/react@19.2.13)
       classnames: 2.5.1
       i18next: 25.10.10(typescript@5.9.3)
-      i18next-resources-to-backend: 1.2.1
+      i18next-resources-to-backend: 1.2.3
       js-cookie: 3.0.8
       jwt-decode: 4.0.0
       lodash-es: 4.18.1
       monaco-editor: 0.53.0
       pluralize: 8.0.0
-      query-string: 9.4.0
+      query-string: 9.5.0
       react: 19.2.4
       react-currency-input-field: 3.10.0(react@19.2.4)
       react-datepicker: 8.10.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -5736,26 +5745,37 @@ snapshots:
     dependencies:
       '@floating-ui/utils': 0.2.11
 
+  '@floating-ui/core@1.8.0':
+    dependencies:
+      '@floating-ui/utils': 0.2.12
+
   '@floating-ui/dom@1.7.6':
     dependencies:
       '@floating-ui/core': 1.7.5
       '@floating-ui/utils': 0.2.11
 
-  '@floating-ui/react-dom@2.1.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@floating-ui/dom@1.8.0':
     dependencies:
-      '@floating-ui/dom': 1.7.6
+      '@floating-ui/core': 1.8.0
+      '@floating-ui/utils': 0.2.12
+
+  '@floating-ui/react-dom@2.1.9(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      '@floating-ui/dom': 1.8.0
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  '@floating-ui/react@0.27.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@floating-ui/react@0.27.20(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@floating-ui/utils': 0.2.11
+      '@floating-ui/react-dom': 2.1.9(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@floating-ui/utils': 0.2.12
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
       tabbable: 6.5.0
 
   '@floating-ui/utils@0.2.11': {}
+
+  '@floating-ui/utils@0.2.12': {}
 
   '@gar/promise-retry@1.0.3': {}
 
@@ -6326,10 +6346,10 @@ snapshots:
       react-dom: 19.2.4(react@19.2.4)
       use-sync-external-store: 1.6.0(react@19.2.4)
 
-  '@tanstack/react-table@9.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@tanstack/react-table@9.1.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@tanstack/react-store': 0.11.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@tanstack/table-core': 9.0.0
+      '@tanstack/table-core': 9.1.2
       react: 19.2.4
     transitivePeerDependencies:
       - react-dom
@@ -6342,7 +6362,7 @@ snapshots:
 
   '@tanstack/store@0.11.1': {}
 
-  '@tanstack/table-core@9.0.0':
+  '@tanstack/table-core@9.1.2':
     dependencies:
       '@tanstack/store': 0.11.1
 
@@ -6950,7 +6970,7 @@ snapshots:
 
   decimal.js@10.6.0: {}
 
-  decode-uri-component@0.4.1: {}
+  decode-uri-component@0.5.0: {}
 
   dedent@1.5.3(babel-plugin-macros@3.1.0):
     optionalDependencies:
@@ -7299,7 +7319,7 @@ snapshots:
     transitivePeerDependencies:
       - '@noble/hashes'
 
-  html-parse-stringify@3.0.1:
+  html-parse-stringify@3.1.0:
     dependencies:
       void-elements: 3.1.0
 
@@ -7323,7 +7343,7 @@ snapshots:
 
   husky@9.1.7: {}
 
-  i18next-resources-to-backend@1.2.1:
+  i18next-resources-to-backend@1.2.3:
     dependencies:
       '@babel/runtime': 7.29.7
 
@@ -8372,9 +8392,9 @@ snapshots:
 
   qrcode-generator@2.0.4: {}
 
-  query-string@9.4.0:
+  query-string@9.5.0:
     dependencies:
-      decode-uri-component: 0.4.1
+      decode-uri-component: 0.5.0
       filter-obj: 5.1.0
       split-on-first: 3.0.0
 
@@ -8386,7 +8406,7 @@ snapshots:
 
   react-datepicker@8.10.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
-      '@floating-ui/react': 0.27.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@floating-ui/react': 0.27.20(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       clsx: 2.1.1
       date-fns: 4.4.0
       react: 19.2.4
@@ -8406,7 +8426,7 @@ snapshots:
   react-i18next@15.7.4(i18next@25.10.10(typescript@5.9.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3):
     dependencies:
       '@babel/runtime': 7.29.7
-      html-parse-stringify: 3.0.1
+      html-parse-stringify: 3.1.0
       i18next: 25.10.10(typescript@5.9.3)
       react: 19.2.4
     optionalDependencies:
