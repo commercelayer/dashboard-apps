@@ -8,14 +8,13 @@ export const instructions: FiltersInstructions = [
       predicate: "shipping_category_id_in",
     },
     render: {
-      component: "inputResourceGroup",
+      component: "inputSelect",
       props: {
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "shipping_categories",
         searchBy: "name_i_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        previewLimit: 5,
         filters: {
           disabled_at_null: true,
         },
@@ -29,15 +28,13 @@ export const instructions: FiltersInstructions = [
       predicate: "tags_id_in",
     },
     render: {
-      component: "inputResourceGroup",
+      component: "inputSelect",
       props: {
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "tags",
         searchBy: "name_i_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        previewLimit: 5,
-        showCheckboxIcon: false,
       },
     },
   },
