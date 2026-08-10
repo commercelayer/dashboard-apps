@@ -231,7 +231,6 @@ export const makeInstructions = ({
         resource: "tags",
         searchBy: "name_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        showCheckboxIcon: false,
       },
     },
   },
