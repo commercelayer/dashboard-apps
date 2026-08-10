@@ -21,16 +21,14 @@ export function PriceEdit(): React.JSX.Element {
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const [, params] = useRoute<{ priceListId: string; priceId: string }>(
-    appRoutes.priceEdit.path,
-  )
+  const [, params] = useRoute<{ priceId: string }>(appRoutes.priceEdit.path)
   const priceId = params?.priceId ?? ""
 
   const { price, isLoading, mutatePrice } = usePriceDetails(priceId)
   const priceListId = price?.price_list?.id ?? ""
   const pageTitle = "Edit price"
 
-  const goBackUrl = appRoutes.priceDetails.makePath({ priceListId, priceId })
+  const goBackUrl = appRoutes.priceDetails.makePath({ priceId })
 
   if (!canUser("update", "prices")) {
     return (

@@ -25,7 +25,7 @@ export function PriceNew(): React.JSX.Element {
 
   const pageTitle = "New price"
 
-  const goBackUrl = appRoutes.pricesList.makePath({ priceListId })
+  const goBackUrl = appRoutes.pricesList.makePath({})
 
   if (!canUser("create", "prices")) {
     return (
@@ -87,7 +87,6 @@ export function PriceNew(): React.JSX.Element {
               .then((createdPrice) => {
                 setLocation(
                   appRoutes.priceDetails.makePath({
-                    priceListId,
                     priceId: createdPrice.id,
                   }),
                 )

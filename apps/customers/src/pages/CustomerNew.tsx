@@ -23,7 +23,7 @@ export function CustomerNew(): React.JSX.Element {
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
-  const goBackUrl = appRoutes.list.makePath()
+  const goBackUrl = appRoutes.home.makePath()
   const pageTitle = t("common.new_resource", {
     resource: t("resources.customers.name").toLowerCase(),
   })

@@ -38,7 +38,7 @@ export function CustomerOrders(): React.JSX.Element {
   const goBackUrl =
     customerId != null
       ? appRoutes.details.makePath(customerId)
-      : appRoutes.list.makePath()
+      : appRoutes.home.makePath()
 
   if (!canUser("read", "orders")) {
     return (

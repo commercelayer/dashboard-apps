@@ -31,7 +31,7 @@ export function CustomerEdit(): React.JSX.Element {
   const goBackUrl =
     customerId != null
       ? appRoutes.details.makePath(customerId)
-      : appRoutes.list.makePath()
+      : appRoutes.home.makePath()
 
   if (!canUser("update", "customers")) {
     return (

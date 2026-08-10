@@ -14,13 +14,10 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         routes={appRoutes}
         list={{
           home: {
-            component: async () => await import("#pages/Home"),
-          },
-          list: {
             component: async () => await import("#pages/CustomerList"),
           },
-          filters: {
-            component: async () => await import("#pages/Filters"),
+          list: {
+            component: async () => await import("#pages/ListRedirect"),
           },
           new: {
             component: async () => await import("#pages/CustomerNew"),

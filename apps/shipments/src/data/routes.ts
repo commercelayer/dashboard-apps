@@ -9,7 +9,6 @@ export type AppRoute = keyof typeof appRoutes
 export const appRoutes = {
   home: createRoute("/"),
   list: createRoute("/list/"),
-  filters: createRoute("/filters/"),
   details: createRoute("/list/:shipmentId/"),
   packing: createRoute("/list/:shipmentId/packing/"),
   purchase: createRoute("/list/:shipmentId/purchase/"),

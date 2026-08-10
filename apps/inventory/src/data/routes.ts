@@ -5,48 +5,32 @@ export type AppRoute = keyof typeof appRoutes
 // a `path` property to be used as patter matching in <Route path> component
 // and `makePath` method to be used to generate the path used in navigation and links
 export const appRoutes = {
+  /** The stock items list. The stock location used to scope it through the url; it is a filter now. */
   home: {
     path: "/",
-    makePath: () => "/",
+    makePath: (filters?: string) =>
+      hasFilterQuery(filters) ? `/?${filters}` : "/",
   },
+  /**
+   * Legacy path of the stock items list, now a redirect to `home`.
+   * Kept because `useAppLinking` points here when linking to this app without a
+   * resource id. Do not link to it from within the app.
+   */
   list: {
     path: "/list",
-    makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/list/?${filters}` : `/list`,
-  },
-  filters: {
-    path: "/filters",
-    makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`,
-  },
-  stockLocation: {
-    path: "/:stockLocationId/list",
-    makePath: (stockLocationId: string, filters?: string) =>
-      hasFilterQuery(filters)
-        ? `/${stockLocationId}/list/?${filters}`
-        : `/${stockLocationId}/list`,
-  },
-  stockLocationFilters: {
-    path: "/:stockLocationId/filters",
-    makePath: (stockLocationId: string, filters?: string) =>
-      hasFilterQuery(filters)
-        ? `/${stockLocationId}/filters/?${filters}`
-        : `/${stockLocationId}/filters`,
+    makePath: () => "/list",
   },
   stockItem: {
-    path: "/:stockLocationId?/list/:stockItemId",
-    makePath: (stockLocationId: string, stockItemId: string) =>
-      `/${stockLocationId !== "" ? `${stockLocationId}/` : ""}list/${stockItemId}`,
+    path: "/list/:stockItemId",
+    makePath: (stockItemId: string) => `/list/${stockItemId}`,
   },
   newStockItem: {
-    path: "/:stockLocationId?/new",
-    makePath: (stockLocationId: string) =>
-      `/${stockLocationId !== "" ? `${stockLocationId}/` : ""}new`,
+    path: "/new",
+    makePath: () => "/new",
   },
   editStockItem: {
-    path: "/:stockLocationId?/list/:stockItemId/edit",
-    makePath: (stockLocationId: string, stockItemId: string) =>
-      `/${stockLocationId !== "" ? `${stockLocationId}/` : ""}list/${stockItemId}/edit`,
+    path: "/list/:stockItemId/edit",
+    makePath: (stockItemId: string) => `/list/${stockItemId}/edit`,
   },
 }
 

@@ -1,6 +1,5 @@
 import {
   formatDateWithPredicate,
-  getCustomerStatusName,
   ListDetailsItem,
   Section,
   Text,
@@ -14,6 +13,12 @@ interface Props {
   customer: Customer
 }
 
+/**
+ * Summary of the customer, laid out as the other apps' info sections: one
+ * `ListDetailsItem` per fact, label on the left and value on the right.
+ *
+ * The status is not repeated here: it is shown as a badge next to the page title.
+ */
 export const CustomerInfo = withSkeletonTemplate<Props>(
   ({ customer }): React.JSX.Element => {
     const { user } = useTokenProvider()
@@ -21,47 +26,34 @@ export const CustomerInfo = withSkeletonTemplate<Props>(
 
     return (
       <Section title={t("common.info")}>
+        <ListDetailsItem label={t("resources.orders.name_other")} gutter="none">
+          {customer.total_orders_count ?? 0}
+        </ListDetailsItem>
         <ListDetailsItem label={t("apps.customers.details.type")} gutter="none">
-          <Text tag="div" weight="semibold">
-            {customer?.has_password === true
-              ? t("apps.customers.details.registered")
-              : t("apps.customers.details.guest")}
-          </Text>
+          {customer?.has_password === true
+            ? t("apps.customers.details.registered")
+            : t("apps.customers.details.guest")}
         </ListDetailsItem>
         <ListDetailsItem
-          label={t("apps.customers.attributes.status")}
+          label={t("apps.customers.form.customer_group_label")}
           gutter="none"
         >
-          <Text tag="div" weight="semibold" className="capitalize">
-            {getCustomerStatusName(customer?.status)}
-          </Text>
+          {customer?.customer_group?.name ?? (
+            <Text className="text-gray-300">&#8212;</Text>
+          )}
         </ListDetailsItem>
-        {customer?.customer_group != null && (
-          <ListDetailsItem
-            label={t("apps.customers.form.customer_group_label")}
-            gutter="none"
-          >
-            <Text tag="div" weight="semibold">
-              {customer.customer_group.name ?? (
-                <Text className="text-gray-300">&#8212;</Text>
-              )}
-            </Text>
-          </ListDetailsItem>
-        )}
         {customer.customer_subscriptions != null &&
           customer.customer_subscriptions.length > 0 && (
             <ListDetailsItem
               label={t("apps.customers.details.newsletter")}
               gutter="none"
             >
-              <Text tag="div" weight="semibold">
-                {formatDateWithPredicate({
-                  predicate: t("apps.customers.details.subscribed"),
-                  isoDate: customer.customer_subscriptions[0]?.created_at ?? "",
-                  timezone: user?.timezone,
-                  locale: user?.locale,
-                })}
-              </Text>
+              {formatDateWithPredicate({
+                predicate: t("apps.customers.details.subscribed"),
+                isoDate: customer.customer_subscriptions[0]?.created_at ?? "",
+                timezone: user?.timezone,
+                locale: user?.locale,
+              })}
             </ListDetailsItem>
           )}
       </Section>

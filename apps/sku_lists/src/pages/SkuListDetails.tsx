@@ -5,8 +5,8 @@ import {
   EmptyState,
   Icon,
   isMockedId,
+  PageHeading,
   type PageHeadingProps,
-  PageLayout,
   ResourceDetails,
   ResourceMetadata,
   Section,
@@ -16,23 +16,23 @@ import {
   Tabs,
   useAppLinking,
   useCoreApi,
+  useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
 import { LinksEmptyState } from "dashboard-apps-common/src/components/LinksEmptyState"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
-import { Link, useLocation } from "wouter"
+import { useEffect } from "react"
+import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { SkuListManualItems } from "#components/SkuListManualItems"
-import { appRoutes, type PageProps } from "#data/routes"
+import { appRoutes } from "#data/routes"
 import { useSkuListDeleteOverlay } from "#hooks/useSkuListDeleteOverlay"
 import { useSkuListDetails } from "#hooks/useSkuListDetails"
 
-export const SkuListDetails = (
-  props: PageProps<typeof appRoutes.details>,
-): React.JSX.Element => {
+export const SkuListDetails = (): React.JSX.Element => {
   const {
-    settings: { mode, extras },
+    settings: { extras },
     canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
@@ -40,13 +40,37 @@ export const SkuListDetails = (
   const queryString = useSearch()
 
   const [, setLocation] = useLocation()
-  const skuListId = props.params?.skuListId ?? ""
+  // rendered as a sibling of the list rather than by a `Route`, so the id comes
+  // from matching the route here
+  const [, params] = useRoute<{ skuListId: string }>(appRoutes.details.path)
+  const skuListId = params?.skuListId ?? ""
 
   const { skuList, isLoading, error, mutateSkuList } =
     useSkuListDetails(skuListId)
 
   const { Overlay: DeleteOverlay, show: showDeleteOverlay } =
     useSkuListDeleteOverlay(skuList)
+
+  // The drawer is driven by the route: open while this component is mounted, and
+  // closing means navigating away.
+  const { Overlay: DetailsDrawer, open: openDrawer } = useOverlay()
+
+  useEffect(() => {
+    openDrawer()
+  }, [openDrawer])
+
+  const closeDrawer = (): void => {
+    // `goBack` returns to another app when the list was opened from one; within
+    // the app it falls back to the list, keeping whatever the url carries.
+    const search = new URLSearchParams(queryString).toString()
+    goBack({
+      currentResourceId: skuListId,
+      defaultRelativePath:
+        search !== ""
+          ? appRoutes.home.makePath({}, search)
+          : appRoutes.home.makePath({}),
+    })
+  }
 
   const hasSalesChannels =
     extras?.salesChannels != null && extras?.salesChannels.length > 0
@@ -70,26 +94,22 @@ export const SkuListDetails = (
 
   if (error != null) {
     return (
-      <PageLayout
-        title="SKU List"
-        navigationButton={{
-          onClick: () => {
-            setLocation(appRoutes.list.makePath({}))
-          },
-          label: "SKU Lists",
-          icon: "arrowLeft",
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title="Not authorized"
-          action={
-            <Link href={appRoutes.list.makePath({})}>
-              <Button variant="primary">Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
+      <DetailsDrawer drawer onBackdropClick={closeDrawer}>
+        <div className="p-6">
+          <PageHeading
+            title="SKU List"
+            navigationButton={{ onClick: closeDrawer, label: "", icon: "x" }}
+          />
+          <EmptyState
+            title="Not authorized"
+            action={
+              <Button variant="primary" onClick={closeDrawer}>
+                Go back
+              </Button>
+            }
+          />
+        </div>
+      </DetailsDrawer>
     )
   }
 
@@ -115,16 +135,17 @@ export const SkuListDetails = (
       : 0
 
   if (canUser("update", "sku_lists")) {
-    pageToolbar.buttons?.push({
-      label: "Edit",
-      size: "small",
-      variant: "secondary",
-      onClick: () => {
-        setLocation(appRoutes.edit.makePath({ skuListId }))
+    pageToolbar.dropdownItems?.push([
+      {
+        label: "Edit",
+        onClick: () => {
+          setLocation(appRoutes.edit.makePath({ skuListId }))
+        },
       },
-    })
+    ])
   }
 
+  // its own group, so a divider separates the destructive action
   if (canUser("destroy", "sku_lists")) {
     pageToolbar.dropdownItems?.push([
       {
@@ -146,129 +167,124 @@ export const SkuListDetails = (
   }
 
   return (
-    <PageLayout
-      mode={mode}
-      title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
-      }
-      navigationButton={{
-        onClick: () => {
-          goBack({
-            currentResourceId: skuListId,
-            defaultRelativePath: appRoutes.list.makePath({}),
-          })
-        },
-        label: "SKU Lists",
-        icon: "arrowLeft",
-      }}
-      toolbar={pageToolbar}
-      scrollToTop
-      gap="only-top"
-    >
-      <Spacer top="10" bottom="4">
-        <Tabs keepAlive defaultTab={defaultTab}>
-          <Tab name="Items">
-            {isManual && (
-              <>
-                {hasBundles && (
-                  <Spacer top="10" bottom="14">
-                    <Alert status="info">
-                      Items in a SKU List linked to a Bundle cannot be modified.
-                    </Alert>
-                  </Spacer>
-                )}
-                <SkuListManualItems
-                  skuListId={skuListId}
-                  hasBundles={hasBundles}
-                />
-              </>
-            )}
-            {isAutomatic && (
+    <DetailsDrawer drawer onBackdropClick={closeDrawer}>
+      <div className="p-6">
+        <PageHeading
+          title={
+            <SkeletonTemplate isLoading={isLoading}>
+              {pageTitle}
+            </SkeletonTemplate>
+          }
+          navigationButton={{ onClick: closeDrawer, label: "", icon: "x" }}
+          toolbar={pageToolbar}
+          gap="only-top"
+        />
+        <Spacer top="6" bottom="4">
+          <Tabs keepAlive defaultTab={defaultTab}>
+            <Tab name="Items">
+              {isManual && (
+                <>
+                  {hasBundles && (
+                    <Spacer top="10" bottom="14">
+                      <Alert status="info">
+                        Items in a SKU List linked to a Bundle cannot be
+                        modified.
+                      </Alert>
+                    </Spacer>
+                  )}
+                  <SkuListManualItems
+                    skuListId={skuListId}
+                    hasBundles={hasBundles}
+                  />
+                </>
+              )}
+              {isAutomatic && (
+                <Spacer top="10">
+                  <CodeBlock
+                    hint={{
+                      text: "Matching SKU codes are automatically included to this list.",
+                    }}
+                  >
+                    {skuList.sku_code_regex ?? ""}
+                  </CodeBlock>
+                </Spacer>
+              )}
+            </Tab>
+            <Tab name="Links">
               <Spacer top="10">
-                <CodeBlock
-                  hint={{
-                    text: "Matching SKU codes are automatically included to this list.",
-                  }}
+                <Section
+                  title="Links"
+                  border={
+                    hasSalesChannels && hasPublicMarkets ? "none" : undefined
+                  }
+                  actionButton={
+                    canUser("update", "sku_lists") &&
+                    hasSalesChannels &&
+                    hasPublicMarkets && (
+                      <Button
+                        size="mini"
+                        variant="secondary"
+                        alignItems="center"
+                        onClick={() => {
+                          setLocation(
+                            appRoutes.linksNew.makePath({
+                              resourceId: skuListId,
+                            }),
+                          )
+                        }}
+                      >
+                        <Icon name="lightning" size="16" />
+                        New link
+                      </Button>
+                    )
+                  }
                 >
-                  {skuList.sku_code_regex ?? ""}
-                </CodeBlock>
+                  {hasSalesChannels && hasPublicMarkets ? (
+                    <LinkListTable
+                      resourceId={skuListId}
+                      resourceType="sku_lists"
+                    />
+                  ) : (
+                    <LinksEmptyState
+                      scope={
+                        !hasSalesChannels
+                          ? "no-sales-channels"
+                          : !hasPublicMarkets
+                            ? "no-public-markets"
+                            : "no-links"
+                      }
+                      resourceId={skuListId}
+                      resourceType="sku_lists"
+                    />
+                  )}
+                </Section>
               </Spacer>
-            )}
-          </Tab>
-          <Tab name="Links">
-            <Spacer top="10">
-              <Section
-                title="Links"
-                border={
-                  hasSalesChannels && hasPublicMarkets ? "none" : undefined
-                }
-                actionButton={
-                  canUser("update", "sku_lists") &&
-                  hasSalesChannels &&
-                  hasPublicMarkets && (
-                    <Button
-                      size="mini"
-                      variant="secondary"
-                      alignItems="center"
-                      onClick={() => {
-                        setLocation(
-                          appRoutes.linksNew.makePath({
-                            resourceId: skuListId,
-                          }),
-                        )
-                      }}
-                    >
-                      <Icon name="lightning" size="16" />
-                      New link
-                    </Button>
-                  )
-                }
-              >
-                {hasSalesChannels && hasPublicMarkets ? (
-                  <LinkListTable
-                    resourceId={skuListId}
-                    resourceType="sku_lists"
-                  />
-                ) : (
-                  <LinksEmptyState
-                    scope={
-                      !hasSalesChannels
-                        ? "no-sales-channels"
-                        : !hasPublicMarkets
-                          ? "no-public-markets"
-                          : "no-links"
-                    }
-                    resourceId={skuListId}
-                    resourceType="sku_lists"
-                  />
-                )}
-              </Section>
-            </Spacer>
-          </Tab>
-          <Tab name="Info">
-            <Spacer top="10">
-              <ResourceDetails
-                resource={skuList}
-                onUpdated={async () => {
-                  void mutateSkuList()
-                }}
-              />
-            </Spacer>
-            {!isMockedId(skuList.id) && (
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="sku_lists"
-                  resourceId={skuList.id}
-                  overlay={{
-                    title: pageTitle,
+            </Tab>
+            <Tab name="Info">
+              <Spacer top="10">
+                <ResourceDetails
+                  resource={skuList}
+                  onUpdated={async () => {
+                    void mutateSkuList()
                   }}
                 />
               </Spacer>
-            )}
-          </Tab>
-        </Tabs>
-      </Spacer>
-      {canUser("destroy", "sku_lists") && <DeleteOverlay />}
-    </PageLayout>
+              {!isMockedId(skuList.id) && (
+                <Spacer top="14">
+                  <ResourceMetadata
+                    resourceType="sku_lists"
+                    resourceId={skuList.id}
+                    overlay={{
+                      title: pageTitle,
+                    }}
+                  />
+                </Spacer>
+              )}
+            </Tab>
+          </Tabs>
+        </Spacer>
+        {canUser("destroy", "sku_lists") && <DeleteOverlay />}
+      </div>
+    </DetailsDrawer>
   )
 }

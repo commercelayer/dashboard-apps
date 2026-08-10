@@ -1,6 +1,6 @@
 import {
   EmptyState,
-  HomePageLayout,
+  PageLayout,
   Spacer,
   useResourceFilters,
   useTokenProvider,
@@ -47,14 +47,14 @@ export const SkusList: FC = () => {
 
   if (!canUser("read", "skus")) {
     return (
-      <HomePageLayout title="SKUs">
+      <PageLayout title="SKUs">
         <EmptyState title="You are not authorized" />
-      </HomePageLayout>
+      </PageLayout>
     )
   }
 
   return (
-    <HomePageLayout
+    <PageLayout
       title="SKUs"
       fullWidth
       toolbar={{
@@ -99,6 +99,6 @@ export const SkusList: FC = () => {
       </Spacer>
 
       <FiltersDrawer onUpdate={handleFiltersUpdate} />
-    </HomePageLayout>
+    </PageLayout>
   )
 }
