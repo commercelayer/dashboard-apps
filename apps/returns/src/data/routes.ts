@@ -14,11 +14,6 @@ export const appRoutes = {
     makePath: (filters?: string) =>
       hasFilterQuery(filters) ? `/list/?${filters}` : `/list`,
   },
-  filters: {
-    path: "/filters",
-    makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`,
-  },
   details: {
     path: "/list/:returnId",
     makePath: (returnId: string) => `/list/${returnId}`,

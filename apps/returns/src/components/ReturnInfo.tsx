@@ -1,7 +1,7 @@
 import {
   Button,
-  ListDetailsItem,
-  Section,
+  Spacer,
+  Stack,
   Text,
   useAppLinking,
   useTokenProvider,
@@ -14,6 +14,10 @@ interface Props {
   returnObj: Return
 }
 
+/**
+ * Order and customer, as a `Stack` so it lines up with the block above it:
+ * consecutive stacks pull themselves together into one grid (`not-first:-mt-px`).
+ */
 export const ReturnInfo = withSkeletonTemplate<Props>(
   ({ returnObj }): React.JSX.Element => {
     const { canAccess } = useTokenProvider()
@@ -38,8 +42,13 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
       : {}
 
     return (
-      <Section title={t("apps.returns.details.info")}>
-        <ListDetailsItem label={t("resources.orders.name")} gutter="none">
+      <Stack>
+        <div>
+          <Spacer bottom="2">
+            <Text size="small" tag="div" variant="info" weight="semibold">
+              {t("resources.orders.name")}
+            </Text>
+          </Spacer>
           <Text tag="div" weight="semibold">
             {canAccess("orders") ? (
               <Button variant="link" {...navigateToOrder}>
@@ -49,8 +58,13 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
               `${returnOrderMarket} ${returnOrderNumber}`
             )}
           </Text>
-        </ListDetailsItem>
-        <ListDetailsItem label={t("resources.customers.name")} gutter="none">
+        </div>
+        <div>
+          <Spacer bottom="2">
+            <Text size="small" tag="div" variant="info" weight="semibold">
+              {t("resources.customers.name")}
+            </Text>
+          </Spacer>
           <Text tag="div" weight="semibold">
             {canAccess("customers") ? (
               <Button variant="link" {...navigateToCustomer}>
@@ -60,8 +74,8 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
               returnCustomerEmail
             )}
           </Text>
-        </ListDetailsItem>
-      </Section>
+        </div>
+      </Stack>
     )
   },
 )
