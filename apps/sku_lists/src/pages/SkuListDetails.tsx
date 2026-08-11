@@ -15,7 +15,9 @@ import {
   Tab,
   Tabs,
   useAppLinking,
+  useConfirmDialog,
   useCoreApi,
+  useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
@@ -27,7 +29,6 @@ import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { SkuListManualItems } from "#components/SkuListManualItems"
 import { appRoutes } from "#data/routes"
-import { useSkuListDeleteOverlay } from "#hooks/useSkuListDeleteOverlay"
 import { useSkuListDetails } from "#hooks/useSkuListDetails"
 
 export const SkuListDetails = (): React.JSX.Element => {
@@ -48,8 +49,8 @@ export const SkuListDetails = (): React.JSX.Element => {
   const { skuList, isLoading, error, mutateSkuList } =
     useSkuListDetails(skuListId)
 
-  const { Overlay: DeleteOverlay, show: showDeleteOverlay } =
-    useSkuListDeleteOverlay(skuList)
+  const { sdkClient } = useCoreSdkProvider()
+  const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
   // The drawer is driven by the route: open while this component is mounted, and
   // closing means navigating away.
@@ -151,7 +152,7 @@ export const SkuListDetails = (): React.JSX.Element => {
       {
         label: "Delete",
         onClick: () => {
-          showDeleteOverlay()
+          showDeleteDialog()
         },
       },
     ])
@@ -283,7 +284,22 @@ export const SkuListDetails = (): React.JSX.Element => {
             </Tab>
           </Tabs>
         </Spacer>
-        {canUser("destroy", "sku_lists") && <DeleteOverlay />}
+        {canUser("destroy", "sku_lists") && (
+          <ConfirmDialog
+            icon="trash"
+            title={`Delete SKU list ${skuList?.name}`}
+            description="This action cannot be undone."
+            confirm={{
+              label: "Delete SKU list",
+              variant: "danger",
+              onClick: async () => {
+                await sdkClient.sku_lists.delete(skuList.id).then(() => {
+                  setLocation(appRoutes.list.makePath({}))
+                })
+              },
+            }}
+          />
+        )}
       </div>
     </DetailsDrawer>
   )
