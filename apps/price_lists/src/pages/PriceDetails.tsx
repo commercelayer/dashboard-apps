@@ -3,18 +3,18 @@ import {
   EmptyState,
   PageHeading,
   type PageHeadingProps,
-  PageLayout,
   ResourceDetails,
   ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
+  useConfirmDialog,
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { PriceInfo } from "#components/PriceInfo"
@@ -38,7 +38,7 @@ export function PriceDetails(): React.JSX.Element {
 
   const { sdkClient } = useCoreSdkProvider()
 
-  const { Overlay, open, close } = useOverlay()
+  const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
   // The drawer is driven by the route: open while this component is mounted, and
   // closing means navigating away.
@@ -60,8 +60,6 @@ export function PriceDetails(): React.JSX.Element {
           : appRoutes.home.makePath({}),
     })
   }
-
-  const [isDeleting, setIsDeleting] = useState(false)
 
   if (error != null) {
     return (
@@ -108,7 +106,7 @@ export function PriceDetails(): React.JSX.Element {
       {
         label: "Delete",
         onClick: () => {
-          open()
+          showDeleteDialog()
         },
       },
     ])
@@ -180,39 +178,20 @@ export function PriceDetails(): React.JSX.Element {
           </Spacer>
         </SkeletonTemplate>
         {canUser("destroy", "prices") && (
-          <Overlay backgroundColor="light">
-            <PageLayout
-              title={`Confirm that you want to delete the price related to ${price?.sku?.code} (${price?.sku?.name}) SKU.`}
-              description="This action cannot be undone, proceed with caution."
-              minHeight={false}
-              navigationButton={{
-                onClick: () => {
-                  close()
-                },
-                label: `Cancel`,
-                icon: "x",
-              }}
-            >
-              <Button
-                variant="danger"
-                size="small"
-                disabled={isDeleting}
-                onClick={(e) => {
-                  setIsDeleting(true)
-                  e.stopPropagation()
-                  void sdkClient.prices
-                    .delete(price.id)
-                    .then(() => {
-                      setLocation(appRoutes.home.makePath({}))
-                    })
-                    .catch(() => {})
-                }}
-                fullWidth
-              >
-                Delete price
-              </Button>
-            </PageLayout>
-          </Overlay>
+          <ConfirmDialog
+            icon="trash"
+            title={`Delete price for ${price?.sku?.code}`}
+            description="This action cannot be undone."
+            confirm={{
+              label: "Delete price",
+              variant: "danger",
+              onClick: async () => {
+                await sdkClient.prices.delete(price.id).then(() => {
+                  setLocation(appRoutes.home.makePath({}))
+                })
+              },
+            }}
+          />
         )}
       </div>
     </DetailsDrawer>
