@@ -1,5 +1,6 @@
 import {
   Button,
+  Card,
   EmptyState,
   isMockedId,
   type PageHeadingProps,
@@ -99,58 +100,69 @@ function ReturnDetails(): React.JSX.Element {
         },
       }}
       toolbar={pageToolbar}
+      fullWidth
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14">
+            <Card overflow="visible">
+              <ReturnAddresses returnObj={returnObj} />
+              <Spacer top="10">
+                <ResourceDetails
+                  resource={returnObj}
+                  onUpdated={async () => {
+                    void mutateReturn()
+                  }}
+                />
+              </Spacer>
+              {!isMockedId(returnObj.id) && (
+                <>
+                  <Spacer top="10">
+                    <ResourceTags
+                      resourceType="returns"
+                      resourceId={returnObj.id}
+                      overlay={{
+                        title: pageTitle,
+                      }}
+                    />
+                  </Spacer>
+                  <Spacer top="10">
+                    <ResourceMetadata
+                      resourceType="returns"
+                      resourceId={returnObj.id}
+                      overlay={{
+                        title: pageTitle,
+                      }}
+                    />
+                  </Spacer>
+                </>
+              )}
+            </Card>
+          </Spacer>
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+      afterSidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14" bottom="4">
+            <Timeline returnObj={returnObj} />
+          </Spacer>
+        </SkeletonTemplate>
+      }
     >
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
           <ReturnSteps returnObj={returnObj} />
-          <Spacer top="14">
-            <ReturnInfo returnObj={returnObj} />
-          </Spacer>
+          <ReturnInfo returnObj={returnObj} />
           <Spacer top="14">
             <ReturnSummary returnObj={returnObj} />
           </Spacer>
-          <Spacer top="14">
-            <ReturnAddresses returnObj={returnObj} />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceDetails
-              resource={returnObj}
-              onUpdated={async () => {
-                void mutateReturn()
-              }}
-            />
-          </Spacer>
-          {!isMockedId(returnObj.id) && (
-            <>
-              <Spacer top="14">
-                <ResourceTags
-                  resourceType="returns"
-                  resourceId={returnObj.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="returns"
-                  resourceId={returnObj.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
           <Spacer top="14">
             <ResourceAttachments
               resourceType="returns"
               resourceId={returnObj.id}
             />
-          </Spacer>
-          <Spacer top="14">
-            <Timeline returnObj={returnObj} />
           </Spacer>
         </Spacer>
       </SkeletonTemplate>
