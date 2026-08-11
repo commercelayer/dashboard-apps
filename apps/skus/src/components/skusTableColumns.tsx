@@ -11,7 +11,7 @@ import { useMemo } from "react"
  * Columns of the SKUs table.
  *
  * The first column carries the same information the list item used to show
- * (image, code and name); the row link is provided by the table itself, so no
+ * (image, name and code); the row link is provided by the table itself, so no
  * caret is needed here.
  */
 export function useSkusTableColumns(): Array<ResourceTableColumn<"skus">> {
@@ -30,11 +30,11 @@ export function useSkusTableColumns(): Array<ResourceTableColumn<"skus">> {
               size="small"
             />
             <div>
+              <Text tag="div" weight="semibold">
+                {resource.name}
+              </Text>
               <Text tag="div" weight="medium" size="x-small" variant="info">
                 {resource.code}
-              </Text>
-              <Text tag="div" weight="semibold" size="regular">
-                {resource.name}
               </Text>
             </div>
           </div>
