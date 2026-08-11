@@ -8,6 +8,7 @@ import {
   ResourceDetails,
   ResourceMetadata,
   ResourceTags,
+  removeFromResourceLists,
   Section,
   SkeletonTemplate,
   Spacer,
@@ -288,9 +289,10 @@ export const SkuDetails: FC = () => {
             label: "Delete",
             variant: "danger",
             onClick: async () => {
-              await sdkClient.skus.delete(sku.id).then(() => {
-                setLocation(appRoutes.home.makePath({}))
-              })
+              await sdkClient.skus.delete(sku.id)
+              // the list stays mounted under this drawer, so it has to be told
+              removeFromResourceLists("skus", sku.id)
+              setLocation(appRoutes.home.makePath({}))
             },
           }}
           successMessage={`SKU ${sku.code} deleted`}
