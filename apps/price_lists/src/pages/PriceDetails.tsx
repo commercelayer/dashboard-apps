@@ -5,6 +5,7 @@ import {
   type PageHeadingProps,
   ResourceDetails,
   ResourceMetadata,
+  removeFromResourceLists,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
@@ -186,9 +187,10 @@ export function PriceDetails(): React.JSX.Element {
               label: "Delete price",
               variant: "danger",
               onClick: async () => {
-                await sdkClient.prices.delete(price.id).then(() => {
-                  setLocation(appRoutes.home.makePath({}))
-                })
+                await sdkClient.prices.delete(price.id)
+                // the list stays mounted under this drawer, so it has to be told
+                removeFromResourceLists("prices", price.id)
+                setLocation(appRoutes.home.makePath({}))
               },
             }}
           />

@@ -5,6 +5,7 @@ import {
   type PageHeadingProps,
   ResourceDetails,
   ResourceMetadata,
+  removeFromResourceLists,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
@@ -168,9 +169,10 @@ export const StockItemDetails: FC = () => {
               label: "Delete stock item",
               variant: "danger",
               onClick: async () => {
-                await sdkClient.stock_items.delete(stockItem.id).then(() => {
-                  setLocation(appRoutes.home.makePath())
-                })
+                await sdkClient.stock_items.delete(stockItem.id)
+                // the list stays mounted under this drawer, so it has to be told
+                removeFromResourceLists("stock_items", stockItem.id)
+                setLocation(appRoutes.home.makePath())
               },
             }}
           />

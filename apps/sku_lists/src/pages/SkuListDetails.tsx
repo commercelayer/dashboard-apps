@@ -9,6 +9,7 @@ import {
   type PageHeadingProps,
   ResourceDetails,
   ResourceMetadata,
+  removeFromResourceLists,
   Section,
   SkeletonTemplate,
   Spacer,
@@ -293,9 +294,10 @@ export const SkuListDetails = (): React.JSX.Element => {
               label: "Delete SKU list",
               variant: "danger",
               onClick: async () => {
-                await sdkClient.sku_lists.delete(skuList.id).then(() => {
-                  setLocation(appRoutes.list.makePath({}))
-                })
+                await sdkClient.sku_lists.delete(skuList.id)
+                // the list stays mounted under this drawer, so it has to be told
+                removeFromResourceLists("sku_lists", skuList.id)
+                setLocation(appRoutes.list.makePath({}))
               },
             }}
           />
