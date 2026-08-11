@@ -1,113 +1,111 @@
 import type { FiltersInstructions } from "@commercelayer/app-elements"
-import { t } from "@commercelayer/app-elements"
+import { getReturnStatusName, t } from "@commercelayer/app-elements"
+import { listableStatuses } from "#data/lists"
 
-export const instructions: FiltersInstructions = [
-  {
-    label: t("apps.returns.details.return_locations"),
-    type: "options",
-    sdk: {
-      predicate: "stock_location_id_in",
-    },
-    render: {
-      component: "inputResourceGroup",
-      props: {
-        fieldForLabel: "name",
-        fieldForValue: "id",
-        resource: "stock_locations",
-        searchBy: "name_cont",
-        sortBy: { attribute: "id", direction: "asc" },
-        previewLimit: 5,
-        hideWhenSingleItem: true,
-        filters: {
-          disabled_at_null: true,
+const textSearchPredicate =
+  [
+    "number",
+    "reference",
+    "customer_email",
+    "origin_address_email",
+    "origin_address_company",
+    "origin_address_first_name",
+    "origin_address_last_name",
+    "origin_address_billing_info",
+    "destination_address_email",
+    "destination_address_company",
+    "destination_address_first_name",
+    "destination_address_last_name",
+    "destination_address_billing_info",
+  ].join("_or_") + "_cont"
+
+export const makeFiltersInstructions = (options?: {
+  hideFilterStatus?: boolean
+}): FiltersInstructions => {
+  const hideFilterStatus = options?.hideFilterStatus ?? false
+  return [
+    {
+      label: t("apps.returns.details.return_locations"),
+      type: "options",
+      sdk: {
+        predicate: "stock_location_id_in",
+      },
+      render: {
+        component: "inputSelect",
+        props: {
+          resource: "stock_locations",
+          fieldForLabel: "name",
+          fieldForValue: "id",
+          searchBy: "name_cont",
+          sortBy: { attribute: "name", direction: "asc" },
+          hideWhenSingleItem: true,
+          filters: {
+            disabled_at_null: true,
+          },
         },
       },
     },
-  },
-  {
-    label: t("apps.returns.attributes.status"),
-    type: "options",
-    sdk: {
-      predicate: "status_in",
-      defaultOptions: [
-        "approved",
-        "shipped",
-        "received",
-        "cancelled",
-        "rejected",
-        "refunded",
-      ],
-    },
-    render: {
-      component: "inputToggleButton",
-      props: {
-        mode: "multi",
-        options: [
-          {
-            value: "requested",
-            label: t("resources.returns.attributes.status.requested"),
-          },
-          {
-            value: "approved",
-            label: t("resources.returns.attributes.status.approved"),
-          },
-          {
-            value: "shipped",
-            label: t("resources.returns.attributes.status.shipped"),
-          },
-          {
-            value: "received",
-            label: t("resources.returns.attributes.status.received"),
-          },
-          {
-            value: "cancelled",
-            label: t("resources.returns.attributes.status.cancelled"),
-          },
-          {
-            value: "rejected",
-            label: t("resources.returns.attributes.status.rejected"),
-          },
-          {
-            value: "refunded",
-            label: t("resources.returns.attributes.status.refunded"),
-          },
-        ],
+    {
+      label: "Archived",
+      type: "options",
+      // scoping only: the tabs decide whether archived returns are included,
+      // it is never rendered as a field
+      hidden: true,
+      sdk: {
+        predicate: "archived_at_null",
+        parseFormValue: (value) =>
+          value === "show" ? undefined : value === "hide",
+      },
+      render: {
+        component: "inputToggleButton",
+        props: {
+          mode: "single",
+          options: [
+            { value: "only", label: "Only archived" },
+            { value: "hide", label: "Hide archived" },
+            { value: "show", label: "Show all, both archived and not" },
+          ],
+        },
       },
     },
-  },
-  {
-    label: t("common.time_range"),
-    type: "timeRange",
-    sdk: {
-      predicate: "updated_at",
+    {
+      label: t("apps.returns.attributes.status"),
+      type: "options",
+      hidden: hideFilterStatus,
+      sdk: {
+        predicate: "status_in",
+        defaultOptions: listableStatuses,
+      },
+      render: {
+        component: "inputToggleButton",
+        props: {
+          mode: "multi",
+          options: listableStatuses.map((status) => ({
+            value: status,
+            label: getReturnStatusName(status),
+          })),
+        },
+      },
     },
-    render: {
-      component: "dateRangePicker",
+    {
+      label: t("common.time_range"),
+      type: "timeRange",
+      sdk: {
+        predicate: "updated_at",
+      },
+      render: {
+        component: "dateRangePicker",
+      },
     },
-  },
-  {
-    label: t("common.search"),
-    type: "textSearch",
-    sdk: {
-      predicate:
-        [
-          "number",
-          "reference",
-          "customer_email",
-          "origin_address_email",
-          "origin_address_company",
-          "origin_address_first_name",
-          "origin_address_last_name",
-          "origin_address_billing_info",
-          "destination_address_email",
-          "destination_address_company",
-          "destination_address_first_name",
-          "destination_address_last_name",
-          "destination_address_billing_info",
-        ].join("_or_") + "_cont",
+    {
+      label: t("common.search"),
+      type: "textSearch",
+      sdk: {
+        predicate: textSearchPredicate,
+      },
+      render: {
+        component: "searchBar",
+      },
     },
-    render: {
-      component: "searchBar",
-    },
-  },
-]
+  ]
+}
