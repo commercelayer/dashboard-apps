@@ -3,18 +3,18 @@ import {
   EmptyState,
   PageHeading,
   type PageHeadingProps,
-  PageLayout,
   ResourceDetails,
   ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
+  useConfirmDialog,
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
-import { type FC, useEffect, useState } from "react"
+import { type FC, useEffect } from "react"
 import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { StockItemInfo } from "#components/StockItemInfo"
@@ -38,7 +38,7 @@ export const StockItemDetails: FC = () => {
 
   const { sdkClient } = useCoreSdkProvider()
 
-  const { Overlay, open, close } = useOverlay()
+  const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
   // The drawer is driven by the route: open while this component is mounted, and
   // closing means navigating away.
@@ -47,8 +47,6 @@ export const StockItemDetails: FC = () => {
   useEffect(() => {
     openDrawer()
   }, [openDrawer])
-
-  const [isDeleting, setIsDeleting] = useState(false)
 
   const closeDrawer = (): void => {
     // `goBack` returns to another app when the stock item was opened from one;
@@ -104,7 +102,7 @@ export const StockItemDetails: FC = () => {
       {
         label: "Delete",
         onClick: () => {
-          open()
+          showDeleteDialog()
         },
       },
     ])
@@ -162,39 +160,20 @@ export const StockItemDetails: FC = () => {
           </Spacer>
         </SkeletonTemplate>
         {canUser("destroy", "stock_items") && (
-          <Overlay backgroundColor="light">
-            <PageLayout
-              title={`Confirm that you want to cancel the stock item related to ${stockItem?.sku?.code} (${stockItem?.sku?.name}) SKU.`}
-              description="This action cannot be undone, proceed with caution."
-              minHeight={false}
-              navigationButton={{
-                onClick: () => {
-                  close()
-                },
-                label: `Cancel`,
-                icon: "x",
-              }}
-            >
-              <Button
-                variant="danger"
-                size="small"
-                disabled={isDeleting}
-                onClick={(e) => {
-                  setIsDeleting(true)
-                  e.stopPropagation()
-                  void sdkClient.stock_items
-                    .delete(stockItem.id)
-                    .then(() => {
-                      setLocation(appRoutes.home.makePath())
-                    })
-                    .catch(() => {})
-                }}
-                fullWidth
-              >
-                Delete stock item
-              </Button>
-            </PageLayout>
-          </Overlay>
+          <ConfirmDialog
+            icon="trash"
+            title={`Delete stock item for ${stockItem?.sku?.code}`}
+            description="This action cannot be undone."
+            confirm={{
+              label: "Delete stock item",
+              variant: "danger",
+              onClick: async () => {
+                await sdkClient.stock_items.delete(stockItem.id).then(() => {
+                  setLocation(appRoutes.home.makePath())
+                })
+              },
+            }}
+          />
         )}
       </div>
     </DetailsDrawer>

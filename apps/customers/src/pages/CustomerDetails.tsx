@@ -15,24 +15,26 @@ import {
   SkeletonTemplate,
   Spacer,
   useAppLinking,
+  useConfirmDialog,
   useCoreApi,
+  useCoreSdkProvider,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
+import { useState } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { CustomerAddresses } from "#components/CustomerAddresses"
 import { CustomerAnonymization } from "#components/CustomerAnonymization"
 import { CustomerInfo } from "#components/CustomerInfo"
 import { CustomerLastOrders } from "#components/CustomerLastOrders"
+import { CustomerResetPasswordDialog } from "#components/CustomerResetPasswordDialog"
 import { CustomerTimeline } from "#components/CustomerTimeline"
 import { CustomerWallet } from "#components/CustomerWallet"
 import { appRoutes } from "#data/routes"
 import { useCustomerCanBeAnonymized } from "#hooks/useCustomerCanBeAnonymized"
 import { useCustomerCanBeDeleted } from "#hooks/useCustomerCanBeDeleted"
-import { useCustomerDeleteOverlay } from "#hooks/useCustomerDeleteOverlay"
 import { useCustomerDetails } from "#hooks/useCustomerDetails"
-import { useCustomerResetPasswordOverlay } from "#hooks/useCustomerResetPasswordOverlay"
 
 export function CustomerDetails(): React.JSX.Element {
   const {
@@ -52,9 +54,48 @@ export function CustomerDetails(): React.JSX.Element {
   const canBeDeleted = useCustomerCanBeDeleted(customerId)
   const canBeAnonymized = useCustomerCanBeAnonymized(customerId)
 
-  const { DeleteOverlay, show } = useCustomerDeleteOverlay(customerId)
-  const { ResetPasswordOverlay, showResetPasswordOverlay } =
-    useCustomerResetPasswordOverlay(customerId)
+  const { sdkClient } = useCoreSdkProvider()
+  const { show, ConfirmDialog } = useConfirmDialog()
+  const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false)
+
+  /**
+   * A customer with orders cannot be deleted, only anonymized, so the same
+   * menu entry confirms whichever of the two is available. Deleting leaves the
+   * page; requesting anonymization stays on it and refreshes the customer.
+   */
+  const deleteDialogProps = canBeDeleted
+    ? {
+        icon: "trash" as const,
+        title: `Delete customer ${customer?.email ?? ""}`,
+        description: "This action cannot be undone.",
+        confirm: {
+          label: t("common.delete_resource", {
+            resource: t("resources.customers.name").toLowerCase(),
+          }),
+          variant: "danger" as const,
+          onClick: async () => {
+            await sdkClient.customers.delete(customer.id).then(() => {
+              setLocation(appRoutes.home.makePath())
+            })
+          },
+        },
+      }
+    : {
+        icon: "eyeSlash" as const,
+        title: t("apps.customers.anonymize.title"),
+        description: t("apps.customers.anonymize.description"),
+        confirm: {
+          label: t("apps.customers.anonymize.request_button"),
+          variant: "danger" as const,
+          onClick: async () => {
+            await sdkClient.customers
+              .update({ id: customer.id, _request_anonymization: true })
+              .then(async () => {
+                await mutateCustomer()
+              })
+          },
+        },
+      }
 
   const { data: organization } = useCoreApi("organization", "retrieve", [])
   const enableResetPassword =
@@ -84,7 +125,7 @@ export function CustomerDetails(): React.JSX.Element {
       {
         label: "Reset Password",
         onClick: () => {
-          showResetPasswordOverlay()
+          setIsResetPasswordOpen(true)
         },
       },
     ])
@@ -256,8 +297,18 @@ export function CustomerDetails(): React.JSX.Element {
         </Spacer>
       </SkeletonTemplate>
 
-      {canUser("destroy", "customers") && <DeleteOverlay />}
-      <ResetPasswordOverlay />
+      {(canBeDeleted || canBeAnonymized) && (
+        <ConfirmDialog {...deleteDialogProps} />
+      )}
+      {enableResetPassword && (
+        <CustomerResetPasswordDialog
+          customerEmail={customer.email}
+          show={isResetPasswordOpen}
+          onClose={() => {
+            setIsResetPasswordOpen(false)
+          }}
+        />
+      )}
     </PageLayout>
   )
 }

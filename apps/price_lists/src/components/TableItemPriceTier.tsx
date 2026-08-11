@@ -1,15 +1,13 @@
 import {
-  Button,
   Dropdown,
   DropdownDivider,
   DropdownItem,
   Icon,
   isMock,
-  PageLayout,
   Td,
   Tr,
+  useConfirmDialog,
   useCoreSdkProvider,
-  useOverlay,
   useTokenProvider,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
@@ -18,7 +16,6 @@ import type {
   PriceFrequencyTier,
   PriceVolumeTier,
 } from "@commercelayer/sdk"
-import { useState } from "react"
 import type { KeyedMutator } from "swr"
 import { useLocation, useRoute } from "wouter"
 import { appRoutes } from "#data/routes"
@@ -43,9 +40,7 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
     const { canUser } = useTokenProvider()
     const { sdkClient } = useCoreSdkProvider()
 
-    const { Overlay, open, close } = useOverlay()
-
-    const [isDeleting, setIsDeleting] = useState(false)
+    const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
     const sdkResource = getPriceTierSdkResource(type)
     const appRoutesPath =
@@ -73,7 +68,7 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
       <DropdownItem
         label="Delete"
         onClick={() => {
-          open()
+          showDeleteDialog()
         }}
       />
     )
@@ -100,42 +95,19 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
           <Td align="right">{contextMenu}</Td>
         </Tr>
         {canUser("destroy", sdkResource) && (
-          <Overlay>
-            <PageLayout
-              title={`Confirm that you want to delete the price ${type} tier with name ${resource.name}.`}
-              description="This action cannot be undone, proceed with caution."
-              minHeight={false}
-              navigationButton={{
-                label: "Cancel",
-                icon: "x",
-                onClick: () => {
-                  close()
-                },
-              }}
-            >
-              <Button
-                variant="danger"
-                size="small"
-                disabled={isDeleting}
-                onClick={(e) => {
-                  setIsDeleting(true)
-                  e.stopPropagation()
-                  void sdkClient[sdkResource]
-                    .delete(resource.id)
-                    .then(() => {
-                      void mutatePrice()
-                      close()
-                    })
-                    .catch(() => {})
-                    .finally(() => {
-                      setIsDeleting(false)
-                    })
-                }}
-              >
-                Delete price {type} tier
-              </Button>
-            </PageLayout>
-          </Overlay>
+          <ConfirmDialog
+            icon="trash"
+            title={`Delete price ${type} tier ${resource.name}`}
+            description="This action cannot be undone."
+            confirm={{
+              label: `Delete price ${type} tier`,
+              variant: "danger",
+              onClick: async () => {
+                await sdkClient[sdkResource].delete(resource.id)
+                await mutatePrice()
+              },
+            }}
+          />
         )}
       </>
     )
