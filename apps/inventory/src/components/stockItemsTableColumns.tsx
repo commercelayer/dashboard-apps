@@ -29,11 +29,11 @@ export function useStockItemsTableColumns(): Array<
               size="small"
             />
             <div>
-              <Text tag="div" weight="medium" size="x-small" variant="info">
-                {resource.sku?.code}
-              </Text>
               <Text tag="div" weight="semibold">
                 {resource.sku?.name}
+              </Text>
+              <Text tag="div" weight="medium" size="x-small" variant="info">
+                {resource.sku?.code}
               </Text>
             </div>
           </div>

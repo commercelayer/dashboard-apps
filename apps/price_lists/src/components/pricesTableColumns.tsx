@@ -11,7 +11,7 @@ import { useMemo } from "react"
  * Columns of the prices table.
  *
  * The SKU column carries the same information the list item used to show (image,
- * code and name); the row link is provided by the table itself, so no caret is
+ * name and code); the row link is provided by the table itself, so no caret is
  * needed here.
  *
  * Requires `include: ['sku', 'price_list']` in the query.
@@ -31,11 +31,11 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
               size="small"
             />
             <div>
-              <Text tag="div" weight="medium" size="x-small" variant="info">
-                {resource.sku?.code}
-              </Text>
               <Text tag="div" weight="semibold">
                 {resource.sku?.name}
+              </Text>
+              <Text tag="div" weight="medium" size="x-small" variant="info">
+                {resource.sku?.code}
               </Text>
             </div>
           </div>
