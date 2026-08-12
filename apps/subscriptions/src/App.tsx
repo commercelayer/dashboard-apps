@@ -1,8 +1,8 @@
 import type { FC } from "react"
-import { Redirect, Route, Router, Switch } from "wouter"
+import { Route, Router, Switch } from "wouter"
 import { ErrorNotFound } from "#components/ErrorNotFound"
 import { appRoutes } from "#data/routes"
-import { Filters } from "#pages/Filters"
+import { ListRedirect } from "#pages/ListRedirect"
 import SubscriptionDetails from "#pages/SubscriptionDetails"
 import { SubscriptionEdit } from "#pages/SubscriptionEdit"
 import { SubscriptionOrders } from "#pages/SubscriptionOrders"
@@ -17,13 +17,10 @@ export const App: FC<AppProps> = ({ routerBase }) => {
     <Router base={routerBase}>
       <Switch>
         <Route path={appRoutes.home.path}>
-          <Redirect to={appRoutes.list.path} replace />
-        </Route>
-        <Route path={appRoutes.list.path}>
           <SubscriptionsList />
         </Route>
-        <Route path={appRoutes.filters.path}>
-          <Filters />
+        <Route path={appRoutes.list.path}>
+          <ListRedirect />
         </Route>
         <Route path={appRoutes.details.path}>
           <SubscriptionDetails />

@@ -1,8 +1,12 @@
 import {
+  Badge,
+  type BadgeProps,
   Button,
+  Card,
   type DropdownItemProps,
   EmptyState,
   formatDateWithPredicate,
+  getStockTransferDisplayStatus,
   isMockedId,
   type PageHeadingProps,
   PageLayout,
@@ -11,6 +15,7 @@ import {
   SkeletonTemplate,
   Spacer,
   useAppLinking,
+  useConfirmDialog,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
@@ -18,7 +23,6 @@ import { useMemo } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { StockTransferAddresses } from "#components/StockTransferAddresses"
 import { StockTransferInfo } from "#components/StockTransferInfo"
-import { StockTransferSteps } from "#components/StockTransferSteps"
 import { StockTransferSummary } from "#components/StockTransferSummary"
 import { Timeline } from "#components/Timeline"
 import {
@@ -26,7 +30,6 @@ import {
   getStockTransferTriggerAttributeName,
 } from "#data/dictionaries"
 import { appRoutes } from "#data/routes"
-import { useCancelOverlay } from "#hooks/useCancelOverlay"
 import { useStockTransferDetails } from "#hooks/useStockTransferDetails"
 import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
@@ -51,7 +54,7 @@ export function StockTransferDetails(): React.JSX.Element {
     return getStockTransferTriggerActions(stockTransfer)
   }, [stockTransfer])
 
-  const { show: showCancelOverlay, Overlay: CancelOverlay } = useCancelOverlay()
+  const { show: showCancelDialog, ConfirmDialog } = useConfirmDialog()
   const { dispatch } = useTriggerAttribute(stockTransfer.id)
 
   if (
@@ -93,7 +96,7 @@ export function StockTransferDetails(): React.JSX.Element {
         onClick: () => {
           // cancel action has its own modal
           if (triggerAction.triggerAttribute === "_cancel") {
-            showCancelOverlay()
+            showCancelDialog()
             return
           }
           void dispatch(triggerAction.triggerAttribute)
@@ -137,7 +140,16 @@ export function StockTransferDetails(): React.JSX.Element {
       mode={mode}
       toolbar={pageToolbar}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle}{" "}
+          <Badge
+            variant={toBadgeVariant(
+              getStockTransferDisplayStatus(stockTransfer).color,
+            )}
+          >
+            {getStockTransferDisplayStatus(stockTransfer).label}
+          </Badge>
+        </SkeletonTemplate>
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
@@ -174,55 +186,89 @@ export function StockTransferDetails(): React.JSX.Element {
         icon: "arrowLeft",
       }}
       scrollToTop
-    >
-      <SkeletonTemplate isLoading={isLoading}>
-        <CancelOverlay
-          stockTransfer={stockTransfer}
-          onConfirm={() => {
-            void dispatch("_cancel")
-          }}
-        />
-        <Spacer bottom="4">
-          <div className="print:hidden">
-            <StockTransferSteps stockTransfer={stockTransfer} />
-          </div>
+      fullWidth
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
           <Spacer top="14">
-            <StockTransferInfo stockTransfer={stockTransfer} />
+            <Card overflow="visible">
+              <StockTransferAddresses stockTransfer={stockTransfer} />
+              <div className="print:hidden">
+                <Spacer top="10">
+                  <ResourceDetails
+                    resource={stockTransfer}
+                    onUpdated={async () => {
+                      void mutateStockTransfer()
+                    }}
+                  />
+                </Spacer>
+              </div>
+              {!isMockedId(stockTransfer.id) && (
+                <Spacer top="10">
+                  <ResourceMetadata
+                    resourceType="stock_transfers"
+                    resourceId={stockTransfer.id}
+                    overlay={{
+                      title: pageTitle,
+                    }}
+                  />
+                </Spacer>
+              )}
+            </Card>
           </Spacer>
-          <Spacer top="14">
-            <StockTransferSummary stockTransfer={stockTransfer} />
-          </Spacer>
-          <Spacer top="14">
-            <StockTransferAddresses stockTransfer={stockTransfer} />
-          </Spacer>
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+      afterSidebar={
+        <SkeletonTemplate isLoading={isLoading}>
           <div className="print:hidden">
-            <Spacer top="14">
-              <ResourceDetails
-                resource={stockTransfer}
-                onUpdated={async () => {
-                  void mutateStockTransfer()
-                }}
-              />
-            </Spacer>
-          </div>
-          {!isMockedId(stockTransfer.id) && (
-            <Spacer top="14">
-              <ResourceMetadata
-                resourceType="stock_transfers"
-                resourceId={stockTransfer.id}
-                overlay={{
-                  title: pageTitle,
-                }}
-              />
-            </Spacer>
-          )}
-          <div className="print:hidden">
-            <Spacer top="14">
+            <Spacer top="14" bottom="4">
               <Timeline stockTransfer={stockTransfer} />
             </Spacer>
           </div>
+        </SkeletonTemplate>
+      }
+    >
+      <SkeletonTemplate isLoading={isLoading}>
+        <ConfirmDialog
+          icon="x"
+          title={`Cancel stock transfer #${stockTransfer.number}`}
+          description="This action cannot be undone."
+          confirm={{
+            // not just "Cancel": the dialog's own dismiss button says that
+            label: getStockTransferTriggerAttributeName("_cancel"),
+            variant: "danger",
+            onClick: async () => {
+              await dispatch("_cancel")
+            },
+          }}
+          cancelLabel="Close"
+        />
+        <Spacer bottom="4">
+          <StockTransferInfo stockTransfer={stockTransfer} />
+          <Spacer top="14">
+            <StockTransferSummary stockTransfer={stockTransfer} />
+          </Spacer>
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>
   )
+}
+
+/** Map the canonical stock transfer display status color onto a `Badge` variant. */
+function toBadgeVariant(
+  color: ReturnType<typeof getStockTransferDisplayStatus>["color"],
+): BadgeProps["variant"] {
+  switch (color) {
+    case "green":
+      return "success"
+    case "orange":
+      return "warning"
+    case "red":
+      return "danger"
+    case "teal":
+      return "teal"
+    default:
+      return "secondary"
+  }
 }
