@@ -2,39 +2,37 @@ import {
   Button,
   EmptyState,
   isMockedId,
+  PageHeading,
   type PageHeadingProps,
-  PageLayout,
   ResourceDetails,
   ResourceMetadata,
   ResourceTags,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
+  useConfirmDialog,
   useCoreSdkProvider,
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { SkuDescription } from "dashboard-apps-common/src/components/SkuDescription"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
-import { type FC, useState } from "react"
-import { Link, useLocation, useRoute } from "wouter"
+import { type FC, useEffect } from "react"
+import { useLocation, useRoute } from "wouter"
+import { useSearch } from "wouter/use-browser-location"
 import { BundleInfo } from "#components/BundleInfo"
 import { BundleSkuList } from "#components/BundleSkuList"
 import { appRoutes } from "#data/routes"
 import { useBundleDetails } from "#hooks/useBundleDetails"
 
 export const BundleDetails: FC = () => {
-  const {
-    settings: { mode },
-    canUser,
-  } = useTokenProvider()
+  const { canUser } = useTokenProvider()
   const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
   const [, params] = useRoute<{ bundleId: string }>(appRoutes.details.path)
 
   const bundleId = params?.bundleId ?? ""
-  const goBackUrl = appRoutes.list.makePath({})
 
   const {
     settings: { extras },
@@ -44,8 +42,30 @@ export const BundleDetails: FC = () => {
 
   const { sdkClient } = useCoreSdkProvider()
 
-  const { Overlay: DeleteOverlay, open, close } = useOverlay()
-  const [isDeleting, setIsDeleting] = useState(false)
+  const queryString = useSearch()
+
+  // The drawer is driven by the route: it is open for as long as this component
+  // is mounted, and closing it means navigating away.
+  const { Overlay: DetailsDrawer, open: openDrawer } = useOverlay()
+
+  useEffect(() => {
+    openDrawer()
+  }, [openDrawer])
+
+  const closeDrawer = (): void => {
+    // `goBack` returns to another app when the bundle was opened from one; within
+    // the app it falls back to the list, keeping the filters the url carries.
+    const search = new URLSearchParams(queryString).toString()
+    goBack({
+      currentResourceId: bundleId,
+      defaultRelativePath:
+        search !== ""
+          ? appRoutes.home.makePath({}, search)
+          : appRoutes.home.makePath({}),
+    })
+  }
+
+  const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
   const pageTitle = bundle.name ?? "Bundles"
 
@@ -55,14 +75,14 @@ export const BundleDetails: FC = () => {
   }
 
   if (canUser("update", "bundles")) {
-    pageToolbar.buttons?.push({
-      label: "Edit",
-      size: "small",
-      variant: "secondary",
-      onClick: () => {
-        setLocation(appRoutes.edit.makePath({ bundleId }))
+    pageToolbar.dropdownItems?.push([
+      {
+        label: "Edit",
+        onClick: () => {
+          setLocation(appRoutes.edit.makePath({ bundleId }))
+        },
       },
-    })
+    ])
   }
 
   if (canUser("destroy", "bundles")) {
@@ -70,7 +90,7 @@ export const BundleDetails: FC = () => {
       {
         label: "Delete",
         onClick: () => {
-          open()
+          showDeleteDialog()
         },
       },
     ])
@@ -87,139 +107,107 @@ export const BundleDetails: FC = () => {
 
   if (error != null) {
     return (
-      <PageLayout
-        mode={mode}
-        title="Bundles"
-        navigationButton={{
-          onClick: () => {
-            goBack({
-              currentResourceId: bundleId,
-              defaultRelativePath: appRoutes.list.makePath({}),
-            })
-          },
-          label: "Bundles",
-          icon: "arrowLeft",
-        }}
-        scrollToTop
-      >
-        <EmptyState
-          title="Not authorized"
-          action={
-            <Link href={goBackUrl}>
-              <Button variant="primary">Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
+      <DetailsDrawer drawer onBackdropClick={closeDrawer}>
+        <div className="p-6">
+          <PageHeading
+            title="Bundle"
+            navigationButton={{ onClick: closeDrawer, label: "", icon: "x" }}
+          />
+          <EmptyState
+            title="Not authorized"
+            action={
+              <Button variant="primary" onClick={closeDrawer}>
+                Go back
+              </Button>
+            }
+          />
+        </div>
+      </DetailsDrawer>
     )
   }
 
   return (
-    <PageLayout
-      mode={mode}
-      title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
-      }
-      description={
-        <SkeletonTemplate isLoading={isLoading}>{bundle.code}</SkeletonTemplate>
-      }
-      navigationButton={{
-        onClick: () => {
-          goBack({
-            currentResourceId: bundleId,
-            defaultRelativePath: appRoutes.list.makePath({}),
-          })
-        },
-        label: "Bundles",
-        icon: "arrowLeft",
-      }}
-      toolbar={pageToolbar}
-      scrollToTop
-      gap="only-top"
-    >
-      <>
-        <SkeletonTemplate isLoading={isLoading}>
-          <Spacer bottom="4">
-            <Spacer top="14">
-              <SkuDescription resource={bundle} />
+    <DetailsDrawer drawer onBackdropClick={closeDrawer}>
+      <div className="p-6">
+        <PageHeading
+          title={
+            <SkeletonTemplate isLoading={isLoading}>
+              {pageTitle}
+            </SkeletonTemplate>
+          }
+          description={
+            <SkeletonTemplate isLoading={isLoading}>
+              {bundle.code}
+            </SkeletonTemplate>
+          }
+          navigationButton={{ onClick: closeDrawer, label: "", icon: "x" }}
+          toolbar={pageToolbar}
+          gap="only-top"
+        />
+        <>
+          <SkeletonTemplate isLoading={isLoading}>
+            <Spacer bottom="4">
+              <Spacer top="14">
+                <SkuDescription resource={bundle} />
+              </Spacer>
+              <Spacer top="14">
+                <BundleSkuList bundle={bundle} />
+              </Spacer>
+              <Spacer top="14">
+                <BundleInfo bundle={bundle} />
+              </Spacer>
+              <Spacer top="14">
+                <ResourceDetails
+                  resource={bundle}
+                  onUpdated={async () => {
+                    void mutateBundle()
+                  }}
+                />
+              </Spacer>
+              {!isMockedId(bundle.id) && (
+                <>
+                  <Spacer top="14">
+                    <ResourceTags
+                      resourceType="bundles"
+                      resourceId={bundle.id}
+                      overlay={{ title: pageTitle }}
+                      onTagClick={(tagId) => {
+                        setLocation(
+                          appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
+                        )
+                      }}
+                    />
+                  </Spacer>
+                  <Spacer top="14">
+                    <ResourceMetadata
+                      resourceType="bundles"
+                      resourceId={bundle.id}
+                      overlay={{
+                        title: pageTitle,
+                      }}
+                    />
+                  </Spacer>
+                </>
+              )}
             </Spacer>
-            <Spacer top="14">
-              <BundleSkuList bundle={bundle} />
-            </Spacer>
-            <Spacer top="14">
-              <BundleInfo bundle={bundle} />
-            </Spacer>
-            <Spacer top="14">
-              <ResourceDetails
-                resource={bundle}
-                onUpdated={async () => {
-                  void mutateBundle()
-                }}
-              />
-            </Spacer>
-            {!isMockedId(bundle.id) && (
-              <>
-                <Spacer top="14">
-                  <ResourceTags
-                    resourceType="bundles"
-                    resourceId={bundle.id}
-                    overlay={{ title: pageTitle }}
-                    onTagClick={(tagId) => {
-                      setLocation(
-                        appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                      )
-                    }}
-                  />
-                </Spacer>
-                <Spacer top="14">
-                  <ResourceMetadata
-                    resourceType="bundles"
-                    resourceId={bundle.id}
-                    overlay={{
-                      title: pageTitle,
-                    }}
-                  />
-                </Spacer>
-              </>
-            )}
-          </Spacer>
-        </SkeletonTemplate>
-        {canUser("destroy", "bundles") && (
-          <DeleteOverlay backgroundColor="light">
-            <PageLayout
-              title={`Confirm that you want to delete the ${bundle.code} (${bundle.name}) bundle.`}
-              description="This action cannot be undone, proceed with caution."
-              minHeight={false}
-              navigationButton={{
-                onClick: () => {
-                  close()
+          </SkeletonTemplate>
+          {canUser("destroy", "bundles") && (
+            <ConfirmDialog
+              icon="trash"
+              title={`Delete bundle ${bundle.code}`}
+              description="This action cannot be undone."
+              confirm={{
+                label: "Delete bundle",
+                variant: "danger",
+                onClick: async () => {
+                  await sdkClient.bundles.delete(bundle.id)
+                  setLocation(appRoutes.home.makePath({}))
                 },
-                label: `Cancel`,
-                icon: "x",
               }}
-            >
-              <Button
-                variant="danger"
-                size="small"
-                disabled={isDeleting}
-                onClick={(e) => {
-                  setIsDeleting(true)
-                  e.stopPropagation()
-                  void sdkClient.bundles
-                    .delete(bundle.id)
-                    .then(() => {
-                      setLocation(appRoutes.list.makePath({}))
-                    })
-                    .catch(() => {})
-                }}
-                fullWidth
-              >
-                Delete bundle
-              </Button>
-            </PageLayout>
-          </DeleteOverlay>
-        )}
-      </>
-    </PageLayout>
+            />
+          )}
+        </>
+      </div>
+    </DetailsDrawer>
   )
 }

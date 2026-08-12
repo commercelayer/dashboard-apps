@@ -35,18 +35,14 @@ export function useStockTransfersTableColumns(): Array<
         header: "Origin",
         hideBelow: "md",
         cell: ({ resource }) => (
-          <Text variant="info">
-            {resource.origin_stock_location?.name ?? "-"}
-          </Text>
+          <Text>{resource.origin_stock_location?.name ?? "-"}</Text>
         ),
       },
       {
         header: "Destination",
         hideBelow: "md",
         cell: ({ resource }) => (
-          <Text variant="info">
-            {resource.destination_stock_location?.name ?? "-"}
-          </Text>
+          <Text>{resource.destination_stock_location?.name ?? "-"}</Text>
         ),
       },
       {
@@ -66,7 +62,7 @@ export function useStockTransfersTableColumns(): Array<
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (
-          <Text variant="info" wrap="nowrap">
+          <Text wrap="nowrap">
             {formatDate({
               format: "full",
               isoDate: resource.updated_at,
