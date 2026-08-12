@@ -22,10 +22,6 @@ export const appRoutes = {
     path: "/list/:tagId/edit",
     makePath: (tagId: string) => `/list/${tagId}/edit`,
   },
-  delete: {
-    path: "/list/:tagId/delete",
-    makePath: (tagId: string) => `/list/${tagId}/delete`,
-  },
 }
 
 function hasFilterQuery(filters?: string): filters is string {
