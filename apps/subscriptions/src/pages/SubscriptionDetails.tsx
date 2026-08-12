@@ -1,6 +1,8 @@
 import {
   Alert,
+  Badge,
   Button,
+  Card,
   EmptyState,
   formatDateWithPredicate,
   isMockedId,
@@ -21,10 +23,11 @@ import { SubscriptionInfo } from "#components/SubscriptionInfo"
 import { SubscriptionItems } from "#components/SubscriptionItems"
 import { SubscriptionOrders } from "#components/SubscriptionOrders"
 import { SubscriptionPayment } from "#components/SubscriptionPayment"
-import { SubscriptionSteps } from "#components/SubscriptionSteps"
 import {
   getOrderSubscriptionTriggerAction,
   getOrderSubscriptionTriggerActionName,
+  getSubscriptionStatusBadgeVariant,
+  getSubscriptionStatusName,
 } from "#data/dictionaries"
 import { appRoutes } from "#data/routes"
 import { useSubscriptionDetails } from "#hooks/useSubscriptionDetails"
@@ -169,7 +172,14 @@ function SubscriptionDetails(): React.JSX.Element {
       mode={mode}
       toolbar={pageToolbar}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle}{" "}
+          <Badge
+            variant={getSubscriptionStatusBadgeVariant(subscription.status)}
+          >
+            {getSubscriptionStatusName(subscription.status)}
+          </Badge>
+        </SkeletonTemplate>
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
@@ -194,6 +204,61 @@ function SubscriptionDetails(): React.JSX.Element {
       }}
       gap="only-top"
       scrollToTop
+      fullWidth
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14">
+            <Card overflow="visible">
+              <SubscriptionAddresses subscription={subscription} />
+              <Spacer top="10">
+                <SubscriptionPayment subscription={subscription} />
+              </Spacer>
+              <Spacer top="10">
+                <ResourceDetails
+                  resource={subscription}
+                  onUpdated={async () => {
+                    void mutateSubscription()
+                  }}
+                />
+              </Spacer>
+              {!isMockedId(subscription.id) && (
+                <>
+                  <Spacer top="10">
+                    <ResourceTags
+                      resourceType="order_subscriptions"
+                      resourceId={subscription.id}
+                      overlay={{ title: pageTitle }}
+                      onTagClick={(tagId) => {
+                        setLocation(
+                          appRoutes.home.makePath({}, `tags_id_in=${tagId}`),
+                        )
+                      }}
+                    />
+                  </Spacer>
+                  <Spacer top="10">
+                    <ResourceMetadata
+                      resourceType="order_subscriptions"
+                      resourceId={subscription.id}
+                      overlay={{
+                        title: pageTitle,
+                      }}
+                    />
+                  </Spacer>
+                </>
+              )}
+            </Card>
+          </Spacer>
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+      afterSidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14" bottom="4">
+            <SubscriptionOrders subscription={subscription} />
+          </Spacer>
+        </SkeletonTemplate>
+      }
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
@@ -207,56 +272,11 @@ function SubscriptionDetails(): React.JSX.Element {
             </Spacer>
           )}
           <Spacer top="14">
-            <SubscriptionSteps subscription={subscription} />
-          </Spacer>
-          <Spacer top="14">
             <SubscriptionInfo subscription={subscription} />
           </Spacer>
           <Spacer top="14">
             <SubscriptionItems subscriptionId={subscription.id} />
           </Spacer>
-          <Spacer top="14">
-            <SubscriptionAddresses subscription={subscription} />
-          </Spacer>
-          <Spacer top="14">
-            <SubscriptionPayment subscription={subscription} />
-          </Spacer>
-          <Spacer top="14">
-            <SubscriptionOrders subscription={subscription} />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceDetails
-              resource={subscription}
-              onUpdated={async () => {
-                void mutateSubscription()
-              }}
-            />
-          </Spacer>
-          {!isMockedId(subscription.id) && (
-            <>
-              <Spacer top="14">
-                <ResourceTags
-                  resourceType="order_subscriptions"
-                  resourceId={subscription.id}
-                  overlay={{ title: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(
-                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                    )
-                  }}
-                />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="order_subscriptions"
-                  resourceId={subscription.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>

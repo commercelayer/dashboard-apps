@@ -15,8 +15,12 @@ interface Props {
 }
 
 /**
- * Order and customer, as a `Stack` so it lines up with the block above it:
- * consecutive stacks pull themselves together into one grid (`not-first:-mt-px`).
+ * Where the return travels and what it belongs to: the customer's city and the
+ * warehouse it goes back to, then the order and customer, both linked.
+ *
+ * Two stacks rather than one of four cells: consecutive stacks pull themselves
+ * together into a single grid (`not-first:-mt-px`), so this reads as two rows of
+ * two instead of four narrow columns.
  */
 export const ReturnInfo = withSkeletonTemplate<Props>(
   ({ returnObj }): React.JSX.Element => {
@@ -41,15 +45,28 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
         })
       : {}
 
+    const originAddress = returnObj.origin_address
+
     return (
-      <Stack>
-        <div>
-          <Spacer bottom="2">
-            <Text size="small" tag="div" variant="info" weight="semibold">
-              {t("resources.orders.name")}
-            </Text>
-          </Spacer>
-          <Text tag="div" weight="semibold">
+      <>
+        <Stack>
+          <InfoCell label={t("apps.returns.details.origin")}>
+            {originAddress?.city == null ? (
+              <EmptyValue />
+            ) : (
+              `${originAddress.city}${
+                originAddress.country_code != null
+                  ? ` (${originAddress.country_code})`
+                  : ""
+              }`
+            )}
+          </InfoCell>
+          <InfoCell label={t("apps.returns.details.destination")}>
+            {returnObj.stock_location?.name ?? <EmptyValue />}
+          </InfoCell>
+        </Stack>
+        <Stack>
+          <InfoCell label={t("resources.orders.name")}>
             {canAccess("orders") ? (
               <Button variant="link" {...navigateToOrder}>
                 {`${returnOrderMarket} ${returnOrderNumber}`}
@@ -57,15 +74,8 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
             ) : (
               `${returnOrderMarket} ${returnOrderNumber}`
             )}
-          </Text>
-        </div>
-        <div>
-          <Spacer bottom="2">
-            <Text size="small" tag="div" variant="info" weight="semibold">
-              {t("resources.customers.name")}
-            </Text>
-          </Spacer>
-          <Text tag="div" weight="semibold">
+          </InfoCell>
+          <InfoCell label={t("resources.customers.name")}>
             {canAccess("customers") ? (
               <Button variant="link" {...navigateToCustomer}>
                 {returnCustomerEmail}
@@ -73,9 +83,35 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
             ) : (
               returnCustomerEmail
             )}
-          </Text>
-        </div>
-      </Stack>
+          </InfoCell>
+        </Stack>
+      </>
     )
   },
 )
+
+/** One cell of the stack: a muted label above the value. */
+function InfoCell({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}): React.JSX.Element {
+  return (
+    <div>
+      <Spacer bottom="2">
+        <Text size="small" tag="div" variant="info" weight="semibold">
+          {label}
+        </Text>
+      </Spacer>
+      <Text tag="div" weight="semibold">
+        {children}
+      </Text>
+    </div>
+  )
+}
+
+function EmptyValue(): React.JSX.Element {
+  return <Text className="text-gray-300">&#8212;</Text>
+}

@@ -4,6 +4,7 @@ import {
   Section,
   Spacer,
   Text,
+  useConfirmDialog,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import type { StockTransfer } from "@commercelayer/sdk"
@@ -11,7 +12,6 @@ import {
   getStockTransferTriggerActions,
   getStockTransferTriggerAttributeName,
 } from "#data/dictionaries"
-import { useCancelOverlay } from "#hooks/useCancelOverlay"
 import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
 interface Props {
@@ -28,8 +28,7 @@ export const StockTransferSummary = withSkeletonTemplate<Props>(
       stockTransfer.id,
     )
 
-    const { show: showCancelOverlay, Overlay: CancelOverlay } =
-      useCancelOverlay()
+    const { show: showCancelDialog, ConfirmDialog } = useConfirmDialog()
 
     if (stockTransfer.line_item == null) return <></>
 
@@ -52,7 +51,7 @@ export const StockTransferSummary = withSkeletonTemplate<Props>(
                 disabled: isLoading,
                 onClick: () => {
                   if (triggerAction.triggerAttribute === "_cancel") {
-                    showCancelOverlay()
+                    showCancelDialog()
                     return
                   }
 
@@ -63,11 +62,19 @@ export const StockTransferSummary = withSkeletonTemplate<Props>(
           />
         </div>
         {renderErrorMessages(errors)}
-        <CancelOverlay
-          stockTransfer={stockTransfer}
-          onConfirm={() => {
-            void dispatch("_cancel")
+        <ConfirmDialog
+          icon="x"
+          title={`Cancel stock transfer #${stockTransfer.number}`}
+          description="This action cannot be undone."
+          confirm={{
+            // not just "Cancel": the dialog's own dismiss button says that
+            label: getStockTransferTriggerAttributeName("_cancel"),
+            variant: "danger",
+            onClick: async () => {
+              await dispatch("_cancel")
+            },
           }}
+          cancelLabel="Close"
         />
       </Section>
     )
