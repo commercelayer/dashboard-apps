@@ -19,7 +19,7 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
-import { type FC, useEffect, useMemo, useState } from "react"
+import { type FC, useMemo, useState } from "react"
 import { useLocation } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { BalanceLog } from "#components/BalanceLog"
@@ -52,11 +52,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
 
   // The drawer is driven by the route: it is open for as long as this component
   // is mounted, and closing it means navigating away.
-  const { Overlay: DetailsDrawer, open: openDrawer } = useOverlay()
-
-  useEffect(() => {
-    openDrawer()
-  }, [openDrawer])
+  const { Overlay: DetailsDrawer } = useOverlay({ initialOpen: true })
 
   const closeDrawer = (): void => {
     // `goBack` returns to another app when the gift card was opened from one;
@@ -201,12 +197,17 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
               {maskGiftCardCode(giftCard.code)}
             </SkeletonTemplate>
           }
-          navigationButton={{ onClick: closeDrawer, label: "", icon: "x" }}
+          navigationButton={{
+            onClick: closeDrawer,
+            label: "",
+            icon: "x",
+            variant: "button",
+          }}
           toolbar={{
             buttons: toolbarButtons,
             dropdownItems: toolbarDropdownItems,
           }}
-          gap="only-top"
+          gap="none"
         />
         <SkeletonTemplate isLoading={isLoading}>
           <Spacer top="14">

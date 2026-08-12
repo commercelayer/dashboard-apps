@@ -25,7 +25,6 @@ import {
 import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
 import { LinksEmptyState } from "dashboard-apps-common/src/components/LinksEmptyState"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
-import { useEffect } from "react"
 import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { SkuListManualItems } from "#components/SkuListManualItems"
@@ -55,11 +54,7 @@ export const SkuListDetails = (): React.JSX.Element => {
 
   // The drawer is driven by the route: open while this component is mounted, and
   // closing means navigating away.
-  const { Overlay: DetailsDrawer, open: openDrawer } = useOverlay()
-
-  useEffect(() => {
-    openDrawer()
-  }, [openDrawer])
+  const { Overlay: DetailsDrawer } = useOverlay({ initialOpen: true })
 
   const closeDrawer = (): void => {
     // `goBack` returns to another app when the list was opened from one; within
@@ -100,7 +95,13 @@ export const SkuListDetails = (): React.JSX.Element => {
         <div className="p-6">
           <PageHeading
             title="SKU List"
-            navigationButton={{ onClick: closeDrawer, label: "", icon: "x" }}
+            gap="none"
+            navigationButton={{
+              onClick: closeDrawer,
+              label: "",
+              icon: "x",
+              variant: "button",
+            }}
           />
           <EmptyState
             title="Not authorized"
@@ -177,9 +178,14 @@ export const SkuListDetails = (): React.JSX.Element => {
               {pageTitle}
             </SkeletonTemplate>
           }
-          navigationButton={{ onClick: closeDrawer, label: "", icon: "x" }}
+          navigationButton={{
+            onClick: closeDrawer,
+            label: "",
+            icon: "x",
+            variant: "button",
+          }}
           toolbar={pageToolbar}
-          gap="only-top"
+          gap="none"
         />
         <Spacer top="6" bottom="4">
           <Tabs keepAlive defaultTab={defaultTab}>
