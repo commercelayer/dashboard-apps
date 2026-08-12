@@ -1,89 +1,76 @@
 import {
-  Button,
-  HomePageLayout,
-  Icon,
+  PageLayout,
   Spacer,
   useResourceFilters,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import { Link, useLocation } from "wouter"
+import { useLocation } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
-import { ListItemTag } from "#components/ListItemTag"
+import { useTagsTableColumns } from "#components/tagsTableColumns"
 import { instructions } from "#data/filters"
-import { presets } from "#data/lists"
 import { appRoutes } from "#data/routes"
 
 export function TagList(): React.JSX.Element {
   const { canUser } = useTokenProvider()
-
-  const queryString = useSearch()
   const [, setLocation] = useLocation()
 
-  const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
+  const queryString = useSearch()
+
+  const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
     useResourceFilters({
       instructions,
     })
 
-  const isUserCustomFiltered =
-    hasActiveFilter && viewTitle === presets.all.viewTitle
+  const columns = useTagsTableColumns()
+
+  const handleFiltersUpdate = (queryString: string): void => {
+    navigate(`?${queryString}`, { replace: true })
+  }
 
   return (
-    <HomePageLayout title="Tags">
-      <SearchWithNav
-        queryString={queryString}
-        onUpdate={(qs) => {
-          navigate(`?${qs}`, {
-            replace: true,
-          })
-        }}
-        onFilterClick={(queryString) => {
-          setLocation(appRoutes.list.makePath(queryString))
-        }}
-        hideFiltersNav
-      />
+    <PageLayout
+      title="Tags"
+      fullWidth
+      toolbar={{
+        buttons: canUser("create", "tags")
+          ? [
+              {
+                icon: "plus",
+                label: "New tag",
+                size: "small",
+                onClick: () => {
+                  setLocation(appRoutes.new.makePath())
+                },
+              },
+            ]
+          : undefined,
+      }}
+    >
+      {/* no tabs: a tag has no status to group by */}
+      <FiltersBar queryString={queryString} onUpdate={handleFiltersUpdate} />
 
       <Spacer bottom="14">
-        <FilteredList
+        <FilteredTable
           type="tags"
-          ItemTemplate={ListItemTag}
+          columns={columns}
           query={{
             fields: {
               tags: ["id", "name", "created_at", "updated_at"],
             },
             pageSize: 25,
-            sort: {
-              updated_at: "desc",
-            },
           }}
+          defaultSort="name"
+          hideTitle
           emptyState={
             <ListEmptyState
-              scope={
-                isUserCustomFiltered
-                  ? "userFiltered"
-                  : viewTitle !== presets.all.viewTitle
-                    ? "presetView"
-                    : "history"
-              }
+              scope={hasActiveFilter ? "userFiltered" : "history"}
             />
-          }
-          actionButton={
-            canUser("create", "tags") ? (
-              <Link href={appRoutes.new.makePath()} asChild>
-                <Button
-                  variant="secondary"
-                  size="mini"
-                  alignItems="center"
-                  aria-label="Add tag"
-                >
-                  <Icon name="plus" />
-                  New
-                </Button>
-              </Link>
-            ) : undefined
           }
         />
       </Spacer>
-    </HomePageLayout>
+
+      <FiltersDrawer onUpdate={handleFiltersUpdate} />
+    </PageLayout>
   )
 }
