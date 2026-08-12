@@ -1,6 +1,7 @@
 import type { FC } from "react"
-import { Redirect, Route, Router, Switch } from "wouter"
+import { Route, Router, Switch } from "wouter"
 import { ErrorNotFound } from "#pages/ErrorNotFound"
+import { ListRedirect } from "#pages/ListRedirect"
 import { TagEdit } from "#pages/TagEdit"
 import { TagList } from "#pages/TagList"
 import { TagNew } from "#pages/TagNew"
@@ -15,10 +16,10 @@ export const App: FC<AppProps> = ({ routerBase }) => {
     <Router base={routerBase}>
       <Switch>
         <Route path={appRoutes.home.path}>
-          <Redirect to={appRoutes.list.path} replace />
+          <TagList />
         </Route>
         <Route path={appRoutes.list.path}>
-          <TagList />
+          <ListRedirect />
         </Route>
         <Route path={appRoutes.new.path}>
           <TagNew />
