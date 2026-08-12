@@ -52,7 +52,6 @@ export function useOrdersTableColumns(
         header: "Customer",
         hideBelow: "md",
         cell: ({ resource }) => {
-          console.log("resource", resource)
           const name = getCustomerName(resource)
           const countryCode = resource.billing_address?.country_code
           const email = resource.customer?.email
