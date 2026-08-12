@@ -1,7 +1,9 @@
 import {
+  Badge,
   Button,
   Card,
   EmptyState,
+  getReturnDisplayStatus,
   isMockedId,
   type PageHeadingProps,
   PageLayout,
@@ -19,10 +21,10 @@ import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resour
 import { Link, useLocation, useRoute } from "wouter"
 import { ReturnAddresses } from "#components/ReturnAddresses"
 import { ReturnInfo } from "#components/ReturnInfo"
-import { ReturnSteps } from "#components/ReturnSteps"
 import { ReturnSummary } from "#components/ReturnSummary"
 import { ScrollToTop } from "#components/ScrollToTop"
 import { Timeline } from "#components/Timeline"
+import { getReturnStatusBadgeVariant } from "#data/dictionaries"
 import { appRoutes } from "#data/routes"
 import { useReturnDetails } from "#hooks/useReturnDetails"
 
@@ -87,7 +89,16 @@ function ReturnDetails(): React.JSX.Element {
     <PageLayout
       mode={mode}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle}{" "}
+          <Badge
+            variant={getReturnStatusBadgeVariant(
+              getReturnDisplayStatus(returnObj).color,
+            )}
+          >
+            {getReturnDisplayStatus(returnObj).label}
+          </Badge>
+        </SkeletonTemplate>
       }
       navigationButton={{
         label: t("resources.returns.name_other"),
@@ -153,7 +164,6 @@ function ReturnDetails(): React.JSX.Element {
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
-          <ReturnSteps returnObj={returnObj} />
           <ReturnInfo returnObj={returnObj} />
           <Spacer top="14">
             <ReturnSummary returnObj={returnObj} />

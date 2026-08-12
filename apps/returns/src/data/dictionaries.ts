@@ -1,4 +1,9 @@
-import { type TriggerAttribute, t } from "@commercelayer/app-elements"
+import {
+  type BadgeProps,
+  type getReturnDisplayStatus,
+  type TriggerAttribute,
+  t,
+} from "@commercelayer/app-elements"
 import type { Return, ReturnUpdate } from "@commercelayer/sdk"
 
 export function getReturnTriggerAttributes(
@@ -59,4 +64,22 @@ export function getReturnTriggerAttributeName(
   }
 
   return dictionary[triggerAttribute]
+}
+
+/** Map the canonical return display status color onto a `Badge` variant. */
+export function getReturnStatusBadgeVariant(
+  color: ReturnType<typeof getReturnDisplayStatus>["color"],
+): BadgeProps["variant"] {
+  switch (color) {
+    case "green":
+      return "success"
+    case "orange":
+      return "warning"
+    case "red":
+      return "danger"
+    case "teal":
+      return "teal"
+    default:
+      return "secondary"
+  }
 }
