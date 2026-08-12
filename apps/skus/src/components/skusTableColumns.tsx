@@ -46,7 +46,7 @@ export function useSkusTableColumns(): Array<ResourceTableColumn<"skus">> {
         cell: ({ resource }) => (
           // requires `include: ['shipping_category']` in the query, otherwise
           // the relationship is not returned and this stays empty
-          <Text variant="info">{resource.shipping_category?.name ?? "-"}</Text>
+          <Text>{resource.shipping_category?.name ?? "-"}</Text>
         ),
       },
       {
@@ -55,7 +55,7 @@ export function useSkusTableColumns(): Array<ResourceTableColumn<"skus">> {
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (
-          <Text variant="info" wrap="nowrap">
+          <Text wrap="nowrap">
             {formatDate({
               format: "full",
               isoDate: resource.updated_at,

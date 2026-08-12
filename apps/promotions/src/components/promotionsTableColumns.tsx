@@ -57,9 +57,7 @@ export function usePromotionsTableColumns(): Array<
           return couponsCount == null ? (
             <Text className="text-gray-300">&#8212;</Text>
           ) : (
-            <Text variant="info" wrap="nowrap">
-              {couponsCount}
-            </Text>
+            <Text wrap="nowrap">{couponsCount}</Text>
           )
         },
       },
@@ -72,9 +70,7 @@ export function usePromotionsTableColumns(): Array<
           resource.priority == null ? (
             <Text className="text-gray-300">&#8212;</Text>
           ) : (
-            <Text variant="info" wrap="nowrap">
-              {resource.priority}
-            </Text>
+            <Text wrap="nowrap">{resource.priority}</Text>
           ),
       },
       {
@@ -83,7 +79,7 @@ export function usePromotionsTableColumns(): Array<
         hideBelow: "md",
         sortBy: "created_at",
         cell: ({ resource }) => (
-          <Text variant="info" wrap="nowrap">
+          <Text wrap="nowrap">
             {formatDate({
               format: "full",
               isoDate: resource.created_at,

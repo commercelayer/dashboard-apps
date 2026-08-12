@@ -157,15 +157,13 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
         predicate: "tags_id_in",
       },
       render: {
-        component: "inputResourceGroup",
+        component: "inputSelect",
         props: {
           fieldForLabel: "name",
           fieldForValue: "id",
           resource: "tags",
           searchBy: "name_i_cont",
           sortBy: { attribute: "name", direction: "asc" },
-          previewLimit: 5,
-          showCheckboxIcon: false,
         },
       },
     },

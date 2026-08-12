@@ -94,7 +94,7 @@ export function useCustomersTableColumns(): Array<
         hideBelow: "lg",
         cell: ({ resource }) =>
           resource.customer_group?.name != null ? (
-            <Text variant="info">{resource.customer_group.name}</Text>
+            <Text>{resource.customer_group.name}</Text>
           ) : (
             <EmptyValue />
           ),
@@ -105,7 +105,7 @@ export function useCustomersTableColumns(): Array<
         hideBelow: "md",
         sortBy: "created_at",
         cell: ({ resource }) => (
-          <Text variant="info" wrap="nowrap">
+          <Text wrap="nowrap">
             {formatDate({
               format: "full",
               isoDate: resource.created_at,
