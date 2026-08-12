@@ -15,7 +15,7 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
-import { type FC, useEffect } from "react"
+import type { FC } from "react"
 import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { StockItemInfo } from "#components/StockItemInfo"
@@ -43,11 +43,7 @@ export const StockItemDetails: FC = () => {
 
   // The drawer is driven by the route: open while this component is mounted, and
   // closing means navigating away.
-  const { Overlay: DetailsDrawer, open: openDrawer } = useOverlay()
-
-  useEffect(() => {
-    openDrawer()
-  }, [openDrawer])
+  const { Overlay: DetailsDrawer } = useOverlay({ initialOpen: true })
 
   const closeDrawer = (): void => {
     // `goBack` returns to another app when the stock item was opened from one;
@@ -65,7 +61,13 @@ export const StockItemDetails: FC = () => {
         <div className="p-6">
           <PageHeading
             title="Stock item"
-            navigationButton={{ onClick: closeDrawer, label: "", icon: "x" }}
+            gap="none"
+            navigationButton={{
+              onClick: closeDrawer,
+              label: "",
+              icon: "x",
+              variant: "button",
+            }}
           />
           <EmptyState
             title="Not authorized"
@@ -132,9 +134,14 @@ export const StockItemDetails: FC = () => {
               {stockItem?.sku?.code ?? ""}
             </SkeletonTemplate>
           }
-          navigationButton={{ onClick: closeDrawer, label: "", icon: "x" }}
+          navigationButton={{
+            onClick: closeDrawer,
+            label: "",
+            icon: "x",
+            variant: "button",
+          }}
           toolbar={pageToolbar}
-          gap="only-top"
+          gap="none"
         />
         <SkeletonTemplate isLoading={isLoading}>
           <Spacer bottom="4">
