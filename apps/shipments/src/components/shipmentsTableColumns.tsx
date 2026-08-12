@@ -34,7 +34,7 @@ export function useShipmentsTableColumns(): Array<
         header: "Origin",
         hideBelow: "md",
         cell: ({ resource }) => (
-          <Text variant="info">{resource.stock_location?.name ?? "-"}</Text>
+          <Text>{resource.stock_location?.name ?? "-"}</Text>
         ),
       },
       {
@@ -43,10 +43,10 @@ export function useShipmentsTableColumns(): Array<
         cell: ({ resource }) => {
           const address = resource.shipping_address
           if (address?.city == null) {
-            return <Text variant="info">-</Text>
+            return <Text>-</Text>
           }
           return (
-            <Text variant="info">
+            <Text>
               {address.city}
               {address.country_code != null ? ` (${address.country_code})` : ""}
             </Text>
@@ -70,7 +70,7 @@ export function useShipmentsTableColumns(): Array<
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (
-          <Text variant="info" wrap="nowrap">
+          <Text wrap="nowrap">
             {formatDate({
               format: "full",
               isoDate: resource.updated_at,

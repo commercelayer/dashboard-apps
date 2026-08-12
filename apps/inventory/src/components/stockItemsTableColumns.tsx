@@ -43,7 +43,7 @@ export function useStockItemsTableColumns(): Array<
         header: "Stock location",
         hideBelow: "md",
         cell: ({ resource }) => (
-          <Text variant="info">{resource.stock_location?.name ?? "-"}</Text>
+          <Text>{resource.stock_location?.name ?? "-"}</Text>
         ),
       },
       {
@@ -72,7 +72,7 @@ export function useStockItemsTableColumns(): Array<
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (
-          <Text variant="info" wrap="nowrap">
+          <Text wrap="nowrap">
             {formatDate({
               format: "full",
               isoDate: resource.updated_at,

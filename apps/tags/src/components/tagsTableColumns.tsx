@@ -40,7 +40,7 @@ export function useTagsTableColumns(): Array<ResourceTableColumn<"tags">> {
         hideBelow: "md",
         sortBy: "created_at",
         cell: ({ resource }) => (
-          <Text variant="info" wrap="nowrap">
+          <Text wrap="nowrap">
             {formatDate({
               format: "full",
               isoDate: resource.created_at,
