@@ -12,6 +12,8 @@ import {
   Th,
   Tooltip,
   Tr,
+  useConfirmDialog,
+  useCoreSdkProvider,
   useTokenProvider,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
@@ -19,7 +21,6 @@ import type { Coupon } from "@commercelayer/sdk"
 import { makeCoupon } from "src/mocks/resources/coupons"
 import { useLocation } from "wouter"
 import { appRoutes } from "#data/routes"
-import { useDeleteCouponOverlay } from "#hooks/useDeleteCouponOverlay"
 
 interface Props {
   coupons: Coupon[]
@@ -98,16 +99,31 @@ export const CouponRow = withSkeletonTemplate<
   }) => {
     const [, setLocation] = useLocation()
     const { user } = useTokenProvider()
-    const { show: showDeleteCouponOverlay, Overlay: CouponOverlay } =
-      useDeleteCouponOverlay()
+    const { sdkClient } = useCoreSdkProvider()
+    const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
     if (coupon == null) return null
 
     return (
       <>
-        <CouponOverlay
-          onDelete={() => {
-            remove?.()
+        <ConfirmDialog
+          icon="trash"
+          title={`Delete coupon ${coupon.code}`}
+          description="This action cannot be undone."
+          confirm={{
+            label: "Delete coupon",
+            variant: "danger",
+            onClick: async () => {
+              await sdkClient.coupons.delete(coupon.id)
+              // the last coupon takes its promotion rule with it, otherwise the
+              // promotion would keep requiring a coupon that no longer exists
+              if (deleteRule && coupon.promotion_rule?.id != null) {
+                await sdkClient.coupon_codes_promotion_rules.delete(
+                  coupon.promotion_rule.id,
+                )
+              }
+              remove?.()
+            },
           }}
         />
         <Tr key={coupon.id}>
@@ -171,10 +187,7 @@ export const CouponRow = withSkeletonTemplate<
                   <DropdownItem
                     label="Delete"
                     onClick={() => {
-                      showDeleteCouponOverlay({
-                        coupon,
-                        deleteRule: deleteRule ?? false,
-                      })
+                      showDeleteDialog()
                     }}
                   />
                 </>
