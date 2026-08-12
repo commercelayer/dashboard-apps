@@ -13,7 +13,6 @@ import {
   Icon,
   Input,
   isMockedId,
-  ListDetailsItem,
   ListItem,
   type PageHeadingProps,
   PageLayout,
@@ -24,10 +23,9 @@ import {
   SkeletonTemplate,
   Spacer,
   Stack,
-  Tab,
-  Tabs,
   Text,
   useAppLinking,
+  useConfirmDialog,
   useCoreSdkProvider,
   useResourceList,
   useTokenProvider,
@@ -36,11 +34,11 @@ import {
 import type { FlexPromotion } from "@commercelayer/sdk"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { type Ref, useMemo, useRef, useState } from "react"
-import { Link, useLocation, useSearch } from "wouter"
-import { navigate } from "wouter/use-browser-location"
+import { Link, useLocation } from "wouter"
 import { CouponList } from "#components/CouponList"
 import { SectionFlexRules } from "#components/FlexRuleBuilder"
 import { GenericPageNotFound, type PageProps } from "#components/Routes"
+import { getPromotionDiscount } from "#data/promotionDiscount"
 import {
   appPromotionsReferenceOrigin,
   promotionConfig,
@@ -48,7 +46,6 @@ import {
 import { appRoutes } from "#data/routes"
 import { ruleBuilderConfig } from "#data/ruleBuilder/config"
 import { usePromotionRules } from "#data/ruleBuilder/usePromotionRules"
-import { useDeletePromotionOverlay } from "#hooks/useDeletePromotionOverlay"
 import { usePromotion } from "#hooks/usePromotion"
 import type { Promotion } from "#types"
 
@@ -61,9 +58,6 @@ function Page(
   const { goBack } = useAppLinking()
 
   const [, setLocation] = useLocation()
-  const search = useSearch()
-  const params = new URLSearchParams(search)
-  const defaultTab = parseInt(params.get("tab") ?? "0")
 
   const { isLoading, promotion, mutatePromotion, error } = usePromotion(
     props.params.promotionId,
@@ -76,8 +70,7 @@ function Page(
   const displayStatus = useDisplayStatus(promotion.id)
   const { sdkClient } = useCoreSdkProvider()
 
-  const { show: showDeleteOverlay, Overlay: DeleteOverlay } =
-    useDeletePromotionOverlay()
+  const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
   const pageTitle = promotion.name
 
@@ -116,7 +109,7 @@ function Page(
         {
           label: "Delete",
           onClick: () => {
-            showDeleteOverlay()
+            showDeleteDialog()
           },
         },
       ],
@@ -187,75 +180,20 @@ function Page(
           })
         },
       }}
-    >
-      <Spacer top="10">
-        <CardStatus promotionId={props.params.promotionId} />
-      </Spacer>
-
-      <Spacer top="14">
-        <Tabs
-          defaultTab={defaultTab}
-          onTabSwitch={(tabIndex) => {
-            params.set("tab", tabIndex.toString())
-            navigate(`?${params.toString()}`)
-          }}
-        >
-          <Tab name="Overview">
-            <SkeletonTemplate isLoading={isLoading}>
-              <DeleteOverlay promotion={promotion} />
-              <Spacer top="6">
-                {!isLoadingRules &&
-                  !hasRules &&
-                  !viaApi &&
-                  promotion.type !== "flex_promotions" && (
-                    <Alert status="warning">
-                      Define activation rules below to prevent application to
-                      all orders.
-                    </Alert>
-                  )}
-
-                {viaApi && promotion.type !== "flex_promotions" && (
-                  <Alert status="info">
-                    This promotion is generated via API. Ask developers for
-                    details. If issues arise, just disable it.
-                  </Alert>
-                )}
-              </Spacer>
-
-              <Spacer top="14">
-                <SectionInfo promotion={promotion} />
-              </Spacer>
-
-              {promotion.type === "flex_promotions" && (
-                <>
-                  <Spacer top="14">
-                    <SectionFlexRules promotion={promotion} />
-                  </Spacer>
-                </>
-              )}
-
-              {promotion.type !== "flex_promotions" && (
-                <>
-                  <Spacer top="14">
-                    <SectionActivationRules
-                      promotionId={props.params.promotionId}
-                    />
-                  </Spacer>
-                </>
-              )}
-
-              <Spacer top="14">
-                <ResourceDetails
-                  resource={promotion}
-                  onUpdated={async () => {
-                    void mutatePromotion()
-                  }}
-                />
-              </Spacer>
-
+      fullWidth
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14">
+            <Card overflow="visible">
+              <ResourceDetails
+                resource={promotion}
+                onUpdated={async () => {
+                  void mutatePromotion()
+                }}
+              />
               {!isMockedId(promotion.id) && (
                 <>
-                  <Spacer top="14">
+                  <Spacer top="10">
                     <ResourceTags
                       overlay={{
                         title: pageTitle,
@@ -264,7 +202,7 @@ function Page(
                       resourceId={promotion.id}
                     />
                   </Spacer>
-                  <Spacer top="14">
+                  <Spacer top="10">
                     <ResourceMetadata
                       overlay={{
                         title: pageTitle,
@@ -275,19 +213,87 @@ function Page(
                   </Spacer>
                 </>
               )}
-
-              {promotion.type === "flex_promotions" && (
-                <Spacer top="14">
-                  <SectionCheck promotion={promotion} />
-                </Spacer>
-              )}
-            </SkeletonTemplate>
-          </Tab>
-          <Tab name="Coupons">
-            {!isMockedId(promotion.id) && <CouponList promotion={promotion} />}
-          </Tab>
-        </Tabs>
+            </Card>
+          </Spacer>
+        </SkeletonTemplate>
+      }
+      // the flex check belongs at the very bottom, below the sidebar, and only
+      // flex promotions have one
+      afterSidebar={
+        promotion.type === "flex_promotions" ? (
+          <SkeletonTemplate isLoading={isLoading}>
+            <Spacer top="14" bottom="4">
+              <SectionCheck promotion={promotion} />
+            </Spacer>
+          </SkeletonTemplate>
+        ) : undefined
+      }
+    >
+      <Spacer top="10">
+        <CardStatus promotionId={props.params.promotionId} />
       </Spacer>
+
+      <SkeletonTemplate isLoading={isLoading}>
+        <ConfirmDialog
+          icon="trash"
+          title={`Delete promotion ${promotion.name}`}
+          description="This action cannot be undone."
+          confirm={{
+            label: "Delete promotion",
+            variant: "danger",
+            onClick: async () => {
+              // the delete lives on the concrete promotion type, not on `promotions`
+              await sdkClient[promotion.type].delete(promotion.id)
+              setLocation(appRoutes.home.makePath({}))
+            },
+          }}
+        />
+        <Spacer top="6">
+          {!isLoadingRules &&
+            !hasRules &&
+            !viaApi &&
+            promotion.type !== "flex_promotions" && (
+              <Alert status="warning">
+                Define activation rules below to prevent application to all
+                orders.
+              </Alert>
+            )}
+
+          {viaApi && promotion.type !== "flex_promotions" && (
+            <Alert status="info">
+              This promotion is generated via API. Ask developers for details.
+              If issues arise, just disable it.
+            </Alert>
+          )}
+        </Spacer>
+
+        <Spacer top="14">
+          <SectionInfo promotion={promotion} />
+        </Spacer>
+
+        {promotion.type === "flex_promotions" && (
+          <>
+            <Spacer top="14">
+              <SectionFlexRules promotion={promotion} />
+            </Spacer>
+          </>
+        )}
+
+        {promotion.type !== "flex_promotions" && (
+          <>
+            <Spacer top="14">
+              <SectionActivationRules promotionId={props.params.promotionId} />
+            </Spacer>
+          </>
+        )}
+
+        {/* the coupons list, previously a tab of its own */}
+        {!isMockedId(promotion.id) && (
+          <Spacer top="14">
+            <CouponList promotion={promotion} />
+          </Spacer>
+        )}
+      </SkeletonTemplate>
     </PageLayout>
   )
 }
@@ -552,67 +558,106 @@ const useDisplayStatus = (promotionId: string) => {
   return displayStatus
 }
 
+/**
+ * What the promotion gives, when it runs and what it applies to.
+ *
+ * Stacks of two rather than label/value rows, as on the other desktop pages:
+ * consecutive stacks pull themselves together into one grid (`not-first:-mt-px`).
+ * The per-type extras still render underneath, since a few types (external, free
+ * gift, buy X pay Y) carry information of their own.
+ */
 const SectionInfo = withSkeletonTemplate<{
   promotion: Promotion
 }>(({ promotion }) => {
   const { user } = useTokenProvider()
   const config = promotionConfig[promotion.type]
-  const viaApi = isGeneratedViaApi(promotion)
+
+  const discount = getPromotionDiscount(promotion)
+  const couponsCount =
+    "coupons_count" in promotion ? promotion.coupons_count : undefined
+
+  const usageLimit = promotion.total_usage_limit
+  const usageCount = promotion.total_usage_count ?? 0
+
+  /** What the promotion is scoped to, most specific first. */
+  const appliesTo =
+    promotion.type === "flex_promotions"
+      ? undefined
+      : (promotion.sku_list?.name ?? promotion.market?.name)
 
   return (
-    <Section title="Info">
+    <>
+      <Stack>
+        <InfoCell label="Discount">{discount ?? <EmptyValue />}</InfoCell>
+        <InfoCell label="Coupons">
+          {couponsCount == null ? <EmptyValue /> : couponsCount}
+        </InfoCell>
+      </Stack>
+      <Stack>
+        <InfoCell label="Started on">
+          {promotion.starts_at == null ? (
+            <EmptyValue />
+          ) : (
+            formatDate({
+              isoDate: promotion.starts_at,
+              format: "full",
+              timezone: user?.timezone,
+              showCurrentYear: true,
+            })
+          )}
+        </InfoCell>
+        <InfoCell label="Expires on">
+          {promotion.expires_at == null ? (
+            <EmptyValue />
+          ) : (
+            formatDate({
+              isoDate: promotion.expires_at,
+              format: "full",
+              timezone: user?.timezone,
+              showCurrentYear: true,
+            })
+          )}
+        </InfoCell>
+      </Stack>
+      <Stack>
+        <InfoCell label="Usage">
+          {usageLimit == null ? usageCount : `${usageCount} / ${usageLimit}`}
+        </InfoCell>
+        <InfoCell label="Apply to">{appliesTo ?? <EmptyValue />}</InfoCell>
+      </Stack>
       <config.DetailsSectionInfo
         // @ts-expect-error TS cannot infer the right promotion
         promotion={promotion}
       />
-      <ListDetailsItem label="Start date" gutter="none">
-        {formatDate({
-          isoDate: promotion.starts_at,
-          format: "full",
-          timezone: user?.timezone,
-          showCurrentYear: true,
-        })}
-      </ListDetailsItem>
-      <ListDetailsItem label="Expiration date" gutter="none">
-        {formatDate({
-          isoDate: promotion.expires_at,
-          format: "full",
-          timezone: user?.timezone,
-          showCurrentYear: true,
-        })}
-      </ListDetailsItem>
-      {promotion.type !== "flex_promotions" && viaApi && (
-        <>
-          {promotion.market != null && (
-            <ListDetailsItem label="Market" gutter="none">
-              {promotion.market.name}
-            </ListDetailsItem>
-          )}
-          {promotion.currency_code != null && (
-            <ListDetailsItem label="Currency" gutter="none">
-              {promotion.currency_code}
-            </ListDetailsItem>
-          )}
-        </>
-      )}
-      {promotion.type !== "flex_promotions" && promotion.sku_list != null && (
-        <ListDetailsItem label="SKU list" gutter="none">
-          {promotion.sku_list.name}
-        </ListDetailsItem>
-      )}
-      {promotion.exclusive === true && (
-        <ListDetailsItem label="Exclusive" gutter="none">
-          No other promotions apply
-        </ListDetailsItem>
-      )}
-      {promotion.priority != null && (
-        <ListDetailsItem label="Priority" gutter="none">
-          {promotion.priority}
-        </ListDetailsItem>
-      )}
-    </Section>
+    </>
   )
 })
+
+/** One cell of the stack: a muted label above the value. */
+function InfoCell({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}): React.JSX.Element {
+  return (
+    <div>
+      <Spacer bottom="2">
+        <Text size="small" tag="div" variant="info" weight="semibold">
+          {label}
+        </Text>
+      </Spacer>
+      <Text tag="div" weight="semibold">
+        {children}
+      </Text>
+    </div>
+  )
+}
+
+function EmptyValue(): React.JSX.Element {
+  return <Text className="text-gray-300">&#8212;</Text>
+}
 
 const SectionActivationRules = withSkeletonTemplate<{
   promotionId: string

@@ -10,7 +10,6 @@ import type { PromotionType } from "./promotions/config"
 export const appRoutes = {
   /** Homepage */
   home: createRoute("/"),
-  filters: createRoute("/filters/"),
   promotionList: createRoute("/list/"),
   promotionDetails: createRoute("/list/:promotionId/"),
   editPromotion: createRoute("/list/:promotionId/edit/"),

@@ -1,17 +1,20 @@
 import {
   PageLayout,
   Spacer,
+  Tab,
+  Tabs,
+  useAppLinking,
   useResourceFilters,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import { useLocation } from "wouter"
+import { useEffect, useMemo } from "react"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
-import { ListItemPromotion } from "#components/ListItemPromotion"
+import { usePromotionsTableColumns } from "#components/promotionsTableColumns"
 import type { PageProps } from "#components/Routes"
 import { filtersInstructions } from "#data/filters"
-import { presets } from "#data/lists"
-import { appRoutes } from "#data/routes"
+import { getPromotionTabs, type PromotionTab } from "#data/lists"
+import type { appRoutes } from "#data/routes"
 
 function Page(
   props: PageProps<typeof appRoutes.promotionList>,
@@ -19,88 +22,148 @@ function Page(
   const {
     settings: { mode },
   } = useTokenProvider()
+  const { navigateTo } = useAppLinking()
 
   const queryString = useSearch()
-  const [, setLocation] = useLocation()
 
-  const { SearchWithNav, FilteredList, viewTitle, hasActiveFilter } =
-    useResourceFilters({
-      instructions: filtersInstructions,
-    })
+  // rebuilt per render: the tabs compare against "now" (see `getPromotionTabs`)
+  const promotionTabs = getPromotionTabs()
 
-  /** Whether the user is viewing only active promotions */
-  const isActivePreset =
-    viewTitle != null && viewTitle === presets.active.viewTitle
+  /** The tab is kept in the url via `viewTitle`, so a refresh or a shared link restores it. */
+  const [activeTabIndex, activeTab] = useMemo(() => {
+    const viewTitle = new URLSearchParams(queryString).get("viewTitle")
+    const index = promotionTabs.findIndex(
+      (tab) => tab.formValues.viewTitle === viewTitle,
+    )
+    const resolvedIndex = index === -1 ? 0 : index
+    return [
+      resolvedIndex,
+      promotionTabs[resolvedIndex] as PromotionTab,
+    ] as const
+  }, [queryString])
+
+  const {
+    FilteredTable,
+    FiltersBar,
+    FiltersDrawer,
+    adapters,
+    hasActiveFilter,
+  } = useResourceFilters({
+    instructions: filtersInstructions,
+  })
+
+  const columns = usePromotionsTableColumns()
+
+  const handleFiltersUpdate = (queryString: string): void => {
+    navigate(`?${queryString}`, { replace: true })
+  }
+
+  /**
+   * Landing without a tab in the url would show the first tab as active while
+   * none of its filters are applied, so they are written once. Filters already in
+   * the url win, so an inbound link keeps filtering by what it asked for.
+   */
+  const hasTabInUrl = new URLSearchParams(queryString).get("viewTitle") != null
+  useEffect(() => {
+    if (!hasTabInUrl) {
+      const incomingFilters = Object.entries(
+        adapters.adaptUrlQueryToFormValues({ queryString }),
+      ).filter(([, value]) => hasFilterValue(value))
+
+      navigate(
+        `?${adapters.adaptFormValuesToUrlQuery({
+          formValues: {
+            ...activeTab.formValues,
+            ...Object.fromEntries(incomingFilters),
+          },
+        })}`,
+        { replace: true },
+      )
+    }
+  }, [hasTabInUrl])
+
+  /** Active promotions are ordered the way they are evaluated, not by recency. */
+  const isActiveTab = activeTab.label === "Active"
+
+  const table = (
+    <FilteredTable
+      type="promotions"
+      columns={columns}
+      query={{
+        // no sparse `fields`: `coupons_count` is not in the list type's field
+        // union, and asking for a subset would drop it from the response
+        pageSize: 25,
+      }}
+      defaultSort={isActiveTab ? "priority" : "-created_at"}
+      hideTitle
+      getRowHref={(promotion) =>
+        navigateTo({ app: "promotions", resourceId: promotion.id })?.href
+      }
+      onRowClick={(promotion, event) => {
+        navigateTo({ app: "promotions", resourceId: promotion.id })?.onClick(
+          event as React.MouseEvent<HTMLAnchorElement>,
+        )
+      }}
+      emptyState={
+        <ListEmptyState scope={hasActiveFilter ? "userFiltered" : "history"} />
+      }
+    />
+  )
 
   return (
     <PageLayout
-      title={viewTitle ?? "Promotions"}
+      title="Promotions"
       overlay={props.overlay}
       mode={mode}
-      navigationButton={{
-        label: "Promotions",
-        onClick() {
-          setLocation(appRoutes.home.makePath({}))
-        },
-      }}
-      gap="only-top"
+      fullWidth
     >
-      <SearchWithNav
-        queryString={queryString}
-        onUpdate={(qs) => {
-          navigate(`?${qs}`, {
-            replace: true,
-          })
-        }}
-        onFilterClick={(queryString) => {
-          setLocation(appRoutes.filters.makePath({}, queryString))
-        }}
-      />
-
-      <Spacer bottom="14">
-        <FilteredList
-          type="promotions"
-          ItemTemplate={ListItemPromotion}
-          query={{
-            fields: {
-              promotions: [
-                "id",
-                "starts_at",
-                "expires_at",
-                "name",
-                "status",
-                "coupons",
-                "reference_origin",
-                "disabled_at",
-                "total_usage_limit",
-                "total_usage_count",
-                "coupon_codes_promotion_rule",
-                "exclusive",
-                "priority",
-              ],
-            },
-            include: ["coupon_codes_promotion_rule"],
-            pageSize: 25,
-            sort: isActivePreset
-              ? {
-                  exclusive: "desc",
-                  priority: "asc",
-                  starts_at: "asc",
-                  created_at: "desc",
-                }
-              : {
-                  updated_at: "desc",
-                },
-          }}
-          emptyState={
-            <ListEmptyState
-              scope={hasActiveFilter ? "userFiltered" : "history"}
-            />
+      {/* Remounted per tab so `Tabs` (which owns its active index internally)
+          picks up the tab restored from the url. */}
+      <Tabs
+        key={activeTabIndex}
+        defaultTab={activeTabIndex}
+        onTabSwitch={(index) => {
+          const tab = promotionTabs[index]
+          if (tab == null || index === activeTabIndex) {
+            return
           }
-        />
-      </Spacer>
+          // switching tab replaces the filters with the tab's own ones
+          navigate(
+            `?${adapters.adaptFormValuesToUrlQuery({
+              formValues: tab.formValues,
+            })}`,
+            { replace: true },
+          )
+        }}
+      >
+        {promotionTabs.map((tab) => (
+          <Tab key={tab.label} name={tab.label}>
+            {/* the tab's own filters are the baseline: only what the user adds on
+                top of them shows up as a removable pill */}
+            <FiltersBar
+              queryString={queryString}
+              onUpdate={handleFiltersUpdate}
+              defaultValues={tab.formValues}
+            />
+            <Spacer bottom="14">{table}</Spacer>
+          </Tab>
+        ))}
+      </Tabs>
+
+      <FiltersDrawer onUpdate={handleFiltersUpdate} />
     </PageLayout>
   )
+}
+
+/**
+ * Whether a filter value is actually set. Not `lodash/isEmpty`, which reports
+ * booleans and numbers as empty and would drop them.
+ */
+function hasFilterValue(value: unknown): boolean {
+  if (Array.isArray(value)) {
+    return value.length > 0
+  }
+  return value != null && value !== ""
 }
 
 export default Page
