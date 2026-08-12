@@ -38,7 +38,6 @@ import { Link, useLocation } from "wouter"
 import { CouponList } from "#components/CouponList"
 import { SectionFlexRules } from "#components/FlexRuleBuilder"
 import { GenericPageNotFound, type PageProps } from "#components/Routes"
-import { getPromotionDiscount } from "#data/promotionDiscount"
 import {
   appPromotionsReferenceOrigin,
   promotionConfig,
@@ -229,10 +228,6 @@ function Page(
         ) : undefined
       }
     >
-      <Spacer top="10">
-        <CardStatus promotionId={props.params.promotionId} />
-      </Spacer>
-
       <SkeletonTemplate isLoading={isLoading}>
         <ConfirmDialog
           icon="trash"
@@ -248,7 +243,14 @@ function Page(
             },
           }}
         />
-        <Spacer top="6">
+        {/* the two stacks are adjacent on purpose: they pull together into a
+            single grid, so the six values read as one block */}
+        <Spacer top="10">
+          <CardStatus promotionId={props.params.promotionId} />
+          <SectionInfo promotion={promotion} />
+        </Spacer>
+
+        <Spacer top="14">
           {!isLoadingRules &&
             !hasRules &&
             !viaApi &&
@@ -265,10 +267,6 @@ function Page(
               If issues arise, just disable it.
             </Alert>
           )}
-        </Spacer>
-
-        <Spacer top="14">
-          <SectionInfo promotion={promotion} />
         </Spacer>
 
         {promotion.type === "flex_promotions" && (
@@ -559,10 +557,14 @@ const useDisplayStatus = (promotionId: string) => {
 }
 
 /**
- * What the promotion gives, when it runs and what it applies to.
+ * When the promotion runs and what it applies to.
  *
- * Stacks of two rather than label/value rows, as on the other desktop pages:
- * consecutive stacks pull themselves together into one grid (`not-first:-mt-px`).
+ * Deliberately three cells, aligning with the `CardStatus` stack above: that one
+ * already carries Discount, Usage and Coupons, so repeating them here would show
+ * the same values twice — and its versions are the better ones (a per-type
+ * description, and a real coupon count rather than the `coupons_count` attribute,
+ * which flex promotions do not have).
+ *
  * The per-type extras still render underneath, since a few types (external, free
  * gift, buy X pay Y) carry information of their own.
  */
@@ -572,13 +574,6 @@ const SectionInfo = withSkeletonTemplate<{
   const { user } = useTokenProvider()
   const config = promotionConfig[promotion.type]
 
-  const discount = getPromotionDiscount(promotion)
-  const couponsCount =
-    "coupons_count" in promotion ? promotion.coupons_count : undefined
-
-  const usageLimit = promotion.total_usage_limit
-  const usageCount = promotion.total_usage_count ?? 0
-
   /** What the promotion is scoped to, most specific first. */
   const appliesTo =
     promotion.type === "flex_promotions"
@@ -587,12 +582,6 @@ const SectionInfo = withSkeletonTemplate<{
 
   return (
     <>
-      <Stack>
-        <InfoCell label="Discount">{discount ?? <EmptyValue />}</InfoCell>
-        <InfoCell label="Coupons">
-          {couponsCount == null ? <EmptyValue /> : couponsCount}
-        </InfoCell>
-      </Stack>
       <Stack>
         <InfoCell label="Started on">
           {promotion.starts_at == null ? (
@@ -617,11 +606,6 @@ const SectionInfo = withSkeletonTemplate<{
               showCurrentYear: true,
             })
           )}
-        </InfoCell>
-      </Stack>
-      <Stack>
-        <InfoCell label="Usage">
-          {usageLimit == null ? usageCount : `${usageCount} / ${usageLimit}`}
         </InfoCell>
         <InfoCell label="Apply to">{appliesTo ?? <EmptyValue />}</InfoCell>
       </Stack>
