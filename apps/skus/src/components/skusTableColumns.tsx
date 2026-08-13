@@ -51,7 +51,6 @@ export function useSkusTableColumns(): Array<ResourceTableColumn<"skus">> {
       },
       {
         header: "Updated at",
-        align: "right",
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (

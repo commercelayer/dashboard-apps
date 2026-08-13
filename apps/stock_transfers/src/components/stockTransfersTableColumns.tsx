@@ -58,7 +58,6 @@ export function useStockTransfersTableColumns(): Array<
       },
       {
         header: "Updated",
-        align: "right",
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (

@@ -46,7 +46,6 @@ export function useBundlesTableColumns(): Array<
       },
       {
         header: "Price",
-        align: "right",
         hideBelow: "md",
         cell: ({ resource }) => (
           <div>
@@ -78,7 +77,6 @@ export function useBundlesTableColumns(): Array<
       },
       {
         header: "Created",
-        align: "right",
         hideBelow: "md",
         sortBy: "created_at",
         cell: ({ resource }) => (

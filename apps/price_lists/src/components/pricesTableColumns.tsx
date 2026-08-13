@@ -43,7 +43,6 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
       },
       {
         header: "Price",
-        align: "right",
         cell: ({ resource }) => (
           <div>
             <Text tag="div" wrap="nowrap">
@@ -68,7 +67,6 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
       },
       {
         header: "Updated at",
-        align: "right",
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (

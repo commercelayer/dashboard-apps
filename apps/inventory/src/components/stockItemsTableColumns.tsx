@@ -48,7 +48,6 @@ export function useStockItemsTableColumns(): Array<
       },
       {
         header: "Quantity",
-        align: "right",
         sortBy: "quantity",
         cell: ({ resource }) => (
           <div>
@@ -68,7 +67,6 @@ export function useStockItemsTableColumns(): Array<
       },
       {
         header: "Updated at",
-        align: "right",
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (

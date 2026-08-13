@@ -37,12 +37,7 @@ export function useImportsTableColumns(): Array<
         ),
       },
       {
-        header: "Status",
-        cell: ({ resource }) => <StatusBadge job={resource} />,
-      },
-      {
         header: "Records",
-        align: "right",
         hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.inputs_size ?? 0}</Text>
@@ -50,7 +45,6 @@ export function useImportsTableColumns(): Array<
       },
       {
         header: "Errors",
-        align: "right",
         hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.errors_count ?? 0}</Text>
@@ -58,7 +52,6 @@ export function useImportsTableColumns(): Array<
       },
       {
         header: "Created",
-        align: "right",
         hideBelow: "md",
         sortBy: "created_at",
         cell: ({ resource }) => (
@@ -73,8 +66,11 @@ export function useImportsTableColumns(): Array<
         ),
       },
       {
+        header: "Status",
+        cell: ({ resource }) => <StatusBadge job={resource} />,
+      },
+      {
         header: "",
-        align: "right",
         // hugs its content, so the leftover table width goes to the first column
         width: "w-px",
         cell: ({ resource }) => <ImportRowActions job={resource} />,
