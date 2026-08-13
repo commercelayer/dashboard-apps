@@ -36,7 +36,6 @@ export function useSkuListsTableColumns(): Array<
       },
       {
         header: "Created",
-        align: "right",
         hideBelow: "md",
         sortBy: "created_at",
         cell: ({ resource }) => (

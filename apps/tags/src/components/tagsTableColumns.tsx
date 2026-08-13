@@ -36,7 +36,6 @@ export function useTagsTableColumns(): Array<ResourceTableColumn<"tags">> {
       },
       {
         header: "Created",
-        align: "right",
         hideBelow: "md",
         sortBy: "created_at",
         cell: ({ resource }) => (
@@ -52,7 +51,6 @@ export function useTagsTableColumns(): Array<ResourceTableColumn<"tags">> {
       },
       {
         header: "",
-        align: "right",
         // hugs its content, so the leftover table width goes to the name column
         width: "w-px",
         cell: ({ resource }) => <TagRowActions tag={resource} />,

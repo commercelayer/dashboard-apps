@@ -36,14 +36,6 @@ export function useSubscriptionsTableColumns(): Array<
         ),
       },
       {
-        header: "Status",
-        cell: ({ resource }) => (
-          <Badge variant={getSubscriptionStatusBadgeVariant(resource.status)}>
-            {getSubscriptionStatusName(resource.status)}
-          </Badge>
-        ),
-      },
-      {
         header: "Customer",
         hideBelow: "md",
         cell: ({ resource }) => {
@@ -61,6 +53,14 @@ export function useSubscriptionsTableColumns(): Array<
             </Text>
           )
         },
+      },
+      {
+        header: "Status",
+        cell: ({ resource }) => (
+          <Badge variant={getSubscriptionStatusBadgeVariant(resource.status)}>
+            {getSubscriptionStatusName(resource.status)}
+          </Badge>
+        ),
       },
       {
         header: "Last run",
