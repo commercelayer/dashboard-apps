@@ -26,7 +26,7 @@ export function useGiftCardsTableColumns(): Array<
         header: "Code",
         cell: ({ resource }) => (
           // only the last digits are readable: the full code is a secret
-          <Text weight="semibold" wrap="nowrap">
+          <Text weight="medium" wrap="nowrap">
             {maskGiftCardCode(resource.code)}
           </Text>
         ),

@@ -29,7 +29,7 @@ export function useStockItemsTableColumns(): Array<
               size="small"
             />
             <div>
-              <Text tag="div" weight="semibold">
+              <Text tag="div" weight="medium">
                 {resource.sku?.name}
               </Text>
               <Text tag="div" weight="medium" size="x-small" variant="info">
@@ -51,14 +51,14 @@ export function useStockItemsTableColumns(): Array<
         sortBy: "quantity",
         cell: ({ resource }) => (
           <div>
-            <Text tag="div" weight="semibold" wrap="nowrap">
+            <Text tag="div" weight="medium" wrap="nowrap">
               {resource.quantity}
             </Text>
             {resource.reserved_stock != null &&
               resource.reserved_stock.quantity > 0 && (
                 // reserved stock is what makes the available quantity differ from
                 // the one on hand, so it stays visible as the list row had it
-                <Text tag="div" size="small" variant="info" wrap="nowrap">
+                <Text tag="div" size="x-small" variant="info" wrap="nowrap">
                   {resource.reserved_stock.quantity} reserved
                 </Text>
               )}

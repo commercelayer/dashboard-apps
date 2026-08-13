@@ -23,7 +23,7 @@ export function useSkuListsTableColumns(): Array<
       {
         header: "Name",
         sortBy: "name",
-        cell: ({ resource }) => <Text weight="semibold">{resource.name}</Text>,
+        cell: ({ resource }) => <Text weight="medium">{resource.name}</Text>,
       },
       {
         header: "Type",

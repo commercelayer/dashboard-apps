@@ -32,7 +32,7 @@ export function useTagsTableColumns(): Array<ResourceTableColumn<"tags">> {
       {
         header: "Name",
         sortBy: "name",
-        cell: ({ resource }) => <Text weight="semibold">{resource.name}</Text>,
+        cell: ({ resource }) => <Text weight="medium">{resource.name}</Text>,
       },
       {
         header: "Created",

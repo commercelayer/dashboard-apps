@@ -27,7 +27,7 @@ export function usePromotionsTableColumns(): Array<
         sortBy: "name",
         cell: ({ resource }) => (
           <div className="flex items-center gap-2">
-            <Text weight="semibold">{resource.name}</Text>
+            <Text weight="medium">{resource.name}</Text>
             {resource.type === "flex_promotions" && (
               <Badge variant="teal">flex</Badge>
             )}
