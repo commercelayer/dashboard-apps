@@ -32,12 +32,7 @@ export function useGiftCardsTableColumns(): Array<
         ),
       },
       {
-        header: "Status",
-        cell: ({ resource }) => <BadgeStatus status={resource.status} />,
-      },
-      {
         header: "Balance",
-        align: "right",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.formatted_balance}</Text>
         ),
@@ -55,8 +50,11 @@ export function useGiftCardsTableColumns(): Array<
         },
       },
       {
+        header: "Status",
+        cell: ({ resource }) => <BadgeStatus status={resource.status} />,
+      },
+      {
         header: "Created",
-        align: "right",
         hideBelow: "md",
         sortBy: "created_at",
         cell: ({ resource }) => (

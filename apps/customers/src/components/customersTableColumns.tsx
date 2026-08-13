@@ -70,15 +70,6 @@ export function useCustomersTableColumns(): Array<
         ),
       },
       {
-        header: "Status",
-        cell: ({ resource }) => (
-          // the raw status rather than `getCustomerStatusName`, as in the design.
-          // A neutral badge because the dictionary maps all three statuses to the
-          // same colour anyway.
-          <Badge variant="secondary">{resource.status}</Badge>
-        ),
-      },
-      {
         header: "Orders",
         hideBelow: "md",
         cell: ({ resource }) =>
@@ -100,8 +91,16 @@ export function useCustomersTableColumns(): Array<
           ),
       },
       {
+        header: "Status",
+        cell: ({ resource }) => (
+          // the raw status rather than `getCustomerStatusName`, as in the design.
+          // A neutral badge because the dictionary maps all three statuses to the
+          // same colour anyway.
+          <Badge variant="secondary">{resource.status}</Badge>
+        ),
+      },
+      {
         header: "Created",
-        align: "right",
         hideBelow: "md",
         sortBy: "created_at",
         cell: ({ resource }) => (

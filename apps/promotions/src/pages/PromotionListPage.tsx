@@ -138,13 +138,16 @@ function Page(
       >
         {promotionTabs.map((tab) => (
           <Tab key={tab.label} name={tab.label}>
-            {/* the tab's own filters are the baseline: only what the user adds on
-                top of them shows up as a removable pill */}
-            <FiltersBar
-              queryString={queryString}
-              onUpdate={handleFiltersUpdate}
-              defaultValues={tab.formValues}
-            />
+            {/* The tab's own filters are the baseline: only what the user adds
+                on top of them shows up as a removable pill. The spacer brings the
+                gap below the tab bar to 24px: 16 from the panel, 8 from here. */}
+            <Spacer top="2">
+              <FiltersBar
+                queryString={queryString}
+                onUpdate={handleFiltersUpdate}
+                defaultValues={tab.formValues}
+              />
+            </Spacer>
             <Spacer bottom="14">{table}</Spacer>
           </Tab>
         ))}

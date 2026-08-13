@@ -69,7 +69,6 @@ export function useReturnsTableColumns(): Array<
       },
       {
         header: "Updated",
-        align: "right",
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (
