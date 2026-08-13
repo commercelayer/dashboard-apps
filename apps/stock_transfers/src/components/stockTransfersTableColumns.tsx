@@ -26,7 +26,7 @@ export function useStockTransfersTableColumns(): Array<
         header: "Number",
         sortBy: "number",
         cell: ({ resource }) => (
-          <Text weight="semibold" wrap="nowrap">
+          <Text weight="medium" wrap="nowrap">
             #{resource.number}
           </Text>
         ),

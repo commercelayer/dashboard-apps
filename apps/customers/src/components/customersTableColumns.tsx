@@ -57,10 +57,10 @@ export function useCustomersTableColumns(): Array<
           <div className="flex items-center gap-4">
             <CustomerAvatar customer={resource} />
             <div className="min-w-0">
-              <Text tag="div" weight="semibold">
+              <Text tag="div" weight="medium">
                 {resource.email}
               </Text>
-              <Text tag="div" size="small" variant="info">
+              <Text tag="div" size="x-small" variant="info">
                 {resource.has_password === true
                   ? t("apps.customers.details.registered")
                   : t("apps.customers.details.guest")}

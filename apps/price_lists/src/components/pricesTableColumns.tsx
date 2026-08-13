@@ -31,7 +31,7 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
               size="small"
             />
             <div>
-              <Text tag="div" weight="semibold">
+              <Text tag="div" weight="medium">
                 {resource.sku?.name}
               </Text>
               <Text tag="div" weight="medium" size="x-small" variant="info">

@@ -34,10 +34,10 @@ export function useOrdersTableColumns(
         sortBy,
         cell: ({ resource }) => (
           <div>
-            <Text tag="div" weight="semibold" wrap="nowrap">
+            <Text tag="div" weight="medium" wrap="nowrap">
               {`${resource.market?.name ?? "Order"} #${resource.number ?? ""}`.trim()}
             </Text>
-            <Text tag="div" size="small" variant="info" wrap="nowrap">
+            <Text tag="div" size="x-small" variant="info" wrap="nowrap">
               {formatDate({
                 format: "full",
                 isoDate: resource.placed_at ?? resource.updated_at,
@@ -66,7 +66,7 @@ export function useOrdersTableColumns(
                 {!isEmpty(countryCode) ? ` (${countryCode})` : ""}
               </Text>
               {!isEmpty(email) && title !== email && (
-                <Text tag="div" size="small" variant="info">
+                <Text tag="div" size="x-small" variant="info">
                   {email}
                 </Text>
               )}
@@ -90,12 +90,12 @@ export function useOrdersTableColumns(
         align: "right",
         cell: ({ resource }) => (
           <div>
-            <Text tag="div" weight="semibold" wrap="nowrap">
+            <Text tag="div" weight="medium" wrap="nowrap">
               {getFormattedTotalAmount(resource)}
             </Text>
             <Text
               tag="div"
-              size="small"
+              size="x-small"
               weight="medium"
               variant="info"
               wrap="nowrap"

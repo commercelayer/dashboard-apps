@@ -25,7 +25,7 @@ export function useShipmentsTableColumns(): Array<
         header: "Shipment",
         sortBy: "number",
         cell: ({ resource }) => (
-          <Text weight="semibold" wrap="nowrap">
+          <Text weight="medium" wrap="nowrap">
             #{resource.number}
           </Text>
         ),
