@@ -5,7 +5,7 @@ import {
   ErrorBoundary,
   I18NProvider,
   MetaTags,
-  PageSkeleton,
+  PageLoading,
   TokenProvider,
 } from "@commercelayer/app-elements"
 import { StrictMode } from "react"
@@ -30,7 +30,7 @@ const Main = (props: ClAppProps): React.JSX.Element => (
           kind="returns"
           appSlug="returns"
           devMode={isDev}
-          loadingElement={<PageSkeleton />}
+          loadingElement={<PageLoading />}
           {...props}
         >
           <I18NProvider>
