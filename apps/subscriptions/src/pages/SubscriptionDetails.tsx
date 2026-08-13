@@ -211,9 +211,6 @@ function SubscriptionDetails(): React.JSX.Element {
             <Card overflow="visible">
               <SubscriptionAddresses subscription={subscription} />
               <Spacer top="10">
-                <SubscriptionPayment subscription={subscription} />
-              </Spacer>
-              <Spacer top="10">
                 <ResourceDetails
                   resource={subscription}
                   onUpdated={async () => {
@@ -276,6 +273,10 @@ function SubscriptionDetails(): React.JSX.Element {
           </Spacer>
           <Spacer top="14">
             <SubscriptionItems subscriptionId={subscription.id} />
+          </Spacer>
+          {/* in the main column, after the items, as it was before the sidebar */}
+          <Spacer top="14">
+            <SubscriptionPayment subscription={subscription} />
           </Spacer>
         </Spacer>
       </SkeletonTemplate>

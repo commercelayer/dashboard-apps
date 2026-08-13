@@ -27,7 +27,7 @@ export function useImportsTableColumns(): Array<
       {
         header: "Type",
         cell: ({ resource }) => (
-          <Text weight="semibold">
+          <Text weight="medium">
             {formatResourceName({
               resource: resource.resource_type as ListableResourceType,
               count: "plural",
@@ -51,6 +51,12 @@ export function useImportsTableColumns(): Array<
         ),
       },
       {
+        // penultimate among the columns that carry data: the last one is the
+        // row's `…` menu
+        header: "Status",
+        cell: ({ resource }) => <StatusBadge job={resource} />,
+      },
+      {
         header: "Created",
         hideBelow: "md",
         sortBy: "created_at",
@@ -64,10 +70,6 @@ export function useImportsTableColumns(): Array<
             })}
           </Text>
         ),
-      },
-      {
-        header: "Status",
-        cell: ({ resource }) => <StatusBadge job={resource} />,
       },
       {
         header: "",
