@@ -23,7 +23,6 @@ export function useWebhooksTableColumns(): Array<
     () => [
       {
         header: "Name",
-        sortBy: "name",
         cell: ({ resource }) => (
           <Text weight="medium">{resource.name ?? "-"}</Text>
         ),

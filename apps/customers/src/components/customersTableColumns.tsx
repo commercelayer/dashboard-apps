@@ -71,6 +71,7 @@ export function useCustomersTableColumns(): Array<
       },
       {
         header: "Orders",
+        sortBy: "total_orders_count",
         hideBelow: "md",
         cell: ({ resource }) =>
           resource.total_orders_count != null &&
@@ -92,6 +93,7 @@ export function useCustomersTableColumns(): Array<
       },
       {
         header: "Status",
+        sortBy: "status",
         cell: ({ resource }) => (
           // the raw status rather than `getCustomerStatusName`, as in the design.
           // A neutral badge because the dictionary maps all three statuses to the
