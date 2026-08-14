@@ -1,6 +1,6 @@
 import {
+  Card,
   ListDetailsItem,
-  Section,
   Text,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
@@ -10,22 +10,40 @@ interface WebhookInfosProps {
   webhook: Webhook
 }
 
+/**
+ * What the webhook is subscribed to and where it posts, as label/value rows.
+ *
+ * Values are monospaced and right-aligned: they are API identifiers and a URL, read
+ * character by character rather than as prose.
+ */
 export const WebhookInfos = withSkeletonTemplate<WebhookInfosProps>(
   ({ webhook }) => {
+    const includes = webhook.include_resources ?? []
+
     return (
-      <Section title="Info">
-        {webhook.topic != null ? (
-          <ListDetailsItem label="Topic" gutter="none">
-            <Text>{webhook.topic}</Text>
+      <Card gap="none">
+        <ListDetailsItem label="Topic" childrenAlign="right">
+          <Text weight="semibold" className="font-mono">
+            {webhook.topic}
+          </Text>
+        </ListDetailsItem>
+        {includes.length > 0 && (
+          <ListDetailsItem label="Includes" childrenAlign="right">
+            <Text weight="semibold" className="font-mono">
+              {includes.join(", ")}
+            </Text>
           </ListDetailsItem>
-        ) : null}
-        {webhook.include_resources != null &&
-        webhook.include_resources.length > 0 ? (
-          <ListDetailsItem label="Includes" gutter="none">
-            <Text>{webhook.include_resources.join(", ")}</Text>
-          </ListDetailsItem>
-        ) : null}
-      </Section>
+        )}
+        <ListDetailsItem
+          label="Callback URL"
+          childrenAlign="right"
+          border="none"
+        >
+          <Text weight="semibold" className="font-mono">
+            {webhook.callback_url}
+          </Text>
+        </ListDetailsItem>
+      </Card>
     )
   },
 )
