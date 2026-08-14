@@ -55,6 +55,7 @@ export function useShipmentsTableColumns(): Array<
       },
       {
         header: "Status",
+        sortBy: "status",
         cell: ({ resource }) => {
           const displayStatus = getShipmentDisplayStatus(resource)
           return (

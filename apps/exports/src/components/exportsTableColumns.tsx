@@ -30,6 +30,7 @@ export function useExportsTableColumns(): Array<
     () => [
       {
         header: "Type",
+        sortBy: "resource_type",
         cell: ({ resource }) => (
           <Text weight="medium">
             {showResourceNiceName(resource.resource_type)}
@@ -38,6 +39,7 @@ export function useExportsTableColumns(): Array<
       },
       {
         header: "Records",
+        sortBy: "records_count",
         hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
@@ -47,6 +49,7 @@ export function useExportsTableColumns(): Array<
       },
       {
         header: "Status",
+        sortBy: "status",
         cell: ({ resource }) => <ExportStatus job={resource} />,
       },
       {

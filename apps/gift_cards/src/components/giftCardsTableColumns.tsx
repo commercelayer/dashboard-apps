@@ -33,6 +33,7 @@ export function useGiftCardsTableColumns(): Array<
       },
       {
         header: "Balance",
+        sortBy: "balance_cents",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.formatted_balance}</Text>
         ),
@@ -51,6 +52,7 @@ export function useGiftCardsTableColumns(): Array<
       },
       {
         header: "Status",
+        sortBy: "status",
         cell: ({ resource }) => <BadgeStatus status={resource.status} />,
       },
       {

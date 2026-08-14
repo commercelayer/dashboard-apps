@@ -30,6 +30,7 @@ export function WebhookCallbacks({ webhook }: Props): React.JSX.Element {
     () => [
       {
         header: "Code",
+        sortBy: "response_code",
         // hugs its content: the response code is at most three characters
         width: "w-px",
         cell: ({ resource }) => (
@@ -40,6 +41,7 @@ export function WebhookCallbacks({ webhook }: Props): React.JSX.Element {
       },
       {
         header: "Message",
+        sortBy: "response_message",
         cell: ({ resource }) => (
           <Text weight="medium">{resource.response_message ?? "-"}</Text>
         ),
