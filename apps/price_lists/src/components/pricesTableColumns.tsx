@@ -44,21 +44,26 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
       {
         header: "Price",
         cell: ({ resource }) => (
-          <div>
-            <Text tag="div" wrap="nowrap">
-              {resource.formatted_amount}
-            </Text>
-            {resource.formatted_compare_at_amount !==
-              resource.formatted_amount && (
-              // a compare-at amount that differs is what makes the price a
-              // discount, so it stays visible, struck through
-              // and smaller, under the price actually charged
-              <Text tag="div" size="x-small" variant="info" wrap="nowrap">
-                <s>{resource.formatted_compare_at_amount}</s>
-              </Text>
-            )}
-          </div>
+          <Text wrap="nowrap">{resource.formatted_amount}</Text>
         ),
+      },
+      {
+        header: "Original",
+        cell: ({ resource }) => {
+          // a compare-at amount only says something when it differs: that is what
+          // makes the price a discount. Struck through, as the price it replaces.
+          if (
+            resource.formatted_compare_at_amount == null ||
+            resource.formatted_compare_at_amount === resource.formatted_amount
+          ) {
+            return <Text className="text-gray-300">&#8212;</Text>
+          }
+          return (
+            <Text wrap="nowrap">
+              <s>{resource.formatted_compare_at_amount}</s>
+            </Text>
+          )
+        },
       },
       {
         header: "Price list",
@@ -66,7 +71,7 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
         cell: ({ resource }) => <Text>{resource.price_list?.name ?? "-"}</Text>,
       },
       {
-        header: "Updated at",
+        header: "Updated",
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (

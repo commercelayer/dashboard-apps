@@ -8,13 +8,15 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { useEffect, useMemo } from "react"
+import { useLocation } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { usePromotionsTableColumns } from "#components/promotionsTableColumns"
 import type { PageProps } from "#components/Routes"
 import { filtersInstructions } from "#data/filters"
 import { getPromotionTabs, type PromotionTab } from "#data/lists"
-import type { appRoutes } from "#data/routes"
+import { appRoutes } from "#data/routes"
+import { usePromotionPermission } from "#hooks/usePromotionPermission"
 
 function Page(
   props: PageProps<typeof appRoutes.promotionList>,
@@ -23,6 +25,8 @@ function Page(
     settings: { mode },
   } = useTokenProvider()
   const { navigateTo } = useAppLinking()
+  const [, setLocation] = useLocation()
+  const { canUserManagePromotions } = usePromotionPermission()
 
   const queryString = useSearch()
 
@@ -116,6 +120,22 @@ function Page(
       overlay={props.overlay}
       mode={mode}
       fullWidth
+      toolbar={{
+        // creating any single promotion type is enough to offer the action: the
+        // next page is where a type gets picked
+        buttons: canUserManagePromotions("create", "atLeastOne")
+          ? [
+              {
+                icon: "plus",
+                label: "New promotion",
+                size: "small",
+                onClick: () => {
+                  setLocation(appRoutes.newSelectType.makePath({}))
+                },
+              },
+            ]
+          : undefined,
+      }}
     >
       {/* Remounted per tab so `Tabs` (which owns its active index internally)
           picks up the tab restored from the url. */}

@@ -40,6 +40,27 @@ export function useStockItemsTableColumns(): Array<
         ),
       },
       {
+        header: "Quantity",
+        sortBy: "quantity",
+        cell: ({ resource }) => (
+          <Text weight="medium" wrap="nowrap">
+            {resource.quantity}
+          </Text>
+        ),
+      },
+      {
+        header: "Reserved",
+        cell: ({ resource }) => {
+          // reserved stock is what makes the available quantity differ from the one
+          // on hand, so it only says something when there is any
+          const reserved = resource.reserved_stock?.quantity
+          if (reserved == null || reserved === 0) {
+            return <Text className="text-gray-300">&#8212;</Text>
+          }
+          return <Text wrap="nowrap">{reserved}</Text>
+        },
+      },
+      {
         header: "Stock location",
         hideBelow: "md",
         cell: ({ resource }) => (
@@ -47,26 +68,7 @@ export function useStockItemsTableColumns(): Array<
         ),
       },
       {
-        header: "Quantity",
-        sortBy: "quantity",
-        cell: ({ resource }) => (
-          <div>
-            <Text tag="div" weight="medium" wrap="nowrap">
-              {resource.quantity}
-            </Text>
-            {resource.reserved_stock != null &&
-              resource.reserved_stock.quantity > 0 && (
-                // reserved stock is what makes the available quantity differ from
-                // the one on hand, so it stays visible as the list row had it
-                <Text tag="div" size="x-small" variant="info" wrap="nowrap">
-                  {resource.reserved_stock.quantity} reserved
-                </Text>
-              )}
-          </div>
-        ),
-      },
-      {
-        header: "Updated at",
+        header: "Updated",
         hideBelow: "md",
         sortBy: "updated_at",
         cell: ({ resource }) => (
