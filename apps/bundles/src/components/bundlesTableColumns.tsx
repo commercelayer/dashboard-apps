@@ -48,21 +48,28 @@ export function useBundlesTableColumns(): Array<
         header: "Price",
         hideBelow: "md",
         cell: ({ resource }) => (
-          <div>
-            <Text tag="div" wrap="nowrap">
-              {resource.formatted_price_amount}
-            </Text>
-            {resource.formatted_compare_at_amount !==
-              resource.formatted_price_amount && (
-              // a compare-at amount that differs is what makes the bundle a
-              // saving, so it stays visible, struck through
-              // and smaller, under the price actually charged
-              <Text tag="div" size="x-small" variant="info" wrap="nowrap">
-                <s>{resource.formatted_compare_at_amount}</s>
-              </Text>
-            )}
-          </div>
+          <Text wrap="nowrap">{resource.formatted_price_amount}</Text>
         ),
+      },
+      {
+        header: "Original",
+        hideBelow: "md",
+        cell: ({ resource }) => {
+          // a compare-at amount only says something when it differs: that is what
+          // makes the bundle a saving. Struck through, as the price it replaces.
+          if (
+            resource.formatted_compare_at_amount == null ||
+            resource.formatted_compare_at_amount ===
+              resource.formatted_price_amount
+          ) {
+            return <Text className="text-gray-300">&#8212;</Text>
+          }
+          return (
+            <Text wrap="nowrap">
+              <s>{resource.formatted_compare_at_amount}</s>
+            </Text>
+          )
+        },
       },
       {
         header: "Market",
