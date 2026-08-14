@@ -27,6 +27,7 @@ export function useSkuListsTableColumns(): Array<
       },
       {
         header: "Type",
+        sortBy: "manual",
         hideBelow: "md",
         cell: ({ resource }) => (
           <Badge variant="secondary">

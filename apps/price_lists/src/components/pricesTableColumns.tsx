@@ -43,12 +43,14 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
       },
       {
         header: "Price",
+        sortBy: "amount_cents",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.formatted_amount}</Text>
         ),
       },
       {
         header: "Original",
+        sortBy: "compare_at_amount_cents",
         cell: ({ resource }) => {
           // a compare-at amount only says something when it differs: that is what
           // makes the price a discount. Struck through, as the price it replaces.

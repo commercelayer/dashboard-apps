@@ -47,6 +47,7 @@ export function useStockTransfersTableColumns(): Array<
       },
       {
         header: "Status",
+        sortBy: "status",
         cell: ({ resource }) => {
           const displayStatus = getStockTransferDisplayStatus(resource)
           return (

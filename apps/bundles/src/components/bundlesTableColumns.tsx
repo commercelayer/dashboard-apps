@@ -46,6 +46,7 @@ export function useBundlesTableColumns(): Array<
       },
       {
         header: "Price",
+        sortBy: "price_amount_cents",
         hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.formatted_price_amount}</Text>
@@ -53,6 +54,7 @@ export function useBundlesTableColumns(): Array<
       },
       {
         header: "Original",
+        sortBy: "compare_at_amount_cents",
         hideBelow: "md",
         cell: ({ resource }) => {
           // a compare-at amount only says something when it differs: that is what

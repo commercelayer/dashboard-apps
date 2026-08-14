@@ -26,6 +26,7 @@ export function useImportsTableColumns(): Array<
     () => [
       {
         header: "Type",
+        sortBy: "resource_type",
         cell: ({ resource }) => (
           <Text weight="medium">
             {formatResourceName({
@@ -38,6 +39,7 @@ export function useImportsTableColumns(): Array<
       },
       {
         header: "Records",
+        sortBy: "inputs_size",
         hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.inputs_size ?? 0}</Text>
@@ -45,6 +47,8 @@ export function useImportsTableColumns(): Array<
       },
       {
         header: "Errors",
+        sortBy: "errors_count",
+        sortDescFirst: true,
         hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.errors_count ?? 0}</Text>
@@ -54,6 +58,7 @@ export function useImportsTableColumns(): Array<
         // penultimate among the columns that carry data: the last one is the
         // row's `…` menu
         header: "Status",
+        sortBy: "status",
         cell: ({ resource }) => <StatusBadge job={resource} />,
       },
       {

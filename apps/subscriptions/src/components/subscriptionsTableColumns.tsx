@@ -56,6 +56,7 @@ export function useSubscriptionsTableColumns(): Array<
       },
       {
         header: "Status",
+        sortBy: "status",
         cell: ({ resource }) => (
           <Badge variant={getSubscriptionStatusBadgeVariant(resource.status)}>
             {getSubscriptionStatusName(resource.status)}

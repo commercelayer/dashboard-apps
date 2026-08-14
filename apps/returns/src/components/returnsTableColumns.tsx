@@ -58,6 +58,7 @@ export function useReturnsTableColumns(): Array<
       },
       {
         header: "Status",
+        sortBy: "status",
         cell: ({ resource }) => {
           const displayStatus = getReturnDisplayStatus(resource)
           return (
