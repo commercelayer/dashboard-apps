@@ -93,15 +93,27 @@ function ExportStatus({ job }: { job: Export }): React.JSX.Element {
 
     return (
       <Tooltip
+        // `inline-block` so the span the tooltip is positioned against hugs the bar
+        // instead of stretching the whole cell, and `relative` so it sits above the
+        // row's stretched link (`after:absolute after:inset-0` on the first cell),
+        // which otherwise covers the bar and swallows the hover — the reason only
+        // the percentage, itself `relative`, was triggering the tooltip
+        className="inline-block relative"
         // the bar alone says roughly how far along it is; the tooltip says exactly
         // that, plus when it should be done
         content={[completed, expected].filter(Boolean).join(". ")}
         label={
-          <div className="w-1/2">
-            <Progress value={job.progress} max={100} displayMode="percentage">
-              {job.progress}%
-            </Progress>
-          </div>
+          <Progress
+            value={job.progress}
+            max={100}
+            displayMode="percentage"
+            // 80px through `style`, not a class: `Progress` puts its own `w-full`
+            // on the element, and app code is not Tailwind-scanned — `w-20` is not
+            // in app-elements' compiled CSS, so it would do nothing here
+            style={{ width: 80 }}
+          >
+            {job.progress}%
+          </Progress>
         }
       />
     )
