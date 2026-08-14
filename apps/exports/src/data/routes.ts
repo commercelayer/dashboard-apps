@@ -12,11 +12,6 @@ export const appRoutes = {
     makePath: (filters?: string) =>
       hasFilterQuery(filters) ? `/?${filters}` : `/`,
   },
-  filters: {
-    path: "/filters",
-    makePath: (filters?: string) =>
-      hasFilterQuery(filters) ? `/filters/?${filters}` : `/filters`,
-  },
   selectResource: {
     path: "/new",
     makePath: () => "/new",

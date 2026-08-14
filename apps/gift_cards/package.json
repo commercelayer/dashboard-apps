@@ -14,7 +14,7 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@3464dee",
+    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@d5f9fe4",
     "@commercelayer/sdk": "8.0.0-beta.11",
     "@hookform/resolvers": "^3.10.0",
     "@tanstack/react-virtual": "^3.14.2",

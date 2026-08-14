@@ -1,7 +1,6 @@
 import { withSkeletonTemplate } from "@commercelayer/app-elements"
 import { useExportDetailsContext } from "#components/Details/Provider"
 import { showResourceNiceName } from "#data/resources"
-import { StatusBadge } from "./StatusBadge"
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {}
 
@@ -15,12 +14,8 @@ export const ExportedResourceType = withSkeletonTemplate<Props>(
       return null
     }
 
-    return (
-      <span {...props}>
-        {showResourceNiceName(data?.resource_type)}
-
-        <StatusBadge job={data} className="inline-block align-middle ml-2" />
-      </span>
-    )
+    // just the name: the status badge is rendered by the page, after the word
+    // "export", rather than in the middle of the title
+    return <span {...props}>{showResourceNiceName(data?.resource_type)}</span>
   },
 )
