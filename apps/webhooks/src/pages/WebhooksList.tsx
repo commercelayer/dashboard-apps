@@ -1,86 +1,79 @@
 import {
-  Button,
   EmptyState,
-  HomePageLayout,
-  Icon,
   PageLayout,
   Spacer,
-  useResourceList,
+  useResourceTable,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { FC } from "react"
-import { Link, useLocation } from "wouter"
-import { ListItemWebhook } from "#components/ListItemWebhook"
+import { useLocation, useRouter } from "wouter"
+import { useWebhooksTableColumns } from "#components/webhooksTableColumns"
 import { appRoutes } from "#data/routes"
 
 export const WebhooksList: FC = () => {
-  const { settings, canUser } = useTokenProvider()
+  const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
-  const { ResourceList } = useResourceList({
+  // the anchor needs an absolute path, `setLocation` a base-relative one
+  const { base } = useRouter()
+
+  const columns = useWebhooksTableColumns()
+
+  // no filters in this app, so the table is used on its own rather than through
+  // `useResourceFilters`
+  const { ResourceTable, Pagination } = useResourceTable({
     type: "webhooks",
+    columns,
     query: {
-      sort: {
-        created_at: "desc",
-      },
+      // "Last fired" reads the most recent callback off this relationship
+      include: ["last_event_callbacks"],
+      pageSize: 25,
+    },
+    defaultSort: "-created_at",
+    getRowHref: (webhook) =>
+      `${base}${appRoutes.details.makePath({ webhookId: webhook.id })}`,
+    onRowClick: (webhook) => {
+      setLocation(appRoutes.details.makePath({ webhookId: webhook.id }))
     },
   })
 
   if (!canUser("read", "webhooks")) {
     return (
-      <PageLayout
-        title="Webhooks"
-        mode={settings.mode}
-        navigationButton={{
-          onClick: () => {
-            setLocation(appRoutes.list.makePath({}))
-          },
-          label: `Webhooks`,
-          icon: "arrowLeft",
-        }}
-      >
+      <PageLayout title="Webhooks" fullWidth>
         <EmptyState title="You are not authorized" />
       </PageLayout>
     )
   }
 
   return (
-    <HomePageLayout title="Webhooks">
-      <Spacer top="14">
-        <ResourceList
-          title="All webhooks"
-          actionButton={
-            canUser("create", "webhooks") ? (
-              <Link href={appRoutes.newWebhook.makePath({})}>
-                <Button
-                  variant="secondary"
-                  size="mini"
-                  alignItems="center"
-                  aria-label="Add webhook"
-                >
-                  <Icon name="plus" size={16} />
-                  New
-                </Button>
-              </Link>
-            ) : undefined
-          }
-          ItemTemplate={ListItemWebhook}
+    <PageLayout
+      title="Webhooks"
+      fullWidth
+      toolbar={{
+        buttons: canUser("create", "webhooks")
+          ? [
+              {
+                icon: "plus",
+                label: "New webhook",
+                size: "small",
+                onClick: () => {
+                  setLocation(appRoutes.newWebhook.makePath({}))
+                },
+              },
+            ]
+          : undefined,
+      }}
+    >
+      <Spacer bottom="14">
+        <ResourceTable
           emptyState={
             <EmptyState
-              title="No webhook yet!"
-              description="Create your first webhook"
-              action={
-                canUser("create", "webhooks") ? (
-                  <Link href={appRoutes.newWebhook.makePath({})}>
-                    <Button variant="primary" type="button">
-                      New webhook
-                    </Button>
-                  </Link>
-                ) : undefined
-              }
+              title="No webhooks yet"
+              description="Callbacks sent to your endpoints will show up here."
             />
           }
         />
+        <Pagination />
       </Spacer>
-    </HomePageLayout>
+    </PageLayout>
   )
 }
