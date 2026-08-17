@@ -185,7 +185,11 @@ const Home: FC = () => {
         }}
       >
         {orderTabs.map((tab) => (
-          <Tab key={tab.label} name={tab.label}>
+          <Tab
+            key={tab.label}
+            name={tab.label}
+            separatorBefore={tab.separatorBefore}
+          >
             {/* The tab's own filters are the baseline: only what the user adds
                 on top of them shows up as a removable pill. The spacer brings the
                 gap below the tab bar to 24px: 16 from the panel, 8 from here. */}
