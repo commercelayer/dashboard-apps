@@ -29,9 +29,6 @@ export function usePromotionsTableColumns(): Array<
         cell: ({ resource }) => (
           <div className="flex items-center gap-2">
             <Text weight="medium">{resource.name}</Text>
-            {resource.type === "flex_promotions" && (
-              <Badge variant="teal">flex</Badge>
-            )}
             {/* the Status column is hidden on mobile, so the badge rides with the name */}
             <RowStatusBadge resource={resource} className="md:hidden" />
           </div>
