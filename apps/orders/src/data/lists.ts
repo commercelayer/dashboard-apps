@@ -1,4 +1,5 @@
 import type { FormFullValues } from "@commercelayer/app-elements"
+import type { HideableFilter } from "./filters"
 
 export interface OrderTab {
   /** Tab label, intentionally not localized */
@@ -16,21 +17,29 @@ export interface OrderTab {
    * standard instructions' time range.
    */
   instructions?: "carts"
+  /**
+   * Filters the tab decides itself, kept out of the drawer: on the Placed tab the
+   * status is the tab, so offering a status field there only invites the user to
+   * contradict it. The value still applies — see `makeInstructions`.
+   */
+  hiddenFilters?: HideableFilter[]
 }
 
 /**
  * Predicates used by the tabs that are not part of the filters instructions and
  * therefore need to be whitelisted in `useResourceFilters`.
+ *
+ * Empty: every tab now filters on a predicate the instructions already declare.
  */
-export const orderTabsPredicateWhitelist = ["fulfillment_status_not_in"]
+export const orderTabsPredicateWhitelist: string[] = []
 
 /**
  * The tabs of the orders entry page.
  *
- * Filters are AND-ed across attributes (there is no OR between them), so each
- * state is spelled out with the values it allows or excludes:
- * - a status list without `pending` also excludes drafts
- * - "not fulfilled" is expressed as `fulfillment_status_not_in: ["fulfilled"]`
+ * Filters are AND-ed across attributes (there is no OR between them), so a tab can
+ * only pin one shape: `status_in` for where the order is in its own lifecycle,
+ * `fulfillment_status_in` for how far its fulfillment has got. Tabs that pin one of
+ * those hide the matching drawer field via `hiddenFilters`.
  */
 export const orderTabs: OrderTab[] = [
   {
@@ -43,30 +52,47 @@ export const orderTabs: OrderTab[] = [
     sortBy: "order.placed_at",
   },
   {
-    label: "Open",
-    // still needs work: to be approved, to be captured, or to be fulfilled.
-    // `fulfillment_status_not_in` (whitelisted in the page) rather than listing
-    // the allowed values: the metrics API only knows `unfulfilled`,
-    // `in_progress` and `fulfilled` — it rejects `not_required` — and orders
-    // with no fulfillment status yet must count as open too.
+    label: "Placed",
+    // waiting to be approved
     formValues: {
-      status_in: ["placed", "approved"],
-      fulfillment_status_not_in: ["fulfilled"],
+      status_in: ["placed"],
       archived: "hide",
-      viewTitle: "Open",
+      viewTitle: "Placed",
     },
     sortBy: "order.placed_at",
+    hiddenFilters: ["status_in"],
   },
   {
-    label: "Closed",
+    label: "Approved",
     formValues: {
       status_in: ["approved"],
-      payment_status_in: ["paid"],
-      fulfillment_status_in: ["fulfilled"],
       archived: "hide",
-      viewTitle: "Closed",
+      viewTitle: "Approved",
     },
     sortBy: "order.placed_at",
+    hiddenFilters: ["status_in"],
+  },
+  {
+    label: "In progress",
+    // Being fulfilled. Only the fulfillment status is pinned: the status field
+    // stays in the drawer, where its default options already exclude carts.
+    formValues: {
+      fulfillment_status_in: ["in_progress"],
+      archived: "hide",
+      viewTitle: "In progress",
+    },
+    sortBy: "order.placed_at",
+    hiddenFilters: ["fulfillment_status_in"],
+  },
+  {
+    label: "Fulfilled",
+    formValues: {
+      fulfillment_status_in: ["fulfilled"],
+      archived: "hide",
+      viewTitle: "Fulfilled",
+    },
+    sortBy: "order.placed_at",
+    hiddenFilters: ["fulfillment_status_in"],
   },
   {
     label: "Carts",

@@ -52,7 +52,10 @@ const Home: FC = () => {
     instructions:
       activeTab.instructions === "carts"
         ? makeCartsInstructions()
-        : makeInstructions({ countryCodes }),
+        : makeInstructions({
+            countryCodes,
+            hiddenFilters: activeTab.hiddenFilters,
+          }),
     predicateWhitelist: orderTabsPredicateWhitelist,
   })
 

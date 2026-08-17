@@ -1,4 +1,9 @@
-import { parseTextSearchValue } from "#data/filters"
+import {
+  type HideableFilter,
+  makeInstructions,
+  parseTextSearchValue,
+} from "#data/filters"
+import { orderTabs } from "#data/lists"
 
 describe("parseTextSearchValue", () => {
   test("Should handle empty or undefined values ", () => {
@@ -82,5 +87,62 @@ describe("parseTextSearchValue", () => {
     expect(parseTextSearchValue("*foobar")).toBe("*foobar")
     expect(parseTextSearchValue("foobar*")).toBe("foobar*")
     expect(parseTextSearchValue('"foobar"')).toBe('"foobar"')
+  })
+})
+
+describe("makeInstructions", () => {
+  const hiddenFlagOf = (
+    predicate: string,
+    hiddenFilters: HideableFilter[] = [],
+  ): boolean | undefined =>
+    makeInstructions({ hiddenFilters }).find(
+      (item) => "predicate" in item.sdk && item.sdk.predicate === predicate,
+    )?.hidden
+
+  test("hides only the filters it is asked to", () => {
+    expect(hiddenFlagOf("status_in", ["status_in"])).toBe(true)
+    expect(hiddenFlagOf("fulfillment_status_in", ["status_in"])).toBe(false)
+    // untouched: it carries no `hidden` flag of its own
+    expect(hiddenFlagOf("payment_status_in", ["status_in"])).not.toBe(true)
+  })
+
+  test("shows both hideable filters when the tab pins neither", () => {
+    expect(hiddenFlagOf("status_in")).toBe(false)
+    expect(hiddenFlagOf("fulfillment_status_in")).toBe(false)
+  })
+
+  // `archived` is hidden for its own reasons, which `hiddenFilters` must not touch
+  test("leaves the filters hidden for other reasons hidden", () => {
+    expect(hiddenFlagOf("archived", ["status_in"])).toBe(true)
+  })
+})
+
+describe("orderTabs", () => {
+  // a tab that pins a filter has to hide it, or the drawer offers the user a way
+  // to contradict the tab they are on
+  test.each([
+    ["Placed", "status_in"],
+    ["Approved", "status_in"],
+    ["In progress", "fulfillment_status_in"],
+    ["Fulfilled", "fulfillment_status_in"],
+  ])("%s pins %s and hides it from the drawer", (label, predicate) => {
+    const tab = orderTabs.find((candidate) => candidate.label === label)
+    expect(tab?.formValues[predicate]).toBeDefined()
+    expect(tab?.hiddenFilters).toEqual([predicate])
+  })
+
+  test("every tab filters on a predicate the instructions declare", () => {
+    const declared = makeInstructions({}).flatMap((item) =>
+      "predicate" in item.sdk ? [item.sdk.predicate] : [],
+    )
+    const used = orderTabs
+      .filter((tab) => tab.instructions !== "carts")
+      .flatMap((tab) =>
+        Object.keys(tab.formValues).filter((key) => key !== "viewTitle"),
+      )
+
+    expect(used.filter((predicate) => !declared.includes(predicate))).toEqual(
+      [],
+    )
   })
 })
