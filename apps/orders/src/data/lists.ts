@@ -18,6 +18,11 @@ export interface OrderTab {
    */
   instructions?: "carts"
   /**
+   * Draws a rule before this tab, to set what follows apart: the states an order
+   * moves through, then the shelves it can sit on (carts, archive).
+   */
+  separatorBefore?: boolean
+  /**
    * Filters the tab decides itself, kept out of the drawer: on the Placed tab the
    * status is the tab, so offering a status field there only invites the user to
    * contradict it. The value still applies — see `makeInstructions`.
@@ -107,6 +112,7 @@ export const orderTabs: OrderTab[] = [
     },
     sortBy: "order.updated_at",
     instructions: "carts",
+    separatorBefore: true,
   },
   {
     label: "Archived",
