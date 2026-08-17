@@ -2,6 +2,7 @@ import {
   Badge,
   type BadgeProps,
   formatDate,
+  formatNumber,
   getPromotionDisplayStatus,
   type ResourceTableColumn,
   Text,
@@ -45,7 +46,9 @@ export function usePromotionsTableColumns(): Array<
           return couponsCount == null ? (
             <Text className="text-gray-300">&#8212;</Text>
           ) : (
-            <Text wrap="nowrap">{couponsCount}</Text>
+            <Text wrap="nowrap">
+              {formatNumber({ value: couponsCount, locale: user?.locale })}
+            </Text>
           )
         },
       },

@@ -2,6 +2,7 @@ import {
   Dropdown,
   DropdownItem,
   formatDate,
+  formatNumber,
   Icon,
   Progress,
   type ResourceTableColumn,
@@ -47,7 +48,10 @@ export function useExportsTableColumns(): Array<
         sortBy: "records_count",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
-            {(resource.records_count ?? 0).toLocaleString()}
+            {formatNumber({
+              value: resource.records_count,
+              locale: user?.locale,
+            })}
           </Text>
         ),
       },

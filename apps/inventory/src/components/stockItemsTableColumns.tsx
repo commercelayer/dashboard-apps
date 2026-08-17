@@ -1,6 +1,7 @@
 import {
   Avatar,
   formatDate,
+  formatNumber,
   type ResourceTableColumn,
   Text,
   useTokenProvider,
@@ -47,7 +48,7 @@ export function useStockItemsTableColumns(): Array<
         sortBy: "quantity",
         cell: ({ resource }) => (
           <Text weight="medium" wrap="nowrap">
-            {resource.quantity}
+            {formatNumber({ value: resource.quantity, locale: user?.locale })}
           </Text>
         ),
       },
@@ -61,7 +62,11 @@ export function useStockItemsTableColumns(): Array<
           if (reserved == null || reserved === 0) {
             return <Text className="text-gray-300">&#8212;</Text>
           }
-          return <Text wrap="nowrap">{reserved}</Text>
+          return (
+            <Text wrap="nowrap">
+              {formatNumber({ value: reserved, locale: user?.locale })}
+            </Text>
+          )
         },
       },
       {
