@@ -43,6 +43,9 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
       },
       {
         header: "Price",
+        // the number this table exists for: worth its place on a phone
+        hideBelow: "never",
+        kind: "amount",
         sortBy: "amount_cents",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.formatted_amount}</Text>
@@ -50,6 +53,7 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
       },
       {
         header: "Original",
+        kind: "amount",
         sortBy: "compare_at_amount_cents",
         cell: ({ resource }) => {
           // a compare-at amount only says something when it differs: that is what
@@ -69,12 +73,12 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
       },
       {
         header: "Price list",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => <Text>{resource.price_list?.name ?? "-"}</Text>,
       },
       {
         header: "Updated",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "updated_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">

@@ -7,6 +7,7 @@ import {
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import type { StockTransfer } from "@commercelayer/sdk"
 import { useMemo } from "react"
 
 /**
@@ -28,38 +29,37 @@ export function useStockTransfersTableColumns(): Array<
         cell: ({ resource }) => (
           <Text weight="medium" wrap="nowrap">
             #{resource.number}
+            {/* the Status column is hidden on mobile, so the badge rides with the name */}
+            <RowStatusBadge
+              resource={resource}
+              className="md:hidden inline-block align-middle ml-2"
+            />
           </Text>
         ),
       },
       {
         header: "Origin",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => (
           <Text>{resource.origin_stock_location?.name ?? "-"}</Text>
         ),
       },
       {
         header: "Destination",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => (
           <Text>{resource.destination_stock_location?.name ?? "-"}</Text>
         ),
       },
       {
         header: "Status",
+        kind: "status",
         sortBy: "status",
-        cell: ({ resource }) => {
-          const displayStatus = getStockTransferDisplayStatus(resource)
-          return (
-            <Badge variant={toBadgeVariant(displayStatus.color)}>
-              {displayStatus.label}
-            </Badge>
-          )
-        },
+        cell: ({ resource }) => <RowStatusBadge resource={resource} />,
       },
       {
         header: "Updated",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "updated_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
@@ -93,4 +93,25 @@ function toBadgeVariant(
     default:
       return "secondary"
   }
+}
+
+/**
+ * The row's status badge.
+ *
+ * Shared by the Status column and, on mobile where that column is hidden, the name
+ * cell — so the two can never drift apart.
+ */
+function RowStatusBadge({
+  resource,
+  className,
+}: {
+  resource: StockTransfer
+  className?: string
+}): React.JSX.Element {
+  const displayStatus = getStockTransferDisplayStatus(resource)
+  return (
+    <Badge variant={toBadgeVariant(displayStatus.color)} className={className}>
+      {displayStatus.label}
+    </Badge>
+  )
 }

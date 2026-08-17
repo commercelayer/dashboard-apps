@@ -27,8 +27,8 @@ export function useSkuListsTableColumns(): Array<
       },
       {
         header: "Type",
+        kind: "text",
         sortBy: "manual",
-        hideBelow: "md",
         cell: ({ resource }) => (
           <Badge variant="secondary">
             {resource.manual === true ? "Manual" : "Automatic"}
@@ -37,7 +37,7 @@ export function useSkuListsTableColumns(): Array<
       },
       {
         header: "Created",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "created_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">

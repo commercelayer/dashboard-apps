@@ -34,13 +34,17 @@ export function useExportsTableColumns(): Array<
         cell: ({ resource }) => (
           <Text weight="medium">
             {showResourceNiceName(resource.resource_type)}
+            {/* the Status column is hidden on mobile, so the badge rides with the name */}
+            <span className="md:hidden inline-block align-middle ml-2">
+              <ExportStatus job={resource} />
+            </span>
           </Text>
         ),
       },
       {
         header: "Records",
+        kind: "count",
         sortBy: "records_count",
-        hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
             {(resource.records_count ?? 0).toLocaleString()}
@@ -49,12 +53,13 @@ export function useExportsTableColumns(): Array<
       },
       {
         header: "Status",
+        kind: "status",
         sortBy: "status",
         cell: ({ resource }) => <ExportStatus job={resource} />,
       },
       {
         header: "Created",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "created_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
@@ -69,8 +74,7 @@ export function useExportsTableColumns(): Array<
       },
       {
         header: "",
-        // hugs its content, so the leftover table width goes to the first column
-        width: "w-px",
+        kind: "actions",
         cell: ({ resource }) => <ExportRowActions job={resource} />,
       },
     ],

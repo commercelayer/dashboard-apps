@@ -42,7 +42,7 @@ export function useSkusTableColumns(): Array<ResourceTableColumn<"skus">> {
       },
       {
         header: "Shipping category",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => (
           // requires `include: ['shipping_category']` in the query, otherwise
           // the relationship is not returned and this stays empty
@@ -51,7 +51,7 @@ export function useSkusTableColumns(): Array<ResourceTableColumn<"skus">> {
       },
       {
         header: "Updated at",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "updated_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">

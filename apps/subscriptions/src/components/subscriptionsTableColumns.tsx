@@ -32,12 +32,19 @@ export function useSubscriptionsTableColumns(): Array<
         cell: ({ resource }) => (
           <Text weight="medium" wrap="nowrap">
             #{resource.number}
+            {/* the Status column is hidden on mobile, so the badge rides with the name */}
+            <Badge
+              variant={getSubscriptionStatusBadgeVariant(resource.status)}
+              className="md:hidden inline-block align-middle ml-2"
+            >
+              {getSubscriptionStatusName(resource.status)}
+            </Badge>
           </Text>
         ),
       },
       {
         header: "Customer",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => {
           const address = resource.source_order?.billing_address
           const name = address?.full_name ?? resource.customer_email
@@ -56,6 +63,7 @@ export function useSubscriptionsTableColumns(): Array<
       },
       {
         header: "Status",
+        kind: "status",
         sortBy: "status",
         cell: ({ resource }) => (
           <Badge variant={getSubscriptionStatusBadgeVariant(resource.status)}>
@@ -65,11 +73,9 @@ export function useSubscriptionsTableColumns(): Array<
       },
       {
         header: "Last run",
-        hideBelow: "md",
+        kind: "datetime",
         // last column, left aligned: without this the table's leftover width
         // collects to its right. `w-px` cannot be honoured, so the column shrinks
-        // to its content and the slack goes to the columns before it instead.
-        width: "w-px",
         sortBy: "last_run_at",
         cell: ({ resource }) => {
           if (resource.last_run_at == null) {
