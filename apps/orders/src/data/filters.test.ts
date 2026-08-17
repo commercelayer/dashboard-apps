@@ -1,9 +1,10 @@
 import {
   type HideableFilter,
+  makeCartsInstructions,
   makeInstructions,
   parseTextSearchValue,
 } from "#data/filters"
-import { orderTabs } from "#data/lists"
+import { orderTabs, orderTabsPredicateWhitelist } from "#data/lists"
 
 describe("parseTextSearchValue", () => {
   test("Should handle empty or undefined values ", () => {
@@ -101,14 +102,14 @@ describe("makeInstructions", () => {
 
   test("hides only the filters it is asked to", () => {
     expect(hiddenFlagOf("status_in", ["status_in"])).toBe(true)
-    expect(hiddenFlagOf("fulfillment_status_in", ["status_in"])).toBe(false)
+    expect(hiddenFlagOf("fulfillment_statuses_in", ["status_in"])).toBe(false)
     // untouched: it carries no `hidden` flag of its own
     expect(hiddenFlagOf("payment_status_in", ["status_in"])).not.toBe(true)
   })
 
   test("shows both hideable filters when the tab pins neither", () => {
     expect(hiddenFlagOf("status_in")).toBe(false)
-    expect(hiddenFlagOf("fulfillment_status_in")).toBe(false)
+    expect(hiddenFlagOf("fulfillment_statuses_in")).toBe(false)
   })
 
   // `archived` is hidden for its own reasons, which `hiddenFilters` must not touch
@@ -121,17 +122,25 @@ describe("orderTabs", () => {
   // a tab that pins a filter has to hide it, or the drawer offers the user a way
   // to contradict the tab they are on
   test.each([
-    ["Placed", "status_in"],
-    ["Approved", "status_in"],
-    ["In progress", "fulfillment_status_in"],
-    ["Fulfilled", "fulfillment_status_in"],
-  ])("%s pins %s and hides it from the drawer", (label, predicate) => {
+    ["Placed", ["status_in"]],
+    ["Approved", ["status_in", "fulfillment_statuses_in"]],
+    ["In progress", ["fulfillment_statuses_in"]],
+    ["Fulfilled", ["fulfillment_statuses_in"]],
+  ])("%s hides the filters it pins: %s", (label, hidden) => {
     const tab = orderTabs.find((candidate) => candidate.label === label)
-    expect(tab?.formValues[predicate]).toBeDefined()
-    expect(tab?.hiddenFilters).toEqual([predicate])
+    expect(tab?.hiddenFilters).toEqual(hidden)
   })
 
-  test("every tab filters on a predicate the instructions declare", () => {
+  test("Approved leaves out the orders already being fulfilled", () => {
+    const approved = orderTabs.find((tab) => tab.label === "Approved")
+    expect(approved?.formValues.status_in).toEqual(["approved"])
+    expect(approved?.formValues.fulfillment_statuses_not_in).toEqual([
+      "fulfilled",
+      "in_progress",
+    ])
+  })
+
+  test("every tab predicate is either declared or whitelisted", () => {
     const declared = makeInstructions({}).flatMap((item) =>
       "predicate" in item.sdk ? [item.sdk.predicate] : [],
     )
@@ -141,8 +150,29 @@ describe("orderTabs", () => {
         Object.keys(tab.formValues).filter((key) => key !== "viewTitle"),
       )
 
-    expect(used.filter((predicate) => !declared.includes(predicate))).toEqual(
-      [],
+    expect(
+      used.filter(
+        (predicate) =>
+          !declared.includes(predicate) &&
+          !orderTabsPredicateWhitelist.includes(predicate),
+      ),
+    ).toEqual([])
+  })
+})
+
+describe("fulfillment status options", () => {
+  // The metrics API knows `unfulfilled`, `in_progress` and `fulfilled` only, and
+  // rejects a request asking for `not_required`, so offering it can only fail.
+  test.each([
+    ["orders", makeInstructions({})],
+    ["carts", makeCartsInstructions()],
+  ])("%s instructions never offer not_required", (_name, instructions) => {
+    const values = instructions.flatMap((item) =>
+      item.render.component === "inputToggleButton"
+        ? item.render.props.options.map((option) => option.value)
+        : [],
     )
+
+    expect(values).not.toContain("not_required")
   })
 })

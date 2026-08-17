@@ -4,7 +4,7 @@ import isEmpty from "lodash-es/isEmpty"
 export type CountryCodesFilterOptions = Array<{ label: string; value: string }>
 
 /** Filters a tab can take over, so the drawer stops offering them. */
-export type HideableFilter = "status_in" | "fulfillment_status_in"
+export type HideableFilter = "status_in" | "fulfillment_statuses_in"
 
 export const makeInstructions = ({
   sortByAttribute = "placed_at",
@@ -114,10 +114,12 @@ export const makeInstructions = ({
   },
   {
     label: t("apps.orders.attributes.fulfillment_status"),
-    hidden: hiddenFilters.includes("fulfillment_status_in"),
+    hidden: hiddenFilters.includes("fulfillment_statuses_in"),
     type: "options",
     sdk: {
-      predicate: "fulfillment_status_in",
+      // plural: the metrics API's field is `fulfillment_statuses`, and it
+      // rejects the singular
+      predicate: "fulfillment_statuses_in",
     },
     render: {
       component: "inputToggleButton",
@@ -142,12 +144,9 @@ export const makeInstructions = ({
               "resources.orders.attributes.fulfillment_status.fulfilled",
             ),
           },
-          {
-            value: "not_required",
-            label: t(
-              "resources.orders.attributes.fulfillment_status.not_required",
-            ),
-          },
+          // no `not_required`: the metrics API knows only `unfulfilled`,
+          // `in_progress` and `fulfilled`, and rejects the request outright when
+          // asked for it
         ],
       },
     },

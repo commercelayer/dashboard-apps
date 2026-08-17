@@ -34,16 +34,19 @@ export interface OrderTab {
  * Predicates used by the tabs that are not part of the filters instructions and
  * therefore need to be whitelisted in `useResourceFilters`.
  *
- * Empty: every tab now filters on a predicate the instructions already declare.
+ * `fulfillment_statuses_not_in` is how the Approved tab keeps orders that are
+ * already being fulfilled out: the drawer only offers `fulfillment_statuses_in`, and
+ * the two
+ * would be AND-ed rather than combined.
  */
-export const orderTabsPredicateWhitelist: string[] = []
+export const orderTabsPredicateWhitelist = ["fulfillment_statuses_not_in"]
 
 /**
  * The tabs of the orders entry page.
  *
  * Filters are AND-ed across attributes (there is no OR between them), so a tab can
  * only pin one shape: `status_in` for where the order is in its own lifecycle,
- * `fulfillment_status_in` for how far its fulfillment has got. Tabs that pin one of
+ * `fulfillment_statuses_in` for how far its fulfillment has got. Tabs that pin one of
  * those hide the matching drawer field via `hiddenFilters`.
  */
 export const orderTabs: OrderTab[] = [
@@ -69,35 +72,38 @@ export const orderTabs: OrderTab[] = [
   },
   {
     label: "Approved",
+    // Approved and not being fulfilled yet: once fulfillment starts the order
+    // belongs to In progress, and once it finishes, to Fulfilled.
     formValues: {
       status_in: ["approved"],
+      fulfillment_statuses_not_in: ["fulfilled", "in_progress"],
       archived: "hide",
       viewTitle: "Approved",
     },
     sortBy: "order.placed_at",
-    hiddenFilters: ["status_in"],
+    hiddenFilters: ["status_in", "fulfillment_statuses_in"],
   },
   {
     label: "In progress",
     // Being fulfilled. Only the fulfillment status is pinned: the status field
     // stays in the drawer, where its default options already exclude carts.
     formValues: {
-      fulfillment_status_in: ["in_progress"],
+      fulfillment_statuses_in: ["in_progress"],
       archived: "hide",
       viewTitle: "In progress",
     },
     sortBy: "order.placed_at",
-    hiddenFilters: ["fulfillment_status_in"],
+    hiddenFilters: ["fulfillment_statuses_in"],
   },
   {
     label: "Fulfilled",
     formValues: {
-      fulfillment_status_in: ["fulfilled"],
+      fulfillment_statuses_in: ["fulfilled"],
       archived: "hide",
       viewTitle: "Fulfilled",
     },
     sortBy: "order.placed_at",
-    hiddenFilters: ["fulfillment_status_in"],
+    hiddenFilters: ["fulfillment_statuses_in"],
   },
   {
     label: "Carts",
