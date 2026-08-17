@@ -1,3 +1,4 @@
+import { formatNumber, useTokenProvider } from "@commercelayer/app-elements"
 import { useExportDetailsContext } from "#components/Details/Provider"
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {
@@ -8,6 +9,7 @@ export function ExportCount({
   type,
   ...props
 }: Props): React.JSX.Element | null {
+  const { user } = useTokenProvider()
   const {
     state: { data },
   } = useExportDetailsContext()
@@ -15,7 +17,9 @@ export function ExportCount({
   if (data == null) {
     return null
   }
-  const value = data[type] ?? 0
-  const formattedValue = new Intl.NumberFormat().format(value)
-  return <span {...props}>{formattedValue}</span>
+  return (
+    <span {...props}>
+      {formatNumber({ value: data[type], locale: user?.locale })}
+    </span>
+  )
 }

@@ -9,6 +9,7 @@ import {
   DropdownItem,
   formatDate,
   formatDateWithPredicate,
+  formatNumber,
   getPromotionDisplayStatus,
   Icon,
   Input,
@@ -489,9 +490,7 @@ const CardStatus = withSkeletonTemplate<{
           </Text>
         </Spacer>
         <Text weight="semibold" style={{ fontSize: "18px" }}>
-          {meta?.recordCount?.toLocaleString(user?.locale, {
-            useGrouping: "always",
-          })}
+          {formatNumber({ value: meta?.recordCount, locale: user?.locale })}
         </Text>
       </div>
     </Stack>
