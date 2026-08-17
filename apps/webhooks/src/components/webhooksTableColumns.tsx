@@ -5,6 +5,7 @@ import {
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import type { Webhook } from "@commercelayer/sdk"
 import { useMemo } from "react"
 import { getWebhookDisplayStatus } from "#data/dictionaries"
 
@@ -24,12 +25,19 @@ export function useWebhooksTableColumns(): Array<
       {
         header: "Name",
         cell: ({ resource }) => (
-          <Text weight="medium">{resource.name ?? "-"}</Text>
+          <Text weight="medium">
+            {resource.name ?? "-"}
+            {/* the Status column is hidden on mobile, so the badge rides with the name */}
+            <RowStatusBadge
+              resource={resource}
+              className="md:hidden inline-block align-middle ml-2"
+            />
+          </Text>
         ),
       },
       {
         header: "Last fired",
-        hideBelow: "md",
+        kind: "datetime",
         cell: ({ resource }) => {
           const lastFiredAt = resource.last_event_callbacks?.[0]?.created_at
           if (lastFiredAt == null) {
@@ -49,16 +57,12 @@ export function useWebhooksTableColumns(): Array<
       },
       {
         header: "Status",
-        cell: ({ resource }) => {
-          const displayStatus = getWebhookDisplayStatus(resource)
-          return (
-            <Badge variant={displayStatus.variant}>{displayStatus.label}</Badge>
-          )
-        },
+        kind: "status",
+        cell: ({ resource }) => <RowStatusBadge resource={resource} />,
       },
       {
         header: "Created",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "created_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
@@ -73,5 +77,26 @@ export function useWebhooksTableColumns(): Array<
       },
     ],
     [user?.timezone, user?.locale],
+  )
+}
+
+/**
+ * The row's status badge.
+ *
+ * Shared by the Status column and, on mobile where that column is hidden, the name
+ * cell — so the two can never drift apart.
+ */
+function RowStatusBadge({
+  resource,
+  className,
+}: {
+  resource: Webhook
+  className?: string
+}): React.JSX.Element {
+  const displayStatus = getWebhookDisplayStatus(resource)
+  return (
+    <Badge variant={displayStatus.variant} className={className}>
+      {displayStatus.label}
+    </Badge>
   )
 }

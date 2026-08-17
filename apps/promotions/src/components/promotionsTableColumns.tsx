@@ -7,6 +7,7 @@ import {
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import type { Promotion } from "@commercelayer/sdk"
 import { useMemo } from "react"
 
 /**
@@ -31,12 +32,14 @@ export function usePromotionsTableColumns(): Array<
             {resource.type === "flex_promotions" && (
               <Badge variant="teal">flex</Badge>
             )}
+            {/* the Status column is hidden on mobile, so the badge rides with the name */}
+            <RowStatusBadge resource={resource} className="md:hidden" />
           </div>
         ),
       },
       {
         header: "Coupons",
-        hideBelow: "md",
+        kind: "count",
         cell: ({ resource }) => {
           // `coupons_count` exists on every promotion type except flex ones, and
           // is absent from the list's sparse-fields union, hence the narrowing
@@ -51,7 +54,7 @@ export function usePromotionsTableColumns(): Array<
       },
       {
         header: "Priority",
-        hideBelow: "md",
+        kind: "count",
         sortBy: "priority",
         cell: ({ resource }) =>
           resource.priority == null ? (
@@ -62,18 +65,12 @@ export function usePromotionsTableColumns(): Array<
       },
       {
         header: "Status",
-        cell: ({ resource }) => {
-          const displayStatus = getPromotionDisplayStatus(resource)
-          return (
-            <Badge variant={toBadgeVariant(displayStatus.color)}>
-              {displayStatus.label}
-            </Badge>
-          )
-        },
+        kind: "status",
+        cell: ({ resource }) => <RowStatusBadge resource={resource} />,
       },
       {
         header: "Created",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "created_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
@@ -107,4 +104,25 @@ function toBadgeVariant(
     default:
       return "secondary"
   }
+}
+
+/**
+ * The row's status badge.
+ *
+ * Shared by the Status column and, on mobile where that column is hidden, the name
+ * cell — so the two can never drift apart.
+ */
+function RowStatusBadge({
+  resource,
+  className,
+}: {
+  resource: Promotion
+  className?: string
+}): React.JSX.Element {
+  const displayStatus = getPromotionDisplayStatus(resource)
+  return (
+    <Badge variant={toBadgeVariant(displayStatus.color)} className={className}>
+      {displayStatus.label}
+    </Badge>
+  )
 }

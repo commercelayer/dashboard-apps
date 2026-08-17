@@ -30,9 +30,9 @@ export function WebhookCallbacks({ webhook }: Props): React.JSX.Element {
     () => [
       {
         header: "Code",
+        // a response code reads as a status: short, and the badge is the point
+        kind: "status",
         sortBy: "response_code",
-        // hugs its content: the response code is at most three characters
-        width: "w-px",
         cell: ({ resource }) => (
           <Badge variant={eventCallbackStatusVariant(resource)}>
             {resource.response_code ?? "-"}
@@ -41,6 +41,8 @@ export function WebhookCallbacks({ webhook }: Props): React.JSX.Element {
       },
       {
         header: "Message",
+        // the number this table exists for: worth its place on a phone
+        hideBelow: "never",
         sortBy: "response_message",
         cell: ({ resource }) => (
           <Text weight="medium">{resource.response_message ?? "-"}</Text>
@@ -48,7 +50,7 @@ export function WebhookCallbacks({ webhook }: Props): React.JSX.Element {
       },
       {
         header: "Data",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "created_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
@@ -63,7 +65,7 @@ export function WebhookCallbacks({ webhook }: Props): React.JSX.Element {
       },
       {
         header: "",
-        width: "w-px",
+        kind: "actions",
         cell: ({ resource }) => <CallbackRowActions callback={resource} />,
       },
     ],
