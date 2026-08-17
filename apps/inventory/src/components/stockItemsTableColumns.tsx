@@ -41,6 +41,9 @@ export function useStockItemsTableColumns(): Array<
       },
       {
         header: "Quantity",
+        // the number this table exists for: worth its place on a phone
+        hideBelow: "never",
+        kind: "count",
         sortBy: "quantity",
         cell: ({ resource }) => (
           <Text weight="medium" wrap="nowrap">
@@ -50,6 +53,7 @@ export function useStockItemsTableColumns(): Array<
       },
       {
         header: "Reserved",
+        kind: "count",
         cell: ({ resource }) => {
           // reserved stock is what makes the available quantity differ from the one
           // on hand, so it only says something when there is any
@@ -62,14 +66,14 @@ export function useStockItemsTableColumns(): Array<
       },
       {
         header: "Stock location",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => (
           <Text>{resource.stock_location?.name ?? "-"}</Text>
         ),
       },
       {
         header: "Updated",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "updated_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">

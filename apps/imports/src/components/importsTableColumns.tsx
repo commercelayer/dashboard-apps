@@ -26,6 +26,7 @@ export function useImportsTableColumns(): Array<
     () => [
       {
         header: "Type",
+        kind: "text",
         sortBy: "resource_type",
         cell: ({ resource }) => (
           <Text weight="medium">
@@ -34,22 +35,26 @@ export function useImportsTableColumns(): Array<
               count: "plural",
               format: "title",
             })}
+            {/* the Status column is hidden on mobile, so the badge rides with the name */}
+            <span className="md:hidden inline-block align-middle ml-2">
+              <StatusBadge job={resource} />
+            </span>
           </Text>
         ),
       },
       {
         header: "Records",
+        kind: "count",
         sortBy: "inputs_size",
-        hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.inputs_size ?? 0}</Text>
         ),
       },
       {
         header: "Errors",
+        kind: "count",
         sortBy: "errors_count",
         sortDescFirst: true,
-        hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.errors_count ?? 0}</Text>
         ),
@@ -58,12 +63,13 @@ export function useImportsTableColumns(): Array<
         // penultimate among the columns that carry data: the last one is the
         // row's `…` menu
         header: "Status",
+        kind: "status",
         sortBy: "status",
         cell: ({ resource }) => <StatusBadge job={resource} />,
       },
       {
         header: "Created",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "created_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
@@ -78,8 +84,7 @@ export function useImportsTableColumns(): Array<
       },
       {
         header: "",
-        // hugs its content, so the leftover table width goes to the first column
-        width: "w-px",
+        kind: "actions",
         cell: ({ resource }) => <ImportRowActions job={resource} />,
       },
     ],

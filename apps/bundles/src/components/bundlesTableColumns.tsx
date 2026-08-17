@@ -46,16 +46,16 @@ export function useBundlesTableColumns(): Array<
       },
       {
         header: "Price",
+        kind: "amount",
         sortBy: "price_amount_cents",
-        hideBelow: "md",
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.formatted_price_amount}</Text>
         ),
       },
       {
         header: "Original",
+        kind: "amount",
         sortBy: "compare_at_amount_cents",
-        hideBelow: "md",
         cell: ({ resource }) => {
           // a compare-at amount only says something when it differs: that is what
           // makes the bundle a saving. Struck through, as the price it replaces.
@@ -75,7 +75,7 @@ export function useBundlesTableColumns(): Array<
       },
       {
         header: "Market",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => (
           <Text>
             {/* a bundle without a market applies to every market sharing its currency */}
@@ -86,7 +86,7 @@ export function useBundlesTableColumns(): Array<
       },
       {
         header: "Created",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "created_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">

@@ -14,6 +14,7 @@ import {
 import type { Order } from "@commercelayer/sdk"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
+import type { OrderTab } from "#data/lists"
 
 /**
  * Columns of the orders table, shared by the entry page and the filtered list.
@@ -22,7 +23,9 @@ import { useMemo } from "react"
  * `placed_at`, so they are sorted by `order.updated_at` instead.
  */
 export function useOrdersTableColumns(
-  sortBy: string,
+  // the metrics attribute the tab sorts by, dotted as Metrics names are — the
+  // column type only accepts a Core sort field or a namespaced metrics one
+  sortBy: OrderTab["sortBy"],
 ): Array<ResourceTableColumn<"orders">> {
   const { user } = useTokenProvider()
 
@@ -36,6 +39,11 @@ export function useOrdersTableColumns(
           <div>
             <Text tag="div" weight="medium" wrap="nowrap">
               {`${resource.market?.name ?? "Order"} #${resource.number ?? ""}`.trim()}
+              {/* the Status column is hidden on mobile, so the badge rides with the name */}
+              <RowStatusBadge
+                resource={resource}
+                className="md:hidden inline-block align-middle ml-2"
+              />
             </Text>
             <Text tag="div" size="x-small" variant="info" wrap="nowrap">
               {formatDate({
@@ -50,7 +58,7 @@ export function useOrdersTableColumns(
       },
       {
         header: "Customer",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => {
           const name = getCustomerName(resource)
           const countryCode = resource.billing_address?.country_code
@@ -76,18 +84,14 @@ export function useOrdersTableColumns(
       },
       {
         header: "Status",
-        cell: ({ resource }) => {
-          const displayStatus = getOrderDisplayStatus(resource)
-          return (
-            <Badge variant={toBadgeVariant(displayStatus.color)}>
-              {displayStatus.label}
-            </Badge>
-          )
-        },
+        kind: "status",
+        cell: ({ resource }) => <RowStatusBadge resource={resource} />,
       },
       {
         header: "Amount",
-        align: "right",
+        kind: "amount",
+        // what the row is worth: worth its place on a phone
+        hideBelow: "never",
         cell: ({ resource }) => (
           <div>
             <Text tag="div" weight="medium" wrap="nowrap">
@@ -152,4 +156,25 @@ function toBadgeVariant(
     default:
       return "secondary"
   }
+}
+
+/**
+ * The row's status badge.
+ *
+ * Shared by the Status column and, on mobile where that column is hidden, the name
+ * cell — so the two can never drift apart.
+ */
+function RowStatusBadge({
+  resource,
+  className,
+}: {
+  resource: Order
+  className?: string
+}): React.JSX.Element {
+  const displayStatus = getOrderDisplayStatus(resource)
+  return (
+    <Badge variant={toBadgeVariant(displayStatus.color)} className={className}>
+      {displayStatus.label}
+    </Badge>
+  )
 }

@@ -59,6 +59,13 @@ export function useCustomersTableColumns(): Array<
             <div className="min-w-0">
               <Text tag="div" weight="medium">
                 {resource.email}
+                {/* the Status column is hidden on mobile, so the badge rides with the name */}
+                <Badge
+                  variant="secondary"
+                  className="md:hidden inline-block align-middle ml-2"
+                >
+                  {resource.status}
+                </Badge>
               </Text>
               <Text tag="div" size="x-small" variant="info">
                 {resource.has_password === true
@@ -71,8 +78,8 @@ export function useCustomersTableColumns(): Array<
       },
       {
         header: "Orders",
+        kind: "count",
         sortBy: "total_orders_count",
-        hideBelow: "md",
         cell: ({ resource }) =>
           resource.total_orders_count != null &&
           resource.total_orders_count > 0 ? (
@@ -83,6 +90,7 @@ export function useCustomersTableColumns(): Array<
       },
       {
         header: "Group",
+        kind: "text",
         hideBelow: "lg",
         cell: ({ resource }) =>
           resource.customer_group?.name != null ? (
@@ -93,6 +101,7 @@ export function useCustomersTableColumns(): Array<
       },
       {
         header: "Status",
+        kind: "status",
         sortBy: "status",
         cell: ({ resource }) => (
           // the raw status rather than `getCustomerStatusName`, as in the design.
@@ -103,7 +112,7 @@ export function useCustomersTableColumns(): Array<
       },
       {
         header: "Created",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "created_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">

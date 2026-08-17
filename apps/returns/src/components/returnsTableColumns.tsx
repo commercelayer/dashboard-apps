@@ -6,6 +6,7 @@ import {
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import type { Return } from "@commercelayer/sdk"
 import { useMemo } from "react"
 import { getReturnStatusBadgeVariant } from "#data/dictionaries"
 
@@ -30,12 +31,17 @@ export function useReturnsTableColumns(): Array<
         cell: ({ resource }) => (
           <Text weight="medium" wrap="nowrap">
             #{resource.number}
+            {/* the Status column is hidden on mobile, so the badge rides with the name */}
+            <RowStatusBadge
+              resource={resource}
+              className="md:hidden inline-block align-middle ml-2"
+            />
           </Text>
         ),
       },
       {
         header: "Origin",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => {
           const address = resource.origin_address
           if (address?.city == null) {
@@ -51,26 +57,20 @@ export function useReturnsTableColumns(): Array<
       },
       {
         header: "Destination",
-        hideBelow: "md",
+        kind: "text",
         cell: ({ resource }) => (
           <Text>{resource.stock_location?.name ?? "-"}</Text>
         ),
       },
       {
         header: "Status",
+        kind: "status",
         sortBy: "status",
-        cell: ({ resource }) => {
-          const displayStatus = getReturnDisplayStatus(resource)
-          return (
-            <Badge variant={getReturnStatusBadgeVariant(displayStatus.color)}>
-              {displayStatus.label}
-            </Badge>
-          )
-        },
+        cell: ({ resource }) => <RowStatusBadge resource={resource} />,
       },
       {
         header: "Updated",
-        hideBelow: "md",
+        kind: "datetime",
         sortBy: "updated_at",
         cell: ({ resource }) => (
           <Text wrap="nowrap">
@@ -85,5 +85,29 @@ export function useReturnsTableColumns(): Array<
       },
     ],
     [user?.timezone, user?.locale],
+  )
+}
+
+/**
+ * The row's status badge.
+ *
+ * Shared by the Status column and, on mobile where that column is hidden, the name
+ * cell — so the two can never drift apart.
+ */
+function RowStatusBadge({
+  resource,
+  className,
+}: {
+  resource: Return
+  className?: string
+}): React.JSX.Element {
+  const displayStatus = getReturnDisplayStatus(resource)
+  return (
+    <Badge
+      variant={getReturnStatusBadgeVariant(displayStatus.color)}
+      className={className}
+    >
+      {displayStatus.label}
+    </Badge>
   )
 }
