@@ -97,7 +97,10 @@ describe("makeInstructions", () => {
     hiddenFilters: HideableFilter[] = [],
   ): boolean | undefined =>
     makeInstructions({ hiddenFilters }).find(
-      (item) => "predicate" in item.sdk && item.sdk.predicate === predicate,
+      (item) =>
+        "sdk" in item &&
+        "predicate" in item.sdk &&
+        item.sdk.predicate === predicate,
     )?.hidden
 
   test("hides only the filters it is asked to", () => {
@@ -142,7 +145,7 @@ describe("orderTabs", () => {
 
   test("every tab predicate is either declared or whitelisted", () => {
     const declared = makeInstructions({}).flatMap((item) =>
-      "predicate" in item.sdk ? [item.sdk.predicate] : [],
+      "sdk" in item && "predicate" in item.sdk ? [item.sdk.predicate] : [],
     )
     const used = orderTabs
       .filter((tab) => tab.instructions !== "carts")
