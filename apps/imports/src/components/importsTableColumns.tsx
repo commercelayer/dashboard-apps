@@ -54,7 +54,6 @@ export function useImportsTableColumns(): Array<
         header: "Errors",
         kind: "count",
         sortBy: "errors_count",
-        sortDescFirst: true,
         cell: ({ resource }) => (
           <Text wrap="nowrap">{resource.errors_count ?? 0}</Text>
         ),
