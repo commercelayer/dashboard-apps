@@ -46,6 +46,8 @@ export function useBundlesTableColumns(): Array<
       },
       {
         header: "Price",
+        // what the row costs: worth its place on a phone, as in price_lists
+        hideBelow: "never",
         kind: "amount",
         sortBy: "price_amount_cents",
         cell: ({ resource }) => (

@@ -3,6 +3,7 @@ import {
   DropdownItem,
   downloadJsonAsFile,
   formatDate,
+  formatNumber,
   formatResourceName,
   Icon,
   type ResourceTableColumn,
@@ -47,7 +48,12 @@ export function useImportsTableColumns(): Array<
         kind: "count",
         sortBy: "inputs_size",
         cell: ({ resource }) => (
-          <Text wrap="nowrap">{resource.inputs_size ?? 0}</Text>
+          <Text wrap="nowrap">
+            {formatNumber({
+              value: resource.inputs_size,
+              locale: user?.locale,
+            })}
+          </Text>
         ),
       },
       {
@@ -55,7 +61,12 @@ export function useImportsTableColumns(): Array<
         kind: "count",
         sortBy: "errors_count",
         cell: ({ resource }) => (
-          <Text wrap="nowrap">{resource.errors_count ?? 0}</Text>
+          <Text wrap="nowrap">
+            {formatNumber({
+              value: resource.errors_count,
+              locale: user?.locale,
+            })}
+          </Text>
         ),
       },
       {

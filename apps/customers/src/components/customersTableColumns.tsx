@@ -2,6 +2,7 @@ import {
   AvatarLetter,
   Badge,
   formatDate,
+  formatNumber,
   RadialProgress,
   type ResourceTableColumn,
   Text,
@@ -83,7 +84,12 @@ export function useCustomersTableColumns(): Array<
         cell: ({ resource }) =>
           resource.total_orders_count != null &&
           resource.total_orders_count > 0 ? (
-            <Text wrap="nowrap">{resource.total_orders_count}</Text>
+            <Text wrap="nowrap">
+              {formatNumber({
+                value: resource.total_orders_count,
+                locale: user?.locale,
+              })}
+            </Text>
           ) : (
             <EmptyValue />
           ),
