@@ -3,15 +3,29 @@ import isEmpty from "lodash-es/isEmpty"
 
 export type CountryCodesFilterOptions = Array<{ label: string; value: string }>
 
+/** Filters a tab can take over, so the drawer stops offering them. */
+export type HideableFilter = "status_in" | "fulfillment_status_in"
+
 export const makeInstructions = ({
   sortByAttribute = "placed_at",
   countryCodes,
+  hiddenFilters = [],
 }: {
   sortByAttribute?: "placed_at" | "created_at"
   countryCodes?: CountryCodesFilterOptions
+  /**
+   * Filters to keep out of the drawer, because the active tab already pins them:
+   * the Placed tab decides the status, so a status field there would only invite
+   * the user to contradict the tab they are on.
+   *
+   * They are hidden, not removed — a hidden instruction still turns its value into
+   * the query (and produces no pill), which is what the tab needs.
+   */
+  hiddenFilters?: HideableFilter[]
 }): FiltersInstructions => [
   {
     label: t("apps.orders.attributes.status"),
+    hidden: hiddenFilters.includes("status_in"),
     type: "options",
     sdk: {
       predicate: "status_in",
@@ -100,6 +114,7 @@ export const makeInstructions = ({
   },
   {
     label: t("apps.orders.attributes.fulfillment_status"),
+    hidden: hiddenFilters.includes("fulfillment_status_in"),
     type: "options",
     sdk: {
       predicate: "fulfillment_status_in",
