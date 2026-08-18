@@ -2,20 +2,16 @@ import {
   Alert,
   Badge,
   Button,
-  Card,
   EmptyState,
   formatDateWithPredicate,
-  isMockedId,
   type PageHeadingProps,
   PageLayout,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { SubscriptionAddresses } from "#components/SubscriptionAddresses"
@@ -209,43 +205,18 @@ function SubscriptionDetails(): React.JSX.Element {
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14">
-            <Card overflow="visible">
-              <SubscriptionAddresses subscription={subscription} />
-              <Spacer top="10">
-                <ResourceDetails
-                  resource={subscription}
-                  onUpdated={async () => {
-                    void mutateSubscription()
-                  }}
-                />
-              </Spacer>
-              {!isMockedId(subscription.id) && (
-                <>
-                  <Spacer top="10">
-                    <ResourceTags
-                      resourceType="order_subscriptions"
-                      resourceId={subscription.id}
-                      overlay={{ title: pageTitle }}
-                      onTagClick={(tagId) => {
-                        setLocation(
-                          appRoutes.home.makePath({}, `tags_id_in=${tagId}`),
-                        )
-                      }}
-                    />
-                  </Spacer>
-                  <Spacer top="10">
-                    <ResourceMetadata
-                      resourceType="order_subscriptions"
-                      resourceId={subscription.id}
-                      overlay={{
-                        title: pageTitle,
-                      }}
-                    />
-                  </Spacer>
-                </>
-              )}
-            </Card>
+          <SubscriptionAddresses subscription={subscription} />
+          <Spacer top="10">
+            <ResourceInfoBlocks
+              resource={subscription}
+              title={pageTitle}
+              onUpdated={async () => {
+                void mutateSubscription()
+              }}
+              onTagClick={(tagId) => {
+                setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
+              }}
+            />
           </Spacer>
         </SkeletonTemplate>
       }

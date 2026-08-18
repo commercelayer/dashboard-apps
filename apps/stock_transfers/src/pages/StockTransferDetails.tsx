@@ -2,22 +2,19 @@ import {
   Badge,
   type BadgeProps,
   Button,
-  Card,
   type DropdownItemProps,
   EmptyState,
   formatDateWithPredicate,
   getStockTransferDisplayStatus,
-  isMockedId,
   type PageHeadingProps,
   PageLayout,
-  ResourceDetails,
-  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
   useConfirmDialog,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useMemo } from "react"
 import { Link, useLocation, useRoute } from "wouter"
@@ -191,32 +188,18 @@ export function StockTransferDetails(): React.JSX.Element {
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14">
-            <Card overflow="visible">
-              <StockTransferAddresses stockTransfer={stockTransfer} />
-              <div className="print:hidden">
-                <Spacer top="10">
-                  <ResourceDetails
-                    resource={stockTransfer}
-                    onUpdated={async () => {
-                      void mutateStockTransfer()
-                    }}
-                  />
-                </Spacer>
-              </div>
-              {!isMockedId(stockTransfer.id) && (
-                <Spacer top="10">
-                  <ResourceMetadata
-                    resourceType="stock_transfers"
-                    resourceId={stockTransfer.id}
-                    overlay={{
-                      title: pageTitle,
-                    }}
-                  />
-                </Spacer>
-              )}
-            </Card>
-          </Spacer>
+          <StockTransferAddresses stockTransfer={stockTransfer} />
+          <div className="print:hidden">
+            <Spacer top="10">
+              <ResourceInfoBlocks
+                resource={stockTransfer}
+                title={pageTitle}
+                onUpdated={async () => {
+                  void mutateStockTransfer()
+                }}
+              />
+            </Spacer>
+          </div>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of

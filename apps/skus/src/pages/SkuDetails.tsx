@@ -2,12 +2,8 @@ import {
   Button,
   EmptyState,
   Icon,
-  isMockedId,
   PageHeading,
   type PageHeadingProps,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   removeFromResourceLists,
   Section,
   SkeletonTemplate,
@@ -23,6 +19,7 @@ import {
 } from "@commercelayer/app-elements"
 import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
 import { LinksEmptyState } from "dashboard-apps-common/src/components/LinksEmptyState"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { SkuDescription } from "dashboard-apps-common/src/components/SkuDescription"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import type { FC } from "react"
@@ -171,35 +168,16 @@ export const SkuDetails: FC = () => {
       <Spacer top="10">
         <SkuInfo sku={sku} />
       </Spacer>
-      {!isMockedId(sku.id) && (
-        <>
-          <Spacer top="14">
-            <ResourceTags
-              resourceType="skus"
-              resourceId={sku.id}
-              overlay={{ title: pageTitle }}
-              onTagClick={(tagId) => {
-                setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
-              }}
-            />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceMetadata
-              resourceType="skus"
-              resourceId={sku.id}
-              overlay={{
-                title: pageTitle,
-              }}
-            />
-          </Spacer>
-        </>
-      )}
       {/* last, as in the reference: the technical fields are the least useful */}
       <Spacer top="14">
-        <ResourceDetails
+        <ResourceInfoBlocks
           resource={sku}
+          title={pageTitle}
           onUpdated={async () => {
             void mutateSku()
+          }}
+          onTagClick={(tagId) => {
+            setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
           }}
         />
       </Spacer>

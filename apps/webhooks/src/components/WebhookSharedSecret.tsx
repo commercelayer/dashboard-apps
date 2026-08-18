@@ -12,7 +12,7 @@ interface Props {
 /** The secret used to sign callbacks, masked until revealed. */
 export const WebhookSharedSecret = withSkeletonTemplate<Props>(
   ({ webhook }) => (
-    <Section title="Shared secret" titleSize="small">
+    <Section title="Shared secret">
       <CodeBlock
         showCopyAction
         showSecretAction
