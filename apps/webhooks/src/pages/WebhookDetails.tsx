@@ -1,17 +1,15 @@
 import {
   Badge,
   Button,
-  Card,
   EmptyState,
   formatDateWithPredicate,
   type PageHeadingProps,
   PageLayout,
-  ResourceDetails,
-  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import type { FC } from "react"
 import { Link, useLocation, useRoute } from "wouter"
@@ -133,26 +131,19 @@ export const WebhookDetails: FC = () => {
         }}
         toolbar={pageToolbar}
         sidebar={
-          // one bordered card holding the whole column, aligned with the top of
-          // the main content — the blocks inside carry their own spacing
-          <Card overflow="visible">
+          <>
             <WebhookSharedSecret webhook={webhook} />
+
             <Spacer top="10">
-              <ResourceMetadata
-                resourceType="webhooks"
-                resourceId={webhook.id}
-                overlay={{ title: pageTitle ?? "" }}
-              />
-            </Spacer>
-            <Spacer top="10">
-              <ResourceDetails
+              <ResourceInfoBlocks
                 resource={webhook}
+                title={pageTitle ?? ""}
                 onUpdated={async () => {
                   void mutateWebhook()
                 }}
               />
             </Spacer>
-          </Card>
+          </>
         }
       >
         <Spacer bottom="14">

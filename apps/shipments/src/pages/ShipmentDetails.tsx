@@ -1,15 +1,10 @@
 import {
   Alert,
   Button,
-  Card,
   EmptyState,
   formatDateWithPredicate,
-  isMockedId,
   PageLayout,
   ResourceAttachments,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   Text,
@@ -17,6 +12,7 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import isEmpty from "lodash-es/isEmpty"
 import { useRoute } from "wouter"
@@ -131,39 +127,18 @@ function ShipmentDetails(): React.JSX.Element {
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14">
-            <Card overflow="visible">
-              <ShipmentAddresses shipment={shipment} />
-              <Spacer top="10">
-                <ShipmentInfo shipment={shipment} />
-              </Spacer>
-              <Spacer top="10">
-                <ResourceDetails
-                  resource={shipment}
-                  onUpdated={async () => {
-                    void mutateShipment()
-                  }}
-                />
-              </Spacer>
-              {!isMockedId(shipment.id) && (
-                <>
-                  <Spacer top="10">
-                    <ResourceTags
-                      resourceType="shipments"
-                      resourceId={shipment.id}
-                      overlay={{ title: pageTitle }}
-                    />
-                  </Spacer>
-                  <Spacer top="10">
-                    <ResourceMetadata
-                      resourceType="shipments"
-                      resourceId={shipment.id}
-                      overlay={{ title: pageTitle }}
-                    />
-                  </Spacer>
-                </>
-              )}
-            </Card>
+          <ShipmentAddresses shipment={shipment} />
+          <Spacer top="10">
+            <ShipmentInfo shipment={shipment} />
+          </Spacer>
+          <Spacer top="10">
+            <ResourceInfoBlocks
+              resource={shipment}
+              title={pageTitle}
+              onUpdated={async () => {
+                void mutateShipment()
+              }}
+            />
           </Spacer>
         </SkeletonTemplate>
       }

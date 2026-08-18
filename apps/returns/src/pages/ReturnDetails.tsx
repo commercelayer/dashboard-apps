@@ -1,22 +1,18 @@
 import {
   Badge,
   Button,
-  Card,
   EmptyState,
   getReturnDisplayStatus,
-  isMockedId,
   type PageHeadingProps,
   PageLayout,
   ResourceAttachments,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { Link, useLocation, useRoute } from "wouter"
 import { ReturnAddresses } from "#components/ReturnAddresses"
@@ -116,40 +112,15 @@ function ReturnDetails(): React.JSX.Element {
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14">
-            <Card overflow="visible">
-              <ReturnAddresses returnObj={returnObj} />
-              <Spacer top="10">
-                <ResourceDetails
-                  resource={returnObj}
-                  onUpdated={async () => {
-                    void mutateReturn()
-                  }}
-                />
-              </Spacer>
-              {!isMockedId(returnObj.id) && (
-                <>
-                  <Spacer top="10">
-                    <ResourceTags
-                      resourceType="returns"
-                      resourceId={returnObj.id}
-                      overlay={{
-                        title: pageTitle,
-                      }}
-                    />
-                  </Spacer>
-                  <Spacer top="10">
-                    <ResourceMetadata
-                      resourceType="returns"
-                      resourceId={returnObj.id}
-                      overlay={{
-                        title: pageTitle,
-                      }}
-                    />
-                  </Spacer>
-                </>
-              )}
-            </Card>
+          <ReturnAddresses returnObj={returnObj} />
+          <Spacer top="10">
+            <ResourceInfoBlocks
+              resource={returnObj}
+              title={pageTitle}
+              onUpdated={async () => {
+                void mutateReturn()
+              }}
+            />
           </Spacer>
         </SkeletonTemplate>
       }

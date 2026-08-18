@@ -4,11 +4,8 @@ import {
   CodeBlock,
   EmptyState,
   Icon,
-  isMockedId,
   PageHeading,
   type PageHeadingProps,
-  ResourceDetails,
-  ResourceMetadata,
   removeFromResourceLists,
   Section,
   SkeletonTemplate,
@@ -24,6 +21,7 @@ import {
 } from "@commercelayer/app-elements"
 import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
 import { LinksEmptyState } from "dashboard-apps-common/src/components/LinksEmptyState"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
@@ -269,25 +267,13 @@ export const SkuListDetails = (): React.JSX.Element => {
               </Spacer>
             </Tab>
             <Tab name="Info">
-              <Spacer top="10">
-                <ResourceDetails
-                  resource={skuList}
-                  onUpdated={async () => {
-                    void mutateSkuList()
-                  }}
-                />
-              </Spacer>
-              {!isMockedId(skuList.id) && (
-                <Spacer top="14">
-                  <ResourceMetadata
-                    resourceType="sku_lists"
-                    resourceId={skuList.id}
-                    overlay={{
-                      title: pageTitle,
-                    }}
-                  />
-                </Spacer>
-              )}
+              <ResourceInfoBlocks
+                resource={skuList}
+                title={pageTitle}
+                onUpdated={async () => {
+                  void mutateSkuList()
+                }}
+              />
             </Tab>
           </Tabs>
         </Spacer>

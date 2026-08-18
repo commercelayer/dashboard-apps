@@ -3,8 +3,6 @@ import {
   EmptyState,
   PageHeading,
   type PageHeadingProps,
-  ResourceDetails,
-  ResourceMetadata,
   removeFromResourceLists,
   SkeletonTemplate,
   Spacer,
@@ -14,6 +12,7 @@ import {
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
@@ -166,22 +165,15 @@ export function PriceDetails(): React.JSX.Element {
               />
             </Spacer>
             <Spacer top="14">
-              <ResourceDetails
+              <ResourceInfoBlocks
                 resource={price}
+                title={pageTitle ?? ""}
                 onUpdated={async () => {
                   void mutatePrice()
                 }}
               />
             </Spacer>
-            <Spacer top="14">
-              <ResourceMetadata
-                resourceId={price.id}
-                resourceType="prices"
-                overlay={{
-                  title: pageTitle ?? "",
-                }}
-              />
-            </Spacer>
+            <Spacer top="14"></Spacer>
           </Spacer>
         </SkeletonTemplate>
         {canUser("destroy", "prices") && (

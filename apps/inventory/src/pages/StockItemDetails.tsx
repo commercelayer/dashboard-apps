@@ -3,8 +3,6 @@ import {
   EmptyState,
   PageHeading,
   type PageHeadingProps,
-  ResourceDetails,
-  ResourceMetadata,
   removeFromResourceLists,
   SkeletonTemplate,
   Spacer,
@@ -14,6 +12,7 @@ import {
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import type { FC } from "react"
 import { useLocation, useRoute } from "wouter"
@@ -149,19 +148,11 @@ export const StockItemDetails: FC = () => {
               <StockItemInfo stockItem={stockItem} />
             </Spacer>
             <Spacer top="14">
-              <ResourceDetails
+              <ResourceInfoBlocks
                 resource={stockItem}
+                title={pageTitle ?? ""}
                 onUpdated={async () => {
                   void mutateStockItem()
-                }}
-              />
-            </Spacer>
-            <Spacer top="14">
-              <ResourceMetadata
-                resourceId={stockItem.id}
-                resourceType="stock_items"
-                overlay={{
-                  title: pageTitle ?? "",
                 }}
               />
             </Spacer>

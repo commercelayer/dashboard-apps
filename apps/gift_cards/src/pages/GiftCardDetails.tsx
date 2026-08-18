@@ -1,13 +1,9 @@
 import {
   GenericPageNotFound,
-  isMockedId,
   maskGiftCardCode,
   PageHeading,
   type PageHeadingProps,
   type PageProps,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   Tab,
@@ -18,6 +14,7 @@ import {
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { type FC, useMemo, useState } from "react"
 import { useLocation } from "wouter"
@@ -223,35 +220,14 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
                   <DetailsImage giftCard={giftCard} />
                 </Spacer>
                 <Spacer top="14">
-                  <ResourceDetails
+                  <ResourceInfoBlocks
                     resource={giftCard}
+                    title={`Gift card ${giftCard?.formatted_initial_balance}`}
                     onUpdated={async () => {
                       void mutateGiftCard()
                     }}
                   />
                 </Spacer>
-                {!isMockedId(giftCard.id) && (
-                  <>
-                    <Spacer top="14">
-                      <ResourceTags
-                        resourceType="gift_cards"
-                        resourceId={giftCard.id}
-                        overlay={{
-                          title: `Gift card ${giftCard?.formatted_initial_balance}`,
-                        }}
-                      />
-                    </Spacer>
-                    <Spacer top="14">
-                      <ResourceMetadata
-                        resourceType="gift_cards"
-                        resourceId={giftCard.id}
-                        overlay={{
-                          title: `Gift card ${giftCard?.formatted_initial_balance}`,
-                        }}
-                      />
-                    </Spacer>
-                  </>
-                )}
                 <Spacer top="14">
                   <GiftCardTimeline giftCard={giftCard} />
                 </Spacer>

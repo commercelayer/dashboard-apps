@@ -1,14 +1,9 @@
 import {
   Button,
-  Card,
   EmptyState,
   formatDateWithPredicate,
-  isMockedId,
   PageLayout,
   ResourceAttachments,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   type ToolbarItem,
@@ -16,6 +11,7 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { OrderAddresses } from "#components/OrderAddresses"
@@ -185,38 +181,25 @@ function OrderDetails(): React.JSX.Element {
       // supporting information sits beside the order itself, see detail.png
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14">
-            <Card overflow="visible">
-              <OrderCustomer order={order} />
-              <Spacer top="10">
-                <OrderAddresses order={order} />
-              </Spacer>
-              {!isMockedId(order.id) && (
-                <>
-                  <Spacer top="10">
-                    <ResourceTags
-                      resourceType="orders"
-                      resourceId={order.id}
-                      overlay={{ title: pageTitle }}
-                      onTagClick={(tagId) => {
-                        setLocation(
-                          appRoutes.home.makePath({}, `tags_id_in=${tagId}`),
-                        )
-                      }}
-                    />
-                  </Spacer>
-                  <Spacer top="10">
-                    <ResourceMetadata
-                      resourceType="orders"
-                      resourceId={order.id}
-                      overlay={{
-                        title: pageTitle,
-                      }}
-                    />
-                  </Spacer>
-                </>
-              )}
-            </Card>
+          <OrderCustomer order={order} />
+          <Spacer top="10">
+            <OrderAddresses order={order} />
+          </Spacer>
+          <Spacer top="10">
+            {/* `print:hidden` as it was in the main column: a printed order is a
+                document for the customer, and the id/reference/timestamps are for
+                whoever works on it */}
+            <ResourceInfoBlocks
+              className="print:hidden"
+              resource={order}
+              title={pageTitle}
+              onUpdated={async () => {
+                void mutateOrder()
+              }}
+              onTagClick={(tagId) => {
+                setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
+              }}
+            />
           </Spacer>
         </SkeletonTemplate>
       }
@@ -253,16 +236,6 @@ function OrderDetails(): React.JSX.Element {
                 <OrderReturns returns={returns} />
               </Spacer>
             )}
-          </div>
-          <div className="print:hidden">
-            <Spacer top="14">
-              <ResourceDetails
-                resource={order}
-                onUpdated={async () => {
-                  void mutateOrder()
-                }}
-              />
-            </Spacer>
           </div>
           <div className="print:hidden">
             <Spacer top="14">
