@@ -2,6 +2,8 @@ import {
   Badge,
   type BadgeProps,
   formatDate,
+  formatDateRange,
+  formatDateWithPredicate,
   formatNumber,
   getPromotionDisplayStatus,
   type ResourceTableColumn,
@@ -28,10 +30,30 @@ export function usePromotionsTableColumns(): Array<
         header: "Name",
         sortBy: "name",
         cell: ({ resource }) => (
-          <div className="flex items-center gap-2">
-            <Text weight="medium">{resource.name}</Text>
-            {/* the Status column is hidden on mobile, so the badge rides with the name */}
-            <RowStatusBadge resource={resource} className="md:hidden" />
+          <div>
+            <div className="flex items-center gap-2">
+              <Text weight="medium">{resource.name}</Text>
+              {/* the Status column is hidden on mobile, so the badge rides with the name */}
+              <RowStatusBadge resource={resource} className="md:hidden" />
+            </div>
+            <Text tag="div" size="x-small" variant="info" wrap="nowrap">
+              {/* when the promotion is available, as the list rows used to show it:
+                  the same `formatDateRange` that `ResourceListItem` uses for its
+                  promotions description */}
+              {resource.expires_at == null
+                ? formatDateWithPredicate({
+                    predicate: "From",
+                    isoDate: resource.starts_at,
+                    timezone: user?.timezone,
+                    format: "date",
+                  })
+                : formatDateRange({
+                    rangeFrom: resource.starts_at,
+                    rangeTo: resource.expires_at,
+                    timezone: user?.timezone,
+                    locale: user?.locale,
+                  })}
+            </Text>
           </div>
         ),
       },

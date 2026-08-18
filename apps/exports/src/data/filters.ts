@@ -15,9 +15,8 @@ export const instructions: FiltersInstructions = [
       ],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "failed",

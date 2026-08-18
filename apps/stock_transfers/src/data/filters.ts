@@ -59,9 +59,9 @@ export const makeFiltersInstructions = (options?: {
           value === "show" ? undefined : value === "hide",
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "single",
+          isMulti: false,
           options: [
             { value: "only", label: "Only archived" },
             { value: "hide", label: "Hide archived" },
@@ -79,9 +79,8 @@ export const makeFiltersInstructions = (options?: {
         defaultOptions: listableStatuses,
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "multi",
           options: listableStatuses.map((status) => ({
             value: status,
             label: getStockTransferStatusName(status),
