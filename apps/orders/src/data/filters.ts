@@ -32,9 +32,8 @@ export const makeInstructions = ({
       defaultOptions: ["placed", "approved", "cancelled", "editing"],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "pending",
@@ -68,9 +67,8 @@ export const makeInstructions = ({
       predicate: "payment_status_in",
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "authorized",
@@ -122,9 +120,8 @@ export const makeInstructions = ({
       predicate: "fulfillment_statuses_in",
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "unfulfilled",
@@ -180,9 +177,8 @@ export const makeInstructions = ({
       predicate: "country_codes_in",
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: countryCodes ?? [],
       },
     },
@@ -197,9 +193,9 @@ export const makeInstructions = ({
     },
     hidden: true,
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "single",
+        isMulti: false,
         options: [
           { value: "only", label: "Only archived" },
           { value: "hide", label: "Hide archived" },
@@ -270,9 +266,8 @@ export const makeCartsInstructions = (): FiltersInstructions => [
       defaultOptions: ["pending"],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [{ value: "pending", label: "Pending", isHidden: true }],
       },
     },
@@ -285,9 +280,8 @@ export const makeCartsInstructions = (): FiltersInstructions => [
       predicate: "payment_status_in",
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "authorized",

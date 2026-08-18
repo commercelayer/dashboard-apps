@@ -30,9 +30,8 @@ export const instructions: FiltersInstructions = [
       defaultOptions: ["inactive", "active", "redeemed"],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           { value: "draft", label: "Draft", isHidden: true },
           { value: "inactive", label: "Inactive" },

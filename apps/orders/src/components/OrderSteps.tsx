@@ -66,21 +66,17 @@ function getFulfillmentStatusBadgeVariant(
 export const OrderSteps = withSkeletonTemplate<Props>(
   ({ order }): React.JSX.Element => {
     return (
-      <>
+      // One flex item rather than three, so the group sits 12px from the title
+      // (`PageHeading`'s gap) while the badges stay 4px apart between themselves
+      <div className="flex items-center gap-1 print:hidden">
         {order.status !== undefined && (
-          <Badge
-            variant={getOrderStatusBadgeVariant(order.status)}
-            className="inline-block align-middle ml-1 print:hidden"
-          >
+          <Badge variant={getOrderStatusBadgeVariant(order.status)}>
             {getOrderStatusName(order.status)}
           </Badge>
         )}
 
         {order.payment_status !== undefined && (
-          <Badge
-            variant={getPaymentStatusBadgeVariant(order.payment_status)}
-            className="inline-block align-middle ml-1 print:hidden"
-          >
+          <Badge variant={getPaymentStatusBadgeVariant(order.payment_status)}>
             {getOrderPaymentStatusName(order.payment_status)}
           </Badge>
         )}
@@ -88,12 +84,11 @@ export const OrderSteps = withSkeletonTemplate<Props>(
         {order.fulfillment_status !== undefined && (
           <Badge
             variant={getFulfillmentStatusBadgeVariant(order.fulfillment_status)}
-            className="inline-block align-middle ml-1 print:hidden"
           >
             {getOrderFulfillmentStatusName(order.fulfillment_status)}
           </Badge>
         )}
-      </>
+      </div>
     )
   },
 )

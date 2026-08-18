@@ -57,6 +57,9 @@ export function SelectCustomerComponent(): React.JSX.Element {
         placeholder={t("apps.orders.form.email_placeholder")}
         hint={{ text: t("apps.orders.form.email_hint") }}
         isCreatable
+        // an email first, a picker second: the customer may not exist yet, so a
+        // chevron would promise a list the value does not have to come from
+        hideDropdownIndicator
         menuFooterText={
           (inputOptions == null &&
             customers != null &&

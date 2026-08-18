@@ -47,9 +47,8 @@ export const instructions = (
         defaultOptions: [...listableStatuses],
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "multi",
           options: listableStatuses.map((status) => ({
             value: status,
             // @ts-expect-error `pending` is supported by the API but not yet in the SDK status union (beta.9)
@@ -65,9 +64,9 @@ export const instructions = (
         predicate: "frequency_matches",
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "single",
+          isMulti: false,
           options: frequenciesByModel ?? frequencies,
         },
       },
