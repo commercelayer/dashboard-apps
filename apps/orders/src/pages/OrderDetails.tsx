@@ -105,8 +105,9 @@ function OrderDetails(): React.JSX.Element {
           onClick: () => {
             setLocation(appRoutes.home.makePath({}))
           },
-          label: t("common.back"),
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         mode={mode}
         scrollToTop
@@ -175,8 +176,9 @@ function OrderDetails(): React.JSX.Element {
             currentResourceId: orderId,
           })
         },
-        label: t("common.back"),
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
       }}
       gap="only-top"
       scrollToTop

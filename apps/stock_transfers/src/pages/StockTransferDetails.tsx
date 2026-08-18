@@ -69,8 +69,9 @@ export function StockTransferDetails(): React.JSX.Element {
           onClick: () => {
             setLocation(appRoutes.home.makePath({}))
           },
-          label: "Stock transfers",
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         mode={mode}
       >
@@ -182,8 +183,9 @@ export function StockTransferDetails(): React.JSX.Element {
             defaultRelativePath: appRoutes.home.makePath({}),
           })
         },
-        label: "Stock transfers",
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
       }}
       scrollToTop
       fullWidth

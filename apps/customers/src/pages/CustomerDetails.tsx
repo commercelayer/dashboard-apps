@@ -157,8 +157,9 @@ export function CustomerDetails(): React.JSX.Element {
         mode={mode}
         title="Customers"
         navigationButton={{
-          label: t("common.back"),
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
           onClick: () => {
             goBack({
               currentResourceId: customerId,
@@ -205,8 +206,9 @@ export function CustomerDetails(): React.JSX.Element {
         </SkeletonTemplate>
       }
       navigationButton={{
-        label: t("common.back"),
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
         onClick: () => {
           goBack({
             currentResourceId: customerId,

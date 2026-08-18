@@ -172,7 +172,9 @@ function Page(
       mode={mode}
       gap="only-top"
       navigationButton={{
-        label: "Back",
+        label: "",
+        icon: "arrowLeft",
+        variant: "button",
         onClick() {
           goBack({
             currentResourceId: promotion.id,
