@@ -9,9 +9,8 @@ export const instructions: FiltersInstructions = [
       defaultOptions: ["prospect", "acquired", "repeat"],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "prospect",
@@ -40,9 +39,8 @@ export const instructions: FiltersInstructions = [
           : undefined,
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           { value: "guest", label: t("apps.customers.details.guest") },
           {

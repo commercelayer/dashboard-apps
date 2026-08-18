@@ -110,12 +110,10 @@ export const WebhookDetails: FC = () => {
     <SkeletonTemplate isLoading={isLoading}>
       <PageLayout
         title={
-          <div className="flex items-center gap-3">
-            {/* name and badge as two flex items: a bare text node would take the
-                gap too, reading as a double space */}
-            <span>{pageTitle}</span>
+          <>
+            {pageTitle}
             <Badge variant={displayStatus.variant}>{displayStatus.label}</Badge>
-          </div>
+          </>
         }
         description={formatDateWithPredicate({
           predicate: "Created",
