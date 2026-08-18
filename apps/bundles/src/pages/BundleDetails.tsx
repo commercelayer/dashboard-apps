@@ -1,12 +1,8 @@
 import {
   Button,
   EmptyState,
-  isMockedId,
   PageHeading,
   type PageHeadingProps,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
@@ -15,6 +11,7 @@ import {
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { SkuDescription } from "dashboard-apps-common/src/components/SkuDescription"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import type { FC } from "react"
@@ -164,38 +161,19 @@ export const BundleDetails: FC = () => {
                 <BundleInfo bundle={bundle} />
               </Spacer>
               <Spacer top="14">
-                <ResourceDetails
+                <ResourceInfoBlocks
                   resource={bundle}
+                  title={pageTitle}
                   onUpdated={async () => {
                     void mutateBundle()
                   }}
+                  onTagClick={(tagId) => {
+                    setLocation(
+                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
+                    )
+                  }}
                 />
               </Spacer>
-              {!isMockedId(bundle.id) && (
-                <>
-                  <Spacer top="14">
-                    <ResourceTags
-                      resourceType="bundles"
-                      resourceId={bundle.id}
-                      overlay={{ title: pageTitle }}
-                      onTagClick={(tagId) => {
-                        setLocation(
-                          appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                        )
-                      }}
-                    />
-                  </Spacer>
-                  <Spacer top="14">
-                    <ResourceMetadata
-                      resourceType="bundles"
-                      resourceId={bundle.id}
-                      overlay={{
-                        title: pageTitle,
-                      }}
-                    />
-                  </Spacer>
-                </>
-              )}
             </Spacer>
           </SkeletonTemplate>
           {canUser("destroy", "bundles") && (

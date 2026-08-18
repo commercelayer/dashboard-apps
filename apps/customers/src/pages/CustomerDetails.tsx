@@ -1,17 +1,12 @@
 import {
   Badge,
   Button,
-  Card,
   EmptyState,
   formatDateWithPredicate,
   getCustomerStatusName,
-  isMockedId,
   type PageHeadingProps,
   PageLayout,
   ResourceAttachments,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
@@ -21,6 +16,7 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useState } from "react"
 import { Link, useLocation, useRoute } from "wouter"
@@ -219,46 +215,24 @@ export function CustomerDetails(): React.JSX.Element {
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14">
-            <Card overflow="visible">
-              <CustomerAddresses
-                customer={customer}
-                onRemovedAddress={() => {
-                  void mutateCustomer()
-                }}
-              />
-              {!isMockedId(customer.id) && (
-                <>
-                  <Spacer top="10">
-                    <ResourceTags
-                      resourceType="customers"
-                      resourceId={customer.id}
-                      overlay={{ title: pageTitle }}
-                      onTagClick={(tagId) => {
-                        setLocation(
-                          appRoutes.home.makePath(`tags_id_in=${tagId}`),
-                        )
-                      }}
-                    />
-                  </Spacer>
-                  <Spacer top="10">
-                    <ResourceMetadata
-                      resourceType="customers"
-                      resourceId={customer.id}
-                      overlay={{ title: pageTitle }}
-                    />
-                  </Spacer>
-                </>
-              )}
-              <Spacer top="10">
-                <ResourceDetails
-                  resource={customer}
-                  onUpdated={async () => {
-                    void mutateCustomer()
-                  }}
-                />
-              </Spacer>
-            </Card>
+          <CustomerAddresses
+            customer={customer}
+            onRemovedAddress={() => {
+              void mutateCustomer()
+            }}
+          />
+
+          <Spacer top="10">
+            <ResourceInfoBlocks
+              resource={customer}
+              title={pageTitle}
+              onUpdated={async () => {
+                void mutateCustomer()
+              }}
+              onTagClick={(tagId) => {
+                setLocation(appRoutes.home.makePath(`tags_id_in=${tagId}`))
+              }}
+            />
           </Spacer>
         </SkeletonTemplate>
       }

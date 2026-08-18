@@ -17,9 +17,6 @@ import {
   ListItem,
   type PageHeadingProps,
   PageLayout,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   Section,
   SkeletonTemplate,
   Spacer,
@@ -33,6 +30,7 @@ import {
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import type { FlexPromotion } from "@commercelayer/sdk"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { type Ref, useMemo, useRef, useState } from "react"
 import { Link, useLocation } from "wouter"
@@ -185,38 +183,13 @@ function Page(
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14">
-            <Card overflow="visible">
-              <ResourceDetails
-                resource={promotion}
-                onUpdated={async () => {
-                  void mutatePromotion()
-                }}
-              />
-              {!isMockedId(promotion.id) && (
-                <>
-                  <Spacer top="10">
-                    <ResourceTags
-                      overlay={{
-                        title: pageTitle,
-                      }}
-                      resourceType={promotion.type}
-                      resourceId={promotion.id}
-                    />
-                  </Spacer>
-                  <Spacer top="10">
-                    <ResourceMetadata
-                      overlay={{
-                        title: pageTitle,
-                      }}
-                      resourceType={promotion.type}
-                      resourceId={promotion.id}
-                    />
-                  </Spacer>
-                </>
-              )}
-            </Card>
-          </Spacer>
+          <ResourceInfoBlocks
+            resource={promotion}
+            title={pageTitle}
+            onUpdated={async () => {
+              void mutatePromotion()
+            }}
+          />
         </SkeletonTemplate>
       }
       // the flex check belongs at the very bottom, below the sidebar, and only

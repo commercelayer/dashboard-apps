@@ -1,17 +1,15 @@
 import {
   Button,
   EmptyState,
-  isMockedId,
   PageHeading,
   type PageHeadingProps,
-  ResourceDetails,
-  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
   useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
@@ -123,25 +121,14 @@ const DetailsPage = (): React.JSX.Element | null => {
                 </Spacer>
 
                 <Spacer bottom="14">
-                  <ResourceDetails
+                  <ResourceInfoBlocks
                     resource={data}
+                    title={"Back"}
                     onUpdated={async () => {
                       void refetch()
                     }}
                   />
                 </Spacer>
-
-                {!isMockedId(data.id) && (
-                  <Spacer top="14">
-                    <ResourceMetadata
-                      resourceType="imports"
-                      resourceId={data.id}
-                      overlay={{
-                        title: "Back",
-                      }}
-                    />
-                  </Spacer>
-                )}
               </SkeletonTemplate>
             )
           }
