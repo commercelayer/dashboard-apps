@@ -55,8 +55,9 @@ function ShipmentDetails(): React.JSX.Element {
               defaultRelativePath: appRoutes.home.makePath({}),
             })
           },
-          label: t("common.back"),
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         mode={mode}
       >
@@ -123,8 +124,9 @@ function ShipmentDetails(): React.JSX.Element {
             defaultRelativePath: appRoutes.home.makePath({}),
           })
         },
-        label: t("common.back"),
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
       }}
       fullWidth
       sidebar={

@@ -48,8 +48,9 @@ function ReturnDetails(): React.JSX.Element {
       <PageLayout
         title={t("resources.returns.name_other")}
         navigationButton={{
-          label: t("common.back"),
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
           onClick: () => {
             setLocation(appRoutes.home.makePath())
           },
@@ -101,8 +102,9 @@ function ReturnDetails(): React.JSX.Element {
         </SkeletonTemplate>
       }
       navigationButton={{
-        label: t("resources.returns.name_other"),
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
         onClick: () => {
           goBack({
             currentResourceId: returnId,

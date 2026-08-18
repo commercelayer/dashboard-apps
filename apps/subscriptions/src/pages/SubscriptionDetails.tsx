@@ -68,8 +68,9 @@ function SubscriptionDetails(): React.JSX.Element {
               defaultRelativePath: appRoutes.list.makePath({}),
             })
           },
-          label: "Back",
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         mode={mode}
         scrollToTop
@@ -199,8 +200,9 @@ function SubscriptionDetails(): React.JSX.Element {
             defaultRelativePath: appRoutes.list.makePath({}),
           })
         },
-        label: "Subscriptions",
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
       }}
       gap="only-top"
       scrollToTop

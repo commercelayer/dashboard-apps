@@ -44,8 +44,9 @@ export const WebhookDetails: FC = () => {
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
-          label: "Webhooks",
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         mode={mode}
       >
