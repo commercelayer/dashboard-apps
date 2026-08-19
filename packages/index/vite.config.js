@@ -1,10 +1,14 @@
 // @ts-check
 import fs from "node:fs"
 import path from "node:path"
+import { fileURLToPath } from "node:url"
 import react from "@vitejs/plugin-react"
 import externalGlobals from "rollup-plugin-external-globals"
 import tsconfigPaths from "vite-tsconfig-paths"
 import { defineConfig } from "vitest/config"
+import { devManifest } from "./vite-plugin-dev-manifest.js"
+
+const __dirname = fileURLToPath(new URL(".", import.meta.url))
 
 /**
  * Detect a locally linked `@commercelayer/app-elements`, i.e. a dependency
@@ -56,7 +60,11 @@ export default defineConfig(() => {
   const linkedAppElements = detectLinkedAppElements()
 
   return {
-    plugins: [react(), tsconfigPaths()],
+    plugins: [
+      react(),
+      tsconfigPaths(),
+      devManifest({ appsDir: path.resolve(__dirname, "..", "..", "apps") }),
+    ],
     envPrefix: "PUBLIC_",
     base: basePath,
     // Local app-elements development: run `pnpm build:watch` in
