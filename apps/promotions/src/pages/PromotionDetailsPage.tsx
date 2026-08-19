@@ -62,8 +62,6 @@ function Page(
     props.params.promotionId,
   )
 
-  const { isLoading: isLoadingRules, rules } = usePromotionRules(promotion)
-  const hasRules = rules.length > 0
   const viaApi = isGeneratedViaApi(promotion)
 
   const displayStatus = useDisplayStatus(promotion.id)
@@ -182,6 +180,16 @@ function Page(
         },
       }}
       fullWidth
+      alert={
+        !isLoading &&
+        viaApi &&
+        promotion.type !== "flex_promotions" && (
+          <Alert status="info">
+            This promotion is generated via API. Ask developers for details. If
+            issues arise, just disable it.
+          </Alert>
+        )
+      }
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <ResourceInfoBlocks
@@ -216,25 +224,6 @@ function Page(
         <Spacer top="10">
           <CardStatus promotionId={props.params.promotionId} />
           <SectionInfo promotion={promotion} />
-        </Spacer>
-
-        <Spacer top="14">
-          {!isLoadingRules &&
-            !hasRules &&
-            !viaApi &&
-            promotion.type !== "flex_promotions" && (
-              <Alert status="warning">
-                Define activation rules below to prevent application to all
-                orders.
-              </Alert>
-            )}
-
-          {viaApi && promotion.type !== "flex_promotions" && (
-            <Alert status="info">
-              This promotion is generated via API. Ask developers for details.
-              If issues arise, just disable it.
-            </Alert>
-          )}
         </Spacer>
 
         {promotion.type === "flex_promotions" && (
@@ -530,7 +519,7 @@ const SectionInfo = withSkeletonTemplate<{
   const appliesTo =
     promotion.type === "flex_promotions"
       ? undefined
-      : (promotion.sku_list?.name ?? promotion.market?.name)
+      : (promotion.sku_list?.name ?? promotion.market?.name ?? "All products")
 
   return (
     <>
