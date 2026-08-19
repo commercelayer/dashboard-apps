@@ -19,10 +19,10 @@ import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resour
 import { type FC, useMemo, useState } from "react"
 import { useLocation } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
+import { BadgeStatus } from "#components/BadgeStatus"
 import { BalanceLog } from "#components/BalanceLog"
 import { DetailsImage } from "#components/DetailsImage"
 import { DetailsInfo } from "#components/DetailsInfo"
-import { DetailsRecap } from "#components/DetailsRecap"
 import { GiftCardTimeline } from "#components/GiftCardTimeline"
 import { appRoutes } from "#data/routes"
 import {
@@ -187,6 +187,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
           title={
             <SkeletonTemplate isLoading={isLoading}>
               {`Gift card ${giftCard?.formatted_initial_balance}`}
+              <BadgeStatus status={giftCard?.status} />
             </SkeletonTemplate>
           }
           description={
@@ -207,9 +208,6 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
           gap="none"
         />
         <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14">
-            <DetailsRecap giftCard={giftCard} />
-          </Spacer>
           <Spacer top="14">
             <Tabs>
               <Tab name="Overview">

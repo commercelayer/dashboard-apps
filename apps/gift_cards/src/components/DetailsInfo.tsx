@@ -16,6 +16,9 @@ export const DetailsInfo = withSkeletonTemplate<{ giftCard: GiftCard }>(
 
     return (
       <ListDetails title="Info">
+        <ListDetailsItem label="Balance" gutter="none">
+          {giftCard.formatted_balance}
+        </ListDetailsItem>
         <ListDetailsItem label="Code" gutter="none">
           {giftCard.code}
         </ListDetailsItem>
