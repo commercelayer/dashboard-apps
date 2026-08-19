@@ -1,14 +1,11 @@
 import {
-  Badge,
-  type BadgeProps,
   formatDate,
-  getShipmentDisplayStatus,
   type ResourceTableColumn,
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import type { Shipment } from "@commercelayer/sdk"
 import { useMemo } from "react"
+import { ShipmentStatusBadge } from "#components/ShipmentStatusBadge"
 
 /**
  * Columns of the shipments table.
@@ -29,8 +26,8 @@ export function useShipmentsTableColumns(): Array<
           <Text weight="medium" wrap="nowrap">
             #{resource.number}
             {/* the Status column is hidden on mobile, so the badge rides with the name */}
-            <RowStatusBadge
-              resource={resource}
+            <ShipmentStatusBadge
+              shipment={resource}
               className="md:hidden inline-block align-middle ml-2"
             />
           </Text>
@@ -63,7 +60,7 @@ export function useShipmentsTableColumns(): Array<
         header: "Status",
         kind: "status",
         sortBy: "status",
-        cell: ({ resource }) => <RowStatusBadge resource={resource} />,
+        cell: ({ resource }) => <ShipmentStatusBadge shipment={resource} />,
       },
       {
         header: "Updated",
@@ -82,44 +79,5 @@ export function useShipmentsTableColumns(): Array<
       },
     ],
     [user?.timezone, user?.locale],
-  )
-}
-
-/** Map the canonical shipment display status color onto a `Badge` variant. */
-function toBadgeVariant(
-  color: ReturnType<typeof getShipmentDisplayStatus>["color"],
-): BadgeProps["variant"] {
-  switch (color) {
-    case "green":
-      return "success"
-    case "orange":
-      return "warning"
-    case "red":
-      return "danger"
-    case "teal":
-      return "teal"
-    default:
-      return "secondary"
-  }
-}
-
-/**
- * The row's status badge.
- *
- * Shared by the Status column and, on mobile where that column is hidden, the name
- * cell — so the two can never drift apart.
- */
-function RowStatusBadge({
-  resource,
-  className,
-}: {
-  resource: Shipment
-  className?: string
-}): React.JSX.Element {
-  const displayStatus = getShipmentDisplayStatus(resource)
-  return (
-    <Badge variant={toBadgeVariant(displayStatus.color)} className={className}>
-      {displayStatus.label}
-    </Badge>
   )
 }

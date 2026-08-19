@@ -109,6 +109,9 @@ function ReturnDetails(): React.JSX.Element {
         },
       }}
       toolbar={pageToolbar}
+      // no bottom gap under the heading: the main column opens with a
+      // `Spacer top="14"`, which is what the sidebar column lines up with
+      gap="only-top"
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
@@ -137,7 +140,9 @@ function ReturnDetails(): React.JSX.Element {
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
-          <ReturnInfo returnObj={returnObj} />
+          <Spacer top="14">
+            <ReturnInfo returnObj={returnObj} />
+          </Spacer>
           <Spacer top="14">
             <ReturnSummary returnObj={returnObj} />
           </Spacer>

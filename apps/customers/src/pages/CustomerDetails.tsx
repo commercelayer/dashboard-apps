@@ -212,6 +212,9 @@ export function CustomerDetails(): React.JSX.Element {
           })
         },
       }}
+      // no bottom gap under the heading: the main column opens with a
+      // `Spacer top="14"`, which is what the sidebar column lines up with
+      gap="only-top"
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>

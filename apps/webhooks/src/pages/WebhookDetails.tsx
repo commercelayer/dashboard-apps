@@ -120,6 +120,9 @@ export const WebhookDetails: FC = () => {
           format: "fullWithSeconds",
         })}
         mode={mode}
+        // no bottom gap under the heading: the main column opens with a
+        // `Spacer top="14"`, which is what the sidebar column lines up with
+        gap="only-top"
         fullWidth
         navigationButton={{
           onClick: () => {
@@ -146,7 +149,7 @@ export const WebhookDetails: FC = () => {
           </>
         }
       >
-        <Spacer bottom="14">
+        <Spacer top="14" bottom="14">
           <WebhookInfos webhook={webhook} />
         </Spacer>
 

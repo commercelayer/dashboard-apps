@@ -185,6 +185,9 @@ export function StockTransferDetails(): React.JSX.Element {
         variant: "button",
       }}
       scrollToTop
+      // no bottom gap under the heading: the main column opens with a
+      // `Spacer top="14"`, which is what the sidebar column lines up with
+      gap="only-top"
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
@@ -230,7 +233,9 @@ export function StockTransferDetails(): React.JSX.Element {
           cancelLabel="Close"
         />
         <Spacer bottom="4">
-          <StockTransferInfo stockTransfer={stockTransfer} />
+          <Spacer top="14">
+            <StockTransferInfo stockTransfer={stockTransfer} />
+          </Spacer>
           <Spacer top="14">
             <StockTransferSummary stockTransfer={stockTransfer} />
           </Spacer>
