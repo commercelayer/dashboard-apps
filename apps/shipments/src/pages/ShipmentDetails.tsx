@@ -138,6 +138,9 @@ function ShipmentDetails(): React.JSX.Element {
       // `Spacer top="14"`, which is what the sidebar column lines up with
       gap="only-top"
       fullWidth
+      alert={
+        purchaseError != null && <Alert status="error">{purchaseError}</Alert>
+      }
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <ShipmentAddresses shipment={shipment} />
@@ -158,11 +161,6 @@ function ShipmentDetails(): React.JSX.Element {
       <SkeletonTemplate isLoading={isLoading}>
         <pageToolbar.Components />
         <Spacer bottom="4">
-          {purchaseError != null && (
-            <Spacer top="14">
-              <Alert status="error">{purchaseError}</Alert>
-            </Spacer>
-          )}
           <Spacer top="14">
             <ShipmentInfo shipment={shipment} />
           </Spacer>

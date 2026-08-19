@@ -203,6 +203,16 @@ function SubscriptionDetails(): React.JSX.Element {
       gap="only-top"
       scrollToTop
       fullWidth
+      alert={
+        !isLoading &&
+        isPending && (
+          <Alert status="warning">
+            This subscription is <b>pending</b> because it has no usable payment
+            method for renewals. Attach a payment source, then activate it to
+            resume.
+          </Alert>
+        )
+      }
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <SubscriptionAddresses subscription={subscription} />
@@ -225,15 +235,6 @@ function SubscriptionDetails(): React.JSX.Element {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
-          {isPending && (
-            <Spacer top="14">
-              <Alert status="warning">
-                This subscription is <b>pending</b> because it has no usable
-                payment method for renewals. Attach a payment source, then
-                activate it to resume.
-              </Alert>
-            </Spacer>
-          )}
           <Spacer top="14">
             <SubscriptionInfo subscription={subscription} />
           </Spacer>

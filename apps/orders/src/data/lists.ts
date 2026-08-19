@@ -52,8 +52,10 @@ export const orderTabsPredicateWhitelist = ["fulfillment_statuses_not_in"]
 export const orderTabs: OrderTab[] = [
   {
     label: "All",
+    // no `status_in`: the same four statuses are the filter's `defaultOptions`, so
+    // the query still leaves out drafts and pending orders while the drawer opens
+    // with nothing selected — on "All" there is no status to show as chosen
     formValues: {
-      status_in: ["placed", "approved", "cancelled", "editing"],
       archived: "hide",
       viewTitle: "All",
     },
