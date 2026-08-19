@@ -205,17 +205,6 @@ function OrderDetails(): React.JSX.Element {
       }
       // stays last at every width: stacked, it follows the sidebar instead of
       // letting the sidebar sink to the bottom of the page
-      afterSidebar={
-        !["draft"].includes(order.status) && (
-          <SkeletonTemplate isLoading={isLoading}>
-            <div className="print:hidden">
-              <Spacer top="14" bottom="4">
-                <Timeline order={order} />
-              </Spacer>
-            </div>
-          </SkeletonTemplate>
-        )
-      }
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
@@ -247,6 +236,17 @@ function OrderDetails(): React.JSX.Element {
           </div>
         </Spacer>
       </SkeletonTemplate>
+
+      {!["draft"].includes(order.status) && (
+        <SkeletonTemplate isLoading={isLoading}>
+          <div className="print:hidden">
+            <Spacer top="14" bottom="4">
+              <Timeline order={order} />
+            </Spacer>
+          </div>
+        </SkeletonTemplate>
+      )}
+
       {confirmDialogs}
     </PageLayout>
   )

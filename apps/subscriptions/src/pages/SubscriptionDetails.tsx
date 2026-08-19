@@ -222,13 +222,6 @@ function SubscriptionDetails(): React.JSX.Element {
       }
       // stays last at every width: stacked, it follows the sidebar instead of
       // letting the sidebar sink to the bottom of the page
-      afterSidebar={
-        <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14" bottom="4">
-            <SubscriptionOrders subscription={subscription} />
-          </Spacer>
-        </SkeletonTemplate>
-      }
     >
       <SkeletonTemplate isLoading={isLoading}>
         <Spacer bottom="4">
@@ -251,6 +244,12 @@ function SubscriptionDetails(): React.JSX.Element {
           <Spacer top="14">
             <SubscriptionPayment subscription={subscription} />
           </Spacer>
+        </Spacer>
+      </SkeletonTemplate>
+
+      <SkeletonTemplate isLoading={isLoading}>
+        <Spacer top="14" bottom="4">
+          <SubscriptionOrders subscription={subscription} />
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>

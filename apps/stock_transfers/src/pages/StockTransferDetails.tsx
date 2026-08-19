@@ -207,15 +207,6 @@ export function StockTransferDetails(): React.JSX.Element {
       }
       // stays last at every width: stacked, it follows the sidebar instead of
       // letting the sidebar sink to the bottom of the page
-      afterSidebar={
-        <SkeletonTemplate isLoading={isLoading}>
-          <div className="print:hidden">
-            <Spacer top="14" bottom="4">
-              <Timeline stockTransfer={stockTransfer} />
-            </Spacer>
-          </div>
-        </SkeletonTemplate>
-      }
     >
       <SkeletonTemplate isLoading={isLoading}>
         <ConfirmDialog
@@ -240,6 +231,14 @@ export function StockTransferDetails(): React.JSX.Element {
             <StockTransferSummary stockTransfer={stockTransfer} />
           </Spacer>
         </Spacer>
+      </SkeletonTemplate>
+
+      <SkeletonTemplate isLoading={isLoading}>
+        <div className="print:hidden">
+          <Spacer top="14" bottom="4">
+            <Timeline stockTransfer={stockTransfer} />
+          </Spacer>
+        </div>
       </SkeletonTemplate>
     </PageLayout>
   )
