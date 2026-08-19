@@ -21,6 +21,7 @@ import {
   SkeletonTemplate,
   Spacer,
   Stack,
+  StackCell,
   Text,
   useAppLinking,
   useConfirmDialog,
@@ -430,44 +431,22 @@ const CardStatus = withSkeletonTemplate<{
   })
 
   return (
-    <Stack>
-      <div>
-        <Spacer bottom="2">
-          <Text size="small" variant="info" weight="semibold">
-            {promotion.type === "fixed_price_promotions"
-              ? "Fixed price"
-              : "Discount"}
-          </Text>
-        </Spacer>
-        <Text weight="semibold" style={{ fontSize: "18px" }}>
-          <config.StatusDescription
-            // @ts-expect-error TS cannot infer the right promotion
-            promotion={promotion}
-          />
-        </Text>
-      </div>
-      <div>
-        <Spacer bottom="2">
-          <Text size="small" variant="info" weight="semibold">
-            Usage
-          </Text>
-        </Spacer>
-        <Text weight="semibold" style={{ fontSize: "18px" }}>
-          {promotion.total_usage_count}
-          {promotion.total_usage_limit != null &&
-            ` / ${promotion.total_usage_limit}`}
-        </Text>
-      </div>
-      <div>
-        <Spacer bottom="2">
-          <Text size="small" variant="info" weight="semibold">
-            Coupons
-          </Text>
-        </Spacer>
-        <Text weight="semibold" style={{ fontSize: "18px" }}>
-          {formatNumber({ value: meta?.recordCount, locale: user?.locale })}
-        </Text>
-      </div>
+    <Stack size="small">
+      <StackCell
+        label={
+          promotion.type === "fixed_price_promotions"
+            ? "Fixed price"
+            : "Discount"
+        }
+      >
+        <config.StatusDescription
+          // @ts-expect-error TS cannot infer the right promotion
+          promotion={promotion}
+        />
+      </StackCell>
+      <StackCell label="Coupons">
+        {formatNumber({ value: meta?.recordCount, locale: user?.locale })}
+      </StackCell>
     </Stack>
   )
 })
@@ -533,11 +512,11 @@ const useDisplayStatus = (promotionId: string) => {
 /**
  * When the promotion runs and what it applies to.
  *
- * Deliberately three cells, aligning with the `CardStatus` stack above: that one
- * already carries Discount, Usage and Coupons, so repeating them here would show
- * the same values twice — and its versions are the better ones (a per-type
- * description, and a real coupon count rather than the `coupons_count` attribute,
- * which flex promotions do not have).
+ * Two cells per row, continuing the `CardStatus` stack above: that one opens with
+ * the discount and the coupon count — its versions are the better ones (a per-type
+ * description, and a real count rather than the `coupons_count` attribute, which
+ * flex promotions do not have) — and the usage joins `Apply to` here, so the three
+ * rows read as one grid.
  *
  * The per-type extras still render underneath, since a few types (external, free
  * gift, buy X pay Y) carry information of their own.
@@ -556,32 +535,35 @@ const SectionInfo = withSkeletonTemplate<{
 
   return (
     <>
-      <Stack>
-        <InfoCell label="Started on">
-          {promotion.starts_at == null ? (
-            <EmptyValue />
-          ) : (
-            formatDate({
-              isoDate: promotion.starts_at,
-              format: "full",
-              timezone: user?.timezone,
-              showCurrentYear: true,
-            })
-          )}
-        </InfoCell>
-        <InfoCell label="Expires on">
-          {promotion.expires_at == null ? (
-            <EmptyValue />
-          ) : (
-            formatDate({
-              isoDate: promotion.expires_at,
-              format: "full",
-              timezone: user?.timezone,
-              showCurrentYear: true,
-            })
-          )}
-        </InfoCell>
-        <InfoCell label="Apply to">{appliesTo ?? <EmptyValue />}</InfoCell>
+      <Stack size="small">
+        <StackCell label="Started on">
+          {promotion.starts_at == null
+            ? undefined
+            : formatDate({
+                isoDate: promotion.starts_at,
+                format: "full",
+                timezone: user?.timezone,
+                showCurrentYear: true,
+              })}
+        </StackCell>
+        <StackCell label="Expires on">
+          {promotion.expires_at == null
+            ? undefined
+            : formatDate({
+                isoDate: promotion.expires_at,
+                format: "full",
+                timezone: user?.timezone,
+                showCurrentYear: true,
+              })}
+        </StackCell>
+      </Stack>
+      <Stack size="small">
+        <StackCell label="Usage">
+          {promotion.total_usage_count}
+          {promotion.total_usage_limit != null &&
+            ` / ${promotion.total_usage_limit}`}
+        </StackCell>
+        <StackCell label="Apply to">{appliesTo}</StackCell>
       </Stack>
       <config.DetailsSectionInfo
         // @ts-expect-error TS cannot infer the right promotion
@@ -590,32 +572,6 @@ const SectionInfo = withSkeletonTemplate<{
     </>
   )
 })
-
-/** One cell of the stack: a muted label above the value. */
-function InfoCell({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}): React.JSX.Element {
-  return (
-    <div>
-      <Spacer bottom="2">
-        <Text size="small" tag="div" variant="info" weight="semibold">
-          {label}
-        </Text>
-      </Spacer>
-      <Text tag="div" weight="semibold">
-        {children}
-      </Text>
-    </div>
-  )
-}
-
-function EmptyValue(): React.JSX.Element {
-  return <Text className="text-gray-300">&#8212;</Text>
-}
 
 const SectionActivationRules = withSkeletonTemplate<{
   promotionId: string
