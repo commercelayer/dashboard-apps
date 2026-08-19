@@ -195,15 +195,6 @@ function Page(
       }
       // the flex check belongs at the very bottom, below the sidebar, and only
       // flex promotions have one
-      afterSidebar={
-        promotion.type === "flex_promotions" ? (
-          <SkeletonTemplate isLoading={isLoading}>
-            <Spacer top="14" bottom="4">
-              <SectionCheck promotion={promotion} />
-            </Spacer>
-          </SkeletonTemplate>
-        ) : undefined
-      }
     >
       <SkeletonTemplate isLoading={isLoading}>
         <ConfirmDialog
@@ -269,6 +260,14 @@ function Page(
           </Spacer>
         )}
       </SkeletonTemplate>
+
+      {promotion.type === "flex_promotions" ? (
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14" bottom="4">
+            <SectionCheck promotion={promotion} />
+          </Spacer>
+        </SkeletonTemplate>
+      ) : undefined}
     </PageLayout>
   )
 }

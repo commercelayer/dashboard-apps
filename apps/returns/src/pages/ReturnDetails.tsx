@@ -129,13 +129,6 @@ function ReturnDetails(): React.JSX.Element {
       }
       // stays last at every width: stacked, it follows the sidebar instead of
       // letting the sidebar sink to the bottom of the page
-      afterSidebar={
-        <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14" bottom="4">
-            <Timeline returnObj={returnObj} />
-          </Spacer>
-        </SkeletonTemplate>
-      }
     >
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
@@ -152,6 +145,12 @@ function ReturnDetails(): React.JSX.Element {
               resourceId={returnObj.id}
             />
           </Spacer>
+        </Spacer>
+      </SkeletonTemplate>
+
+      <SkeletonTemplate isLoading={isLoading}>
+        <Spacer top="14" bottom="4">
+          <Timeline returnObj={returnObj} />
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>
