@@ -19,9 +19,10 @@ import { useRoute } from "wouter"
 import { ShipmentAddresses } from "#components/ShipmentAddresses"
 import { ShipmentInfo } from "#components/ShipmentInfo"
 import { ShipmentPackingList } from "#components/ShipmentPackingList"
-import { ShipmentSteps } from "#components/ShipmentSteps"
+import { ShipmentStatusBadge } from "#components/ShipmentStatusBadge"
 import { ShipmentTimeline } from "#components/ShipmentTimeline"
 import { appRoutes } from "#data/routes"
+import { useActiveStockTransfers } from "#hooks/useActiveStockTransfers"
 import { useShipmentDetails } from "#hooks/useShipmentDetails"
 import { useShipmentToolbar } from "#hooks/useShipmentToolbar"
 
@@ -40,6 +41,7 @@ function ShipmentDetails(): React.JSX.Element {
   const { shipment, isLoading, error, mutateShipment, purchaseError } =
     useShipmentDetails(shipmentId)
   const pageToolbar = useShipmentToolbar({ shipment })
+  const activeStockTransfers = useActiveStockTransfers(shipment)
 
   if (shipmentId === undefined || !canUser("read", "orders") || error != null) {
     return (
@@ -93,7 +95,15 @@ function ShipmentDetails(): React.JSX.Element {
       mode={mode}
       toolbar={pageToolbar.props}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle}
+          <ShipmentStatusBadge
+            shipment={shipment}
+            awaitingStockTransfer={
+              shipment.status === "on_hold" && activeStockTransfers.length > 0
+            }
+          />
+        </SkeletonTemplate>
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
@@ -124,13 +134,13 @@ function ShipmentDetails(): React.JSX.Element {
         icon: "arrowLeft",
         variant: "button",
       }}
+      // no bottom gap under the heading: the main column opens with a
+      // `Spacer top="14"`, which is what the sidebar column lines up with
+      gap="only-top"
       fullWidth
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <ShipmentAddresses shipment={shipment} />
-          <Spacer top="10">
-            <ShipmentInfo shipment={shipment} />
-          </Spacer>
           <Spacer top="10">
             <ResourceInfoBlocks
               resource={shipment}
@@ -155,14 +165,14 @@ function ShipmentDetails(): React.JSX.Element {
       <SkeletonTemplate isLoading={isLoading}>
         <pageToolbar.Components />
         <Spacer bottom="4">
-          <Spacer top="14">
-            <ShipmentSteps shipment={shipment} />
-          </Spacer>
           {purchaseError != null && (
             <Spacer top="14">
               <Alert status="error">{purchaseError}</Alert>
             </Spacer>
           )}
+          <Spacer top="14">
+            <ShipmentInfo shipment={shipment} />
+          </Spacer>
           <Spacer top="14">
             <ShipmentPackingList shipment={shipment} />
           </Spacer>

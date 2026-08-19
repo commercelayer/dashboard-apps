@@ -1,6 +1,8 @@
 import {
-  ListDetailsItem,
-  Section,
+  Button,
+  Spacer,
+  Stack,
+  Text,
   useAppLinking,
   useTokenProvider,
   useTranslation,
@@ -12,51 +14,94 @@ interface Props {
   shipment: Shipment
 }
 
+/**
+ * Where the shipment ships from and how, then what it belongs to: the order and
+ * its customer, both linked.
+ *
+ * Two stacks rather than one of four cells: consecutive stacks pull themselves
+ * together into a single grid (`not-first:-mt-px`), so this reads as two rows of
+ * two instead of four narrow columns — as in the stock transfers app.
+ */
 export const ShipmentInfo = withSkeletonTemplate<Props>(
   ({ shipment }): React.JSX.Element => {
     const { canAccess } = useTokenProvider()
     const { navigateTo } = useAppLinking()
     const { t } = useTranslation()
 
-    const shipmentOrderNumber = `#${shipment.order?.number}`
-    const navigateToOrder = canAccess("orders")
-      ? navigateTo({
-          app: "orders",
-          resourceId: shipment.order?.id,
-        })
-      : {}
+    const order = shipment.order
+    const customer = shipment.order?.customer
 
-    const shipmentCustomerEmail = shipment?.order?.customer?.email
-    const navigateToCustomer = canAccess("customers")
-      ? navigateTo({
-          app: "customers",
-          resourceId: shipment?.order?.customer?.id,
-        })
-      : {}
+    const navigateToOrder =
+      canAccess("orders") && order?.id != null
+        ? navigateTo({ app: "orders", resourceId: order.id })
+        : {}
+
+    const navigateToCustomer =
+      canAccess("customers") && customer?.id != null
+        ? navigateTo({ app: "customers", resourceId: customer.id })
+        : {}
 
     return (
-      <Section title="Info">
-        <ListDetailsItem
-          label={t("apps.shipments.details.origin")}
-          gutter="none"
-        >
-          {shipment.stock_location?.name}
-        </ListDetailsItem>
-        <ListDetailsItem label={t("resources.orders.name")} gutter="none">
-          {canAccess("orders") ? (
-            <a {...navigateToOrder}>{`${shipmentOrderNumber}`}</a>
-          ) : (
-            `${shipmentOrderNumber}`
-          )}
-        </ListDetailsItem>
-        <ListDetailsItem label={t("resources.customers.name")} gutter="none">
-          {canAccess("customers") ? (
-            <a {...navigateToCustomer}>{shipmentCustomerEmail}</a>
-          ) : (
-            shipmentCustomerEmail
-          )}
-        </ListDetailsItem>
-      </Section>
+      <>
+        <Stack>
+          <InfoCell label={t("apps.shipments.details.origin")}>
+            {shipment.stock_location?.name ?? <EmptyValue />}
+          </InfoCell>
+          <InfoCell label={t("resources.shipping_methods.name")}>
+            {shipment.shipping_method?.name ?? <EmptyValue />}
+          </InfoCell>
+        </Stack>
+        <Stack>
+          <InfoCell label={t("resources.orders.name")}>
+            {order?.number == null ? (
+              <EmptyValue />
+            ) : canAccess("orders") ? (
+              <Button variant="link" {...navigateToOrder}>
+                #{order.number}
+              </Button>
+            ) : (
+              `#${order.number}`
+            )}
+          </InfoCell>
+          <InfoCell label={t("resources.customers.name")}>
+            {customer?.email == null ? (
+              <EmptyValue />
+            ) : canAccess("customers") ? (
+              <Button variant="link" {...navigateToCustomer}>
+                {customer.email}
+              </Button>
+            ) : (
+              customer.email
+            )}
+          </InfoCell>
+        </Stack>
+      </>
     )
   },
 )
+
+/** One cell of the stack: a muted label above the value. */
+function InfoCell({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}): React.JSX.Element {
+  return (
+    <div>
+      <Spacer bottom="2">
+        <Text size="small" tag="div" variant="info" weight="semibold">
+          {label}
+        </Text>
+      </Spacer>
+      <Text tag="div" weight="semibold">
+        {children}
+      </Text>
+    </div>
+  )
+}
+
+function EmptyValue(): React.JSX.Element {
+  return <Text className="text-gray-300">&#8212;</Text>
+}
