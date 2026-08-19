@@ -2,9 +2,8 @@ import {
   Badge,
   Button,
   formatDate,
-  Spacer,
   Stack,
-  Text,
+  StackCell,
   useAppLinking,
   useTokenProvider,
   withSkeletonTemplate,
@@ -42,14 +41,12 @@ export const SubscriptionInfo = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <Stack>
-          <InfoCell label="Frequency">
-            {getFrequencyLabelByValue(subscription.frequency) ?? <EmptyValue />}
-          </InfoCell>
-          <InfoCell label="Last run">
-            {subscription.last_run_at == null ? (
-              <EmptyValue />
-            ) : (
+        <Stack size="small">
+          <StackCell label="Frequency">
+            {getFrequencyLabelByValue(subscription.frequency)}
+          </StackCell>
+          <StackCell label="Last run">
+            {subscription.last_run_at == null ? undefined : (
               <div className="flex items-center gap-2">
                 {formatDate({
                   format: "full",
@@ -62,73 +59,47 @@ export const SubscriptionInfo = withSkeletonTemplate<Props>(
                 )}
               </div>
             )}
-          </InfoCell>
-          <InfoCell label="Next run">
+          </StackCell>
+        </Stack>
+        {/* on its own row: five cells do not pair up, and pairing this with the
+            source order below would mix the schedule with the relations */}
+        <Stack size="small">
+          <StackCell label="Next run">
             {/* a cancelled subscription will not run again */}
             {subscription.status === "cancelled" ||
-            subscription.next_run_at == null ? (
-              <EmptyValue />
-            ) : (
-              formatDate({
-                format: "full",
-                isoDate: subscription.next_run_at,
-                timezone: user?.timezone,
-                locale: user?.locale,
-              })
-            )}
-          </InfoCell>
+            subscription.next_run_at == null
+              ? undefined
+              : formatDate({
+                  format: "full",
+                  isoDate: subscription.next_run_at,
+                  timezone: user?.timezone,
+                  locale: user?.locale,
+                })}
+          </StackCell>
         </Stack>
-        <Stack>
-          <InfoCell label="Source order">
-            {sourceOrder?.number == null ? (
-              <EmptyValue />
-            ) : canAccess("orders") ? (
+        <Stack size="small">
+          <StackCell label="Source order">
+            {sourceOrder?.number == null ? undefined : canAccess("orders") ? (
               <Button variant="link" {...navigateToOrder}>
                 #{sourceOrder.number}
               </Button>
             ) : (
               `#${sourceOrder.number}`
             )}
-          </InfoCell>
-          <InfoCell label="Customer">
-            {subscription.customer_email == null ? (
-              <EmptyValue />
-            ) : canAccess("customers") ? (
+          </StackCell>
+          <StackCell label="Customer">
+            {subscription.customer_email == null ? undefined : canAccess(
+                "customers",
+              ) ? (
               <Button variant="link" {...navigateToCustomer}>
                 {subscription.customer_email}
               </Button>
             ) : (
               subscription.customer_email
             )}
-          </InfoCell>
+          </StackCell>
         </Stack>
       </>
     )
   },
 )
-
-/** One cell of the stack: a muted label above the value. */
-function InfoCell({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}): React.JSX.Element {
-  return (
-    <div>
-      <Spacer bottom="2">
-        <Text size="small" tag="div" variant="info" weight="semibold">
-          {label}
-        </Text>
-      </Spacer>
-      <Text tag="div" weight="semibold">
-        {children}
-      </Text>
-    </div>
-  )
-}
-
-function EmptyValue(): React.JSX.Element {
-  return <Text className="text-gray-300">&#8212;</Text>
-}

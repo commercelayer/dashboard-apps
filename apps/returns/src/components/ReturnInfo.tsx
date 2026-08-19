@@ -1,8 +1,7 @@
 import {
   Button,
-  Spacer,
   Stack,
-  Text,
+  StackCell,
   useAppLinking,
   useTokenProvider,
   useTranslation,
@@ -49,24 +48,22 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <Stack>
-          <InfoCell label={t("apps.returns.details.origin")}>
-            {originAddress?.city == null ? (
-              <EmptyValue />
-            ) : (
-              `${originAddress.city}${
-                originAddress.country_code != null
-                  ? ` (${originAddress.country_code})`
-                  : ""
-              }`
-            )}
-          </InfoCell>
-          <InfoCell label={t("apps.returns.details.destination")}>
-            {returnObj.stock_location?.name ?? <EmptyValue />}
-          </InfoCell>
+        <Stack size="small">
+          <StackCell label={t("apps.returns.details.origin")}>
+            {originAddress?.city == null
+              ? undefined
+              : `${originAddress.city}${
+                  originAddress.country_code != null
+                    ? ` (${originAddress.country_code})`
+                    : ""
+                }`}
+          </StackCell>
+          <StackCell label={t("apps.returns.details.destination")}>
+            {returnObj.stock_location?.name}
+          </StackCell>
         </Stack>
-        <Stack>
-          <InfoCell label={t("resources.orders.name")}>
+        <Stack size="small">
+          <StackCell label={t("resources.orders.name")}>
             {canAccess("orders") ? (
               <Button variant="link" {...navigateToOrder}>
                 {`${returnOrderMarket} ${returnOrderNumber}`}
@@ -74,8 +71,8 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
             ) : (
               `${returnOrderMarket} ${returnOrderNumber}`
             )}
-          </InfoCell>
-          <InfoCell label={t("resources.customers.name")}>
+          </StackCell>
+          <StackCell label={t("resources.customers.name")}>
             {canAccess("customers") ? (
               <Button variant="link" {...navigateToCustomer}>
                 {returnCustomerEmail}
@@ -83,35 +80,9 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
             ) : (
               returnCustomerEmail
             )}
-          </InfoCell>
+          </StackCell>
         </Stack>
       </>
     )
   },
 )
-
-/** One cell of the stack: a muted label above the value. */
-function InfoCell({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}): React.JSX.Element {
-  return (
-    <div>
-      <Spacer bottom="2">
-        <Text size="small" tag="div" variant="info" weight="semibold">
-          {label}
-        </Text>
-      </Spacer>
-      <Text tag="div" weight="semibold">
-        {children}
-      </Text>
-    </div>
-  )
-}
-
-function EmptyValue(): React.JSX.Element {
-  return <Text className="text-gray-300">&#8212;</Text>
-}

@@ -1,8 +1,7 @@
 import {
   Button,
-  Spacer,
   Stack,
-  Text,
+  StackCell,
   useAppLinking,
   useTokenProvider,
   useTranslation,
@@ -43,65 +42,35 @@ export const ShipmentInfo = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <Stack>
-          <InfoCell label={t("apps.shipments.details.origin")}>
-            {shipment.stock_location?.name ?? <EmptyValue />}
-          </InfoCell>
-          <InfoCell label={t("resources.shipping_methods.name")}>
-            {shipment.shipping_method?.name ?? <EmptyValue />}
-          </InfoCell>
+        <Stack size="small">
+          <StackCell label={t("apps.shipments.details.origin")}>
+            {shipment.stock_location?.name}
+          </StackCell>
+          <StackCell label={t("resources.shipping_methods.name")}>
+            {shipment.shipping_method?.name}
+          </StackCell>
         </Stack>
-        <Stack>
-          <InfoCell label={t("resources.orders.name")}>
-            {order?.number == null ? (
-              <EmptyValue />
-            ) : canAccess("orders") ? (
+        <Stack size="small">
+          <StackCell label={t("resources.orders.name")}>
+            {order?.number == null ? undefined : canAccess("orders") ? (
               <Button variant="link" {...navigateToOrder}>
                 #{order.number}
               </Button>
             ) : (
               `#${order.number}`
             )}
-          </InfoCell>
-          <InfoCell label={t("resources.customers.name")}>
-            {customer?.email == null ? (
-              <EmptyValue />
-            ) : canAccess("customers") ? (
+          </StackCell>
+          <StackCell label={t("resources.customers.name")}>
+            {customer?.email == null ? undefined : canAccess("customers") ? (
               <Button variant="link" {...navigateToCustomer}>
                 {customer.email}
               </Button>
             ) : (
               customer.email
             )}
-          </InfoCell>
+          </StackCell>
         </Stack>
       </>
     )
   },
 )
-
-/** One cell of the stack: a muted label above the value. */
-function InfoCell({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}): React.JSX.Element {
-  return (
-    <div>
-      <Spacer bottom="2">
-        <Text size="small" tag="div" variant="info" weight="semibold">
-          {label}
-        </Text>
-      </Spacer>
-      <Text tag="div" weight="semibold">
-        {children}
-      </Text>
-    </div>
-  )
-}
-
-function EmptyValue(): React.JSX.Element {
-  return <Text className="text-gray-300">&#8212;</Text>
-}
