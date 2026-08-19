@@ -241,13 +241,6 @@ export function CustomerDetails(): React.JSX.Element {
       }
       // stays last at every width: stacked, it follows the sidebar instead of
       // letting the sidebar sink to the bottom of the page
-      afterSidebar={
-        <SkeletonTemplate isLoading={isLoading}>
-          <Spacer top="14" bottom="4">
-            <CustomerTimeline customer={customer} />
-          </Spacer>
-        </SkeletonTemplate>
-      }
       scrollToTop
     >
       <SkeletonTemplate isLoading={isLoading}>
@@ -273,6 +266,12 @@ export function CustomerDetails(): React.JSX.Element {
               resourceId={customer.id}
             />
           </Spacer>
+        </Spacer>
+      </SkeletonTemplate>
+
+      <SkeletonTemplate isLoading={isLoading}>
+        <Spacer top="14" bottom="4">
+          <CustomerTimeline customer={customer} />
         </Spacer>
       </SkeletonTemplate>
 
