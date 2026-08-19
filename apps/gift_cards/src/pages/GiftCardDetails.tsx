@@ -180,19 +180,17 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
     return <GenericPageNotFound />
   }
 
+  // masked, as in the list: the full code is in the Info block
+  const pageTitle = `Gift card ${maskGiftCardCode(giftCard.code)}`
+
   return (
     <DetailsDrawer drawer onBackdropClick={closeDrawer}>
       <div className="p-6">
         <PageHeading
           title={
             <SkeletonTemplate isLoading={isLoading}>
-              {`Gift card ${giftCard?.formatted_initial_balance}`}
+              {pageTitle}
               <BadgeStatus status={giftCard?.status} />
-            </SkeletonTemplate>
-          }
-          description={
-            <SkeletonTemplate isLoading={isLoading}>
-              {maskGiftCardCode(giftCard.code)}
             </SkeletonTemplate>
           }
           navigationButton={{
@@ -220,7 +218,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
                 <Spacer top="14">
                   <ResourceInfoBlocks
                     resource={giftCard}
-                    title={`Gift card ${giftCard?.formatted_initial_balance}`}
+                    title={pageTitle}
                     onUpdated={async () => {
                       void mutateGiftCard()
                     }}
