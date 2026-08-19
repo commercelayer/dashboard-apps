@@ -1,8 +1,7 @@
 import {
   Button,
-  Spacer,
   Stack,
-  Text,
+  StackCell,
   useAppLinking,
   useTokenProvider,
   withSkeletonTemplate,
@@ -44,65 +43,35 @@ export const StockTransferInfo = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <Stack>
-          <InfoCell label="Origin">
-            {stockTransfer?.origin_stock_location?.name ?? <EmptyValue />}
-          </InfoCell>
-          <InfoCell label="Destination">
-            {stockTransfer?.destination_stock_location?.name ?? <EmptyValue />}
-          </InfoCell>
+        <Stack size="small">
+          <StackCell label="Origin">
+            {stockTransfer?.origin_stock_location?.name}
+          </StackCell>
+          <StackCell label="Destination">
+            {stockTransfer?.destination_stock_location?.name}
+          </StackCell>
         </Stack>
-        <Stack>
-          <InfoCell label="Order">
-            {order?.number == null ? (
-              <EmptyValue />
-            ) : canAccess("orders") ? (
+        <Stack size="small">
+          <StackCell label="Order">
+            {order?.number == null ? undefined : canAccess("orders") ? (
               <Button variant="link" {...navigateToOrder}>
                 #{order.number}
               </Button>
             ) : (
               `#${order.number}`
             )}
-          </InfoCell>
-          <InfoCell label="Shipment">
-            {shipment?.number == null ? (
-              <EmptyValue />
-            ) : canAccess("shipments") ? (
+          </StackCell>
+          <StackCell label="Shipment">
+            {shipment?.number == null ? undefined : canAccess("shipments") ? (
               <Button variant="link" {...navigateToShipment}>
                 #{shipment.number}
               </Button>
             ) : (
               `#${shipment.number}`
             )}
-          </InfoCell>
+          </StackCell>
         </Stack>
       </>
     )
   },
 )
-
-/** One cell of the stack: a muted label above the value. */
-function InfoCell({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}): React.JSX.Element {
-  return (
-    <div>
-      <Spacer bottom="2">
-        <Text size="small" tag="div" variant="info" weight="semibold">
-          {label}
-        </Text>
-      </Spacer>
-      <Text tag="div" weight="semibold">
-        {children}
-      </Text>
-    </div>
-  )
-}
-
-function EmptyValue(): React.JSX.Element {
-  return <Text className="text-gray-300">&#8212;</Text>
-}
