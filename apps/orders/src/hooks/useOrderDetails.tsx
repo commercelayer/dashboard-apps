@@ -24,6 +24,16 @@ export const orderIncludeAttribute = [
   "payment_source",
   "transactions",
 
+  // payment sessions (API version 2026-05+)
+  "payment_sessions",
+  "payment_sessions.payment_setting",
+  "payment_sessions.payment_authorization",
+  "payment_sessions.payment_captures",
+  "payment_sessions.payment_void",
+  "payment_sessions.payment_refunds",
+  "payment_sessions.payment_transactions",
+  "payment_sessions.events",
+
   // order editing
   "line_items.sku",
   "shipments.shipping_method",
