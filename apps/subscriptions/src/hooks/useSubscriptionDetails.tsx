@@ -11,6 +11,15 @@ export const orderSubscriptionIncludeAttribute = [
   "order_subscription_items.sku",
   "order_subscription_items.bundle",
   "customer_payment_source.payment_source",
+  // 2026-05+ replaces `customer_payment_source` with a stored wallet: the
+  // setting says which gateway, the wallet carries the card.
+  "payment_wallet",
+  "payment_wallet.payment_setting",
+  // Recorded instead of a wallet when the gateway cannot vault a card. The
+  // same record is included through the source order's session too, because
+  // only there does core serialize the STI subclass that names the gateway.
+  "payment_setting",
+  "source_order.payment_sessions.payment_setting",
 ]
 
 export function useSubscriptionDetails(id: string) {

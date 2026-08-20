@@ -6,6 +6,7 @@ import {
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
+import { OrderPaymentTotals } from "#components/OrderPayment/OrderPaymentTotals"
 import { useOrderDetails } from "#hooks/useOrderDetails"
 import { DeleteCouponButton } from "../DeleteCouponButton"
 import { SummaryRows } from "../SummaryRows"
@@ -71,6 +72,7 @@ export function useSummaryRows(order: Order): {
     element: (
       <>
         <SummaryRows order={order} editable={isEditing} />
+        <OrderPaymentTotals order={order} />
         {diffTotalAndPlacedTotal != null && (
           <Spacer bottom="8">
             <Alert status="warning">
