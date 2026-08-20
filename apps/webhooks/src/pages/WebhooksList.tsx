@@ -24,8 +24,6 @@ export const WebhooksList: FC = () => {
     type: "webhooks",
     columns,
     query: {
-      // "Last fired" reads the most recent callback off this relationship
-      include: ["last_event_callbacks"],
       pageSize: 25,
     },
     defaultSort: "-created_at",
