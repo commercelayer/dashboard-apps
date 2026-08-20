@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "install:local": "node install-local.mjs",
     "dev": "pnpm --filter index dev",
     "build": "pnpm build:apps",
     "build:apps": "pnpm --parallel --aggregate-output --color --filter \"app-*\" build",
