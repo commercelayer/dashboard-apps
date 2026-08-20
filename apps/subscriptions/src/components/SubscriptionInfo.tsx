@@ -61,8 +61,6 @@ export const SubscriptionInfo = withSkeletonTemplate<Props>(
             )}
           </StackCell>
         </Stack>
-        {/* on its own row: five cells do not pair up, and pairing this with the
-            source order below would mix the schedule with the relations */}
         <Stack size="small">
           <StackCell label="Next run">
             {/* a cancelled subscription will not run again */}
@@ -76,6 +74,9 @@ export const SubscriptionInfo = withSkeletonTemplate<Props>(
                   locale: user?.locale,
                 })}
           </StackCell>
+          {/* the market used to be the page title; here it fills the row the
+              schedule would otherwise leave half empty */}
+          <StackCell label="Market">{subscription.market?.name}</StackCell>
         </Stack>
         <Stack size="small">
           <StackCell label="Source order">

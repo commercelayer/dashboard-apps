@@ -1,8 +1,7 @@
 import {
   formatDateWithPredicate,
-  ListDetailsItem,
-  Section,
-  Text,
+  Stack,
+  StackCell,
   useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
@@ -14,8 +13,8 @@ interface Props {
 }
 
 /**
- * Summary of the customer, laid out as the other apps' info sections: one
- * `ListDetailsItem` per fact, label on the left and value on the right.
+ * Summary of the customer, as the row of facts the other details pages open with:
+ * label above value, side by side once there is room for them.
  *
  * The status is not repeated here: it is shown as a badge next to the page title.
  */
@@ -24,39 +23,40 @@ export const CustomerInfo = withSkeletonTemplate<Props>(
     const { user } = useTokenProvider()
     const { t } = useTranslation()
 
+    const newsletterSubscribedAt =
+      customer.customer_subscriptions?.[0]?.created_at
+
+    // two cells per row, as a small `Stack` is meant to be read: consecutive
+    // stacks merge their borders, so the two rows still read as one block
     return (
-      <Section title={t("common.info")}>
-        <ListDetailsItem label={t("resources.orders.name_other")} gutter="none">
-          {customer.total_orders_count ?? 0}
-        </ListDetailsItem>
-        <ListDetailsItem label={t("apps.customers.details.type")} gutter="none">
-          {customer?.has_password === true
-            ? t("apps.customers.details.registered")
-            : t("apps.customers.details.guest")}
-        </ListDetailsItem>
-        <ListDetailsItem
-          label={t("apps.customers.form.customer_group_label")}
-          gutter="none"
-        >
-          {customer?.customer_group?.name ?? (
-            <Text className="text-gray-300">&#8212;</Text>
-          )}
-        </ListDetailsItem>
-        {customer.customer_subscriptions != null &&
-          customer.customer_subscriptions.length > 0 && (
-            <ListDetailsItem
-              label={t("apps.customers.details.newsletter")}
-              gutter="none"
-            >
-              {formatDateWithPredicate({
-                predicate: t("apps.customers.details.subscribed"),
-                isoDate: customer.customer_subscriptions[0]?.created_at ?? "",
-                timezone: user?.timezone,
-                locale: user?.locale,
-              })}
-            </ListDetailsItem>
-          )}
-      </Section>
+      <>
+        <Stack size="small">
+          <StackCell label={t("resources.orders.name_other")}>
+            {customer.total_orders_count ?? 0}
+          </StackCell>
+          <StackCell label={t("apps.customers.details.type")}>
+            {customer?.has_password === true
+              ? t("apps.customers.details.registered")
+              : t("apps.customers.details.guest")}
+          </StackCell>
+        </Stack>
+        <Stack size="small">
+          <StackCell label={t("apps.customers.form.customer_group_label")}>
+            {/* an empty cell renders as a dash on its own */}
+            {customer?.customer_group?.name}
+          </StackCell>
+          <StackCell label={t("apps.customers.details.newsletter")}>
+            {newsletterSubscribedAt != null
+              ? formatDateWithPredicate({
+                  predicate: t("apps.customers.details.subscribed"),
+                  isoDate: newsletterSubscribedAt,
+                  timezone: user?.timezone,
+                  locale: user?.locale,
+                })
+              : "Not subscribed"}
+          </StackCell>
+        </Stack>
+      </>
     )
   },
 )
