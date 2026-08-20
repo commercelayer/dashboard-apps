@@ -1,5 +1,4 @@
 import {
-  Icon,
   ListItem,
   ResourceAddress,
   Section,
@@ -29,28 +28,23 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
 
     const addresses = customer.customer_addresses?.map((customerAddress) =>
       customerAddress?.address != null ? (
-        <div key={customerAddress?.address?.id} className="relative">
-          <ListItem>
-            <ResourceAddress
-              address={customerAddress?.address}
-              editable={canUser("update", "addresses")}
-              showBillingInfo
-            />
-          </ListItem>
-          {canUser("destroy", "addresses") && (
-            <div className="absolute right-0" style={{ bottom: "12px" }}>
-              <button
-                type="button"
-                onClick={() => {
-                  setAddressSetForDeletion(customerAddress)
-                  show()
-                }}
-              >
-                <Icon name="trash" size={18} />
-              </button>
-            </div>
-          )}
-        </div>
+        <ListItem key={customerAddress?.address?.id}>
+          <ResourceAddress
+            address={customerAddress?.address}
+            editable={canUser("update", "addresses")}
+            // both actions sit in the address's own `…` menu, rather than a
+            // trash icon pinned over the corner of the row
+            onDelete={
+              canUser("destroy", "addresses")
+                ? () => {
+                    setAddressSetForDeletion(customerAddress)
+                    show()
+                  }
+                : undefined
+            }
+            showBillingInfo
+          />
+        </ListItem>
       ) : null,
     )
 

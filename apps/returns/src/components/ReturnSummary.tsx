@@ -71,6 +71,12 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
         {canUser("update", "returns") && (
           <ActionButtons
             actions={triggerAttributes
+              // archiving lives in the page's action menu, above
+              .filter(
+                (triggerAttribute) =>
+                  triggerAttribute !== "_archive" &&
+                  triggerAttribute !== "_unarchive",
+              )
               .filter((triggerAttributes) => {
                 return (
                   triggerAttributes !== "_refund" ||

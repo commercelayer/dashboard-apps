@@ -20,9 +20,13 @@ import { ReturnInfo } from "#components/ReturnInfo"
 import { ReturnSummary } from "#components/ReturnSummary"
 import { ScrollToTop } from "#components/ScrollToTop"
 import { Timeline } from "#components/Timeline"
-import { getReturnStatusBadgeVariant } from "#data/dictionaries"
+import {
+  getReturnStatusBadgeVariant,
+  getReturnTriggerAttributeName,
+} from "#data/dictionaries"
 import { appRoutes } from "#data/routes"
 import { useReturnDetails } from "#hooks/useReturnDetails"
+import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
 function ReturnDetails(): React.JSX.Element {
   const {
@@ -35,6 +39,9 @@ function ReturnDetails(): React.JSX.Element {
   const { goBack } = useAppLinking()
 
   const returnId = params?.returnId ?? ""
+
+  const { dispatch: dispatchTrigger, isLoading: isTriggering } =
+    useTriggerAttribute(returnId)
 
   const { returnObj, isLoading, mutateReturn, error } =
     useReturnDetails(returnId)
@@ -80,6 +87,23 @@ function ReturnDetails(): React.JSX.Element {
       extras,
     )
     pageToolbar.buttons?.push(resourceInspectorButton)
+  }
+
+  // Archiving is filing a return away rather than moving it along, so it belongs
+  // with the page's own actions and not among the lifecycle buttons under the
+  // items. Only a cancelled return can be filed, as before.
+  if (returnObj.status === "cancelled" && canUser("update", "returns")) {
+    const archiveTrigger =
+      returnObj.archived_at == null ? "_archive" : "_unarchive"
+    pageToolbar.dropdownItems?.push([
+      {
+        label: getReturnTriggerAttributeName(archiveTrigger),
+        disabled: isTriggering,
+        onClick: () => {
+          void dispatchTrigger(archiveTrigger)
+        },
+      },
+    ])
   }
 
   return (
