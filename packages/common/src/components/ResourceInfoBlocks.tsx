@@ -4,7 +4,6 @@ import {
   ResourceDetails,
   ResourceMetadata,
   ResourceTags,
-  Spacer,
 } from "@commercelayer/app-elements"
 import type { ListableResource } from "@commercelayer/sdk"
 
@@ -61,17 +60,17 @@ export function ResourceInfoBlocks({
         />
       )}
       {canFetchRelated && (
-        <Spacer top={isTaggableResource(resourceType) ? "10" : undefined}>
+        <div className={"mt-14" + (isTaggableResource(resourceType) ? " lg:mt-10" : undefined)}>
           <ResourceMetadata
             resourceType={resourceType}
             resourceId={resource.id}
             overlay={{ title }}
           />
-        </Spacer>
+        </div>
       )}
-      <Spacer top={canFetchRelated ? "10" : undefined}>
+      <div className={"mt-14" + (canFetchRelated ? " lg:mt-10" : undefined)}>
         <ResourceDetails resource={resource} onUpdated={onUpdated} />
-      </Spacer>
+      </div>
     </div>
   )
 }

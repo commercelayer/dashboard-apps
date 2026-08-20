@@ -144,7 +144,7 @@ function ShipmentDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <ShipmentAddresses shipment={shipment} />
-          <Spacer top="10">
+          <div className="mt-14 lg:mt-10">
             <ResourceInfoBlocks
               resource={shipment}
               title={pageTitle}
@@ -152,7 +152,7 @@ function ShipmentDetails(): React.JSX.Element {
                 void mutateShipment()
               }}
             />
-          </Spacer>
+          </div>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of
@@ -160,10 +160,7 @@ function ShipmentDetails(): React.JSX.Element {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <pageToolbar.Components />
-        <Spacer bottom="4">
-          <Spacer top="14">
             <ShipmentInfo shipment={shipment} />
-          </Spacer>
           <Spacer top="14">
             <ShipmentPackingList shipment={shipment} />
           </Spacer>
@@ -173,13 +170,9 @@ function ShipmentDetails(): React.JSX.Element {
               resourceId={shipment.id}
             />
           </Spacer>
-        </Spacer>
-      </SkeletonTemplate>
-
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer top="14" bottom="4">
-          <ShipmentTimeline shipment={shipment} />
-        </Spacer>
+          <Spacer top="14">
+            <ShipmentTimeline shipment={shipment} />
+          </Spacer>
       </SkeletonTemplate>
     </PageLayout>
   )
