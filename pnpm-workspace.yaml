@@ -12,3 +12,5 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@commercelayer/app-elements'
   - '@commercelayer/sdk'
+
+blockExoticSubdeps: false
