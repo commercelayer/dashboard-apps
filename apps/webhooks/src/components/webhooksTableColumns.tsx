@@ -36,6 +36,13 @@ export function useWebhooksTableColumns(): Array<
         ),
       },
       {
+        header: "Topic",
+        // the event it listens to, an API identifier rather than prose
+        kind: "code",
+        sortBy: "topic",
+        cell: ({ resource }) => <Text>{resource.topic}</Text>,
+      },
+      {
         header: "Status",
         kind: "status",
         cell: ({ resource }) => <RowStatusBadge resource={resource} />,
