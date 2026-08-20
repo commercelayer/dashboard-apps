@@ -194,7 +194,7 @@ export const CouponRow = withSkeletonTemplate<
               }
               dropdownLabel={
                 <Button variant="circle">
-                  <Icon name="dotsThree" size={24} />
+                  <Icon name="dotsThree" size={16} />
                 </Button>
               }
             />

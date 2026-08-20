@@ -111,7 +111,7 @@ function CallbackRowActions({
 
   return (
     <Dropdown
-      dropdownLabel={<Icon name="dotsThree" size="24" />}
+      dropdownLabel={<Icon name="dotsThree" size="16" />}
       dropdownItems={[
         <DropdownItem
           key="payload"

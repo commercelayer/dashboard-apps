@@ -216,7 +216,7 @@ function SubscriptionDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <SubscriptionAddresses subscription={subscription} />
-          <div className="mt-14 lg:mt-10">
+          <Spacer top={{ base: "14", lg: "10" }}>
             <ResourceInfoBlocks
               resource={subscription}
               title={pageTitle}
@@ -227,7 +227,7 @@ function SubscriptionDetails(): React.JSX.Element {
                 setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
               }}
             />
-          </div>
+          </Spacer>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of

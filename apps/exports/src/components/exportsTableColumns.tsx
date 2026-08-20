@@ -254,7 +254,7 @@ function ExportRowActions({ job }: { job: Export }): React.JSX.Element | null {
       )}
 
       <Dropdown
-        dropdownLabel={<Icon name="dotsThree" size="24" />}
+        dropdownLabel={<Icon name="dotsThree" size="16" />}
         dropdownItems={dropdownItems}
       />
     </>

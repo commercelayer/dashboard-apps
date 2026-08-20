@@ -225,7 +225,7 @@ export function CustomerDetails(): React.JSX.Element {
             }}
           />
 
-          <div className="mt-14 lg:mt-10">
+          <Spacer top={{ base: "14", lg: "10" }}>
             <ResourceInfoBlocks
               resource={customer}
               title={pageTitle}
@@ -236,7 +236,7 @@ export function CustomerDetails(): React.JSX.Element {
                 setLocation(appRoutes.home.makePath(`tags_id_in=${tagId}`))
               }}
             />
-          </div>
+          </Spacer>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of
