@@ -116,7 +116,7 @@ function ReturnDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <ReturnAddresses returnObj={returnObj} />
-          <Spacer top="10">
+           <div className="mt-14 lg:mt-10">
             <ResourceInfoBlocks
               resource={returnObj}
               title={pageTitle}
@@ -124,7 +124,7 @@ function ReturnDetails(): React.JSX.Element {
                 void mutateReturn()
               }}
             />
-          </Spacer>
+          </div>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of
@@ -132,10 +132,7 @@ function ReturnDetails(): React.JSX.Element {
     >
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom="4">
-          <Spacer top="14">
             <ReturnInfo returnObj={returnObj} />
-          </Spacer>
           <Spacer top="14">
             <ReturnSummary returnObj={returnObj} />
           </Spacer>
@@ -145,12 +142,8 @@ function ReturnDetails(): React.JSX.Element {
               resourceId={returnObj.id}
             />
           </Spacer>
-        </Spacer>
-      </SkeletonTemplate>
-
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer top="14" bottom="4">
-          <Timeline returnObj={returnObj} />
+          <Spacer top="14">
+            <Timeline returnObj={returnObj} />
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>

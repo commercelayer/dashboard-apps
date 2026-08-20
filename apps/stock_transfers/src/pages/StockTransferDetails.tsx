@@ -192,8 +192,7 @@ export function StockTransferDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <StockTransferAddresses stockTransfer={stockTransfer} />
-          <div className="print:hidden">
-            <Spacer top="10">
+          <div className="mt-14 lg:mt-10 print:hidden">
               <ResourceInfoBlocks
                 resource={stockTransfer}
                 title={pageTitle}
@@ -201,7 +200,6 @@ export function StockTransferDetails(): React.JSX.Element {
                   void mutateStockTransfer()
                 }}
               />
-            </Spacer>
           </div>
         </SkeletonTemplate>
       }
@@ -223,18 +221,11 @@ export function StockTransferDetails(): React.JSX.Element {
           }}
           cancelLabel="Close"
         />
-        <Spacer bottom="4">
-          <Spacer top="14">
-            <StockTransferInfo stockTransfer={stockTransfer} />
-          </Spacer>
+          <StockTransferInfo stockTransfer={stockTransfer} />
           <Spacer top="14">
             <StockTransferSummary stockTransfer={stockTransfer} />
           </Spacer>
-        </Spacer>
-      </SkeletonTemplate>
-
-      <SkeletonTemplate isLoading={isLoading}>
-        <div className="print:hidden">
+          <div className="print:hidden">
           <Spacer top="14" bottom="4">
             <Timeline stockTransfer={stockTransfer} />
           </Spacer>

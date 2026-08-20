@@ -182,10 +182,10 @@ function OrderDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <OrderCustomer order={order} />
-          <Spacer top="10">
+          <div className="mt-14 lg:mt-10">
             <OrderAddresses order={order} />
-          </Spacer>
-          <Spacer top="10">
+          </div>
+          <div className="mt-14 lg:mt-10">
             {/* `print:hidden` as it was in the main column: a printed order is a
                 document for the customer, and the id/reference/timestamps are for
                 whoever works on it */}
@@ -200,52 +200,42 @@ function OrderDetails(): React.JSX.Element {
                 setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
               }}
             />
-          </Spacer>
+          </div>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of
       // letting the sidebar sink to the bottom of the page
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom="4">
+        <OrderSummary order={order} />
+        <div className="print:hidden">
           <Spacer top="14">
-            <OrderSummary order={order} />
+            <OrderPayment order={order} />
           </Spacer>
+        </div>
+        <div className="print:hidden">
+          <Spacer top="14">
+            <OrderShipments order={order} />
+          </Spacer>
+          {!isLoadingReturns && (
+            <Spacer top="14">
+              <OrderReturns returns={returns} />
+            </Spacer>
+          )}
+        </div>
+        <div className="print:hidden">
+          <Spacer top="14">
+            <ResourceAttachments resourceType="orders" resourceId={order.id} />
+          </Spacer>
+        </div>
+        {!["draft"].includes(order.status) && (
           <div className="print:hidden">
             <Spacer top="14">
-              <OrderPayment order={order} />
-            </Spacer>
-          </div>
-          <div className="print:hidden">
-            <Spacer top="14">
-              <OrderShipments order={order} />
-            </Spacer>
-            {!isLoadingReturns && (
-              <Spacer top="14">
-                <OrderReturns returns={returns} />
-              </Spacer>
-            )}
-          </div>
-          <div className="print:hidden">
-            <Spacer top="14">
-              <ResourceAttachments
-                resourceType="orders"
-                resourceId={order.id}
-              />
-            </Spacer>
-          </div>
-        </Spacer>
-      </SkeletonTemplate>
-
-      {!["draft"].includes(order.status) && (
-        <SkeletonTemplate isLoading={isLoading}>
-          <div className="print:hidden">
-            <Spacer top="14" bottom="4">
               <Timeline order={order} />
             </Spacer>
           </div>
-        </SkeletonTemplate>
-      )}
+        )}
+      </SkeletonTemplate>
 
       {confirmDialogs}
     </PageLayout>

@@ -225,7 +225,7 @@ export function CustomerDetails(): React.JSX.Element {
             }}
           />
 
-          <Spacer top="10">
+          <div className="mt-14 lg:mt-10">
             <ResourceInfoBlocks
               resource={customer}
               title={pageTitle}
@@ -236,7 +236,7 @@ export function CustomerDetails(): React.JSX.Element {
                 setLocation(appRoutes.home.makePath(`tags_id_in=${tagId}`))
               }}
             />
-          </Spacer>
+          </div>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of
@@ -244,11 +244,8 @@ export function CustomerDetails(): React.JSX.Element {
       scrollToTop
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom="4">
-          <CustomerAnonymization customerId={customer.id} />
-          <Spacer top="14">
-            <CustomerInfo customer={customer} />
-          </Spacer>
+        <CustomerAnonymization customerId={customer.id} />
+        <CustomerInfo customer={customer} />
           <Spacer top="14">
             <CustomerLastOrders />
           </Spacer>
@@ -266,12 +263,8 @@ export function CustomerDetails(): React.JSX.Element {
               resourceId={customer.id}
             />
           </Spacer>
-        </Spacer>
-      </SkeletonTemplate>
-
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer top="14" bottom="4">
-          <CustomerTimeline customer={customer} />
+          <Spacer top="14">
+            <CustomerTimeline customer={customer} />
         </Spacer>
       </SkeletonTemplate>
 

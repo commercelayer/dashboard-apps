@@ -221,10 +221,8 @@ function Page(
         />
         {/* the two stacks are adjacent on purpose: they pull together into a
             single grid, so the six values read as one block */}
-        <Spacer top="10">
           <CardStatus promotionId={props.params.promotionId} />
           <SectionInfo promotion={promotion} />
-        </Spacer>
 
         {promotion.type === "flex_promotions" && (
           <>

@@ -192,7 +192,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         key={currentImportJob?.id}
       />
 
-      <Spacer top="4" bottom="8">
+      <Spacer top="4">
         <div
           style={{
             borderWidth: "1px",
