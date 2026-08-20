@@ -182,10 +182,10 @@ function OrderDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <OrderCustomer order={order} />
-          <div className="mt-14 lg:mt-10">
+          <Spacer top={{ base: "14", lg: "10" }}>
             <OrderAddresses order={order} />
-          </div>
-          <div className="mt-14 lg:mt-10">
+          </Spacer>
+          <Spacer top={{ base: "14", lg: "10" }}>
             {/* `print:hidden` as it was in the main column: a printed order is a
                 document for the customer, and the id/reference/timestamps are for
                 whoever works on it */}
@@ -200,7 +200,7 @@ function OrderDetails(): React.JSX.Element {
                 setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
               }}
             />
-          </div>
+          </Spacer>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of

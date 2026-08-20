@@ -144,7 +144,7 @@ function ShipmentDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <ShipmentAddresses shipment={shipment} />
-          <div className="mt-14 lg:mt-10">
+          <Spacer top={{ base: "14", lg: "10" }}>
             <ResourceInfoBlocks
               resource={shipment}
               title={pageTitle}
@@ -152,7 +152,7 @@ function ShipmentDetails(): React.JSX.Element {
                 void mutateShipment()
               }}
             />
-          </div>
+          </Spacer>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of

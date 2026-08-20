@@ -57,7 +57,7 @@ export function useCustomersTableColumns(): Array<
         cell: ({ resource }) => (
           <div className="flex items-center gap-4">
             <CustomerAvatar customer={resource} />
-            <div className="min-w-0">
+            <div className="min-w-0 [&>*]:truncate">
               <Text tag="div" weight="medium">
                 {resource.email}
                 {/* the Status column is hidden on mobile, so the badge rides with the name */}

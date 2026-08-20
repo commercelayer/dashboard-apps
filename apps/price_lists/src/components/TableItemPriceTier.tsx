@@ -75,7 +75,7 @@ export const TableItemPriceTier = withSkeletonTemplate<Props>(
 
     const contextMenu = (
       <Dropdown
-        dropdownLabel={<Icon name="dotsThree" size={24} />}
+        dropdownLabel={<Icon name="dotsThree" size={16} />}
         dropdownItems={
           <>
             {contextMenuEdit}

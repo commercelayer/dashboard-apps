@@ -30,7 +30,7 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
               src={resource.sku?.image_url as `https://${string}`}
               size="small"
             />
-            <div>
+            <div className="min-w-0 [&>*]:truncate">
               <Text tag="div" weight="medium">
                 {resource.sku?.name}
               </Text>

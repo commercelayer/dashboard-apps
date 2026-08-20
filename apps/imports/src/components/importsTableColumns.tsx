@@ -200,7 +200,7 @@ function ImportRowActions({ job }: { job: Import }): React.JSX.Element | null {
       )}
 
       <Dropdown
-        dropdownLabel={<Icon name="dotsThree" size="24" />}
+        dropdownLabel={<Icon name="dotsThree" size="16" />}
         dropdownItems={dropdownItems}
       />
     </>

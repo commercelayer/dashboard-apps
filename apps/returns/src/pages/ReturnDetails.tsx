@@ -116,7 +116,7 @@ function ReturnDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <ReturnAddresses returnObj={returnObj} />
-          <div className="mt-14 lg:mt-10">
+          <Spacer top={{ base: "14", lg: "10" }}>
             <ResourceInfoBlocks
               resource={returnObj}
               title={pageTitle}
@@ -124,7 +124,7 @@ function ReturnDetails(): React.JSX.Element {
                 void mutateReturn()
               }}
             />
-          </div>
+          </Spacer>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of

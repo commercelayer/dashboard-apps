@@ -192,7 +192,7 @@ export function StockTransferDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <StockTransferAddresses stockTransfer={stockTransfer} />
-          <div className="mt-14 lg:mt-10 print:hidden">
+          <Spacer top={{ base: "14", lg: "10" }} className="print:hidden">
             <ResourceInfoBlocks
               resource={stockTransfer}
               title={pageTitle}
@@ -200,7 +200,7 @@ export function StockTransferDetails(): React.JSX.Element {
                 void mutateStockTransfer()
               }}
             />
-          </div>
+          </Spacer>
         </SkeletonTemplate>
       }
       // stays last at every width: stacked, it follows the sidebar instead of
