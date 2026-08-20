@@ -116,7 +116,7 @@ function ReturnDetails(): React.JSX.Element {
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
           <ReturnAddresses returnObj={returnObj} />
-           <div className="mt-14 lg:mt-10">
+          <div className="mt-14 lg:mt-10">
             <ResourceInfoBlocks
               resource={returnObj}
               title={pageTitle}
@@ -132,18 +132,18 @@ function ReturnDetails(): React.JSX.Element {
     >
       <ScrollToTop />
       <SkeletonTemplate isLoading={isLoading}>
-            <ReturnInfo returnObj={returnObj} />
-          <Spacer top="14">
-            <ReturnSummary returnObj={returnObj} />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceAttachments
-              resourceType="returns"
-              resourceId={returnObj.id}
-            />
-          </Spacer>
-          <Spacer top="14">
-            <Timeline returnObj={returnObj} />
+        <ReturnInfo returnObj={returnObj} />
+        <Spacer top="14">
+          <ReturnSummary returnObj={returnObj} />
+        </Spacer>
+        <Spacer top="14">
+          <ResourceAttachments
+            resourceType="returns"
+            resourceId={returnObj.id}
+          />
+        </Spacer>
+        <Spacer top="14">
+          <Timeline returnObj={returnObj} />
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>
