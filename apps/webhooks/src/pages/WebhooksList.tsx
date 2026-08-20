@@ -19,7 +19,6 @@ export const WebhooksList: FC = () => {
   const { ResourceList } = useResourceList({
     type: "webhooks",
     query: {
-      include: ["last_event_callbacks"],
       sort: {
         created_at: "desc",
       },
