@@ -11,7 +11,7 @@ importers:
   .:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.4.16
+        specifier: ^2.5.9
         version: 2.5.9
       husky:
         specifier: ^9.1.7
@@ -53,10 +53,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -78,10 +78,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -99,13 +99,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/customers:
@@ -135,10 +135,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -157,10 +157,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -178,13 +178,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/exports:
@@ -196,7 +196,7 @@ importers:
         specifier: 8.0.0-beta.11
         version: 8.0.0-beta.11
       '@testing-library/jest-dom':
-        specifier: ^6.9.1
+        specifier: ^6.10.0
         version: 6.10.0(@testing-library/dom@10.4.1)
       '@testing-library/react':
         specifier: ^16.3.2
@@ -239,10 +239,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       dotenv:
         specifier: ^17.4.2
@@ -254,7 +254,7 @@ importers:
         specifier: ^27.4.0
         version: 27.4.0
       prettier:
-        specifier: ^3.8.3
+        specifier: ^3.9.6
         version: 3.9.6
       rollup-plugin-external-globals:
         specifier: ^0.13.0
@@ -263,13 +263,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/gift_cards:
@@ -284,7 +284,7 @@ importers:
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.62.0(react@19.2.4))
       '@tanstack/react-virtual':
-        specifier: ^3.14.2
+        specifier: ^3.14.10
         version: 3.14.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       dashboard-apps-common:
         specifier: workspace:*
@@ -302,10 +302,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -324,10 +324,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -345,13 +345,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/imports:
@@ -372,7 +372,7 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       papaparse:
-        specifier: ^5.5.3
+        specifier: ^5.6.0
         version: 5.6.0
       react:
         specifier: 19.2.4
@@ -394,7 +394,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/app-builder
       '@testing-library/jest-dom':
-        specifier: ^6.9.1
+        specifier: ^6.10.0
         version: 6.10.0(@testing-library/dom@10.4.1)
       '@testing-library/react':
         specifier: ^16.3.2
@@ -409,10 +409,10 @@ importers:
         specifier: ^5.5.2
         version: 5.5.2
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       dotenv:
         specifier: ^17.4.2
@@ -427,19 +427,19 @@ importers:
         specifier: ^0.13.0
         version: 0.13.0(rollup@4.62.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/inventory:
@@ -469,10 +469,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -494,10 +494,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -515,13 +515,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/my_sample_app:
@@ -548,10 +548,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -570,16 +570,16 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
         version: 5.2.0(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       cronstrue:
-        specifier: ^3.14.0
+        specifier: ^3.24.0
         version: 3.24.0
       i18next:
         specifier: ^25.10.10
@@ -594,13 +594,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/orders:
@@ -633,10 +633,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -655,10 +655,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -676,13 +676,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/price_lists:
@@ -712,10 +712,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -737,10 +737,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -758,13 +758,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/promotions:
@@ -797,10 +797,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -819,13 +819,13 @@ importers:
         specifier: ^4.17.12
         version: 4.17.12
       '@types/node':
-        specifier: ^22.19.20
+        specifier: ^22.20.1
         version: 22.20.1
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -843,13 +843,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.20.1)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.3.6(@types/node@22.20.1)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.20.1)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.20.1)(yaml@2.9.0))
 
   apps/returns:
@@ -879,10 +879,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -898,13 +898,13 @@ importers:
         specifier: ^4.17.12
         version: 4.17.12
       '@types/node':
-        specifier: ^22.19.20
+        specifier: ^22.20.1
         version: 22.20.1
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -922,13 +922,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.20.1)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.3.6(@types/node@22.20.1)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.20.1)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.20.1)(yaml@2.9.0))
 
   apps/shipments:
@@ -958,10 +958,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -983,10 +983,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -1004,13 +1004,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/sku_lists:
@@ -1043,10 +1043,10 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -1065,10 +1065,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -1086,13 +1086,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/skus:
@@ -1125,10 +1125,10 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -1150,10 +1150,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -1171,13 +1171,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/stock_transfers:
@@ -1207,10 +1207,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -1226,13 +1226,13 @@ importers:
         specifier: ^4.17.12
         version: 4.17.12
       '@types/node':
-        specifier: ^22.19.20
+        specifier: ^22.20.1
         version: 22.20.1
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -1250,13 +1250,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.20.1)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.3.6(@types/node@22.20.1)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.20.1)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.20.1)(yaml@2.9.0))
 
   apps/subscriptions:
@@ -1286,10 +1286,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -1308,16 +1308,16 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
         version: 5.2.0(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       cronstrue:
-        specifier: ^3.14.0
+        specifier: ^3.24.0
         version: 3.24.0
       i18next:
         specifier: ^25.10.10
@@ -1332,13 +1332,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/tags:
@@ -1365,10 +1365,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -1387,10 +1387,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -1408,13 +1408,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   apps/webhooks:
@@ -1447,10 +1447,10 @@ importers:
         specifier: 7.62.0
         version: 7.62.0(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -1469,10 +1469,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -1490,13 +1490,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
   packages/app-builder:
@@ -1508,16 +1508,16 @@ importers:
         specifier: ^0.13.0
         version: 0.13.0(rollup@4.62.4)
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.20.1)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.3.6(@types/node@22.20.1)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.20.1)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.20.1)(yaml@2.9.0))
       yargs:
-        specifier: ^18.0.0
+        specifier: ^18.1.0
         version: 18.1.0
 
   packages/common:
@@ -1547,10 +1547,10 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       swr:
-        specifier: ^2.4.1
+        specifier: ^2.5.1
         version: 2.5.1(react@19.2.4)
       type-fest:
-        specifier: ^5.7.0
+        specifier: ^5.8.0
         version: 5.8.0
       wouter:
         specifier: ^3.10.0
@@ -1563,7 +1563,7 @@ importers:
         specifier: ^4.17.12
         version: 4.17.12
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       i18next:
         specifier: ^25.10.10
@@ -1609,10 +1609,10 @@ importers:
         specifier: 22.13.4
         version: 22.13.4
       '@types/react':
-        specifier: ^19.2.17
+        specifier: ^19.2.18
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
       '@vitejs/plugin-react':
         specifier: ^5.2.0
@@ -1621,7 +1621,7 @@ importers:
         specifier: ^3.0.8
         version: 3.0.8
       js-yaml:
-        specifier: ^4.2.0
+        specifier: ^4.3.1
         version: 4.3.1
       jsdom:
         specifier: ^27.4.0
@@ -1633,13 +1633,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.3.5
+        specifier: ^7.3.6
         version: 7.3.6(@types/node@22.13.4)(yaml@2.9.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(supports-color@7.2.0)(typescript@5.9.3)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
       vitest:
-        specifier: ^4.1.8
+        specifier: ^4.1.11
         version: 4.1.11(@types/node@22.13.4)(jsdom@27.4.0)(vite@7.3.6(@types/node@22.13.4)(yaml@2.9.0))
 
 packages:
@@ -8003,7 +8003,7 @@ snapshots:
       proc-log: 6.1.0
       semver: 7.7.2
       tar: 7.5.11
-      tinyglobby: 0.2.12
+      tinyglobby: 0.2.17
       undici: 6.28.0
       which: 6.0.1
 
