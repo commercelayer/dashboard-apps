@@ -56,8 +56,8 @@ const injectReact19 = () => {
 /**
  * Define the dashboard-app configuration for Vite.
  * @see https://vitejs.dev/config
- * @param {string} appSlug 
- * @returns 
+ * @param {string} appSlug
+ * @returns
  */
 
 export const defineConfig = (appSlug) => vitestDefineConfig(({ mode }) => {
