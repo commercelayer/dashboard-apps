@@ -36,26 +36,6 @@ export function useWebhooksTableColumns(): Array<
         ),
       },
       {
-        header: "Last fired",
-        kind: "datetime",
-        cell: ({ resource }) => {
-          const lastFiredAt = resource.last_event_callbacks?.[0]?.created_at
-          if (lastFiredAt == null) {
-            return <Text className="text-gray-300">&#8212;</Text>
-          }
-          return (
-            <Text wrap="nowrap">
-              {formatDate({
-                format: "full",
-                isoDate: lastFiredAt,
-                timezone: user?.timezone,
-                locale: user?.locale,
-              })}
-            </Text>
-          )
-        },
-      },
-      {
         header: "Status",
         kind: "status",
         cell: ({ resource }) => <RowStatusBadge resource={resource} />,
