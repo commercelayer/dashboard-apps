@@ -4,15 +4,14 @@ import {
   RadialProgress,
   StatusIcon,
   Text,
-  useTokenProvider,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import type { Webhook } from "@commercelayer/sdk"
+import { startCase } from "lodash-es"
 import { useLocation } from "wouter"
 import { getWebhookStatus, hasWebhookEverFired } from "#data/dictionaries"
 import { appRoutes } from "#data/routes"
 import { makeWebhook } from "#mocks"
-import { getWebhookPredicateByStatus } from "#utils/getWebhookPredicateByStatus"
 
 /**
  * Get the relative status based on webhook's circuit state {@link https://docs.commercelayer.io/core/v/api-reference/webhooks/object}
@@ -46,11 +45,7 @@ interface ListItemWebhookProps {
 export const ListItemWebhook = withSkeletonTemplate<ListItemWebhookProps>(
   ({ resource = makeWebhook() }) => {
     const [, setLocation] = useLocation()
-    const { user } = useTokenProvider()
-    const webhookPredicate = getWebhookPredicateByStatus(
-      resource,
-      user?.timezone,
-    )
+    const status = getWebhookStatus(resource)
 
     return (
       <ListItem
@@ -63,7 +58,7 @@ export const ListItemWebhook = withSkeletonTemplate<ListItemWebhookProps>(
         <div>
           <Text weight="semibold">{resource.name}</Text>
           <Text tag="div" variant="info" weight="medium" size="small">
-            {resource.topic} · {webhookPredicate}
+            {resource.topic} · {startCase(status)}
           </Text>
         </div>
         <Icon name="caretRight" />
