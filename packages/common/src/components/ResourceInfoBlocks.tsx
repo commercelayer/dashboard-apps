@@ -60,7 +60,12 @@ export function ResourceInfoBlocks({
         />
       )}
       {canFetchRelated && (
-        <div className={"mt-14" + (isTaggableResource(resourceType) ? " lg:mt-10" : undefined)}>
+        <div
+          className={
+            "mt-14" +
+            (isTaggableResource(resourceType) ? " lg:mt-10" : undefined)
+          }
+        >
           <ResourceMetadata
             resourceType={resourceType}
             resourceId={resource.id}

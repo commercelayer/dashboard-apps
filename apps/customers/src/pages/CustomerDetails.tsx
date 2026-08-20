@@ -246,25 +246,25 @@ export function CustomerDetails(): React.JSX.Element {
       <SkeletonTemplate isLoading={isLoading}>
         <CustomerAnonymization customerId={customer.id} />
         <CustomerInfo customer={customer} />
-          <Spacer top="14">
-            <CustomerLastOrders />
-          </Spacer>
-          <Spacer top="14">
-            <CustomerWallet
-              customer={customer}
-              onRemovedPaymentSource={() => {
-                void mutateCustomer()
-              }}
-            />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceAttachments
-              resourceType="customers"
-              resourceId={customer.id}
-            />
-          </Spacer>
-          <Spacer top="14">
-            <CustomerTimeline customer={customer} />
+        <Spacer top="14">
+          <CustomerLastOrders />
+        </Spacer>
+        <Spacer top="14">
+          <CustomerWallet
+            customer={customer}
+            onRemovedPaymentSource={() => {
+              void mutateCustomer()
+            }}
+          />
+        </Spacer>
+        <Spacer top="14">
+          <ResourceAttachments
+            resourceType="customers"
+            resourceId={customer.id}
+          />
+        </Spacer>
+        <Spacer top="14">
+          <CustomerTimeline customer={customer} />
         </Spacer>
       </SkeletonTemplate>
 

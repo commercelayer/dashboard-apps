@@ -37,9 +37,9 @@ export function useWebhooksTableColumns(): Array<
       },
       {
         header: "Topic",
-        // the event it listens to, an API identifier rather than prose
+        // the event it listens to, an API identifier rather than prose. Not
+        // sortable: `topic` is not in the webhook's sortable set
         kind: "code",
-        sortBy: "topic",
         cell: ({ resource }) => <Text>{resource.topic}</Text>,
       },
       {

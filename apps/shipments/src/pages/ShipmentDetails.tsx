@@ -160,19 +160,19 @@ function ShipmentDetails(): React.JSX.Element {
     >
       <SkeletonTemplate isLoading={isLoading}>
         <pageToolbar.Components />
-            <ShipmentInfo shipment={shipment} />
-          <Spacer top="14">
-            <ShipmentPackingList shipment={shipment} />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceAttachments
-              resourceType="shipments"
-              resourceId={shipment.id}
-            />
-          </Spacer>
-          <Spacer top="14">
-            <ShipmentTimeline shipment={shipment} />
-          </Spacer>
+        <ShipmentInfo shipment={shipment} />
+        <Spacer top="14">
+          <ShipmentPackingList shipment={shipment} />
+        </Spacer>
+        <Spacer top="14">
+          <ResourceAttachments
+            resourceType="shipments"
+            resourceId={shipment.id}
+          />
+        </Spacer>
+        <Spacer top="14">
+          <ShipmentTimeline shipment={shipment} />
+        </Spacer>
       </SkeletonTemplate>
     </PageLayout>
   )

@@ -234,13 +234,13 @@ function SubscriptionDetails(): React.JSX.Element {
       // letting the sidebar sink to the bottom of the page
     >
       <SkeletonTemplate isLoading={isLoading}>
-            <SubscriptionInfo subscription={subscription} />
-          <Spacer top="14">
-            <SubscriptionItems subscriptionId={subscription.id} />
-          </Spacer>
-          {/* in the main column, after the items, as it was before the sidebar */}
-          <Spacer top="14">
-            <SubscriptionPayment subscription={subscription} />
+        <SubscriptionInfo subscription={subscription} />
+        <Spacer top="14">
+          <SubscriptionItems subscriptionId={subscription.id} />
+        </Spacer>
+        {/* in the main column, after the items, as it was before the sidebar */}
+        <Spacer top="14">
+          <SubscriptionPayment subscription={subscription} />
         </Spacer>
         <Spacer top="14" bottom="4">
           <SubscriptionOrders subscription={subscription} />

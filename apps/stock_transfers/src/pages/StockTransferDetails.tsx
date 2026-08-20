@@ -193,13 +193,13 @@ export function StockTransferDetails(): React.JSX.Element {
         <SkeletonTemplate isLoading={isLoading}>
           <StockTransferAddresses stockTransfer={stockTransfer} />
           <div className="mt-14 lg:mt-10 print:hidden">
-              <ResourceInfoBlocks
-                resource={stockTransfer}
-                title={pageTitle}
-                onUpdated={async () => {
-                  void mutateStockTransfer()
-                }}
-              />
+            <ResourceInfoBlocks
+              resource={stockTransfer}
+              title={pageTitle}
+              onUpdated={async () => {
+                void mutateStockTransfer()
+              }}
+            />
           </div>
         </SkeletonTemplate>
       }
@@ -221,11 +221,11 @@ export function StockTransferDetails(): React.JSX.Element {
           }}
           cancelLabel="Close"
         />
-          <StockTransferInfo stockTransfer={stockTransfer} />
-          <Spacer top="14">
-            <StockTransferSummary stockTransfer={stockTransfer} />
-          </Spacer>
-          <div className="print:hidden">
+        <StockTransferInfo stockTransfer={stockTransfer} />
+        <Spacer top="14">
+          <StockTransferSummary stockTransfer={stockTransfer} />
+        </Spacer>
+        <div className="print:hidden">
           <Spacer top="14" bottom="4">
             <Timeline stockTransfer={stockTransfer} />
           </Spacer>
