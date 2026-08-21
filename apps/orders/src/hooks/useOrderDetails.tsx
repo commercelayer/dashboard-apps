@@ -4,6 +4,7 @@ import {
   useCoreApi,
 } from "@commercelayer/app-elements"
 import isEmpty from "lodash-es/isEmpty"
+import { hasPollableTransaction } from "#components/OrderPayment/paymentSessionUtils"
 import { makeOrder } from "#mocks"
 
 export const orderIncludeAttribute = [
@@ -65,11 +66,17 @@ export function useOrderDetails(id: string) {
     {
       fallbackData: makeOrder(),
       refreshInterval: (order) => {
-        return (order?.transactions ?? []).some(
+        // Two independent conditions, one per payment model, so dropping the
+        // legacy one later is deleting a clause rather than untangling a
+        // shared helper.
+        const hasLegacyAsyncCapture = (order?.transactions ?? []).some(
           orderTransactionIsAnAsyncCapture,
         )
-          ? 5000
-          : 0
+        const hasUnsettledPaymentSession = (order?.payment_sessions ?? []).some(
+          hasPollableTransaction,
+        )
+
+        return hasLegacyAsyncCapture || hasUnsettledPaymentSession ? 5000 : 0
       },
     },
   )

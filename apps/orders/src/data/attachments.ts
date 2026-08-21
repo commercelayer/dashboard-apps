@@ -4,6 +4,12 @@ import type { SetNonNullable, SetRequired } from "type-fest"
 
 export const noteReferenceOrigin = "app-orders--note"
 export const refundNoteReferenceOrigin = "app-orders--refund-note"
+/**
+ * Note attached to a `payment_refund` (API version 2026-05+), as opposed to
+ * `refundNoteReferenceOrigin`, which legacy attaches to the order itself.
+ */
+export const paymentRefundNoteReferenceOrigin =
+  "app-orders--payment-refund-note"
 
 export function isAttachmentValidNote(
   attachment: Attachment,
@@ -21,6 +27,7 @@ export function isAttachmentValidNote(
   const validReferenceOrigins: string[] = [
     noteReferenceOrigin,
     refundNoteReferenceOrigin,
+    paymentRefundNoteReferenceOrigin,
   ]
   return (
     validReferenceOrigins.includes(attachment.reference_origin) &&

@@ -19,7 +19,6 @@ interface Props {
  */
 export const OrderPayment = withSkeletonTemplate<Props>(
   ({ order, onOrderChange }) => {
-    console.log("order", order)
     return (
       <>
         <OrderPaymentLegacy order={order} />
