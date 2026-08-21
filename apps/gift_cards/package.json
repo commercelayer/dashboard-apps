@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "check": "pnpm biome check",
     "check:fix": "pnpm biome check --write",
-    "ts:check": "tsc --noEmit",
+    "ts:check": "tsc -b --noEmit",
     "test": "pnpm run check && vitest run --passWithNoTests",
     "test:watch": "vitest --passWithNoTests"
   },

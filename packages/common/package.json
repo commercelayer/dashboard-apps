@@ -6,7 +6,7 @@
   "scripts": {
     "check": "pnpm biome check",
     "check:fix": "pnpm biome check --write",
-    "ts:check": "tsc --noEmit"
+    "ts:check": "tsc -b --noEmit"
   },
   "dependencies": {
     "@commercelayer/app-elements": "7.11.1",
