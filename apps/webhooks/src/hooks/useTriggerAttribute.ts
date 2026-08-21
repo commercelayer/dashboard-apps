@@ -2,10 +2,7 @@ import { useCoreSdkProvider } from "@commercelayer/app-elements"
 import { CommerceLayerStatic } from "@commercelayer/sdk"
 import { useCallback, useState } from "react"
 import type { getWebhookTriggerActionName } from "#data/dictionaries"
-import {
-  useWebhookDetails,
-  webhookIncludeAttribute,
-} from "#hooks/useWebhookDetails"
+import { useWebhookDetails } from "#hooks/useWebhookDetails"
 
 type UITriggerAttributes = Parameters<typeof getWebhookTriggerActionName>[0]
 
@@ -27,15 +24,10 @@ export function useTriggerAttribute(webhookId: string): TriggerAttributeHook {
       setIsLoading(true)
       setErrors(undefined)
       try {
-        const updatedWebhook = await sdkClient.webhooks.update(
-          {
-            id: webhookId,
-            [triggerAttribute]: true,
-          },
-          {
-            include: webhookIncludeAttribute,
-          },
-        )
+        const updatedWebhook = await sdkClient.webhooks.update({
+          id: webhookId,
+          [triggerAttribute]: true,
+        })
         void mutateWebhook(updatedWebhook)
       } catch (error) {
         setErrors(

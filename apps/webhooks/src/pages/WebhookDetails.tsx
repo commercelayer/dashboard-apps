@@ -31,8 +31,10 @@ export const WebhookDetails: FC = () => {
   const [, setLocation] = useLocation()
 
   const webhookId = params?.webhookId ?? ""
-  const { webhook, isLoading, mutateWebhook, error } =
-    useWebhookDetails(webhookId)
+  const { webhook, isLoading, mutateWebhook, error } = useWebhookDetails(
+    webhookId,
+    { withLastEventCallbacks: true },
+  )
 
   if (webhookId == null || !canUser("read", "webhooks") || error != null) {
     return (
