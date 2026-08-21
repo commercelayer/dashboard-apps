@@ -11,9 +11,6 @@ import { getWebhookDisplayStatus } from "#data/dictionaries"
 
 /**
  * Columns of the webhooks table.
- *
- * Requires `include: ['last_event_callbacks']` in the query: "Last fired" is the
- * date of the most recent callback, which lives on that relationship.
  */
 export function useWebhooksTableColumns(): Array<
   ResourceTableColumn<"webhooks">
