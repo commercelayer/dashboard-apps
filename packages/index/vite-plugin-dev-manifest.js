@@ -124,6 +124,12 @@ export const devManifest = ({ appsDir }) => {
         }
 
         const [, slug, file] = match
+
+        if (slug == null) {
+          next()
+          return
+        }
+
         const entry = appEntryUrl(slug)
 
         if (entry == null) {
