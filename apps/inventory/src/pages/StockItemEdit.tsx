@@ -10,6 +10,7 @@ import {
 import type { StockItemUpdate } from "@commercelayer/sdk"
 import { useState } from "react"
 import { Link, useLocation, useRoute } from "wouter"
+import { useSearch } from "wouter/use-browser-location"
 import {
   StockItemForm,
   type StockItemFormValues,
@@ -21,6 +22,8 @@ export function StockItemEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
+  // carried through so returning to the list keeps its filters
+  const queryString = useSearch()
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
@@ -32,7 +35,10 @@ export function StockItemEdit(): React.JSX.Element {
   const { stockItem, isLoading, mutateStockItem } =
     useStockItemDetails(stockItemId)
 
-  const goBackUrl = appRoutes.stockItem.makePath(stockItemId)
+  const goBackUrl = appRoutes.stockItem.makePath(
+    stockItemId,
+    new URLSearchParams(queryString).toString(),
+  )
 
   if (!canUser("update", "stock_items")) {
     return (

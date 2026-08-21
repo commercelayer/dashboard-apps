@@ -22,7 +22,12 @@ export const appRoutes = {
   },
   stockItem: {
     path: "/list/:stockItemId",
-    makePath: (stockItemId: string) => `/list/${stockItemId}`,
+    // the filters ride along, so closing the drawer returns to the list the user
+    // was looking at rather than an unfiltered one
+    makePath: (stockItemId: string, filters?: string) =>
+      hasFilterQuery(filters)
+        ? `/list/${stockItemId}?${filters}`
+        : `/list/${stockItemId}`,
   },
   newStockItem: {
     path: "/new",
@@ -30,7 +35,10 @@ export const appRoutes = {
   },
   editStockItem: {
     path: "/list/:stockItemId/edit",
-    makePath: (stockItemId: string) => `/list/${stockItemId}/edit`,
+    makePath: (stockItemId: string, filters?: string) =>
+      hasFilterQuery(filters)
+        ? `/list/${stockItemId}/edit?${filters}`
+        : `/list/${stockItemId}/edit`,
   },
 }
 

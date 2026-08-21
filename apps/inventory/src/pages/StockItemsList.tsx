@@ -35,14 +35,13 @@ export function StockItemsList(): React.JSX.Element {
    * filters have to travel with the url — otherwise the table behind the drawer
    * would reload unfiltered and the filters would be lost on close.
    */
-  const detailsPath = (stockItemId: string): string => {
+  const detailsPath = (stockItemId: string): string =>
     // `useSearch` returns the search including its leading `?`, so it is
     // normalized rather than concatenated
-    const search = new URLSearchParams(queryString).toString()
-    return `${appRoutes.stockItem.makePath(stockItemId)}${
-      search !== "" ? `?${search}` : ""
-    }`
-  }
+    appRoutes.stockItem.makePath(
+      stockItemId,
+      new URLSearchParams(queryString).toString(),
+    )
 
   if (!canUser("read", "stock_locations")) {
     return (
