@@ -100,9 +100,9 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
       type: "groupedPredicates",
       urlParamKey: "filter_coupons", // a key to match the value in query string, not for API
       render: {
-        component: "inputSelect",
+        component: "inputToggleButton",
         props: {
-          isMulti: false,
+          mode: "single",
           options: [
             {
               value: "with_coupons", // value to identify the UI selection, won't be passed to API
