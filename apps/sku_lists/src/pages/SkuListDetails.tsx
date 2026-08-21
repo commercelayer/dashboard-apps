@@ -140,7 +140,12 @@ export const SkuListDetails = (): React.JSX.Element => {
       {
         label: "Edit",
         onClick: () => {
-          setLocation(appRoutes.edit.makePath({ skuListId }))
+          setLocation(
+            appRoutes.edit.makePath(
+              { skuListId },
+              new URLSearchParams(queryString).toString(),
+            ),
+          )
         },
       },
     ])

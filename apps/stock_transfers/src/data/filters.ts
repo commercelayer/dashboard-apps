@@ -18,7 +18,7 @@ const stockLocationSelect = {
     resource: "stock_locations" as const,
     fieldForLabel: "name",
     fieldForValue: "id",
-    searchBy: "name_cont",
+    searchBy: "name_i_cont",
     sortBy: { attribute: "name", direction: "asc" as const },
     filters: {
       disabled_at_null: true,

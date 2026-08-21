@@ -72,7 +72,12 @@ export const BundleDetails: FC = () => {
       {
         label: "Edit",
         onClick: () => {
-          setLocation(appRoutes.edit.makePath({ bundleId }))
+          setLocation(
+            appRoutes.edit.makePath(
+              { bundleId },
+              new URLSearchParams(queryString).toString(),
+            ),
+          )
         },
       },
     ])

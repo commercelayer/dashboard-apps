@@ -15,13 +15,19 @@ export const filterInstructions: FiltersInstructions = [
     },
     render: {
       component: "inputSelect",
+      // the axis this page is read through, so it sits in the bar rather than
+      // behind the funnel: single-valued, and it states itself instead of
+      // leaving a pill underneath
+      position: "bar",
       props: {
+        isMulti: false,
+        placeholder: "All price lists",
         resource: "price_lists",
         fieldForLabel: "name",
         fieldForValue: "id",
         // Core caps `page[size]` at 25, so searching server-side is what makes
         // price lists beyond the first page reachable
-        searchBy: "name_cont",
+        searchBy: "name_i_cont",
         sortBy: { attribute: "name", direction: "asc" },
       },
     },

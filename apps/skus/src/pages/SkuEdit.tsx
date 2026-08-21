@@ -9,7 +9,7 @@ import {
 } from "@commercelayer/app-elements"
 import type { Sku } from "@commercelayer/sdk"
 import { useState } from "react"
-import { Link, useLocation, useRoute } from "wouter"
+import { Link, useLocation, useRoute, useSearch } from "wouter"
 import { SkuForm, type SkuFormValues } from "#components/SkuForm"
 import { appRoutes } from "#data/routes"
 import { useSkuDetails } from "#hooks/useSkuDetails"
@@ -19,6 +19,8 @@ export function SkuEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
+  // carried through so returning to the list keeps its filters
+  const queryString = useSearch()
   const [, params] = useRoute<{ skuId: string }>(appRoutes.edit.path)
   const skuId = params?.skuId ?? ""
 
@@ -28,7 +30,10 @@ export function SkuEdit(): React.JSX.Element {
 
   const goBackUrl =
     skuId != null
-      ? appRoutes.details.makePath({ skuId })
+      ? appRoutes.details.makePath(
+          { skuId },
+          new URLSearchParams(queryString).toString(),
+        )
       : appRoutes.list.makePath({})
 
   if (!canUser("update", "skus")) {

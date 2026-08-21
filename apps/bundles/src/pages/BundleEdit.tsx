@@ -9,7 +9,7 @@ import {
 } from "@commercelayer/app-elements"
 import type { Bundle, BundleUpdate } from "@commercelayer/sdk"
 import { useState } from "react"
-import { Link, useLocation, useRoute } from "wouter"
+import { Link, useLocation, useRoute, useSearch } from "wouter"
 import { BundleForm, type BundleFormValues } from "#components/BundleForm"
 import { appRoutes } from "#data/routes"
 import { useBundleDetails } from "#hooks/useBundleDetails"
@@ -18,6 +18,8 @@ export function BundleEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
+  // carried through so returning to the list keeps its filters
+  const queryString = useSearch()
   const [, params] = useRoute<{ bundleId: string }>(appRoutes.edit.path)
   const bundleId = params?.bundleId ?? ""
 
@@ -27,7 +29,10 @@ export function BundleEdit(): React.JSX.Element {
 
   const goBackUrl =
     bundleId != null
-      ? appRoutes.details.makePath({ bundleId })
+      ? appRoutes.details.makePath(
+          { bundleId },
+          new URLSearchParams(queryString).toString(),
+        )
       : appRoutes.list.makePath({})
 
   if (!canUser("update", "bundles")) {

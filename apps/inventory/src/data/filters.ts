@@ -16,13 +16,19 @@ export const stockItemsInstructions: FiltersInstructions = [
     },
     render: {
       component: "inputSelect",
+      // the axis this page is read through, so it sits in the bar rather than
+      // behind the funnel: single-valued, and it states itself instead of
+      // leaving a pill underneath
+      position: "bar",
       props: {
+        isMulti: false,
+        placeholder: "All locations",
         resource: "stock_locations",
         fieldForLabel: "name",
         fieldForValue: "id",
         // Core caps `page[size]` at 25, so searching server-side is what makes
         // stock locations beyond the first page reachable
-        searchBy: "name_cont",
+        searchBy: "name_i_cont",
         sortBy: { attribute: "name", direction: "asc" },
       },
     },
