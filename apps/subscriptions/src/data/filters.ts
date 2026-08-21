@@ -1,9 +1,13 @@
 import type { FiltersInstructions } from "@commercelayer/app-elements"
+import { listableStatuses } from "#data/lists"
+import { getSubscriptionStatusName } from "./dictionaries"
 import { frequenciesForFilters, getFrequencyLabelByValue } from "./frequencies"
 
 export const instructions = (
   subscriptionModelFrequencies?: string[],
+  options?: { hideFilterStatus?: boolean },
 ): FiltersInstructions => {
+  const hideFilterStatus = options?.hideFilterStatus ?? false
   const frequenciesByModel = subscriptionModelFrequencies?.map((f) => {
     return {
       value: f,
@@ -20,14 +24,14 @@ export const instructions = (
         predicate: "market_id_in",
       },
       render: {
-        component: "inputResourceGroup",
+        component: "inputSelect",
         props: {
           fieldForLabel: "name",
           fieldForValue: "id",
           resource: "markets",
           searchBy: "name_cont",
           sortBy: { attribute: "name", direction: "asc" },
-          previewLimit: 5,
+          hideWhenSingleItem: true,
           filters: {
             disabled_at_null: true,
           },
@@ -37,20 +41,19 @@ export const instructions = (
     {
       label: "Status",
       type: "options",
+      hidden: hideFilterStatus,
       sdk: {
         predicate: "status_in",
+        defaultOptions: [...listableStatuses],
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "multi",
-          options: [
-            { value: "draft", label: "Draft" },
-            { value: "active", label: "Active" },
-            { value: "pending", label: "Pending" },
-            { value: "inactive", label: "Inactive" },
-            { value: "cancelled", label: "Cancelled" },
-          ],
+          options: listableStatuses.map((status) => ({
+            value: status,
+            // @ts-expect-error `pending` is supported by the API but not yet in the SDK status union (beta.9)
+            label: getSubscriptionStatusName(status),
+          })),
         },
       },
     },
@@ -61,9 +64,9 @@ export const instructions = (
         predicate: "frequency_matches",
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "single",
+          isMulti: false,
           options: frequenciesByModel ?? frequencies,
         },
       },

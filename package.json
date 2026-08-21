@@ -13,7 +13,7 @@
     "ts:check": "pnpm -r ts:check",
     "test:watch": "pnpm -r --parallel --aggregate-output --color test:watch",
     "dep:major": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u && node replace-react.mjs",
-    "dep:minor": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u -t minor && node replace-react.mjs",
+    "dep:semver": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u -t semver && node replace-react.mjs",
     "elements:preview": "node replace-app-elements.mjs preview",
     "elements:bump": "node replace-app-elements.mjs bump",
     "prepare": "husky"
@@ -37,7 +37,7 @@
     "apps/*"
   ],
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
+    "@biomejs/biome": "^2.5.9",
     "husky": "^9.1.7",
     "lerna": "^9.0.7",
     "lint-staged": "^16.4.0",

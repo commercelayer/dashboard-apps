@@ -1,13 +1,9 @@
 import {
-  Button,
-  Icon,
   ListItem,
-  PageLayout,
   ResourceAddress,
   Section,
-  toast,
+  useConfirmDialog,
   useCoreSdkProvider,
-  useOverlay,
   useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
@@ -26,35 +22,29 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
     const { sdkClient } = useCoreSdkProvider()
     const { t } = useTranslation()
 
-    const { Overlay: DeleteOverlay, open, close } = useOverlay()
-    const [isDeleting, setIsDeleting] = useState(false)
+    const { show, ConfirmDialog } = useConfirmDialog()
     const [addressSetForDeletion, setAddressSetForDeletion] =
       useState<CustomerAddress | null>(null)
 
     const addresses = customer.customer_addresses?.map((customerAddress) =>
       customerAddress?.address != null ? (
-        <div key={customerAddress?.address?.id} className="relative">
-          <ListItem>
-            <ResourceAddress
-              address={customerAddress?.address}
-              editable={canUser("update", "addresses")}
-              showBillingInfo
-            />
-          </ListItem>
-          {canUser("destroy", "addresses") && (
-            <div className="absolute right-0" style={{ bottom: "12px" }}>
-              <button
-                type="button"
-                onClick={() => {
-                  setAddressSetForDeletion(customerAddress)
-                  open()
-                }}
-              >
-                <Icon name="trash" size={18} />
-              </button>
-            </div>
-          )}
-        </div>
+        <ListItem key={customerAddress?.address?.id}>
+          <ResourceAddress
+            address={customerAddress?.address}
+            editable={canUser("update", "addresses")}
+            // both actions sit in the address's own `…` menu, rather than a
+            // trash icon pinned over the corner of the row
+            onDelete={
+              canUser("destroy", "addresses")
+                ? () => {
+                    setAddressSetForDeletion(customerAddress)
+                    show()
+                  }
+                : undefined
+            }
+            showBillingInfo
+          />
+        </ListItem>
       ) : null,
     )
 
@@ -66,49 +56,22 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
           {addresses}
         </Section>
         {canUser("destroy", "addresses") && (
-          <DeleteOverlay backgroundColor="light">
-            <PageLayout
-              title={`Confirm that you want to delete the address for ${addressSetForDeletion?.address?.full_name}.`}
-              description="This action cannot be undone, proceed with caution."
-              minHeight={false}
-              navigationButton={{
-                onClick: () => {
-                  close()
-                },
-                label: `Cancel`,
-                icon: "x",
-              }}
-            >
-              <Button
-                variant="danger"
-                size="small"
-                disabled={isDeleting}
-                onClick={(e) => {
-                  setIsDeleting(true)
-                  e.stopPropagation()
-                  try {
-                    void sdkClient.customer_addresses
-                      .delete(addressSetForDeletion?.id ?? "")
-                      .then(() => {
-                        if (onRemovedAddress != null) {
-                          onRemovedAddress()
-                        }
-                      })
-                  } catch (error) {
-                    const title: string | undefined = (error as any)
-                      ?.errors?.[0]?.title
-                    toast(title ?? "An error occurred", { type: "error" })
-                  } finally {
-                    setIsDeleting(false)
-                    close()
-                  }
-                }}
-                fullWidth
-              >
-                Delete address
-              </Button>
-            </PageLayout>
-          </DeleteOverlay>
+          // the dialog reports a failed delete itself, as an error toast
+          <ConfirmDialog
+            icon="trash"
+            title={`Delete address for ${addressSetForDeletion?.address?.full_name}`}
+            description="This action cannot be undone."
+            confirm={{
+              label: "Delete address",
+              variant: "danger",
+              onClick: async () => {
+                await sdkClient.customer_addresses.delete(
+                  addressSetForDeletion?.id ?? "",
+                )
+                onRemovedAddress?.()
+              },
+            }}
+          />
         )}
       </>
     )

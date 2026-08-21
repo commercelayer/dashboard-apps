@@ -9,9 +9,8 @@ export const instructions: FiltersInstructions = [
       defaultOptions: ["pending", "in_progress", "interrupted", "completed"],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "pending",

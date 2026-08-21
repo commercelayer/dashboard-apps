@@ -1,102 +1,112 @@
 import type { FiltersInstructions } from "@commercelayer/app-elements"
+import { getStockTransferStatusName } from "@commercelayer/app-elements"
+import { listableStatuses } from "#data/lists"
 
-export const instructions: FiltersInstructions = [
-  {
-    label: "Origin",
-    type: "options",
-    sdk: {
-      predicate: "origin_stock_location_id_in",
+const textSearchPredicate =
+  [
+    "number",
+    "reference",
+    "sku_code",
+    "origin_stock_location_name",
+    "destination_stock_location_name",
+  ].join("_or_") + "_cont"
+
+/** Shared props of the two stock location fields, which differ only by predicate. */
+const stockLocationSelect = {
+  component: "inputSelect" as const,
+  props: {
+    resource: "stock_locations" as const,
+    fieldForLabel: "name",
+    fieldForValue: "id",
+    searchBy: "name_cont",
+    sortBy: { attribute: "name", direction: "asc" as const },
+    filters: {
+      disabled_at_null: true,
     },
-    render: {
-      component: "inputResourceGroup",
-      props: {
-        fieldForLabel: "name",
-        fieldForValue: "id",
-        resource: "stock_locations",
-        searchBy: "name_cont",
-        sortBy: { attribute: "id", direction: "asc" },
-        previewLimit: 5,
-        filters: {
-          disabled_at_null: true,
+  },
+}
+
+export const makeFiltersInstructions = (options?: {
+  hideFilterStatus?: boolean
+}): FiltersInstructions => {
+  const hideFilterStatus = options?.hideFilterStatus ?? false
+  return [
+    {
+      label: "Origin",
+      type: "options",
+      sdk: {
+        predicate: "origin_stock_location_id_in",
+      },
+      render: stockLocationSelect,
+    },
+    {
+      label: "Destination",
+      type: "options",
+      sdk: {
+        predicate: "destination_stock_location_id_in",
+      },
+      render: stockLocationSelect,
+    },
+    {
+      label: "Archived",
+      type: "options",
+      // scoping only: the tabs decide whether archived transfers are included,
+      // it is never rendered as a field
+      hidden: true,
+      sdk: {
+        predicate: "archived_at_null",
+        parseFormValue: (value) =>
+          value === "show" ? undefined : value === "hide",
+      },
+      render: {
+        component: "inputSelect",
+        props: {
+          isMulti: false,
+          options: [
+            { value: "only", label: "Only archived" },
+            { value: "hide", label: "Hide archived" },
+            { value: "show", label: "Show all, both archived and not" },
+          ],
         },
       },
     },
-  },
-  {
-    label: "Destination",
-    type: "options",
-    sdk: {
-      predicate: "destination_stock_location_id_in",
-    },
-    render: {
-      component: "inputResourceGroup",
-      props: {
-        fieldForLabel: "name",
-        fieldForValue: "id",
-        resource: "stock_locations",
-        searchBy: "name_cont",
-        sortBy: { attribute: "id", direction: "asc" },
-        previewLimit: 5,
-        filters: {
-          disabled_at_null: true,
+    {
+      label: "Status",
+      type: "options",
+      hidden: hideFilterStatus,
+      sdk: {
+        predicate: "status_in",
+        defaultOptions: listableStatuses,
+      },
+      render: {
+        component: "inputSelect",
+        props: {
+          options: listableStatuses.map((status) => ({
+            value: status,
+            label: getStockTransferStatusName(status),
+          })),
         },
       },
     },
-  },
-  {
-    label: "Status",
-    type: "options",
-    sdk: {
-      predicate: "status_in",
-      defaultOptions: [
-        "picking",
-        "in_transit",
-        "completed",
-        "cancelled",
-        "on_hold",
-        "upcoming",
-      ],
-    },
-    render: {
-      component: "inputToggleButton",
-      props: {
-        mode: "multi",
-        options: [
-          { value: "picking", label: "Picking" },
-          { value: "in_transit", label: "In transit" },
-          { value: "completed", label: "Completed" },
-          { value: "cancelled", label: "Cancelled" },
-          { value: "on_hold", label: "On hold" },
-          { value: "upcoming", label: "Upcoming" },
-        ],
+    {
+      label: "Time Range",
+      type: "timeRange",
+      sdk: {
+        predicate: "updated_at",
+      },
+      render: {
+        component: "dateRangePicker",
       },
     },
-  },
-  {
-    label: "Time Range",
-    type: "timeRange",
-    sdk: {
-      predicate: "updated_at",
+    {
+      label: "Search",
+      type: "textSearch",
+      sdk: {
+        predicate: textSearchPredicate,
+      },
+      render: {
+        component: "searchBar",
+      },
     },
-    render: {
-      component: "dateRangePicker",
-    },
-  },
-  {
-    label: "Search",
-    type: "textSearch",
-    sdk: {
-      predicate:
-        [
-          "number",
-          "reference",
-          "sku_code",
-          "origin_stock_location_name",
-          "destination_stock_location_name",
-        ].join("_or_") + "_cont",
-    },
-    render: {
-      component: "searchBar",
-    },
-  },
-]
+  ]
+}

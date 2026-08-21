@@ -1,8 +1,7 @@
 import {
   Button,
-  ListDetailsItem,
-  Section,
-  Text,
+  Stack,
+  StackCell,
   useAppLinking,
   useTokenProvider,
   useTranslation,
@@ -14,6 +13,14 @@ interface Props {
   returnObj: Return
 }
 
+/**
+ * Where the return travels and what it belongs to: the customer's city and the
+ * warehouse it goes back to, then the order and customer, both linked.
+ *
+ * Two stacks rather than one of four cells: consecutive stacks pull themselves
+ * together into a single grid (`not-first:-mt-px`), so this reads as two rows of
+ * two instead of four narrow columns.
+ */
 export const ReturnInfo = withSkeletonTemplate<Props>(
   ({ returnObj }): React.JSX.Element => {
     const { canAccess } = useTokenProvider()
@@ -37,10 +44,26 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
         })
       : {}
 
+    const originAddress = returnObj.origin_address
+
     return (
-      <Section title={t("apps.returns.details.info")}>
-        <ListDetailsItem label={t("resources.orders.name")} gutter="none">
-          <Text tag="div" weight="semibold">
+      <>
+        <Stack size="small">
+          <StackCell label={t("apps.returns.details.origin")}>
+            {originAddress?.city == null
+              ? undefined
+              : `${originAddress.city}${
+                  originAddress.country_code != null
+                    ? ` (${originAddress.country_code})`
+                    : ""
+                }`}
+          </StackCell>
+          <StackCell label={t("apps.returns.details.destination")}>
+            {returnObj.stock_location?.name}
+          </StackCell>
+        </Stack>
+        <Stack size="small">
+          <StackCell label={t("resources.orders.name")}>
             {canAccess("orders") ? (
               <Button variant="link" {...navigateToOrder}>
                 {`${returnOrderMarket} ${returnOrderNumber}`}
@@ -48,10 +71,8 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
             ) : (
               `${returnOrderMarket} ${returnOrderNumber}`
             )}
-          </Text>
-        </ListDetailsItem>
-        <ListDetailsItem label={t("resources.customers.name")} gutter="none">
-          <Text tag="div" weight="semibold">
+          </StackCell>
+          <StackCell label={t("resources.customers.name")}>
             {canAccess("customers") ? (
               <Button variant="link" {...navigateToCustomer}>
                 {returnCustomerEmail}
@@ -59,9 +80,9 @@ export const ReturnInfo = withSkeletonTemplate<Props>(
             ) : (
               returnCustomerEmail
             )}
-          </Text>
-        </ListDetailsItem>
-      </Section>
+          </StackCell>
+        </Stack>
+      </>
     )
   },
 )

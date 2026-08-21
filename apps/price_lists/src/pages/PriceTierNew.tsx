@@ -18,7 +18,7 @@ import {
   type PriceTierFormValues,
 } from "#components/PriceTierForm"
 import { appRoutes } from "#data/routes"
-import { usePriceListDetails } from "#hooks/usePriceListDetails"
+import { usePriceDetails } from "#hooks/usePriceDetails"
 import { getPriceTierSdkResource, getUpToFromForm } from "#utils/priceTiers"
 
 export function PriceTierNew(): React.JSX.Element {
@@ -38,12 +38,12 @@ export function PriceTierNew(): React.JSX.Element {
     tierType === "frequency" ? "priceFrequencyTierNew" : "priceVolumeTierNew"
   const sdkResource = getPriceTierSdkResource(tierType)
 
-  const [, params] = useRoute<{ priceListId: string; priceId: string }>(
-    appRoutes[pathName].path,
-  )
-  const priceListId = params?.priceListId ?? ""
+  const [, params] = useRoute<{ priceId: string }>(appRoutes[pathName].path)
   const priceId = params?.priceId ?? ""
-  const { priceList, isLoading, error } = usePriceListDetails(priceListId)
+  // the price list is no longer in the path: it comes from the price, which
+  // `usePriceDetails` already includes
+  const { price, isLoading, error } = usePriceDetails(priceId)
+  const priceList = price?.price_list
 
   const pageTitle = "New tier"
 
@@ -72,7 +72,7 @@ export function PriceTierNew(): React.JSX.Element {
     )
   }
 
-  const goBackUrl = appRoutes.priceDetails.makePath({ priceListId, priceId })
+  const goBackUrl = appRoutes.priceDetails.makePath({ priceId })
 
   if (!canUser("create", sdkResource)) {
     return (
@@ -119,7 +119,7 @@ export function PriceTierNew(): React.JSX.Element {
         <Spacer bottom="14">
           <PriceTierForm
             defaultValues={{
-              currency_code: priceList.currency_code,
+              currency_code: priceList?.currency_code,
               price: 0,
               type: tierType,
             }}
@@ -133,7 +133,6 @@ export function PriceTierNew(): React.JSX.Element {
                 .then(() => {
                   setLocation(
                     appRoutes.priceDetails.makePath({
-                      priceListId,
                       priceId,
                     }),
                   )

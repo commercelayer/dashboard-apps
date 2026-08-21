@@ -15,20 +15,19 @@ export type PageProps<
 // and `makePath` method to be used to generate the path used in navigation and links
 export const appRoutes = {
   home: createRoute("/"),
-  pricesList: createRoute("/:priceListId?/list/"),
-  priceNew: createRoute("/:priceListId?/list/new/"),
-  priceDetails: createRoute("/:priceListId?/list/:priceId/"),
-  priceEdit: createRoute("/:priceListId?/list/:priceId/edit/"),
-  priceVolumeTierNew: createRoute(
-    "/:priceListId?/list/:priceId/volume-tiers/new/",
-  ),
-  priceFrequencyTierNew: createRoute(
-    "/:priceListId?/list/:priceId/frequency-tiers/new/",
-  ),
-  priceVolumeTierEdit: createRoute(
-    "/:priceListId?/list/:priceId/volume-tiers/:tierId/edit/",
-  ),
+  /**
+   * Legacy path of the prices list, now a redirect to `home`.
+   * Kept because `useAppLinking` points here when linking to this app without a
+   * resource id. Do not link to it from within the app.
+   */
+  pricesList: createRoute("/list/"),
+  priceNew: createRoute("/new/"),
+  priceDetails: createRoute("/list/:priceId/"),
+  priceEdit: createRoute("/list/:priceId/edit/"),
+  priceVolumeTierNew: createRoute("/list/:priceId/volume-tiers/new/"),
+  priceFrequencyTierNew: createRoute("/list/:priceId/frequency-tiers/new/"),
+  priceVolumeTierEdit: createRoute("/list/:priceId/volume-tiers/:tierId/edit/"),
   priceFrequencyTierEdit: createRoute(
-    "/:priceListId?/list/:priceId/frequency-tiers/:tierId/edit/",
+    "/list/:priceId/frequency-tiers/:tierId/edit/",
   ),
 }

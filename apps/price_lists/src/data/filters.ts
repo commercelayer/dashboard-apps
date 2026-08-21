@@ -1,37 +1,28 @@
 import type { FiltersInstructions } from "@commercelayer/app-elements"
 
+/**
+ * Filters of the prices list.
+ *
+ * The price list used to scope the page through the url (`/:priceListId/list`);
+ * it is a regular filter now, so every price is reachable from a single list.
+ */
 export const filterInstructions: FiltersInstructions = [
-  {
-    label: "Search",
-    type: "textSearch",
-    sdk: {
-      predicate: ["currency_code", "name"].join("_or_") + "_cont",
-    },
-    render: {
-      component: "searchBar",
-    },
-  },
-]
-
-interface PricesFilterInstructionsConfig {
-  priceListId: string
-}
-
-export const pricesFilterInstructions = ({
-  priceListId,
-}: PricesFilterInstructionsConfig): FiltersInstructions => [
   {
     label: "Price list",
     type: "options",
     sdk: {
       predicate: "price_list_id_in",
-      defaultOptions: [priceListId],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "single",
-        options: [{ value: priceListId, label: priceListId }],
+        resource: "price_lists",
+        fieldForLabel: "name",
+        fieldForValue: "id",
+        // Core caps `page[size]` at 25, so searching server-side is what makes
+        // price lists beyond the first page reachable
+        searchBy: "name_cont",
+        sortBy: { attribute: "name", direction: "asc" },
       },
     },
   },

@@ -2,12 +2,9 @@ import {
   Button,
   EmptyState,
   Icon,
-  isMockedId,
+  PageHeading,
   type PageHeadingProps,
-  PageLayout,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
+  removeFromResourceLists,
   Section,
   SkeletonTemplate,
   Spacer,
@@ -17,14 +14,16 @@ import {
   useConfirmDialog,
   useCoreApi,
   useCoreSdkProvider,
+  useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { LinkListTable } from "dashboard-apps-common/src/components/LinkListTable"
 import { LinksEmptyState } from "dashboard-apps-common/src/components/LinksEmptyState"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { SkuDescription } from "dashboard-apps-common/src/components/SkuDescription"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import type { FC } from "react"
-import { Link, useLocation, useRoute } from "wouter"
+import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
 import { SkuInfo } from "#components/SkuInfo"
 import { appRoutes } from "#data/routes"
@@ -32,7 +31,7 @@ import { useSkuDetails } from "#hooks/useSkuDetails"
 
 export const SkuDetails: FC = () => {
   const {
-    settings: { mode, extras },
+    settings: { extras },
     canUser,
   } = useTokenProvider()
   const { goBack } = useAppLinking()
@@ -46,6 +45,25 @@ export const SkuDetails: FC = () => {
   const skuId = params?.skuId ?? ""
 
   const { sku, isLoading, error, mutateSku } = useSkuDetails(skuId)
+
+  // The drawer is driven by the route: it is open for as long as this component
+  // is mounted, and closing it means navigating away — back to wherever the user
+  // came from, or to the list.
+  const { Overlay: DetailsDrawer } = useOverlay({ initialOpen: true })
+
+  const closeDrawer = (): void => {
+    // `goBack` returns to another app when the SKU was opened from one. Within the
+    // app there is no saved entry, so it falls back here: the list, keeping the
+    // filters that the details url carries.
+    const search = new URLSearchParams(queryString).toString()
+    goBack({
+      currentResourceId: skuId,
+      defaultRelativePath:
+        search !== ""
+          ? appRoutes.home.makePath({}, search)
+          : appRoutes.home.makePath({}),
+    })
+  }
 
   // const { Overlay: SkuDeleteOverlay, show } = useSkuDeleteOverlay(sku)
   const { show, ConfirmDialog } = useConfirmDialog()
@@ -74,26 +92,28 @@ export const SkuDetails: FC = () => {
 
   if (error != null) {
     return (
-      <PageLayout
-        title="Skus"
-        navigationButton={{
-          onClick: () => {
-            setLocation(appRoutes.list.makePath({}))
-          },
-          label: "SKUs",
-          icon: "arrowLeft",
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title="Not authorized"
-          action={
-            <Link href={appRoutes.list.makePath({})}>
-              <Button variant="primary">Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
+      <DetailsDrawer drawer onBackdropClick={closeDrawer}>
+        <div className="p-6">
+          <PageHeading
+            title="SKU"
+            gap="none"
+            navigationButton={{
+              onClick: closeDrawer,
+              label: "",
+              icon: "x",
+              variant: "button",
+            }}
+          />
+          <EmptyState
+            title="Not authorized"
+            action={
+              <Button variant="primary" onClick={closeDrawer}>
+                Go back
+              </Button>
+            }
+          />
+        </div>
+      </DetailsDrawer>
     )
   }
 
@@ -105,16 +125,17 @@ export const SkuDetails: FC = () => {
   }
 
   if (canUser("update", "skus")) {
-    pageToolbar.buttons?.push({
-      label: "Edit",
-      size: "small",
-      variant: "secondary",
-      onClick: () => {
-        setLocation(appRoutes.edit.makePath({ skuId }))
+    pageToolbar.dropdownItems?.push([
+      {
+        label: "Edit",
+        onClick: () => {
+          setLocation(appRoutes.edit.makePath({ skuId }))
+        },
       },
-    })
+    ])
   }
 
+  // its own group, so a divider separates the destructive action
   if (canUser("destroy", "skus")) {
     pageToolbar.dropdownItems?.push([
       {
@@ -135,7 +156,7 @@ export const SkuDetails: FC = () => {
     pageToolbar.buttons?.push(resourceInspectorButton)
   }
 
-  const tabs = ["info", "links"]
+  const tabs = ["general", "links"]
   const urlParams = new URLSearchParams(queryString)
   const defaultTab =
     urlParams.get("tab") != null
@@ -147,43 +168,25 @@ export const SkuDetails: FC = () => {
       <Spacer top="10">
         <SkuInfo sku={sku} />
       </Spacer>
+      {/* last, as in the reference: the technical fields are the least useful */}
       <Spacer top="14">
-        <ResourceDetails
+        <ResourceInfoBlocks
           resource={sku}
+          title={pageTitle}
           onUpdated={async () => {
             void mutateSku()
           }}
+          onTagClick={(tagId) => {
+            setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
+          }}
         />
       </Spacer>
-      {!isMockedId(sku.id) && (
-        <>
-          <Spacer top="14">
-            <ResourceTags
-              resourceType="skus"
-              resourceId={sku.id}
-              overlay={{ title: pageTitle }}
-              onTagClick={(tagId) => {
-                setLocation(appRoutes.list.makePath({}, `tags_id_in=${tagId}`))
-              }}
-            />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceMetadata
-              resourceType="skus"
-              resourceId={sku.id}
-              overlay={{
-                title: pageTitle,
-              }}
-            />
-          </Spacer>
-        </>
-      )}
     </>
   )
 
   const SkuTabs = (
     <Tabs keepAlive defaultTab={defaultTab}>
-      <Tab name="Info">{SkuInfos}</Tab>
+      <Tab name="General">{SkuInfos}</Tab>
       <Tab name="Links">
         <Spacer top="10">
           <Section
@@ -233,51 +236,53 @@ export const SkuDetails: FC = () => {
   )
 
   return (
-    <PageLayout
-      mode={mode}
-      title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
-      }
-      description={
-        <SkeletonTemplate isLoading={isLoading}>{sku.code}</SkeletonTemplate>
-      }
-      navigationButton={{
-        onClick: () => {
-          goBack({
-            currentResourceId: skuId,
-            defaultRelativePath: appRoutes.list.makePath({}),
-          })
-        },
-        label: "SKUs",
-        icon: "arrowLeft",
-      }}
-      toolbar={pageToolbar}
-      scrollToTop
-      gap="only-top"
-    >
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom="4">
-          <Spacer top="14">
-            <SkuDescription resource={sku} />
+    <DetailsDrawer drawer onBackdropClick={closeDrawer}>
+      <div className="p-6">
+        <PageHeading
+          title={
+            <SkeletonTemplate isLoading={isLoading}>
+              {pageTitle}
+            </SkeletonTemplate>
+          }
+          description={
+            <SkeletonTemplate isLoading={isLoading}>
+              {sku.code}
+            </SkeletonTemplate>
+          }
+          navigationButton={{
+            onClick: closeDrawer,
+            label: "",
+            icon: "x",
+            variant: "button",
+          }}
+          toolbar={pageToolbar}
+          gap="none"
+        />
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer bottom="4">
+            <Spacer top="6">
+              <SkuDescription resource={sku} />
+            </Spacer>
+            <Spacer top="6">{SkuTabs}</Spacer>
           </Spacer>
-          <Spacer top="14">{SkuTabs}</Spacer>
-        </Spacer>
-      </SkeletonTemplate>
-      <ConfirmDialog
-        icon="trash"
-        title={`Delete SKU ${sku.name}?`}
-        description={sku.code}
-        confirm={{
-          label: "Delete",
-          variant: "danger",
-          onClick: async () => {
-            await sdkClient.skus.delete(sku.id).then(() => {
-              setLocation(appRoutes.list.makePath({}))
-            })
-          },
-        }}
-        successMessage={`SKU ${sku.code} deleted`}
-      />
-    </PageLayout>
+        </SkeletonTemplate>
+        <ConfirmDialog
+          icon="trash"
+          title={`Delete SKU ${sku.code}`}
+          description="This action cannot be undone."
+          confirm={{
+            label: "Delete",
+            variant: "danger",
+            onClick: async () => {
+              await sdkClient.skus.delete(sku.id)
+              // the list stays mounted under this drawer, so it has to be told
+              removeFromResourceLists("skus", sku.id)
+              setLocation(appRoutes.home.makePath({}))
+            },
+          }}
+          successMessage={`SKU ${sku.code} deleted`}
+        />
+      </div>
+    </DetailsDrawer>
   )
 }

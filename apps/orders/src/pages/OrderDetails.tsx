@@ -2,12 +2,8 @@ import {
   Button,
   EmptyState,
   formatDateWithPredicate,
-  isMockedId,
   PageLayout,
   ResourceAttachments,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   type ToolbarItem,
@@ -15,6 +11,7 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { OrderAddresses } from "#components/OrderAddresses"
@@ -98,13 +95,15 @@ function OrderDetails(): React.JSX.Element {
   if (orderId === undefined || !canUser("read", "orders") || error != null) {
     return (
       <PageLayout
+        fullWidth
         title={t("resources.orders.name_other")}
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.home.makePath({}))
           },
-          label: t("common.back"),
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         mode={mode}
         scrollToTop
@@ -131,6 +130,7 @@ function OrderDetails(): React.JSX.Element {
 
   return (
     <PageLayout
+      fullWidth
       mode={mode}
       toolbar={toolbar}
       title={
@@ -168,92 +168,75 @@ function OrderDetails(): React.JSX.Element {
       navigationButton={{
         onClick: () => {
           goBack({
-            defaultRelativePath: appRoutes.list.makePath({}),
+            defaultRelativePath: appRoutes.home.makePath({}),
             currentResourceId: orderId,
           })
         },
-        label: t("common.back"),
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
       }}
       gap="only-top"
       scrollToTop
-    >
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom="4">
-          <Spacer top="14">
-            <OrderSummary order={order} />
-          </Spacer>
-          <div className="print:hidden">
-            <Spacer top="14">
-              <OrderPayment order={order} />
-            </Spacer>
-          </div>
-          <Spacer top="14">
-            <OrderCustomer order={order} />
-          </Spacer>
-          <Spacer top="14">
+      // supporting information sits beside the order itself, see detail.png
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <OrderCustomer order={order} />
+          <Spacer top={{ base: "14", lg: "10" }}>
             <OrderAddresses order={order} />
           </Spacer>
-          <div className="print:hidden">
+          <Spacer top={{ base: "14", lg: "10" }}>
+            {/* `print:hidden` as it was in the main column: a printed order is a
+                document for the customer, and the id/reference/timestamps are for
+                whoever works on it */}
+            <ResourceInfoBlocks
+              className="print:hidden"
+              resource={order}
+              title={pageTitle}
+              onUpdated={async () => {
+                void mutateOrder()
+              }}
+              onTagClick={(tagId) => {
+                setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
+              }}
+            />
+          </Spacer>
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+    >
+      <SkeletonTemplate isLoading={isLoading}>
+        <OrderSummary order={order} />
+        <div className="print:hidden">
+          <Spacer top="14">
+            <OrderPayment order={order} />
+          </Spacer>
+        </div>
+        <div className="print:hidden">
+          <Spacer top="14">
+            <OrderShipments order={order} />
+          </Spacer>
+          {!isLoadingReturns && (
             <Spacer top="14">
-              <OrderShipments order={order} />
+              <OrderReturns returns={returns} />
             </Spacer>
-            {!isLoadingReturns && (
-              <Spacer top="14">
-                <OrderReturns returns={returns} />
-              </Spacer>
-            )}
-          </div>
-          <div className="print:hidden">
-            <Spacer top="14">
-              <ResourceDetails
-                resource={order}
-                onUpdated={async () => {
-                  void mutateOrder()
-                }}
-              />
-            </Spacer>
-          </div>
-          {!isMockedId(order.id) && (
-            <>
-              <Spacer top="14">
-                <ResourceTags
-                  resourceType="orders"
-                  resourceId={order.id}
-                  overlay={{ title: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(
-                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                    )
-                  }}
-                />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="orders"
-                  resourceId={order.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
           )}
+        </div>
+        <div className="print:hidden">
+          <Spacer top="14">
+            <ResourceAttachments resourceType="orders" resourceId={order.id} />
+          </Spacer>
+        </div>
+        {!["draft"].includes(order.status) && (
           <div className="print:hidden">
             <Spacer top="14">
-              <ResourceAttachments
-                resourceType="orders"
-                resourceId={order.id}
-              />
+              <Timeline order={order} />
             </Spacer>
-            {!["draft"].includes(order.status) && (
-              <Spacer top="14">
-                <Timeline order={order} />
-              </Spacer>
-            )}
           </div>
-        </Spacer>
+        )}
       </SkeletonTemplate>
+
       {confirmDialogs}
     </PageLayout>
   )

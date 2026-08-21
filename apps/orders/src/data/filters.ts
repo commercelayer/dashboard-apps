@@ -3,24 +3,37 @@ import isEmpty from "lodash-es/isEmpty"
 
 export type CountryCodesFilterOptions = Array<{ label: string; value: string }>
 
+/** Filters a tab can take over, so the drawer stops offering them. */
+export type HideableFilter = "status_in" | "fulfillment_statuses_in"
+
 export const makeInstructions = ({
   sortByAttribute = "placed_at",
   countryCodes,
+  hiddenFilters = [],
 }: {
   sortByAttribute?: "placed_at" | "created_at"
   countryCodes?: CountryCodesFilterOptions
+  /**
+   * Filters to keep out of the drawer, because the active tab already pins them:
+   * the Placed tab decides the status, so a status field there would only invite
+   * the user to contradict the tab they are on.
+   *
+   * They are hidden, not removed — a hidden instruction still turns its value into
+   * the query (and produces no pill), which is what the tab needs.
+   */
+  hiddenFilters?: HideableFilter[]
 }): FiltersInstructions => [
   {
     label: t("apps.orders.attributes.status"),
+    hidden: hiddenFilters.includes("status_in"),
     type: "options",
     sdk: {
       predicate: "status_in",
       defaultOptions: ["placed", "approved", "cancelled", "editing"],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "pending",
@@ -54,9 +67,8 @@ export const makeInstructions = ({
       predicate: "payment_status_in",
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "authorized",
@@ -100,14 +112,16 @@ export const makeInstructions = ({
   },
   {
     label: t("apps.orders.attributes.fulfillment_status"),
+    hidden: hiddenFilters.includes("fulfillment_statuses_in"),
     type: "options",
     sdk: {
-      predicate: "fulfillment_status_in",
+      // plural: the metrics API's field is `fulfillment_statuses`, and it
+      // rejects the singular
+      predicate: "fulfillment_statuses_in",
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "unfulfilled",
@@ -127,12 +141,9 @@ export const makeInstructions = ({
               "resources.orders.attributes.fulfillment_status.fulfilled",
             ),
           },
-          {
-            value: "not_required",
-            label: t(
-              "resources.orders.attributes.fulfillment_status.not_required",
-            ),
-          },
+          // no `not_required`: the metrics API knows only `unfulfilled`,
+          // `in_progress` and `fulfilled`, and rejects the request outright when
+          // asked for it
         ],
       },
     },
@@ -144,14 +155,13 @@ export const makeInstructions = ({
       predicate: "market_id_in",
     },
     render: {
-      component: "inputResourceGroup",
+      component: "inputSelect",
       props: {
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "markets",
         searchBy: "name_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        previewLimit: 5,
         hideWhenSingleItem: true,
         filters: {
           disabled_at_null: true,
@@ -167,9 +177,8 @@ export const makeInstructions = ({
       predicate: "country_codes_in",
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: countryCodes ?? [],
       },
     },
@@ -184,9 +193,9 @@ export const makeInstructions = ({
     },
     hidden: true,
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "single",
+        isMulti: false,
         options: [
           { value: "only", label: "Only archived" },
           { value: "hide", label: "Hide archived" },
@@ -225,15 +234,13 @@ export const makeInstructions = ({
       predicate: "tags_id_in",
     },
     render: {
-      component: "inputResourceGroup",
+      component: "inputSelect",
       props: {
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "tags",
         searchBy: "name_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        previewLimit: 5,
-        showCheckboxIcon: false,
       },
     },
   },
@@ -259,9 +266,8 @@ export const makeCartsInstructions = (): FiltersInstructions => [
       defaultOptions: ["pending"],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [{ value: "pending", label: "Pending", isHidden: true }],
       },
     },
@@ -274,9 +280,8 @@ export const makeCartsInstructions = (): FiltersInstructions => [
       predicate: "payment_status_in",
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "authorized",

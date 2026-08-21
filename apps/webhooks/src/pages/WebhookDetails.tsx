@@ -1,21 +1,23 @@
 import {
+  Badge,
   Button,
   EmptyState,
+  formatDateWithPredicate,
   type PageHeadingProps,
   PageLayout,
-  ResourceDetails,
-  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import type { FC } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { ErrorNotFound } from "#components/ErrorNotFound"
-import { WebhookCallback } from "#components/WebhookCallback"
+import { WebhookCallbacks } from "#components/WebhookCallbacks"
 import { WebhookInfos } from "#components/WebhookInfos"
-import { WebhookTopCard } from "#components/WebhookTopCard"
+import { WebhookSharedSecret } from "#components/WebhookSharedSecret"
+import { getWebhookDisplayStatus } from "#data/dictionaries"
 import { appRoutes } from "#data/routes"
 import { useWebhookDetails } from "#hooks/useWebhookDetails"
 
@@ -23,13 +25,16 @@ export const WebhookDetails: FC = () => {
   const {
     settings: { extras, mode },
     canUser,
+    user,
   } = useTokenProvider()
   const [, params] = useRoute(appRoutes.details.path)
   const [, setLocation] = useLocation()
 
   const webhookId = params?.webhookId ?? ""
-  const { webhook, isLoading, mutateWebhook, error } =
-    useWebhookDetails(webhookId)
+  const { webhook, isLoading, mutateWebhook, error } = useWebhookDetails(
+    webhookId,
+    { withLastEventCallbacks: true },
+  )
 
   if (webhookId == null || !canUser("read", "webhooks") || error != null) {
     return (
@@ -39,8 +44,9 @@ export const WebhookDetails: FC = () => {
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
-          label: `Webhooks`,
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         mode={mode}
       >
@@ -56,17 +62,31 @@ export const WebhookDetails: FC = () => {
     )
   }
 
+  if (webhook == null) {
+    return <ErrorNotFound />
+  }
+
   const pageTitle = webhook.name
+  const displayStatus = getWebhookDisplayStatus(webhook)
+
   const pageToolbar: PageHeadingProps["toolbar"] = {
     buttons: [],
     dropdownItems: [],
   }
 
+  if (extras?.openResourceModal != null) {
+    pageToolbar.buttons?.push(
+      getResourceModalButton("webhooks", webhook.id, extras),
+    )
+  }
+
+  const actions: NonNullable<
+    NonNullable<PageHeadingProps["toolbar"]>["dropdownItems"]
+  >[number] = []
+
   if (canUser("update", "webhooks")) {
-    pageToolbar.buttons?.push({
+    actions.push({
       label: "Edit",
-      size: "small",
-      variant: "secondary",
       onClick: () => {
         setLocation(appRoutes.editWebhook.makePath({ webhookId }))
       },
@@ -74,65 +94,68 @@ export const WebhookDetails: FC = () => {
   }
 
   if (canUser("destroy", "webhooks")) {
-    pageToolbar.dropdownItems?.push([
-      {
-        label: "Delete",
-        onClick: () => {
-          setLocation(appRoutes.deleteWebhook.makePath({ webhookId }))
-        },
+    actions.push({
+      label: "Delete",
+      onClick: () => {
+        setLocation(appRoutes.deleteWebhook.makePath({ webhookId }))
       },
-    ])
+    })
   }
 
-  if (extras?.openResourceModal != null) {
-    const resourceInspectorButton = getResourceModalButton(
-      "webhooks",
-      webhook.id,
-      extras,
-    )
-    pageToolbar.buttons?.push(resourceInspectorButton)
+  if (actions.length > 0) {
+    pageToolbar.dropdownItems?.push(actions)
   }
 
-  return webhook == null ? (
-    <ErrorNotFound />
-  ) : (
+  return (
     <SkeletonTemplate isLoading={isLoading}>
       <PageLayout
-        title={pageTitle}
+        title={
+          <>
+            {pageTitle}
+            <Badge variant={displayStatus.variant}>{displayStatus.label}</Badge>
+          </>
+        }
+        description={formatDateWithPredicate({
+          predicate: "Created",
+          isoDate: webhook.created_at ?? "",
+          timezone: user?.timezone,
+          format: "fullWithSeconds",
+        })}
         mode={mode}
+        // no bottom gap under the heading: the main column opens with a
+        // `Spacer top="14"`, which is what the sidebar column lines up with
+        gap="only-top"
+        fullWidth
         navigationButton={{
           onClick: () => {
             setLocation(appRoutes.list.makePath({}))
           },
-          label: `Webhooks`,
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         toolbar={pageToolbar}
+        sidebar={
+          <>
+            <WebhookSharedSecret webhook={webhook} />
+
+            <Spacer top="10">
+              <ResourceInfoBlocks
+                resource={webhook}
+                title={pageTitle ?? ""}
+                onUpdated={async () => {
+                  void mutateWebhook()
+                }}
+              />
+            </Spacer>
+          </>
+        }
       >
-        <Spacer bottom="14">
-          <WebhookTopCard />
-        </Spacer>
         <Spacer bottom="14">
           <WebhookInfos webhook={webhook} />
         </Spacer>
-        <WebhookCallback webhook={webhook} />
-        <Spacer top="14">
-          <ResourceDetails
-            resource={webhook}
-            onUpdated={async () => {
-              void mutateWebhook()
-            }}
-          />
-        </Spacer>
-        <Spacer top="14">
-          <ResourceMetadata
-            resourceType="webhooks"
-            resourceId={webhook.id}
-            overlay={{
-              title: pageTitle ?? "",
-            }}
-          />
-        </Spacer>
+
+        <WebhookCallbacks webhook={webhook} />
       </PageLayout>
     </SkeletonTemplate>
   )

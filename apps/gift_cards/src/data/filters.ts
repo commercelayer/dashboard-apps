@@ -8,14 +8,14 @@ export const instructions: FiltersInstructions = [
       predicate: "market_id_in",
     },
     render: {
-      component: "inputResourceGroup",
+      component: "inputSelect",
       props: {
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "markets",
         searchBy: "name_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        previewLimit: 5,
+        hideWhenSingleItem: true,
         filters: {
           disabled_at_null: true,
         },
@@ -30,9 +30,8 @@ export const instructions: FiltersInstructions = [
       defaultOptions: ["inactive", "active", "redeemed"],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           { value: "draft", label: "Draft", isHidden: true },
           { value: "inactive", label: "Inactive" },

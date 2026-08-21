@@ -2,7 +2,6 @@ import type { FC } from "react"
 import { Route, Router, Switch } from "wouter"
 import { ErrorNotFound } from "#components/ErrorNotFound"
 import { appRoutes } from "#data/routes"
-import { EventCallbacksList } from "#pages/EventCallbacksList"
 import { WebhookCreate } from "#pages/WebhookCreate"
 import { WebhookDelete } from "#pages/WebhookDelete"
 import { WebhookDetails } from "#pages/WebhookDetails"
@@ -31,9 +30,6 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         </Route>
         <Route path={appRoutes.details.path}>
           <WebhookDetails />
-        </Route>
-        <Route path={appRoutes.webhookEventCallbacks.path}>
-          <EventCallbacksList />
         </Route>
         <Route>
           <ErrorNotFound />

@@ -1,31 +1,30 @@
 import {
   GenericPageNotFound,
-  isMockedId,
   maskGiftCardCode,
-  PageLayout,
-  type PageLayoutProps,
+  PageHeading,
+  type PageHeadingProps,
   type PageProps,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   Tab,
   Tabs,
   useAppLinking,
+  useConfirmDialog,
   useCoreSdkProvider,
+  useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { type FC, useMemo, useState } from "react"
 import { useLocation } from "wouter"
+import { useSearch } from "wouter/use-browser-location"
+import { BadgeStatus } from "#components/BadgeStatus"
 import { BalanceLog } from "#components/BalanceLog"
 import { DetailsImage } from "#components/DetailsImage"
 import { DetailsInfo } from "#components/DetailsInfo"
-import { DetailsRecap } from "#components/DetailsRecap"
 import { GiftCardTimeline } from "#components/GiftCardTimeline"
 import { appRoutes } from "#data/routes"
-import { useDeleteOverlay } from "#hooks/useDeleteOverlay"
 import {
   giftCardIncludeAttribute,
   useGiftCardDetails,
@@ -35,7 +34,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
   params,
 }) => {
   const {
-    settings: { mode, extras },
+    settings: { extras },
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { sdkClient } = useCoreSdkProvider()
@@ -46,11 +45,30 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
   const { giftCard, isLoading, error, mutateGiftCard } =
     useGiftCardDetails(giftCardId)
 
-  const { DeleteOverlay, openDeleteOverlay } = useDeleteOverlay()
+  const queryString = useSearch()
+
+  // The drawer is driven by the route: it is open for as long as this component
+  // is mounted, and closing it means navigating away.
+  const { Overlay: DetailsDrawer } = useOverlay({ initialOpen: true })
+
+  const closeDrawer = (): void => {
+    // `goBack` returns to another app when the gift card was opened from one;
+    // within the app it falls back to the list, keeping the url's filters.
+    const search = new URLSearchParams(queryString).toString()
+    goBack({
+      currentResourceId: giftCardId,
+      defaultRelativePath:
+        search !== ""
+          ? appRoutes.home.makePath({}, search)
+          : appRoutes.home.makePath({}),
+    })
+  }
+
+  const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
   const [isUpdating, setIsUpdating] = useState(false)
 
   const toolbarButtons = useMemo<
-    NonNullable<PageLayoutProps["toolbar"]>["buttons"]
+    NonNullable<PageHeadingProps["toolbar"]>["buttons"]
   >(() => {
     const otherToolbarButtons = []
     if (extras?.openResourceModal != null) {
@@ -136,7 +154,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
   }, [giftCard, isUpdating])
 
   const toolbarDropdownItems = useMemo<
-    NonNullable<PageLayoutProps["toolbar"]>["dropdownItems"]
+    NonNullable<PageHeadingProps["toolbar"]>["dropdownItems"]
   >(() => {
     return [
       [
@@ -151,7 +169,7 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
         canUser("destroy", "gift_cards") && {
           label: "Delete",
           onClick: () => {
-            openDeleteOverlay()
+            showDeleteDialog()
           },
         },
       ].filter((o) => o !== false),
@@ -162,93 +180,80 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
     return <GenericPageNotFound />
   }
 
-  return (
-    <PageLayout
-      mode={mode}
-      isLoading={isLoading}
-      title={`Gift card ${giftCard?.formatted_initial_balance}`}
-      navigationButton={{
-        onClick: () => {
-          goBack({
-            currentResourceId: giftCardId,
-            defaultRelativePath: appRoutes.list.makePath({}),
-          })
-        },
-        label: "Back",
-        icon: "arrowLeft",
-      }}
-      gap="only-top"
-      scrollToTop
-      toolbar={{
-        buttons: toolbarButtons,
-        dropdownItems: toolbarDropdownItems,
-      }}
-    >
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer top="14">
-          <DetailsRecap giftCard={giftCard} />
-        </Spacer>
-        <Spacer top="14">
-          <Tabs>
-            <Tab name="Overview">
-              <Spacer top="6">
-                <DetailsInfo giftCard={giftCard} />
-              </Spacer>
-              <Spacer top="14">
-                <DetailsImage giftCard={giftCard} />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceDetails
-                  resource={giftCard}
-                  onUpdated={async () => {
-                    void mutateGiftCard()
-                  }}
-                />
-              </Spacer>
-              {!isMockedId(giftCard.id) && (
-                <>
-                  <Spacer top="14">
-                    <ResourceTags
-                      resourceType="gift_cards"
-                      resourceId={giftCard.id}
-                      overlay={{
-                        title: `Gift card ${giftCard?.formatted_initial_balance}`,
-                      }}
-                    />
-                  </Spacer>
-                  <Spacer top="14">
-                    <ResourceMetadata
-                      resourceType="gift_cards"
-                      resourceId={giftCard.id}
-                      overlay={{
-                        title: `Gift card ${giftCard?.formatted_initial_balance}`,
-                      }}
-                    />
-                  </Spacer>
-                </>
-              )}
-              <Spacer top="14">
-                <GiftCardTimeline giftCard={giftCard} />
-              </Spacer>
-            </Tab>
-            <Tab name="Balance log">
-              <Spacer top="6">
-                <BalanceLog giftCardId={giftCard.id} />
-              </Spacer>
-            </Tab>
-          </Tabs>
-        </Spacer>
-      </SkeletonTemplate>
+  // masked, as in the list: the full code is in the Info block
+  const pageTitle = `Gift card ${maskGiftCardCode(giftCard.code)}`
 
-      <DeleteOverlay
-        title={`Confirm that you want to delete the gift card ending with ${maskGiftCardCode(giftCard.code)} with balance ${giftCard?.formatted_balance}?`}
-        onDelete={async () => {
-          return await sdkClient.gift_cards.delete(giftCard.id).then(() => {
-            setLocation(appRoutes.list.makePath({}))
-          })
-        }}
-      />
-    </PageLayout>
+  return (
+    <DetailsDrawer drawer onBackdropClick={closeDrawer}>
+      <div className="p-6">
+        <PageHeading
+          title={
+            <SkeletonTemplate isLoading={isLoading}>
+              {pageTitle}
+              <BadgeStatus status={giftCard?.status} />
+            </SkeletonTemplate>
+          }
+          navigationButton={{
+            onClick: closeDrawer,
+            label: "",
+            icon: "x",
+            variant: "button",
+          }}
+          toolbar={{
+            buttons: toolbarButtons,
+            dropdownItems: toolbarDropdownItems,
+          }}
+          gap="none"
+        />
+        <SkeletonTemplate isLoading={isLoading}>
+          <Spacer top="14">
+            <Tabs>
+              <Tab name="Overview">
+                <Spacer top="6">
+                  <DetailsInfo giftCard={giftCard} />
+                </Spacer>
+                <Spacer top="14">
+                  <DetailsImage giftCard={giftCard} />
+                </Spacer>
+                <Spacer top="14">
+                  <ResourceInfoBlocks
+                    resource={giftCard}
+                    title={pageTitle}
+                    onUpdated={async () => {
+                      void mutateGiftCard()
+                    }}
+                  />
+                </Spacer>
+                <Spacer top="14">
+                  <GiftCardTimeline giftCard={giftCard} />
+                </Spacer>
+              </Tab>
+              <Tab name="Balance log">
+                <Spacer top="6">
+                  <BalanceLog giftCardId={giftCard.id} />
+                </Spacer>
+              </Tab>
+            </Tabs>
+          </Spacer>
+        </SkeletonTemplate>
+
+        {canUser("destroy", "gift_cards") && (
+          <ConfirmDialog
+            icon="trash"
+            title={`Delete gift card ${maskGiftCardCode(giftCard.code)}`}
+            description="This action cannot be undone."
+            confirm={{
+              label: "Delete gift card",
+              variant: "danger",
+              onClick: async () => {
+                await sdkClient.gift_cards.delete(giftCard.id)
+                setLocation(appRoutes.home.makePath({}))
+              },
+            }}
+          />
+        )}
+      </div>
+    </DetailsDrawer>
   )
 }
 

@@ -9,9 +9,8 @@ export const instructions: FiltersInstructions = [
       defaultOptions: ["prospect", "acquired", "repeat"],
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           {
             value: "prospect",
@@ -40,9 +39,8 @@ export const instructions: FiltersInstructions = [
           : undefined,
     },
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
-        mode: "multi",
         options: [
           { value: "guest", label: t("apps.customers.details.guest") },
           {
@@ -60,14 +58,13 @@ export const instructions: FiltersInstructions = [
       predicate: "customer_group_id_in",
     },
     render: {
-      component: "inputResourceGroup",
+      component: "inputSelect",
       props: {
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "customer_groups",
         searchBy: "name_i_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        previewLimit: 5,
       },
     },
   },
@@ -78,15 +75,13 @@ export const instructions: FiltersInstructions = [
       predicate: "tags_id_in",
     },
     render: {
-      component: "inputResourceGroup",
+      component: "inputSelect",
       props: {
         fieldForLabel: "name",
         fieldForValue: "id",
         resource: "tags",
         searchBy: "name_i_cont",
         sortBy: { attribute: "name", direction: "asc" },
-        previewLimit: 5,
-        showCheckboxIcon: false,
       },
     },
   },

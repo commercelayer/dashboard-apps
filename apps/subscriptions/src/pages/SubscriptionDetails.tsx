@@ -1,19 +1,17 @@
 import {
   Alert,
+  Badge,
   Button,
   EmptyState,
   formatDateWithPredicate,
-  isMockedId,
   type PageHeadingProps,
   PageLayout,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { SubscriptionAddresses } from "#components/SubscriptionAddresses"
@@ -21,10 +19,11 @@ import { SubscriptionInfo } from "#components/SubscriptionInfo"
 import { SubscriptionItems } from "#components/SubscriptionItems"
 import { SubscriptionOrders } from "#components/SubscriptionOrders"
 import { SubscriptionPayment } from "#components/SubscriptionPayment"
-import { SubscriptionSteps } from "#components/SubscriptionSteps"
 import {
   getOrderSubscriptionTriggerAction,
   getOrderSubscriptionTriggerActionName,
+  getSubscriptionStatusBadgeVariant,
+  getSubscriptionStatusName,
 } from "#data/dictionaries"
 import { appRoutes } from "#data/routes"
 import { useSubscriptionDetails } from "#hooks/useSubscriptionDetails"
@@ -65,8 +64,9 @@ function SubscriptionDetails(): React.JSX.Element {
               defaultRelativePath: appRoutes.list.makePath({}),
             })
           },
-          label: "Back",
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         mode={mode}
         scrollToTop
@@ -169,7 +169,14 @@ function SubscriptionDetails(): React.JSX.Element {
       mode={mode}
       toolbar={pageToolbar}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle}{" "}
+          <Badge
+            variant={getSubscriptionStatusBadgeVariant(subscription.status)}
+          >
+            {getSubscriptionStatusName(subscription.status)}
+          </Badge>
+        </SkeletonTemplate>
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
@@ -189,74 +196,54 @@ function SubscriptionDetails(): React.JSX.Element {
             defaultRelativePath: appRoutes.list.makePath({}),
           })
         },
-        label: "Subscriptions",
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
       }}
       gap="only-top"
       scrollToTop
-    >
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom="4">
-          {isPending && (
-            <Spacer top="14">
-              <Alert status="warning">
-                This subscription is <b>pending</b> because it has no usable
-                payment method for renewals. Attach a payment source, then
-                activate it to resume.
-              </Alert>
-            </Spacer>
-          )}
-          <Spacer top="14">
-            <SubscriptionSteps subscription={subscription} />
-          </Spacer>
-          <Spacer top="14">
-            <SubscriptionInfo subscription={subscription} />
-          </Spacer>
-          <Spacer top="14">
-            <SubscriptionItems subscriptionId={subscription.id} />
-          </Spacer>
-          <Spacer top="14">
-            <SubscriptionAddresses subscription={subscription} />
-          </Spacer>
-          <Spacer top="14">
-            <SubscriptionPayment subscription={subscription} />
-          </Spacer>
-          <Spacer top="14">
-            <SubscriptionOrders subscription={subscription} />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceDetails
+      fullWidth
+      alert={
+        !isLoading &&
+        isPending && (
+          <Alert status="warning">
+            This subscription is <b>pending</b> because it has no usable payment
+            method for renewals. Attach a payment source, then activate it to
+            resume.
+          </Alert>
+        )
+      }
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <SubscriptionAddresses subscription={subscription} />
+          <Spacer top={{ base: "14", lg: "10" }}>
+            <ResourceInfoBlocks
               resource={subscription}
+              title={pageTitle}
               onUpdated={async () => {
                 void mutateSubscription()
               }}
+              onTagClick={(tagId) => {
+                setLocation(appRoutes.home.makePath({}, `tags_id_in=${tagId}`))
+              }}
             />
           </Spacer>
-          {!isMockedId(subscription.id) && (
-            <>
-              <Spacer top="14">
-                <ResourceTags
-                  resourceType="order_subscriptions"
-                  resourceId={subscription.id}
-                  overlay={{ title: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(
-                      appRoutes.list.makePath({}, `tags_id_in=${tagId}`),
-                    )
-                  }}
-                />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="order_subscriptions"
-                  resourceId={subscription.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+    >
+      <SkeletonTemplate isLoading={isLoading}>
+        <SubscriptionInfo subscription={subscription} />
+        <Spacer top="14">
+          <SubscriptionItems subscriptionId={subscription.id} />
+        </Spacer>
+        {/* in the main column, after the items, as it was before the sidebar */}
+        <Spacer top="14">
+          <SubscriptionPayment subscription={subscription} />
+        </Spacer>
+        <Spacer top="14" bottom="4">
+          <SubscriptionOrders subscription={subscription} />
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>

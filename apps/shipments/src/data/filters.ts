@@ -26,15 +26,37 @@ export const makeFiltersInstructions = (options?: {
         predicate: "stock_location_id_in",
       },
       render: {
-        component: "inputResourceGroup",
+        component: "inputSelect",
         props: {
           resource: "stock_locations",
           fieldForLabel: "name",
           fieldForValue: "id",
           searchBy: "name_cont",
           sortBy: { attribute: "updated_at", direction: "desc" },
-          previewLimit: 5,
           hideWhenSingleItem: true,
+        },
+      },
+    },
+    {
+      label: "Archived",
+      type: "options",
+      // scoping only: the tabs decide whether archived shipments are included,
+      // it is never rendered as a field
+      hidden: true,
+      sdk: {
+        predicate: "archived_at_null",
+        parseFormValue: (value) =>
+          value === "show" ? undefined : value === "hide",
+      },
+      render: {
+        component: "inputSelect",
+        props: {
+          isMulti: false,
+          options: [
+            { value: "only", label: "Only archived" },
+            { value: "hide", label: "Hide archived" },
+            { value: "show", label: "Show all, both archived and not" },
+          ],
         },
       },
     },
@@ -47,9 +69,8 @@ export const makeFiltersInstructions = (options?: {
         defaultOptions: allowedStatuses,
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "multi",
           options: allowedStatuses.map((status) => ({
             value: status,
             label: getShipmentStatusName(status),
@@ -74,15 +95,13 @@ export const makeFiltersInstructions = (options?: {
         predicate: "tags_id_in",
       },
       render: {
-        component: "inputResourceGroup",
+        component: "inputSelect",
         props: {
           fieldForLabel: "name",
           fieldForValue: "id",
           resource: "tags",
           searchBy: "name_cont",
           sortBy: { attribute: "name", direction: "asc" },
-          previewLimit: 5,
-          showCheckboxIcon: false,
         },
       },
     },

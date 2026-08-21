@@ -1,17 +1,18 @@
 import {
   Button,
   EmptyState,
-  isMockedId,
+  PageHeading,
   type PageHeadingProps,
-  PageLayout,
-  ResourceDetails,
-  ResourceMetadata,
   SkeletonTemplate,
   Spacer,
+  useAppLinking,
+  useOverlay,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
-import { Link, useLocation, useRoute } from "wouter"
+import { useRoute } from "wouter"
+import { useSearch } from "wouter/use-browser-location"
 import { ImportDate } from "#components/Details/ImportDate"
 import { ImportDetails } from "#components/Details/ImportDetails"
 import { ImportedResourceType } from "#components/Details/ImportedResourceType"
@@ -23,36 +24,53 @@ import { appRoutes } from "#data/routes"
 const DetailsPage = (): React.JSX.Element | null => {
   const {
     canUser,
-    settings: { mode, extras },
+    settings: { extras },
   } = useTokenProvider()
-  const [_, setLocation] = useLocation()
   const [_match, params] = useRoute<{ importId?: string }>(
     appRoutes.details.path,
   )
   const importId = params == null ? null : params.importId
+  const { goBack } = useAppLinking()
+  const queryString = useSearch()
+
+  // The drawer is driven by the route: it is open for as long as this component
+  // is mounted, and closing it means navigating away.
+  const { Overlay: DetailsDrawer } = useOverlay({ initialOpen: true })
+
+  const closeDrawer = (): void => {
+    // `goBack` returns to another app when the import was opened from one; within
+    // the app it falls back to the list, keeping the url's filters.
+    const search = new URLSearchParams(queryString).toString()
+    goBack({
+      currentResourceId: importId ?? undefined,
+      defaultRelativePath: appRoutes.list.makePath(search),
+    })
+  }
 
   if (importId == null || !canUser("read", "imports")) {
     return (
-      <PageLayout
-        title="Imports"
-        navigationButton={{
-          label: "Back",
-          icon: "arrowLeft",
-          onClick: () => {
-            setLocation(appRoutes.list.makePath())
-          },
-        }}
-        mode={mode}
-      >
-        <EmptyState
-          title="Not authorized"
-          action={
-            <Link href={appRoutes.list.makePath()}>
-              <Button variant="primary">Go back</Button>
-            </Link>
-          }
-        />
-      </PageLayout>
+      <DetailsDrawer drawer onBackdropClick={closeDrawer}>
+        <div className="p-6">
+          <PageHeading
+            title="Import"
+            gap="none"
+            navigationButton={{
+              onClick: closeDrawer,
+              label: "",
+              icon: "x",
+              variant: "button",
+            }}
+          />
+          <EmptyState
+            title="Not authorized"
+            action={
+              <Button variant="primary" onClick={closeDrawer}>
+                Go back
+              </Button>
+            }
+          />
+        </div>
+      </DetailsDrawer>
     )
   }
 
@@ -71,58 +89,52 @@ const DetailsPage = (): React.JSX.Element | null => {
   }
 
   return (
-    <ImportDetailsProvider importId={importId}>
-      {({ state: { data, isLoading, isNotFound }, refetch }) =>
-        isNotFound ? (
-          <ErrorNotFound />
-        ) : (
-          <SkeletonTemplate isLoading={isLoading}>
-            <PageLayout
-              title={<ImportedResourceType />}
-              mode={mode}
-              description={<ImportDate atType="created_at" includeTime />}
-              navigationButton={{
-                label: "Imports",
-                icon: "arrowLeft",
-                onClick: () => {
-                  setLocation(appRoutes.list.makePath())
-                },
-              }}
-              toolbar={pageToolbar}
-            >
-              <Spacer bottom="14">
-                <ImportReport />
-              </Spacer>
-
-              <Spacer bottom="14">
-                <ImportDetails />
-              </Spacer>
-
-              <Spacer bottom="14">
-                <ResourceDetails
-                  resource={data}
-                  onUpdated={async () => {
-                    void refetch()
+    // The drawer is the outermost element, as in the other drawer apps: the data
+    // provider polls a running import every few seconds, and anything mounted
+    // above the drawer would take it down with it on each update.
+    <DetailsDrawer drawer onBackdropClick={closeDrawer}>
+      <div className="p-6">
+        <ImportDetailsProvider importId={importId}>
+          {({ state: { data, isLoading, isNotFound }, refetch }) =>
+            isNotFound ? (
+              <ErrorNotFound />
+            ) : (
+              <SkeletonTemplate isLoading={isLoading}>
+                <PageHeading
+                  title={<ImportedResourceType />}
+                  description={<ImportDate atType="created_at" includeTime />}
+                  navigationButton={{
+                    onClick: closeDrawer,
+                    label: "",
+                    icon: "x",
+                    variant: "button",
                   }}
+                  toolbar={pageToolbar}
+                  gap="none"
                 />
-              </Spacer>
+                <Spacer bottom="14">
+                  <ImportReport />
+                </Spacer>
 
-              {!isMockedId(data.id) && (
-                <Spacer top="14">
-                  <ResourceMetadata
-                    resourceType="imports"
-                    resourceId={data.id}
-                    overlay={{
-                      title: "Back",
+                <Spacer bottom="14">
+                  <ImportDetails />
+                </Spacer>
+
+                <Spacer bottom="14">
+                  <ResourceInfoBlocks
+                    resource={data}
+                    title={"Back"}
+                    onUpdated={async () => {
+                      void refetch()
                     }}
                   />
                 </Spacer>
-              )}
-            </PageLayout>
-          </SkeletonTemplate>
-        )
-      }
-    </ImportDetailsProvider>
+              </SkeletonTemplate>
+            )
+          }
+        </ImportDetailsProvider>
+      </div>
+    </DetailsDrawer>
   )
 }
 

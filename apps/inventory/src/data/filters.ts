@@ -1,34 +1,33 @@
 import type { FiltersInstructions } from "@commercelayer/app-elements"
-import { isEmpty } from "lodash-es"
 
-interface StockItemsInstructionsConfig {
-  stockLocationId?: string
-}
-
-export const stockItemsInstructions = ({
-  stockLocationId,
-}: StockItemsInstructionsConfig): FiltersInstructions => {
-  const instructions: FiltersInstructions = []
-  if (!isEmpty(stockLocationId) && stockLocationId != null) {
-    instructions.push({
-      label: "Stock location",
-      type: "options",
-      sdk: {
-        predicate: "stock_location_id_in",
-        defaultOptions: [stockLocationId],
+/**
+ * Filters of the stock items list.
+ *
+ * The stock location used to scope the page through the url
+ * (`/:stockLocationId/list`); it is a regular filter now, so every stock item is
+ * reachable from a single list.
+ */
+export const stockItemsInstructions: FiltersInstructions = [
+  {
+    label: "Stock locations",
+    type: "options",
+    sdk: {
+      predicate: "stock_location_id_in",
+    },
+    render: {
+      component: "inputSelect",
+      props: {
+        resource: "stock_locations",
+        fieldForLabel: "name",
+        fieldForValue: "id",
+        // Core caps `page[size]` at 25, so searching server-side is what makes
+        // stock locations beyond the first page reachable
+        searchBy: "name_cont",
+        sortBy: { attribute: "name", direction: "asc" },
       },
-      hidden: true,
-      render: {
-        component: "inputToggleButton",
-        props: {
-          mode: "single",
-          options: [{ value: stockLocationId, label: stockLocationId }],
-        },
-      },
-    })
-  }
-
-  instructions.push({
+    },
+  },
+  {
     label: "Availability",
     type: "groupedPredicates",
     urlParamKey: "availability",
@@ -50,9 +49,8 @@ export const stockItemsInstructions = ({
         ],
       },
     },
-  })
-
-  instructions.push({
+  },
+  {
     label: "Search",
     type: "textSearch",
     sdk: {
@@ -61,6 +59,5 @@ export const stockItemsInstructions = ({
     render: {
       component: "searchBar",
     },
-  })
-  return instructions
-}
+  },
+]

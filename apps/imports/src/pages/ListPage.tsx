@@ -1,128 +1,87 @@
 import {
-  Button,
   EmptyState,
-  HomePageLayout,
-  Icon,
-  List,
-  useCoreSdkProvider,
+  PageLayout,
+  Spacer,
   useResourceFilters,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { FC } from "react"
-import { Link, useLocation } from "wouter"
+import { useLocation, useRouter } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
-import { Item } from "#components/List/Item"
-import { ListImportProvider } from "#components/List/Provider"
+import { useImportsTableColumns } from "#components/importsTableColumns"
 import { instructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
 
 const ListPage: FC = () => {
   const { canUser } = useTokenProvider()
-  const { sdkClient } = useCoreSdkProvider()
   const queryString = useSearch()
   const [, setLocation] = useLocation()
+  // the anchor needs an absolute path, `setLocation` a base-relative one —
+  // the same split `useAppLinking` makes for the apps whose routes it fits
+  const { base } = useRouter()
 
-  const { sdkFilters, SearchWithNav, hasActiveFilter } = useResourceFilters({
-    instructions,
-  })
+  const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
+    useResourceFilters({
+      instructions,
+    })
 
-  if (sdkFilters == null) {
-    return null
+  const columns = useImportsTableColumns()
+
+  const handleFiltersUpdate = (queryString: string): void => {
+    navigate(`?${queryString}`, { replace: true })
   }
 
   return (
-    <HomePageLayout title="Imports">
-      <SearchWithNav
-        queryString={queryString}
-        onUpdate={(qs) => {
-          navigate(`?${qs}`, {
-            replace: true,
-          })
-        }}
-        onFilterClick={(queryString) => {
-          setLocation(appRoutes.filters.makePath(queryString))
-        }}
-      />
-      <ListImportProvider
-        sdkClient={sdkClient}
-        pageSize={25}
-        filters={sdkFilters}
-      >
-        {({ state, changePage }) => {
-          const { isLoading, currentPage, list } = state
+    <PageLayout
+      title="Imports"
+      fullWidth
+      toolbar={{
+        buttons: canUser("create", "imports")
+          ? [
+              {
+                icon: "plus",
+                label: "New import",
+                size: "small",
+                onClick: () => {
+                  setLocation(appRoutes.selectResource.makePath())
+                },
+              },
+            ]
+          : undefined,
+      }}
+    >
+      <FiltersBar queryString={queryString} onUpdate={handleFiltersUpdate} />
 
-          if (isLoading) {
-            return <List isLoading />
-          }
-
-          if (list == null) {
-            return (
-              <div>
-                <EmptyState title="Unable to load list" />
-              </div>
-            )
-          }
-
-          if (list.length === 0) {
-            return (
-              <div>
-                <EmptyState
-                  title={
-                    hasActiveFilter ? "No imports found!" : "No imports yet!"
-                  }
-                  description={
-                    hasActiveFilter
-                      ? "We didn't find any import matching the current filters selection."
-                      : "Create your first import"
-                  }
-                  action={
-                    canUser("create", "imports") && !hasActiveFilter ? (
-                      <Link href={appRoutes.selectResource.makePath()}>
-                        <Button variant="primary">New import</Button>
-                      </Link>
-                    ) : undefined
-                  }
-                />
-              </div>
-            )
-          }
-
-          const isRefetching = currentPage !== list.meta.currentPage
-          const { recordCount, recordsPerPage, pageCount } = list.meta
-
-          return (
-            <List
-              isDisabled={isRefetching}
-              title="All Imports"
-              actionButton={
-                <Link href={appRoutes.selectResource.makePath()} asChild>
-                  <Button
-                    variant="secondary"
-                    size="mini"
-                    alignItems="center"
-                    aria-label="Add import"
-                  >
-                    <Icon name="plus" />
-                    New
-                  </Button>
-                </Link>
+      <Spacer bottom="14">
+        <FilteredTable
+          type="imports"
+          columns={columns}
+          query={{
+            pageSize: 25,
+          }}
+          defaultSort="-created_at"
+          hideTitle
+          // this app keeps its details at `/:importId`, while `navigateTo` builds
+          // the `/list/:id` shape every other app uses — so the route is built here
+          getRowHref={(job) => `${base}${appRoutes.details.makePath(job.id)}`}
+          onRowClick={(job) => {
+            setLocation(appRoutes.details.makePath(job.id))
+          }}
+          emptyState={
+            <EmptyState
+              title={hasActiveFilter ? "No imports found" : "No imports yet"}
+              description={
+                hasActiveFilter
+                  ? "Try a different search or filter."
+                  : "Imported records will show up here."
               }
-              pagination={{
-                recordsPerPage,
-                recordCount,
-                currentPage,
-                onChangePageRequest: changePage,
-                pageCount,
-              }}
-            >
-              {list.map((job) => (
-                <Item key={job.id} job={job} />
-              ))}
-            </List>
-          )
-        }}
-      </ListImportProvider>
-    </HomePageLayout>
+            />
+          }
+        />
+      </Spacer>
+
+      <FiltersDrawer onUpdate={handleFiltersUpdate} />
+    </PageLayout>
   )
 }
 

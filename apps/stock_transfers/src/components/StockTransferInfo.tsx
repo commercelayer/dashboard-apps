@@ -1,8 +1,7 @@
 import {
   Button,
-  ListDetailsItem,
-  Section,
-  Text,
+  Stack,
+  StackCell,
   useAppLinking,
   useTokenProvider,
   withSkeletonTemplate,
@@ -13,60 +12,66 @@ interface Props {
   stockTransfer: StockTransfer
 }
 
+/**
+ * Where the transfer goes and what it belongs to: the two stock locations, then
+ * the order and shipment it originates from, both linked.
+ *
+ * Two stacks rather than one of four cells: consecutive stacks pull themselves
+ * together into a single grid (`not-first:-mt-px`), so this reads as two rows of
+ * two instead of four narrow columns.
+ *
+ * A transfer created by hand has no shipment, and so no order either; those cells
+ * fall back to a dash rather than disappearing, which would break the grid.
+ */
 export const StockTransferInfo = withSkeletonTemplate<Props>(
   ({ stockTransfer }): React.JSX.Element => {
     const { canAccess } = useTokenProvider()
     const { navigateTo } = useAppLinking()
 
-    const orderNumber = `#${stockTransfer?.shipment?.order?.number}`
-    const navigateToOrder = canAccess("orders")
-      ? navigateTo({
-          app: "orders",
-          resourceId: stockTransfer?.shipment?.order?.id,
-        })
-      : {}
+    const order = stockTransfer?.shipment?.order
+    const shipment = stockTransfer?.shipment
 
-    const shipmentNumber = `#${stockTransfer?.shipment?.number}`
-    const navigateToShipment = canAccess("shipments")
-      ? navigateTo({
-          app: "shipments",
-          resourceId: stockTransfer?.shipment?.id,
-        })
-      : {}
+    const navigateToOrder =
+      canAccess("orders") && order?.id != null
+        ? navigateTo({ app: "orders", resourceId: order.id })
+        : {}
 
-    if (orderNumber === "#" && shipmentNumber === "#") return <></>
+    const navigateToShipment =
+      canAccess("shipments") && shipment?.id != null
+        ? navigateTo({ app: "shipments", resourceId: shipment.id })
+        : {}
 
     return (
-      <Section title="Info">
-        {orderNumber !== "#" && (
-          <ListDetailsItem label="Order" gutter="none">
-            <Text tag="div" weight="semibold">
-              {canAccess("orders") ? (
-                <Button variant="link" {...navigateToOrder}>
-                  {orderNumber}
-                </Button>
-              ) : (
-                orderNumber
-              )}
-            </Text>
-          </ListDetailsItem>
-        )}
-        {shipmentNumber !== "#" && (
-          <div className="print:hidden">
-            <ListDetailsItem label="Shipment" gutter="none">
-              <Text tag="div" weight="semibold">
-                {canAccess("orders") ? (
-                  <Button variant="link" {...navigateToShipment}>
-                    {shipmentNumber}
-                  </Button>
-                ) : (
-                  shipmentNumber
-                )}
-              </Text>
-            </ListDetailsItem>
-          </div>
-        )}
-      </Section>
+      <>
+        <Stack size="small">
+          <StackCell label="Origin">
+            {stockTransfer?.origin_stock_location?.name}
+          </StackCell>
+          <StackCell label="Destination">
+            {stockTransfer?.destination_stock_location?.name}
+          </StackCell>
+        </Stack>
+        <Stack size="small">
+          <StackCell label="Order">
+            {order?.number == null ? undefined : canAccess("orders") ? (
+              <Button variant="link" {...navigateToOrder}>
+                #{order.number}
+              </Button>
+            ) : (
+              `#${order.number}`
+            )}
+          </StackCell>
+          <StackCell label="Shipment">
+            {shipment?.number == null ? undefined : canAccess("shipments") ? (
+              <Button variant="link" {...navigateToShipment}>
+                #{shipment.number}
+              </Button>
+            ) : (
+              `#${shipment.number}`
+            )}
+          </StackCell>
+        </Stack>
+      </>
     )
   },
 )

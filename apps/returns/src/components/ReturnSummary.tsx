@@ -5,6 +5,7 @@ import {
   Section,
   Spacer,
   Text,
+  useConfirmDialog,
   useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
@@ -16,7 +17,6 @@ import {
   getReturnTriggerAttributes,
 } from "#data/dictionaries"
 import { appRoutes } from "#data/routes"
-import { useCancelOverlay } from "#hooks/useCancelOverlay"
 import { useRestockableList } from "#hooks/useRestockableList"
 import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
@@ -32,8 +32,7 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
 
     const { isLoading, errors, dispatch } = useTriggerAttribute(returnObj.id)
 
-    const { show: showCancelOverlay, Overlay: CancelOverlay } =
-      useCancelOverlay()
+    const { show: showCancelDialog, ConfirmDialog } = useConfirmDialog()
 
     const [, setLocation] = useLocation()
     const restockableList = useRestockableList(returnObj)
@@ -72,6 +71,12 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
         {canUser("update", "returns") && (
           <ActionButtons
             actions={triggerAttributes
+              // archiving lives in the page's action menu, above
+              .filter(
+                (triggerAttribute) =>
+                  triggerAttribute !== "_archive" &&
+                  triggerAttribute !== "_unarchive",
+              )
               .filter((triggerAttributes) => {
                 return (
                   triggerAttributes !== "_refund" ||
@@ -89,7 +94,7 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
                   disabled: isLoading,
                   onClick: () => {
                     if (triggerAttribute === "_cancel") {
-                      showCancelOverlay()
+                      showCancelDialog()
                       return
                     }
 
@@ -105,11 +110,20 @@ export const ReturnSummary = withSkeletonTemplate<Props>(
           />
         )}
         {renderErrorMessages(errors)}
-        <CancelOverlay
-          returnObj={returnObj}
-          onConfirm={() => {
-            void dispatch("_cancel")
+        <ConfirmDialog
+          icon="x"
+          title={`Cancel return #${returnObj.number}`}
+          description="This action cannot be undone."
+          confirm={{
+            // resolves to "Cancel return" — the same label as the action button,
+            // and not just "Cancel", which the dialog's dismiss button already says
+            label: getReturnTriggerAttributeName("_cancel"),
+            variant: "danger",
+            onClick: async () => {
+              await dispatch("_cancel")
+            },
           }}
+          cancelLabel={t("common.close")}
         />
       </Section>
     )

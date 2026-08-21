@@ -76,9 +76,8 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
         ],
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "multi",
           options: [
             { value: "buy_x_pay_y_promotions", label: "Buy X pay Y" },
             { value: "fixed_amount_promotions", label: "Fixed amount" },
@@ -103,9 +102,9 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
         predicate: "coupons_code_present",
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "single",
+          isMulti: false,
           options: [
             { value: "true", label: "With coupons" },
             { value: "false", label: "Without coupons" },
@@ -121,9 +120,9 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
         predicate: "priority_null",
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "single",
+          isMulti: false,
           options: [
             { value: "false", label: "Has priority" },
             { value: "true", label: "Doesn't have priority" },
@@ -139,9 +138,9 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
         predicate: "exclusive_true",
       },
       render: {
-        component: "inputToggleButton",
+        component: "inputSelect",
         props: {
-          mode: "single",
+          isMulti: false,
           options: [
             { value: "true", label: "Is exclusive" },
             { value: "false", label: "Isn't exclusive" },
@@ -157,15 +156,13 @@ export const filtersInstructions: FiltersInstructions = filtersWhitelist.concat(
         predicate: "tags_id_in",
       },
       render: {
-        component: "inputResourceGroup",
+        component: "inputSelect",
         props: {
           fieldForLabel: "name",
           fieldForValue: "id",
           resource: "tags",
           searchBy: "name_i_cont",
           sortBy: { attribute: "name", direction: "asc" },
-          previewLimit: 5,
-          showCheckboxIcon: false,
         },
       },
     },

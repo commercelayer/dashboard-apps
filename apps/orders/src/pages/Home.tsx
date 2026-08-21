@@ -1,39 +1,127 @@
 import {
-  HomePageLayout,
-  List,
-  ListItem,
-  RadialProgress,
-  SkeletonTemplate,
+  PageLayout,
   Spacer,
-  StatusIcon,
-  Text,
+  Tab,
+  Tabs,
+  useAppLinking,
   useCoreSdkProvider,
   useResourceFilters,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
-import { Link, useLocation } from "wouter"
-import { useSearch } from "wouter/use-browser-location"
-import { makeInstructions } from "#data/filters"
-import { presets } from "#data/lists"
+import { type FC, useEffect, useMemo } from "react"
+import { useCountryCodes } from "src/metricsApi/useCountryCodes"
+import { useLocation } from "wouter"
+import { navigate, useSearch } from "wouter/use-browser-location"
+import { ListEmptyState } from "#components/ListEmptyState"
+import { useOrdersTableColumns } from "#components/ordersTableColumns"
+import { makeCartsInstructions, makeInstructions } from "#data/filters"
+import {
+  type OrderTab,
+  orderTabs,
+  orderTabsPredicateWhitelist,
+} from "#data/lists"
 import { appRoutes } from "#data/routes"
-import { useListCounters } from "../metricsApi/useListCounters"
 
-function Home(): React.JSX.Element {
+const Home: FC = () => {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
   const { sdkClient } = useCoreSdkProvider()
   const { canUser } = useTokenProvider()
-  const search = useSearch()
-  const { data: counters, isLoading: isLoadingCounters } = useListCounters()
+  const { navigateTo } = useAppLinking()
+  const { countryCodes } = useCountryCodes()
+  const queryString = useSearch()
 
-  const { adapters, SearchWithNav } = useResourceFilters({
-    instructions: makeInstructions({}),
+  /** The tab is kept in the url via `viewTitle`, so a refresh or a shared link restores it. */
+  const [activeTabIndex, activeTab] = useMemo(() => {
+    const viewTitle = new URLSearchParams(queryString).get("viewTitle")
+    const index = orderTabs.findIndex(
+      (tab) => tab.formValues.viewTitle === viewTitle,
+    )
+    const resolvedIndex = index === -1 ? 0 : index
+    return [resolvedIndex, orderTabs[resolvedIndex] as OrderTab] as const
+  }, [queryString])
+
+  const {
+    FilteredTable,
+    FiltersBar,
+    FiltersDrawer,
+    adapters,
+    hasActiveFilter,
+  } = useResourceFilters({
+    instructions:
+      activeTab.instructions === "carts"
+        ? makeCartsInstructions()
+        : makeInstructions({
+            countryCodes,
+            hiddenFilters: activeTab.hiddenFilters,
+          }),
+    predicateWhitelist: orderTabsPredicateWhitelist,
   })
 
+  const handleFiltersUpdate = (queryString: string): void => {
+    navigate(`?${queryString}`, { replace: true })
+  }
+
+  /**
+   * Landing without a tab in the url (e.g. `/orders`) would show the first tab
+   * as active while none of its filters are applied, so they are written once.
+   *
+   * Filters already present in the url take precedence: an inbound link such as
+   * `/orders?tags_id_in=xxx` (from an order detail, or from another app) must keep
+   * filtering by what it asked for, and only get the tab's filters on top.
+   */
+  const hasTabInUrl = new URLSearchParams(queryString).get("viewTitle") != null
+  useEffect(() => {
+    if (!hasTabInUrl) {
+      const incomingFilters = Object.entries(
+        adapters.adaptUrlQueryToFormValues({ queryString }),
+      ).filter(([, value]) => hasFilterValue(value))
+
+      navigate(
+        `?${adapters.adaptFormValuesToUrlQuery({
+          formValues: {
+            ...activeTab.formValues,
+            ...Object.fromEntries(incomingFilters),
+          },
+        })}`,
+        { replace: true },
+      )
+    }
+  }, [hasTabInUrl])
+
+  const columns = useOrdersTableColumns(activeTab.sortBy)
+
+  const table = (
+    <FilteredTable
+      type="orders"
+      columns={columns}
+      metricsQuery={{
+        search: {
+          limit: 25,
+          fields: ["order.*", "billing_address.*", "market.*", "customer.*"],
+        },
+      }}
+      defaultSort={`-${activeTab.sortBy}`}
+      hideTitle
+      getRowHref={(order) =>
+        navigateTo({ app: "orders", resourceId: order.id })?.href
+      }
+      onRowClick={(order, event) => {
+        navigateTo({ app: "orders", resourceId: order.id })?.onClick(
+          event as React.MouseEvent<HTMLAnchorElement>,
+        )
+      }}
+      emptyState={
+        <ListEmptyState scope={hasActiveFilter ? "userFiltered" : "history"} />
+      }
+    />
+  )
+
   return (
-    <HomePageLayout
+    <PageLayout
       title={t("resources.orders.name_other")}
+      fullWidth
       toolbar={{
         buttons: canUser("create", "orders")
           ? [
@@ -77,189 +165,60 @@ function Home(): React.JSX.Element {
           : undefined,
       }}
     >
-      <SearchWithNav
-        hideFiltersNav
-        onFilterClick={() => {}}
-        onUpdate={(qs) => {
-          setLocation(appRoutes.list.makePath({}, qs))
+      {/* Remounted per tab so `Tabs` (which owns its active index internally)
+          picks up the tab restored from the url. */}
+      <Tabs
+        key={activeTabIndex}
+        defaultTab={activeTabIndex}
+        onTabSwitch={(index) => {
+          const tab = orderTabs[index]
+          if (tab == null || index === activeTabIndex) {
+            return
+          }
+          // switching tab replaces the filters with the tab's own ones
+          navigate(
+            `?${adapters.adaptFormValuesToUrlQuery({
+              formValues: tab.formValues,
+            })}`,
+            { replace: true },
+          )
         }}
-        queryString={search}
-        searchBarDebounceMs={1000}
-      />
+      >
+        {orderTabs.map((tab) => (
+          <Tab
+            key={tab.label}
+            name={tab.label}
+            separatorBefore={tab.separatorBefore}
+          >
+            {/* The tab's own filters are the baseline: only what the user adds
+                on top of them shows up as a removable pill. The spacer brings the
+                gap below the tab bar to 24px: 16 from the panel, 8 from here. */}
+            <Spacer top="2">
+              <FiltersBar
+                queryString={queryString}
+                onUpdate={handleFiltersUpdate}
+                defaultValues={tab.formValues}
+              />
+            </Spacer>
+            <Spacer bottom="14">{table}</Spacer>
+          </Tab>
+        ))}
+      </Tabs>
 
-      <SkeletonTemplate isLoading={isLoadingCounters}>
-        <Spacer bottom="14">
-          <List title={t("apps.orders.tasks.open")}>
-            <Link
-              href={appRoutes.list.makePath(
-                {},
-                adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.awaitingApproval,
-                }),
-              )}
-              asChild
-            >
-              <ListItem
-                icon={
-                  <StatusIcon
-                    name="arrowDown"
-                    background="orange"
-                    gap="small"
-                  />
-                }
-              >
-                <Text weight="semibold">
-                  {presets.awaitingApproval.viewTitle}{" "}
-                  {formatCounter(counters?.awaitingApproval)}
-                </Text>
-                <StatusIcon name="caretRight" />
-              </ListItem>
-            </Link>
-
-            <Link
-              href={appRoutes.list.makePath(
-                {},
-                adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.paymentToCapture,
-                }),
-              )}
-              asChild
-            >
-              <ListItem
-                icon={
-                  <StatusIcon
-                    name="creditCard"
-                    background="orange"
-                    gap="small"
-                  />
-                }
-              >
-                <Text weight="semibold">
-                  {presets.paymentToCapture.viewTitle}{" "}
-                  {formatCounter(counters?.paymentToCapture)}
-                </Text>
-                <StatusIcon name="caretRight" />
-              </ListItem>
-            </Link>
-
-            <Link
-              href={appRoutes.list.makePath(
-                {},
-                adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.fulfillmentInProgress,
-                }),
-              )}
-              asChild
-            >
-              <ListItem
-                icon={
-                  <StatusIcon
-                    name="arrowClockwise"
-                    background="orange"
-                    gap="small"
-                  />
-                }
-              >
-                <Text weight="semibold">
-                  {presets.fulfillmentInProgress.viewTitle}{" "}
-                  {formatCounter(counters?.fulfillmentInProgress)}
-                </Text>
-                <StatusIcon name="caretRight" />
-              </ListItem>
-            </Link>
-            {counters?.editing != null && counters?.editing > 0 && (
-              <Link
-                href={appRoutes.list.makePath(
-                  {},
-                  adapters.adaptFormValuesToUrlQuery({
-                    formValues: presets.editing,
-                  }),
-                )}
-                asChild
-              >
-                <ListItem
-                  icon={
-                    <StatusIcon
-                      name="pencilSimple"
-                      background="orange"
-                      gap="small"
-                    />
-                  }
-                >
-                  <Text weight="semibold">
-                    {presets.editing.viewTitle}{" "}
-                    {formatCounter(counters?.editing)}
-                  </Text>
-                  <StatusIcon name="caretRight" />
-                </ListItem>
-              </Link>
-            )}
-          </List>
-        </Spacer>
-
-        <Spacer bottom="14">
-          <List title={t("apps.orders.tasks.browse")}>
-            <Link
-              href={appRoutes.list.makePath(
-                {},
-                adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.history,
-                }),
-              )}
-              asChild
-            >
-              <ListItem
-                icon={
-                  <StatusIcon
-                    name="asteriskSimple"
-                    background="black"
-                    gap="small"
-                  />
-                }
-              >
-                <Text weight="semibold">{presets.history.viewTitle}</Text>
-                <StatusIcon name="caretRight" />
-              </ListItem>
-            </Link>
-            <Link
-              href={appRoutes.list.makePath(
-                {},
-                adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.pending,
-                }),
-              )}
-              asChild
-            >
-              <ListItem icon={<RadialProgress size="small" />}>
-                <Text weight="semibold">{presets.pending.viewTitle}</Text>
-                <StatusIcon name="caretRight" />
-              </ListItem>
-            </Link>
-            <Link
-              href={appRoutes.list.makePath(
-                {},
-                adapters.adaptFormValuesToUrlQuery({
-                  formValues: presets.archived,
-                }),
-              )}
-              asChild
-            >
-              <ListItem
-                icon={<StatusIcon name="minus" background="gray" gap="small" />}
-              >
-                <Text weight="semibold">{presets.archived.viewTitle}</Text>
-                <StatusIcon name="caretRight" />
-              </ListItem>
-            </Link>
-          </List>
-        </Spacer>
-      </SkeletonTemplate>
-    </HomePageLayout>
+      <FiltersDrawer onUpdate={handleFiltersUpdate} />
+    </PageLayout>
   )
 }
 
-function formatCounter(counter = 0): string {
-  return `(${Intl.NumberFormat().format(counter)})`
+/**
+ * Whether a filter value is actually set. Not `lodash/isEmpty`, which reports
+ * booleans and numbers as empty and would drop them.
+ */
+function hasFilterValue(value: unknown): boolean {
+  if (Array.isArray(value)) {
+    return value.length > 0
+  }
+  return value != null && value !== ""
 }
 
 export default Home

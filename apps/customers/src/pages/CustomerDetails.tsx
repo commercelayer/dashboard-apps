@@ -1,35 +1,36 @@
 import {
+  Badge,
   Button,
   EmptyState,
   formatDateWithPredicate,
-  isMockedId,
+  getCustomerStatusName,
   type PageHeadingProps,
   PageLayout,
   ResourceAttachments,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
+  useConfirmDialog,
   useCoreApi,
+  useCoreSdkProvider,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
+import { useState } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { CustomerAddresses } from "#components/CustomerAddresses"
 import { CustomerAnonymization } from "#components/CustomerAnonymization"
 import { CustomerInfo } from "#components/CustomerInfo"
 import { CustomerLastOrders } from "#components/CustomerLastOrders"
+import { CustomerResetPasswordDialog } from "#components/CustomerResetPasswordDialog"
 import { CustomerTimeline } from "#components/CustomerTimeline"
 import { CustomerWallet } from "#components/CustomerWallet"
 import { appRoutes } from "#data/routes"
 import { useCustomerCanBeAnonymized } from "#hooks/useCustomerCanBeAnonymized"
 import { useCustomerCanBeDeleted } from "#hooks/useCustomerCanBeDeleted"
-import { useCustomerDeleteOverlay } from "#hooks/useCustomerDeleteOverlay"
 import { useCustomerDetails } from "#hooks/useCustomerDetails"
-import { useCustomerResetPasswordOverlay } from "#hooks/useCustomerResetPasswordOverlay"
 
 export function CustomerDetails(): React.JSX.Element {
   const {
@@ -49,9 +50,48 @@ export function CustomerDetails(): React.JSX.Element {
   const canBeDeleted = useCustomerCanBeDeleted(customerId)
   const canBeAnonymized = useCustomerCanBeAnonymized(customerId)
 
-  const { DeleteOverlay, show } = useCustomerDeleteOverlay(customerId)
-  const { ResetPasswordOverlay, showResetPasswordOverlay } =
-    useCustomerResetPasswordOverlay(customerId)
+  const { sdkClient } = useCoreSdkProvider()
+  const { show, ConfirmDialog } = useConfirmDialog()
+  const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false)
+
+  /**
+   * A customer with orders cannot be deleted, only anonymized, so the same
+   * menu entry confirms whichever of the two is available. Deleting leaves the
+   * page; requesting anonymization stays on it and refreshes the customer.
+   */
+  const deleteDialogProps = canBeDeleted
+    ? {
+        icon: "trash" as const,
+        title: `Delete customer ${customer?.email ?? ""}`,
+        description: "This action cannot be undone.",
+        confirm: {
+          label: t("common.delete_resource", {
+            resource: t("resources.customers.name").toLowerCase(),
+          }),
+          variant: "danger" as const,
+          onClick: async () => {
+            await sdkClient.customers.delete(customer.id).then(() => {
+              setLocation(appRoutes.home.makePath())
+            })
+          },
+        },
+      }
+    : {
+        icon: "eyeSlash" as const,
+        title: t("apps.customers.anonymize.title"),
+        description: t("apps.customers.anonymize.description"),
+        confirm: {
+          label: t("apps.customers.anonymize.request_button"),
+          variant: "danger" as const,
+          onClick: async () => {
+            await sdkClient.customers
+              .update({ id: customer.id, _request_anonymization: true })
+              .then(async () => {
+                await mutateCustomer()
+              })
+          },
+        },
+      }
 
   const { data: organization } = useCoreApi("organization", "retrieve", [])
   const enableResetPassword =
@@ -81,7 +121,7 @@ export function CustomerDetails(): React.JSX.Element {
       {
         label: "Reset Password",
         onClick: () => {
-          showResetPasswordOverlay()
+          setIsResetPasswordOpen(true)
         },
       },
     ])
@@ -113,12 +153,13 @@ export function CustomerDetails(): React.JSX.Element {
         mode={mode}
         title="Customers"
         navigationButton={{
-          label: t("common.back"),
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
           onClick: () => {
             goBack({
               currentResourceId: customerId,
-              defaultRelativePath: appRoutes.list.makePath(),
+              defaultRelativePath: appRoutes.home.makePath(),
             })
           },
         }}
@@ -127,7 +168,7 @@ export function CustomerDetails(): React.JSX.Element {
         <EmptyState
           title={t("common.not_authorized")}
           action={
-            <Link href={appRoutes.list.makePath()}>
+            <Link href={appRoutes.home.makePath()}>
               <Button variant="primary">{t("common.go_back")}</Button>
             </Link>
           }
@@ -141,7 +182,12 @@ export function CustomerDetails(): React.JSX.Element {
       mode={mode}
       toolbar={pageToolbar}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle}{" "}
+          <Badge variant="secondary">
+            {getCustomerStatusName(customer.status)}
+          </Badge>
+        </SkeletonTemplate>
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
@@ -156,90 +202,84 @@ export function CustomerDetails(): React.JSX.Element {
         </SkeletonTemplate>
       }
       navigationButton={{
-        label: t("common.back"),
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
         onClick: () => {
           goBack({
             currentResourceId: customerId,
-            defaultRelativePath: appRoutes.list.makePath(),
+            defaultRelativePath: appRoutes.home.makePath(),
           })
         },
       }}
+      // no bottom gap under the heading: the main column opens with a
+      // `Spacer top="14"`, which is what the sidebar column lines up with
       gap="only-top"
-      scrollToTop
-    >
-      <SkeletonTemplate isLoading={isLoading}>
-        <Spacer bottom="4">
-          <CustomerAnonymization customerId={customer.id} />
-          <Spacer top="14">
-            <CustomerInfo customer={customer} />
-          </Spacer>
-          <Spacer top="14">
-            <CustomerLastOrders />
-          </Spacer>
-          <Spacer top="14">
-            <CustomerWallet
-              customer={customer}
-              onRemovedPaymentSource={() => {
-                void mutateCustomer()
-              }}
-            />
-          </Spacer>
-          <Spacer top="14">
-            <CustomerAddresses
-              customer={customer}
-              onRemovedAddress={() => {
-                void mutateCustomer()
-              }}
-            />
-          </Spacer>
+      fullWidth
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <CustomerAddresses
+            customer={customer}
+            onRemovedAddress={() => {
+              void mutateCustomer()
+            }}
+          />
 
-          <Spacer top="14">
-            <ResourceDetails
+          <Spacer top={{ base: "14", lg: "10" }}>
+            <ResourceInfoBlocks
               resource={customer}
+              title={pageTitle}
               onUpdated={async () => {
                 void mutateCustomer()
               }}
+              onTagClick={(tagId) => {
+                setLocation(appRoutes.home.makePath(`tags_id_in=${tagId}`))
+              }}
             />
           </Spacer>
-
-          {!isMockedId(customer.id) && (
-            <>
-              <Spacer top="14">
-                <ResourceTags
-                  resourceType="customers"
-                  resourceId={customer.id}
-                  overlay={{ title: pageTitle }}
-                  onTagClick={(tagId) => {
-                    setLocation(appRoutes.list.makePath(`tags_id_in=${tagId}`))
-                  }}
-                />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="customers"
-                  resourceId={customer.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
-          <Spacer top="14">
-            <ResourceAttachments
-              resourceType="customers"
-              resourceId={customer.id}
-            />
-          </Spacer>
-          <Spacer top="14">
-            <CustomerTimeline customer={customer} />
-          </Spacer>
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+      scrollToTop
+    >
+      <SkeletonTemplate isLoading={isLoading}>
+        <CustomerAnonymization customerId={customer.id} />
+        <CustomerInfo customer={customer} />
+        <Spacer top="14">
+          <CustomerLastOrders />
+        </Spacer>
+        <Spacer top="14">
+          <CustomerWallet
+            customer={customer}
+            onRemovedPaymentSource={() => {
+              void mutateCustomer()
+            }}
+          />
+        </Spacer>
+        <Spacer top="14">
+          <ResourceAttachments
+            resourceType="customers"
+            resourceId={customer.id}
+          />
+        </Spacer>
+        <Spacer top="14">
+          <CustomerTimeline customer={customer} />
         </Spacer>
       </SkeletonTemplate>
 
-      {canUser("destroy", "customers") && <DeleteOverlay />}
-      <ResetPasswordOverlay />
+      {(canBeDeleted || canBeAnonymized) && (
+        <ConfirmDialog {...deleteDialogProps} />
+      )}
+      {enableResetPassword && (
+        <CustomerResetPasswordDialog
+          customerEmail={customer.email}
+          show={isResetPasswordOpen}
+          onClose={() => {
+            setIsResetPasswordOpen(false)
+          }}
+        />
+      )}
     </PageLayout>
   )
 }

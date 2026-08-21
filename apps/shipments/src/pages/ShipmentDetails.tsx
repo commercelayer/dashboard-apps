@@ -3,12 +3,8 @@ import {
   Button,
   EmptyState,
   formatDateWithPredicate,
-  isMockedId,
   PageLayout,
   ResourceAttachments,
-  ResourceDetails,
-  ResourceMetadata,
-  ResourceTags,
   SkeletonTemplate,
   Spacer,
   Text,
@@ -16,15 +12,17 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
+import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import isEmpty from "lodash-es/isEmpty"
 import { useRoute } from "wouter"
 import { ShipmentAddresses } from "#components/ShipmentAddresses"
 import { ShipmentInfo } from "#components/ShipmentInfo"
 import { ShipmentPackingList } from "#components/ShipmentPackingList"
-import { ShipmentSteps } from "#components/ShipmentSteps"
+import { ShipmentStatusBadge } from "#components/ShipmentStatusBadge"
 import { ShipmentTimeline } from "#components/ShipmentTimeline"
 import { appRoutes } from "#data/routes"
+import { useActiveStockTransfers } from "#hooks/useActiveStockTransfers"
 import { useShipmentDetails } from "#hooks/useShipmentDetails"
 import { useShipmentToolbar } from "#hooks/useShipmentToolbar"
 
@@ -43,6 +41,7 @@ function ShipmentDetails(): React.JSX.Element {
   const { shipment, isLoading, error, mutateShipment, purchaseError } =
     useShipmentDetails(shipmentId)
   const pageToolbar = useShipmentToolbar({ shipment })
+  const activeStockTransfers = useActiveStockTransfers(shipment)
 
   if (shipmentId === undefined || !canUser("read", "orders") || error != null) {
     return (
@@ -54,8 +53,9 @@ function ShipmentDetails(): React.JSX.Element {
               defaultRelativePath: appRoutes.home.makePath({}),
             })
           },
-          label: t("common.back"),
+          label: "",
           icon: "arrowLeft",
+          variant: "button",
         }}
         mode={mode}
       >
@@ -95,7 +95,15 @@ function ShipmentDetails(): React.JSX.Element {
       mode={mode}
       toolbar={pageToolbar.props}
       title={
-        <SkeletonTemplate isLoading={isLoading}>{pageTitle}</SkeletonTemplate>
+        <SkeletonTemplate isLoading={isLoading}>
+          {pageTitle}
+          <ShipmentStatusBadge
+            shipment={shipment}
+            awaitingStockTransfer={
+              shipment.status === "on_hold" && activeStockTransfers.length > 0
+            }
+          />
+        </SkeletonTemplate>
       }
       description={
         <SkeletonTemplate isLoading={isLoading}>
@@ -122,70 +130,48 @@ function ShipmentDetails(): React.JSX.Element {
             defaultRelativePath: appRoutes.home.makePath({}),
           })
         },
-        label: t("common.back"),
+        label: "",
         icon: "arrowLeft",
+        variant: "button",
       }}
+      // no bottom gap under the heading: the main column opens with a
+      // `Spacer top="14"`, which is what the sidebar column lines up with
       gap="only-top"
-    >
-      <SkeletonTemplate isLoading={isLoading}>
-        <pageToolbar.Components />
-        <Spacer bottom="4">
-          <Spacer top="14">
-            <ShipmentSteps shipment={shipment} />
-          </Spacer>
-          {purchaseError != null && (
-            <Spacer top="14">
-              <Alert status="error">{purchaseError}</Alert>
-            </Spacer>
-          )}
-          <Spacer top="14">
-            <ShipmentPackingList shipment={shipment} />
-          </Spacer>
-          <Spacer top="14">
-            <ShipmentAddresses shipment={shipment} />
-          </Spacer>
-          <Spacer top="14">
-            <ShipmentInfo shipment={shipment} />
-          </Spacer>
-          <Spacer top="14">
-            <ResourceDetails
+      fullWidth
+      alert={
+        purchaseError != null && <Alert status="error">{purchaseError}</Alert>
+      }
+      sidebar={
+        <SkeletonTemplate isLoading={isLoading}>
+          <ShipmentAddresses shipment={shipment} />
+          <Spacer top={{ base: "14", lg: "10" }}>
+            <ResourceInfoBlocks
               resource={shipment}
+              title={pageTitle}
               onUpdated={async () => {
                 void mutateShipment()
               }}
             />
           </Spacer>
-          {!isMockedId(shipment.id) && (
-            <>
-              <Spacer top="14">
-                <ResourceTags
-                  resourceType="shipments"
-                  resourceId={shipment.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-              <Spacer top="14">
-                <ResourceMetadata
-                  resourceType="shipments"
-                  resourceId={shipment.id}
-                  overlay={{
-                    title: pageTitle,
-                  }}
-                />
-              </Spacer>
-            </>
-          )}
-          <Spacer top="14">
-            <ResourceAttachments
-              resourceType="shipments"
-              resourceId={shipment.id}
-            />
-          </Spacer>
-          <Spacer top="14">
-            <ShipmentTimeline shipment={shipment} />
-          </Spacer>
+        </SkeletonTemplate>
+      }
+      // stays last at every width: stacked, it follows the sidebar instead of
+      // letting the sidebar sink to the bottom of the page
+    >
+      <SkeletonTemplate isLoading={isLoading}>
+        <pageToolbar.Components />
+        <ShipmentInfo shipment={shipment} />
+        <Spacer top="14">
+          <ShipmentPackingList shipment={shipment} />
+        </Spacer>
+        <Spacer top="14">
+          <ResourceAttachments
+            resourceType="shipments"
+            resourceId={shipment.id}
+          />
+        </Spacer>
+        <Spacer top="14">
+          <ShipmentTimeline shipment={shipment} />
         </Spacer>
       </SkeletonTemplate>
     </PageLayout>

@@ -4,6 +4,7 @@ import {
   DropdownItem,
   Icon,
   SearchBar,
+  Section,
   Spacer,
   Text,
   useCoreSdkProvider,
@@ -74,7 +75,9 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   })
 
   return (
-    <>
+    // titled here: it used to be a tab named "Coupons". `border="none"` to match
+    // the "Apply when" section above it — the table draws its own top border
+    <Section title="Coupons" border="none">
       <div
         style={{
           display: "flex",
@@ -189,7 +192,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         key={currentImportJob?.id}
       />
 
-      <Spacer top="4" bottom="8">
+      <Spacer top="4">
         <div
           style={{
             borderWidth: "1px",
@@ -241,6 +244,6 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         </div>
         <Pagination />
       </Spacer>
-    </>
+    </Section>
   )
 }

@@ -17,10 +17,7 @@ export const App: FC<AppProps> = ({ routerBase }) => {
             component: async () => await import("#pages/Home"),
           },
           list: {
-            component: async () => await import("#pages/OrderList"),
-          },
-          filters: {
-            component: async () => await import("#pages/Filters"),
+            component: async () => await import("#pages/ListRedirect"),
           },
           details: {
             component: async () => await import("#pages/OrderDetails"),
