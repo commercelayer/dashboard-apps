@@ -151,7 +151,7 @@ export const WebhookDetails: FC = () => {
           </>
         }
       >
-        <Spacer top="14" bottom="14">
+        <Spacer bottom="14">
           <WebhookInfos webhook={webhook} />
         </Spacer>
 
