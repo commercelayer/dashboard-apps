@@ -161,7 +161,12 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
         canUser("update", "gift_cards") && {
           label: "Edit",
           onClick: () => {
-            setLocation(appRoutes.edit.makePath({ giftCardId }))
+            setLocation(
+              appRoutes.edit.makePath(
+                { giftCardId },
+                new URLSearchParams(queryString).toString(),
+              ),
+            )
           },
         },
       ].filter((o) => o !== false),

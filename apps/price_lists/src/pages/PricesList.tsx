@@ -19,10 +19,9 @@ export function PricesList(): React.JSX.Element {
   const [, setLocation] = useLocation()
   const { base } = useRouter()
 
-  const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
-    useResourceFilters({
-      instructions: filterInstructions,
-    })
+  const { FilteredTable, FiltersBar, hasActiveFilter } = useResourceFilters({
+    instructions: filterInstructions,
+  })
 
   const columns = usePricesTableColumns()
 
@@ -96,8 +95,6 @@ export function PricesList(): React.JSX.Element {
           }
         />
       </Spacer>
-
-      <FiltersDrawer onUpdate={handleFiltersUpdate} />
     </PageLayout>
   )
 }

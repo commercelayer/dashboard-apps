@@ -36,7 +36,7 @@ export const makeFiltersInstructions = (options?: {
           resource: "stock_locations",
           fieldForLabel: "name",
           fieldForValue: "id",
-          searchBy: "name_cont",
+          searchBy: "name_i_cont",
           sortBy: { attribute: "name", direction: "asc" },
           hideWhenSingleItem: true,
           filters: {

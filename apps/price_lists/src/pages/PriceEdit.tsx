@@ -9,7 +9,7 @@ import {
 } from "@commercelayer/app-elements"
 import type { PriceUpdate } from "@commercelayer/sdk"
 import { useState } from "react"
-import { Link, useLocation, useRoute } from "wouter"
+import { Link, useLocation, useRoute, useSearch } from "wouter"
 import { PriceForm, type PriceFormValues } from "#components/PriceForm"
 import { appRoutes } from "#data/routes"
 import { usePriceDetails } from "#hooks/usePriceDetails"
@@ -18,6 +18,8 @@ export function PriceEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
+  // carried through so returning to the list keeps its filters
+  const queryString = useSearch()
   const [apiError, setApiError] = useState<any>()
   const [isSaving, setIsSaving] = useState(false)
 
@@ -28,7 +30,10 @@ export function PriceEdit(): React.JSX.Element {
   const priceListId = price?.price_list?.id ?? ""
   const pageTitle = "Edit price"
 
-  const goBackUrl = appRoutes.priceDetails.makePath({ priceId })
+  const goBackUrl = appRoutes.priceDetails.makePath(
+    { priceId },
+    new URLSearchParams(queryString).toString(),
+  )
 
   if (!canUser("update", "prices")) {
     return (

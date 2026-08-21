@@ -129,7 +129,12 @@ export const SkuDetails: FC = () => {
       {
         label: "Edit",
         onClick: () => {
-          setLocation(appRoutes.edit.makePath({ skuId }))
+          setLocation(
+            appRoutes.edit.makePath(
+              { skuId },
+              new URLSearchParams(queryString).toString(),
+            ),
+          )
         },
       },
     ])

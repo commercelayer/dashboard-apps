@@ -95,7 +95,12 @@ export function PriceDetails(): React.JSX.Element {
       {
         label: "Edit",
         onClick: () => {
-          setLocation(appRoutes.priceEdit.makePath({ priceId }))
+          setLocation(
+            appRoutes.priceEdit.makePath(
+              { priceId },
+              new URLSearchParams(queryString).toString(),
+            ),
+          )
         },
       },
     ])

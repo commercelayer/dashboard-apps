@@ -6,7 +6,7 @@ import {
   Spacer,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import { Link, useLocation, useRoute } from "wouter"
+import { Link, useLocation, useRoute, useSearch } from "wouter"
 import { SkuListForm } from "#components/SkuListForm"
 import { appRoutes } from "#data/routes"
 import { useSkuListDetails } from "#hooks/useSkuListDetails"
@@ -15,6 +15,8 @@ import { useUpdateSkuList } from "#hooks/useUpdateSkuList"
 export function SkuListEdit(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
+  // carried through so returning to the list keeps its filters
+  const queryString = useSearch()
 
   const [, params] = useRoute<{ skuListId: string }>(appRoutes.edit.path)
   const skuListId = params?.skuListId ?? ""
@@ -24,7 +26,10 @@ export function SkuListEdit(): React.JSX.Element {
   const { updateSkuListError, updateSkuList, isUpdatingSkuList } =
     useUpdateSkuList()
 
-  const goBackUrl = appRoutes.details.makePath({ skuListId })
+  const goBackUrl = appRoutes.details.makePath(
+    { skuListId },
+    new URLSearchParams(queryString).toString(),
+  )
 
   if (!canUser("update", "sku_lists")) {
     return (

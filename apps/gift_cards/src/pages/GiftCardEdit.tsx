@@ -9,6 +9,7 @@ import {
 } from "@commercelayer/app-elements"
 import isEmpty from "lodash-es/isEmpty"
 import type { FC } from "react"
+import { useSearch } from "wouter"
 import { Form } from "#components/Form"
 import { appRoutes } from "#data/routes"
 import { useGiftCardDetails } from "#hooks/useGiftCardDetails"
@@ -21,6 +22,8 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
   const giftCardId = params?.giftCardId
   const { giftCard, isLoading, error } = useGiftCardDetails(params?.giftCardId)
   const { goBack } = useAppLinking()
+  // carried through so returning to the list keeps its filters
+  const queryString = useSearch()
 
   if (error != null) {
     return <GenericPageNotFound />
@@ -37,9 +40,10 @@ const GiftCardEdit: FC<PageProps<typeof appRoutes.edit>> = ({ params }) => {
         onClick: () => {
           goBack({
             currentResourceId: giftCardId,
-            defaultRelativePath: appRoutes.details.makePath({
-              giftCardId,
-            }),
+            defaultRelativePath: appRoutes.details.makePath(
+              { giftCardId },
+              new URLSearchParams(queryString).toString(),
+            ),
           })
         },
         label: "Back",

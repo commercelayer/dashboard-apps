@@ -93,7 +93,12 @@ export const StockItemDetails: FC = () => {
       {
         label: "Edit",
         onClick: () => {
-          setLocation(appRoutes.editStockItem.makePath(stockItemId))
+          setLocation(
+            appRoutes.editStockItem.makePath(
+              stockItemId,
+              new URLSearchParams(queryString).toString(),
+            ),
+          )
         },
       },
     ])
@@ -170,7 +175,11 @@ export const StockItemDetails: FC = () => {
                 await sdkClient.stock_items.delete(stockItem.id)
                 // the list stays mounted under this drawer, so it has to be told
                 removeFromResourceLists("stock_items", stockItem.id)
-                setLocation(appRoutes.home.makePath())
+                setLocation(
+                  appRoutes.home.makePath(
+                    new URLSearchParams(queryString).toString(),
+                  ),
+                )
               },
             }}
           />

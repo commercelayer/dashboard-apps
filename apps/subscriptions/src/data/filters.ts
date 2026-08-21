@@ -29,7 +29,7 @@ export const instructions = (
           fieldForLabel: "name",
           fieldForValue: "id",
           resource: "markets",
-          searchBy: "name_cont",
+          searchBy: "name_i_cont",
           sortBy: { attribute: "name", direction: "asc" },
           hideWhenSingleItem: true,
           filters: {
