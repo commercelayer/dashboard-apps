@@ -361,15 +361,15 @@ export function parseTextSearchValue(value: unknown): string | undefined {
 
   // It's not a full or partial email, but text contains a dot, needs to wrap it in double quotes so API won't escape the dot
   if (searchText.includes(".") && !searchText.includes("@")) {
-    return `*"${searchText}"*`
+    return `"${searchText}"*`
   }
 
   // Could be a partial email, needs to wrap it in double quotes so API won't escape the dot but final @ needs to be removed
   if (searchText.includes(".") && searchText.at(-1) === "@") {
-    return `*"${searchText.replace("@", "")}"*`
+    return `"${searchText.replace("@", "")}"*`
   }
 
-  return `*${wrapEmailInQuotes(searchText)}*`
+  return `${wrapEmailInQuotes(searchText)}*`
 }
 
 // If an email is found in a sentence, wrap it in double quotes
