@@ -1,12 +1,12 @@
 import {
   PageLayout,
+  type PageProps,
   SkeletonTemplate,
   Spacer,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { useLocation } from "wouter"
 import { CouponForm } from "#components/CouponForm"
-import type { PageProps } from "#components/Routes"
 import { couponToFormValues } from "#data/formConverters/coupon"
 import { appRoutes } from "#data/routes"
 import { useCoupon } from "#hooks/useCoupon"

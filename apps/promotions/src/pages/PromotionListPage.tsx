@@ -1,5 +1,6 @@
 import {
   PageLayout,
+  type PageProps,
   Spacer,
   Tab,
   Tabs,
@@ -12,7 +13,6 @@ import { useLocation } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { usePromotionsTableColumns } from "#components/promotionsTableColumns"
-import type { PageProps } from "#components/Routes"
 import { filtersInstructions } from "#data/filters"
 import { getPromotionTabs, type PromotionTab } from "#data/lists"
 import { appRoutes } from "#data/routes"

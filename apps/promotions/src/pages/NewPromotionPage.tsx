@@ -1,7 +1,11 @@
-import { PageLayout, useTokenProvider } from "@commercelayer/app-elements"
+import {
+  GenericPageNotFound,
+  PageLayout,
+  type PageProps,
+  useTokenProvider,
+} from "@commercelayer/app-elements"
 import { useLocation } from "wouter"
 import { PromotionForm } from "#components/PromotionForm"
-import { GenericPageNotFound, type PageProps } from "#components/Routes"
 import { promotionConfig } from "#data/promotions/config"
 import { appRoutes } from "#data/routes"
 

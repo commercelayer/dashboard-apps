@@ -10,6 +10,7 @@ import {
   formatDate,
   formatDateWithPredicate,
   formatNumber,
+  GenericPageNotFound,
   getPromotionDisplayStatus,
   Icon,
   Input,
@@ -17,6 +18,7 @@ import {
   ListItem,
   type PageHeadingProps,
   PageLayout,
+  type PageProps,
   Section,
   SkeletonTemplate,
   Spacer,
@@ -37,7 +39,6 @@ import { type Ref, useMemo, useRef, useState } from "react"
 import { Link, useLocation } from "wouter"
 import { CouponList } from "#components/CouponList"
 import { SectionFlexRules } from "#components/FlexRuleBuilder"
-import { GenericPageNotFound, type PageProps } from "#components/Routes"
 import {
   appPromotionsReferenceOrigin,
   promotionConfig,

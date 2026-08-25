@@ -6,6 +6,7 @@ import {
   ListItem,
   Modal,
   PageLayout,
+  type PageProps,
   Section,
   Spacer,
   StatusIcon,
@@ -15,7 +16,6 @@ import {
 } from "@commercelayer/app-elements"
 import { useState } from "react"
 import { Link, useLocation } from "wouter"
-import type { PageProps } from "#components/Routes"
 import { type PromotionType, promotionConfig } from "#data/promotions/config"
 import { appRoutes } from "#data/routes"
 import { flexPromotionImageSrc } from "../assets/flex-promotion"

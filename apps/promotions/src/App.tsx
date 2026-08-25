@@ -1,6 +1,6 @@
+import { Routes } from "@commercelayer/app-elements"
 import type { FC } from "react"
 import { Router } from "wouter"
-import { Routes } from "#components/Routes"
 import { appRoutes } from "#data/routes"
 
 interface AppProps {

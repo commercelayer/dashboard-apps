@@ -1,12 +1,12 @@
 import {
   EmptyState,
   PageLayout,
+  type PageProps,
   SkeletonTemplate,
   Spacer,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { useLocation } from "wouter"
-import type { PageProps } from "#components/Routes"
 import { appRoutes } from "#data/routes"
 import { RuleBuilderForm } from "#data/ruleBuilder/form/RuleBuilderForm"
 import { usePromotion } from "#hooks/usePromotion"
