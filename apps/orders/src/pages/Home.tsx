@@ -198,6 +198,10 @@ const Home: FC = () => {
                 queryString={queryString}
                 onUpdate={handleFiltersUpdate}
                 defaultValues={tab.formValues}
+                /* one or two characters match most of the catalogue, and the
+                   search supports wildcards, so a trailing `*` must not stand
+                   in for the characters still missing */
+                searchBarMinLength={3}
               />
             </Spacer>
             <Spacer bottom="14">{table}</Spacer>
