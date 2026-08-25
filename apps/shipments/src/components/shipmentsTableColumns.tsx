@@ -4,6 +4,7 @@ import {
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 import { ShipmentStatusBadge } from "#components/ShipmentStatusBadge"
 
@@ -23,14 +24,25 @@ export function useShipmentsTableColumns(): Array<
         header: "Shipment",
         sortBy: "number",
         cell: ({ resource }) => (
-          <Text weight="medium" wrap="nowrap">
-            #{resource.number}
-            {/* the Status column is hidden on mobile, so the badge rides with the name */}
-            <ShipmentStatusBadge
-              shipment={resource}
-              className="md:hidden inline-block align-middle ml-2"
-            />
-          </Text>
+          // the cell truncates its direct children only, so a two-line cell has
+          // to pass truncation down itself or a long reference overflows
+          <div className="min-w-0 [&>*]:truncate">
+            <Text tag="div" weight="medium" wrap="nowrap">
+              #{resource.number}
+              {/* the Status column is hidden on mobile, so the badge rides with the name */}
+              <ShipmentStatusBadge
+                shipment={resource}
+                className="md:hidden inline-block align-middle ml-2"
+              />
+            </Text>
+            {/* a reference is optional, and an empty second line would only
+                make the row taller for nothing */}
+            {!isEmpty(resource.reference) && (
+              <Text tag="div" size="x-small" variant="info" wrap="nowrap">
+                {resource.reference}
+              </Text>
+            )}
+          </div>
         ),
       },
       {
