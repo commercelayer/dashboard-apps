@@ -3,6 +3,11 @@ import { type FiltersInstructions, t } from "@commercelayer/app-elements"
 export const instructions: FiltersInstructions = [
   {
     label: t("apps.customers.attributes.status"),
+    // scoping only: every tab pins the status — including All, which pins the
+    // same three values this filter offers — so a field here would duplicate
+    // the tabs and let the two disagree. It still reaches the query and the
+    // tabs still write it, it just is not rendered as a field.
+    hidden: true,
     type: "options",
     sdk: {
       predicate: "status_in",
