@@ -1,11 +1,11 @@
 import {
   PageLayout,
+  type PageProps,
   SkeletonTemplate,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { useLocation } from "wouter"
 import { PromotionForm } from "#components/PromotionForm"
-import type { PageProps } from "#components/Routes"
 import { promotionToFormValues } from "#data/formConverters/promotion"
 import { promotionConfig } from "#data/promotions/config"
 import { appRoutes } from "#data/routes"
