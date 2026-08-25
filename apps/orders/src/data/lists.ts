@@ -99,13 +99,16 @@ export const orderTabs: OrderTab[] = [
   },
   {
     label: "Fulfilled",
+    // Fulfillment is done. Cancelled orders keep the fulfillment status they had
+    // when they were cancelled, so the status is pinned to leave them out.
     formValues: {
+      status_in: ["placed", "approved", "editing"],
       fulfillment_statuses_in: ["fulfilled"],
       archived: "hide",
       viewTitle: "Fulfilled",
     },
     sortBy: "order.placed_at",
-    hiddenFilters: ["fulfillment_statuses_in"],
+    hiddenFilters: ["status_in", "fulfillment_statuses_in"],
   },
   {
     label: "Carts",

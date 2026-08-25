@@ -126,7 +126,7 @@ describe("orderTabs", () => {
     ["Placed", ["status_in"]],
     ["Approved", ["status_in", "fulfillment_statuses_in"]],
     ["In progress", ["fulfillment_statuses_in"]],
-    ["Fulfilled", ["fulfillment_statuses_in"]],
+    ["Fulfilled", ["status_in", "fulfillment_statuses_in"]],
   ])("%s hides the filters it pins: %s", (label, hidden) => {
     const tab = orderTabs.find((candidate) => candidate.label === label)
     expect(tab?.hiddenFilters).toEqual(hidden)
@@ -139,6 +139,16 @@ describe("orderTabs", () => {
       "fulfilled",
       "in_progress",
     ])
+  })
+
+  test("Fulfilled leaves out the cancelled orders", () => {
+    const fulfilled = orderTabs.find((tab) => tab.label === "Fulfilled")
+    expect(fulfilled?.formValues.status_in).toEqual([
+      "placed",
+      "approved",
+      "editing",
+    ])
+    expect(fulfilled?.formValues.fulfillment_statuses_in).toEqual(["fulfilled"])
   })
 
   test("every tab predicate is either declared or whitelisted", () => {
