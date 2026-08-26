@@ -91,6 +91,7 @@ export const webhookEvents: Record<ResourceWithEvent, string[]> = {
     "destroy",
     "last_run_failed",
     "last_run_succeeded",
+    "pending",
     "renewal",
   ],
   parcels: [
