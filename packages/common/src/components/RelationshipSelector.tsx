@@ -158,7 +158,7 @@ export const RelationshipSelector: FC<RelationshipSelectorProps> = ({
                 .list({
                   pageSize: 25,
                   filters: {
-                    name_cont: hint,
+                    name_i_cont: hint,
                   },
                 })
                 .then((res) => {

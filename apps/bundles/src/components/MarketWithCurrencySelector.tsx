@@ -128,7 +128,7 @@ export const MarketWithCurrencySelector: FC<{
                       },
                       include: ["price_list"],
                       filters: {
-                        name_cont: hint,
+                        name_i_cont: hint,
                       },
                     })
                     .then((res) => {

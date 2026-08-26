@@ -38,7 +38,7 @@ export const PriceListSelector: FC = () => {
           sort: {
             name: "asc",
           },
-          ...(isEmpty(hint) ? {} : { filters: { name_cont: hint } }),
+          ...(isEmpty(hint) ? {} : { filters: { name_i_cont: hint } }),
         })
 
         return {

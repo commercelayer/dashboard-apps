@@ -124,7 +124,7 @@ function InputSelectPackages({
                   pageSize: 25,
                   filters: {
                     stock_location_id_eq: stockLocationId,
-                    name_cont: hint,
+                    name_i_cont: hint,
                   },
                 })
                 .then(packagesToSelectOptions)

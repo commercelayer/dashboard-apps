@@ -22,12 +22,16 @@ export function SkuListsSelect({
       }))}
       isClearable
       pathToValue="value"
-      loadAsyncValues={async (hint) => {
-        const list = await fetchSkuLists({ sdkClient, hint })
-        return list.map(({ id, name }) => ({
-          value: id,
-          label: name,
-        }))
+      infiniteScroll
+      loadAsyncValues={async (hint, { page }) => {
+        const list = await fetchSkuLists({ sdkClient, hint, pageNumber: page })
+        return {
+          options: list.map(({ id, name }) => ({
+            value: id,
+            label: name,
+          })),
+          hasMore: list.meta?.pageCount != null && list.meta.pageCount > page,
+        }
       }}
     />
   )
