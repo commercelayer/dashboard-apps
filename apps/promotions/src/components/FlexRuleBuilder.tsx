@@ -169,6 +169,7 @@ export function SectionFlexRules({
                 setPromotionRules(promotion.rules as PromotionRules)
                 close()
               }}
+              className="px-4"
             >
               <Icon name="arrowLeft" />
               <Text size="small" weight="semibold">
