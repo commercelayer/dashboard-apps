@@ -1,114 +1,57 @@
 import {
   HookedInputSelect,
-  type InputSelectValue,
-  useCoreApi,
   useCoreSdkProvider,
 } from "@commercelayer/app-elements"
-import type { ListResponse, PriceList, Resource } from "@commercelayer/sdk"
 import isEmpty from "lodash-es/isEmpty"
-import isString from "lodash-es/isString"
 import type { FC } from "react"
-import { useFormContext } from "react-hook-form"
 
+/** Core caps `pageSize` at 25, so this is also the most we can load in one go. */
+const pageSize = 25
+
+/**
+ * Picks the price list a new price belongs to.
+ *
+ * Options are always fetched from the api, one page at a time as the menu is
+ * scrolled: an organization can hold far more price lists than a single page,
+ * and everything past the first one has to stay reachable both by scrolling and
+ * by typing.
+ */
 export const PriceListSelector: FC = () => {
   const { sdkClient } = useCoreSdkProvider()
-  const { setValue } = useFormContext()
-  const { data, isLoading: isLoadingInitialValues } = useCoreApi(
-    "price_lists",
-    "list",
-    [
-      {
-        fields: {
-          price_lists: ["name", "currency_code"],
-        },
-        pageSize: 25,
-        sort: {
-          name: "asc",
-        },
-      },
-    ],
-  )
-
-  const hasMorePages =
-    (data?.meta?.pageCount != null && data.meta.pageCount > 1) ?? false
-
-  const initialValues = [
-    ...makeSelectInitialValuesWithDefault<PriceList>({
-      resourceList: data,
-      fieldForLabel: "name",
-    }),
-  ]
 
   return (
     <HookedInputSelect
       name="price_list"
       label="Price list"
       placeholder="Select a price list"
-      initialValues={initialValues}
-      isLoading={isLoadingInitialValues}
+      initialValues={[]}
       isClearable={false}
       isSearchable
-      onSelect={(selected) => {
-        if (isString(selected) && !isEmpty(selected)) {
-          setValue("price_list", selected)
+      infiniteScroll
+      loadAsyncValues={async (hint, { page }) => {
+        const priceLists = await sdkClient.price_lists.list({
+          fields: {
+            price_lists: ["name", "currency_code"],
+          },
+          pageSize,
+          pageNumber: page,
+          sort: {
+            name: "asc",
+          },
+          ...(isEmpty(hint) ? {} : { filters: { name_i_cont: hint } }),
+        })
+
+        return {
+          options: priceLists.map((priceList) => ({
+            label: priceList.name,
+            value: priceList.id,
+            meta: priceList,
+          })),
+          hasMore:
+            priceLists.meta?.pageCount != null &&
+            priceLists.meta.pageCount > page,
         }
       }}
-      menuFooterText={
-        hasMorePages
-          ? "Showing 25 results. Type to search for more options."
-          : undefined
-      }
-      loadAsyncValues={
-        hasMorePages
-          ? async (hint) => {
-              return await sdkClient.price_lists
-                .list({
-                  pageSize: 25,
-                  filters: {
-                    name_cont: hint,
-                    fields: {
-                      price_lists: ["name"],
-                    },
-                  },
-                })
-                .then((res) => {
-                  return res.map((priceList) => ({
-                    label: priceList.name,
-                    value: priceList.id,
-                    meta: priceList,
-                  }))
-                })
-            }
-          : undefined
-      }
     />
   )
-}
-
-function makeSelectInitialValuesWithDefault<R extends Resource>({
-  resourceList,
-  defaultResource,
-  fieldForLabel,
-}: {
-  resourceList?: ListResponse<R>
-  defaultResource?: R
-  fieldForLabel: keyof R
-}): InputSelectValue[] {
-  const options = [
-    defaultResource != null
-      ? {
-          label: (
-            defaultResource[fieldForLabel] ?? defaultResource.id
-          ).toString(),
-          value: defaultResource.id,
-        }
-      : undefined,
-    ...(resourceList ?? []).map((item) => ({
-      label: (item[fieldForLabel] ?? item.id).toString(),
-      value: item.id,
-      meta: item,
-    })),
-  ].filter((v) => !isEmpty(v)) as InputSelectValue[]
-
-  return options.sort((a, b) => a.label.localeCompare(b.label))
 }

@@ -30,7 +30,7 @@ export const fetchResources = async ({
     filters:
       hint != null
         ? {
-            name_cont: hint,
+            name_i_cont: hint,
           }
         : undefined,
     pageSize: 25,

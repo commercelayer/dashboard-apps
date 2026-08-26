@@ -47,7 +47,7 @@ export const SelectMarketStep: React.FC<
         label: t("common.search"),
         type: "textSearch",
         sdk: {
-          predicate: "name_cont",
+          predicate: "name_i_cont",
         },
         render: {
           component: "searchBar",

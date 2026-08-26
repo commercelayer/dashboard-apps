@@ -62,7 +62,7 @@ export const fetchResourcesByHint = async <ResType extends SearchableResource>({
     fields: fields as QueryFields<Resource>,
     filters: {
       ...filters,
-      [`${fieldForLabel}_cont`]: hint,
+      [`${fieldForLabel}_i_cont`]: hint,
     },
     pageSize: 5,
   })

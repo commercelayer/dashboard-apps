@@ -64,11 +64,11 @@ export const StockLocationSelector: FC = () => {
               return await sdkClient.stock_locations
                 .list({
                   pageSize: 25,
+                  fields: {
+                    stock_locations: ["name"],
+                  },
                   filters: {
                     name_i_cont: hint,
-                    fields: {
-                      stock_locations: ["name"],
-                    },
                   },
                 })
                 .then((res) => {

@@ -99,7 +99,7 @@ function getParams({ email }: { email: string }): QueryParamsList<Customer> {
       email: "asc",
     },
     filters: {
-      email_cont: email,
+      email_i_cont: email,
     },
   }
 }

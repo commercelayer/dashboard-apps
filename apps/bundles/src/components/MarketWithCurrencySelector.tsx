@@ -122,13 +122,13 @@ export const MarketWithCurrencySelector: FC<{
                   return await sdkClient.markets
                     .list({
                       pageSize: 25,
+                      fields: {
+                        markets: ["name", "price_list"],
+                        price_lists: ["currency_code"],
+                      },
+                      include: ["price_list"],
                       filters: {
-                        name_cont: hint,
-                        fields: {
-                          markets: ["name", "price_list"],
-                          price_lists: ["currency_code"],
-                        },
-                        include: ["price_list"],
+                        name_i_cont: hint,
                       },
                     })
                     .then((res) => {
