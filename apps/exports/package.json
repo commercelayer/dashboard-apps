@@ -25,7 +25,7 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "7.16.0",
+    "@commercelayer/app-elements": "7.17.0",
     "@commercelayer/sdk": "8.0.0-beta.11",
     "@testing-library/jest-dom": "^6.10.0",
     "@testing-library/react": "^16.3.2",
