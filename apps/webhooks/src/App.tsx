@@ -3,7 +3,6 @@ import { Route, Router, Switch } from "wouter"
 import { ErrorNotFound } from "#components/ErrorNotFound"
 import { appRoutes } from "#data/routes"
 import { WebhookCreate } from "#pages/WebhookCreate"
-import { WebhookDelete } from "#pages/WebhookDelete"
 import { WebhookDetails } from "#pages/WebhookDetails"
 import { WebhookEdit } from "#pages/WebhookEdit"
 import { WebhooksList } from "#pages/WebhooksList"
@@ -24,9 +23,6 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         </Route>
         <Route path={appRoutes.editWebhook.path}>
           <WebhookEdit />
-        </Route>
-        <Route path={appRoutes.deleteWebhook.path}>
-          <WebhookDelete />
         </Route>
         <Route path={appRoutes.details.path}>
           <WebhookDetails />
