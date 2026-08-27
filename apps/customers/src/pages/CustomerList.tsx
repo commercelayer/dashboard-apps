@@ -1,18 +1,18 @@
 import {
-  Alert,
+  type PageHeadingProps,
   PageLayout,
   Spacer,
   Tab,
   Tabs,
-  Text,
   useAppLinking,
   useResourceFilters,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
-import { useEffect, useMemo } from "react"
-import { Link, useLocation } from "wouter"
+import { useEffect, useMemo, useState } from "react"
+import { useLocation } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
+import { CustomerPendingAnonymizationDialog } from "#components/CustomerPendingAnonymizationDialog"
 import { useCustomersTableColumns } from "#components/customersTableColumns"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { instructions } from "#data/filters"
@@ -55,6 +55,9 @@ function CustomerList(): React.JSX.Element {
   const hasPendingAnonymization =
     customersWithPendingAnonymization != null &&
     customersWithPendingAnonymization.length > 0
+
+  const [isPendingAnonymizationOpen, setIsPendingAnonymizationOpen] =
+    useState(false)
 
   const handleFiltersUpdate = (queryString: string): void => {
     navigate(`?${queryString}`, { replace: true })
@@ -121,44 +124,39 @@ function CustomerList(): React.JSX.Element {
     />
   )
 
+  const pageToolbar: PageHeadingProps["toolbar"] = {
+    buttons: [],
+  }
+
+  if (hasPendingAnonymization) {
+    pageToolbar.buttons?.push({
+      icon: "hourglassHigh",
+      label: "Pending anonymization",
+      size: "small",
+      variant: "secondary",
+      onClick: () => {
+        setIsPendingAnonymizationOpen(true)
+      },
+    })
+  }
+
+  if (canUser("create", "customers")) {
+    pageToolbar.buttons?.push({
+      icon: "plus",
+      label: `${t("common.new")} ${t("resources.customers.name").toLowerCase()}`,
+      size: "small",
+      onClick: () => {
+        setLocation(appRoutes.new.makePath())
+      },
+    })
+  }
+
   return (
     <PageLayout
       title={t("resources.customers.name_other")}
       fullWidth
-      toolbar={{
-        buttons: canUser("create", "customers")
-          ? [
-              {
-                icon: "plus",
-                label: `${t("common.new")} ${t("resources.customers.name").toLowerCase()}`,
-                size: "small",
-                onClick: () => {
-                  setLocation(appRoutes.new.makePath())
-                },
-              },
-            ]
-          : undefined,
-      }}
+      toolbar={pageToolbar}
     >
-      {hasPendingAnonymization && (
-        <Spacer bottom="14">
-          <Alert status="warning">
-            <Text weight="semibold">Pending anonymization requests:</Text>
-            <Spacer top="2">
-              {customersWithPendingAnonymization.map((customer) => (
-                <Spacer key={customer.id} bottom="1">
-                  <Text color="black" size="small" weight="semibold">
-                    <Link href={appRoutes.details.makePath(customer.id)}>
-                      {customer.email}
-                    </Link>
-                  </Text>
-                </Spacer>
-              ))}
-            </Spacer>
-          </Alert>
-        </Spacer>
-      )}
-
       {/* Remounted per tab so `Tabs` (which owns its active index internally)
           picks up the tab restored from the url. */}
       <Tabs
@@ -196,6 +194,16 @@ function CustomerList(): React.JSX.Element {
       </Tabs>
 
       <FiltersDrawer onUpdate={handleFiltersUpdate} />
+
+      {hasPendingAnonymization && (
+        <CustomerPendingAnonymizationDialog
+          customers={customersWithPendingAnonymization}
+          show={isPendingAnonymizationOpen}
+          onClose={() => {
+            setIsPendingAnonymizationOpen(false)
+          }}
+        />
+      )}
     </PageLayout>
   )
 }
