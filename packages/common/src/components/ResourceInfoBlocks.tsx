@@ -1,9 +1,9 @@
 import {
   isMockedId,
-  isTaggableResource,
   ResourceDetails,
   ResourceMetadata,
   ResourceTags,
+  useIsTaggableResource,
 } from "@commercelayer/app-elements"
 import type { ListableResource } from "@commercelayer/sdk"
 
@@ -46,12 +46,13 @@ export function ResourceInfoBlocks({
   const resourceType = resource.type
   // a mock resource has no server-side counterpart to fetch tags or metadata for
   const canFetchRelated = !isMockedId(resource.id)
+  const isTaggable = useIsTaggableResource(resourceType)
 
   return (
     // Details last, as the designs have it: the id, reference and timestamps are the
     // least useful of the three, so tags and metadata come first.
     <div className={className}>
-      {canFetchRelated && isTaggableResource(resourceType) && (
+      {canFetchRelated && isTaggable && (
         <ResourceTags
           resourceType={resourceType}
           resourceId={resource.id}
@@ -60,12 +61,7 @@ export function ResourceInfoBlocks({
         />
       )}
       {canFetchRelated && (
-        <div
-          className={
-            "mt-14" +
-            (isTaggableResource(resourceType) ? " lg:mt-10" : undefined)
-          }
-        >
+        <div className={"mt-14" + (isTaggable ? " lg:mt-10" : undefined)}>
           <ResourceMetadata
             resourceType={resourceType}
             resourceId={resource.id}
