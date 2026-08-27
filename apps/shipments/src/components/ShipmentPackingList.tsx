@@ -10,12 +10,14 @@ import {
   Spacer,
   Text,
   toast,
+  useConfirmDialog,
   useCoreSdkProvider,
   useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import type { Shipment as ShipmentResource } from "@commercelayer/sdk"
+import { useState } from "react"
 import { Link, useLocation } from "wouter"
 import { ShipmentProgress } from "#components/ShipmentProgress"
 import { appRoutes } from "#data/routes"
@@ -120,6 +122,8 @@ const ParcelList = withSkeletonTemplate<{
   const { canUser } = useTokenProvider()
   const { mutateShipment } = useShipmentDetails(shipment.id)
   const { t } = useTranslation()
+  const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
+  const [parcelToDelete, setParcelToDelete] = useState<string>()
 
   const updateTrackingNumber = async (
     parcelId: string,
@@ -156,13 +160,28 @@ const ParcelList = withSkeletonTemplate<{
         <ResourceShipmentParcels
           shipment={shipment}
           onRemoveParcel={(id) => {
-            void sdkClient.parcels
-              .delete(id)
-              .then(async () => await mutateShipment())
+            setParcelToDelete(id)
+            showDeleteDialog()
           }}
           onTrackingNumberUpdate={
             canUser("update", "parcels") ? updateTrackingNumber : undefined
           }
+        />
+        <ConfirmDialog
+          icon="trash"
+          title="Delete parcel"
+          description="This action cannot be undone."
+          confirm={{
+            label: "Delete parcel",
+            variant: "danger",
+            onClick: async () => {
+              if (parcelToDelete == null) {
+                return
+              }
+              await sdkClient.parcels.delete(parcelToDelete)
+              await mutateShipment()
+            },
+          }}
         />
       </Section>
     </Spacer>
