@@ -7,6 +7,8 @@ import {
   PageLayout,
   SkeletonTemplate,
   Spacer,
+  useConfirmDialog,
+  useCoreSdkProvider,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
@@ -35,6 +37,8 @@ export const WebhookDetails: FC = () => {
     webhookId,
     { withLastEventCallbacks: true },
   )
+  const { sdkClient } = useCoreSdkProvider()
+  const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
   if (webhookId == null || !canUser("read", "webhooks") || error != null) {
     return (
@@ -97,7 +101,7 @@ export const WebhookDetails: FC = () => {
     actions.push({
       label: "Delete",
       onClick: () => {
-        setLocation(appRoutes.deleteWebhook.makePath({ webhookId }))
+        showDeleteDialog()
       },
     })
   }
@@ -156,6 +160,22 @@ export const WebhookDetails: FC = () => {
         </Spacer>
 
         <WebhookCallbacks webhook={webhook} />
+
+        {canUser("destroy", "webhooks") && (
+          <ConfirmDialog
+            icon="trash"
+            title={`Delete webhook ${webhook.name}`}
+            description="This action cannot be undone."
+            confirm={{
+              label: "Delete webhook",
+              variant: "danger",
+              onClick: async () => {
+                await sdkClient.webhooks.delete(webhookId)
+                setLocation(appRoutes.list.makePath({}))
+              },
+            }}
+          />
+        )}
       </PageLayout>
     </SkeletonTemplate>
   )

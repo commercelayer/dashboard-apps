@@ -10,6 +10,5 @@ export const appRoutes = {
   list: createRoute("/"),
   newWebhook: createRoute("/new/"),
   editWebhook: createRoute("/:webhookId/edit/"),
-  deleteWebhook: createRoute("/:webhookId/delete/"),
   details: createRoute("/:webhookId/"),
 }

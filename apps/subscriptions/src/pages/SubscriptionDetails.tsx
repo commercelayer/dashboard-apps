@@ -9,6 +9,7 @@ import {
   SkeletonTemplate,
   Spacer,
   useAppLinking,
+  useConfirmDialog,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
@@ -45,6 +46,7 @@ function SubscriptionDetails(): React.JSX.Element {
 
   const subscriptionId = params?.subscriptionId ?? ""
   const { dispatch } = useTriggerAttribute(subscriptionId)
+  const { show: showCancelDialog, ConfirmDialog } = useConfirmDialog()
 
   const { subscription, isLoading, error, mutateSubscription } =
     useSubscriptionDetails(subscriptionId)
@@ -149,7 +151,7 @@ function SubscriptionDetails(): React.JSX.Element {
       {
         label: "Cancel subscription",
         onClick: () => {
-          void dispatch("_cancel")
+          showCancelDialog()
         },
       },
     ])
@@ -234,6 +236,19 @@ function SubscriptionDetails(): React.JSX.Element {
       // letting the sidebar sink to the bottom of the page
     >
       <SkeletonTemplate isLoading={isLoading}>
+        <ConfirmDialog
+          icon="x"
+          title={`Cancel subscription ${pageTitle}`}
+          description="This action cannot be undone."
+          confirm={{
+            label: "Cancel subscription",
+            variant: "danger",
+            onClick: async () => {
+              await dispatch("_cancel")
+            },
+          }}
+          cancelLabel="Close"
+        />
         <SubscriptionInfo subscription={subscription} />
         <Spacer top="14">
           <SubscriptionItems subscriptionId={subscription.id} />
