@@ -4,7 +4,6 @@ import type { SkuListFormValues } from "#components/SkuListForm"
 import { adaptFormValuesToSkuListUpdate } from "#components/SkuListForm/utils"
 
 interface UpdateSkuListHook {
-  isUpdatingSkuList: boolean
   updateSkuListError?: any
   updateSkuList: (formValues: SkuListFormValues) => Promise<void>
 }
@@ -12,13 +11,11 @@ interface UpdateSkuListHook {
 export function useUpdateSkuList(): UpdateSkuListHook {
   const { sdkClient } = useCoreSdkProvider()
 
-  const [isUpdatingSkuList, setIsUpdatingSkuList] = useState(false)
   const [updateSkuListError, setUpdateSkuListError] =
     useState<UpdateSkuListHook["updateSkuListError"]>()
 
   const updateSkuList = useCallback<UpdateSkuListHook["updateSkuList"]>(
     async (formValues) => {
-      setIsUpdatingSkuList(true)
       setUpdateSkuListError(undefined)
 
       try {
@@ -26,15 +23,12 @@ export function useUpdateSkuList(): UpdateSkuListHook {
         await sdkClient.sku_lists.update(skuList)
       } catch (err) {
         setUpdateSkuListError(err)
-      } finally {
-        setIsUpdatingSkuList(false)
       }
     },
     [],
   )
 
   return {
-    isUpdatingSkuList,
     updateSkuListError,
     updateSkuList,
   }

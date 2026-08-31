@@ -5,7 +5,6 @@ import type { SkuListFormValues } from "#components/SkuListForm"
 import { adaptFormValuesToSkuListCreate } from "#components/SkuListForm/utils"
 
 interface CreateSkuListHook {
-  isCreatingSkuList: boolean
   createSkuListError?: any
   createSkuList: (formValues: SkuListFormValues) => Promise<SkuList | undefined>
 }
@@ -13,13 +12,11 @@ interface CreateSkuListHook {
 export function useCreateSkuList(): CreateSkuListHook {
   const { sdkClient } = useCoreSdkProvider()
 
-  const [isCreatingSkuList, setIsCreatingSkuList] = useState(false)
   const [createSkuListError, setCreateSkuListError] =
     useState<CreateSkuListHook["createSkuListError"]>()
 
   const createSkuList: CreateSkuListHook["createSkuList"] = useCallback(
     async (formValues) => {
-      setIsCreatingSkuList(true)
       setCreateSkuListError(undefined)
 
       const skuList = adaptFormValuesToSkuListCreate(formValues)
@@ -28,15 +25,12 @@ export function useCreateSkuList(): CreateSkuListHook {
         return createdSkuList
       } catch (err) {
         setCreateSkuListError(err)
-      } finally {
-        setIsCreatingSkuList(false)
       }
     },
     [],
   )
 
   return {
-    isCreatingSkuList,
     createSkuListError,
     createSkuList,
   }

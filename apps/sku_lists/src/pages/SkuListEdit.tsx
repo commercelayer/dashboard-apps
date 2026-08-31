@@ -23,8 +23,7 @@ export function SkuListEdit(): React.JSX.Element {
 
   const { skuList, isLoading, mutateSkuList } = useSkuListDetails(skuListId)
 
-  const { updateSkuListError, updateSkuList, isUpdatingSkuList } =
-    useUpdateSkuList()
+  const { updateSkuListError, updateSkuList } = useUpdateSkuList()
 
   const goBackUrl = appRoutes.details.makePath(
     { skuListId },
@@ -87,11 +86,11 @@ export function SkuListEdit(): React.JSX.Element {
                   : undefined,
             }}
             apiError={updateSkuListError}
-            isSubmitting={isUpdatingSkuList}
             onSubmit={(formValues) => {
               void updateSkuList(formValues).then(() => {
-                void mutateSkuList()
-                setLocation(goBackUrl)
+                void mutateSkuList().then(() => {
+                  setLocation(goBackUrl)
+                })
               })
             }}
           />

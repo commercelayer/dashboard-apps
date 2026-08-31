@@ -19,11 +19,10 @@ export type SkuListFormValues = z.infer<typeof skuListFormSchema>
 
 interface Props {
   defaultValues?: Partial<SkuListFormValues>
-  isSubmitting: boolean
   onSubmit: (
     formValues: SkuListFormValues,
     setError: UseFormSetError<SkuListFormValues>,
-  ) => void
+  ) => Promise<void> | void
   apiError?: any
 }
 
@@ -31,12 +30,15 @@ export function SkuListForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const skuListFormMethods = useForm<SkuListFormValues>({
     defaultValues,
     resolver: zodResolver(skuListFormSchema),
   })
+
+  const {
+    formState: { isSubmitting },
+  } = skuListFormMethods
 
   const watchedFormManual = skuListFormMethods.watch("manualString")
   useEffect(() => {
@@ -52,7 +54,7 @@ export function SkuListForm({
       <HookedForm
         {...skuListFormMethods}
         onSubmit={(formValues) => {
-          onSubmit(formValues, skuListFormMethods.setError)
+          return onSubmit(formValues, skuListFormMethods.setError)
         }}
       >
         <Section>
