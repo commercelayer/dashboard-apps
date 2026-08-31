@@ -9,7 +9,7 @@ import {
   useTranslation,
 } from "@commercelayer/app-elements"
 import { Link, useLocation, useRoute } from "wouter"
-import { FormRestock } from "#components/FormRestock"
+import { FormRestock, useRestockFormMethods } from "#components/FormRestock"
 import { ScrollToTop } from "#components/ScrollToTop"
 import { appRoutes } from "#data/routes"
 import { useRestockableList } from "#hooks/useRestockableList"
@@ -34,11 +34,17 @@ function RestockReturn(): React.JSX.Element {
 
   const restockableReturnLineItems = useRestockableList(returnObj)
 
-  const {
-    restockReturnLineItemsError,
-    restockReturnLineItems,
-    isRestockingReturnLineItems,
-  } = useRestockReturnLineItems()
+  const { restockReturnLineItemsError, restockReturnLineItems } =
+    useRestockReturnLineItems()
+
+  const restockFormDefaultValues = {
+    items:
+      restockableReturnLineItems?.map((item) => ({
+        quantity: item.quantity,
+        value: item.id,
+      })) ?? [],
+  }
+  const restockFormMethods = useRestockFormMethods(restockFormDefaultValues)
 
   if (
     returnObj == null ||
@@ -95,12 +101,8 @@ function RestockReturn(): React.JSX.Element {
           <>
             <Spacer bottom="4">
               <FormRestock
-                defaultValues={{
-                  items: restockableReturnLineItems?.map((item) => ({
-                    quantity: item.quantity,
-                    value: item.id,
-                  })),
-                }}
+                methods={restockFormMethods}
+                defaultValues={restockFormDefaultValues}
                 returnLineItems={restockableReturnLineItems}
                 apiError={restockReturnLineItemsError}
                 onSubmit={(formValues) => {
@@ -118,7 +120,7 @@ function RestockReturn(): React.JSX.Element {
               type="submit"
               form="return-restock-form"
               fullWidth
-              disabled={isRestockingReturnLineItems}
+              disabled={restockFormMethods.formState.isSubmitting}
             >
               {t("apps.returns.actions.restock")}
             </Button>

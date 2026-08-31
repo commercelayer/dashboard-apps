@@ -4,7 +4,6 @@ import { useCallback, useState } from "react"
 import type { RestockFormValues } from "#components/FormRestock"
 
 interface RestockReturnLineItemsHook {
-  isRestockingReturnLineItems: boolean
   restockReturnLineItemsError?: any
   restockReturnLineItems: (
     returnObj: Return,
@@ -15,14 +14,11 @@ interface RestockReturnLineItemsHook {
 export function useRestockReturnLineItems(): RestockReturnLineItemsHook {
   const { sdkClient } = useCoreSdkProvider()
 
-  const [isRestockingReturnLineItems, setIsRestockingReturnLineItems] =
-    useState(false)
   const [restockReturnLineItemsError, setRestockReturnLineItemsError] =
     useState<RestockReturnLineItemsHook["restockReturnLineItemsError"]>()
 
   const restockReturnLineItems: RestockReturnLineItemsHook["restockReturnLineItems"] =
     useCallback(async (returnObj, formValues) => {
-      setIsRestockingReturnLineItems(true)
       setRestockReturnLineItemsError(undefined)
       const returnLineItemIds = formValues.items.map((item) => item.value)
 
@@ -44,14 +40,11 @@ export function useRestockReturnLineItems(): RestockReturnLineItemsHook {
           })
         } catch (err) {
           setRestockReturnLineItemsError(err)
-        } finally {
-          setIsRestockingReturnLineItems(false)
         }
       }
     }, [])
 
   return {
-    isRestockingReturnLineItems,
     restockReturnLineItemsError,
     restockReturnLineItems,
   }
