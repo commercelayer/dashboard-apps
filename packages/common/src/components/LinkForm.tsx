@@ -54,7 +54,6 @@ export type LinkFormValues = z.infer<typeof linkFormSchema>
 interface Props {
   resourceType: "orders" | "skus" | "sku_lists"
   defaultValues?: Partial<LinkFormValues>
-  isSubmitting: boolean
   onSubmit: (
     formValues: LinkFormValues,
     setError: UseFormSetError<LinkFormValues>,
@@ -67,12 +66,14 @@ export function LinkForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const linkFormMethods = useForm<LinkFormValues>({
     defaultValues,
     resolver: zodResolver(linkFormSchema),
   })
+  const {
+    formState: { isSubmitting },
+  } = linkFormMethods
   const { settings } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const salesChannels = settings.extras?.salesChannels

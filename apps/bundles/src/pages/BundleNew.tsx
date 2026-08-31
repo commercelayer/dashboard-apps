@@ -19,7 +19,6 @@ export function BundleNew(): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl = appRoutes.list.makePath({})
 
@@ -70,9 +69,7 @@ export function BundleNew(): React.JSX.Element {
             currency_code: "USD",
           }}
           apiError={apiError}
-          isSubmitting={isSaving}
           onSubmit={(formValues) => {
-            setIsSaving(true)
             const bundle = adaptFormValuesToBundle(formValues)
             void sdkClient.bundles
               .create(bundle)
@@ -81,7 +78,6 @@ export function BundleNew(): React.JSX.Element {
               })
               .catch((error) => {
                 setApiError(error)
-                setIsSaving(false)
               })
           }}
         />

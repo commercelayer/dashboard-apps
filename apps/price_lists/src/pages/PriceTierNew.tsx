@@ -30,7 +30,6 @@ export function PriceTierNew(): React.JSX.Element {
   const [location, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const tierType = location.includes("frequency") ? "frequency" : "volume"
 
@@ -124,9 +123,7 @@ export function PriceTierNew(): React.JSX.Element {
               type: tierType,
             }}
             apiError={apiError}
-            isSubmitting={isSaving}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               const tier = adaptFormValuesToPriceTier(formValues, priceId)
               void sdkClient[sdkResource]
                 .create(tier)
@@ -139,7 +136,6 @@ export function PriceTierNew(): React.JSX.Element {
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />

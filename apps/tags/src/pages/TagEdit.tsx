@@ -24,7 +24,6 @@ export function TagEdit(): React.JSX.Element {
 
   const { tag, isLoading, mutateTag } = useTagDetails(tagId)
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl = appRoutes.list.makePath()
 
@@ -73,9 +72,7 @@ export function TagEdit(): React.JSX.Element {
           <TagForm
             defaultValues={adaptTagToFormValues(tag)}
             apiError={apiError}
-            isSubmitting={isSaving}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               void sdkClient.tags
                 .update(adaptFormValuesToTag(formValues, tag.id))
                 .then((updatedTag) => {
@@ -85,7 +82,6 @@ export function TagEdit(): React.JSX.Element {
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />

@@ -25,7 +25,6 @@ export function StockItemEdit(): React.JSX.Element {
   // carried through so returning to the list keeps its filters
   const queryString = useSearch()
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const [, params] = useRoute<{ stockItemId: string }>(
     appRoutes.editStockItem.path,
@@ -96,9 +95,7 @@ export function StockItemEdit(): React.JSX.Element {
               stockLocation: stockItem.stock_location?.id,
             }}
             apiError={apiError}
-            isSubmitting={isSaving}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               const stockItem = adaptFormValuesToStockItem(formValues)
               void sdkClient.stock_items
                 .update(stockItem)
@@ -109,7 +106,6 @@ export function StockItemEdit(): React.JSX.Element {
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />

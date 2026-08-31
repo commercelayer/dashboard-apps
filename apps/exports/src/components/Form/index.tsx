@@ -21,13 +21,11 @@ import type { ExportFormValues } from "./types"
 
 interface Props {
   resourceType: AllowedResourceType
-  isLoading?: boolean
   defaultValues: ExportFormValues
   onSubmit: (values: ExportFormValues) => void
 }
 
 export function Form({
-  isLoading,
   resourceType,
   defaultValues,
   onSubmit,
@@ -35,6 +33,9 @@ export function Form({
   const methods = useForm<ExportFormValues>({
     defaultValues,
   })
+  const {
+    formState: { isSubmitting },
+  } = methods
 
   return (
     <HookedForm {...methods} onSubmit={onSubmit}>
@@ -133,8 +134,8 @@ export function Form({
         </HookedInputCheckbox>
       </Spacer>
 
-      <Button variant="primary" type="submit" disabled={isLoading}>
-        {isLoading === true
+      <Button variant="primary" type="submit" disabled={isSubmitting}>
+        {isSubmitting
           ? "Exporting..."
           : `Export ${showResourceNiceName(resourceType).toLowerCase()}`}
       </Button>

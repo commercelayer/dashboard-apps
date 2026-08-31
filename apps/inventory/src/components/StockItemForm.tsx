@@ -29,7 +29,6 @@ export type StockItemFormValues = z.infer<typeof stockItemFormSchema>
 interface Props {
   resource?: StockItem
   defaultValues?: Partial<StockItemFormValues>
-  isSubmitting: boolean
   onSubmit: (
     formValues: StockItemFormValues,
     setError: UseFormSetError<StockItemFormValues>,
@@ -42,12 +41,15 @@ export function StockItemForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const stockItemFormMethods = useForm<StockItemFormValues>({
     defaultValues,
     resolver: zodResolver(stockItemFormSchema),
   })
+
+  const {
+    formState: { isSubmitting },
+  } = stockItemFormMethods
 
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
     useAddItemOverlay()

@@ -23,7 +23,6 @@ export type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>
 
 interface Props {
   defaultValues: SubscriptionFormValues
-  isSubmitting: boolean
   onSubmit: (
     formValues: SubscriptionFormValues,
     setError: UseFormSetError<SubscriptionFormValues>,
@@ -35,12 +34,14 @@ export function SubscriptionForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const methods = useForm({
     defaultValues,
     resolver: zodResolver(subscriptionFormSchema),
   })
+  const {
+    formState: { isSubmitting },
+  } = methods
   const { user } = useTokenProvider()
 
   const frequencies = useSubscriptionModelsFrequencies()

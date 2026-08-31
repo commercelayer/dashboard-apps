@@ -33,7 +33,6 @@ const NewExportPage = (): React.JSX.Element | null => {
   const [_location, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<ApiError[] | undefined>()
-  const [isLoading, setIsLoading] = useState(false)
 
   const resourceType = params?.resourceType
   if (!isAvailableResource(resourceType)) {
@@ -67,7 +66,6 @@ const NewExportPage = (): React.JSX.Element | null => {
 
   const createExportTask = async (values: ExportFormValues): Promise<void> => {
     setApiError(undefined)
-    setIsLoading(true)
 
     try {
       const filters =
@@ -92,7 +90,6 @@ const NewExportPage = (): React.JSX.Element | null => {
       setLocation(appRoutes.list.makePath())
     } catch (error) {
       setApiError(parseApiError(error))
-      setIsLoading(false)
     }
   }
 
@@ -114,7 +111,6 @@ const NewExportPage = (): React.JSX.Element | null => {
       <Spacer bottom="14">
         <Form
           resourceType={resourceType}
-          isLoading={isLoading}
           defaultValues={{
             dryData: false,
             format: "json",

@@ -39,7 +39,6 @@ export type PriceFormValues = z.infer<typeof priceFormSchema>
 interface Props {
   resource?: Price
   defaultValues?: Partial<PriceFormValues>
-  isSubmitting: boolean
   onSubmit: (
     formValues: PriceFormValues,
     setError: UseFormSetError<PriceFormValues>,
@@ -52,12 +51,14 @@ export function PriceForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const priceFormMethods = useForm<PriceFormValues>({
     defaultValues,
     resolver: zodResolver(priceFormSchema),
   })
+  const {
+    formState: { isSubmitting },
+  } = priceFormMethods
 
   const { show: showAddItemOverlay, Overlay: AddItemOverlay } =
     useAddItemOverlay()
@@ -79,7 +80,7 @@ export function PriceForm({
       <HookedForm
         {...priceFormMethods}
         onSubmit={(formValues) => {
-          onSubmit(formValues, priceFormMethods.setError)
+          void onSubmit(formValues, priceFormMethods.setError)
         }}
       >
         <Section>

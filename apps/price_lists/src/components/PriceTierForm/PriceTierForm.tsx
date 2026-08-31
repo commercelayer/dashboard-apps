@@ -26,7 +26,6 @@ export type PriceTierFormValues =
 
 interface Props {
   defaultValues?: Partial<PriceTierFormValues>
-  isSubmitting: boolean
   onSubmit: (
     formValues: PriceTierFormValues,
     setError: UseFormSetError<PriceTierFormValues>,
@@ -38,7 +37,6 @@ export function PriceTierForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const priceTierFormMethods = useForm<PriceTierFormValues>({
     defaultValues,
@@ -47,6 +45,9 @@ export function PriceTierForm({
         ? zodResolver(priceTierVolumeFormSchema)
         : zodResolver(priceTierFrequencyFormSchema),
   })
+  const {
+    formState: { isSubmitting },
+  } = priceTierFormMethods
 
   const watchedUpTo = priceTierFormMethods.watch("up_to")
 

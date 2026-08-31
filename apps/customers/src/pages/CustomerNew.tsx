@@ -21,7 +21,6 @@ export function CustomerNew(): React.JSX.Element {
   const { t } = useTranslation()
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl = appRoutes.home.makePath()
   const pageTitle = t("common.new_resource", {
@@ -70,9 +69,7 @@ export function CustomerNew(): React.JSX.Element {
         <CustomerForm
           defaultValues={newCustomerToFormValues()}
           apiError={apiError}
-          isSubmitting={isSaving}
           onSubmit={(formValues) => {
-            setIsSaving(true)
             void sdkClient.customers
               .create(adaptFormValuesToCustomer(formValues))
               .then(() => {
@@ -80,7 +77,6 @@ export function CustomerNew(): React.JSX.Element {
               })
               .catch((error) => {
                 setApiError(error)
-                setIsSaving(false)
               })
           }}
         />

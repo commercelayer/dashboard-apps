@@ -27,7 +27,6 @@ function LinkEdit(
   const { t } = useTranslation()
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const orderId = props.params?.orderId ?? ""
   const linkId = props.params?.linkId ?? ""
@@ -91,10 +90,8 @@ function LinkEdit(
         <LinkForm
           resourceType="orders"
           apiError={apiError}
-          isSubmitting={isSaving}
           defaultValues={adaptLinkToFormValues(link)}
           onSubmit={(formValues) => {
-            setIsSaving(true)
             const link = adaptFormValuesToLink(formValues)
             void sdkClient.links
               .update(link)
@@ -107,7 +104,6 @@ function LinkEdit(
               })
               .catch((error) => {
                 setApiError(error)
-                setIsSaving(false)
               })
           }}
         />

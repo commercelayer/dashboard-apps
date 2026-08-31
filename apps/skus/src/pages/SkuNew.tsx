@@ -22,7 +22,6 @@ export function SkuNew(): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl = appRoutes.list.makePath({})
 
@@ -72,9 +71,7 @@ export function SkuNew(): React.JSX.Element {
             unitOfWeight: "gr",
           }}
           apiError={apiError}
-          isSubmitting={isSaving}
           onSubmit={(formValues) => {
-            setIsSaving(true)
             const sku = adaptFormValuesToSku(formValues)
             void sdkClient.skus
               .create(sku)
@@ -85,7 +82,6 @@ export function SkuNew(): React.JSX.Element {
               })
               .catch((error) => {
                 setApiError(error)
-                setIsSaving(false)
               })
           }}
         />

@@ -34,7 +34,6 @@ export const LinkNewPage = ({
   const [, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const pageTitle = "New link"
 
@@ -67,12 +66,10 @@ export const LinkNewPage = ({
           <LinkForm
             resourceType="skus"
             apiError={apiError}
-            isSubmitting={isSaving}
             defaultValues={{
               name: defaultName,
             }}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               const link = adaptFormValuesToLink(
                 formValues,
                 resourceId,
@@ -92,7 +89,6 @@ export const LinkNewPage = ({
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />
