@@ -27,7 +27,7 @@ function Packing(): React.JSX.Element {
   const { shipment, isLoading } = useShipmentDetails(shipmentId)
   const pickingList = usePickingList(shipment)
   const isValidStatus = shipment?.status === "packing"
-  const { createParcelError, createParcelWithItems, isCreatingParcel } =
+  const { createParcelError, createParcelWithItems } =
     useCreateParcel(shipmentId)
   const { t } = useTranslation()
 
@@ -115,7 +115,6 @@ function Packing(): React.JSX.Element {
           }}
           stockLineItems={pickingList}
           stockLocationId={shipment.stock_location.id}
-          isSubmitting={isCreatingParcel}
           apiError={createParcelError}
           onSubmit={(formValues) => {
             void createParcelWithItems(formValues)
