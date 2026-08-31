@@ -88,8 +88,9 @@ export function BundleEdit(): React.JSX.Element {
               void sdkClient.bundles
                 .update(adaptFormValuesToBundle(formValues) as Bundle)
                 .then((updatedBundle) => {
-                  setLocation(goBackUrl)
-                  void mutateBundle({ ...updatedBundle })
+                  void mutateBundle({ ...updatedBundle }).then(() => {
+                    setLocation(goBackUrl)
+                  })
                 })
                 .catch((error) => {
                   setApiError(error)

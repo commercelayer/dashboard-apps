@@ -103,8 +103,9 @@ export function StockItemEdit(): React.JSX.Element {
               void sdkClient.stock_items
                 .update(stockItem)
                 .then((updatedStockItem) => {
-                  void mutateStockItem({ ...updatedStockItem })
-                  setLocation(goBackUrl)
+                  void mutateStockItem({ ...updatedStockItem }).then(() => {
+                    setLocation(goBackUrl)
+                  })
                 })
                 .catch((error) => {
                   setApiError(error)

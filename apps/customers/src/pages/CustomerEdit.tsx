@@ -90,8 +90,9 @@ export function CustomerEdit(): React.JSX.Element {
               void sdkClient.customers
                 .update(adaptFormValuesToCustomer(formValues, customer.id))
                 .then((updatedCustomer) => {
-                  setLocation(goBackUrl)
-                  void mutateCustomer({ ...updatedCustomer })
+                  void mutateCustomer({ ...updatedCustomer }).then(() => {
+                    setLocation(goBackUrl)
+                  })
                 })
                 .catch((error) => {
                   setApiError(error)

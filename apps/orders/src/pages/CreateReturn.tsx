@@ -194,7 +194,7 @@ function CreateReturn(): React.JSX.Element {
                   stockLocation,
                   formValues,
                 ).then(() => {
-                  void mutateOrder().finally(() => {
+                  void mutateOrder().then(() => {
                     setLocation(goBackUrl)
                   })
                 })
