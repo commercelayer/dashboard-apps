@@ -79,8 +79,9 @@ export function TagEdit(): React.JSX.Element {
               void sdkClient.tags
                 .update(adaptFormValuesToTag(formValues, tag.id))
                 .then((updatedTag) => {
-                  setLocation(goBackUrl)
-                  void mutateTag({ ...updatedTag })
+                  void mutateTag({ ...updatedTag }).then(() => {
+                    setLocation(goBackUrl)
+                  })
                 })
                 .catch((error) => {
                   setApiError(error)

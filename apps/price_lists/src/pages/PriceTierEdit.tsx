@@ -155,12 +155,13 @@ export function PriceTierEdit(): React.JSX.Element {
               void sdkClient[sdkResource]
                 .update(tier)
                 .then((updatedTier) => {
-                  void mutateTier({ ...updatedTier })
-                  setLocation(
-                    appRoutes.priceDetails.makePath({
-                      priceId,
-                    }),
-                  )
+                  void mutateTier({ ...updatedTier }).then(() => {
+                    setLocation(
+                      appRoutes.priceDetails.makePath({
+                        priceId,
+                      }),
+                    )
+                  })
                 })
                 .catch((error) => {
                   setApiError(error)

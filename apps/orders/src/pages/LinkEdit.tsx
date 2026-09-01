@@ -100,8 +100,9 @@ function LinkEdit(
               .update(link)
               .then((editedLink) => {
                 if (editedLink != null) {
-                  void mutateLink()
-                  setLocation(goBackUrl)
+                  void mutateLink().then(() => {
+                    setLocation(goBackUrl)
+                  })
                 }
               })
               .catch((error) => {

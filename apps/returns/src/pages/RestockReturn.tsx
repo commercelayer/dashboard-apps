@@ -106,7 +106,7 @@ function RestockReturn(): React.JSX.Element {
                 onSubmit={(formValues) => {
                   void restockReturnLineItems(returnObj, formValues).then(
                     () => {
-                      void mutateReturn().finally(() => {
+                      void mutateReturn().then(() => {
                         setLocation(goBackUrl)
                       })
                     },
