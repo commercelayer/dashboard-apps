@@ -94,7 +94,7 @@ export const instructions: FiltersInstructions = [
     label: t("common.search"),
     type: "textSearch",
     sdk: {
-      predicate: ["email", "reference"].join("_or_") + "_start",
+      predicate: ["email", "reference"].join("_or_") + "_i_cont",
     },
     render: {
       component: "searchBar",
