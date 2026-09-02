@@ -29,12 +29,14 @@ export function ListEmptyState({
   if (scope === "userFiltered") {
     return (
       <EmptyState
-        title="No returns found!"
+        title={t("common.empty_states.no_resource_found", {
+          resource: t("resources.returns.name").toLowerCase(),
+        })}
         description={
           <div>
             <p>
               {t("common.empty_states.no_resources_found_for_filters", {
-                resources: t("resources.returns.name_other"),
+                resources: t("resources.returns.name_other").toLowerCase(),
               })}
             </p>
           </div>

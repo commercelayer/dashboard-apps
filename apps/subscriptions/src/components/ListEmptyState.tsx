@@ -1,11 +1,10 @@
 import {
   A,
-  Button,
   EmptyState,
   Text,
   useTokenProvider,
+  useTranslation,
 } from "@commercelayer/app-elements"
-import { Link } from "wouter"
 
 interface Props {
   scope?: "history" | "userFiltered"
@@ -15,20 +14,36 @@ export function ListEmptyState({
   scope = "history",
 }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
+  const { t } = useTranslation()
 
   if (scope === "userFiltered") {
-    return <Text weight="semibold">No results found. Try a new search.</Text>
+    return (
+      <Text weight="semibold">
+        {t("common.empty_states.no_resources_found_for_filters", {
+          resources: t(
+            "resources.order_subscriptions.name_other",
+          ).toLowerCase(),
+        })}
+      </Text>
+    )
   }
 
   if (canUser("create", "order_subscriptions")) {
     return (
       <EmptyState
-        title="No subscriptions yet!"
-        description="Create your first subscription"
-        action={
-          <Link href="#">
-            <Button variant="primary">New subscription</Button>
-          </Link>
+        title={t("common.empty_states.no_resource_found", {
+          resource: t("resources.order_subscriptions.name").toLowerCase(),
+        })}
+        description={
+          <div>
+            <p>
+              {t("common.empty_states.no_resources_found_for_filters", {
+                resources: t(
+                  "resources.order_subscriptions.name_other",
+                ).toLowerCase(),
+              })}
+            </p>
+          </div>
         }
       />
     )
@@ -36,16 +51,22 @@ export function ListEmptyState({
 
   return (
     <EmptyState
-      title="No subscriptions yet!"
+      title={t("common.empty_states.no_resource_yet", {
+        resource: t("resources.order_subscriptions.name").toLowerCase(),
+      })}
       description={
         <div>
-          <p>Add a subscription with the API, or use the CLI.</p>
+          <p>
+            {t("common.empty_states.create_the_first_resource", {
+              resource: t("resources.order_subscriptions.name").toLowerCase(),
+            })}
+          </p>
           <A
             target="_blank"
             href="https://docs.commercelayer.io/core/v/api-reference/order_subscriptions"
             rel="noreferrer"
           >
-            View API reference.
+            {t("common.view_api_docs")}
           </A>
         </div>
       }

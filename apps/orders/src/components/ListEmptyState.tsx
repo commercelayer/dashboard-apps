@@ -61,7 +61,7 @@ export function ListEmptyState({
           <div>
             <p>
               {t("common.empty_states.no_resources_found_for_filters", {
-                resources: t("resources.skus.name").toLowerCase(),
+                resources: t("resources.skus.name_other").toLowerCase(),
               })}
             </p>
           </div>
