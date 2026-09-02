@@ -25,7 +25,7 @@
     "test:watch": "vitest --passWithNoTests"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "7.18.0",
+    "@commercelayer/app-elements": "7.18.1",
     "@commercelayer/sdk": "8.0.0-beta.11",
     "@vitejs/plugin-react": "^5.2.0",
     "dashboard-apps-common": "workspace:*",
