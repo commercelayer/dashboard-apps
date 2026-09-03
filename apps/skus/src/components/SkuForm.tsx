@@ -68,7 +68,6 @@ export type SkuFormValues = z.infer<typeof skuFormSchema>
 
 interface Props {
   defaultValues?: Partial<SkuFormValues>
-  isSubmitting: boolean
   onSubmit: (
     formValues: SkuFormValues,
     setError: UseFormSetError<SkuFormValues>,
@@ -80,13 +79,16 @@ export function SkuForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const skuFormMethods = useForm<SkuFormValues>({
     defaultValues,
     resolver: zodResolver(skuFormSchema),
   })
   const skuFormWatchedImageUrl = skuFormMethods.watch("imageUrl")
+
+  const {
+    formState: { isSubmitting },
+  } = skuFormMethods
 
   const { shippingCategories } = useShippingCategoriesList({})
   /*

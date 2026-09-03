@@ -26,7 +26,6 @@ export function SkuEdit(): React.JSX.Element {
 
   const { sku, isLoading, mutateSku } = useSkuDetails(skuId)
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl =
     skuId != null
@@ -83,9 +82,7 @@ export function SkuEdit(): React.JSX.Element {
           <SkuForm
             defaultValues={adaptSkuToFormValues(sku)}
             apiError={apiError}
-            isSubmitting={isSaving}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               void sdkClient.skus
                 .update(getSkuFromFormValues(formValues, sdkClient))
                 .then(() => {
@@ -95,7 +92,6 @@ export function SkuEdit(): React.JSX.Element {
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />

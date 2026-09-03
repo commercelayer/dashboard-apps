@@ -19,7 +19,6 @@ export function TagNew(): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl = appRoutes.list.makePath()
 
@@ -65,9 +64,7 @@ export function TagNew(): React.JSX.Element {
         <TagForm
           defaultValues={newTagToFormValues()}
           apiError={apiError}
-          isSubmitting={isSaving}
           onSubmit={(formValues) => {
-            setIsSaving(true)
             void sdkClient.tags
               .create(adaptFormValuesToTag(formValues))
               .then(() => {
@@ -75,7 +72,6 @@ export function TagNew(): React.JSX.Element {
               })
               .catch((error) => {
                 setApiError(error)
-                setIsSaving(false)
               })
           }}
         />

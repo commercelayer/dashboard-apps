@@ -105,6 +105,9 @@ export const Form: FC<{
   })
 
   const currencyCode = methods.watch("currency_code") as CurrencyCode
+  const {
+    formState: { isSubmitting },
+  } = methods
 
   return (
     <HookedForm
@@ -248,7 +251,7 @@ export const Form: FC<{
       </Spacer>
 
       <Spacer top="14">
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isNew ? "Create" : "Update"}
         </Button>
         <Spacer top="2">

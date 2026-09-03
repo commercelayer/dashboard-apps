@@ -22,7 +22,6 @@ export type TagFormValues = z.infer<typeof tagFormSchema>
 
 interface Props {
   defaultValues: TagFormValues
-  isSubmitting: boolean
   onSubmit: (
     formValues: TagFormValues,
     setError: UseFormSetError<TagFormValues>,
@@ -34,12 +33,14 @@ export function TagForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const methods = useForm({
     defaultValues,
     resolver: zodResolver(tagFormSchema),
   })
+  const {
+    formState: { isSubmitting },
+  } = methods
 
   return (
     <HookedForm

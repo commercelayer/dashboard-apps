@@ -25,7 +25,6 @@ export function BundleEdit(): React.JSX.Element {
 
   const { bundle, isLoading, mutateBundle } = useBundleDetails(bundleId)
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl =
     bundleId != null
@@ -82,9 +81,7 @@ export function BundleEdit(): React.JSX.Element {
           <BundleForm
             defaultValues={adaptBundleToFormValues(bundle)}
             apiError={apiError}
-            isSubmitting={isSaving}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               void sdkClient.bundles
                 .update(adaptFormValuesToBundle(formValues) as Bundle)
                 .then((updatedBundle) => {
@@ -94,7 +91,6 @@ export function BundleEdit(): React.JSX.Element {
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />

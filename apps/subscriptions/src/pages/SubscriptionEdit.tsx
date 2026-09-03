@@ -30,7 +30,6 @@ export function SubscriptionEdit(): React.JSX.Element {
   const { subscription, isLoading, mutateSubscription } =
     useSubscriptionDetails(subscriptionId)
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl =
     subscriptionId != null
@@ -86,9 +85,7 @@ export function SubscriptionEdit(): React.JSX.Element {
           <SubscriptionForm
             defaultValues={adaptSubscriptionToFormValues(subscription)}
             apiError={apiError}
-            isSubmitting={isSaving}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               void sdkClient.order_subscriptions
                 .update(
                   adaptFormValuesToSubscription(
@@ -102,7 +99,6 @@ export function SubscriptionEdit(): React.JSX.Element {
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />

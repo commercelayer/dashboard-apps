@@ -21,7 +21,6 @@ export function StockItemNew(): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl = appRoutes.home.makePath()
 
@@ -72,9 +71,7 @@ export function StockItemNew(): React.JSX.Element {
             quantity: 1,
           }}
           apiError={apiError}
-          isSubmitting={isSaving}
           onSubmit={(formValues) => {
-            setIsSaving(true)
             const stockItem = adaptFormValuesToStockItem(formValues)
             void sdkClient.stock_items
               .create(stockItem)
@@ -83,7 +80,6 @@ export function StockItemNew(): React.JSX.Element {
               })
               .catch((error) => {
                 setApiError(error)
-                setIsSaving(false)
               })
           }}
         />

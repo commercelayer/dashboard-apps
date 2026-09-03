@@ -14,8 +14,7 @@ export function SkuListNew(): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const [, setLocation] = useLocation()
 
-  const { createSkuListError, createSkuList, isCreatingSkuList } =
-    useCreateSkuList()
+  const { createSkuListError, createSkuList } = useCreateSkuList()
 
   const goBackUrl = appRoutes.list.makePath({})
 
@@ -63,15 +62,13 @@ export function SkuListNew(): React.JSX.Element {
         <SkuListForm
           defaultValues={{ manualString: "manual" }}
           apiError={createSkuListError}
-          isSubmitting={isCreatingSkuList}
-          onSubmit={(formValues) => {
-            void createSkuList(formValues).then((createdSkuList) => {
-              if (createdSkuList != null) {
-                setLocation(
-                  appRoutes.details.makePath({ skuListId: createdSkuList.id }),
-                )
-              }
-            })
+          onSubmit={async (formValues) => {
+            const createdSkuList = await createSkuList(formValues)
+            if (createdSkuList != null) {
+              setLocation(
+                appRoutes.details.makePath({ skuListId: createdSkuList.id }),
+              )
+            }
           }}
         />
       </Spacer>

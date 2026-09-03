@@ -55,7 +55,6 @@ export type BundleFormValues = z.infer<typeof bundleFormSchema>
 
 interface Props {
   defaultValues?: Partial<BundleFormValues>
-  isSubmitting: boolean
   onSubmit: (
     formValues: BundleFormValues,
     setError: UseFormSetError<BundleFormValues>,
@@ -67,12 +66,15 @@ export function BundleForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const bundleFormMethods = useForm<BundleFormValues>({
     defaultValues,
     resolver: zodResolver(bundleFormSchema),
   })
+
+  const {
+    formState: { isSubmitting },
+  } = bundleFormMethods
 
   const bundleFormWatchedImageUrl = bundleFormMethods.watch("image_url")
   const bundleFormWatchedCurrenctyCode =

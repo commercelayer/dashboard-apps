@@ -7,7 +7,12 @@ import {
 import type { ReturnLineItem } from "@commercelayer/sdk"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { forwardRef, useState } from "react"
-import { FormProvider, type UseFormSetError, useForm } from "react-hook-form"
+import {
+  FormProvider,
+  type UseFormReturn,
+  type UseFormSetError,
+  useForm,
+} from "react-hook-form"
 import { z } from "zod"
 import { FormFieldItems } from "./FormFieldItems"
 
@@ -35,7 +40,17 @@ const restockFormSchema = z.object({
 export type RestockFormValues = z.infer<typeof restockFormSchema>
 export type RestockFormDefaultValues = z.input<typeof restockFormSchema>
 
+export function useRestockFormMethods(
+  defaultValues: RestockFormDefaultValues,
+): UseFormReturn<RestockFormValues> {
+  return useForm({
+    defaultValues,
+    resolver: zodResolver(restockFormSchema),
+  })
+}
+
 interface Props {
+  methods: UseFormReturn<RestockFormValues>
   defaultValues: RestockFormDefaultValues
   onSubmit: (
     formValues: RestockFormValues,
@@ -46,12 +61,7 @@ interface Props {
 }
 
 export const FormRestock = forwardRef<HTMLFormElement, Props>(
-  ({ onSubmit, defaultValues, apiError, returnLineItems }, ref) => {
-    const methods = useForm({
-      defaultValues,
-      resolver: zodResolver(restockFormSchema),
-    })
-
+  ({ methods, onSubmit, defaultValues, apiError, returnLineItems }, ref) => {
     // when returnLineItems changes, we need to re-render the form
     // to update defaults values for FormFieldItems
     const [renderKey, setRenderKey] = useState(0)
@@ -71,8 +81,8 @@ export const FormRestock = forwardRef<HTMLFormElement, Props>(
       },
     })
 
-    const doSubmit = methods.handleSubmit(async (data) => {
-      onSubmit(data, methods.setError)
+    const doSubmit = methods.handleSubmit((data) => {
+      void onSubmit(data, methods.setError)
     })
 
     return (

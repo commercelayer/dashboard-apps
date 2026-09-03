@@ -25,7 +25,6 @@ export type CustomerFormValues = z.infer<typeof customerFormSchema>
 
 interface Props {
   defaultValues: CustomerFormValues
-  isSubmitting: boolean
   onSubmit: (
     formValues: CustomerFormValues,
     setError: UseFormSetError<CustomerFormValues>,
@@ -37,13 +36,15 @@ export function CustomerForm({
   defaultValues,
   onSubmit,
   apiError,
-  isSubmitting,
 }: Props): React.JSX.Element {
   const { t } = useTranslation()
   const methods = useForm({
     defaultValues,
     resolver: zodResolver(customerFormSchema),
   })
+  const {
+    formState: { isSubmitting },
+  } = methods
 
   const { customerGroups } = useCustomerGroupsList({})
   /*

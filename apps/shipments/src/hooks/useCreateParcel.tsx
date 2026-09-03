@@ -9,7 +9,6 @@ import type { PackingFormValues } from "#data/packingFormSchema"
 import { useShipmentDetails } from "#hooks/useShipmentDetails"
 
 interface CreateParcelHook {
-  isCreatingParcel: boolean
   createParcelError?: any
   createParcelWithItems: (formValues: PackingFormValues) => Promise<void>
 }
@@ -18,14 +17,12 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
   const { mutateShipment } = useShipmentDetails(shipmentId)
   const { sdkClient } = useCoreSdkProvider()
 
-  const [isCreatingParcel, setIsCreatingParcel] = useState(false)
   const [createParcelError, setCreateParcelError] =
     useState<CreateParcelHook["createParcelError"]>()
 
   const createParcelWithItems: CreateParcelHook["createParcelWithItems"] =
     useCallback(
       async (formValues) => {
-        setIsCreatingParcel(true)
         setCreateParcelError(undefined)
         let parcel: Parcel | undefined
         const parcelLineItems: ParcelLineItem[] = []
@@ -77,15 +74,12 @@ export function useCreateParcel(shipmentId: string): CreateParcelHook {
             await sdkClient.parcels.delete(parcel.id)
           }
           setCreateParcelError(err)
-        } finally {
-          setIsCreatingParcel(false)
         }
       },
       [shipmentId],
     )
 
   return {
-    isCreatingParcel,
     createParcelError,
     createParcelWithItems,
   }

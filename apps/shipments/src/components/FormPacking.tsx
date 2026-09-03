@@ -22,7 +22,6 @@ import { FormPackingMoreOptions } from "./FormPackingMoreOptions"
 
 interface Props {
   defaultValues: PackingFormDefaultValues
-  isSubmitting?: boolean
   onSubmit: (
     formValues: PackingFormValues,
     setError: UseFormSetError<PackingFormValues>,
@@ -38,7 +37,6 @@ export function FormPacking({
   shipment,
   defaultValues,
   apiError,
-  isSubmitting,
   stockLocationId,
   stockLineItems,
 }: Props): React.JSX.Element {
@@ -57,6 +55,10 @@ export function FormPacking({
       setRenderKey(Date.now())
     },
   })
+
+  const {
+    formState: { isSubmitting },
+  } = methods
 
   useIsChanged({
     value: defaultValues,

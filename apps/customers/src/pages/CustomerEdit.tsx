@@ -26,7 +26,6 @@ export function CustomerEdit(): React.JSX.Element {
 
   const { customer, isLoading, mutateCustomer } = useCustomerDetails(customerId)
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const goBackUrl =
     customerId != null
@@ -84,9 +83,7 @@ export function CustomerEdit(): React.JSX.Element {
           <CustomerForm
             defaultValues={adaptCustomerToFormValues(customer)}
             apiError={apiError}
-            isSubmitting={isSaving}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               void sdkClient.customers
                 .update(adaptFormValuesToCustomer(formValues, customer.id))
                 .then((updatedCustomer) => {
@@ -96,7 +93,6 @@ export function CustomerEdit(): React.JSX.Element {
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />

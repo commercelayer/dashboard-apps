@@ -18,7 +18,6 @@ export function PriceNew(): React.JSX.Element {
   const [, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const [, params] = useRoute<{ priceListId: string }>(appRoutes.priceNew.path)
   const priceListId = params?.priceListId ?? ""
@@ -78,9 +77,7 @@ export function PriceNew(): React.JSX.Element {
               : {}),
           }}
           apiError={apiError}
-          isSubmitting={isSaving}
           onSubmit={(formValues) => {
-            setIsSaving(true)
             const price = adaptFormValuesToPrice(formValues, priceListId)
             void sdkClient.prices
               .create(price)
@@ -93,7 +90,6 @@ export function PriceNew(): React.JSX.Element {
               })
               .catch((error) => {
                 setApiError(error)
-                setIsSaving(false)
               })
           }}
         />

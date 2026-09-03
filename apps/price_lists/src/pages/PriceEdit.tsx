@@ -21,7 +21,6 @@ export function PriceEdit(): React.JSX.Element {
   // carried through so returning to the list keeps its filters
   const queryString = useSearch()
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const [, params] = useRoute<{ priceId: string }>(appRoutes.priceEdit.path)
   const priceId = params?.priceId ?? ""
@@ -91,9 +90,7 @@ export function PriceEdit(): React.JSX.Element {
               price_list: price.price_list?.id,
             }}
             apiError={apiError}
-            isSubmitting={isSaving}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               const price = adaptFormValuesToPrice(formValues, priceListId)
               void sdkClient.prices
                 .update(price)
@@ -104,7 +101,6 @@ export function PriceEdit(): React.JSX.Element {
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />

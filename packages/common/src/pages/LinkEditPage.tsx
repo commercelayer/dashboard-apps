@@ -35,7 +35,6 @@ export const LinkEditPage = ({
   const { link, isLoading, mutateLink } = useLinkDetails(linkId)
 
   const [apiError, setApiError] = useState<any>()
-  const [isSaving, setIsSaving] = useState(false)
 
   const pageTitle = link?.name ?? "Edit link"
 
@@ -82,10 +81,8 @@ export const LinkEditPage = ({
           <LinkForm
             resourceType="skus"
             apiError={apiError}
-            isSubmitting={isSaving}
             defaultValues={adaptLinkToFormValues(link)}
             onSubmit={(formValues) => {
-              setIsSaving(true)
               const link = adaptFormValuesToLink(
                 formValues,
                 resourceId,
@@ -102,7 +99,6 @@ export const LinkEditPage = ({
                 })
                 .catch((error) => {
                   setApiError(error)
-                  setIsSaving(false)
                 })
             }}
           />
