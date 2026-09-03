@@ -2,7 +2,7 @@
   "private": true,
   "name": "app-my_sample_app",
   "description": "A Commerce Layer Single Page Application.",
-  "version": "5.3.0",
+  "version": "5.4.0",
   "license": "MIT",
   "keywords": [
     "reactjs",
