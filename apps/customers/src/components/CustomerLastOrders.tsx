@@ -1,55 +1,52 @@
 import {
-  Button,
-  Icon,
-  Section,
+  useResourceList,
   useTranslation,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
-import { useLocation, useRoute } from "wouter"
+import { useRoute } from "wouter"
 import { ListItemOrder } from "#components/ListItemOrder"
 import { appRoutes } from "#data/routes"
-import { useCustomerOrdersList } from "#hooks/useCustomerOrdersList"
 
 export const CustomerLastOrders = withSkeletonTemplate(
   (): React.JSX.Element => {
     const [, params] = useRoute<{ customerId: string }>(appRoutes.details.path)
-    const [, setLocation] = useLocation()
     const { t } = useTranslation()
     const customerId = params?.customerId ?? ""
 
-    const { orders } = useCustomerOrdersList({
-      id: customerId ?? "",
-      settings: { pageSize: 5 },
+    const { ResourceList, Pagination, meta } = useResourceList({
+      type: "orders",
+      query: {
+        filters: {
+          customer_id_eq: customerId,
+          status_matches_any: "placed,approved,editing,cancelled",
+        },
+        include: ["billing_address", "market"],
+        sort: ["-placed_at"],
+        pageSize: 5,
+      },
+      // five at a time with prev/next, so the whole history is here rather than
+      // behind a "see all" link
+      paginationType: "pagination",
+      // the list is a section of a bigger page: paging it should not move the
+      // page around the reader
+      paginationScrollTo: "none",
     })
-    if (customerId.length === 0) return <></>
-    if (orders === undefined || orders?.meta.recordCount === 0) return <></>
 
-    const showAll = orders != null && orders?.meta.pageCount > 1
-    const ordersListItems = orders?.map((order) => {
-      return <ListItemOrder resource={order} key={order.id} />
-    })
+    if (customerId.length === 0 || meta?.recordCount === 0) {
+      return <></>
+    }
 
     return (
-      <Section
-        title={`${t("resources.orders.name_other")} · ${orders?.meta?.recordCount}`}
-        actionButton={
-          showAll && (
-            <Button
-              variant="secondary"
-              size="mini"
-              onClick={() => {
-                setLocation(appRoutes.orders.makePath(customerId))
-              }}
-              alignItems="center"
-            >
-              <Icon name="eye" size={16} />
-              {t("common.see_all")}
-            </Button>
-          )
-        }
-      >
-        {ordersListItems}
-      </Section>
+      <>
+        <ResourceList
+          // nested in this page: gray card, dashed rules between rows
+          variant="boxed"
+          // as a function, so the record count is not interpolated into it
+          title={() => t("resources.orders.name_other")}
+          ItemTemplate={ListItemOrder}
+        />
+        <Pagination />
+      </>
     )
   },
 )

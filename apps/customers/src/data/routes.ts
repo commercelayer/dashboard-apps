@@ -27,10 +27,6 @@ export const appRoutes = {
     path: "/list/:customerId/edit",
     makePath: (customerId: string) => `/list/${customerId}/edit`,
   },
-  orders: {
-    path: "/list/:customerId/orders",
-    makePath: (customerId: string) => `/list/${customerId}/orders`,
-  },
 }
 
 function hasFilterQuery(filters?: string): filters is string {

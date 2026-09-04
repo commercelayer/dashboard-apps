@@ -10,6 +10,5 @@ export const appRoutes = {
   home: createRoute("/"),
   list: createRoute("/list/"),
   details: createRoute("/list/:subscriptionId/"),
-  orders: createRoute("/list/:subscriptionId/orders/"),
   edit: createRoute("/list/:subscriptionId/edit/"),
 }
