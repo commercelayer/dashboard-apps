@@ -25,6 +25,7 @@ import {
   Stack,
   StackCell,
   Text,
+  type UseResourceListConfig,
   useAppLinking,
   useConfirmDialog,
   useCoreSdkProvider,
@@ -406,7 +407,7 @@ const CardStatus = withSkeletonTemplate<{
   const { user } = useTokenProvider()
   const config = promotionConfig[promotion.type]
 
-  const query = useMemo<Parameters<typeof useResourceList>[0]["query"]>(() => {
+  const query = useMemo<UseResourceListConfig<"coupons">["query"]>(() => {
     return {
       filters: {
         promotion_rule_promotion_id_eq: promotionId,

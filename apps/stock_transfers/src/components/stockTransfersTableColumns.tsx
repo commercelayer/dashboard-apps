@@ -1,8 +1,7 @@
 import {
-  Badge,
-  type BadgeProps,
   formatDate,
   getStockTransferDisplayStatus,
+  ResourceStatusBadge,
   type ResourceTableColumn,
   Text,
   useTokenProvider,
@@ -77,24 +76,6 @@ export function useStockTransfersTableColumns(): Array<
   )
 }
 
-/** Map the canonical stock transfer display status color onto a `Badge` variant. */
-function toBadgeVariant(
-  color: ReturnType<typeof getStockTransferDisplayStatus>["color"],
-): BadgeProps["variant"] {
-  switch (color) {
-    case "green":
-      return "success"
-    case "orange":
-      return "warning"
-    case "red":
-      return "danger"
-    case "teal":
-      return "teal"
-    default:
-      return "secondary"
-  }
-}
-
 /**
  * The row's status badge.
  *
@@ -109,9 +90,5 @@ function RowStatusBadge({
   className?: string
 }): React.JSX.Element {
   const displayStatus = getStockTransferDisplayStatus(resource)
-  return (
-    <Badge variant={toBadgeVariant(displayStatus.color)} className={className}>
-      {displayStatus.label}
-    </Badge>
-  )
+  return <ResourceStatusBadge status={displayStatus} className={className} />
 }

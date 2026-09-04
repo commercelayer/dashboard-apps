@@ -5,7 +5,6 @@ import { appRoutes } from "#data/routes"
 import { ListRedirect } from "#pages/ListRedirect"
 import SubscriptionDetails from "#pages/SubscriptionDetails"
 import { SubscriptionEdit } from "#pages/SubscriptionEdit"
-import { SubscriptionOrders } from "#pages/SubscriptionOrders"
 import { SubscriptionsList } from "#pages/SubscriptionsList"
 
 interface AppProps {
@@ -24,9 +23,6 @@ export const App: FC<AppProps> = ({ routerBase }) => {
         </Route>
         <Route path={appRoutes.details.path}>
           <SubscriptionDetails />
-        </Route>
-        <Route path={appRoutes.orders.path}>
-          <SubscriptionOrders />
         </Route>
         <Route path={appRoutes.edit.path}>
           <SubscriptionEdit />
