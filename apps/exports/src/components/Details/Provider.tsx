@@ -1,5 +1,4 @@
-import { useCoreApi, useCoreSdkProvider } from "@commercelayer/app-elements"
-import type { Export } from "@commercelayer/sdk"
+import { useCoreSdkProvider } from "@commercelayer/app-elements"
 import {
   createContext,
   type ReactNode,
@@ -7,7 +6,7 @@ import {
   useContext,
   useState,
 } from "react"
-import { makeExport } from "#mocks"
+import { useExportDetails } from "#hooks/useExportDetails"
 import { initialValues } from "./data"
 import type { ExportDetailsContextValue } from "./types"
 
@@ -15,9 +14,6 @@ interface ExportDetailsProviderProps {
   exportId: string
   children: ((props: ExportDetailsContextValue) => ReactNode) | ReactNode
 }
-
-const POLLING_INTERVAL = 4000
-const statusForPolling: Array<Export["status"]> = ["pending", "in_progress"]
 
 const Context = createContext<ExportDetailsContextValue>(initialValues)
 export const useExportDetailsContext = (): ExportDetailsContextValue =>
@@ -30,18 +26,7 @@ export function ExportDetailsProvider({
   const { sdkClient } = useCoreSdkProvider()
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const { data, error, isLoading, mutate } = useCoreApi(
-    "exports",
-    "retrieve",
-    [exportId],
-    {
-      fallbackData: makeExport(),
-      refreshInterval: (job) =>
-        job?.status != null && statusForPolling.includes(job.status)
-          ? POLLING_INTERVAL
-          : 0,
-    },
-  )
+  const { data, error, isLoading, mutate } = useExportDetails(exportId)
 
   const deleteExport = useCallback(async (): Promise<boolean> => {
     setIsDeleting(true)

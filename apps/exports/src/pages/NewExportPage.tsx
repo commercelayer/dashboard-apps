@@ -73,7 +73,7 @@ const NewExportPage = (): React.JSX.Element | null => {
           ? values.filters
           : adaptFormFiltersToSdk(values.filters, user?.timezone)
 
-      await sdkClient.exports.create({
+      const exportJob = await sdkClient.exports.create({
         resource_type: resourceType,
         dry_data: values.dryData,
         includes: values.includes,
@@ -87,7 +87,9 @@ const NewExportPage = (): React.JSX.Element | null => {
             : undefined,
         filters,
       })
-      setLocation(appRoutes.list.makePath())
+      // lets the list keep polling this export's row until it's done, without
+      // needing the detail drawer open
+      setLocation(appRoutes.list.makePath(`justCreatedId=${exportJob.id}`))
     } catch (error) {
       setApiError(parseApiError(error))
     }

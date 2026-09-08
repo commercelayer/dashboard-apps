@@ -1,16 +1,19 @@
 import {
   EmptyState,
   PageLayout,
+  refreshResourceLists,
   Spacer,
   useResourceFilters,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { FC } from "react"
+import { useEffect, useRef } from "react"
 import { useLocation, useRouter } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { useExportsTableColumns } from "#components/exportsTableColumns"
 import { instructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
+import { statusForPolling, useExportDetails } from "#hooks/useExportDetails"
 
 const ListPage: FC = () => {
   const { canUser } = useTokenProvider()
@@ -26,6 +29,8 @@ const ListPage: FC = () => {
     })
 
   const columns = useExportsTableColumns()
+
+  useTrackJustCreatedExport(queryString)
 
   const handleFiltersUpdate = (queryString: string): void => {
     navigate(`?${queryString}`, { replace: true })
@@ -91,6 +96,35 @@ const ListPage: FC = () => {
       <FiltersDrawer onUpdate={handleFiltersUpdate} />
     </PageLayout>
   )
+}
+
+/**
+ * Keeps the list row of the export just created (in this browser tab) fresh
+ * until it reaches a terminal state, without requiring its detail drawer to
+ * be open: polls it through the same source `Provider.tsx` uses, and
+ * refreshes the list whenever its status changes. Once it's done, the
+ * `justCreatedId` marker is dropped from the url.
+ */
+function useTrackJustCreatedExport(queryString: string): void {
+  const justCreatedId = new URLSearchParams(queryString).get("justCreatedId")
+  const { data } = useExportDetails(justCreatedId)
+  const previousStatus = useRef(data?.status)
+
+  useEffect(() => {
+    if (data == null || data.status === previousStatus.current) {
+      return
+    }
+    previousStatus.current = data.status
+    refreshResourceLists("exports")
+
+    if (!statusForPolling.includes(data.status)) {
+      const params = new URLSearchParams(queryString)
+      params.delete("justCreatedId")
+      navigate(params.size > 0 ? `?${params.toString()}` : "", {
+        replace: true,
+      })
+    }
+  }, [data, queryString])
 }
 
 export default ListPage
