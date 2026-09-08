@@ -17,7 +17,6 @@ export function getOrderSubscriptionTriggerAction(
 ): TriggerAction | undefined {
   const status = orderSubscription.status
   switch (status) {
-    // @ts-expect-error `pending` is not yet in the SDK status union (beta.9)
     case "pending":
     case "inactive":
       return { triggerAttribute: "_activate" }
@@ -56,7 +55,6 @@ export function getSubscriptionStatusBadgeVariant(
     case "active":
     case "running":
       return "success"
-    // @ts-expect-error `pending` is supported by the API but not yet in the SDK status union (beta.9)
     case "pending":
       return "warning"
     default:
@@ -72,7 +70,6 @@ export function getSubscriptionStatusName(
       return "Active"
     case "running":
       return "Running"
-    // @ts-expect-error `pending` is supported by the API but not yet in the SDK status union (beta.9)
     case "pending":
       return "Pending"
     case "inactive":
