@@ -98,7 +98,6 @@ function SubscriptionDetails(): React.JSX.Element {
   // A subscription becomes `pending` when its payment method requires a saved
   // wallet for renewals but none is available (see core-api#3292). It resolves
   // to `active` once a payment source is attached and activation is triggered.
-  // @ts-expect-error `pending` is not yet in the SDK status union (beta.9)
   const isPending = subscription.status === "pending"
 
   const pageToolbar: PageHeadingProps["toolbar"] = canUser(
@@ -119,7 +118,6 @@ function SubscriptionDetails(): React.JSX.Element {
     const showMainAction =
       subscription.status === "active" ||
       subscription.status === "inactive" ||
-      // @ts-expect-error `pending` is not yet in the SDK status union (beta.9)
       subscription.status === "pending"
 
     if (showMainAction) {
