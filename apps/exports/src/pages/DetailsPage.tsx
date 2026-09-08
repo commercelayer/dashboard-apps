@@ -94,7 +94,7 @@ const DetailsPage = (): React.JSX.Element | null => {
             isNotFound ? (
               <ErrorNotFound />
             ) : (
-              <SkeletonTemplate isLoading={isLoading}>
+              <SkeletonTemplate isLoading={isLoading || data == null}>
                 <PageHeading
                   title={
                     <div className="flex items-center gap-3">
