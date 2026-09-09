@@ -7,6 +7,7 @@ import {
   Section,
   Spacer,
   Text,
+  type UseResourceListConfig,
   useCoreSdkProvider,
   useResourceList,
   useTokenProvider,
@@ -49,7 +50,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
     never: { expires_at_null: true },
   }
 
-  const query = useMemo<Parameters<typeof useResourceList>[0]["query"]>(() => {
+  const query = useMemo<UseResourceListConfig<"coupons">["query"]>(() => {
     return {
       filters: {
         promotion_rule_promotion_id_eq: promotion.id,

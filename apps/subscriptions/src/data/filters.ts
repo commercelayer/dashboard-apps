@@ -51,7 +51,6 @@ export const instructions = (
         props: {
           options: listableStatuses.map((status) => ({
             value: status,
-            // @ts-expect-error `pending` is supported by the API but not yet in the SDK status union (beta.9)
             label: getSubscriptionStatusName(status),
           })),
         },

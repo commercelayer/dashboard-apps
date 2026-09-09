@@ -1,6 +1,4 @@
 import {
-  Badge,
-  type BadgeProps,
   Button,
   type DropdownItemProps,
   EmptyState,
@@ -8,6 +6,7 @@ import {
   getStockTransferDisplayStatus,
   type PageHeadingProps,
   PageLayout,
+  ResourceStatusBadge,
   SkeletonTemplate,
   Spacer,
   useAppLinking,
@@ -140,13 +139,9 @@ export function StockTransferDetails(): React.JSX.Element {
       title={
         <SkeletonTemplate isLoading={isLoading}>
           {pageTitle}{" "}
-          <Badge
-            variant={toBadgeVariant(
-              getStockTransferDisplayStatus(stockTransfer).color,
-            )}
-          >
-            {getStockTransferDisplayStatus(stockTransfer).label}
-          </Badge>
+          <ResourceStatusBadge
+            status={getStockTransferDisplayStatus(stockTransfer)}
+          />
         </SkeletonTemplate>
       }
       description={
@@ -233,22 +228,4 @@ export function StockTransferDetails(): React.JSX.Element {
       </SkeletonTemplate>
     </PageLayout>
   )
-}
-
-/** Map the canonical stock transfer display status color onto a `Badge` variant. */
-function toBadgeVariant(
-  color: ReturnType<typeof getStockTransferDisplayStatus>["color"],
-): BadgeProps["variant"] {
-  switch (color) {
-    case "green":
-      return "success"
-    case "orange":
-      return "warning"
-    case "red":
-      return "danger"
-    case "teal":
-      return "teal"
-    default:
-      return "secondary"
-  }
 }

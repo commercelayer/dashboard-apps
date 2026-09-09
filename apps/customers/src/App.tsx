@@ -30,9 +30,6 @@ export const App: FC<AppProps> = ({ routerBase }) => {
             component: async () => await import("#pages/CustomerEdit"),
             overlay: true,
           },
-          orders: {
-            component: async () => await import("#pages/CustomerOrders"),
-          },
         }}
       />
     </Router>
