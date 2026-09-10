@@ -210,7 +210,12 @@ function OrderDetails(): React.JSX.Element {
         <OrderSummary order={order} />
         <div className="print:hidden">
           <Spacer top="14">
-            <OrderPayment order={order} />
+            <OrderPayment
+              order={order}
+              onOrderChange={() => {
+                void mutateOrder()
+              }}
+            />
           </Spacer>
         </div>
         <div className="print:hidden">
