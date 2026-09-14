@@ -6,8 +6,13 @@ import {
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
-import { useMemo } from "react"
+import { Fragment, useMemo } from "react"
 import { useLocation } from "wouter"
+import { usePaymentSessionRefundModal } from "#components/OrderPayment/hooks/usePaymentSessionRefundModal"
+import {
+  getOrderRefundableCaptures,
+  isNewPaymentModel,
+} from "#components/OrderPayment/paymentSessionUtils"
 import {
   getTriggerAttributeIcon,
   getTriggerAttributeName,
@@ -15,6 +20,7 @@ import {
 } from "#components/OrderSummary/orderDictionary"
 import { appRoutes } from "#data/routes"
 import { useMarketInventoryModel } from "#hooks/useMarketInventoryModel"
+import { useOrderDetails } from "#hooks/useOrderDetails"
 import { useReturnableList } from "#hooks/useReturnableList"
 import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 
@@ -25,6 +31,7 @@ interface OrderToolbar {
 
 export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
   const { canUser } = useTokenProvider()
+  const { mutateOrder } = useOrderDetails(order.id)
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
   const { inventoryModel } = useMarketInventoryModel(order.market?.id)
@@ -50,6 +57,26 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
       : undefined
   }, [order, returnableLineItems, showReturnDropDownItem])
 
+  /**
+   * Order-level refund on the 2026-05 model: every refundable capture across
+   * the order's sessions, in the same modal the rows use. Preselected only
+   * when there is one, so a single-session order needs no pointless click.
+   * Legacy orders keep their own refund page, untouched.
+   */
+  const orderRefundTargets = getOrderRefundableCaptures(order)
+  const { modal: refundModal, open: openRefund } = usePaymentSessionRefundModal(
+    {
+      targets: orderRefundTargets,
+      preselectedCaptureId:
+        orderRefundTargets.length === 1
+          ? orderRefundTargets[0]?.capture.id
+          : undefined,
+      onChange: () => {
+        void mutateOrder()
+      },
+    },
+  )
+
   const { dispatch } = useTriggerAttribute(order.id)
   const { show: showFulfillConfirm, ConfirmDialog: FulfillConfirmDialogBase } =
     useConfirmDialog()
@@ -57,9 +84,10 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
   const triggerMenuActions = useMemo(() => {
     const triggerAttributes = getTriggerAttributes(order)
 
-    return getTriggerAttributesForUser(canUser).filter((attr) =>
-      triggerAttributes.includes(attr),
-    )
+    return getTriggerAttributesForUser(
+      canUser,
+      isNewPaymentModel(order),
+    ).filter((attr) => triggerAttributes.includes(attr))
   }, [order])
 
   const triggerDropDownItems: DropdownItemProps[] = triggerMenuActions.map(
@@ -67,9 +95,13 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
       label: getTriggerAttributeName(triggerAttribute),
       icon: getTriggerAttributeIcon(triggerAttribute),
       onClick: () => {
-        // refund action has its own form page
         if (triggerAttribute === "_refund") {
-          setLocation(appRoutes.refund.makePath({ orderId: order.id }))
+          if (isNewPaymentModel(order)) {
+            openRefund()
+          } else {
+            // Legacy refund keeps its own form page.
+            setLocation(appRoutes.refund.makePath({ orderId: order.id }))
+          }
           return
         }
 
@@ -107,6 +139,7 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
       dropdownItems: [dropdownItemsGroup],
     },
     confirmDialogs: [
+      <Fragment key="order-refund">{refundModal}</Fragment>,
       <FulfillConfirmDialogBase
         key="fulfill"
         icon="packageIcon"
@@ -129,12 +162,16 @@ type UITriggerAttributes = Parameters<typeof getTriggerAttributeName>[0]
 type CanUserSignature = ReturnType<typeof useTokenProvider>["canUser"]
 function getTriggerAttributesForUser(
   canUser: CanUserSignature,
+  isNewPayments: boolean,
 ): UITriggerAttributes[] {
   const onOrder: UITriggerAttributes[] = canUser("update", "orders")
     ? ["_archive", "_unarchive"]
     : []
-  const onCapture: UITriggerAttributes[] = canUser("update", "transactions")
-    ? ["_refund"]
-    : []
+  // Legacy refunds are a transaction update, new-model ones create a
+  // `payment_refund`, so the permission to check differs per model.
+  const canRefund = isNewPayments
+    ? canUser("create", "payment_refunds")
+    : canUser("update", "transactions")
+  const onCapture: UITriggerAttributes[] = canRefund ? ["_refund"] : []
   return [...onOrder, ...onCapture]
 }

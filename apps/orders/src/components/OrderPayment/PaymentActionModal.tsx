@@ -28,6 +28,37 @@ export interface PaymentActionCopy {
   error: string
 }
 
+/**
+ * Joins the amount and the instrument for the result step, dropping whatever
+ * is missing so the separator never dangles.
+ */
+export function joinPaymentDetail(
+  ...parts: Array<string | undefined | null>
+): string {
+  return parts.filter((part) => part != null && part !== "").join(" · ")
+}
+
+export const CAPTURE_COPY: PaymentActionCopy = {
+  running: "Capturing payment…",
+  success: "Payment captured",
+  pending: "Capture still processing",
+  error: "Capture failed",
+}
+
+export const VOID_COPY: PaymentActionCopy = {
+  running: "Voiding authorization…",
+  success: "Authorization voided",
+  pending: "Void still processing",
+  error: "Void failed",
+}
+
+export const REFUND_COPY: PaymentActionCopy = {
+  running: "Refunding payment…",
+  success: "Payment refunded",
+  pending: "Refund still processing",
+  error: "Refund failed",
+}
+
 interface Props {
   show: boolean
   step: PaymentActionStep
@@ -123,7 +154,8 @@ export function PaymentActionConfirm({
 }: {
   icon: IconProps["name"]
   title: string
-  description: string
+  /** A plain string is wrapped in muted small text; a node is rendered as is. */
+  description: React.ReactNode
   confirmLabel: string
   confirmVariant?: "primary" | "danger"
   onConfirm: () => void
@@ -139,9 +171,13 @@ export function PaymentActionConfirm({
           <Text weight="medium" className="text-balance">
             {title}
           </Text>
-          <Text variant="info" size="small">
-            {description}
-          </Text>
+          {typeof description === "string" ? (
+            <Text variant="info" size="small">
+              {description}
+            </Text>
+          ) : (
+            description
+          )}
         </div>
       </Modal.Body>
       <Modal.Footer>

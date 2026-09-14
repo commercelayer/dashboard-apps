@@ -14,6 +14,7 @@ import { usePaymentSessionActions } from "#components/OrderPayment/hooks/usePaym
 import { usePaymentSessionDetailsOverlay } from "#components/OrderPayment/hooks/usePaymentSessionDetailsOverlay"
 import { getPaymentDisplay } from "#components/OrderPayment/paymentDisplay"
 import {
+  getCapturedAmount,
   getPaymentSessionBadgeVariant,
   getPaymentSessionStatusName,
   getRefundedAmount,
@@ -65,6 +66,7 @@ function PaymentSessionRow({
   isLast: boolean
 }) {
   const { user } = useTokenProvider()
+  const capturedAmount = getCapturedAmount(session)
   const refundedAmount = getRefundedAmount(session)
   const display = getPaymentDisplay(session)
   const { logoSrc, label, last4 } = display
@@ -114,9 +116,14 @@ function PaymentSessionRow({
             </Text>
             {/*
               The amount above is what the session was created to collect, and
-              nothing that happens afterwards changes it. This line covers the
-              refund case, so the row says how much of it actually stuck.
+              nothing that happens afterwards changes it. These lines cover the
+              cases where less than that actually moved.
             */}
+            {capturedAmount != null && (
+              <Text tag="div" variant="info" size="small">
+                {capturedAmount} captured
+              </Text>
+            )}
             {refundedAmount != null && (
               <Text tag="div" variant="info" size="small">
                 {refundedAmount} refunded

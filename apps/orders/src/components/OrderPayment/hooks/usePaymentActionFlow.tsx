@@ -1,4 +1,8 @@
-import { parseApiError } from "@commercelayer/app-elements"
+import {
+  type CurrencyCode,
+  formatCentsToCurrency,
+  parseApiError,
+} from "@commercelayer/app-elements"
 import type { PaymentTransaction } from "@commercelayer/sdk"
 import { useState } from "react"
 import type { PaymentActionStep } from "#components/OrderPayment/PaymentActionModal"
@@ -23,15 +27,21 @@ const SETTLED_STATUSES: Array<PaymentTransaction["status"]> = [
 
 interface Props<T> {
   /**
-   * Creates the transaction. Returns it so its outcome can be read back.
-   * Receives whatever `run` was called with, so form values reach it without
-   * a round trip through state.
+   * Creates the transaction, or several of them: an order-level capture is one
+   * capture per funding session. Returns them so their outcome can be read
+   * back. Receives whatever `run` was called with, so form values reach it
+   * without a round trip through state.
    */
-  create: (input: T) => Promise<PaymentTransaction>
-  /** Re-reads the same transaction, typed to its own resource. */
+  create: (input: T) => Promise<PaymentTransaction | PaymentTransaction[]>
+  /** Re-reads one of the created transactions, typed to its own resource. */
   retrieve: (id: string) => Promise<PaymentTransaction>
-  /** Called once the action settled successfully, to refresh the order. */
+  /** Called once the action settled, to refresh the order. */
   onSettled: () => void
+  /**
+   * Needed only to total several transactions into one amount. With a single
+   * transaction its own `formatted_amount` is used.
+   */
+  currencyCode?: string | null
 }
 
 interface PaymentActionFlowHook<T> {
@@ -61,6 +71,7 @@ export function usePaymentActionFlow<T = void>({
   create,
   retrieve,
   onSettled,
+  currencyCode,
 }: Props<T>): PaymentActionFlowHook<T> {
   const [step, setStep] = useState<PaymentActionStep>("confirm")
   const [errorDetail, setErrorDetail] = useState<string>()
@@ -80,9 +91,10 @@ export function usePaymentActionFlow<T = void>({
       setErrorDetail(undefined)
       setAmount(undefined)
 
-      let transaction: PaymentTransaction
+      let transactions: PaymentTransaction[]
       try {
-        transaction = await create(input)
+        const created = await create(input)
+        transactions = Array.isArray(created) ? created : [created]
       } catch (error) {
         // A rejected request never reached the gateway, so the API's own
         // message is the most useful thing we can show.
@@ -91,14 +103,16 @@ export function usePaymentActionFlow<T = void>({
         return
       }
 
-      setAmount(transaction.formatted_amount ?? undefined)
+      setAmount(getAmount(transactions, currencyCode))
 
       await new Promise((resolve) => setTimeout(resolve, WAIT_MS))
 
       let outcome: PaymentActionOutcome
       try {
-        const settled = await retrieve(transaction.id)
-        outcome = getOutcome(settled.status)
+        const settled = await Promise.all(
+          transactions.map(async ({ id }) => await retrieve(id)),
+        )
+        outcome = getCombinedOutcome(settled.map(({ status }) => status))
       } catch {
         // The action itself was accepted, so a failed read is not a failed
         // action: report it as unsettled rather than as an error.
@@ -121,4 +135,41 @@ function getOutcome(
   }
 
   return SETTLED_STATUSES.includes(status) ? "error" : "pending"
+}
+
+/**
+ * With several transactions the worst outcome wins, so a partly failed
+ * order-level capture is never reported as a success.
+ */
+function getCombinedOutcome(
+  statuses: Array<PaymentTransaction["status"]>,
+): PaymentActionOutcome {
+  const outcomes = statuses.map(getOutcome)
+
+  if (outcomes.includes("error")) {
+    return "error"
+  }
+
+  return outcomes.includes("pending") ? "pending" : "success"
+}
+
+function getAmount(
+  transactions: PaymentTransaction[],
+  currencyCode: string | null | undefined,
+): string | undefined {
+  if (transactions.length === 1) {
+    return transactions[0]?.formatted_amount ?? undefined
+  }
+
+  if (currencyCode == null) {
+    return undefined
+  }
+
+  return formatCentsToCurrency(
+    transactions.reduce(
+      (total, { amount_cents }) => total + (amount_cents ?? 0),
+      0,
+    ),
+    currencyCode as Uppercase<CurrencyCode>,
+  )
 }

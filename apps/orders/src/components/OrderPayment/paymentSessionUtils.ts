@@ -4,6 +4,7 @@ import {
   formatCentsToCurrency,
 } from "@commercelayer/app-elements"
 import type {
+  Order,
   PaymentCapture,
   PaymentSession,
   PaymentTransaction,
@@ -229,10 +230,37 @@ export function getRefundableCaptures(
     return []
   }
 
-  return (session.payment_captures ?? []).filter(
-    (capture) =>
-      capture.status === "succeeded" && (capture.refund_balance_cents ?? 0) > 0,
+  return (
+    (session.payment_captures ?? [])
+      .filter(
+        (capture) =>
+          capture.status === "succeeded" &&
+          (capture.refund_balance_cents ?? 0) > 0,
+      )
+      // Oldest first, so the list and the preselection do not depend on
+      // whatever order the API returned.
+      .sort((a, b) => a.created_at.localeCompare(b.created_at))
   )
+}
+
+/** A capture, with the session it belongs to: a refund needs both. */
+export interface RefundTarget {
+  session: PaymentSession
+  capture: PaymentCapture
+}
+
+/**
+ * Every refundable capture on the order, across all its sessions.
+ *
+ * Used by the order-level Refund action, where the choice spans instruments.
+ * The per-row action passes only its own session's captures.
+ */
+export function getOrderRefundableCaptures(order: Order): RefundTarget[] {
+  return (order.payment_sessions ?? [])
+    .flatMap((session) =>
+      getRefundableCaptures(session).map((capture) => ({ session, capture })),
+    )
+    .sort((a, b) => a.capture.created_at.localeCompare(b.capture.created_at))
 }
 
 /**
@@ -260,7 +288,70 @@ export function getRefundedAmount(session: PaymentSession): string | undefined {
     : undefined
 }
 
+/**
+ * Total successfully captured, formatted, but only when it differs from the
+ * amount the session set out to collect.
+ *
+ * A full capture needs no line: the session amount already says it. A partial
+ * one does, because the row would otherwise show $40.00 when $25.00 was taken.
+ * Nothing captured yet is not a divergence either, it is what `authorized`
+ * means, so it stays silent.
+ */
+export function getCapturedAmount(session: PaymentSession): string | undefined {
+  const currencyCode = session.currency_code as
+    | Uppercase<CurrencyCode>
+    | undefined
+  if (currencyCode == null) {
+    return undefined
+  }
+
+  const capturedCents = (session.payment_captures ?? [])
+    .filter((capture) => capture.status === "succeeded")
+    .reduce((total, capture) => total + (capture.amount_cents ?? 0), 0)
+
+  return capturedCents > 0 && capturedCents !== session.amount_cents
+    ? formatCentsToCurrency(capturedCents, currencyCode)
+    : undefined
+}
+
 /** "Mastercard ··4242", or just the label when there is no tail to show. */
 export function getInstrumentLabel({ label, last4 }: PaymentDisplay): string {
   return last4 != null ? `${label} ··${last4}` : label
+}
+
+/**
+ * Whether the order is on the 2026-05 payment model.
+ *
+ * There is no version flag on the order, and `payment_sessions` is always
+ * present as an array, so a non-empty one is the only available signal. It is
+ * enough for the order-level actions, which only exist once a payment has been
+ * attempted: a legacy order never has sessions, and a new-model order with no
+ * session has nothing to capture, void or refund either way.
+ */
+export function isNewPaymentModel(order: Order): boolean {
+  return (order.payment_sessions ?? []).length > 0
+}
+
+/** Sessions the order-level "Capture payment" button should act on. */
+export function getCapturableSessions(order: Order): PaymentSession[] {
+  return (order.payment_sessions ?? []).filter(canCapture)
+}
+
+/** Sessions whose authorization can still be voided. */
+export function getVoidableSessions(order: Order): PaymentSession[] {
+  return (order.payment_sessions ?? []).filter(canVoid)
+}
+
+/** Total still capturable across the order, in cents. */
+export function getCapturableAmountCents(order: Order): number {
+  return getCapturableSessions(order).reduce(
+    (total, session) =>
+      total + (session.payment_authorization?.capture_balance_cents ?? 0),
+    0,
+  )
+}
+
+/** True while any session on the order has a write in flight. */
+export function hasOrderPaymentInFlight(order: Order): boolean {
+  return (order.payment_sessions ?? []).some(hasPollableTransaction)
 }

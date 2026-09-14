@@ -1,6 +1,7 @@
 import {
   Button,
   type CurrencyCode,
+  formatDate,
   HookedForm,
   HookedInput,
   HookedInputCurrency,
@@ -10,7 +11,7 @@ import {
   useCoreSdkProvider,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import type { PaymentCapture, PaymentSession } from "@commercelayer/sdk"
+import type { PaymentCapture } from "@commercelayer/sdk"
 import { zodResolver } from "@hookform/resolvers/zod"
 import isEmpty from "lodash-es/isEmpty"
 import { useState } from "react"
@@ -18,27 +19,26 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { usePaymentActionFlow } from "#components/OrderPayment/hooks/usePaymentActionFlow"
 import {
-  type PaymentActionCopy,
+  joinPaymentDetail,
   PaymentActionModal,
+  REFUND_COPY,
 } from "#components/OrderPayment/PaymentActionModal"
-import type { PaymentDisplay } from "#components/OrderPayment/paymentDisplay"
+import { getPaymentDisplay } from "#components/OrderPayment/paymentDisplay"
 import {
   getInstrumentLabel,
-  getRefundableCaptures,
+  type RefundTarget,
 } from "#components/OrderPayment/paymentSessionUtils"
 import { paymentRefundNoteReferenceOrigin } from "#data/attachments"
 
 interface Props {
-  session: PaymentSession
-  display: PaymentDisplay
+  /**
+   * Captures a refund can be issued against. A row passes its own session's
+   * captures, the order-level action passes every session's.
+   */
+  targets: RefundTarget[]
+  /** Preselected capture, when the caller has an obvious one. */
+  preselectedCaptureId?: string
   onChange: () => void
-}
-
-const REFUND_COPY: PaymentActionCopy = {
-  running: "Refunding payment…",
-  success: "Payment refunded",
-  pending: "Refund still processing",
-  error: "Refund failed",
 }
 
 interface PaymentSessionRefundModalHook {
@@ -55,29 +55,45 @@ interface PaymentSessionRefundModalHook {
  * so the select is often a one-option confirmation of the target.
  */
 export function usePaymentSessionRefundModal({
-  session,
-  display,
+  targets,
+  preselectedCaptureId,
   onChange,
 }: Props): PaymentSessionRefundModalHook {
   const [show, setShow] = useState(false)
   const { sdkClient } = useCoreSdkProvider()
   const { user } = useTokenProvider()
 
-  const captures = getRefundableCaptures(session)
-  const instrument = getInstrumentLabel(display)
-  const currencyCode = session.currency_code as
-    | Uppercase<CurrencyCode>
-    | undefined
+  const captures = targets.map(({ capture }) => capture)
 
   const methods = useForm<RefundFormValues>({
-    defaultValues: { paymentCaptureId: captures[0]?.id },
+    defaultValues: { paymentCaptureId: preselectedCaptureId },
     resolver: zodResolver(makeFormSchema(captures)),
   })
 
+  const selectedTarget =
+    targets.find(
+      ({ capture }) => capture.id === methods.watch("paymentCaptureId"),
+    ) ?? targets[0]
+  const instrument =
+    selectedTarget == null
+      ? ""
+      : getInstrumentLabel(getPaymentDisplay(selectedTarget.session))
+  const currencyCode = selectedTarget?.session.currency_code as
+    | Uppercase<CurrencyCode>
+    | undefined
+
   const flow = usePaymentActionFlow<RefundFormValues>({
     create: async (values) => {
+      const target = targets.find(
+        ({ capture }) => capture.id === values.paymentCaptureId,
+      )
       const refund = await sdkClient.payment_refunds.create({
-        payment_session: { id: session.id, type: "payment_sessions" },
+        // The session of the chosen capture, which at order level is not
+        // necessarily the first one.
+        payment_session: {
+          id: target?.session.id ?? "",
+          type: "payment_sessions",
+        },
         payment_capture: {
           id: values.paymentCaptureId,
           type: "payment_captures",
@@ -128,7 +144,7 @@ export function usePaymentSessionRefundModal({
       show={show}
       step={flow.step}
       copy={REFUND_COPY}
-      detail={`${flow.amount ?? ""} · ${instrument}`}
+      detail={joinPaymentDetail(flow.amount, instrument)}
       errorDetail={flow.errorDetail}
       size="small"
       onClose={close}
@@ -144,9 +160,9 @@ export function usePaymentSessionRefundModal({
           <Spacer bottom="8">
             <HookedInputSelect
               name="paymentCaptureId"
-              initialValues={captures.map((capture) => ({
-                value: capture.id,
-                label: getCaptureLabel(capture, instrument),
+              initialValues={targets.map((target) => ({
+                value: target.capture.id,
+                label: getCaptureLabel(target, user?.timezone),
               }))}
               isSearchable={false}
             />
@@ -173,6 +189,7 @@ export function usePaymentSessionRefundModal({
             fullWidth
             type="submit"
             disabled={
+              methods.watch("paymentCaptureId") == null ||
               methods.watch("amountCents") == null ||
               methods.watch("amountCents") === 0 ||
               methods.formState.isSubmitting
@@ -195,11 +212,21 @@ export function usePaymentSessionRefundModal({
 
 /**
  * Two captures on the same session share the card brand and last4, since both
- * come from the session's single authorization, so the remaining balance is
- * what actually tells them apart.
+ * come from the session's single authorization, so the date is what actually
+ * tells them apart. Across sessions the instrument already differs.
  */
-function getCaptureLabel(capture: PaymentCapture, instrument: string): string {
-  return `${instrument} (up to ${capture.formatted_refund_balance ?? "0"})`
+function getCaptureLabel(
+  { session, capture }: RefundTarget,
+  timezone: string | undefined,
+): string {
+  const instrument = getInstrumentLabel(getPaymentDisplay(session))
+  const date = formatDate({
+    isoDate: capture.created_at,
+    timezone,
+    format: "date",
+  })
+
+  return `${instrument} · ${date} (up to ${capture.formatted_refund_balance ?? "0"})`
 }
 
 const makeFormSchema = (captures: PaymentCapture[]) =>

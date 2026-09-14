@@ -8,9 +8,11 @@ import { useState } from "react"
 import { usePaymentActionFlow } from "#components/OrderPayment/hooks/usePaymentActionFlow"
 import { usePaymentSessionRefundModal } from "#components/OrderPayment/hooks/usePaymentSessionRefundModal"
 import {
+  CAPTURE_COPY,
+  joinPaymentDetail,
   PaymentActionConfirm,
-  type PaymentActionCopy,
   PaymentActionModal,
+  VOID_COPY,
 } from "#components/OrderPayment/PaymentActionModal"
 import type { PaymentDisplay } from "#components/OrderPayment/paymentDisplay"
 import {
@@ -27,20 +29,6 @@ interface Props {
   onViewDetails: () => void
 }
 
-const CAPTURE_COPY: PaymentActionCopy = {
-  running: "Capturing payment…",
-  success: "Payment captured",
-  pending: "Capture still processing",
-  error: "Capture failed",
-}
-
-const VOID_COPY: PaymentActionCopy = {
-  running: "Voiding authorization…",
-  success: "Authorization voided",
-  pending: "Void still processing",
-  error: "Void failed",
-}
-
 export function usePaymentSessionActions({
   session,
   display,
@@ -53,8 +41,17 @@ export function usePaymentSessionActions({
   const [showCapture, setShowCapture] = useState(false)
   const [showVoid, setShowVoid] = useState(false)
 
+  // The row refunds only its own session's captures, oldest preselected.
+  const refundTargets = getRefundableCaptures(session).map((capture) => ({
+    session,
+    capture,
+  }))
   const { modal: refundModal, open: openRefund } = usePaymentSessionRefundModal(
-    { session, display, onChange },
+    {
+      targets: refundTargets,
+      preselectedCaptureId: refundTargets[0]?.capture.id,
+      onChange,
+    },
   )
 
   const authorization = session.payment_authorization
@@ -119,10 +116,7 @@ export function usePaymentSessionActions({
     )
   }
 
-  if (
-    getRefundableCaptures(session).length > 0 &&
-    canUser("create", "payment_refunds")
-  ) {
+  if (refundTargets.length > 0 && canUser("create", "payment_refunds")) {
     dropdownItems.push(
       <DropdownItem
         key="refund"
@@ -152,7 +146,10 @@ export function usePaymentSessionActions({
         show={showCapture}
         step={captureFlow.step}
         copy={CAPTURE_COPY}
-        detail={`${captureFlow.amount ?? captureAmount} · ${instrument}`}
+        detail={joinPaymentDetail(
+          captureFlow.amount ?? captureAmount,
+          instrument,
+        )}
         errorDetail={captureFlow.errorDetail}
         onClose={closeCapture}
       >
@@ -172,7 +169,10 @@ export function usePaymentSessionActions({
         show={showVoid}
         step={voidFlow.step}
         copy={VOID_COPY}
-        detail={`${voidFlow.amount ?? authorization?.formatted_void_balance ?? ""} · ${instrument}`}
+        detail={joinPaymentDetail(
+          voidFlow.amount ?? authorization?.formatted_void_balance,
+          instrument,
+        )}
         errorDetail={voidFlow.errorDetail}
         onClose={closeVoid}
       >
