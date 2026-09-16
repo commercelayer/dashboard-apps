@@ -23,6 +23,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       errors,
       CancelDialog,
       CaptureDialog,
+      RefundDialog,
       SelectShippingMethodOverlay,
     } = useActionButtons({ order })
 
@@ -37,6 +38,8 @@ export const OrderSummary = withSkeletonTemplate<Props>(
         {renderErrorMessages(errors)}
 
         {CaptureDialog}
+
+        {RefundDialog}
 
         {CancelDialog}
 

@@ -17,6 +17,7 @@ import { useLocation, useRoute } from "wouter"
 import { OrderAddresses } from "#components/OrderAddresses"
 import { OrderCustomer } from "#components/OrderCustomer"
 import { OrderPayment } from "#components/OrderPayment"
+import { getOrderPaymentTotals } from "#components/OrderPayment/paymentSessionUtils"
 import { OrderReturns } from "#components/OrderReturns"
 import { OrderShipments } from "#components/OrderShipments"
 import { OrderSteps } from "#components/OrderSteps"
@@ -53,10 +54,20 @@ function OrderDetails(): React.JSX.Element {
 
   const { goBack } = useAppLinking()
 
+  // While editing, the checkout link is only worth sharing when the edits left
+  // the order worth more than what is paid and authorized: that gap is what the
+  // customer is being asked to cover. Edited down, or still covered, there is
+  // nothing to pay and the link would only invite a second payment.
+  const isEditingAndUnderfunded =
+    order.status === "editing" &&
+    getOrderPaymentTotals(order).toCollectCents > 0
+
   if (canUser("update", "orders")) {
     if (
-      order.status === "pending" &&
-      !isPendingWithTransactions &&
+      // `isPendingWithTransactions` only describes `pending` orders, so it is
+      // skipped for `editing` ones, which carry their own condition above.
+      (order.status === "pending" || isEditingAndUnderfunded) &&
+      (!isPendingWithTransactions || order.status === "editing") &&
       extras?.salesChannels != null &&
       extras?.salesChannels.length > 0 &&
       order.market?.private === false
@@ -210,7 +221,12 @@ function OrderDetails(): React.JSX.Element {
         <OrderSummary order={order} />
         <div className="print:hidden">
           <Spacer top="14">
-            <OrderPayment order={order} />
+            <OrderPayment
+              order={order}
+              onOrderChange={() => {
+                void mutateOrder()
+              }}
+            />
           </Spacer>
         </div>
         <div className="print:hidden">
