@@ -3,7 +3,7 @@ import type { Export } from "@commercelayer/sdk"
 import type { KeyedMutator } from "swr"
 import { makeExport } from "#mocks"
 
-const POLLING_INTERVAL = 4000
+const POLLING_INTERVAL = 1000
 export const statusForPolling: Array<Export["status"]> = [
   "pending",
   "in_progress",
