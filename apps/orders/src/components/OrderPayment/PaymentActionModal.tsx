@@ -130,7 +130,7 @@ export function PaymentActionModal({
       )}
       {step !== "confirm" && step !== "running" && (
         <Modal.Footer>
-          <Button fullWidth variant="secondary" onClick={onClose}>
+          <Button type="button" fullWidth variant="secondary" onClick={onClose}>
             Close
           </Button>
         </Modal.Footer>
@@ -181,10 +181,15 @@ export function PaymentActionConfirm({
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button fullWidth variant={confirmVariant} onClick={onConfirm}>
+        <Button
+          type="button"
+          fullWidth
+          variant={confirmVariant}
+          onClick={onConfirm}
+        >
           {confirmLabel}
         </Button>
-        <Button fullWidth variant="secondary" onClick={onCancel}>
+        <Button type="button" fullWidth variant="secondary" onClick={onCancel}>
           Cancel
         </Button>
       </Modal.Footer>

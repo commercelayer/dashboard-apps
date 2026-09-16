@@ -38,6 +38,12 @@ interface Props {
   targets: RefundTarget[]
   /** Preselected capture, when the caller has an obvious one. */
   preselectedCaptureId?: string
+  /**
+   * Amount to start from, when the caller knows one: the order-level action
+   * refunds what the order holds beyond its total. Capped per capture, since
+   * the selected one may not be able to cover all of it on its own.
+   */
+  defaultAmountCents?: number
   onChange: () => void
 }
 
@@ -57,6 +63,7 @@ interface PaymentSessionRefundModalHook {
 export function usePaymentSessionRefundModal({
   targets,
   preselectedCaptureId,
+  defaultAmountCents,
   onChange,
 }: Props): PaymentSessionRefundModalHook {
   const [show, setShow] = useState(false)
@@ -65,8 +72,16 @@ export function usePaymentSessionRefundModal({
 
   const captures = targets.map(({ capture }) => capture)
 
+  const defaultValues = {
+    paymentCaptureId: preselectedCaptureId,
+    amountCents: getDefaultAmountCents(captures, {
+      preselectedCaptureId,
+      defaultAmountCents,
+    }),
+  }
+
   const methods = useForm<RefundFormValues>({
-    defaultValues: { paymentCaptureId: preselectedCaptureId },
+    defaultValues,
     resolver: zodResolver(makeFormSchema(captures)),
   })
 
@@ -110,7 +125,7 @@ export function usePaymentSessionRefundModal({
   const close = (): void => {
     setShow(false)
     flow.reset()
-    methods.reset()
+    methods.reset(defaultValues)
   }
 
   /**
@@ -227,6 +242,26 @@ function getCaptureLabel(
   })
 
   return `${instrument} · ${date} (up to ${capture.formatted_refund_balance ?? "0"})`
+}
+
+/**
+ * Only prefilled against a known capture: with several to choose from, the
+ * amount would describe whichever one the operator has not picked yet.
+ */
+function getDefaultAmountCents(
+  captures: PaymentCapture[],
+  {
+    preselectedCaptureId,
+    defaultAmountCents,
+  }: Pick<Props, "preselectedCaptureId" | "defaultAmountCents">,
+): number | undefined {
+  const capture = captures.find(({ id }) => id === preselectedCaptureId)
+
+  if (capture == null || defaultAmountCents == null) {
+    return undefined
+  }
+
+  return Math.min(defaultAmountCents, capture.refund_balance_cents ?? 0)
 }
 
 const makeFormSchema = (captures: PaymentCapture[]) =>

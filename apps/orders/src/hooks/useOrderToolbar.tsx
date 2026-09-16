@@ -81,14 +81,19 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
   const { show: showFulfillConfirm, ConfirmDialog: FulfillConfirmDialogBase } =
     useConfirmDialog()
 
+  // On the new model the modal refunds a capture, so an order whose captures
+  // are all fully refunded has nothing to offer and the entry is dropped.
+  // Legacy orders keep their own page, which handles that case itself.
+  const hasNothingToRefund =
+    isNewPaymentModel(order) && orderRefundTargets.length === 0
+
   const triggerMenuActions = useMemo(() => {
     const triggerAttributes = getTriggerAttributes(order)
 
-    return getTriggerAttributesForUser(
-      canUser,
-      isNewPaymentModel(order),
-    ).filter((attr) => triggerAttributes.includes(attr))
-  }, [order])
+    return getTriggerAttributesForUser(canUser, isNewPaymentModel(order))
+      .filter((attr) => triggerAttributes.includes(attr))
+      .filter((attr) => !(attr === "_refund" && hasNothingToRefund))
+  }, [order, hasNothingToRefund])
 
   const triggerDropDownItems: DropdownItemProps[] = triggerMenuActions.map(
     (triggerAttribute) => ({

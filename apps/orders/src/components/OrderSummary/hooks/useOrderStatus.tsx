@@ -4,6 +4,10 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { LineItem, Order } from "@commercelayer/sdk"
+import {
+  getOrderPaymentTotals,
+  isNewPaymentModel,
+} from "#components/OrderPayment/paymentSessionUtils"
 import { arrayOf } from "../utils"
 
 export function useOrderStatus(order: Order) {
@@ -28,8 +32,27 @@ export function useOrderStatus(order: Order) {
     (order.total_amount_with_taxes_cents ?? 0) -
     (order.place_total_amount_cents ?? 0)
 
+  /**
+   * Legacy only: core refuses `stop_editing` above the amount the order was
+   * placed at (`within_placed_total_amount?`), so the dashboard mirrors it.
+   */
   const isOriginalOrderAmountExceeded =
-    order.status === "editing" && diffTotalAndPlacedTotal > 0
+    order.status === "editing" &&
+    !isNewPaymentModel(order) &&
+    diffTotalAndPlacedTotal > 0
+
+  /**
+   * New model: core dropped that check (`stop_editing_amount_check?` returns
+   * early on `new_payments?`), so the placed total no longer means anything
+   * here. What decides whether the edit can be finished is whether the order
+   * is funded: an order edited upwards is fine once the customer has paid or
+   * authorized the difference. Holds count, since the capture happens on
+   * approval.
+   */
+  const toCollectCents =
+    order.status === "editing" && isNewPaymentModel(order)
+      ? getOrderPaymentTotals(order).toCollectCents
+      : 0
 
   function isGiftCard(
     item: LineItem,
@@ -81,5 +104,12 @@ export function useOrderStatus(order: Order) {
       isOriginalOrderAmountExceeded && currencyCode != null
         ? formatCentsToCurrency(diffTotalAndPlacedTotal, currencyCode)
         : null,
+    /** What the customer still has to pay before the edit can be finished. */
+    amountToCollect:
+      toCollectCents > 0 && currencyCode != null
+        ? formatCentsToCurrency(toCollectCents, currencyCode)
+        : null,
+    /** `true` when the edit cannot be finished yet, whichever model applies. */
+    isEditingBlocked: isOriginalOrderAmountExceeded || toCollectCents > 0,
   }
 }
