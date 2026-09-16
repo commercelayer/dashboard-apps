@@ -342,13 +342,131 @@ export function getVoidableSessions(order: Order): PaymentSession[] {
   return (order.payment_sessions ?? []).filter(canVoid)
 }
 
-/** Total still capturable across the order, in cents. */
-export function getCapturableAmountCents(order: Order): number {
+/** Total still capturable across the order, before any capping, in cents. */
+function getCapturableBalanceCents(order: Order): number {
   return getCapturableSessions(order).reduce(
     (total, session) =>
       total + (session.payment_authorization?.capture_balance_cents ?? 0),
     0,
   )
+}
+
+/** Everything already taken on this order, in cents. */
+function getCapturedAmountCents(order: Order): number {
+  return (order.payment_sessions ?? []).reduce(
+    (total, session) =>
+      total +
+      (session.payment_captures ?? [])
+        .filter((capture) => capture.status === "succeeded")
+        .reduce((sum, capture) => sum + (capture.amount_cents ?? 0), 0),
+    0,
+  )
+}
+
+/**
+ * What the order-level capture should take in total.
+ *
+ * The order total, minus what is already captured, capped at what the
+ * authorizations can still give. The cap matters after an order is edited
+ * down: sessions keep their original amounts, so capturing every balance in
+ * full would take more than the order is now worth. Legacy clamped this in
+ * core; the 2026-05 model deliberately leaves it to the caller, since a
+ * payment session need not belong to an order at all.
+ *
+ * The second half of the `min` is defensive only: the dashboard does not offer
+ * Approve until an order is fully authorized, so in its own flow the
+ * outstanding amount is always reachable.
+ */
+export function getCapturableAmountCents(order: Order): number {
+  const outstanding =
+    (order.total_amount_with_taxes_cents ?? 0) - getCapturedAmountCents(order)
+
+  return Math.max(0, Math.min(outstanding, getCapturableBalanceCents(order)))
+}
+
+/**
+ * How much to take from each session, oldest first, so the total matches
+ * `getCapturableAmountCents`. A session capped below its own balance leaves
+ * the remainder authorized: it cannot be voided (a partial capture moves the
+ * session to `partially_paid`, and voiding is only legal from `authorized`),
+ * so it expires at the gateway.
+ */
+export function getCaptureDistribution(
+  order: Order,
+): Array<{ session: PaymentSession; amountCents: number }> {
+  let remaining = getCapturableAmountCents(order)
+
+  return getCapturableSessions(order)
+    .map((session) => {
+      const balance = session.payment_authorization?.capture_balance_cents ?? 0
+      const amountCents = Math.min(balance, remaining)
+      remaining -= amountCents
+      return { session, amountCents }
+    })
+    .filter(({ amountCents }) => amountCents > 0)
+}
+
+/**
+ * What the order has actually collected, committed, and still needs.
+ *
+ * Derived from the transactions rather than from the session amounts, because
+ * a session keeps the amount it was created with: after an order is edited,
+ * that figure no longer describes what moved. All values are in cents.
+ */
+export function getOrderPaymentTotals(order: Order): {
+  /** Everything the gateways took, before any refund. */
+  capturedCents: number
+  refundedCents: number
+  /** Captured minus refunded: what we hold. */
+  paidCents: number
+  /** Authorized and not captured, whether or not the order still needs it. */
+  heldCents: number
+  /** Still to be collected once the authorizations above are captured. */
+  toCollectCents: number
+  /** Held beyond what the order is worth, which only a refund can correct. */
+  toRefundCents: number
+} {
+  const sessions = order.payment_sessions ?? []
+
+  const capturedCents = getCapturedAmountCents(order)
+  const refundedCents = sessions.reduce(
+    (total, session) =>
+      total +
+      (session.payment_refunds ?? [])
+        .filter((refund) => refund.status === "succeeded")
+        .reduce((sum, refund) => sum + (refund.amount_cents ?? 0), 0),
+    0,
+  )
+
+  // Only sessions still holding money: a voided one keeps a positive capture
+  // balance, since a void does not touch it.
+  const heldCents = sessions
+    .filter(
+      (session) =>
+        session.status === "authorized" || session.status === "partially_paid",
+    )
+    .reduce(
+      (total, session) =>
+        total + (session.payment_authorization?.capture_balance_cents ?? 0),
+      0,
+    )
+
+  const paidCents = capturedCents - refundedCents
+  const missingCents = (order.total_amount_with_taxes_cents ?? 0) - paidCents
+
+  // A hold only counts as coverage up to what the order still needs. Beyond
+  // that it is a leftover, not money on its way in, which is what made a fully
+  // captured order look as though it owed a refund.
+  const authorizedCents = Math.max(0, Math.min(heldCents, missingCents))
+
+  return {
+    capturedCents,
+    refundedCents,
+    paidCents,
+    heldCents,
+    toCollectCents: Math.max(0, missingCents - authorizedCents),
+    toRefundCents: Math.max(0, -missingCents),
+  }
 }
 
 /** True while any session on the order has a write in flight. */

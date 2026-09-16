@@ -4,25 +4,18 @@ import {
   formatCentsToCurrency,
   getPaymentInstrumentDetails,
   orderTransactionIsAnAsyncCapture,
-  Text,
   useConfirmDialog,
-  useCoreSdkProvider,
+  useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
-import { useMemo, useState } from "react"
-import { usePaymentActionFlow } from "#components/OrderPayment/hooks/usePaymentActionFlow"
-import {
-  CAPTURE_COPY,
-  joinPaymentDetail,
-  PaymentActionConfirm,
-  PaymentActionModal,
-} from "#components/OrderPayment/PaymentActionModal"
-import { getPaymentDisplay } from "#components/OrderPayment/paymentDisplay"
+import { useMemo } from "react"
+import { useOrderCaptureModal } from "#components/OrderPayment/hooks/useOrderCaptureModal"
+import { usePaymentSessionRefundModal } from "#components/OrderPayment/hooks/usePaymentSessionRefundModal"
 import {
   getCapturableAmountCents,
-  getCapturableSessions,
-  getInstrumentLabel,
+  getOrderPaymentTotals,
+  getOrderRefundableCaptures,
   hasOrderPaymentInFlight,
   isNewPaymentModel,
 } from "#components/OrderPayment/paymentSessionUtils"
@@ -39,20 +32,43 @@ import { useSelectShippingMethodOverlay } from "./useSelectShippingMethodOverlay
 export const useActionButtons = ({ order }: { order: Order }) => {
   const triggerAttributes = getTriggerAttributes(order)
   const { t } = useTranslation()
+  const { canUser } = useTokenProvider()
 
   const { isLoading, errors, dispatch } = useTriggerAttribute(order.id)
   const { mutateOrder } = useOrderDetails(order.id)
   const { hasInvalidShipments, hasLineItems } = useOrderStatus(order)
 
-  const { sdkClient } = useCoreSdkProvider()
   const { show: showCaptureDialog, ConfirmDialog: CaptureConfirmDialog } =
     useConfirmDialog()
-  const [showNewPaymentCapture, setShowNewPaymentCapture] = useState(false)
-  // Frozen when the capture starts: the sessions stop being capturable the
-  // moment it succeeds, so the live list would empty out under the result step.
-  const [capturedInstruments, setCapturedInstruments] = useState<string>()
+  const { modal: captureModal, open: openCapture } = useOrderCaptureModal({
+    order,
+    onChange: () => {
+      void mutateOrder()
+    },
+  })
   const { show: showCancelDialog, ConfirmDialog: CancelConfirmDialog } =
     useConfirmDialog()
+  const refundTargets = isNewPaymentModel(order)
+    ? getOrderRefundableCaptures(order)
+    : []
+  // What the order holds beyond its own total, which is what this button is
+  // there to give back. Non-zero once an order is edited down after capture.
+  const toRefundCents = isNewPaymentModel(order)
+    ? getOrderPaymentTotals(order).toRefundCents
+    : 0
+  const { modal: refundModal, open: openRefund } = usePaymentSessionRefundModal(
+    {
+      targets: refundTargets,
+      // One capture is the usual case here, and it is the only one whose
+      // balance can size the amount, so the prefill rides on the same test.
+      preselectedCaptureId:
+        refundTargets.length === 1 ? refundTargets[0]?.capture.id : undefined,
+      defaultAmountCents: toRefundCents,
+      onChange: () => {
+        void mutateOrder()
+      },
+    },
+  )
   const {
     show: showSelectShippingMethodOverlay,
     Overlay: SelectShippingMethodOverlay,
@@ -65,6 +81,12 @@ export const useActionButtons = ({ order }: { order: Order }) => {
   const isOriginalOrderAmountExceeded =
     order.status === "editing" && diffTotalAndPlacedTotal > 0
 
+  // A partially paid or partially voided order still offers Capture, but the
+  // rest of its authorization may already be gone (voided, or captured for
+  // less than it held), which would open the modal on an empty form.
+  const hasNothingToCapture =
+    isNewPaymentModel(order) && getCapturableAmountCents(order) === 0
+
   const standardFooterActions: ActionButtonsProps["actions"] = useMemo(() => {
     return triggerAttributes
       .filter(
@@ -74,6 +96,10 @@ export const useActionButtons = ({ order }: { order: Order }) => {
           typeof triggerAttribute,
           "_archive" | "_unarchive" | "_refund"
         > => !["_archive", "_unarchive", "_refund"].includes(triggerAttribute),
+      )
+      .filter(
+        (triggerAttribute) =>
+          !(triggerAttribute === "_capture" && hasNothingToCapture),
       )
       .map((triggerAttribute) => {
         if (
@@ -100,7 +126,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
           onClick: () => {
             if (triggerAttribute === "_capture") {
               if (isNewPaymentModel(order)) {
-                setShowNewPaymentCapture(true)
+                openCapture()
               } else {
                 showCaptureDialog()
               }
@@ -117,6 +143,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
       })
   }, [
     dispatch,
+    hasNothingToCapture,
     isLoading,
     showCancelDialog,
     showCaptureDialog,
@@ -163,6 +190,35 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     dispatch,
   ])
 
+  /**
+   * Over-captured orders get their own primary button, outside the status
+   * dictionary: the trigger is an amount rather than a status triple, and it
+   * has to appear on a `paid` order too, which is where an order edited down
+   * after capture ends up.
+   */
+  const refundFooterActions: ActionButtonsProps["actions"] =
+    // Approved only, like every other refund entry point: before that the
+    // order is still moving (a `placed` one can be edited or cancelled), so
+    // the excess it would refund is not final yet.
+    order.status === "approved" &&
+    toRefundCents > 0 &&
+    refundTargets.length > 0 &&
+    canUser("create", "payment_refunds")
+      ? [
+          {
+            label: `${t("apps.orders.actions.refund")} ${formatCentsToCurrency(
+              toRefundCents,
+              order.currency_code as Uppercase<CurrencyCode>,
+            )}`,
+            variant: "primary",
+            disabled: isLoading,
+            onClick: () => {
+              openRefund()
+            },
+          },
+        ]
+      : []
+
   const CancelDialog = (
     <CancelConfirmDialog
       icon="warningCircle"
@@ -190,106 +246,6 @@ export const useActionButtons = ({ order }: { order: Order }) => {
 
   // The 2026-05 model has no `payment_source` to describe, so the instruments
   // come from the sessions this capture will actually act on.
-  const capturableSessions = getCapturableSessions(order)
-
-  /**
-   * Order-level capture on the 2026-05 model: `_capture` does not exist there,
-   * so the one button becomes one capture per funding session, reported
-   * through the same modal the payment rows use.
-   */
-  const captureFlow = usePaymentActionFlow({
-    create: async () =>
-      await Promise.all(
-        capturableSessions.flatMap((session) => {
-          const authorization = session.payment_authorization
-          if (authorization == null) return []
-          return [
-            sdkClient.payment_captures.create({
-              payment_session: { id: session.id, type: "payment_sessions" },
-              payment_authorization: {
-                id: authorization.id,
-                type: "payment_authorizations",
-              },
-            }),
-          ]
-        }),
-      ),
-    retrieve: async (id) => await sdkClient.payment_captures.retrieve(id),
-    onSettled: () => {
-      void mutateOrder()
-    },
-    currencyCode: order.currency_code,
-  })
-
-  const closeNewPaymentCapture = (): void => {
-    setShowNewPaymentCapture(false)
-    setCapturedInstruments(undefined)
-    captureFlow.reset()
-  }
-
-  /**
-   * One line per session, with what will be taken from each. A comma-joined
-   * list of instruments was unreadable as soon as an order had more than one
-   * session, and useless when the same card funds several of them.
-   */
-  const captureLines = capturableSessions.map((session) => ({
-    id: session.id,
-    instrument: getInstrumentLabel(getPaymentDisplay(session)),
-    amount: session.payment_authorization?.formatted_capture_balance,
-  }))
-  // Short form for the result step, where a breakdown would be noise.
-  const instruments =
-    captureLines.length === 1
-      ? (captureLines[0]?.instrument ?? "")
-      : `${captureLines.length} payments`
-  const capturableAmount =
-    order.currency_code == null
-      ? undefined
-      : formatCentsToCurrency(
-          getCapturableAmountCents(order),
-          order.currency_code as Uppercase<CurrencyCode>,
-        )
-  const NewPaymentCaptureDialog = (
-    <PaymentActionModal
-      show={showNewPaymentCapture}
-      step={captureFlow.step}
-      copy={CAPTURE_COPY}
-      detail={joinPaymentDetail(
-        captureFlow.amount ?? capturableAmount,
-        capturedInstruments ?? instruments,
-      )}
-      errorDetail={captureFlow.errorDetail}
-      onClose={closeNewPaymentCapture}
-    >
-      <PaymentActionConfirm
-        icon="bank"
-        title="Capture payment?"
-        description={
-          <div className="w-full">
-            {captureLines.map((line) => (
-              <Text
-                key={line.id}
-                tag="div"
-                variant="info"
-                size="small"
-                className="flex justify-between gap-4"
-              >
-                <span>{line.instrument}</span>
-                <span>{line.amount}</span>
-              </Text>
-            ))}
-          </div>
-        }
-        confirmLabel={`${t("apps.orders.actions.capture")} ${capturableAmount ?? ""}`.trim()}
-        onConfirm={() => {
-          setCapturedInstruments(instruments)
-          void captureFlow.run()
-        }}
-        onCancel={closeNewPaymentCapture}
-      />
-    </PaymentActionModal>
-  )
-
   const LegacyCaptureDialog = (
     <CaptureConfirmDialog
       icon="bank"
@@ -315,11 +271,16 @@ export const useActionButtons = ({ order }: { order: Order }) => {
   )
 
   return {
-    actions: [...standardFooterActions, ...editingFooterActions],
+    actions: [
+      ...standardFooterActions,
+      ...editingFooterActions,
+      ...refundFooterActions,
+    ],
     hasInvalidShipments,
     CaptureDialog: isNewPaymentModel(order)
-      ? NewPaymentCaptureDialog
+      ? captureModal
       : LegacyCaptureDialog,
+    RefundDialog: refundModal,
     CancelDialog,
     SelectShippingMethodOverlay,
     errors,
