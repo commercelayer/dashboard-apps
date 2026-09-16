@@ -10,6 +10,5 @@ export interface ExportDetailsContextState {
   data: Export
   isLoading: boolean
   isDeleting: boolean
-  isPolling: boolean
   isNotFound: boolean
 }
