@@ -190,7 +190,6 @@ function OrderDetails(): React.JSX.Element {
                 document for the customer, and the id/reference/timestamps are for
                 whoever works on it */}
             <ResourceInfoBlocks
-              className="print:hidden"
               resource={order}
               title={pageTitle}
               onUpdated={async () => {
