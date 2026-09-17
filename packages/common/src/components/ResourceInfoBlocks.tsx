@@ -69,7 +69,13 @@ export function ResourceInfoBlocks({
           />
         </div>
       )}
-      <div className={"mt-14" + (canFetchRelated ? " lg:mt-10" : undefined)}>
+      <div
+        className={
+          "mt-14" +
+          (canFetchRelated ? " lg:mt-10" : undefined) +
+          " print:hidden"
+        }
+      >
         <ResourceDetails resource={resource} onUpdated={onUpdated} />
       </div>
     </div>
