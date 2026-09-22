@@ -2,11 +2,11 @@
 
 /**
  * This script will replace all "version number" occurrences from React and ReactDOM urls so that it will point to the same package.json version.
- * This script runs on "pre-commit" hook.
+ * Run it after every dependency bump: the `dep:*` scripts chain it.
  * 
  * @example https://cdn.jsdelivr.net/npm/@commercelayer/drop-in.js@2/dist/drop-in/drop-in.esm.js
- * @example `https://esm.sh/react@19.2.4`
- * @example `https://esm.sh/react-dom@19.2.4`
+ * @example `https://esm.sh/react@19.3.0`
+ * @example `https://esm.sh/react-dom@19.3.0`
  */
 
 import { replaceInFileSync } from 'replace-in-file'
