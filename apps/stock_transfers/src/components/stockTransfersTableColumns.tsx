@@ -1,5 +1,6 @@
 import {
   formatDate,
+  formatNumber,
   getStockTransferDisplayStatus,
   ResourceStatusBadge,
   type ResourceTableColumn,
@@ -7,10 +8,16 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { StockTransfer } from "@commercelayer/sdk"
+import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 
 /**
  * Columns of the stock transfers table.
+ *
+ * NUMBER is the primary column, always shown; the others can be hidden by the
+ * user from the columns menu (`hideable`), with Quantity, SKU code and
+ * Reference hidden until they are turned on (`quantity`, `sku_code` and
+ * `reference` must be among the sparse fields).
  *
  * Requires `include: ['origin_stock_location', 'destination_stock_location']` in
  * the query: a transfer moves stock between two locations, so both ends are names.
@@ -37,27 +44,35 @@ export function useStockTransfersTableColumns(): Array<
         ),
       },
       {
+        id: "origin",
         header: "Origin",
+        hideable: true,
         kind: "text",
         cell: ({ resource }) => (
           <Text>{resource.origin_stock_location?.name ?? "-"}</Text>
         ),
       },
       {
+        id: "destination",
         header: "Destination",
+        hideable: true,
         kind: "text",
         cell: ({ resource }) => (
           <Text>{resource.destination_stock_location?.name ?? "-"}</Text>
         ),
       },
       {
+        id: "status",
         header: "Status",
+        hideable: true,
         kind: "status",
         sortBy: "status",
         cell: ({ resource }) => <RowStatusBadge resource={resource} />,
       },
       {
+        id: "updated",
         header: "Updated",
+        hideable: true,
         kind: "datetime",
         sortBy: "updated_at",
         cell: ({ resource }) => (
@@ -70,6 +85,45 @@ export function useStockTransfersTableColumns(): Array<
             })}
           </Text>
         ),
+      },
+      {
+        id: "quantity",
+        header: "Quantity",
+        kind: "count",
+        sortBy: "quantity",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => (
+          <Text wrap="nowrap">
+            {formatNumber({ value: resource.quantity, locale: user?.locale })}
+          </Text>
+        ),
+      },
+      {
+        id: "sku_code",
+        header: "SKU code",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          isEmpty(resource.sku_code) ? (
+            <Text>-</Text>
+          ) : (
+            <Text wrap="nowrap">{resource.sku_code}</Text>
+          ),
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <Text>-</Text>
+          ) : (
+            <Text wrap="nowrap">{resource.reference}</Text>
+          ),
       },
     ],
     [user?.timezone, user?.locale],

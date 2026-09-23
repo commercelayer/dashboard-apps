@@ -5,6 +5,8 @@ import {
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
+import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 
 /**
@@ -14,7 +16,12 @@ import { useMemo } from "react"
  * (image, name and code); the row link is provided by the table itself, so no
  * caret is needed here.
  *
- * Requires `include: ['market']` in the query.
+ * BUNDLE is the primary column, always shown; the others can be hidden by the
+ * user from the columns menu (`hideable`), with Reference and Tags hidden until
+ * they are turned on.
+ *
+ * Requires `include: ['market', 'tags']` in the query, and `reference` among the
+ * sparse fields.
  */
 export function useBundlesTableColumns(): Array<
   ResourceTableColumn<"bundles">
@@ -45,7 +52,9 @@ export function useBundlesTableColumns(): Array<
         ),
       },
       {
+        id: "price",
         header: "Price",
+        hideable: true,
         // what the row costs: worth its place on a phone, as in price_lists
         hideBelow: "never",
         kind: "amount",
@@ -55,7 +64,9 @@ export function useBundlesTableColumns(): Array<
         ),
       },
       {
+        id: "original",
         header: "Original",
+        hideable: true,
         kind: "amount",
         sortBy: "compare_at_amount_cents",
         cell: ({ resource }) => {
@@ -76,7 +87,9 @@ export function useBundlesTableColumns(): Array<
         },
       },
       {
+        id: "market",
         header: "Market",
+        hideable: true,
         kind: "text",
         cell: ({ resource }) => (
           <Text>
@@ -87,7 +100,9 @@ export function useBundlesTableColumns(): Array<
         ),
       },
       {
+        id: "created",
         header: "Created",
+        hideable: true,
         kind: "datetime",
         sortBy: "created_at",
         cell: ({ resource }) => (
@@ -100,6 +115,27 @@ export function useBundlesTableColumns(): Array<
             })}
           </Text>
         ),
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <Text className="text-gray-300">&#8212;</Text>
+          ) : (
+            <Text wrap="nowrap">{resource.reference}</Text>
+          ),
+      },
+      {
+        id: "tags",
+        header: "Tags",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => <TableTagsCell tags={resource.tags} />,
       },
     ],
     [user?.timezone, user?.locale],

@@ -12,6 +12,7 @@ import { ListEmptyState } from "#components/ListEmptyState"
 import { useSkusTableColumns } from "#components/skusTableColumns"
 import { instructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
+import { skusTableSettings } from "#data/tableSettings"
 
 export const SkusList: FC = () => {
   const { canUser } = useTokenProvider()
@@ -37,6 +38,7 @@ export const SkusList: FC = () => {
   const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
     useResourceFilters({
       instructions,
+      tableSettings: skusTableSettings,
     })
 
   const columns = useSkusTableColumns()
@@ -80,10 +82,12 @@ export const SkusList: FC = () => {
           columns={columns}
           query={{
             pageSize: 25,
-            // the `Shipping category` column reads this relationship
-            include: ["shipping_category"],
+            // the `Shipping category` and Tags columns read these relationships
+            include: ["shipping_category", "tags"],
           }}
-          defaultSort="code"
+          // columns the user turns on may not fit: past that point the table
+          // scrolls sideways rather than squeezing them
+          layout="fit-or-scroll"
           hideTitle
           // a real href keeps cmd/middle-click opening the SKU in a new tab
           getRowHref={(sku) => `${base}${detailsPath(sku.id)}`}

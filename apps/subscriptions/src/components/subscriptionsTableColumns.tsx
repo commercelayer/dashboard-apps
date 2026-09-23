@@ -5,6 +5,8 @@ import {
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
+import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 import {
   getSubscriptionStatusBadgeVariant,
@@ -15,7 +17,12 @@ import { subscriptionFailedOnLastRun } from "#utils/subscriptionFailedOnLastRun"
 /**
  * Columns of the subscriptions table.
  *
- * Requires `include: ['customer', 'source_order', 'source_order.billing_address']`
+ * NUMBER is the primary column, always shown; the others can be hidden by the
+ * user from the columns menu (`hideable`), with Next run, Frequency, Created,
+ * Reference and Tags hidden until they are turned on.
+ *
+ * Requires `include: ['customer', 'source_order', 'source_order.billing_address',
+ * 'tags']`
  * in the query: the customer column shows the name on the source order's billing
  * address, which is the only place a subscription carries one.
  */
@@ -43,7 +50,9 @@ export function useSubscriptionsTableColumns(): Array<
         ),
       },
       {
+        id: "customer",
         header: "Customer",
+        hideable: true,
         kind: "text",
         cell: ({ resource }) => {
           const address = resource.source_order?.billing_address
@@ -62,7 +71,9 @@ export function useSubscriptionsTableColumns(): Array<
         },
       },
       {
+        id: "status",
         header: "Status",
+        hideable: true,
         kind: "status",
         sortBy: "status",
         cell: ({ resource }) => (
@@ -72,7 +83,9 @@ export function useSubscriptionsTableColumns(): Array<
         ),
       },
       {
+        id: "last_run",
         header: "Last run",
+        hideable: true,
         kind: "datetime",
         // last column, left aligned: without this the table's leftover width
         // collects to its right. `w-px` cannot be honoured, so the column shrinks
@@ -100,6 +113,74 @@ export function useSubscriptionsTableColumns(): Array<
             </div>
           )
         },
+      },
+      {
+        id: "next_run",
+        header: "Next run",
+        kind: "datetime",
+        sortBy: "next_run_at",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          resource.next_run_at == null ? (
+            <Text className="text-gray-300">&#8212;</Text>
+          ) : (
+            <Text wrap="nowrap">
+              {formatDate({
+                format: "full",
+                isoDate: resource.next_run_at,
+                timezone: user?.timezone,
+                locale: user?.locale,
+              })}
+            </Text>
+          ),
+      },
+      {
+        id: "frequency",
+        header: "Frequency",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => <Text wrap="nowrap">{resource.frequency}</Text>,
+      },
+      {
+        id: "created",
+        header: "Created",
+        kind: "datetime",
+        sortBy: "created_at",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => (
+          <Text wrap="nowrap">
+            {formatDate({
+              format: "full",
+              isoDate: resource.created_at,
+              timezone: user?.timezone,
+              locale: user?.locale,
+            })}
+          </Text>
+        ),
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <Text className="text-gray-300">&#8212;</Text>
+          ) : (
+            <Text wrap="nowrap">{resource.reference}</Text>
+          ),
+      },
+      {
+        id: "tags",
+        header: "Tags",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => <TableTagsCell tags={resource.tags} />,
       },
     ],
     [user?.timezone, user?.locale],
