@@ -14,7 +14,7 @@ export interface OrderTab {
    */
   formValues: FormFullValues
   /**
-   * The metrics attribute behind the "Order" sort option, and the one the ORDER
+   * The metrics attribute behind the "Order" sort option, and the one the DATE
    * column marks as sorted. Carts have no `placed_at`, so they go by
    * `created_at`.
    */

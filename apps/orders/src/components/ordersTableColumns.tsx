@@ -20,11 +20,11 @@ import type { OrderTab } from "#data/lists"
  * Columns of the orders table, shared by the entry page and the filtered list.
  *
  * ORDER is the primary column, always shown; the others can be hidden by the
- * user from the columns menu (`hideable`), with Reference and Tags hidden until
- * they are turned on.
+ * user from the columns menu (`hideable`), with Market, Country, Reference and
+ * Tags hidden until they are turned on.
  *
  * @param sortBy - the metrics attribute of the "Order" sort option, which the
- * ORDER column marks as sorted. Carts have no `placed_at`, so they go by
+ * DATE column marks as sorted. Carts have no `placed_at`, so they go by
  * `order.created_at` instead.
  */
 export function useOrdersTableColumns(
@@ -38,8 +38,6 @@ export function useOrdersTableColumns(
     () => [
       {
         header: "Order",
-        // sorting is resolved server-side by the metrics API
-        sortBy,
         cell: ({ resource }) => (
           <div>
             <Text tag="div" weight="medium" wrap="nowrap">
@@ -50,15 +48,30 @@ export function useOrdersTableColumns(
                 className="md:hidden inline-block align-middle ml-2"
               />
             </Text>
-            <Text tag="div" size="x-small" variant="info" wrap="nowrap">
-              {formatDate({
-                format: "full",
-                isoDate: resource.placed_at ?? resource.updated_at,
-                timezone: user?.timezone,
-                locale: user?.locale,
-              })}
+            {/* mobile only: from `md` up the date has a column of its own */}
+            <Text
+              tag="div"
+              size="x-small"
+              variant="info"
+              wrap="nowrap"
+              className="md:hidden"
+            >
+              <OrderDate resource={resource} />
             </Text>
           </div>
+        ),
+      },
+      {
+        id: "date",
+        header: "Date",
+        kind: "datetime",
+        hideable: true,
+        // sorting is resolved server-side by the metrics API
+        sortBy,
+        cell: ({ resource }) => (
+          <Text wrap="nowrap">
+            <OrderDate resource={resource} />
+          </Text>
         ),
       },
       {
@@ -66,27 +79,12 @@ export function useOrdersTableColumns(
         header: "Customer",
         kind: "text",
         hideable: true,
+        // the email alone, the country having a column of its own. A guest
+        // checkout can have no email, and the billing name stands in for it.
         cell: ({ resource }) => {
-          const name = getCustomerName(resource)
-          const countryCode = resource.billing_address?.country_code
           const email = resource.customer?.email
-          // guest checkouts can have no billing name at all, in which case the
-          // email is the only identifying information worth showing first
-          const title = isEmpty(name) ? email : name
-
-          return (
-            <div>
-              <Text tag="div" weight="medium">
-                {isEmpty(title) ? "-" : title}
-                {!isEmpty(countryCode) ? ` (${countryCode})` : ""}
-              </Text>
-              {!isEmpty(email) && title !== email && (
-                <Text tag="div" size="x-small" variant="info">
-                  {email}
-                </Text>
-              )}
-            </div>
-          )
+          const label = isEmpty(email) ? getBillingName(resource) : email
+          return <Text>{isEmpty(label) ? "-" : label}</Text>
         },
       },
       {
@@ -103,22 +101,43 @@ export function useOrdersTableColumns(
         hideable: true,
         // what the row is worth: worth its place on a phone
         hideBelow: "never",
+        // the amount alone: the payment status has a column of its own
         cell: ({ resource }) => (
-          <div>
-            <Text tag="div" weight="medium" wrap="nowrap">
-              {getFormattedTotalAmount(resource)}
-            </Text>
-            <Text
-              tag="div"
-              size="x-small"
-              weight="medium"
-              variant="info"
-              wrap="nowrap"
-            >
-              {getOrderPaymentStatusName(resource.payment_status)}
-            </Text>
-          </div>
+          <Text weight="medium" wrap="nowrap">
+            {getFormattedTotalAmount(resource)}
+          </Text>
         ),
+      },
+      {
+        id: "payment_status",
+        header: "Payment status",
+        kind: "status",
+        hideable: true,
+        cell: ({ resource }) => (
+          <Text wrap="nowrap">
+            {getOrderPaymentStatusName(resource.payment_status)}
+          </Text>
+        ),
+      },
+      {
+        id: "market",
+        header: "Market",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => <Text>{resource.market?.name ?? "-"}</Text>,
+      },
+      {
+        id: "country",
+        header: "Country",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => {
+          const countryCode =
+            resource.country_code ?? resource.billing_address?.country_code
+          return <Text>{isEmpty(countryCode) ? "-" : countryCode}</Text>
+        },
       },
       {
         id: "reference",
@@ -145,8 +164,27 @@ export function useOrdersTableColumns(
   )
 }
 
+/**
+ * When the order was placed, or last updated for a cart, which has no placement
+ * date. Shared by the Date column and, on mobile where that column is hidden, the
+ * name cell.
+ */
+function OrderDate({ resource }: { resource: Order }): React.JSX.Element {
+  const { user } = useTokenProvider()
+  return (
+    <>
+      {formatDate({
+        format: "full",
+        isoDate: resource.placed_at ?? resource.updated_at,
+        timezone: user?.timezone,
+        locale: user?.locale,
+      })}
+    </>
+  )
+}
+
 /** Company name when present, otherwise the abbreviated billing full name. */
-function getCustomerName(order: Order): string {
+function getBillingName(order: Order): string {
   const billingAddress = order.billing_address
   return !isEmpty(billingAddress?.company)
     ? (billingAddress?.company ?? "")
