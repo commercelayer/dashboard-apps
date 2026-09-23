@@ -74,8 +74,13 @@ export function makePromotionsTableSettings(
     sortOptions: [
       { id: "name", label: "Name", sortBy: "name", kind: "text" },
       { id: "priority", label: "Priority", sortBy: "priority", kind: "number" },
-      { id: "starts", label: "Starts", sortBy: "starts_at", kind: "date" },
-      { id: "expires", label: "Expires", sortBy: "expires_at", kind: "date" },
+      { id: "starts", label: "Starts", sortBy: "starts_at", kind: "schedule" },
+      {
+        id: "expires",
+        label: "Expires",
+        sortBy: "expires_at",
+        kind: "schedule",
+      },
       { id: "created", label: "Created", sortBy: "created_at", kind: "date" },
     ],
     defaultSort:

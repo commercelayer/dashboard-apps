@@ -12,7 +12,7 @@ export const giftCardsTableSettings: TableSettingsConfig = {
       sortBy: "balance_cents",
       kind: "number",
     },
-    { id: "expires", label: "Expires", sortBy: "expires_at", kind: "date" },
+    { id: "expires", label: "Expires", sortBy: "expires_at", kind: "schedule" },
     { id: "created", label: "Created", sortBy: "created_at", kind: "date" },
   ],
   defaultSort: { id: "created", direction: "desc" },

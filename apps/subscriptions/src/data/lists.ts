@@ -78,7 +78,12 @@ export const subscriptionsTableSettings: TableSettingsConfig = {
   sortOptions: [
     { id: "number", label: "Number", sortBy: "number", kind: "text" },
     { id: "last_run", label: "Last run", sortBy: "last_run_at", kind: "date" },
-    { id: "next_run", label: "Next run", sortBy: "next_run_at", kind: "date" },
+    {
+      id: "next_run",
+      label: "Next run",
+      sortBy: "next_run_at",
+      kind: "schedule",
+    },
     { id: "updated", label: "Updated", sortBy: "updated_at", kind: "date" },
   ],
   defaultSort: { id: "updated", direction: "desc" },
