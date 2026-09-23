@@ -40,10 +40,17 @@ export function useShipmentsTableColumns(): Array<
                 className="md:hidden inline-block align-middle ml-2"
               />
             </Text>
-            {/* a reference is optional, and an empty second line would only
-                make the row taller for nothing */}
+            {/* mobile only: from `md` up the reference has a column of its own.
+                It is optional, and an empty second line would only make the
+                row taller for nothing */}
             {!isEmpty(resource.reference) && (
-              <Text tag="div" size="x-small" variant="info" wrap="nowrap">
+              <Text
+                tag="div"
+                size="x-small"
+                variant="info"
+                wrap="nowrap"
+                className="md:hidden"
+              >
                 {resource.reference}
               </Text>
             )}
