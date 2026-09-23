@@ -1,4 +1,7 @@
-import type { FormFullValues } from "@commercelayer/app-elements"
+import type {
+  FormFullValues,
+  TableSettingsConfig,
+} from "@commercelayer/app-elements"
 
 export interface PromotionTab {
   /** Tab label, intentionally not localized */
@@ -56,4 +59,28 @@ export function getPromotionTabs(): PromotionTab[] {
       },
     },
   ]
+}
+
+/**
+ * Sort options and stored preference of the promotions table, shared by every
+ * tab. Until the user picks a sort, Active promotions are ordered the way they
+ * are evaluated (by priority), the other tabs by recency.
+ */
+export function makePromotionsTableSettings(
+  tab: PromotionTab,
+): TableSettingsConfig {
+  return {
+    listId: "promotions",
+    sortOptions: [
+      { id: "name", label: "Name", sortBy: "name", kind: "text" },
+      { id: "priority", label: "Priority", sortBy: "priority", kind: "number" },
+      { id: "starts", label: "Starts", sortBy: "starts_at", kind: "date" },
+      { id: "expires", label: "Expires", sortBy: "expires_at", kind: "date" },
+      { id: "created", label: "Created", sortBy: "created_at", kind: "date" },
+    ],
+    defaultSort:
+      tab.label === "Active"
+        ? { id: "priority", direction: "asc" }
+        : { id: "created", direction: "desc" },
+  }
 }
