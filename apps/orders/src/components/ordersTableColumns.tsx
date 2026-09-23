@@ -11,6 +11,7 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
+import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 import type { OrderTab } from "#data/lists"
@@ -18,13 +19,18 @@ import type { OrderTab } from "#data/lists"
 /**
  * Columns of the orders table, shared by the entry page and the filtered list.
  *
- * @param sortBy - the metrics attribute the ORDER column sorts by. Carts have no
- * `placed_at`, so they are sorted by `order.updated_at` instead.
+ * ORDER is the primary column, always shown; the others can be hidden by the
+ * user from the columns menu (`hideable`), with Reference and Tags hidden until
+ * they are turned on.
+ *
+ * @param sortBy - the metrics attribute of the "Order" sort option, which the
+ * ORDER column marks as sorted. Carts have no `placed_at`, so they go by
+ * `order.created_at` instead.
  */
 export function useOrdersTableColumns(
-  // the metrics attribute the tab sorts by, dotted as Metrics names are — the
-  // column type only accepts a Core sort field or a namespaced metrics one
-  sortBy: OrderTab["sortBy"],
+  // dotted as Metrics names are — the column type only accepts a Core sort field
+  // or a namespaced metrics one
+  sortBy: OrderTab["orderSortBy"],
 ): Array<ResourceTableColumn<"orders">> {
   const { user } = useTokenProvider()
 
@@ -56,8 +62,10 @@ export function useOrdersTableColumns(
         ),
       },
       {
+        id: "customer",
         header: "Customer",
         kind: "text",
+        hideable: true,
         cell: ({ resource }) => {
           const name = getCustomerName(resource)
           const countryCode = resource.billing_address?.country_code
@@ -82,13 +90,17 @@ export function useOrdersTableColumns(
         },
       },
       {
+        id: "status",
         header: "Status",
         kind: "status",
+        hideable: true,
         cell: ({ resource }) => <RowStatusBadge resource={resource} />,
       },
       {
+        id: "amount",
         header: "Amount",
         kind: "amount",
+        hideable: true,
         // what the row is worth: worth its place on a phone
         hideBelow: "never",
         cell: ({ resource }) => (
@@ -107,6 +119,26 @@ export function useOrdersTableColumns(
             </Text>
           </div>
         ),
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => (
+          <Text tag="div" wrap="nowrap">
+            {isEmpty(resource.reference) ? "-" : resource.reference}
+          </Text>
+        ),
+      },
+      {
+        id: "tags",
+        header: "Tags",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => <TableTagsCell tags={resource.tags} />,
       },
     ],
     [sortBy, user?.timezone, user?.locale],

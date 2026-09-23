@@ -17,6 +17,7 @@ import { ListEmptyState } from "#components/ListEmptyState"
 import { useOrdersTableColumns } from "#components/ordersTableColumns"
 import { makeCartsInstructions, makeInstructions } from "#data/filters"
 import {
+  makeOrdersTableSettings,
   type OrderTab,
   orderTabs,
   orderTabsPredicateWhitelist,
@@ -57,6 +58,7 @@ const Home: FC = () => {
             hiddenFilters: activeTab.hiddenFilters,
           }),
     predicateWhitelist: orderTabsPredicateWhitelist,
+    tableSettings: makeOrdersTableSettings(activeTab),
   })
 
   const handleFiltersUpdate = (queryString: string): void => {
@@ -90,7 +92,7 @@ const Home: FC = () => {
     }
   }, [hasTabInUrl])
 
-  const columns = useOrdersTableColumns(activeTab.sortBy)
+  const columns = useOrdersTableColumns(activeTab.orderSortBy)
 
   const table = (
     <FilteredTable
@@ -99,10 +101,19 @@ const Home: FC = () => {
       metricsQuery={{
         search: {
           limit: 25,
-          fields: ["order.*", "billing_address.*", "market.*", "customer.*"],
+          // `tags` is a field of its own in Metrics, not part of `order.*`
+          fields: [
+            "order.*",
+            "billing_address.*",
+            "market.*",
+            "customer.*",
+            "tags.*",
+          ],
         },
       }}
-      defaultSort={`-${activeTab.sortBy}`}
+      // columns the user turns on may not fit: past that point the table
+      // scrolls sideways rather than squeezing them
+      layout="fit-or-scroll"
       hideTitle
       getRowHref={(order) =>
         navigateTo({ app: "orders", resourceId: order.id })?.href

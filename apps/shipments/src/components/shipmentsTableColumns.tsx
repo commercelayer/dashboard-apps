@@ -4,6 +4,7 @@ import {
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 import { ShipmentStatusBadge } from "#components/ShipmentStatusBadge"
@@ -11,7 +12,11 @@ import { ShipmentStatusBadge } from "#components/ShipmentStatusBadge"
 /**
  * Columns of the shipments table.
  *
- * Requires `include: ['stock_location', 'shipping_address']` in the query.
+ * SHIPMENT is the primary column, always shown; the others can be hidden by the
+ * user from the columns menu (`hideable`), with Reference and Tags hidden until
+ * they are turned on.
+ *
+ * Requires `include: ['stock_location', 'shipping_address', 'tags']` in the query.
  */
 export function useShipmentsTableColumns(): Array<
   ResourceTableColumn<"shipments">
@@ -46,15 +51,19 @@ export function useShipmentsTableColumns(): Array<
         ),
       },
       {
+        id: "origin",
         header: "Origin",
         kind: "text",
+        hideable: true,
         cell: ({ resource }) => (
           <Text>{resource.stock_location?.name ?? "-"}</Text>
         ),
       },
       {
+        id: "destination",
         header: "Destination",
         kind: "text",
+        hideable: true,
         cell: ({ resource }) => {
           const address = resource.shipping_address
           if (address?.city == null) {
@@ -69,15 +78,19 @@ export function useShipmentsTableColumns(): Array<
         },
       },
       {
+        id: "status",
         header: "Status",
         kind: "status",
         sortBy: "status",
+        hideable: true,
         cell: ({ resource }) => <ShipmentStatusBadge shipment={resource} />,
       },
       {
+        id: "updated",
         header: "Updated",
         kind: "datetime",
         sortBy: "updated_at",
+        hideable: true,
         cell: ({ resource }) => (
           <Text wrap="nowrap">
             {formatDate({
@@ -88,6 +101,26 @@ export function useShipmentsTableColumns(): Array<
             })}
           </Text>
         ),
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => (
+          <Text wrap="nowrap">
+            {isEmpty(resource.reference) ? "-" : resource.reference}
+          </Text>
+        ),
+      },
+      {
+        id: "tags",
+        header: "Tags",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => <TableTagsCell tags={resource.tags} />,
       },
     ],
     [user?.timezone, user?.locale],

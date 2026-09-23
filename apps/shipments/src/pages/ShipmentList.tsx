@@ -12,7 +12,11 @@ import { useEffect, useMemo } from "react"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { useShipmentsTableColumns } from "#components/shipmentsTableColumns"
 import { makeFiltersInstructions } from "#data/filters"
-import { type ShipmentTab, shipmentTabs } from "#data/lists"
+import {
+  type ShipmentTab,
+  shipmentsTableSettings,
+  shipmentTabs,
+} from "#data/lists"
 
 function ShipmentList(): React.JSX.Element {
   const { t } = useTranslation()
@@ -34,6 +38,7 @@ function ShipmentList(): React.JSX.Element {
     useResourceFilters({
       // the tab owns the status, so the status field would only contradict it
       instructions: makeFiltersInstructions({ hideFilterStatus: true }),
+      tableSettings: shipmentsTableSettings,
     })
 
   const columns = useShipmentsTableColumns()
@@ -72,10 +77,12 @@ function ShipmentList(): React.JSX.Element {
       columns={columns}
       query={{
         pageSize: 25,
-        // the Origin and Destination columns read these relationships
-        include: ["stock_location", "shipping_address"],
+        // the Origin, Destination and Tags columns read these relationships
+        include: ["stock_location", "shipping_address", "tags"],
       }}
-      defaultSort="-updated_at"
+      // columns the user turns on may not fit: past that point the table
+      // scrolls sideways rather than squeezing them
+      layout="fit-or-scroll"
       hideTitle
       getRowHref={(shipment) =>
         navigateTo({ app: "shipments", resourceId: shipment.id })?.href
