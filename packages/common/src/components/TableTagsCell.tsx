@@ -1,39 +1,34 @@
-import { Badge, Tooltip } from "@commercelayer/app-elements"
+import { Text, Tooltip } from "@commercelayer/app-elements"
 import type { Tag } from "@commercelayer/sdk"
 import type { FC } from "react"
 
-/** How many tags are shown as badges before the rest collapse into "+N". */
-const visibleTagsCount = 2
-
 /**
- * The tags of a table row: the first two as badges, the rest counted in a "+N"
- * badge. Hovering the cell lists every tag, comma-separated, so the full set is
- * one gesture away without the column growing with each tag.
+ * The tags of a table row, as a comma-separated line that ends in an ellipsis
+ * when it does not fit. Plain text rather than badges: a badge cannot be cut, so
+ * a few long tags would widen the column. Hovering the cell lists every tag.
  */
 export const TableTagsCell: FC<{
   tags: Array<Pick<Tag, "id" | "name">> | null | undefined
 }> = ({ tags }) => {
   if (tags == null || tags.length === 0) {
-    return <>-</>
+    return <Text variant="disabled">&#8212;</Text>
   }
 
-  const hiddenCount = tags.length - visibleTagsCount
+  const names = tags.map((tag) => tag.name).join(", ")
 
   return (
-    <Tooltip
-      label={
-        <span className="inline-flex items-center gap-1">
-          {tags.slice(0, visibleTagsCount).map((tag) => (
-            <Badge key={tag.id} variant="secondary">
-              {tag.name}
-            </Badge>
-          ))}
-          {hiddenCount > 0 && (
-            <Badge variant="secondary">{`+${hiddenCount}`}</Badge>
-          )}
-        </span>
-      }
-      content={tags.map((tag) => tag.name).join(", ")}
-    />
+    // The table truncates the direct children of a cell, and `Tooltip` renders
+    // its box next to its label: without this wrapper the tooltip would be cut
+    // at one line as well. Being fixed-positioned, it is not clipped by the
+    // wrapper's own overflow.
+    <div>
+      <Tooltip
+        // a block, so the line can be cut at the column edge
+        className="block truncate"
+        label={names}
+        // the cell's `nowrap` is inherited: the list wraps again in the tooltip
+        content={<span className="whitespace-normal">{names}</span>}
+      />
+    </div>
   )
 }
