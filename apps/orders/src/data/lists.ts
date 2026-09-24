@@ -14,11 +14,11 @@ export interface OrderTab {
    */
   formValues: FormFullValues
   /**
-   * The metrics attribute behind the "Order" sort option, and the one the DATE
-   * column marks as sorted. Carts have no `placed_at`, so they go by
-   * `created_at`.
+   * The metrics attribute of the date the DATE column shows, and so the one it
+   * marks as sorted: when the order was placed, or when a cart — which is never
+   * placed — was last updated.
    */
-  orderSortBy: "order.placed_at" | "order.created_at"
+  dateSortBy: "order.placed_at" | "order.updated_at"
   /** The sort the tab opens with, until the user picks one. */
   defaultSort: TableSortValue
   /**
@@ -69,7 +69,7 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "All",
     },
-    orderSortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
     defaultSort: { id: "order", direction: "desc" },
   },
   {
@@ -80,7 +80,7 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "Placed",
     },
-    orderSortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
     defaultSort: { id: "order", direction: "desc" },
     hiddenFilters: ["status_in"],
   },
@@ -94,7 +94,7 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "Approved",
     },
-    orderSortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
     defaultSort: { id: "order", direction: "desc" },
     hiddenFilters: ["status_in", "fulfillment_statuses_in"],
   },
@@ -107,7 +107,7 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "In progress",
     },
-    orderSortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
     defaultSort: { id: "order", direction: "desc" },
     hiddenFilters: ["fulfillment_statuses_in"],
   },
@@ -121,7 +121,7 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "Fulfilled",
     },
-    orderSortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
     defaultSort: { id: "order", direction: "desc" },
     hiddenFilters: ["status_in", "fulfillment_statuses_in"],
   },
@@ -136,8 +136,8 @@ export const orderTabs: OrderTab[] = [
       archived: "show",
       viewTitle: "Carts",
     },
-    orderSortBy: "order.created_at",
-    defaultSort: { id: "updated", direction: "desc" },
+    dateSortBy: "order.updated_at",
+    defaultSort: { id: "order", direction: "desc" },
     instructions: "carts",
     separatorBefore: true,
   },
@@ -147,7 +147,7 @@ export const orderTabs: OrderTab[] = [
       archived: "only",
       viewTitle: "Archived",
     },
-    orderSortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
     defaultSort: { id: "order", direction: "desc" },
   },
 ]
@@ -155,15 +155,37 @@ export const orderTabs: OrderTab[] = [
 /**
  * Sort options and stored preference of the orders table.
  *
- * The Metrics API only sorts by date fields, so there is no sort by number,
- * customer or amount. One `listId` for every tab: a sort picked on a tab holds on
- * the others, with "Order" resolving to each tab's own attribute.
+ * The Metrics API only sorts by date fields. "Order" sorts by the order number
+ * all the same, through `created_at`: numbers are handed out in sequence when an
+ * order is created, so the two orderings match (checked on both `/orders` and
+ * `/carts`). Customer and amount have no such stand-in.
+ *
+ * One `listId` for every tab: a sort picked on a tab holds on the others where
+ * it applies. Carts are served by the metrics `/carts`
+ * endpoint, which has no `placed_at`, so the Carts tab does not offer "Placed"
+ * and falls back to its own default when that is the stored choice.
  */
 export function makeOrdersTableSettings(tab: OrderTab): TableSettingsConfig {
+  const isCarts = tab.instructions === "carts"
   return {
     listId: "orders",
     sortOptions: [
-      { id: "order", label: "Order", sortBy: tab.orderSortBy, kind: "date" },
+      {
+        id: "order",
+        label: "Order",
+        sortBy: "order.created_at",
+        kind: "number",
+      },
+      ...(isCarts
+        ? []
+        : [
+            {
+              id: "placed",
+              label: "Placed",
+              sortBy: "order.placed_at",
+              kind: "date",
+            } as const,
+          ]),
       {
         id: "updated",
         label: "Updated",

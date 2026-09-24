@@ -92,7 +92,7 @@ const Home: FC = () => {
     }
   }, [hasTabInUrl])
 
-  const columns = useOrdersTableColumns(activeTab.orderSortBy)
+  const columns = useOrdersTableColumns(activeTab.dateSortBy)
 
   const table = (
     <FilteredTable

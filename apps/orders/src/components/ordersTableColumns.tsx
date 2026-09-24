@@ -19,18 +19,19 @@ import type { OrderTab } from "#data/lists"
 /**
  * Columns of the orders table, shared by the entry page and the filtered list.
  *
- * ORDER is the primary column, always shown; the others can be hidden by the
- * user from the columns menu (`hideable`), with Market, Country, Reference and
- * Tags hidden until they are turned on.
+ * ORDER is the primary column, always shown: the number alone, since the market
+ * has a column of its own. The others can be hidden by the user from the columns
+ * menu (`hideable`), with Market, Country, Reference and Tags hidden until they
+ * are turned on.
  *
- * @param sortBy - the metrics attribute of the "Order" sort option, which the
- * DATE column marks as sorted. Carts have no `placed_at`, so they go by
- * `order.created_at` instead.
+ * @param sortBy - the metrics attribute of the date the DATE column shows, which
+ * it marks as sorted: `order.placed_at`, or `order.updated_at` for carts, which
+ * are never placed.
  */
 export function useOrdersTableColumns(
   // dotted as Metrics names are — the column type only accepts a Core sort field
   // or a namespaced metrics one
-  sortBy: OrderTab["orderSortBy"],
+  sortBy: OrderTab["dateSortBy"],
 ): Array<ResourceTableColumn<"orders">> {
   const { user } = useTokenProvider()
 
@@ -38,10 +39,13 @@ export function useOrdersTableColumns(
     () => [
       {
         header: "Order",
+        // the number is handed out at creation, so this is what sorts by it
+        // (the Metrics API sorts by date fields only)
+        sortBy: "order.created_at",
         cell: ({ resource }) => (
           <div>
             <Text tag="div" weight="medium" wrap="nowrap">
-              {`${resource.market?.name ?? "Order"} #${resource.number ?? ""}`.trim()}
+              {`#${resource.number ?? ""}`}
               {/* the Status column is hidden on mobile, so the badge rides with the name */}
               <RowStatusBadge
                 resource={resource}
