@@ -153,6 +153,16 @@ export const orderTabs: OrderTab[] = [
 ]
 
 /**
+ * What the tab's date is called, in the DATE column header and in the sort
+ * menu: an order is dated by its placement, a cart — never placed — by its last
+ * update.
+ */
+export const orderDateLabels: Record<OrderTab["dateSortBy"], string> = {
+  "order.placed_at": "Placed",
+  "order.updated_at": "Updated",
+}
+
+/**
  * Sort options and stored preference of the orders table.
  *
  * The Metrics API only sorts by date fields. "Order" sorts by the order number
@@ -160,13 +170,12 @@ export const orderTabs: OrderTab[] = [
  * order is created, so the two orderings match (checked on both `/orders` and
  * `/carts`). Customer and amount have no such stand-in.
  *
- * One `listId` for every tab: a sort picked on a tab holds on the others where
- * it applies. Carts are served by the metrics `/carts`
- * endpoint, which has no `placed_at`, so the Carts tab does not offer "Placed"
- * and falls back to its own default when that is the stored choice.
+ * The other option is the tab's own date, the one the DATE column shows:
+ * "Placed" on orders, "Updated" on carts, which `/carts` cannot sort by
+ * placement anyway. It keeps the same id on every tab, so a choice made on one
+ * tab holds on the others, as the whole preference does (one `listId`).
  */
 export function makeOrdersTableSettings(tab: OrderTab): TableSettingsConfig {
-  const isCarts = tab.instructions === "carts"
   return {
     listId: "orders",
     sortOptions: [
@@ -176,20 +185,10 @@ export function makeOrdersTableSettings(tab: OrderTab): TableSettingsConfig {
         sortBy: "order.created_at",
         kind: "number",
       },
-      ...(isCarts
-        ? []
-        : [
-            {
-              id: "placed",
-              label: "Placed",
-              sortBy: "order.placed_at",
-              kind: "date",
-            } as const,
-          ]),
       {
-        id: "updated",
-        label: "Updated",
-        sortBy: "order.updated_at",
+        id: "date",
+        label: orderDateLabels[tab.dateSortBy],
+        sortBy: tab.dateSortBy,
         kind: "date",
       },
     ],

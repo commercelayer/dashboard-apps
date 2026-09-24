@@ -14,7 +14,7 @@ import type { Order } from "@commercelayer/sdk"
 import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
-import type { OrderTab } from "#data/lists"
+import { type OrderTab, orderDateLabels } from "#data/lists"
 
 /**
  * Columns of the orders table, shared by the entry page and the filtered list.
@@ -71,7 +71,9 @@ export function useOrdersTableColumns(
       },
       {
         id: "date",
-        header: "Date",
+        // "Placed", or "Updated" on carts: the id stays the same, so the column
+        // keeps its visibility and place across tabs
+        header: orderDateLabels[sortBy],
         kind: "datetime",
         hideable: true,
         // sorting is resolved server-side by the metrics API
