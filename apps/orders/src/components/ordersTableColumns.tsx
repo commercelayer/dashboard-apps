@@ -21,8 +21,8 @@ import type { OrderTab } from "#data/lists"
  *
  * ORDER is the primary column, always shown: the number alone, since the market
  * has a column of its own. The others can be hidden by the user from the columns
- * menu (`hideable`), with Market, Country, Reference and Tags hidden until they
- * are turned on.
+ * menu (`hideable`), with Payment status, Market, Country, Reference and Tags
+ * hidden until they are turned on.
  *
  * @param sortBy - the metrics attribute of the date the DATE column shows, which
  * it marks as sorted: `order.placed_at`, or `order.updated_at` for carts, which
@@ -39,6 +39,10 @@ export function useOrdersTableColumns(
     () => [
       {
         header: "Order",
+        // a number and nothing else since the market and the date moved to
+        // columns of their own: an identifier's share of the table, not the
+        // flexible one it had when it held all three
+        kind: "code",
         // the number is handed out at creation, so this is what sorts by it
         // (the Metrics API sorts by date fields only)
         sortBy: "order.created_at",
@@ -117,6 +121,7 @@ export function useOrdersTableColumns(
         header: "Payment status",
         kind: "status",
         hideable: true,
+        defaultHidden: true,
         cell: ({ resource }) => (
           <Text wrap="nowrap">
             {getOrderPaymentStatusName(resource.payment_status)}
