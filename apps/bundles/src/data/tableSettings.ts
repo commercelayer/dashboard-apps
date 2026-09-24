@@ -15,5 +15,5 @@ export const bundlesTableSettings: TableSettingsConfig = {
     },
     { id: "created", label: "Created", sortBy: "created_at", kind: "date" },
   ],
-  defaultSort: { id: "name", direction: "asc" },
+  defaultSort: { id: "created", direction: "desc" },
 }

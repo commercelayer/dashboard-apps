@@ -89,7 +89,7 @@ export const shipmentTabs: ShipmentTab[] = [
 export const shipmentsTableSettings: TableSettingsConfig = {
   listId: "shipments",
   sortOptions: [
-    { id: "number", label: "Shipment", sortBy: "number", kind: "text" },
+    { id: "number", label: "Number", sortBy: "number", kind: "number" },
     { id: "updated", label: "Updated", sortBy: "updated_at", kind: "date" },
   ],
   defaultSort: { id: "updated", direction: "desc" },

@@ -97,7 +97,7 @@ export const returnTabs: ReturnTab[] = [
 export const returnsTableSettings: TableSettingsConfig = {
   listId: "returns",
   sortOptions: [
-    { id: "number", label: "Number", sortBy: "number", kind: "text" },
+    { id: "number", label: "Number", sortBy: "number", kind: "number" },
     { id: "updated", label: "Updated", sortBy: "updated_at", kind: "date" },
     { id: "created", label: "Created", sortBy: "created_at", kind: "date" },
   ],

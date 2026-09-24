@@ -54,7 +54,7 @@ export function useReturnsTableColumns(): Array<
         cell: ({ resource }) => {
           const address = resource.origin_address
           if (address?.city == null) {
-            return <Text>-</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return (
             <Text>
@@ -69,9 +69,12 @@ export function useReturnsTableColumns(): Array<
         header: "Destination",
         kind: "text",
         hideable: true,
-        cell: ({ resource }) => (
-          <Text>{resource.stock_location?.name ?? "-"}</Text>
-        ),
+        cell: ({ resource }) =>
+          resource.stock_location?.name != null ? (
+            <Text>{resource.stock_location?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
         id: "status",
@@ -104,11 +107,12 @@ export function useReturnsTableColumns(): Array<
         kind: "text",
         hideable: true,
         defaultHidden: true,
-        cell: ({ resource }) => (
-          <Text>
-            {isEmpty(resource.customer_email) ? "-" : resource.customer_email}
-          </Text>
-        ),
+        cell: ({ resource }) =>
+          isEmpty(resource.customer_email) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text>{resource.customer_email}</Text>
+          ),
       },
       {
         id: "reference",
@@ -116,11 +120,12 @@ export function useReturnsTableColumns(): Array<
         kind: "code",
         hideable: true,
         defaultHidden: true,
-        cell: ({ resource }) => (
-          <Text wrap="nowrap">
-            {isEmpty(resource.reference) ? "-" : resource.reference}
-          </Text>
-        ),
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text wrap="nowrap">{resource.reference}</Text>
+          ),
       },
       {
         id: "tags",

@@ -18,9 +18,10 @@ import { useMemo } from "react"
  * Columns of the promotions table.
  *
  * NAME is the primary column, always shown; the others can be hidden by the
- * user from the columns menu (`hideable`), with Starts, Expires, Usage,
- * Reference and Tags hidden until they are turned on. Tags need
- * `include: ['tags']` in the query.
+ * user from the columns menu (`hideable`), with Usage, Reference and Tags hidden
+ * until they are turned on. Tags need `include: ['tags']` in the query. The
+ * availability dates under the name are for mobile, where Starts and Expires
+ * are not on screen.
  *
  * The status is derived from the promotion's dates and `disabled_at` rather than
  * read from an attribute, so those fields have to be in the query.
@@ -42,7 +43,15 @@ export function usePromotionsTableColumns(): Array<
               {/* the Status column is hidden on mobile, so the badge rides with the name */}
               <RowStatusBadge resource={resource} className="md:hidden" />
             </div>
-            <Text tag="div" size="x-small" variant="info" wrap="nowrap">
+            {/* mobile only: from `md` up Starts and Expires have columns of
+                their own */}
+            <Text
+              tag="div"
+              size="x-small"
+              variant="info"
+              wrap="nowrap"
+              className="md:hidden"
+            >
               {/* when the promotion is available, as the list rows used to show it:
                   the same `formatDateRange` that `ResourceListItem` uses for its
                   promotions description */}
@@ -74,7 +83,7 @@ export function usePromotionsTableColumns(): Array<
           const couponsCount =
             "coupons_count" in resource ? resource.coupons_count : undefined
           return couponsCount == null ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">
               {formatNumber({ value: couponsCount, locale: user?.locale })}
@@ -90,7 +99,7 @@ export function usePromotionsTableColumns(): Array<
         hideable: true,
         cell: ({ resource }) =>
           resource.priority == null ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.priority}</Text>
           ),
@@ -125,7 +134,6 @@ export function usePromotionsTableColumns(): Array<
         kind: "datetime",
         sortBy: "starts_at",
         hideable: true,
-        defaultHidden: true,
         cell: ({ resource }) => (
           <Text wrap="nowrap">
             {formatDate({
@@ -143,10 +151,9 @@ export function usePromotionsTableColumns(): Array<
         kind: "datetime",
         sortBy: "expires_at",
         hideable: true,
-        defaultHidden: true,
         cell: ({ resource }) =>
           resource.expires_at == null ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">
               {formatDate({
@@ -166,7 +173,7 @@ export function usePromotionsTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           resource.total_usage_count == null ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">
               {formatNumber({
@@ -190,7 +197,7 @@ export function usePromotionsTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           isEmpty(resource.reference) ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.reference}</Text>
           ),

@@ -48,18 +48,24 @@ export function useStockTransfersTableColumns(): Array<
         header: "Origin",
         hideable: true,
         kind: "text",
-        cell: ({ resource }) => (
-          <Text>{resource.origin_stock_location?.name ?? "-"}</Text>
-        ),
+        cell: ({ resource }) =>
+          resource.origin_stock_location?.name != null ? (
+            <Text>{resource.origin_stock_location?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
         id: "destination",
         header: "Destination",
         hideable: true,
         kind: "text",
-        cell: ({ resource }) => (
-          <Text>{resource.destination_stock_location?.name ?? "-"}</Text>
-        ),
+        cell: ({ resource }) =>
+          resource.destination_stock_location?.name != null ? (
+            <Text>{resource.destination_stock_location?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
         id: "status",
@@ -107,7 +113,7 @@ export function useStockTransfersTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           isEmpty(resource.sku_code) ? (
-            <Text>-</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.sku_code}</Text>
           ),
@@ -120,7 +126,7 @@ export function useStockTransfersTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           isEmpty(resource.reference) ? (
-            <Text>-</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.reference}</Text>
           ),

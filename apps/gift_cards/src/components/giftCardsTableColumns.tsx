@@ -63,7 +63,7 @@ export function useGiftCardsTableColumns(): Array<
           const recipient = resource.gift_card_recipient
           const email = recipient?.customer?.email ?? recipient?.email
           if (email == null) {
-            return <Text className="text-gray-300">&#8212;</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return <Text>{email}</Text>
         },
@@ -102,7 +102,7 @@ export function useGiftCardsTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           resource.expires_at == null ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">
               {formatDate({
@@ -122,7 +122,7 @@ export function useGiftCardsTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           isEmpty(resource.reference) ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.reference}</Text>
           ),

@@ -95,7 +95,7 @@ export const stockTransferTabs: StockTransferTab[] = [
 export const stockTransfersTableSettings: TableSettingsConfig = {
   listId: "stock_transfers",
   sortOptions: [
-    { id: "number", label: "Number", sortBy: "number", kind: "text" },
+    { id: "number", label: "Number", sortBy: "number", kind: "number" },
     { id: "quantity", label: "Quantity", sortBy: "quantity", kind: "number" },
     { id: "updated", label: "Updated", sortBy: "updated_at", kind: "date" },
   ],

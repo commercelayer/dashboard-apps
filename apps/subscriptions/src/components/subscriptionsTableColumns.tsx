@@ -58,7 +58,7 @@ export function useSubscriptionsTableColumns(): Array<
           const address = resource.source_order?.billing_address
           const name = address?.full_name ?? resource.customer_email
           if (name == null) {
-            return <Text>-</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return (
             <Text>
@@ -92,7 +92,7 @@ export function useSubscriptionsTableColumns(): Array<
         sortBy: "last_run_at",
         cell: ({ resource }) => {
           if (resource.last_run_at == null) {
-            return <Text>-</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return (
             // the badge only shows for a failed run, so a healthy list stays quiet.
@@ -123,7 +123,7 @@ export function useSubscriptionsTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           resource.next_run_at == null ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">
               {formatDate({
@@ -169,7 +169,7 @@ export function useSubscriptionsTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           isEmpty(resource.reference) ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.reference}</Text>
           ),

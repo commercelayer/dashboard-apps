@@ -1,4 +1,5 @@
 import {
+  Badge,
   type CurrencyCode,
   formatCentsToCurrency,
   formatDate,
@@ -14,12 +15,13 @@ import type { Order } from "@commercelayer/sdk"
 import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
+import { getPaymentStatusBadgeVariant } from "#components/OrderSteps"
 import { type OrderTab, orderDateLabels } from "#data/lists"
 
 /**
  * Columns of the orders table, shared by the entry page and the filtered list.
  *
- * ORDER is the primary column, always shown: the number alone, since the market
+ * NUMBER is the primary column, always shown: the number alone, since the market
  * has a column of its own. The others can be hidden by the user from the columns
  * menu (`hideable`), with Payment status, Market, Country, Reference and Tags
  * hidden until they are turned on.
@@ -38,7 +40,7 @@ export function useOrdersTableColumns(
   return useMemo(
     () => [
       {
-        header: "Order",
+        header: "Number",
         // a number and nothing else since the market and the date moved to
         // columns of their own: an identifier's share of the table, not the
         // flexible one it had when it held all three
@@ -94,7 +96,11 @@ export function useOrdersTableColumns(
         cell: ({ resource }) => {
           const email = resource.customer?.email
           const label = isEmpty(email) ? getBillingName(resource) : email
-          return <Text>{isEmpty(label) ? "-" : label}</Text>
+          return isEmpty(label) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text>{label}</Text>
+          )
         },
       },
       {
@@ -124,11 +130,17 @@ export function useOrdersTableColumns(
         kind: "status",
         hideable: true,
         defaultHidden: true,
-        cell: ({ resource }) => (
-          <Text wrap="nowrap">
-            {getOrderPaymentStatusName(resource.payment_status)}
-          </Text>
-        ),
+        // the same badge as on the order details page
+        cell: ({ resource }) =>
+          resource.payment_status == null ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Badge
+              variant={getPaymentStatusBadgeVariant(resource.payment_status)}
+            >
+              {getOrderPaymentStatusName(resource.payment_status)}
+            </Badge>
+          ),
       },
       {
         id: "market",
@@ -136,7 +148,12 @@ export function useOrdersTableColumns(
         kind: "text",
         hideable: true,
         defaultHidden: true,
-        cell: ({ resource }) => <Text>{resource.market?.name ?? "-"}</Text>,
+        cell: ({ resource }) =>
+          resource.market?.name != null ? (
+            <Text>{resource.market?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
         id: "country",
@@ -147,7 +164,11 @@ export function useOrdersTableColumns(
         cell: ({ resource }) => {
           const countryCode =
             resource.country_code ?? resource.billing_address?.country_code
-          return <Text>{isEmpty(countryCode) ? "-" : countryCode}</Text>
+          return isEmpty(countryCode) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text>{countryCode}</Text>
+          )
         },
       },
       {
@@ -156,11 +177,14 @@ export function useOrdersTableColumns(
         kind: "code",
         hideable: true,
         defaultHidden: true,
-        cell: ({ resource }) => (
-          <Text tag="div" wrap="nowrap">
-            {isEmpty(resource.reference) ? "-" : resource.reference}
-          </Text>
-        ),
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text tag="div" wrap="nowrap">
+              {resource.reference}
+            </Text>
+          ),
       },
       {
         id: "tags",

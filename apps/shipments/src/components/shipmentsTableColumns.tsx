@@ -12,7 +12,7 @@ import { ShipmentStatusBadge } from "#components/ShipmentStatusBadge"
 /**
  * Columns of the shipments table.
  *
- * SHIPMENT is the primary column, always shown; the others can be hidden by the
+ * NUMBER is the primary column, always shown; the others can be hidden by the
  * user from the columns menu (`hideable`), with Reference and Tags hidden until
  * they are turned on.
  *
@@ -26,7 +26,7 @@ export function useShipmentsTableColumns(): Array<
   return useMemo(
     () => [
       {
-        header: "Shipment",
+        header: "Number",
         sortBy: "number",
         cell: ({ resource }) => (
           // the cell truncates its direct children only, so a two-line cell has
@@ -62,9 +62,12 @@ export function useShipmentsTableColumns(): Array<
         header: "Origin",
         kind: "text",
         hideable: true,
-        cell: ({ resource }) => (
-          <Text>{resource.stock_location?.name ?? "-"}</Text>
-        ),
+        cell: ({ resource }) =>
+          resource.stock_location?.name != null ? (
+            <Text>{resource.stock_location?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
         id: "destination",
@@ -74,7 +77,7 @@ export function useShipmentsTableColumns(): Array<
         cell: ({ resource }) => {
           const address = resource.shipping_address
           if (address?.city == null) {
-            return <Text>-</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return (
             <Text>
@@ -115,11 +118,12 @@ export function useShipmentsTableColumns(): Array<
         kind: "code",
         hideable: true,
         defaultHidden: true,
-        cell: ({ resource }) => (
-          <Text wrap="nowrap">
-            {isEmpty(resource.reference) ? "-" : resource.reference}
-          </Text>
-        ),
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text wrap="nowrap">{resource.reference}</Text>
+          ),
       },
       {
         id: "tags",

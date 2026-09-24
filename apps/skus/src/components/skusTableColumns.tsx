@@ -53,11 +53,14 @@ export function useSkusTableColumns(): Array<ResourceTableColumn<"skus">> {
         header: "Shipping category",
         hideable: true,
         kind: "text",
-        cell: ({ resource }) => (
+        cell: ({ resource }) =>
           // requires `include: ['shipping_category']` in the query, otherwise
           // the relationship is not returned and this stays empty
-          <Text>{resource.shipping_category?.name ?? "-"}</Text>
-        ),
+          resource.shipping_category?.name != null ? (
+            <Text>{resource.shipping_category?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
         id: "updated",
@@ -102,7 +105,7 @@ export function useSkusTableColumns(): Array<ResourceTableColumn<"skus">> {
         defaultHidden: true,
         cell: ({ resource }) =>
           isEmpty(resource.reference) ? (
-            <Text>-</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.reference}</Text>
           ),

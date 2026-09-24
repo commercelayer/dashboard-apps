@@ -77,7 +77,7 @@ export function useBundlesTableColumns(): Array<
             resource.formatted_compare_at_amount ===
               resource.formatted_price_amount
           ) {
-            return <Text className="text-gray-300">&#8212;</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return (
             <Text wrap="nowrap">
@@ -124,7 +124,7 @@ export function useBundlesTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           isEmpty(resource.reference) ? (
-            <Text className="text-gray-300">&#8212;</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.reference}</Text>
           ),

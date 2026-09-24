@@ -69,7 +69,7 @@ export function useStockItemsTableColumns(): Array<
           // on hand, so it only says something when there is any
           const reserved = resource.reserved_stock?.quantity
           if (reserved == null || reserved === 0) {
-            return <Text className="text-gray-300">&#8212;</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return (
             <Text wrap="nowrap">
@@ -83,9 +83,12 @@ export function useStockItemsTableColumns(): Array<
         header: "Stock location",
         hideable: true,
         kind: "text",
-        cell: ({ resource }) => (
-          <Text>{resource.stock_location?.name ?? "-"}</Text>
-        ),
+        cell: ({ resource }) =>
+          resource.stock_location?.name != null ? (
+            <Text>{resource.stock_location?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
         id: "updated",
@@ -112,7 +115,7 @@ export function useStockItemsTableColumns(): Array<
         defaultHidden: true,
         cell: ({ resource }) =>
           isEmpty(resource.reference) ? (
-            <Text>-</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.reference}</Text>
           ),

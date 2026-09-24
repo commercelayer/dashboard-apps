@@ -76,7 +76,7 @@ export const subscriptionTabs: SubscriptionTab[] = [
 export const subscriptionsTableSettings: TableSettingsConfig = {
   listId: "order_subscriptions",
   sortOptions: [
-    { id: "number", label: "Number", sortBy: "number", kind: "text" },
+    { id: "number", label: "Number", sortBy: "number", kind: "number" },
     { id: "last_run", label: "Last run", sortBy: "last_run_at", kind: "date" },
     {
       id: "next_run",

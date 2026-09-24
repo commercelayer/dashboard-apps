@@ -71,7 +71,7 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
             resource.formatted_compare_at_amount == null ||
             resource.formatted_compare_at_amount === resource.formatted_amount
           ) {
-            return <Text className="text-gray-300">&#8212;</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return (
             <Text wrap="nowrap">
@@ -85,7 +85,12 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
         header: "Price list",
         hideable: true,
         kind: "text",
-        cell: ({ resource }) => <Text>{resource.price_list?.name ?? "-"}</Text>,
+        cell: ({ resource }) =>
+          resource.price_list?.name != null ? (
+            <Text>{resource.price_list?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
         id: "updated",
@@ -112,7 +117,7 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
         defaultHidden: true,
         cell: ({ resource }) =>
           isEmpty(resource.reference) ? (
-            <Text>-</Text>
+            <Text variant="disabled">&#8212;</Text>
           ) : (
             <Text wrap="nowrap">{resource.reference}</Text>
           ),

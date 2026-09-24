@@ -19,7 +19,7 @@ import { useMemo } from "react"
  * so the column keeps its rhythm instead of looking broken.
  */
 function EmptyValue(): React.JSX.Element {
-  return <Text className="text-gray-300">&#8212;</Text>
+  return <Text variant="disabled">&#8212;</Text>
 }
 
 /**

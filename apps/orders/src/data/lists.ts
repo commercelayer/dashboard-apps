@@ -165,7 +165,7 @@ export const orderDateLabels: Record<OrderTab["dateSortBy"], string> = {
 /**
  * Sort options and stored preference of the orders table.
  *
- * The Metrics API only sorts by date fields. "Order" sorts by the order number
+ * The Metrics API only sorts by date fields. "Number" sorts by the order number
  * all the same, through `created_at`: numbers are handed out in sequence when an
  * order is created, so the two orderings match (checked on both `/orders` and
  * `/carts`). Customer and amount have no such stand-in.
@@ -181,7 +181,7 @@ export function makeOrdersTableSettings(tab: OrderTab): TableSettingsConfig {
     sortOptions: [
       {
         id: "order",
-        label: "Order",
+        label: "Number",
         sortBy: "order.created_at",
         kind: "number",
       },
