@@ -4,6 +4,7 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { LineItem, Order } from "@commercelayer/sdk"
+import { isLegacyPaymentModel } from "#components/OrderPayment/paymentSessionUtils"
 import { arrayOf } from "../utils"
 
 export function useOrderStatus(order: Order) {
@@ -28,8 +29,19 @@ export function useOrderStatus(order: Order) {
     (order.total_amount_with_taxes_cents ?? 0) -
     (order.place_total_amount_cents ?? 0)
 
+  /**
+   * Legacy only: core refuses `stop_editing` above the amount the order was
+   * placed at (`within_placed_total_amount?`), so the dashboard mirrors it.
+   * On the 2026-05 model the edit never depends on the money: core lets
+   * `stop_editing` through whatever is still to be collected
+   * (`stop_editing_amount_check?` returns early on `new_payments?`), and
+   * collecting a difference is a payment-link job afterwards rather than a
+   * precondition.
+   */
   const isOriginalOrderAmountExceeded =
-    order.status === "editing" && diffTotalAndPlacedTotal > 0
+    order.status === "editing" &&
+    isLegacyPaymentModel(order) &&
+    diffTotalAndPlacedTotal > 0
 
   function isGiftCard(
     item: LineItem,
@@ -76,7 +88,12 @@ export function useOrderStatus(order: Order) {
     hasShippableLineItems,
     /** `true` when the order has transactions, but the status is still `pending`. This is a kind of error status. */
     isPendingWithTransactions,
-    /** Difference between the current `total_amount` and the `place_total_amount`. */
+    /**
+     * How far a legacy order sits above the total it was placed at, formatted,
+     * or `null` when nothing does. Non-null is exactly the case where the edit
+     * cannot be finished, so it is both the warning's amount and the reason
+     * the button is disabled.
+     */
     diffTotalAndPlacedTotal:
       isOriginalOrderAmountExceeded && currencyCode != null
         ? formatCentsToCurrency(diffTotalAndPlacedTotal, currencyCode)
