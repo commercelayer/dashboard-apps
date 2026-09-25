@@ -223,6 +223,9 @@ export function CustomerDetails(): React.JSX.Element {
             onRemovedAddress={() => {
               void mutateCustomer()
             }}
+            onCreatedAddress={() => {
+              void mutateCustomer()
+            }}
           />
 
           <Spacer top={{ base: "14", lg: "10" }}>
