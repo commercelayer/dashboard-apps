@@ -37,11 +37,19 @@ export function usePromotionsTableColumns(): Array<
         header: "Name",
         sortBy: "name",
         cell: ({ resource }) => (
-          <div>
+          // the cell truncates its direct children only, so a two-line cell has
+          // to pass truncation down itself or a long name overflows
+          <div className="min-w-0 [&>*]:truncate">
             <div className="flex items-center gap-2">
-              <Text weight="medium">{resource.name}</Text>
+              {/* `min-w-0`: a flex item would not shrink below its text */}
+              <Text weight="medium" className="min-w-0 truncate">
+                {resource.name}
+              </Text>
               {/* the Status column is hidden on mobile, so the badge rides with the name */}
-              <RowStatusBadge resource={resource} className="md:hidden" />
+              <RowStatusBadge
+                resource={resource}
+                className="md:hidden shrink-0"
+              />
             </div>
             {/* mobile only: from `md` up Starts and Expires have columns of
                 their own */}
