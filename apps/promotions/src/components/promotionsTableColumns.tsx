@@ -18,8 +18,8 @@ import { useMemo } from "react"
  * Columns of the promotions table.
  *
  * NAME is the primary column, always shown; the others can be hidden by the
- * user from the columns menu (`hideable`), with Usage, Reference and Tags hidden
- * until they are turned on. Tags need `include: ['tags']` in the query. The
+ * user from the columns menu (`hideable`), with Priority, Usage, Reference and
+ * Tags hidden until they are turned on. Tags need `include: ['tags']` in the query. The
  * availability dates under the name are for mobile, where Starts and Expires
  * are not on screen.
  *
@@ -73,6 +73,43 @@ export function usePromotionsTableColumns(): Array<
         ),
       },
       {
+        id: "starts",
+        header: "Starts",
+        kind: "datetime",
+        sortBy: "starts_at",
+        hideable: true,
+        cell: ({ resource }) => (
+          <Text wrap="nowrap">
+            {formatDate({
+              format: "date",
+              isoDate: resource.starts_at,
+              timezone: user?.timezone,
+              locale: user?.locale,
+            })}
+          </Text>
+        ),
+      },
+      {
+        id: "expires",
+        header: "Expires",
+        kind: "datetime",
+        sortBy: "expires_at",
+        hideable: true,
+        cell: ({ resource }) =>
+          resource.expires_at == null ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text wrap="nowrap">
+              {formatDate({
+                format: "date",
+                isoDate: resource.expires_at,
+                timezone: user?.timezone,
+                locale: user?.locale,
+              })}
+            </Text>
+          ),
+      },
+      {
         id: "coupons",
         header: "Coupons",
         kind: "count",
@@ -90,19 +127,6 @@ export function usePromotionsTableColumns(): Array<
             </Text>
           )
         },
-      },
-      {
-        id: "priority",
-        header: "Priority",
-        kind: "count",
-        sortBy: "priority",
-        hideable: true,
-        cell: ({ resource }) =>
-          resource.priority == null ? (
-            <Text variant="disabled">&#8212;</Text>
-          ) : (
-            <Text wrap="nowrap">{resource.priority}</Text>
-          ),
       },
       {
         id: "status",
@@ -129,40 +153,17 @@ export function usePromotionsTableColumns(): Array<
         ),
       },
       {
-        id: "starts",
-        header: "Starts",
-        kind: "datetime",
-        sortBy: "starts_at",
+        id: "priority",
+        header: "Priority",
+        kind: "count",
+        sortBy: "priority",
         hideable: true,
-        cell: ({ resource }) => (
-          <Text wrap="nowrap">
-            {formatDate({
-              format: "full",
-              isoDate: resource.starts_at,
-              timezone: user?.timezone,
-              locale: user?.locale,
-            })}
-          </Text>
-        ),
-      },
-      {
-        id: "expires",
-        header: "Expires",
-        kind: "datetime",
-        sortBy: "expires_at",
-        hideable: true,
+        defaultHidden: true,
         cell: ({ resource }) =>
-          resource.expires_at == null ? (
+          resource.priority == null ? (
             <Text variant="disabled">&#8212;</Text>
           ) : (
-            <Text wrap="nowrap">
-              {formatDate({
-                format: "full",
-                isoDate: resource.expires_at,
-                timezone: user?.timezone,
-                locale: user?.locale,
-              })}
-            </Text>
+            <Text wrap="nowrap">{resource.priority}</Text>
           ),
       },
       {

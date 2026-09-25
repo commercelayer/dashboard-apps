@@ -16,8 +16,8 @@ import { usePromotionsTableColumns } from "#components/promotionsTableColumns"
 import { filtersInstructions } from "#data/filters"
 import {
   getPromotionTabs,
-  makePromotionsTableSettings,
   type PromotionTab,
+  promotionsTableSettings,
 } from "#data/lists"
 import { appRoutes } from "#data/routes"
 import { usePromotionPermission } from "#hooks/usePromotionPermission"
@@ -58,7 +58,7 @@ function Page(
     hasActiveFilter,
   } = useResourceFilters({
     instructions: filtersInstructions,
-    tableSettings: makePromotionsTableSettings(activeTab),
+    tableSettings: promotionsTableSettings,
   })
 
   const columns = usePromotionsTableColumns()
