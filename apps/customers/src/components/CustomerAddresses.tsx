@@ -1,9 +1,12 @@
 import {
+  Button,
+  Icon,
   ListItem,
   ResourceAddress,
   Section,
   useConfirmDialog,
   useCoreSdkProvider,
+  useResourceAddressOverlay,
   useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
@@ -14,10 +17,15 @@ import { useState } from "react"
 interface Props {
   customer: Customer
   onRemovedAddress?: () => void
+  onCreatedAddress?: () => void
 }
 
 export const CustomerAddresses = withSkeletonTemplate<Props>(
-  ({ customer, onRemovedAddress }): React.JSX.Element | null => {
+  ({
+    customer,
+    onRemovedAddress,
+    onCreatedAddress,
+  }): React.JSX.Element | null => {
     const { canUser } = useTokenProvider()
     const { sdkClient } = useCoreSdkProvider()
     const { t } = useTranslation()
@@ -25,6 +33,30 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
     const { show, ConfirmDialog } = useConfirmDialog()
     const [addressSetForDeletion, setAddressSetForDeletion] =
       useState<CustomerAddress | null>(null)
+
+    // an address on its own belongs to nobody: creating one here means creating
+    // the `customer_address` that ties it to this customer
+    const canCreate =
+      canUser("create", "addresses") && canUser("create", "customer_addresses")
+
+    const {
+      ResourceAddressOverlay: NewAddressOverlay,
+      openAddressOverlay: openNewAddressOverlay,
+    } = useResourceAddressOverlay({
+      address: null,
+      showBillingInfo: true,
+      onCreate: (address) => {
+        void sdkClient.customer_addresses
+          .create({
+            customer_email: customer.email,
+            customer: { type: "customers", id: customer.id },
+            address: { type: "addresses", id: address.id },
+          })
+          .then(() => {
+            onCreatedAddress?.()
+          })
+      },
+    })
 
     const addresses = customer.customer_addresses?.map((customerAddress) =>
       customerAddress?.address != null ? (
@@ -48,13 +80,33 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
       ) : null,
     )
 
-    if (addresses?.length === 0) return <></>
+    // with nothing to list and nothing to add the section would be an empty
+    // heading, so it stays out of the page entirely
+    if (addresses?.length === 0 && !canCreate) return <></>
 
     return (
       <>
-        <Section title={t("resources.addresses.name_other")}>
+        <Section
+          title={t("resources.addresses.name_other")}
+          actionButton={
+            canCreate && (
+              <Button
+                alignItems="center"
+                variant="secondary"
+                size="mini"
+                onClick={() => {
+                  openNewAddressOverlay()
+                }}
+              >
+                <Icon name="plus" />
+                {t("common.new")}
+              </Button>
+            )
+          }
+        >
           {addresses}
         </Section>
+        {canCreate && <NewAddressOverlay />}
         {canUser("destroy", "addresses") && (
           // the dialog reports a failed delete itself, as an error toast
           <ConfirmDialog
