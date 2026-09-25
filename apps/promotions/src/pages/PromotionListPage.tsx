@@ -14,7 +14,11 @@ import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { usePromotionsTableColumns } from "#components/promotionsTableColumns"
 import { filtersInstructions } from "#data/filters"
-import { getPromotionTabs, type PromotionTab } from "#data/lists"
+import {
+  getPromotionTabs,
+  type PromotionTab,
+  promotionsTableSettings,
+} from "#data/lists"
 import { appRoutes } from "#data/routes"
 import { usePromotionPermission } from "#hooks/usePromotionPermission"
 
@@ -54,6 +58,7 @@ function Page(
     hasActiveFilter,
   } = useResourceFilters({
     instructions: filtersInstructions,
+    tableSettings: promotionsTableSettings,
   })
 
   const columns = usePromotionsTableColumns()
@@ -86,9 +91,6 @@ function Page(
     }
   }, [hasTabInUrl])
 
-  /** Active promotions are ordered the way they are evaluated, not by recency. */
-  const isActiveTab = activeTab.label === "Active"
-
   const table = (
     <FilteredTable
       type="promotions"
@@ -97,8 +99,12 @@ function Page(
         // no sparse `fields`: `coupons_count` is not in the list type's field
         // union, and asking for a subset would drop it from the response
         pageSize: 25,
+        // the Tags column reads this relationship
+        include: ["tags"],
       }}
-      defaultSort={isActiveTab ? "priority" : "-created_at"}
+      // columns the user turns on may not fit: past that point the table
+      // scrolls sideways rather than squeezing them
+      layout="fit-or-scroll"
       hideTitle
       getRowHref={(promotion) =>
         navigateTo({ app: "promotions", resourceId: promotion.id })?.href

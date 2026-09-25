@@ -10,6 +10,8 @@ import {
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Customer } from "@commercelayer/sdk"
+import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
+import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 
 /**
@@ -17,7 +19,7 @@ import { useMemo } from "react"
  * so the column keeps its rhythm instead of looking broken.
  */
 function EmptyValue(): React.JSX.Element {
-  return <Text className="text-gray-300">&#8212;</Text>
+  return <Text variant="disabled">&#8212;</Text>
 }
 
 /**
@@ -41,7 +43,12 @@ function CustomerAvatar({
 /**
  * Columns of the customers table.
  *
- * Requires `include: ['customer_group']` in the query.
+ * CUSTOMER is the primary column, always shown; the others can be hidden by the
+ * user from the columns menu (`hideable`), with Updated, Reference and Tags
+ * hidden until they are turned on.
+ *
+ * Requires `include: ['customer_group', 'tags']` in the query, and `reference`
+ * among the sparse fields.
  */
 export function useCustomersTableColumns(): Array<
   ResourceTableColumn<"customers">
@@ -78,8 +85,10 @@ export function useCustomersTableColumns(): Array<
         ),
       },
       {
+        id: "orders",
         header: "Orders",
         kind: "count",
+        hideable: true,
         sortBy: "total_orders_count",
         cell: ({ resource }) =>
           resource.total_orders_count != null &&
@@ -95,8 +104,10 @@ export function useCustomersTableColumns(): Array<
           ),
       },
       {
+        id: "group",
         header: "Group",
         kind: "text",
+        hideable: true,
         hideBelow: "lg",
         cell: ({ resource }) =>
           resource.customer_group?.name != null ? (
@@ -106,9 +117,11 @@ export function useCustomersTableColumns(): Array<
           ),
       },
       {
+        id: "status",
         header: "Status",
         kind: "status",
         sortBy: "status",
+        hideable: true,
         cell: ({ resource }) => (
           // the raw status rather than `getCustomerStatusName`, as in the design.
           // A neutral badge because the dictionary maps all three statuses to the
@@ -117,9 +130,11 @@ export function useCustomersTableColumns(): Array<
         ),
       },
       {
+        id: "created",
         header: "Created",
         kind: "datetime",
         sortBy: "created_at",
+        hideable: true,
         cell: ({ resource }) => (
           <Text wrap="nowrap">
             {formatDate({
@@ -130,6 +145,50 @@ export function useCustomersTableColumns(): Array<
             })}
           </Text>
         ),
+      },
+      {
+        id: "updated",
+        header: "Updated",
+        kind: "datetime",
+        sortBy: "updated_at",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => (
+          <Text wrap="nowrap">
+            {formatDate({
+              format: "full",
+              isoDate: resource.updated_at,
+              timezone: user?.timezone,
+              locale: user?.locale,
+            })}
+          </Text>
+        ),
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <EmptyValue />
+          ) : (
+            <Text wrap="nowrap">{resource.reference}</Text>
+          ),
+      },
+      {
+        id: "tags",
+        header: "Tags",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          (resource.tags?.length ?? 0) > 0 ? (
+            <TableTagsCell tags={resource.tags} />
+          ) : (
+            <EmptyValue />
+          ),
       },
     ],
     [t, user?.timezone, user?.locale],

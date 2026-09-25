@@ -16,7 +16,11 @@ import { CustomerPendingAnonymizationDialog } from "#components/CustomerPendingA
 import { useCustomersTableColumns } from "#components/customersTableColumns"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { instructions } from "#data/filters"
-import { type CustomerTab, customerTabs } from "#data/lists"
+import {
+  type CustomerTab,
+  customersTableSettings,
+  customerTabs,
+} from "#data/lists"
 import { appRoutes } from "#data/routes"
 import { useCustomerAnonymizedPendingList } from "#hooks/useCustomerAnonymizedPendingList"
 
@@ -46,6 +50,7 @@ function CustomerList(): React.JSX.Element {
     hasActiveFilter,
   } = useResourceFilters({
     instructions,
+    tableSettings: customersTableSettings,
   })
 
   const columns = useCustomersTableColumns()
@@ -101,14 +106,19 @@ function CustomerList(): React.JSX.Element {
             "total_orders_count",
             "created_at",
             "updated_at",
+            "reference",
             "customer_group",
+            "tags",
           ],
+          tags: ["id", "name"],
         },
-        // the Group column reads this relationship
-        include: ["customer_group"],
+        // the Group and Tags columns read these relationships
+        include: ["customer_group", "tags"],
         pageSize: 25,
       }}
-      defaultSort="-created_at"
+      // columns the user turns on may not fit: past that point the table
+      // scrolls sideways rather than squeezing them
+      layout="fit-or-scroll"
       hideTitle
       getRowHref={(customer) =>
         navigateTo({ app: "customers", resourceId: customer.id })?.href

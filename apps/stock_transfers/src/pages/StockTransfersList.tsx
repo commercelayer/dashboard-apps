@@ -11,7 +11,11 @@ import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { useStockTransfersTableColumns } from "#components/stockTransfersTableColumns"
 import { makeFiltersInstructions } from "#data/filters"
-import { type StockTransferTab, stockTransferTabs } from "#data/lists"
+import {
+  type StockTransferTab,
+  stockTransfersTableSettings,
+  stockTransferTabs,
+} from "#data/lists"
 
 export function StockTransfersList(): React.JSX.Element {
   const { navigateTo } = useAppLinking()
@@ -40,6 +44,7 @@ export function StockTransfersList(): React.JSX.Element {
   } = useResourceFilters({
     // the tab owns the status, so the status field would only contradict it
     instructions: makeFiltersInstructions({ hideFilterStatus: true }),
+    tableSettings: stockTransfersTableSettings,
   })
 
   const columns = useStockTransfersTableColumns()
@@ -83,6 +88,9 @@ export function StockTransfersList(): React.JSX.Element {
             "number",
             "status",
             "updated_at",
+            "quantity",
+            "sku_code",
+            "reference",
             "origin_stock_location",
             "destination_stock_location",
           ],
@@ -92,7 +100,9 @@ export function StockTransfersList(): React.JSX.Element {
         include: ["origin_stock_location", "destination_stock_location"],
         pageSize: 25,
       }}
-      defaultSort="-updated_at"
+      // columns the user turns on may not fit: past that point the table
+      // scrolls sideways rather than squeezing them
+      layout="fit-or-scroll"
       hideTitle
       getRowHref={(stockTransfer) =>
         navigateTo({ app: "stock_transfers", resourceId: stockTransfer.id })

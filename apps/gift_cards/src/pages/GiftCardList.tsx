@@ -12,6 +12,7 @@ import { useGiftCardsTableColumns } from "#components/giftCardsTableColumns"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { instructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
+import { giftCardsTableSettings } from "#data/tableSettings"
 
 const GiftCardList: FC = () => {
   const { canUser } = useTokenProvider()
@@ -22,6 +23,7 @@ const GiftCardList: FC = () => {
   const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
     useResourceFilters({
       instructions,
+      tableSettings: giftCardsTableSettings,
     })
 
   const columns = useGiftCardsTableColumns()
@@ -70,14 +72,25 @@ const GiftCardList: FC = () => {
                 "formatted_initial_balance",
                 "created_at",
                 "updated_at",
+                "expires_at",
+                "reference",
                 "gift_card_recipient",
+                "tags",
               ],
+              tags: ["id", "name"],
             },
-            // the Customer column reads the recipient's customer, or its email
-            include: ["gift_card_recipient", "gift_card_recipient.customer"],
+            // the Customer column reads the recipient's customer, or its email;
+            // the Tags column reads the tags
+            include: [
+              "gift_card_recipient",
+              "gift_card_recipient.customer",
+              "tags",
+            ],
             pageSize: 25,
           }}
-          defaultSort="-created_at"
+          // columns the user turns on may not fit: past that point the table
+          // scrolls sideways rather than squeezing them
+          layout="fit-or-scroll"
           hideTitle
           getRowHref={(giftCard) =>
             navigateTo({ app: "gift_cards", resourceId: giftCard.id })?.href

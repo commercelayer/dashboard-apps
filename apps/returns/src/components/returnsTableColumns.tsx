@@ -7,6 +7,8 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { Return } from "@commercelayer/sdk"
+import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
+import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 import { getReturnStatusBadgeVariant } from "#data/dictionaries"
 
@@ -16,7 +18,12 @@ import { getReturnStatusBadgeVariant } from "#data/dictionaries"
  * A return travels the opposite way to a shipment, so Origin is the customer's
  * address and Destination the warehouse it goes back to.
  *
- * Requires `include: ['origin_address', 'stock_location']` in the query.
+ * NUMBER is the primary column, always shown; the others can be hidden by the
+ * user from the columns menu (`hideable`), with Customer, Reference and Tags
+ * hidden until they are turned on.
+ *
+ * Requires `include: ['origin_address', 'stock_location', 'tags']` in the query,
+ * and `customer_email` and `reference` among the sparse fields.
  */
 export function useReturnsTableColumns(): Array<
   ResourceTableColumn<"returns">
@@ -27,6 +34,8 @@ export function useReturnsTableColumns(): Array<
     () => [
       {
         header: "Number",
+        // the number alone: an identifier's share of the table, as on orders
+        kind: "code",
         sortBy: "number",
         cell: ({ resource }) => (
           <Text weight="medium" wrap="nowrap">
@@ -40,12 +49,14 @@ export function useReturnsTableColumns(): Array<
         ),
       },
       {
+        id: "origin",
         header: "Origin",
         kind: "text",
+        hideable: true,
         cell: ({ resource }) => {
           const address = resource.origin_address
           if (address?.city == null) {
-            return <Text>-</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return (
             <Text>
@@ -56,22 +67,31 @@ export function useReturnsTableColumns(): Array<
         },
       },
       {
+        id: "destination",
         header: "Destination",
         kind: "text",
-        cell: ({ resource }) => (
-          <Text>{resource.stock_location?.name ?? "-"}</Text>
-        ),
+        hideable: true,
+        cell: ({ resource }) =>
+          resource.stock_location?.name != null ? (
+            <Text>{resource.stock_location?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
+        id: "status",
         header: "Status",
         kind: "status",
         sortBy: "status",
+        hideable: true,
         cell: ({ resource }) => <RowStatusBadge resource={resource} />,
       },
       {
+        id: "updated",
         header: "Updated",
         kind: "datetime",
         sortBy: "updated_at",
+        hideable: true,
         cell: ({ resource }) => (
           <Text wrap="nowrap">
             {formatDate({
@@ -82,6 +102,40 @@ export function useReturnsTableColumns(): Array<
             })}
           </Text>
         ),
+      },
+      {
+        id: "customer",
+        header: "Customer",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          isEmpty(resource.customer_email) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text>{resource.customer_email}</Text>
+          ),
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text wrap="nowrap">{resource.reference}</Text>
+          ),
+      },
+      {
+        id: "tags",
+        header: "Tags",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => <TableTagsCell tags={resource.tags} />,
       },
     ],
     [user?.timezone, user?.locale],

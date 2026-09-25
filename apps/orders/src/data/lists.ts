@@ -1,4 +1,8 @@
-import type { FormFullValues } from "@commercelayer/app-elements"
+import type {
+  FormFullValues,
+  TableSettingsConfig,
+  TableSortValue,
+} from "@commercelayer/app-elements"
 import type { HideableFilter } from "./filters"
 
 export interface OrderTab {
@@ -9,8 +13,14 @@ export interface OrderTab {
    * the active tab survives a refresh and can be shared.
    */
   formValues: FormFullValues
-  /** Metrics attribute the tab is sorted by, descending. */
-  sortBy: "order.placed_at" | "order.updated_at"
+  /**
+   * The metrics attribute of the date the DATE column shows, and so the one it
+   * marks as sorted: when the order was placed, or when a cart — which is never
+   * placed — was last updated.
+   */
+  dateSortBy: "order.placed_at" | "order.updated_at"
+  /** The sort the tab opens with, until the user picks one. */
+  defaultSort: TableSortValue
   /**
    * Which filters instructions the tab needs. Carts are served by the metrics
    * `/carts` endpoint, which rejects the `placed_at` date field used by the
@@ -59,7 +69,8 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "All",
     },
-    sortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
+    defaultSort: { id: "order", direction: "desc" },
   },
   {
     label: "Placed",
@@ -69,7 +80,8 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "Placed",
     },
-    sortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
+    defaultSort: { id: "order", direction: "desc" },
     hiddenFilters: ["status_in"],
   },
   {
@@ -82,7 +94,8 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "Approved",
     },
-    sortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
+    defaultSort: { id: "order", direction: "desc" },
     hiddenFilters: ["status_in", "fulfillment_statuses_in"],
   },
   {
@@ -94,7 +107,8 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "In progress",
     },
-    sortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
+    defaultSort: { id: "order", direction: "desc" },
     hiddenFilters: ["fulfillment_statuses_in"],
   },
   {
@@ -107,7 +121,8 @@ export const orderTabs: OrderTab[] = [
       archived: "hide",
       viewTitle: "Fulfilled",
     },
-    sortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
+    defaultSort: { id: "order", direction: "desc" },
     hiddenFilters: ["status_in", "fulfillment_statuses_in"],
   },
   {
@@ -121,7 +136,8 @@ export const orderTabs: OrderTab[] = [
       archived: "show",
       viewTitle: "Carts",
     },
-    sortBy: "order.updated_at",
+    dateSortBy: "order.updated_at",
+    defaultSort: { id: "order", direction: "desc" },
     instructions: "carts",
     separatorBefore: true,
   },
@@ -131,6 +147,51 @@ export const orderTabs: OrderTab[] = [
       archived: "only",
       viewTitle: "Archived",
     },
-    sortBy: "order.placed_at",
+    dateSortBy: "order.placed_at",
+    defaultSort: { id: "order", direction: "desc" },
   },
 ]
+
+/**
+ * What the tab's date is called, in the DATE column header and in the sort
+ * menu: an order is dated by its placement, a cart — never placed — by its last
+ * update.
+ */
+export const orderDateLabels: Record<OrderTab["dateSortBy"], string> = {
+  "order.placed_at": "Placed",
+  "order.updated_at": "Updated",
+}
+
+/**
+ * Sort options and stored preference of the orders table.
+ *
+ * The Metrics API only sorts by date fields. "Number" sorts by the order number
+ * all the same, through `created_at`: numbers are handed out in sequence when an
+ * order is created, so the two orderings match (checked on both `/orders` and
+ * `/carts`). Customer and amount have no such stand-in.
+ *
+ * The other option is the tab's own date, the one the DATE column shows:
+ * "Placed" on orders, "Updated" on carts, which `/carts` cannot sort by
+ * placement anyway. It keeps the same id on every tab, so a choice made on one
+ * tab holds on the others, as the whole preference does (one `listId`).
+ */
+export function makeOrdersTableSettings(tab: OrderTab): TableSettingsConfig {
+  return {
+    listId: "orders",
+    sortOptions: [
+      {
+        id: "order",
+        label: "Number",
+        sortBy: "order.created_at",
+        kind: "number",
+      },
+      {
+        id: "date",
+        label: orderDateLabels[tab.dateSortBy],
+        sortBy: tab.dateSortBy,
+        kind: "date",
+      },
+    ],
+    defaultSort: tab.defaultSort,
+  }
+}
