@@ -35,6 +35,8 @@ export function useSubscriptionsTableColumns(): Array<
     () => [
       {
         header: "Number",
+        // the number alone: an identifier's share of the table, as on orders
+        kind: "code",
         sortBy: "number",
         cell: ({ resource }) => (
           <Text weight="medium" wrap="nowrap">

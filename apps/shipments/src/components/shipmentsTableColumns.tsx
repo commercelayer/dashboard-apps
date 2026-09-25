@@ -27,6 +27,8 @@ export function useShipmentsTableColumns(): Array<
     () => [
       {
         header: "Number",
+        // the number alone: an identifier's share of the table, as on orders
+        kind: "code",
         sortBy: "number",
         cell: ({ resource }) => (
           // the cell truncates its direct children only, so a two-line cell has
