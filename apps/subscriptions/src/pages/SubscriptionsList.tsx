@@ -13,7 +13,11 @@ import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { useSubscriptionsTableColumns } from "#components/subscriptionsTableColumns"
 import { instructions } from "#data/filters"
-import { type SubscriptionTab, subscriptionTabs } from "#data/lists"
+import {
+  type SubscriptionTab,
+  subscriptionsTableSettings,
+  subscriptionTabs,
+} from "#data/lists"
 import { useSubscriptionModelsFrequencies } from "#hooks/useSubscriptionModelsFrequencies"
 
 export const SubscriptionsList: FC = () => {
@@ -47,6 +51,7 @@ export const SubscriptionsList: FC = () => {
     instructions: instructions(subscriptionModelsFrequencies, {
       hideFilterStatus: true,
     }),
+    tableSettings: subscriptionsTableSettings,
   })
 
   const columns = useSubscriptionsTableColumns()
@@ -92,11 +97,19 @@ export const SubscriptionsList: FC = () => {
       type="order_subscriptions"
       columns={columns}
       query={{
-        // the Customer column reads the name off the source order's billing address
-        include: ["customer", "source_order", "source_order.billing_address"],
+        // the Customer column reads the name off the source order's billing
+        // address, the Tags column the tags
+        include: [
+          "customer",
+          "source_order",
+          "source_order.billing_address",
+          "tags",
+        ],
         pageSize: 25,
       }}
-      defaultSort="-updated_at"
+      // columns the user turns on may not fit: past that point the table
+      // scrolls sideways rather than squeezing them
+      layout="fit-or-scroll"
       hideTitle
       getRowHref={(subscription) =>
         navigateTo({ app: "subscriptions", resourceId: subscription.id })?.href

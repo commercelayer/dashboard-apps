@@ -1,4 +1,7 @@
-import type { FormFullValues } from "@commercelayer/app-elements"
+import type {
+  FormFullValues,
+  TableSettingsConfig,
+} from "@commercelayer/app-elements"
 
 export interface CustomerTab {
   /** Tab label, intentionally not localized */
@@ -44,3 +47,21 @@ export const customerTabs: CustomerTab[] = [
     },
   },
 ]
+
+/**
+ * Sort options and stored preference of the customers table, shared by every tab.
+ */
+export const customersTableSettings: TableSettingsConfig = {
+  listId: "customers",
+  sortOptions: [
+    { id: "email", label: "Email", sortBy: "email", kind: "text" },
+    {
+      id: "orders",
+      label: "Orders",
+      sortBy: "total_orders_count",
+      kind: "number",
+    },
+    { id: "created", label: "Created", sortBy: "created_at", kind: "date" },
+  ],
+  defaultSort: { id: "created", direction: "desc" },
+}

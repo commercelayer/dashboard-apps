@@ -1,4 +1,7 @@
-import type { FormFullValues } from "@commercelayer/app-elements"
+import type {
+  FormFullValues,
+  TableSettingsConfig,
+} from "@commercelayer/app-elements"
 import type { Return } from "@commercelayer/sdk"
 
 export interface ReturnTab {
@@ -87,3 +90,16 @@ export const returnTabs: ReturnTab[] = [
     },
   },
 ]
+
+/**
+ * Sort options and stored preference of the returns table, shared by every tab.
+ */
+export const returnsTableSettings: TableSettingsConfig = {
+  listId: "returns",
+  sortOptions: [
+    { id: "number", label: "Number", sortBy: "number", kind: "number" },
+    { id: "updated", label: "Updated", sortBy: "updated_at", kind: "date" },
+    { id: "created", label: "Created", sortBy: "created_at", kind: "date" },
+  ],
+  defaultSort: { id: "updated", direction: "desc" },
+}

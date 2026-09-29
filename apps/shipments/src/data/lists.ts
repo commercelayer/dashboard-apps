@@ -1,4 +1,7 @@
-import type { FormFullValues } from "@commercelayer/app-elements"
+import type {
+  FormFullValues,
+  TableSettingsConfig,
+} from "@commercelayer/app-elements"
 
 export interface ShipmentTab {
   /** Tab label, intentionally not localized */
@@ -77,3 +80,17 @@ export const shipmentTabs: ShipmentTab[] = [
     },
   },
 ]
+
+/**
+ * Sort options and stored preference of the shipments table, shared by every tab.
+ * Only the shipment's own sortable attributes are offered: sorting by a
+ * relationship (the order number) is not typed by the SDK nor verified.
+ */
+export const shipmentsTableSettings: TableSettingsConfig = {
+  listId: "shipments",
+  sortOptions: [
+    { id: "number", label: "Number", sortBy: "number", kind: "number" },
+    { id: "updated", label: "Updated", sortBy: "updated_at", kind: "date" },
+  ],
+  defaultSort: { id: "updated", direction: "desc" },
+}

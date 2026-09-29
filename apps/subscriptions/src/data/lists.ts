@@ -1,4 +1,7 @@
-import type { FormFullValues } from "@commercelayer/app-elements"
+import type {
+  FormFullValues,
+  TableSettingsConfig,
+} from "@commercelayer/app-elements"
 
 export interface SubscriptionTab {
   /** Tab label, intentionally not localized */
@@ -65,3 +68,23 @@ export const subscriptionTabs: SubscriptionTab[] = [
     },
   },
 ]
+
+/**
+ * Sort options and stored preference of the subscriptions table, shared by every
+ * tab.
+ */
+export const subscriptionsTableSettings: TableSettingsConfig = {
+  listId: "order_subscriptions",
+  sortOptions: [
+    { id: "number", label: "Number", sortBy: "number", kind: "number" },
+    { id: "last_run", label: "Last run", sortBy: "last_run_at", kind: "date" },
+    {
+      id: "next_run",
+      label: "Next run",
+      sortBy: "next_run_at",
+      kind: "schedule",
+    },
+    { id: "updated", label: "Updated", sortBy: "updated_at", kind: "date" },
+  ],
+  defaultSort: { id: "updated", direction: "desc" },
+}

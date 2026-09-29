@@ -11,6 +11,7 @@ import { ListEmptyStateStockItems } from "#components/ListEmptyStateStockItems"
 import { useStockItemsTableColumns } from "#components/stockItemsTableColumns"
 import { stockItemsInstructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
+import { stockItemsTableSettings } from "#data/tableSettings"
 
 export function StockItemsList(): React.JSX.Element {
   const { canUser } = useTokenProvider()
@@ -22,6 +23,7 @@ export function StockItemsList(): React.JSX.Element {
   const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
     useResourceFilters({
       instructions: stockItemsInstructions,
+      tableSettings: stockItemsTableSettings,
     })
 
   const columns = useStockItemsTableColumns()
@@ -81,7 +83,9 @@ export function StockItemsList(): React.JSX.Element {
             // the SKU, Stock location and Quantity columns read these
             include: ["sku", "reserved_stock", "stock_location"],
           }}
-          defaultSort="-updated_at"
+          // columns the user turns on may not fit: past that point the table
+          // scrolls sideways rather than squeezing them
+          layout="fit-or-scroll"
           hideTitle
           // a real href keeps cmd/middle-click opening the stock item in a new tab
           getRowHref={(stockItem) => `${base}${detailsPath(stockItem.id)}`}

@@ -1,4 +1,7 @@
-import type { FormFullValues } from "@commercelayer/app-elements"
+import type {
+  FormFullValues,
+  TableSettingsConfig,
+} from "@commercelayer/app-elements"
 import type { StockTransfer } from "@commercelayer/sdk"
 
 export interface StockTransferTab {
@@ -84,3 +87,17 @@ export const stockTransferTabs: StockTransferTab[] = [
     },
   },
 ]
+
+/**
+ * Sort options and stored preference of the stock transfers table, shared by
+ * every tab.
+ */
+export const stockTransfersTableSettings: TableSettingsConfig = {
+  listId: "stock_transfers",
+  sortOptions: [
+    { id: "number", label: "Number", sortBy: "number", kind: "number" },
+    { id: "quantity", label: "Quantity", sortBy: "quantity", kind: "number" },
+    { id: "updated", label: "Updated", sortBy: "updated_at", kind: "date" },
+  ],
+  defaultSort: { id: "updated", direction: "desc" },
+}

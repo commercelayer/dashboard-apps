@@ -29,7 +29,8 @@ function getOrderStatusBadgeVariant(
   }
 }
 
-function getPaymentStatusBadgeVariant(
+/** The payment status badge colour, shared with the orders table. */
+export function getPaymentStatusBadgeVariant(
   status: Order["payment_status"],
 ): BadgeProps["variant"] {
   switch (status) {

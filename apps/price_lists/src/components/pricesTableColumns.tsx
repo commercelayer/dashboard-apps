@@ -5,6 +5,7 @@ import {
   Text,
   useTokenProvider,
 } from "@commercelayer/app-elements"
+import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
 
 /**
@@ -13,6 +14,10 @@ import { useMemo } from "react"
  * The SKU column carries the same information the list item used to show (image,
  * name and code); the row link is provided by the table itself, so no caret is
  * needed here.
+ *
+ * SKU is the primary column, always shown; the others can be hidden by the user
+ * from the columns menu (`hideable`), with Reference hidden until it is turned
+ * on.
  *
  * Requires `include: ['sku', 'price_list']` in the query.
  */
@@ -42,7 +47,9 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
         ),
       },
       {
+        id: "price",
         header: "Price",
+        hideable: true,
         // the number this table exists for: worth its place on a phone
         hideBelow: "never",
         kind: "amount",
@@ -52,7 +59,9 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
         ),
       },
       {
+        id: "original",
         header: "Original",
+        hideable: true,
         kind: "amount",
         sortBy: "compare_at_amount_cents",
         cell: ({ resource }) => {
@@ -62,7 +71,7 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
             resource.formatted_compare_at_amount == null ||
             resource.formatted_compare_at_amount === resource.formatted_amount
           ) {
-            return <Text className="text-gray-300">&#8212;</Text>
+            return <Text variant="disabled">&#8212;</Text>
           }
           return (
             <Text wrap="nowrap">
@@ -72,12 +81,21 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
         },
       },
       {
+        id: "price_list",
         header: "Price list",
+        hideable: true,
         kind: "text",
-        cell: ({ resource }) => <Text>{resource.price_list?.name ?? "-"}</Text>,
+        cell: ({ resource }) =>
+          resource.price_list?.name != null ? (
+            <Text>{resource.price_list?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
       },
       {
+        id: "updated",
         header: "Updated",
+        hideable: true,
         kind: "datetime",
         sortBy: "updated_at",
         cell: ({ resource }) => (
@@ -90,6 +108,19 @@ export function usePricesTableColumns(): Array<ResourceTableColumn<"prices">> {
             })}
           </Text>
         ),
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text wrap="nowrap">{resource.reference}</Text>
+          ),
       },
     ],
     [user?.timezone, user?.locale],

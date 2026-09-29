@@ -12,7 +12,7 @@ import { navigate, useSearch } from "wouter/use-browser-location"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { useReturnsTableColumns } from "#components/returnsTableColumns"
 import { makeFiltersInstructions } from "#data/filters"
-import { type ReturnTab, returnTabs } from "#data/lists"
+import { type ReturnTab, returnsTableSettings, returnTabs } from "#data/lists"
 
 function ReturnsList(): React.JSX.Element {
   const { t } = useTranslation()
@@ -39,6 +39,7 @@ function ReturnsList(): React.JSX.Element {
   } = useResourceFilters({
     // the tab owns the status, so the status field would only contradict it
     instructions: makeFiltersInstructions({ hideFilterStatus: true }),
+    tableSettings: returnsTableSettings,
   })
 
   const columns = useReturnsTableColumns()
@@ -82,17 +83,23 @@ function ReturnsList(): React.JSX.Element {
             "number",
             "status",
             "updated_at",
+            "customer_email",
+            "reference",
             "origin_address",
             "stock_location",
+            "tags",
           ],
           addresses: ["id", "city", "country_code"],
           stock_locations: ["id", "name"],
+          tags: ["id", "name"],
         },
-        // the Origin and Destination columns read these relationships
-        include: ["origin_address", "stock_location"],
+        // the Origin, Destination and Tags columns read these relationships
+        include: ["origin_address", "stock_location", "tags"],
         pageSize: 25,
       }}
-      defaultSort="-updated_at"
+      // columns the user turns on may not fit: past that point the table
+      // scrolls sideways rather than squeezing them
+      layout="fit-or-scroll"
       hideTitle
       getRowHref={(returnObj) =>
         navigateTo({ app: "returns", resourceId: returnObj.id })?.href

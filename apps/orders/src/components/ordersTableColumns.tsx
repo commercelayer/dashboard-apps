@@ -1,4 +1,5 @@
 import {
+  Badge,
   type CurrencyCode,
   formatCentsToCurrency,
   formatDate,
@@ -11,110 +12,214 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
+import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
-import type { OrderTab } from "#data/lists"
+import { getPaymentStatusBadgeVariant } from "#components/OrderSteps"
+import { type OrderTab, orderDateLabels } from "#data/lists"
 
 /**
  * Columns of the orders table, shared by the entry page and the filtered list.
  *
- * @param sortBy - the metrics attribute the ORDER column sorts by. Carts have no
- * `placed_at`, so they are sorted by `order.updated_at` instead.
+ * NUMBER is the primary column, always shown: the number alone, since the market
+ * has a column of its own. The others can be hidden by the user from the columns
+ * menu (`hideable`), with Payment status, Market, Country, Reference and Tags
+ * hidden until they are turned on.
+ *
+ * @param sortBy - the metrics attribute of the date the DATE column shows, which
+ * it marks as sorted: `order.placed_at`, or `order.updated_at` for carts, which
+ * are never placed.
  */
 export function useOrdersTableColumns(
-  // the metrics attribute the tab sorts by, dotted as Metrics names are — the
-  // column type only accepts a Core sort field or a namespaced metrics one
-  sortBy: OrderTab["sortBy"],
+  // dotted as Metrics names are — the column type only accepts a Core sort field
+  // or a namespaced metrics one
+  sortBy: OrderTab["dateSortBy"],
 ): Array<ResourceTableColumn<"orders">> {
   const { user } = useTokenProvider()
 
   return useMemo(
     () => [
       {
-        header: "Order",
-        // sorting is resolved server-side by the metrics API
-        sortBy,
+        header: "Number",
+        // a number and nothing else since the market and the date moved to
+        // columns of their own: an identifier's share of the table, not the
+        // flexible one it had when it held all three
+        kind: "code",
+        // the number is handed out at creation, so this is what sorts by it
+        // (the Metrics API sorts by date fields only)
+        sortBy: "order.created_at",
         cell: ({ resource }) => (
           <div>
             <Text tag="div" weight="medium" wrap="nowrap">
-              {`${resource.market?.name ?? "Order"} #${resource.number ?? ""}`.trim()}
+              {`#${resource.number ?? ""}`}
               {/* the Status column is hidden on mobile, so the badge rides with the name */}
               <RowStatusBadge
                 resource={resource}
                 className="md:hidden inline-block align-middle ml-2"
               />
             </Text>
-            <Text tag="div" size="x-small" variant="info" wrap="nowrap">
-              {formatDate({
-                format: "full",
-                isoDate: resource.placed_at ?? resource.updated_at,
-                timezone: user?.timezone,
-                locale: user?.locale,
-              })}
+            {/* mobile only: from `md` up the date has a column of its own */}
+            <Text
+              tag="div"
+              size="x-small"
+              variant="info"
+              wrap="nowrap"
+              className="md:hidden"
+            >
+              <OrderDate resource={resource} />
             </Text>
           </div>
         ),
       },
       {
+        id: "date",
+        // "Placed", or "Updated" on carts: the id stays the same, so the column
+        // keeps its visibility and place across tabs
+        header: orderDateLabels[sortBy],
+        kind: "datetime",
+        hideable: true,
+        // sorting is resolved server-side by the metrics API
+        sortBy,
+        cell: ({ resource }) => (
+          <Text wrap="nowrap">
+            <OrderDate resource={resource} />
+          </Text>
+        ),
+      },
+      {
+        id: "customer",
         header: "Customer",
         kind: "text",
+        hideable: true,
+        // the email alone, the country having a column of its own. A guest
+        // checkout can have no email, and the billing name stands in for it.
         cell: ({ resource }) => {
-          const name = getCustomerName(resource)
-          const countryCode = resource.billing_address?.country_code
           const email = resource.customer?.email
-          // guest checkouts can have no billing name at all, in which case the
-          // email is the only identifying information worth showing first
-          const title = isEmpty(name) ? email : name
-
-          return (
-            <div>
-              <Text tag="div" weight="medium">
-                {isEmpty(title) ? "-" : title}
-                {!isEmpty(countryCode) ? ` (${countryCode})` : ""}
-              </Text>
-              {!isEmpty(email) && title !== email && (
-                <Text tag="div" size="x-small" variant="info">
-                  {email}
-                </Text>
-              )}
-            </div>
+          const label = isEmpty(email) ? getBillingName(resource) : email
+          return isEmpty(label) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text>{label}</Text>
           )
         },
       },
       {
+        id: "status",
         header: "Status",
         kind: "status",
+        hideable: true,
         cell: ({ resource }) => <RowStatusBadge resource={resource} />,
       },
       {
+        id: "amount",
         header: "Amount",
         kind: "amount",
+        hideable: true,
         // what the row is worth: worth its place on a phone
         hideBelow: "never",
+        // the amount alone: the payment status has a column of its own
         cell: ({ resource }) => (
-          <div>
-            <Text tag="div" weight="medium" wrap="nowrap">
-              {getFormattedTotalAmount(resource)}
-            </Text>
-            <Text
-              tag="div"
-              size="x-small"
-              weight="medium"
-              variant="info"
-              wrap="nowrap"
+          <Text weight="medium" wrap="nowrap">
+            {getFormattedTotalAmount(resource)}
+          </Text>
+        ),
+      },
+      {
+        id: "payment_status",
+        header: "Payment status",
+        kind: "status",
+        hideable: true,
+        defaultHidden: true,
+        // the same badge as on the order details page
+        cell: ({ resource }) =>
+          resource.payment_status == null ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Badge
+              variant={getPaymentStatusBadgeVariant(resource.payment_status)}
             >
               {getOrderPaymentStatusName(resource.payment_status)}
+            </Badge>
+          ),
+      },
+      {
+        id: "market",
+        header: "Market",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          resource.market?.name != null ? (
+            <Text>{resource.market?.name}</Text>
+          ) : (
+            <Text variant="disabled">&#8212;</Text>
+          ),
+      },
+      {
+        id: "country",
+        header: "Country",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => {
+          const countryCode =
+            resource.country_code ?? resource.billing_address?.country_code
+          return isEmpty(countryCode) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text>{countryCode}</Text>
+          )
+        },
+      },
+      {
+        id: "reference",
+        header: "Reference",
+        kind: "code",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) =>
+          isEmpty(resource.reference) ? (
+            <Text variant="disabled">&#8212;</Text>
+          ) : (
+            <Text tag="div" wrap="nowrap">
+              {resource.reference}
             </Text>
-          </div>
-        ),
+          ),
+      },
+      {
+        id: "tags",
+        header: "Tags",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        cell: ({ resource }) => <TableTagsCell tags={resource.tags} />,
       },
     ],
     [sortBy, user?.timezone, user?.locale],
   )
 }
 
+/**
+ * When the order was placed, or last updated for a cart, which has no placement
+ * date. Shared by the Date column and, on mobile where that column is hidden, the
+ * name cell.
+ */
+function OrderDate({ resource }: { resource: Order }): React.JSX.Element {
+  const { user } = useTokenProvider()
+  return (
+    <>
+      {formatDate({
+        format: "full",
+        isoDate: resource.placed_at ?? resource.updated_at,
+        timezone: user?.timezone,
+        locale: user?.locale,
+      })}
+    </>
+  )
+}
+
 /** Company name when present, otherwise the abbreviated billing full name. */
-function getCustomerName(order: Order): string {
+function getBillingName(order: Order): string {
   const billingAddress = order.billing_address
   return !isEmpty(billingAddress?.company)
     ? (billingAddress?.company ?? "")

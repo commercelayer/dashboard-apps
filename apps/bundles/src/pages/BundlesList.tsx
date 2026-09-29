@@ -13,6 +13,7 @@ import { useBundlesTableColumns } from "#components/bundlesTableColumns"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { instructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
+import { bundlesTableSettings } from "#data/tableSettings"
 
 export const BundlesList: FC = () => {
   const { canUser } = useTokenProvider()
@@ -24,6 +25,7 @@ export const BundlesList: FC = () => {
   const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
     useResourceFilters({
       instructions,
+      tableSettings: bundlesTableSettings,
     })
 
   const columns = useBundlesTableColumns()
@@ -77,15 +79,20 @@ export const BundlesList: FC = () => {
                 "formatted_compare_at_amount",
                 "created_at",
                 "updated_at",
+                "reference",
                 "market",
+                "tags",
               ],
               markets: ["id", "name"],
+              tags: ["id", "name"],
             },
-            // the Market column reads this relationship
-            include: ["market"],
+            // the Market and Tags columns read these relationships
+            include: ["market", "tags"],
             pageSize: 25,
           }}
-          defaultSort="name"
+          // columns the user turns on may not fit: past that point the table
+          // scrolls sideways rather than squeezing them
+          layout="fit-or-scroll"
           hideTitle
           getRowHref={(bundle) =>
             navigateTo({ app: "bundles", resourceId: bundle.id })?.href
