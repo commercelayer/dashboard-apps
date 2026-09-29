@@ -12,7 +12,7 @@
     "test": "pnpm  --stream -r test",
     "ts:check": "pnpm -r ts:check",
     "test:watch": "pnpm -r --parallel --aggregate-output --color test:watch",
-    "lerna": "pnpm dlx lerna@9.0.7",
+    "lerna": "pnpm dlx --allow-build=nx lerna@9.0.7",
     "dep:major": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u && node replace-react.mjs",
     "dep:semver": "pnpm dlx npm-check-updates --packageFile '**/package.json' -u -t semver && node replace-react.mjs",
     "elements:preview": "node replace-app-elements.mjs preview",
