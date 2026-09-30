@@ -4,9 +4,11 @@ import {
   ListItem,
   ResourceAddress,
   Section,
+  Spacer,
+  Text,
   useConfirmDialog,
   useCoreSdkProvider,
-  useResourceAddressOverlay,
+  useResourceAddressModal,
   useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
@@ -40,9 +42,9 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
       canUser("create", "addresses") && canUser("create", "customer_addresses")
 
     const {
-      ResourceAddressOverlay: NewAddressOverlay,
-      openAddressOverlay: openNewAddressOverlay,
-    } = useResourceAddressOverlay({
+      addressModal: newAddressModal,
+      openAddressModal: openNewAddressModal,
+    } = useResourceAddressModal({
       address: null,
       showBillingInfo: true,
       onCreate: (address) => {
@@ -95,7 +97,7 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
                 variant="secondary"
                 size="mini"
                 onClick={() => {
-                  openNewAddressOverlay()
+                  openNewAddressModal()
                 }}
               >
                 <Icon name="plus" />
@@ -104,9 +106,17 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
             )
           }
         >
-          {addresses}
+          {addresses?.length !== 0 ? (
+            addresses
+          ) : (
+            <Spacer top="4">
+              <Text variant="info" size="small">
+                {t("common.no_resources.no_addresses")}
+              </Text>
+            </Spacer>
+          )}
         </Section>
-        {canCreate && <NewAddressOverlay />}
+        {canCreate && newAddressModal}
         {canUser("destroy", "addresses") && (
           // the dialog reports a failed delete itself, as an error toast
           <ConfirmDialog
