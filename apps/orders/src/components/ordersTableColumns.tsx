@@ -12,6 +12,7 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
+import { TableNamesCell } from "dashboard-apps-common/src/components/TableNamesCell"
 import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
@@ -23,8 +24,8 @@ import { type OrderTab, orderDateLabels } from "#data/lists"
  *
  * NUMBER is the primary column, always shown: the number alone, since the market
  * has a column of its own. The others can be hidden by the user from the columns
- * menu (`hideable`), with Payment status, Market, Country, Reference and Tags
- * hidden until they are turned on.
+ * menu (`hideable`), with Payment status, Market, Country, Origin, Reference
+ * and Tags hidden until they are turned on.
  *
  * @param sortBy - the metrics attribute of the date the DATE column shows, which
  * it marks as sorted: `order.placed_at`, or `order.updated_at` for carts, which
@@ -170,6 +171,21 @@ export function useOrdersTableColumns(
             <Text>{countryCode}</Text>
           )
         },
+      },
+      {
+        id: "origin",
+        header: "Origin",
+        kind: "text",
+        hideable: true,
+        defaultHidden: true,
+        // an order can ship from more than one stock location, one per shipment
+        cell: ({ resource }) => (
+          <TableNamesCell
+            names={resource.shipments?.map(
+              (shipment) => shipment.stock_location?.name,
+            )}
+          />
+        ),
       },
       {
         id: "reference",

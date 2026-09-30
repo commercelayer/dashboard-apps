@@ -108,6 +108,14 @@ const Home: FC = () => {
             "market.*",
             "customer.*",
             "tags.*",
+            // for the Origin column. Carts have no shipment yet (they have
+            // no address to ship to), and `/carts` has no `shipments` fields
+            ...(activeTab.instructions === "carts"
+              ? []
+              : [
+                  "shipments.stock_location.id",
+                  "shipments.stock_location.name",
+                ]),
           ],
         },
       }}
