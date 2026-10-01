@@ -2,7 +2,7 @@
   "private": true,
   "name": "app-my_sample_app",
   "description": "A Commerce Layer Single Page Application.",
-  "version": "5.7.0",
+  "version": "6.0.0-new-payments.0",
   "license": "MIT",
   "keywords": [
     "reactjs",
@@ -25,8 +25,8 @@
     "prepare": "touch ./public/config.local.js"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "7.24.1",
-    "@commercelayer/sdk": "8.0.0-beta.12",
+    "@commercelayer/app-elements": "https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@759c047",
+    "@commercelayer/sdk": "https://pkg.pr.new/commercelayer/commercelayer-sdk/@commercelayer/sdk@1f52218",
     "@hookform/resolvers": "^3.10.0",
     "lodash-es": "^4.18.1",
     "react": "19.3.0",
