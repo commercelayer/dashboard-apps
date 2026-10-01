@@ -104,23 +104,20 @@ export function useCreatePaymentLinkModal({
           })
         : undefined
 
-      const created = await sdkClient.payment_links.create(
-        // @ts-expect-error: `url` and `billing_address` are typed as required.
-        {
-          order: { id: order.id, type: "orders" },
-          payment_setting: settingRel,
-          amount_cents: values.amountCents,
-          name: values.name,
-          ...(paymentSession == null
-            ? {}
-            : {
-                payment_session: {
-                  id: paymentSession.id,
-                  type: "payment_sessions",
-                },
-              }),
-        },
-      )
+      const created = await sdkClient.payment_links.create({
+        order: { id: order.id, type: "orders" },
+        payment_setting: settingRel,
+        amount_cents: values.amountCents,
+        name: values.name,
+        ...(paymentSession == null
+          ? {}
+          : {
+              payment_session: {
+                id: paymentSession.id,
+                type: "payment_sessions",
+              },
+            }),
+      })
 
       setLink(created)
       setStep("success")
