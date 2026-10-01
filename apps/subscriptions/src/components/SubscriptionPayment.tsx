@@ -1,6 +1,4 @@
 import {
-  Badge,
-  type BadgeProps,
   Card,
   ListItem,
   ResourcePaymentMethod,
@@ -8,14 +6,10 @@ import {
   Text,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
-import type {
-  OrderSubscription,
-  PaymentSetting,
-  PaymentWallet,
-} from "@commercelayer/sdk"
+import type { OrderSubscription, PaymentSetting } from "@commercelayer/sdk"
+import { PaymentWalletCard } from "dashboard-apps-common/src/components/PaymentWalletCard"
 import {
   getPaymentSettingDisplay,
-  getPaymentWalletDisplay,
   type PaymentSettingType,
 } from "dashboard-apps-common/src/helpers/paymentDisplay"
 
@@ -27,7 +21,7 @@ export const SubscriptionPayment = withSkeletonTemplate<Props>(
   ({ subscription }) => {
     const content =
       subscription.payment_wallet != null ? (
-        <PaymentWalletRow wallet={subscription.payment_wallet} />
+        <PaymentWalletCard wallet={subscription.payment_wallet} />
       ) : subscription.payment_setting != null ? (
         <PaymentSettingRow
           setting={subscription.payment_setting}
@@ -52,56 +46,6 @@ export const SubscriptionPayment = withSkeletonTemplate<Props>(
     )
   },
 )
-
-interface PaymentWalletRowProps {
-  wallet: PaymentWallet
-}
-
-/** The wallet each renewal is charged to. */
-function PaymentWalletRow({
-  wallet,
-}: PaymentWalletRowProps): React.JSX.Element {
-  const {
-    logoSrc,
-    label,
-    last4,
-    settingLabel: gateway,
-  } = getPaymentWalletDisplay(wallet)
-  const expiry = getFormattedExpiry(wallet.expires_at)
-
-  return (
-    <Card backgroundColor="light" overflow="visible">
-      <ListItem
-        padding="none"
-        borderStyle="none"
-        icon={
-          // Decorative: the brand name is already rendered as text beside it.
-          <img src={logoSrc} alt="" className="h-8 w-auto" />
-        }
-      >
-        <div>
-          <div className="flex items-center gap-2">
-            <Text weight="bold">
-              {label}
-              {last4 != null && <span className="font-normal"> ··{last4}</span>}
-            </Text>
-            {/* Only when renewals will not charge: canceled, or waiting on the customer. */}
-            {wallet.status !== "succeeded" && (
-              <Badge variant={getWalletBadgeVariant(wallet.status)}>
-                {wallet.status.replace(/_/g, " ")}
-              </Badge>
-            )}
-          </div>
-          {(gateway != null || expiry != null) && (
-            <Text variant="info" size="small">
-              {[gateway, expiry].filter((part) => part != null).join(" · ")}
-            </Text>
-          )}
-        </div>
-      </ListItem>
-    </Card>
-  )
-}
 
 /** The setting's gateway type, from the source order's sessions: the subscription's copy has only the base type. */
 function getGatewayType(
@@ -150,35 +94,4 @@ function PaymentSettingRow({
       </ListItem>
     </Card>
   )
-}
-
-function getWalletBadgeVariant(
-  status: PaymentWallet["status"],
-): BadgeProps["variant"] {
-  switch (status) {
-    case "succeeded":
-      return "success"
-    case "canceled":
-      // Nothing can be charged against it any more, unlike the transient ones.
-      return "danger"
-    default:
-      return "warning"
-  }
-}
-
-/** The card's expiry as MM/YY, read in UTC so a local timezone cannot shift the month. */
-function getFormattedExpiry(
-  expiresAt: string | null | undefined,
-): string | undefined {
-  if (expiresAt == null) {
-    return undefined
-  }
-
-  const date = new Date(expiresAt)
-  if (Number.isNaN(date.getTime())) {
-    return undefined
-  }
-
-  const month = `${date.getUTCMonth() + 1}`.padStart(2, "0")
-  return `expires ${month}/${`${date.getUTCFullYear()}`.slice(-2)}`
 }

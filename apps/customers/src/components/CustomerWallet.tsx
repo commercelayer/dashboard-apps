@@ -9,8 +9,14 @@ import {
   useTranslation,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
-import type { Customer, CustomerPaymentSource } from "@commercelayer/sdk"
+import type {
+  Customer,
+  CustomerPaymentSource,
+  PaymentWallet,
+} from "@commercelayer/sdk"
+import { PaymentWalletCard } from "dashboard-apps-common/src/components/PaymentWalletCard"
 import type { SetNonNullable, SetRequired } from "type-fest"
+import { useCustomerPaymentWallets } from "#hooks/useCustomerPaymentWallets"
 
 interface Props {
   customer: Customer
@@ -20,6 +26,9 @@ interface Props {
 export const CustomerWallet = withSkeletonTemplate<Props>(
   ({ customer, onRemovedPaymentSource }) => {
     const { t } = useTranslation()
+    const { paymentWallets, mutatePaymentWallets } = useCustomerPaymentWallets(
+      customer.id,
+    )
 
     const customerPaymentSources = customer?.customer_payment_sources?.map(
       (customerPaymentSource) => {
@@ -33,11 +42,20 @@ export const CustomerWallet = withSkeletonTemplate<Props>(
       },
     )
 
-    if (customerPaymentSources?.length === 0) return <></>
+    if (customerPaymentSources?.length === 0 && paymentWallets.length === 0) {
+      return <></>
+    }
 
     return (
       <Section title={t("apps.customers.details.wallet")} border="none">
         {customerPaymentSources}
+        {paymentWallets.map((paymentWallet) => (
+          <CustomerPaymentWalletItem
+            key={paymentWallet.id}
+            paymentWallet={paymentWallet}
+            onCanceledPaymentWallet={mutatePaymentWallets}
+          />
+        ))}
       </Section>
     )
   },
@@ -91,6 +109,55 @@ const CustomerWalletItem = withSkeletonTemplate<{
     </Spacer>
   )
 })
+
+interface CustomerPaymentWalletItemProps {
+  paymentWallet: PaymentWallet
+  onCanceledPaymentWallet: () => void
+}
+
+/** A stored payment method; removing it cancels the wallet, so the gateway stops charging it. */
+function CustomerPaymentWalletItem({
+  paymentWallet,
+  onCanceledPaymentWallet,
+}: CustomerPaymentWalletItemProps): React.JSX.Element {
+  const { canUser } = useTokenProvider()
+  const { sdkClient } = useCoreSdkProvider()
+  const { show: showCancelDialog, ConfirmDialog } = useConfirmDialog()
+  const canCancel = canUser("update", "payment_wallets")
+
+  return (
+    <Spacer bottom="4">
+      <PaymentWalletCard
+        wallet={paymentWallet}
+        actionButton={
+          canCancel ? (
+            <button type="button" onClick={showCancelDialog}>
+              <Icon name="trash" size={18} />
+            </button>
+          ) : null
+        }
+      />
+      {canCancel && (
+        <ConfirmDialog
+          icon="trash"
+          title="Remove payment method"
+          description="The customer can no longer pay with this card."
+          confirm={{
+            label: "Remove payment method",
+            variant: "danger",
+            onClick: async () => {
+              await sdkClient.payment_wallets.update({
+                id: paymentWallet.id,
+                _cancel: true,
+              })
+              onCanceledPaymentWallet()
+            },
+          }}
+        />
+      )}
+    </Spacer>
+  )
+}
 
 export function hasPaymentSource(
   customerPaymentSource: CustomerPaymentSource,
