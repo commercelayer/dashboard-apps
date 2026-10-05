@@ -70,7 +70,7 @@ export const orderTabs: OrderTab[] = [
       viewTitle: "All",
     },
     dateSortBy: "order.placed_at",
-    defaultSort: { id: "order", direction: "desc" },
+    defaultSort: { id: "date", direction: "desc" },
   },
   {
     label: "Placed",
@@ -81,7 +81,7 @@ export const orderTabs: OrderTab[] = [
       viewTitle: "Placed",
     },
     dateSortBy: "order.placed_at",
-    defaultSort: { id: "order", direction: "desc" },
+    defaultSort: { id: "date", direction: "desc" },
     hiddenFilters: ["status_in"],
   },
   {
@@ -95,7 +95,7 @@ export const orderTabs: OrderTab[] = [
       viewTitle: "Approved",
     },
     dateSortBy: "order.placed_at",
-    defaultSort: { id: "order", direction: "desc" },
+    defaultSort: { id: "date", direction: "desc" },
     hiddenFilters: ["status_in", "fulfillment_statuses_in"],
   },
   {
@@ -108,7 +108,7 @@ export const orderTabs: OrderTab[] = [
       viewTitle: "In progress",
     },
     dateSortBy: "order.placed_at",
-    defaultSort: { id: "order", direction: "desc" },
+    defaultSort: { id: "date", direction: "desc" },
     hiddenFilters: ["fulfillment_statuses_in"],
   },
   {
@@ -122,7 +122,7 @@ export const orderTabs: OrderTab[] = [
       viewTitle: "Fulfilled",
     },
     dateSortBy: "order.placed_at",
-    defaultSort: { id: "order", direction: "desc" },
+    defaultSort: { id: "date", direction: "desc" },
     hiddenFilters: ["status_in", "fulfillment_statuses_in"],
   },
   {
@@ -137,7 +137,7 @@ export const orderTabs: OrderTab[] = [
       viewTitle: "Carts",
     },
     dateSortBy: "order.updated_at",
-    defaultSort: { id: "order", direction: "desc" },
+    defaultSort: { id: "date", direction: "desc" },
     instructions: "carts",
     separatorBefore: true,
   },
@@ -148,7 +148,7 @@ export const orderTabs: OrderTab[] = [
       viewTitle: "Archived",
     },
     dateSortBy: "order.placed_at",
-    defaultSort: { id: "order", direction: "desc" },
+    defaultSort: { id: "date", direction: "desc" },
   },
 ]
 
