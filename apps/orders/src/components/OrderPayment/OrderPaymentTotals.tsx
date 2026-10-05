@@ -47,7 +47,7 @@ export function OrderPaymentTotals({ order }: Props): React.JSX.Element | null {
   const rows = [
     {
       key: "captured",
-      label: "Captured",
+      label: "Paid",
       value: format(capturedCents),
       hidden: capturedCents === 0,
     },

@@ -110,7 +110,7 @@ function getStatusName(status: PaymentSession["status"]): string {
     case "paid":
       return "paid"
     case "partially_paid":
-      return "partially paid"
+      return "part. paid"
     case "refunded":
       return "refunded"
     case "invalidated":
