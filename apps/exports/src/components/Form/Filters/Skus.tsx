@@ -70,6 +70,18 @@ export function Skus({ onChange }: Props): React.JSX.Element | null {
       </Spacer>
 
       <Spacer bottom="6">
+        <ResourceFinder
+          label="Tags"
+          resourceType="tags"
+          isMulti
+          onSelect={(values) => {
+            updateFilters("tags_id_in", flatSelectValues(values))
+          }}
+          sdkClient={sdkClient}
+        />
+      </Spacer>
+
+      <Spacer bottom="6">
         <InputToggleButton
           label="Product Type"
           mode="single"
