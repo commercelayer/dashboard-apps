@@ -22,6 +22,10 @@ export type OrdersField =
   | "placed_at_gteq"
   | "placed_at_lteq"
 
+// customers
+export type CustomersFilters = Filters<CustomersField>
+export type CustomersField = "tags_id_in"
+
 // in_stock_subscriptions
 export type InStockSubscriptionsFilters = Filters<InStockSubscriptionsField>
 export type InStockSubscriptionsField =
@@ -50,6 +54,7 @@ export type SkusField =
   | "created_at_lteq"
   | "do_not_ship_false" // is shippable
   | "shipping_category_id_in"
+  | "tags_id_in"
 
 // prices
 export type PricesFilters = Filters<PricesField>
@@ -64,6 +69,7 @@ export type StockItemsFilters = Filters<StockItemsField>
 export type StockItemsField = "stock_location_id_in"
 
 export type AllFilters = OrdersFilters &
+  CustomersFilters &
   SkusFilters &
   PricesFilters &
   CouponsFilters &

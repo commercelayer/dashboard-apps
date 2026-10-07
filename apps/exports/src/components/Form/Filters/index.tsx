@@ -1,6 +1,7 @@
 import type { AllowedResourceType } from "@typing/resources.types"
 import type { AllFilters } from "../types"
 import { Coupons } from "./Coupons"
+import { Customers } from "./Customers"
 import { InStockSubscriptions } from "./InStockSubscriptions"
 import { OrderSubscriptions } from "./OrderSubscriptions"
 import { Orders } from "./Orders"
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export const resourcesWithFilters = [
+  "customers",
   "in_stock_subscriptions",
   "order_subscriptions",
   "orders",
@@ -31,6 +33,10 @@ export function Filters({
 }: Props): React.JSX.Element | null {
   if (resourceType === "orders") {
     return <Orders onChange={onChange} />
+  }
+
+  if (resourceType === "customers") {
+    return <Customers onChange={onChange} />
   }
 
   if (resourceType === "returns") {
