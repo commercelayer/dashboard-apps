@@ -1,16 +1,14 @@
-import type { ApiError } from "App"
 import {
   Button,
   HookedForm,
   HookedInput,
-  InputFeedback,
-  parseApiError,
+  HookedValidationApiError,
   Spacer,
   useCoreSdkProvider,
 } from "@commercelayer/app-elements"
 import type { Webhook } from "@commercelayer/sdk"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useLocation } from "wouter"
 import zod from "zod"
@@ -41,7 +39,7 @@ interface Props {
 
 const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
   const { sdkClient } = useCoreSdkProvider()
-  const [apiError, setApiError] = useState<ApiError[] | undefined>(undefined)
+  const [apiError, setApiError] = useState<any>()
   const [, setLocation] = useLocation()
 
   const formAction = webhookData !== undefined ? "update" : "create"
@@ -63,20 +61,9 @@ const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
     resolver: zodResolver(webhookFormSchema),
   })
 
-  const hasApiError = apiError != null && apiError.length > 0
-
   if (sdkClient == null) {
     return null
   }
-
-  useEffect(
-    function clearApiError() {
-      if (hasApiError) {
-        setApiError(undefined)
-      }
-    },
-    [methods?.formState?.isSubmitted],
-  )
 
   const submitWebhookTask = async (
     values: WebhookFormValues,
@@ -89,13 +76,16 @@ const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
         name: values.name,
         topic: values.topic,
         callback_url: values.callback_url,
-        include_resources: values.include_resources.split(","),
+        include_resources:
+          values.include_resources === ""
+            ? []
+            : values.include_resources.split(","),
       }
       const sdkRequest = await sdkClient.webhooks[formAction](payload)
       methods.reset()
       setLocation(appRoutes.details.makePath({ webhookId: sdkRequest?.id }))
     } catch (error) {
-      setApiError(parseApiError(error, "Could not save the webhook"))
+      setApiError(error)
     }
   }
 
@@ -156,17 +146,9 @@ const WebhookForm = ({ webhookData }: Props): React.JSX.Element | null => {
         <Button variant="primary" type="submit" fullWidth>
           {formAction === "create" ? "Create webhook" : "Edit webhook"}
         </Button>
-        {hasApiError ? (
-          <div className="mt-2">
-            {apiError.map((error) => (
-              <InputFeedback
-                key={error.detail}
-                variant="danger"
-                message={error.detail}
-              />
-            ))}
-          </div>
-        ) : null}
+        <Spacer top="2">
+          <HookedValidationApiError apiError={apiError} />
+        </Spacer>
       </Spacer>
     </HookedForm>
   )
