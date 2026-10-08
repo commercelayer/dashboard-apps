@@ -78,12 +78,9 @@ export function SectionFlexRules({
   const ruleListCard = (
     <Card overflow="visible" gap="4">
       {promotionRules.rules.map((item, index, arr) => {
-        const idx = `#${(index + 1).toString().padStart(2, "0")}`
         return (
           <div key={item.id}>
-            <div>
-              <b className="pr-4">{idx}</b> {item.name}
-            </div>
+            <div>{item.name}</div>
             {index < arr.length - 1 ? (
               <Spacer top="4" bottom="4">
                 <Hr style={{ borderStyle: "dashed" }} />
