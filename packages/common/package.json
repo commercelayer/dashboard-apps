@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "dashboard-apps-common",
-  "version": "5.7.0",
+  "version": "6.0.0-new-payments.1",
   "type": "module",
   "scripts": {
     "check": "pnpm biome check",
@@ -9,8 +9,8 @@
     "ts:check": "tsc -b --noEmit"
   },
   "dependencies": {
-    "@commercelayer/app-elements": "7.24.1",
-    "@commercelayer/sdk": "8.0.0-beta.12",
+    "@commercelayer/app-elements": "8.1.1",
+    "@commercelayer/sdk": "8.0.2",
     "@hookform/resolvers": "^3.10.0",
     "date-fns": "^4.4.0",
     "lodash-es": "^4.18.1",

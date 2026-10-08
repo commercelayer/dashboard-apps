@@ -1,5 +1,5 @@
 {
-  "version": "5.7.0",
+  "version": "6.0.0-new-payments.1",
   "$schema": "https://unpkg.com/lerna@9.0.7/schemas/lerna-schema.json",
   "useNx": false,
   "npmClient": "pnpm",

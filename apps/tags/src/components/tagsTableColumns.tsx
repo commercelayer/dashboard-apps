@@ -10,7 +10,7 @@ import {
   Text,
   useConfirmDialog,
   useCoreSdkProvider,
-  useEditMetadataOverlay,
+  useResourceMetadataModal,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { Tag } from "@commercelayer/sdk"
@@ -69,8 +69,11 @@ function TagRowActions({ tag }: { tag: Tag }): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
 
   const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
-  const { Overlay: EditMetadataOverlay, show: showEditMetadataOverlay } =
-    useEditMetadataOverlay()
+  const { metadataModal, openMetadataModal } = useResourceMetadataModal({
+    resourceType: tag.type,
+    resourceId: tag.id,
+    title: tag.name,
+  })
 
   const dropdownItems: React.JSX.Element[] = []
 
@@ -94,7 +97,7 @@ function TagRowActions({ tag }: { tag: Tag }): React.JSX.Element {
         icon="code"
         label="Metadata"
         onClick={() => {
-          showEditMetadataOverlay()
+          openMetadataModal()
         }}
       />,
     )
@@ -115,13 +118,7 @@ function TagRowActions({ tag }: { tag: Tag }): React.JSX.Element {
 
   return (
     <>
-      {!isMockedId(tag.id) && (
-        <EditMetadataOverlay
-          resourceType={tag.type}
-          resourceId={tag.id}
-          title={tag.name}
-        />
-      )}
+      {!isMockedId(tag.id) && metadataModal}
 
       {canUser("destroy", "tags") && (
         // the dialog reports a failed delete itself, as an error toast

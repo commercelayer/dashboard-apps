@@ -4,6 +4,7 @@ import {
   t,
 } from "@commercelayer/app-elements"
 import type { Order, OrderUpdate } from "@commercelayer/sdk"
+import { isLegacyPaymentModel } from "#components/OrderPayment/paymentSessionUtils"
 
 export type UITriggerAttributes =
   | Extract<
@@ -36,9 +37,24 @@ export function getTriggerAttributes(order: Order): UITriggerAttributes[] {
     return ["_place", "__cancel_transactions"]
   }
 
+  // Legacy orders keep no actions on the partial statuses.
+  if (
+    isLegacyPaymentModel(order) &&
+    (order.payment_status === "partially_paid" ||
+      order.payment_status === "partially_voided")
+  ) {
+    return []
+  }
+
   switch (combinedStatus) {
     case "placed:authorized:unfulfilled":
     case "placed:authorized:not_required":
+    // Partial statuses read as authorized here: part of the money has been
+    // taken or released, and whatever is left still needs the same decision.
+    case "placed:partially_paid:unfulfilled":
+    case "placed:partially_paid:not_required":
+    case "placed:partially_voided:unfulfilled":
+    case "placed:partially_voided:not_required":
     case "placed:paid:unfulfilled":
     case "placed:paid:not_required":
     case "placed:partially_refunded:unfulfilled":
@@ -60,6 +76,20 @@ export function getTriggerAttributes(order: Order): UITriggerAttributes[] {
     case "approved:authorized:fulfilled":
       return ["_capture"]
 
+    // Partly collected: there is still something to capture, and what was
+    // already captured can be refunded, so both are offered.
+    case "approved:partially_paid:unfulfilled":
+    case "approved:partially_paid:not_required":
+    case "approved:partially_voided:unfulfilled":
+    case "approved:partially_voided:not_required":
+      return ["_cancel", "_capture", "_refund"]
+
+    case "approved:partially_paid:in_progress":
+    case "approved:partially_paid:fulfilled":
+    case "approved:partially_voided:in_progress":
+    case "approved:partially_voided:fulfilled":
+      return ["_capture", "_refund"]
+
     case "approved:paid:in_progress":
     case "approved:partially_refunded:in_progress":
       return ["_refund"]
@@ -78,6 +108,8 @@ export function getTriggerAttributes(order: Order): UITriggerAttributes[] {
 
     case "approved:free:not_required":
     case "cancelled:voided:unfulfilled":
+    case "cancelled:partially_voided:unfulfilled":
+    case "cancelled:partially_voided:not_required":
     case "cancelled:refunded:unfulfilled":
     case "cancelled:refunded:not_required":
     case "cancelled:unpaid:unfulfilled":
