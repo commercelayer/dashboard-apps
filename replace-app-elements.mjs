@@ -1,7 +1,8 @@
 // @ts-check
 
 /**
- * This script replaces @commercelayer/app-elements versions across all package.json files.
+ * This script sets the @commercelayer/app-elements version in the pnpm-workspace.yaml
+ * catalog, which every package.json points to with `catalog:`.
  * It supports two modes:
  * - preview: Replace with a pkg.pr.new preview URL using a commit hash
  * - bump: Replace with a production version
@@ -11,10 +12,8 @@
  * @example pnpm elements:bump latest
  */
 
-import { readFileSync, readdirSync } from "fs";
 import { get } from "https";
-import { join } from "path";
-import { replaceInFileSync } from "replace-in-file";
+import { readCatalogEntry, writeCatalogEntry } from "./workspace-catalog.mjs";
 
 /**
  * Fetch the latest version from npm registry
@@ -108,116 +107,30 @@ if (mode === "preview") {
       }
     }
 
-    // Get current app-elements value from packages/index/package.json (read fresh from disk)
-    const indexPackageJsonPath = "./packages/index/package.json";
-    const packageJson = JSON.parse(readFileSync(indexPackageJsonPath, "utf-8"));
-    const currentValue =
-      packageJson.dependencies["@commercelayer/app-elements"];
-
-    if (!currentValue) {
-      console.error(
-        "❌ Could not find @commercelayer/app-elements in packages/index/package.json",
-      );
-      process.exit(1);
-    }
-
-    /**
-     * Count package.json files containing the current app-elements value
-     * @param {string} dir - Directory to scan (apps or packages)
-     * @returns {number} Count of files containing the dependency
-     */
-    function countFilesWithDependency(dir) {
-      let count = 0;
-      try {
-        const subdirs = readdirSync(dir, { withFileTypes: true })
-          .filter((dirent) => dirent.isDirectory())
-          .map((dirent) => dirent.name);
-
-        for (const subdir of subdirs) {
-          const pkgPath = join(dir, subdir, "package.json");
-          try {
-            const content = readFileSync(pkgPath, "utf-8");
-            if (
-              content.includes("@commercelayer/app-elements") &&
-              content.includes(currentValue)
-            ) {
-              count++;
-            }
-          } catch {
-            // Skip if package.json doesn't exist
-          }
-        }
-      } catch (error) {
-        console.error(`Error scanning ${dir}:`, error);
-      }
-      return count;
-    }
-
-    // Count files before replacement
-    const appsCount = countFilesWithDependency("./apps");
-    const packagesCount = countFilesWithDependency("./packages");
-
-    // Display what we found
-    const displayValue = currentValue.startsWith("https://")
-      ? currentValue.split("@").pop() // Extract hash from URL
-      : currentValue;
-
-    console.log(
-      `📦 app-elements ${displayValue} found in ${appsCount} apps and ${packagesCount} packages\n`,
-    );
-
-    // Build the search pattern - need to match the full dependency line
-    // Current value could be either a version or a URL
-    let fromPattern;
-    if (currentValue.startsWith("https://")) {
-      // Escape special regex characters in URL
-      const escapedUrl = currentValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      fromPattern = new RegExp(
-        `("@commercelayer/app-elements":\\s*)"${escapedUrl}"`,
-        "g",
-      );
-    } else {
-      fromPattern = new RegExp(
-        `("@commercelayer/app-elements":\\s*)"${currentValue}"`,
-        "g",
-      );
-    }
-
-    // Build the replacement string
+    const currentValue = readCatalogEntry("@commercelayer/app-elements");
     const toValue =
       mode === "preview"
-        ? `$1"https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@${finalValue}"`
-        : `$1"${finalValue}"`;
+        ? `https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@${finalValue}`
+        : finalValue;
 
-    const results = replaceInFileSync({
-      files: ["./apps/**/package.json", "./packages/**/package.json"],
-      ignore: ["**/node_modules/**"],
-      from: fromPattern,
-      to: toValue,
-      countMatches: true,
-    });
+    // Show the hash for a preview url, not the whole url
+    const display = (/** @type {string} */ v) =>
+      v.startsWith("https://") ? v.split("@").pop() : v;
 
-    // Separate results by directory
-    const changedFiles = results.filter((r) => r.hasChanged);
-    const appsUpdated = changedFiles.filter((r) =>
-      r.file.startsWith("apps/"),
-    ).length;
-    const packagesUpdated = changedFiles.filter((r) =>
-      r.file.startsWith("packages/"),
-    ).length;
-
-    // Display results
-    if (changedFiles.length > 0) {
-      console.log("✅ Replacement completed:");
-      console.log(`   - Updated ${appsUpdated} of 18 apps`);
-      console.log(`   - Updated ${packagesUpdated} of 3 packages`);
-      console.log("");
-      console.log("💡 Now run pnpm install to proceed");
-    } else {
+    if (currentValue === toValue) {
       console.log(
-        "⚠️  No files were updated. The version might already be set.",
+        `⚠️  app-elements is already ${display(toValue)}, nothing to update.`,
       );
+      return;
     }
+
+    writeCatalogEntry("@commercelayer/app-elements", toValue);
+
+    console.log(
+      `✅ app-elements ${display(currentValue)} → ${display(toValue)} in the pnpm-workspace.yaml catalog`,
+    );
+    console.log("");
+    console.log("💡 Now run pnpm install to proceed");
   } catch (error) {
     console.error("❌ Error occurred:", error);
     process.exit(1);

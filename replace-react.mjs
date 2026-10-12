@@ -1,7 +1,7 @@
 // @ts-check
 
 /**
- * This script will replace all "version number" occurrences from React and ReactDOM urls so that it will point to the same package.json version.
+ * This script will replace all "version number" occurrences from React and ReactDOM urls so that it will point to the version set in the pnpm-workspace.yaml catalog.
  * Run it after every dependency bump: the `dep:*` scripts chain it.
  * 
  * @example https://cdn.jsdelivr.net/npm/@commercelayer/drop-in.js@2/dist/drop-in/drop-in.esm.js
@@ -10,10 +10,11 @@
  */
 
 import { replaceInFileSync } from 'replace-in-file'
-import packageJson from './packages/index/package.json' with { type: 'json' }
+import { readCatalogEntry } from './workspace-catalog.mjs'
 
-const reactVersion = packageJson.dependencies['react']
-const reactDOMVersion = packageJson.dependencies['react-dom']
+// the package.json files only say `catalog:`: the version is in pnpm-workspace.yaml
+const reactVersion = readCatalogEntry('react')
+const reactDOMVersion = readCatalogEntry('react-dom')
 
 /** @type { Pick<import('replace-in-file').ReplaceInFileConfig, 'from' | 'to'>[] } */
 const tasks = [
