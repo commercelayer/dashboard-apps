@@ -1,14 +1,10 @@
 import {
-  Card,
-  CodeBlock,
-  formatDate,
-  Spacer,
+  ResourceDetailsTimeline,
+  ResourceDetailsTimelineItem,
   Text,
   useResourceDetailsModal,
-  useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { PaymentSession, PaymentTransaction } from "@commercelayer/sdk"
-import { useState } from "react"
 import type { JsonObject } from "type-fest"
 
 interface Props {
@@ -31,8 +27,8 @@ export function usePaymentSessionDetailsModal({ session }: Props) {
   return { modal, open }
 }
 
+/** Grouped by day and styled like the Events tab next to it. */
 function TransactionsTab({ session }: { session: PaymentSession }) {
-  const { user } = useTokenProvider()
   const transactions = session.payment_transactions ?? []
 
   if (transactions.length === 0) {
@@ -42,18 +38,19 @@ function TransactionsTab({ session }: { session: PaymentSession }) {
   const typesById = getTransactionTypesById(session)
 
   return (
-    <div>
-      {[...transactions]
-        .sort((a, b) => b.created_at.localeCompare(a.created_at))
-        .map((transaction) => (
-          <TransactionItem
-            key={transaction.id}
-            transaction={transaction}
-            type={typesById.get(transaction.id) ?? transaction.type}
-            timezone={user?.timezone}
-          />
-        ))}
-    </div>
+    <ResourceDetailsTimeline
+      items={[...transactions].sort((a, b) =>
+        b.created_at.localeCompare(a.created_at),
+      )}
+      getDate={(transaction) => transaction.created_at}
+      getKey={(transaction) => transaction.id}
+      renderItem={(transaction) => (
+        <TransactionItem
+          transaction={transaction}
+          type={typesById.get(transaction.id) ?? transaction.type}
+        />
+      )}
+    />
   )
 }
 
@@ -86,13 +83,10 @@ function getTransactionTypesById(
 function TransactionItem({
   transaction,
   type,
-  timezone,
 }: {
   transaction: PaymentTransaction
   type: PaymentTransaction["type"]
-  timezone?: string
 }) {
-  const [isOpen, setIsOpen] = useState(false)
   // @ts-expect-error: `CodeBlock` takes a `JsonObject`, whose values cannot be
   // `undefined`, while every optional field on an SDK resource can be. What
   // arrives over the wire is plain JSON either way.
@@ -103,40 +97,17 @@ function TransactionItem({
       : undefined
 
   return (
-    <Spacer bottom="2">
-      <Card
-        gap="none"
-        className={`w-full rounded! ${isOpen ? "border-black!" : ""}`}
-      >
-        <button
-          type="button"
-          className="w-full flex items-center justify-between text-sm gap-8 select-none p-4"
-          onClick={() => {
-            setIsOpen((prev) => !prev)
-          }}
-        >
-          <div className="flex items-baseline gap-1">
-            <Text weight="bold">{transaction.formatted_amount}</Text>
-            <Text variant="info">
-              {getTransactionTypeLabel(type)} {transaction.status}
-              {reason != null && ` · ${reason}`}
-            </Text>
-          </div>
-          <Text variant="info">
-            {formatDate({
-              isoDate: transaction.created_at,
-              format: "timeWithSeconds",
-              timezone,
-            })}
-          </Text>
-        </button>
-        {isOpen && (
-          <div className="mx-4 mb-4" style={{ cursor: "auto" }}>
-            <CodeBlock>{transactionJson}</CodeBlock>
-          </div>
-        )}
-      </Card>
-    </Spacer>
+    <ResourceDetailsTimelineItem
+      title={transaction.formatted_amount}
+      isoDate={transaction.created_at}
+      description={
+        <>
+          {getTransactionTypeLabel(type)} {transaction.status}
+          {reason != null && ` · ${reason}`}
+        </>
+      }
+      code={transactionJson}
+    />
   )
 }
 

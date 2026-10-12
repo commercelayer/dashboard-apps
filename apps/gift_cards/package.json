@@ -17,7 +17,7 @@
     "@commercelayer/app-elements": "catalog:",
     "@commercelayer/sdk": "catalog:",
     "@hookform/resolvers": "catalog:",
-    "@tanstack/react-virtual": "^3.14.13",
+    "@tanstack/react-virtual": "^3.14.14",
     "dashboard-apps-common": "workspace:*",
     "lodash-es": "catalog:",
     "react": "catalog:",
