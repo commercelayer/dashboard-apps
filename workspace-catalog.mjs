@@ -1,15 +1,15 @@
 // @ts-check
 
 /**
- * Read and write entries of the default `catalog:` in `pnpm-workspace.yaml`,
+ * Read entries of the default `catalog:` in `pnpm-workspace.yaml`,
  * where the versions shared by more than one package.json live (the package.json
  * files only say `catalog:`).
  *
  * The catalog is a flat `name: version` map, so it is handled line by line: no
- * YAML library needed, and the rest of the file (comments, order) stays as it is.
+ * YAML library needed.
  */
 
-import { readFileSync, writeFileSync } from "node:fs"
+import { readFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 
 const WORKSPACE_FILE = fileURLToPath(
@@ -53,27 +53,4 @@ export function readCatalogEntry(name) {
     throw new Error(`${name} is not in the pnpm-workspace.yaml catalog`)
   }
   return match[2].trim().replace(/^(['"])(.*)\1$/, "$2")
-}
-
-/**
- * @param {string} name
- * @param {string} value a version or a url
- */
-export function writeCatalogEntry(name, value) {
-  const content = readFileSync(WORKSPACE_FILE, "utf8")
-  const { start, end } = catalogBounds(content)
-  const block = content.slice(start, end)
-  if (!entryPattern(name).test(block)) {
-    throw new Error(`${name} is not in the pnpm-workspace.yaml catalog`)
-  }
-  // a plain version stays unquoted, like the entries pnpm writes; anything else
-  // (a url, a range) is quoted so YAML reads it as a string
-  const yamlValue = /^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(value)
-    ? value
-    : `'${value}'`
-  const updated = block.replace(entryPattern(name), `$1${yamlValue}`)
-  writeFileSync(
-    WORKSPACE_FILE,
-    content.slice(0, start) + updated + content.slice(end),
-  )
 }
