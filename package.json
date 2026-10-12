@@ -15,8 +15,6 @@
     "lerna": "pnpm dlx --allow-build=nx lerna@9.0.7",
     "dep:major": "pnpm dlx npm-check-updates --workspaces --root -u && node replace-react.mjs",
     "dep:semver": "pnpm dlx npm-check-updates --workspaces --root -u -t semver && node replace-react.mjs",
-    "elements:preview": "node replace-app-elements.mjs preview",
-    "elements:bump": "node replace-app-elements.mjs bump",
     "prepare": "husky"
   },
   "keywords": [],
