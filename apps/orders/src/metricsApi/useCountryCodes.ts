@@ -1,4 +1,7 @@
-import { useTokenProvider } from "@commercelayer/app-elements"
+import {
+  type TokenProviderExtras,
+  useTokenProvider,
+} from "@commercelayer/app-elements"
 import useSWR from "swr"
 import type { CountryCodesFilterOptions } from "#data/filters"
 import { metricsApiFetcher } from "./fetcher"
@@ -15,15 +18,19 @@ export function useCountryCodes(): {
   isLoading: boolean
 } {
   const {
-    settings: { accessToken, organizationSlug, domain },
+    settings: { accessToken, organizationSlug, domain, extras },
   } = useTokenProvider()
 
+  // the countries filter is enterprise-only: without a key nothing is fetched,
+  // and the empty list keeps the filter hidden
   const { data, isLoading } = useSWR(
-    {
-      domain,
-      slug: organizationSlug,
-      accessToken,
-    },
+    isEnterprise(extras)
+      ? {
+          domain,
+          slug: organizationSlug,
+          accessToken,
+        }
+      : null,
     fetchCountryForFilter,
     {
       revalidateIfStale: false,
@@ -37,6 +44,15 @@ export function useCountryCodes(): {
     countryCodes: data ?? [],
     isLoading,
   }
+}
+
+/**
+ * Whether the organization is on an enterprise subscription. Read from the
+ * token provider extras, which the dashboard fills in: an app running outside
+ * the dashboard has nothing there, and is treated as non-enterprise.
+ */
+function isEnterprise(extras: TokenProviderExtras | undefined): boolean {
+  return extras?.organization?.isEnterprise === true
 }
 
 async function fetchCountryDictionary(): Promise<

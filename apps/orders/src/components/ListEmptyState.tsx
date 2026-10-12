@@ -6,7 +6,13 @@ import {
 } from "@commercelayer/app-elements"
 
 interface Props {
-  scope?: "history" | "userFiltered" | "presetView" | "noSKUs" | "noBundles"
+  scope?:
+    | "history"
+    | "userFiltered"
+    | "presetView"
+    | "noSKUs"
+    | "noBundles"
+    | "noMarkets"
 }
 
 export function ListEmptyState({
@@ -19,6 +25,26 @@ export function ListEmptyState({
     return (
       <EmptyState
         title={t("common.empty_states.all_good_here")}
+        description={
+          <div>
+            <p>
+              {t("common.empty_states.no_resources_found_for_list", {
+                resources: t("resources.orders.name_other").toLowerCase(),
+              })}
+            </p>
+          </div>
+        }
+      />
+    )
+  }
+
+  // without a market there is no order to create yet, so no call to action
+  if (scope === "noMarkets") {
+    return (
+      <EmptyState
+        title={t("common.empty_states.no_resource_yet", {
+          resource: t("resources.orders.name").toLowerCase(),
+        })}
         description={
           <div>
             <p>

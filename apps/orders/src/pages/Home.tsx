@@ -4,6 +4,7 @@ import {
   Tab,
   Tabs,
   useAppLinking,
+  useCoreApi,
   useCoreSdkProvider,
   useResourceFilters,
   useTokenProvider,
@@ -32,6 +33,23 @@ const Home: FC = () => {
   const { navigateTo } = useAppLinking()
   const { countryCodes } = useCountryCodes()
   const queryString = useSearch()
+
+  /**
+   * An order is placed in a market: without an enabled one there is nothing to
+   * create, so the button goes and the empty state points to markets instead.
+   * Only the first one is needed, to create the order straight on it when it is
+   * the only market.
+   */
+  const { data: markets } = useCoreApi("markets", "list", [
+    {
+      fields: ["id"],
+      filters: {
+        disabled_at_null: true,
+      },
+      pageSize: 1,
+    },
+  ])
+  const hasMarkets = markets == null ? undefined : markets.meta.recordCount > 0
 
   /** The tab is kept in the url via `viewTitle`, so a refresh or a shared link restores it. */
   const [activeTabIndex, activeTab] = useMemo(() => {
@@ -132,7 +150,15 @@ const Home: FC = () => {
         )
       }}
       emptyState={
-        <ListEmptyState scope={hasActiveFilter ? "userFiltered" : "history"} />
+        <ListEmptyState
+          scope={
+            hasActiveFilter
+              ? "userFiltered"
+              : hasMarkets === false
+                ? "noMarkets"
+                : "history"
+          }
+        />
       }
     />
   )
@@ -142,46 +168,37 @@ const Home: FC = () => {
       title={t("resources.orders.name_other")}
       fullWidth
       toolbar={{
-        buttons: canUser("create", "orders")
-          ? [
-              {
-                icon: "plus",
-                label: `${t("common.new")} ${t("resources.orders.name").toLowerCase()}`,
-                size: "small",
-                onClick: () => {
-                  void sdkClient.markets
-                    .list({
-                      fields: ["id"],
-                      filters: {
-                        disabled_at_null: true,
-                      },
-                      pageSize: 1,
-                    })
-                    .then((markets) => {
-                      if (markets.meta.recordCount > 1) {
-                        setLocation(appRoutes.new.makePath({}))
-                      } else {
-                        const [resource] = markets
-                        if (resource != null) {
-                          void sdkClient.orders
-                            .create({
-                              market: {
-                                type: "markets",
-                                id: resource.id,
-                              },
-                            })
-                            .then((order) => {
-                              setLocation(
-                                appRoutes.new.makePath({ orderId: order.id }),
-                              )
-                            })
-                        }
-                      }
-                    })
+        buttons:
+          canUser("create", "orders") && markets != null && hasMarkets === true
+            ? [
+                {
+                  icon: "plus",
+                  label: `${t("common.new")} ${t("resources.orders.name").toLowerCase()}`,
+                  size: "small",
+                  onClick: () => {
+                    if (markets.meta.recordCount > 1) {
+                      setLocation(appRoutes.new.makePath({}))
+                      return
+                    }
+                    const [resource] = markets
+                    if (resource != null) {
+                      void sdkClient.orders
+                        .create({
+                          market: {
+                            type: "markets",
+                            id: resource.id,
+                          },
+                        })
+                        .then((order) => {
+                          setLocation(
+                            appRoutes.new.makePath({ orderId: order.id }),
+                          )
+                        })
+                    }
+                  },
                 },
-              },
-            ]
-          : undefined,
+              ]
+            : undefined,
       }}
     >
       {/* Remounted per tab so `Tabs` (which owns its active index internally)
