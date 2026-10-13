@@ -11,7 +11,11 @@ interface Props {
   order: Order
 }
 
-export const OrderPayment = withSkeletonTemplate<Props>(({ order }) => {
+/**
+ * The order's payment method, on the legacy payment model.
+ * @deprecated Remove with the legacy payment model.
+ */
+export const OrderPaymentLegacy = withSkeletonTemplate<Props>(({ order }) => {
   const { t } = useTranslation()
   if (!hasPaymentMethod(order) || order.payment_status === "free") {
     return null

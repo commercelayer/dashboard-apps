@@ -56,7 +56,7 @@ export function ResourceInfoBlocks({
         <ResourceTags
           resourceType={resourceType}
           resourceId={resource.id}
-          overlay={{ title }}
+          modal={{ title }}
           onTagClick={onTagClick}
         />
       )}
@@ -65,7 +65,7 @@ export function ResourceInfoBlocks({
           <ResourceMetadata
             resourceType={resourceType}
             resourceId={resource.id}
-            overlay={{ title }}
+            modal={{ title }}
           />
         </div>
       )}

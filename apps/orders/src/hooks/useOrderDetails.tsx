@@ -4,6 +4,7 @@ import {
   useCoreApi,
 } from "@commercelayer/app-elements"
 import isEmpty from "lodash-es/isEmpty"
+import { hasPollableTransaction } from "#components/OrderPayment/paymentSessionUtils"
 import { makeOrder } from "#mocks"
 
 export const orderIncludeAttribute = [
@@ -23,6 +24,16 @@ export const orderIncludeAttribute = [
   "payment_method",
   "payment_source",
   "transactions",
+
+  // payment sessions
+  "available_payment_settings",
+  "payment_sessions",
+  "payment_sessions.payment_setting",
+  "payment_sessions.payment_authorization",
+  "payment_sessions.payment_captures",
+  "payment_sessions.payment_void",
+  "payment_sessions.payment_refunds",
+  "payment_sessions.payment_transactions",
 
   // order editing
   "line_items.sku",
@@ -55,11 +66,15 @@ export function useOrderDetails(id: string) {
     {
       fallbackData: makeOrder(),
       refreshInterval: (order) => {
-        return (order?.transactions ?? []).some(
+        // One condition per payment model, so legacy can be dropped alone.
+        const hasLegacyAsyncCapture = (order?.transactions ?? []).some(
           orderTransactionIsAnAsyncCapture,
         )
-          ? 5000
-          : 0
+        const hasUnsettledPaymentSession = (order?.payment_sessions ?? []).some(
+          hasPollableTransaction,
+        )
+
+        return hasLegacyAsyncCapture || hasUnsettledPaymentSession ? 5000 : 0
       },
     },
   )

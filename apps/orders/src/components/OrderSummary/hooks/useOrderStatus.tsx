@@ -4,6 +4,7 @@ import {
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { LineItem, Order } from "@commercelayer/sdk"
+import { isLegacyPaymentModel } from "#components/OrderPayment/paymentSessionUtils"
 import { arrayOf } from "../utils"
 
 export function useOrderStatus(order: Order) {
@@ -28,8 +29,11 @@ export function useOrderStatus(order: Order) {
     (order.total_amount_with_taxes_cents ?? 0) -
     (order.place_total_amount_cents ?? 0)
 
+  /** Legacy only: core refuses to stop editing above the placed total. */
   const isOriginalOrderAmountExceeded =
-    order.status === "editing" && diffTotalAndPlacedTotal > 0
+    order.status === "editing" &&
+    isLegacyPaymentModel(order) &&
+    diffTotalAndPlacedTotal > 0
 
   function isGiftCard(
     item: LineItem,
@@ -76,7 +80,7 @@ export function useOrderStatus(order: Order) {
     hasShippableLineItems,
     /** `true` when the order has transactions, but the status is still `pending`. This is a kind of error status. */
     isPendingWithTransactions,
-    /** Difference between the current `total_amount` and the `place_total_amount`. */
+    /** How far a legacy order in editing sits above its placed total, formatted; `null` otherwise. */
     diffTotalAndPlacedTotal:
       isOriginalOrderAmountExceeded && currencyCode != null
         ? formatCentsToCurrency(diffTotalAndPlacedTotal, currencyCode)

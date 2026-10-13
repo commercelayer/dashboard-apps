@@ -11,6 +11,13 @@ export const orderSubscriptionIncludeAttribute = [
   "order_subscription_items.sku",
   "order_subscription_items.bundle",
   "customer_payment_source.payment_source",
+  // New model: the wallet charged on renewal, and its gateway.
+  "payment_wallet",
+  "payment_wallet.payment_setting",
+  // Or a setting alone, when the gateway cannot vault a card. The session's
+  // copy carries the gateway type.
+  "payment_setting",
+  "source_order.payment_sessions.payment_setting",
 ]
 
 export function useSubscriptionDetails(id: string) {

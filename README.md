@@ -55,52 +55,25 @@ pnpm build:apps
 
 ## Managing app-elements versions
 
-All Dashboard apps use [@commercelayer/app-elements](https://github.com/commercelayer/app-elements) as a shared component library. You can easily switch between production versions and preview builds across all applications.
+All Dashboard apps use [@commercelayer/app-elements](https://github.com/commercelayer/app-elements) as a shared component library. Its version is set once, in the `catalog` of `pnpm-workspace.yaml`: every `package.json` refers to it as `"@commercelayer/app-elements": "catalog:"`.
 
-### Testing preview versions
+To switch version, change that line and install:
 
-To test a preview build from a pull request or specific commit:
-
-```bash
-pnpm elements:preview <commit-hash>
+```yaml
+catalog:
+  '@commercelayer/app-elements': 8.1.2
 ```
 
-Example:
-
 ```bash
-pnpm elements:preview 085e9c3
+pnpm install
 ```
 
-This updates all `package.json` files to use the preview build from [pkg.pr.new](https://pkg.pr.new).
+To test a preview build from a pull request or a specific commit, use its [pkg.pr.new](https://pkg.pr.new) url instead (quoted, as it contains a `:`):
 
-### Updating to a production version
-
-To update all apps to a specific production version:
-
-```bash
-pnpm elements:bump <version>
+```yaml
+catalog:
+  '@commercelayer/app-elements': 'https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@085e9c3'
 ```
-
-Example:
-
-```bash
-pnpm elements:bump 6.10.2
-```
-
-Or use `latest` to automatically fetch and use the latest version from npm:
-
-```bash
-pnpm elements:bump latest
-```
-
-This updates all `package.json` files to use the specified version from npm.
-
-> [!NOTE]
-> After running either command, you need to install dependencies:
->
-> ```bash
-> pnpm install
-> ```
 
 ## Docker
 
