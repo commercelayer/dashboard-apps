@@ -7,11 +7,11 @@ settings:
 catalogs:
   default:
     '@commercelayer/app-elements':
-      specifier: 8.1.3
-      version: 8.1.3
+      specifier: 8.2.0
+      version: 8.2.0
     '@commercelayer/sdk':
-      specifier: 8.0.2
-      version: 8.0.2
+      specifier: 8.0.3
+      version: 8.0.3
     '@hookform/resolvers':
       specifier: ^3.10.0
       version: 3.10.0
@@ -117,10 +117,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -199,10 +199,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -278,10 +278,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 6.10.0(@testing-library/dom@10.4.2)
@@ -363,10 +363,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -445,10 +445,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 5.2.0(vite@7.3.7(@types/node@22.20.5)(yaml@2.9.1))
@@ -533,10 +533,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -615,10 +615,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -694,10 +694,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -776,10 +776,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -858,10 +858,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -943,10 +943,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -1022,10 +1022,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -1104,10 +1104,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -1186,10 +1186,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -1271,10 +1271,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -1350,10 +1350,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -1432,10 +1432,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -1508,10 +1508,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -1611,10 +1611,10 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       '@commercelayer/sdk':
         specifier: 'catalog:'
-        version: 8.0.2
+        version: 8.0.3
       '@hookform/resolvers':
         specifier: 'catalog:'
         version: 3.10.0(react-hook-form@7.88.0(react@19.3.0))
@@ -1663,7 +1663,7 @@ importers:
     dependencies:
       '@commercelayer/app-elements':
         specifier: 'catalog:'
-        version: 8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
+        version: 8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))
       lodash-es:
         specifier: 'catalog:'
         version: 4.18.1
@@ -1890,8 +1890,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@commercelayer/app-elements@8.1.3':
-    resolution: {integrity: sha512-XBaA6/tjxeOh+kLCHqBNBP4eHUm+j9SWl8Llp1jDmFxRddIPE+pKE8Z8YTGGAdzjM4nKBk2r9DfIFZ3aCBwOvg==}
+  '@commercelayer/app-elements@8.2.0':
+    resolution: {integrity: sha512-i/tsC82pKWBOBZsQ+j8sEtryNowtjJp0emKyVhFe8fjKXVYtDTeVSRbJH+Cm8w1lx1SUrCydgNH0PuY9IkYUog==}
     engines: {node: '>=22.22'}
     peerDependencies:
       query-string: ^9.x
@@ -1905,16 +1905,16 @@ packages:
     resolution: {integrity: sha512-kk4VqN2iEOreXFq76YqTP83KhBs09Z5Ez9nZNlikXWf5DXzkrOfShqqEwq8ezHjSOlqs4xVyxgQzsEdPP35CeQ==}
     engines: {node: '>=18.0.0'}
 
-  '@commercelayer/js-auth@7.4.2':
-    resolution: {integrity: sha512-ifRcoAL1R7o5AU5w4bgmSnNMEWXDc11A+yZwAAZMEkAYrrsaud1X/3xmgY1e0yIXK8AAdIiqfW/Rm/4DdWwAQA==}
+  '@commercelayer/js-auth@8.0.2':
+    resolution: {integrity: sha512-xwQWXuYtW6PBehzJoeI8fgmSnE79xPR4yK/SrevZwBERG0xLaCDPsihw684Ri1m5PMbHH/k1AwqncXpyu45OiQ==}
     engines: {node: '>=20.0.0'}
 
   '@commercelayer/provisioning-sdk@3.0.1':
     resolution: {integrity: sha512-/iruKAtQWBntQEy+exNgIRqFwWPPRveedmnfa2qjJggKF/yK8K2muwIzvKP4fI37qdP5r6zsg1U8nbnlPH2/aQ==}
     engines: {node: '>=20'}
 
-  '@commercelayer/sdk@8.0.2':
-    resolution: {integrity: sha512-OdKFC4qDUvQDeNpYRi+wChQFqktc74sFaQxK8NpaEeGx8mkepribmP+pOI0d7Xy1GdeExv5D5es9ZxRenLY0vA==}
+  '@commercelayer/sdk@8.0.3':
+    resolution: {integrity: sha512-vb8FbdaLswYuib5V/AUbQnvWgdBEKV/lEpccLFgHUPAInl/AxaB92WgcPZbwvm33Dv1e9HXq5rPOOBsSclwwzA==}
     engines: {node: '>=20'}
 
   '@csstools/color-helpers@6.1.2':
@@ -3766,11 +3766,11 @@ snapshots:
   '@biomejs/cli-win32-x64@2.5.15':
     optional: true
 
-  '@commercelayer/app-elements@8.1.3(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))':
+  '@commercelayer/app-elements@8.2.0(query-string@9.5.1)(react-dom@19.3.0(react@19.3.0))(react-gtm-module@2.0.11)(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(wouter@3.13.0(react@19.3.0))':
     dependencies:
-      '@commercelayer/js-auth': 7.4.2
+      '@commercelayer/js-auth': 8.0.2
       '@commercelayer/provisioning-sdk': 3.0.1
-      '@commercelayer/sdk': 8.0.2
+      '@commercelayer/sdk': 8.0.3
       '@date-fns/tz': 1.5.0
       '@dnd-kit/core': 6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@dnd-kit/modifiers': 9.0.0(@dnd-kit/core@6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
@@ -3815,11 +3815,11 @@ snapshots:
 
   '@commercelayer/js-auth@6.7.2': {}
 
-  '@commercelayer/js-auth@7.4.2': {}
+  '@commercelayer/js-auth@8.0.2': {}
 
   '@commercelayer/provisioning-sdk@3.0.1': {}
 
-  '@commercelayer/sdk@8.0.2': {}
+  '@commercelayer/sdk@8.0.3': {}
 
   '@csstools/color-helpers@6.1.2': {}
 
