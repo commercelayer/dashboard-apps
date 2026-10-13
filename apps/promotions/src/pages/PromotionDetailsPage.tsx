@@ -319,8 +319,8 @@ function SectionCheck({
                     : "So sad, it doesn't match 😢"}
               </Spacer>
             </Text>
-            {results.data?.map((rule: any, index: number) => (
-              <CheckItem key={rule.id} index={index} rule={rule} />
+            {results.data?.map((rule: any) => (
+              <CheckItem key={rule.id} rule={rule} />
             ))}
           </Spacer>
         )}
@@ -329,19 +329,11 @@ function SectionCheck({
   )
 }
 
-function CheckItem({
-  index,
-  rule,
-}: {
-  index: number
-  rule: any
-}): React.JSX.Element {
+function CheckItem({ rule }: { rule: any }): React.JSX.Element {
   const [show, setShow] = useState(false)
 
   type ExtractRef<T> = T extends { ref?: Ref<infer R> } ? R | null : never
   const ref = useRef<ExtractRef<Parameters<typeof CodeEditor>[0]>>(null)
-
-  const idx = `#${(index + 1).toString().padStart(2, "0")}`
 
   return (
     <div>
@@ -368,10 +360,7 @@ function CheckItem({
               }}
               className="flex items-center justify-between w-full gap-2"
             >
-              <div className="text-left flex gap-4">
-                <b>{idx}</b>
-                <div>{rule.name}</div>
-              </div>
+              <div className="text-left">{rule.name}</div>
               <Icon
                 name={show ? "caretDown" : "caretRight"}
                 size={16}
