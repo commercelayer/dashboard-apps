@@ -1,6 +1,7 @@
 import {
   Badge,
   type CurrencyCode,
+  currencies,
   formatCentsToCurrency,
   formatDate,
   formatDisplayName,
@@ -249,11 +250,17 @@ function getBillingName(order: Order): string {
  * This helper aims to get `formatted_total_amount` from a metrics `Order`,
  * which returns `total_amount` in units instead of a formatted string.
  */
-function getFormattedTotalAmount(order: Order): string | null | undefined {
+export function getFormattedTotalAmount(
+  order: Order,
+): string | null | undefined {
   if ("total_amount" in order && order.currency_code != null) {
+    const currencyCode = order.currency_code as CurrencyCode
+    const subunitToUnit =
+      currencies[currencyCode.toLowerCase() as Lowercase<CurrencyCode>]
+        ?.subunit_to_unit ?? 100
     return formatCentsToCurrency(
-      (order.total_amount as number) * 100,
-      order.currency_code as CurrencyCode,
+      Math.round((order.total_amount as number) * subunitToUnit),
+      currencyCode,
     )
   }
 
