@@ -13,12 +13,13 @@ minimumReleaseAgeExclude:
   - '@commercelayer/app-elements'
   - '@commercelayer/sdk'
   - '@commercelayer/provisioning-sdk'
+  - '@commercelayer/js-auth'
 
 blockExoticSubdeps: false
 
 catalog:
-  '@commercelayer/app-elements': 8.1.3
-  '@commercelayer/sdk': 8.0.2
+  '@commercelayer/app-elements': 8.2.0
+  '@commercelayer/sdk': 8.0.3
   '@hookform/resolvers': '^3.10.0'
   '@testing-library/jest-dom': '^6.10.0'
   '@testing-library/react': '^16.3.3'

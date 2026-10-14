@@ -65,7 +65,6 @@ export function ResourceInfoBlocks({
           <ResourceMetadata
             resourceType={resourceType}
             resourceId={resource.id}
-            modal={{ title }}
           />
         </div>
       )}
