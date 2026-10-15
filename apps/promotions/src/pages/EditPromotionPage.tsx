@@ -24,6 +24,7 @@ function Page(
   return (
     <PageLayout
       overlay={props.overlay}
+      scrollToTop
       title="Edit promotion"
       mode={mode}
       gap="only-top"

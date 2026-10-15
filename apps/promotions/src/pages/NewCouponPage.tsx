@@ -25,6 +25,7 @@ function Page(props: PageProps<typeof appRoutes.newCoupon>): React.JSX.Element {
     <PageLayout
       title="New coupon"
       overlay={props.overlay}
+      scrollToTop
       mode={mode}
       gap="only-top"
       navigationButton={{
