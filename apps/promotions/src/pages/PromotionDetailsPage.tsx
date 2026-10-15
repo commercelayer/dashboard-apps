@@ -36,7 +36,8 @@ import {
 import type { FlexPromotion } from "@commercelayer/sdk"
 import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/ResourceInfoBlocks"
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
-import { type Ref, useMemo, useRef, useState } from "react"
+import { chunk } from "lodash-es"
+import { type ReactNode, type Ref, useMemo, useRef, useState } from "react"
 import { Link, useLocation } from "wouter"
 import { CouponList } from "#components/CouponList"
 import { SectionFlexRules } from "#components/FlexRuleBuilder"
@@ -221,9 +222,6 @@ function Page(
             },
           }}
         />
-        {/* the two stacks are adjacent on purpose: they pull together into a
-            single grid, so the six values read as one block */}
-        <CardStatus promotionId={props.params.promotionId} />
         <SectionInfo promotion={promotion} />
 
         {promotion.type === "flex_promotions" && (
@@ -389,49 +387,6 @@ function CheckItem({ rule }: { rule: any }): React.JSX.Element {
 const isGeneratedViaApi = (promotion: Promotion): boolean =>
   promotion.reference_origin !== appPromotionsReferenceOrigin
 
-const CardStatus = withSkeletonTemplate<{
-  promotionId: string
-}>(({ promotionId }) => {
-  const { promotion } = usePromotion(promotionId)
-  const { user } = useTokenProvider()
-  const config = promotionConfig[promotion.type]
-
-  const query = useMemo<UseResourceListConfig<"coupons">["query"]>(() => {
-    return {
-      filters: {
-        promotion_rule_promotion_id_eq: promotionId,
-      },
-      sort: ["-updated_at"],
-      pageSize: 10,
-    }
-  }, [promotionId])
-
-  const { meta } = useResourceList({
-    type: "coupons",
-    query,
-  })
-
-  return (
-    <Stack size="small">
-      <StackCell
-        label={
-          promotion.type === "fixed_price_promotions"
-            ? "Fixed price"
-            : "Discount"
-        }
-      >
-        <config.StatusDescription
-          // @ts-expect-error TS cannot infer the right promotion
-          promotion={promotion}
-        />
-      </StackCell>
-      <StackCell label="Coupons">
-        {formatNumber({ value: meta?.recordCount, locale: user?.locale })}
-      </StackCell>
-    </Stack>
-  )
-})
-
 const useDisplayStatus = (promotionId: string) => {
   const { user } = useTokenProvider()
   const { promotion } = usePromotion(promotionId)
@@ -491,14 +446,17 @@ const useDisplayStatus = (promotionId: string) => {
 }
 
 /**
- * When the promotion runs and what it applies to.
+ * What the promotion gives, when it runs, how it competes with the others and what
+ * it applies to.
  *
- * Two cells per row, continuing the `CardStatus` stack above: that one opens with
- * the discount and the coupon count — its versions are the better ones (a per-type
- * description, and a real count rather than the `coupons_count` attribute, which
- * flex promotions do not have) — and the usage joins `Apply to` here, so the three
- * rows read as one grid. Flex promotions carry their scope in their rules, so they
- * leave `Apply to` out and the usage stands alone.
+ * The cells are listed first and then paired into `Stack` rows, so the conditional
+ * ones never leave a hole: consecutive stacks merge their borders and read as one
+ * grid, and a lone trailing cell is the remainder of an odd count. The first five
+ * are always there; `Apply to` (not for flex promotions, which carry their scope in
+ * their rules), `Priority` and `Options` follow only when they have something to say.
+ *
+ * The coupon count comes from the coupons list rather than the `coupons_count`
+ * attribute, which flex promotions do not have.
  *
  * The per-type extras still render underneath, since a few types (external, free
  * gift, buy X pay Y) carry information of their own.
@@ -509,46 +467,105 @@ const SectionInfo = withSkeletonTemplate<{
   const { user } = useTokenProvider()
   const config = promotionConfig[promotion.type]
 
-  /** What the promotion is scoped to, most specific first. */
-  const appliesTo =
-    promotion.type === "flex_promotions"
-      ? null
-      : (promotion.sku_list?.name ?? promotion.market?.name ?? "All products")
+  const query = useMemo<UseResourceListConfig<"coupons">["query"]>(() => {
+    return {
+      filters: {
+        promotion_rule_promotion_id_eq: promotion.id,
+      },
+      sort: ["-updated_at"],
+      pageSize: 10,
+    }
+  }, [promotion.id])
 
-  return (
-    <>
-      <Stack size="small">
-        <StackCell label="Started on">
-          {promotion.starts_at == null
-            ? undefined
-            : formatDate({
-                isoDate: promotion.starts_at,
-                format: "full",
-                timezone: user?.timezone,
-                showCurrentYear: true,
-              })}
-        </StackCell>
-        <StackCell label="Expires on">
-          {promotion.expires_at == null
-            ? undefined
-            : formatDate({
-                isoDate: promotion.expires_at,
-                format: "full",
-                timezone: user?.timezone,
-                showCurrentYear: true,
-              })}
-        </StackCell>
-      </Stack>
-      <Stack size="small">
-        <StackCell label="Usage">
+  const { meta } = useResourceList({
+    type: "coupons",
+    query,
+  })
+
+  const cells: Array<{ label: string; value: ReactNode }> = [
+    {
+      label:
+        promotion.type === "fixed_price_promotions"
+          ? "Fixed price"
+          : "Discount",
+      value: (
+        <config.StatusDescription
+          // @ts-expect-error TS cannot infer the right promotion
+          promotion={promotion}
+        />
+      ),
+    },
+    {
+      label: "Coupons",
+      value: formatNumber({ value: meta?.recordCount, locale: user?.locale }),
+    },
+    {
+      label: "Started on",
+      value:
+        promotion.starts_at == null
+          ? undefined
+          : formatDate({
+              isoDate: promotion.starts_at,
+              format: "full",
+              timezone: user?.timezone,
+              showCurrentYear: true,
+            }),
+    },
+    {
+      label: "Expires on",
+      value:
+        promotion.expires_at == null
+          ? undefined
+          : formatDate({
+              isoDate: promotion.expires_at,
+              format: "full",
+              timezone: user?.timezone,
+              showCurrentYear: true,
+            }),
+    },
+    {
+      label: "Usage",
+      value: (
+        <>
           {promotion.total_usage_count}
           {promotion.total_usage_limit != null &&
             ` / ${promotion.total_usage_limit}`}
-        </StackCell>
-        {appliesTo != null && (
-          <StackCell label="Apply to">{appliesTo}</StackCell>
-        )}
-      </Stack>
+        </>
+      ),
+    },
+  ]
+
+  if (promotion.type !== "flex_promotions") {
+    cells.push({
+      label: "Apply to",
+      // most specific scope first
+      value:
+        promotion.sku_list?.name ?? promotion.market?.name ?? "All products",
+    })
+  }
+
+  if (promotion.priority != null) {
+    cells.push({ label: "Priority", value: promotion.priority })
+  }
+
+  if (promotion.exclusive === true) {
+    cells.push({
+      label: "Options",
+      value: <Badge variant="secondary">exclusive</Badge>,
+    })
+  }
+
+  return (
+    <>
+      {chunk(cells, 2).map((row) => (
+        <Stack key={row[0]?.label} size="small">
+          {row.map(({ label, value }) => (
+            <StackCell key={label} label={label}>
+              {value}
+            </StackCell>
+          ))}
+        </Stack>
+      ))}
       <config.DetailsSectionInfo
         // @ts-expect-error TS cannot infer the right promotion
         promotion={promotion}
