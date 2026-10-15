@@ -18,7 +18,7 @@ minimumReleaseAgeExclude:
 blockExoticSubdeps: false
 
 catalog:
-  '@commercelayer/app-elements': 8.2.0
+  '@commercelayer/app-elements': 8.2.1
   '@commercelayer/sdk': 8.0.3
   '@hookform/resolvers': '^3.10.0'
   '@testing-library/jest-dom': '^6.10.0'
