@@ -497,7 +497,8 @@ const useDisplayStatus = (promotionId: string) => {
  * the discount and the coupon count — its versions are the better ones (a per-type
  * description, and a real count rather than the `coupons_count` attribute, which
  * flex promotions do not have) — and the usage joins `Apply to` here, so the three
- * rows read as one grid.
+ * rows read as one grid. Flex promotions carry their scope in their rules, so they
+ * leave `Apply to` out and the usage stands alone.
  *
  * The per-type extras still render underneath, since a few types (external, free
  * gift, buy X pay Y) carry information of their own.
@@ -511,7 +512,7 @@ const SectionInfo = withSkeletonTemplate<{
   /** What the promotion is scoped to, most specific first. */
   const appliesTo =
     promotion.type === "flex_promotions"
-      ? undefined
+      ? null
       : (promotion.sku_list?.name ?? promotion.market?.name ?? "All products")
 
   return (
@@ -544,7 +545,9 @@ const SectionInfo = withSkeletonTemplate<{
           {promotion.total_usage_limit != null &&
             ` / ${promotion.total_usage_limit}`}
         </StackCell>
-        <StackCell label="Apply to">{appliesTo}</StackCell>
+        {appliesTo != null && (
+          <StackCell label="Apply to">{appliesTo}</StackCell>
+        )}
       </Stack>
       <config.DetailsSectionInfo
         // @ts-expect-error TS cannot infer the right promotion
