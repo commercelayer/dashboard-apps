@@ -538,7 +538,11 @@ const SectionInfo = withSkeletonTemplate<{
 
   if (promotion.type !== "flex_promotions") {
     cells.push({
-      label: "Apply to",
+      // a free gift's SKU list is the gifts themselves, as the form names it
+      label:
+        promotion.type === "free_gift_promotions"
+          ? "Free gift products"
+          : "Apply to",
       // most specific scope first
       value:
         promotion.sku_list?.name ?? promotion.market?.name ?? "All products",
