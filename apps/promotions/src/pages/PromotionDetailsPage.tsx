@@ -168,6 +168,7 @@ function Page(
         </SkeletonTemplate>
       }
       overlay={props.overlay}
+      scrollToTop
       toolbar={toolbar}
       mode={mode}
       gap="only-top"
