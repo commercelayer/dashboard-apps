@@ -106,18 +106,17 @@ export default {
         {promotion.x}x{promotion.y}
       </>
     ),
-    DetailsSectionInfo: ({ promotion }) => (
-      <Stack size="small">
-        {/* <StackCell label='Buy'>
+    DetailsSectionInfo: ({ promotion }) =>
+      promotion.cheapest_free === true && (
+        <Stack size="small">
+          {/* <StackCell label='Buy'>
           {promotion.x}
         </StackCell>
         <StackCell label='Pay'>
           {promotion.y}
         </StackCell> */}
-        {promotion.cheapest_free === true && (
           <StackCell label="Mode">Cheapest free</StackCell>
-        )}
-      </Stack>
-    ),
+        </Stack>
+      ),
   },
 } satisfies Pick<PromotionConfig, "buy_x_pay_y_promotions">

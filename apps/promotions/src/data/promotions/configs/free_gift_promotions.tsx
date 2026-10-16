@@ -58,12 +58,14 @@ export default {
     },
     Options: () => <></>,
     StatusDescription: () => <>Free gift</>,
-    DetailsSectionInfo: ({ promotion }) => (
-      <Stack size="small">
-        <StackCell label="Max free quantity">
-          {promotion.max_quantity}
-        </StackCell>
-      </Stack>
-    ),
+    DetailsSectionInfo: ({ promotion }) =>
+      promotion.max_quantity != null &&
+      promotion?.max_quantity > 0 && (
+        <Stack size="small">
+          <StackCell label="Max free quantity">
+            {promotion.max_quantity}
+          </StackCell>
+        </Stack>
+      ),
   },
 } satisfies Pick<PromotionConfig, "free_gift_promotions">
