@@ -38,9 +38,10 @@ jobs:
       - run:
           name: Test
           command: |
-            pnpm --aggregate-output --color $(node latest-pnpm-filters.cjs) check
-            pnpm --aggregate-output --color $(node latest-pnpm-filters.cjs) ts:check
-            pnpm --aggregate-output --color $(node latest-pnpm-filters.cjs) test
+            FILTERS=$(node latest-pnpm-filters.cjs)
+            pnpm --aggregate-output --color $FILTERS check
+            pnpm --aggregate-output --color $FILTERS ts:check
+            pnpm --aggregate-output --color $FILTERS test
   build:
     <<: *image
     steps:
@@ -48,7 +49,9 @@ jobs:
       - <<: *setup
       - run:
           name: Build
-          command: pnpm --aggregate-output --color $(node latest-pnpm-filters.cjs) build
+          command: |
+            FILTERS=$(node latest-pnpm-filters.cjs)
+            pnpm --aggregate-output --color $FILTERS build
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY
           aws_secret_access_key: AWS_SECRET_ACCESS_KEY
