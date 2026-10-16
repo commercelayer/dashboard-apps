@@ -47,7 +47,12 @@ export const stockItemsInstructions: FiltersInstructions = [
           {
             value: "in_stock",
             label: "In stock",
-            sdk: { predicate: "quantity_gt", value: "0" },
+            // exclusive like the badge: items below their low stock threshold
+            // belong to the next option
+            sdk: [
+              { predicate: "quantity_gt", value: "0" },
+              { predicate: "low_stock", value: "false" },
+            ],
           },
           {
             value: "low_stock",
