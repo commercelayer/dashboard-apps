@@ -3,9 +3,10 @@ import {
   Grid,
   HookedInput,
   HookedInputCheckbox,
-  ListDetailsItem,
   Section,
   Spacer,
+  Stack,
+  StackCell,
   Text,
 } from "@commercelayer/app-elements"
 import { z } from "zod"
@@ -106,19 +107,17 @@ export default {
       </>
     ),
     DetailsSectionInfo: ({ promotion }) => (
-      <>
-        {/* <ListDetailsItem label='Buy' gutter='none'>
+      <Stack size="small">
+        {/* <StackCell label='Buy'>
           {promotion.x}
-        </ListDetailsItem>
-        <ListDetailsItem label='Pay' gutter='none'>
+        </StackCell>
+        <StackCell label='Pay'>
           {promotion.y}
-        </ListDetailsItem> */}
+        </StackCell> */}
         {promotion.cheapest_free === true && (
-          <ListDetailsItem label="Mode" gutter="none">
-            Cheapest free
-          </ListDetailsItem>
+          <StackCell label="Mode">Cheapest free</StackCell>
         )}
-      </>
+      </Stack>
     ),
   },
 } satisfies Pick<PromotionConfig, "buy_x_pay_y_promotions">
