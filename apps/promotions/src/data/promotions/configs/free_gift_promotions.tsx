@@ -1,8 +1,9 @@
 import {
   A,
   HookedInput,
-  ListDetailsItem,
   Spacer,
+  Stack,
+  StackCell,
 } from "@commercelayer/app-elements"
 import { z } from "zod"
 import { PromotionSkuListSelector } from "../components/PromotionSkuListSelector"
@@ -58,11 +59,11 @@ export default {
     Options: () => <></>,
     StatusDescription: () => <>Free gift</>,
     DetailsSectionInfo: ({ promotion }) => (
-      <>
-        <ListDetailsItem label="Max free quantity" gutter="none">
+      <Stack size="small">
+        <StackCell label="Max free quantity">
           {promotion.max_quantity}
-        </ListDetailsItem>
-      </>
+        </StackCell>
+      </Stack>
     ),
   },
 } satisfies Pick<PromotionConfig, "free_gift_promotions">

@@ -1,7 +1,9 @@
 import {
+  Badge,
   HookedInput,
-  ListDetailsItem,
   Spacer,
+  Stack,
+  StackCell,
 } from "@commercelayer/app-elements"
 import { z } from "zod"
 import { PromotionSkuListSelector } from "../components/PromotionSkuListSelector"
@@ -94,20 +96,30 @@ export default {
     },
     StatusDescription: () => <>External</>,
     DetailsSectionInfo: ({ promotion }) => (
-      <>
-        <ListDetailsItem label="External service URL" gutter="none">
+      <Stack size="small">
+        <StackCell label="External service URL">
           {promotion.promotion_url}
-        </ListDetailsItem>
-        {promotion.external_includes != null && (
-          <ListDetailsItem label="Includes" gutter="none">
-            <div>
-              {promotion.external_includes
-                .map((item) => item.trim())
-                .join(", ")}
-            </div>
-          </ListDetailsItem>
-        )}
-      </>
+        </StackCell>
+        {promotion.external_includes != null &&
+          promotion.external_includes.length > 0 && (
+            <StackCell label="Includes">
+              {/* inline badges follow the cell's text alignment, so they sit on
+                  the right when the cell is the trailing one of the row and on
+                  the left once the cells are stacked */}
+              <div style={{ margin: "-0.25rem", marginTop: "0.25rem" }}>
+                {promotion.external_includes.map((item) => (
+                  <Badge
+                    key={item}
+                    variant="secondary"
+                    style={{ margin: "0.25rem" }}
+                  >
+                    {item.trim()}
+                  </Badge>
+                ))}
+              </div>
+            </StackCell>
+          )}
+      </Stack>
     ),
   },
 } satisfies Pick<PromotionConfig, "external_promotions">
