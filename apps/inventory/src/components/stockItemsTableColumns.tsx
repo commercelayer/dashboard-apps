@@ -14,8 +14,8 @@ import { BadgeStockItemStatus } from "#components/BadgeStockItemStatus"
  * Columns of the stock items table.
  *
  * SKU is the primary column, always shown; the others can be hidden by the user
- * from the columns menu (`hideable`), with Reference hidden until it is turned
- * on.
+ * from the columns menu (`hideable`), with Reserved and Reference hidden until
+ * they are turned on.
  *
  * Requires `include: ['sku', 'stock_location', 'reserved_stock']` in the query:
  * Status and Reserved both read the reserved stock.
@@ -72,6 +72,7 @@ export function useStockItemsTableColumns(): Array<
         id: "reserved",
         header: "Reserved",
         hideable: true,
+        defaultHidden: true,
         kind: "count",
         cell: ({ resource }) => {
           // reserved stock is what makes the available quantity differ from the one
