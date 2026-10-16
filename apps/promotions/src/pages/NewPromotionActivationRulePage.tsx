@@ -25,6 +25,7 @@ function Page(
     <PageLayout
       title="New activation rule"
       overlay={props.overlay}
+      scrollToTop
       mode={mode}
       gap="only-top"
       navigationButton={{
