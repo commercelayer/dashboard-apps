@@ -91,6 +91,7 @@ export function StockItemEdit(): React.JSX.Element {
             defaultValues={{
               id: stockItem.id,
               quantity: stockItem.quantity,
+              lowQuantity: stockItem.low_quantity,
               item: stockItem.sku?.id,
               stockLocation: stockItem.stock_location?.id,
             }}
@@ -125,5 +126,7 @@ function adaptFormValuesToStockItem(
       type: "skus",
     },
     quantity: formValues.quantity,
+    // `null` clears a threshold the field was emptied of
+    low_quantity: formValues.lowQuantity ?? null,
   }
 }

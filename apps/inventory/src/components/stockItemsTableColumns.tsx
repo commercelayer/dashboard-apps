@@ -8,6 +8,7 @@ import {
 } from "@commercelayer/app-elements"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
+import { BadgeStockItemStatus } from "#components/BadgeStockItemStatus"
 
 /**
  * Columns of the stock items table.
@@ -16,7 +17,8 @@ import { useMemo } from "react"
  * from the columns menu (`hideable`), with Reference hidden until it is turned
  * on.
  *
- * Requires `include: ['sku', 'stock_location', 'reserved_stock']` in the query.
+ * Requires `include: ['sku', 'stock_location', 'reserved_stock']` in the query:
+ * Status and Reserved both read the reserved stock.
  */
 export function useStockItemsTableColumns(): Array<
   ResourceTableColumn<"stock_items">
@@ -58,6 +60,13 @@ export function useStockItemsTableColumns(): Array<
             {formatNumber({ value: resource.quantity, locale: user?.locale })}
           </Text>
         ),
+      },
+      {
+        id: "status",
+        header: "Status",
+        hideable: true,
+        kind: "status",
+        cell: ({ resource }) => <BadgeStockItemStatus stockItem={resource} />,
       },
       {
         id: "reserved",

@@ -80,7 +80,7 @@ export function StockItemsList(): React.JSX.Element {
           columns={columns}
           query={{
             pageSize: 25,
-            // the SKU, Stock location and Quantity columns read these
+            // the SKU, Status, Reserved and Stock location columns read these
             include: ["sku", "reserved_stock", "stock_location"],
           }}
           // columns the user turns on may not fit: past that point the table
