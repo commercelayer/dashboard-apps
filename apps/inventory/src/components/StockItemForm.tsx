@@ -22,6 +22,12 @@ const stockItemFormSchema = z.object({
   stockLocation: z.string().min(1),
   item: z.string().min(1),
   quantity: z.number().min(0),
+  lowQuantity: z.preprocess(
+    // an emptied number input reads as `NaN`: no threshold, rather than an error
+    (value) =>
+      typeof value === "number" && Number.isNaN(value) ? null : value,
+    z.number().int().min(1).nullable().optional(),
+  ),
 })
 
 export type StockItemFormValues = z.infer<typeof stockItemFormSchema>
@@ -120,6 +126,23 @@ export function StockItemForm({
               label="Quantity"
               type="number"
               min="0"
+            />
+          </Spacer>
+          <Spacer top="6" bottom="4">
+            <HookedInput
+              name="lowQuantity"
+              label="Low stock threshold"
+              type="number"
+              min="1"
+              hint={{
+                text: (
+                  <Text variant="info">
+                    Stock is considered low when the available quantity
+                    (quantity minus reserved) falls below this threshold. Leave
+                    it empty to never flag it.
+                  </Text>
+                ),
+              }}
             />
           </Spacer>
         </Section>
