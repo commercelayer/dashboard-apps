@@ -38,14 +38,31 @@ export const stockItemsInstructions: FiltersInstructions = [
     type: "groupedPredicates",
     urlParamKey: "availability",
     render: {
-      component: "inputToggleButton",
+      component: "inputSelect",
       props: {
         mode: "single",
+        // clearing is the only way back to every stock item
+        isClearable: true,
         options: [
           {
             value: "in_stock",
             label: "In stock",
-            sdk: { predicate: "quantity_gt", value: "0" },
+            // exclusive like the badge: items below their low stock threshold
+            // belong to the next option
+            sdk: [
+              { predicate: "quantity_gt", value: "0" },
+              { predicate: "low_stock", value: "false" },
+            ],
+          },
+          {
+            value: "low_stock",
+            label: "Low stock",
+            // the API scope also matches items with nothing on hand, which
+            // have their own option: `quantity_gt` leaves them out
+            sdk: [
+              { predicate: "low_stock", value: "true" },
+              { predicate: "quantity_gt", value: "0" },
+            ],
           },
           {
             value: "out_of_stock",

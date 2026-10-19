@@ -17,6 +17,7 @@ import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resour
 import type { FC } from "react"
 import { useLocation, useRoute } from "wouter"
 import { useSearch } from "wouter/use-browser-location"
+import { BadgeStockItemStatus } from "#components/BadgeStockItemStatus"
 import { StockItemInfo } from "#components/StockItemInfo"
 import { appRoutes } from "#data/routes"
 import { useStockItemDetails } from "#hooks/useStockItemDetails"
@@ -131,6 +132,7 @@ export const StockItemDetails: FC = () => {
           title={
             <SkeletonTemplate isLoading={isLoading}>
               {pageTitle}
+              <BadgeStockItemStatus stockItem={stockItem} />
             </SkeletonTemplate>
           }
           description={

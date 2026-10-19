@@ -97,6 +97,7 @@ function adaptFormValuesToStockItem(
       type: "skus",
     },
     quantity: formValues.quantity,
+    low_quantity: formValues.lowQuantity ?? null,
     stock_location: {
       // required by the form schema, so the selector always provides it
       id: formValues.stockLocation,
