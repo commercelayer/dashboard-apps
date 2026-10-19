@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Dropdown,
   DropdownDivider,
@@ -20,6 +21,7 @@ import {
 import type { Coupon } from "@commercelayer/sdk"
 import { makeCoupon } from "src/mocks/resources/coupons"
 import { useLocation } from "wouter"
+import { getCouponStatus } from "#data/couponStatus"
 import { appRoutes } from "#data/routes"
 
 interface Props {
@@ -46,7 +48,8 @@ export const CouponTable = ({
         thead={
           <Tr>
             <Th>Code</Th>
-            <Th>Used</Th>
+            <Th>Status</Th>
+            <Th>Usage</Th>
             <Th>Expiry</Th>
             <Th />
           </Tr>
@@ -55,7 +58,7 @@ export const CouponTable = ({
           <>
             {!isLoading && coupons.length === 0 && (
               <Tr>
-                <Td colSpan={4}>no results</Td>
+                <Td colSpan={5}>no results</Td>
               </Tr>
             )}
             {coupons?.map((coupon) => (
@@ -103,6 +106,8 @@ export const CouponRow = withSkeletonTemplate<
     const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
     if (coupon == null) return null
+
+    const status = getCouponStatus(coupon)
 
     return (
       <>
@@ -156,14 +161,19 @@ export const CouponRow = withSkeletonTemplate<
             )}
           </Td>
           <Td>
-            {coupon.usage_count}
-            {coupon.usage_limit != null ? ` / ${coupon.usage_limit}` : ""}
+            <Badge variant={status === "available" ? "success" : "secondary"}>
+              {status}
+            </Badge>
+          </Td>
+          <Td>
+            {coupon.usage_count ?? 0}
+            {coupon.usage_limit != null ? `/${coupon.usage_limit}` : ""}
           </Td>
           <Td>
             {coupon.expires_at == null
-              ? "Never"
+              ? "—"
               : formatDate({
-                  format: "distanceToNow",
+                  format: "full",
                   isoDate: coupon.expires_at,
                   timezone: user?.timezone,
                 })}
