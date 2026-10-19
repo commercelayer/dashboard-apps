@@ -37,6 +37,7 @@ function Page(
     <PageLayout
       title="Select type"
       overlay={props.overlay}
+      scrollToTop
       mode={mode}
       gap="only-top"
       navigationButton={{

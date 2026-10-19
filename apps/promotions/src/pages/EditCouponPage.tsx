@@ -32,6 +32,7 @@ function Page(
     <PageLayout
       title="Edit coupon"
       overlay={props.overlay}
+      scrollToTop
       mode={mode}
       gap="only-top"
       navigationButton={{

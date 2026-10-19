@@ -28,6 +28,7 @@ function Page(
       title={`New ${config.titleNew}`}
       // description='Enter basic details to create the promotion, then set activation rules or coupons to limit its reach after creation.'
       overlay={props.overlay}
+      scrollToTop
       mode={mode}
       gap="only-top"
       navigationButton={{
