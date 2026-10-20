@@ -9,19 +9,23 @@ import { describe, expect, test } from "vitest"
 
 /**
  * Only what `getPaymentSessionDisplay` reads: the payment setting type, the
- * authorization's `response_data`, and the gift card code.
+ * authorization's `response_data`, the `payment_instrument`, and the gift card
+ * code.
  */
 function makeSession({
   settingType,
   responseData,
+  paymentInstrument,
   giftCardCode,
 }: {
   settingType?: string
   responseData?: Record<string, unknown>
+  paymentInstrument?: Record<string, unknown>
   giftCardCode?: string
 }): PaymentSession {
   return {
     gift_card_code: giftCardCode,
+    payment_instrument: paymentInstrument,
     payment_setting: settingType != null ? { type: settingType } : undefined,
     payment_authorization:
       responseData != null ? { response_data: responseData } : undefined,
@@ -153,6 +157,48 @@ describe("getPaymentSessionDisplay > Stripe", () => {
 
     expect(logoSrc).toContain("/apple_pay.svg")
     expect(label).toBe("Visa")
+  })
+})
+
+describe("getPaymentSessionDisplay > payment instrument", () => {
+  test("reads the card when the gateway response carries none (Braintree)", () => {
+    const { logoSrc, label, last4 } = getPaymentSessionDisplay(
+      makeSession({
+        settingType: "payment_setting_braintrees",
+        responseData: { clientToken: "token" },
+        paymentInstrument: {
+          card_type: "MASTERCARD",
+          card_last_digits: "1005",
+          card_expiry_month: 12,
+          card_expiry_year: 2030,
+        },
+      }),
+    )
+
+    expect(logoSrc).toContain("/mastercard.svg")
+    expect(label).toBe("Mastercard")
+    expect(last4).toBe("1005")
+  })
+
+  test("prefers the gateway response, which can name a wallet", () => {
+    const { logoSrc, last4 } = getPaymentSessionDisplay(
+      makeSession({
+        settingType: "payment_setting_stripes",
+        responseData: {
+          payment_method_details: {
+            card: {
+              brand: "visa",
+              last4: "4242",
+              wallet: { type: "apple_pay" },
+            },
+          },
+        },
+        paymentInstrument: { card_type: "visa", card_last_digits: "4242" },
+      }),
+    )
+
+    expect(logoSrc).toContain("/apple_pay.svg")
+    expect(last4).toBe("4242")
   })
 })
 

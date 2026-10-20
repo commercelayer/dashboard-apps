@@ -51,6 +51,14 @@ function readAdyenPaymentResult(data: UnknownRecord): CardDetails {
   }
 }
 
+/** The card in core's `payment_instrument`, the same shape for every gateway. */
+export function readPaymentInstrument(instrument: UnknownRecord): CardDetails {
+  return {
+    brand: getString(instrument, "card_type"),
+    last4: getString(instrument, "card_last_digits"),
+  }
+}
+
 /** Where each gateway puts the card in an authorization's `response_data`. */
 export const SESSION_CARD_READERS: Partial<
   Record<PaymentSettingType, (responseData: UnknownRecord) => CardDetails>
