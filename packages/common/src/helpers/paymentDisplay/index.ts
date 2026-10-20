@@ -2,6 +2,7 @@ import type { PaymentSession, PaymentWallet } from "@commercelayer/sdk"
 import {
   type CardDetails,
   isUnknownRecord,
+  readPaymentInstrument,
   SESSION_CARD_READERS,
   WALLET_SHAPES,
   type WalletShape,
@@ -130,8 +131,9 @@ function getGiftCardTail(session: PaymentSession): string | undefined {
 }
 
 /**
- * Read from the authorization, which points at the transaction that reached
- * the card network, rather than from every transaction.
+ * Read from the authorization's gateway response first, which can also name a
+ * wallet (Apple Pay, Google Pay), then from the session's `payment_instrument`,
+ * which core fills for every gateway.
  */
 function getSessionCardDetails(
   session: PaymentSession,
@@ -140,10 +142,18 @@ function getSessionCardDetails(
   const responseData = session.payment_authorization?.response_data
   const read =
     settingType == null ? undefined : SESSION_CARD_READERS[settingType]
+  const gatewayDetails =
+    read != null && isUnknownRecord(responseData)
+      ? read(responseData)
+      : undefined
 
-  return read != null && isUnknownRecord(responseData)
-    ? read(responseData)
-    : undefined
+  if (gatewayDetails?.brand != null || gatewayDetails?.last4 != null) {
+    return gatewayDetails
+  }
+
+  return isUnknownRecord(session.payment_instrument)
+    ? readPaymentInstrument(session.payment_instrument)
+    : gatewayDetails
 }
 
 /** The setting's type when usable, else the one its payload shape names. */
