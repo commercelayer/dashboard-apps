@@ -18,5 +18,5 @@
     "vitest": "catalog:",
     "yargs": "^18.2.0"
   },
-  "version": "6.0.0"
+  "version": "6.2.0"
 }
