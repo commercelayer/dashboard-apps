@@ -5,6 +5,7 @@ import { LinkDetails } from "#pages/LinkDetails"
 import { LinkEdit } from "#pages/LinkEdit"
 import { LinkNew } from "#pages/LinkNew"
 import { SkuDetails } from "#pages/SkuDetails"
+import { SkuDuplicate } from "#pages/SkuDuplicate"
 import { SkuEdit } from "#pages/SkuEdit"
 import { SkuNew } from "#pages/SkuNew"
 import { SkusList } from "#pages/SkusList"
@@ -49,6 +50,7 @@ const SkusScreen: FC = () => {
           </Route>
           <Route path={appRoutes.edit.path} component={SkuEdit} />
           <Route path={appRoutes.new.path} component={SkuNew} />
+          <Route path={appRoutes.duplicate.path} component={SkuDuplicate} />
           <Route path={appRoutes.linksNew.path} component={LinkNew} />
           <Route path={appRoutes.linksDetails.path} component={LinkDetails} />
           <Route path={appRoutes.linksEdit.path} component={LinkEdit} />

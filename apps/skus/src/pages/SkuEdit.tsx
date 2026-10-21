@@ -7,12 +7,12 @@ import {
   useCoreSdkProvider,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import type { Sku } from "@commercelayer/sdk"
 import { useState } from "react"
 import { Link, useLocation, useRoute, useSearch } from "wouter"
-import { SkuForm, type SkuFormValues } from "#components/SkuForm"
+import { SkuForm } from "#components/SkuForm"
 import { appRoutes } from "#data/routes"
 import { useSkuDetails } from "#hooks/useSkuDetails"
+import { getFormValuesFromSku } from "#utils/getFormValuesFromSku"
 import { getSkuFromFormValues } from "#utils/getSkuFromFormValues"
 
 export function SkuEdit(): React.JSX.Element {
@@ -80,7 +80,7 @@ export function SkuEdit(): React.JSX.Element {
       <Spacer bottom="14">
         {!isLoading && sku != null ? (
           <SkuForm
-            defaultValues={adaptSkuToFormValues(sku)}
+            defaultValues={getFormValuesFromSku(sku)}
             apiError={apiError}
             onSubmit={(formValues) => {
               void sdkClient.skus
@@ -99,21 +99,4 @@ export function SkuEdit(): React.JSX.Element {
       </Spacer>
     </PageLayout>
   )
-}
-
-function adaptSkuToFormValues(sku?: Sku): SkuFormValues {
-  return {
-    id: sku?.id,
-    code: sku?.code ?? "",
-    name: sku?.name ?? "",
-    description: sku?.description ?? "",
-    shippingCategory: sku?.shipping_category?.id ?? null,
-    weight: sku?.weight?.toString() ?? "",
-    unitOfWeight: sku?.unit_of_weight ?? "",
-    piecesPerPack: sku?.pieces_per_pack ?? null,
-    hsTariffNumber: sku?.hs_tariff_number?.toString() ?? "",
-    doNotShip: sku?.do_not_ship ?? false,
-    doNotTrack: sku?.do_not_track ?? false,
-    imageUrl: sku?.image_url ?? "",
-  }
 }

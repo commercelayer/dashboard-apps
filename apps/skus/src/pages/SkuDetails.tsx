@@ -1,5 +1,6 @@
 import {
   Button,
+  type DropdownItemProps,
   EmptyState,
   Icon,
   PageHeading,
@@ -124,20 +125,39 @@ export const SkuDetails: FC = () => {
     dropdownItems: [],
   }
 
+  // Edit and Duplicate share a group, apart from the destructive action below
+  const editItems: DropdownItemProps[] = []
+
   if (canUser("update", "skus")) {
-    pageToolbar.dropdownItems?.push([
-      {
-        label: "Edit",
-        onClick: () => {
-          setLocation(
-            appRoutes.edit.makePath(
-              { skuId },
-              new URLSearchParams(queryString).toString(),
-            ),
-          )
-        },
+    editItems.push({
+      label: "Edit",
+      onClick: () => {
+        setLocation(
+          appRoutes.edit.makePath(
+            { skuId },
+            new URLSearchParams(queryString).toString(),
+          ),
+        )
       },
-    ])
+    })
+  }
+
+  if (canUser("create", "skus")) {
+    editItems.push({
+      label: "Duplicate",
+      onClick: () => {
+        setLocation(
+          appRoutes.duplicate.makePath(
+            { skuId },
+            new URLSearchParams(queryString).toString(),
+          ),
+        )
+      },
+    })
+  }
+
+  if (editItems.length > 0) {
+    pageToolbar.dropdownItems?.push(editItems)
   }
 
   // its own group, so a divider separates the destructive action

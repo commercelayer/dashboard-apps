@@ -20,5 +20,6 @@ export const appRoutes = {
   new: createRoute("/new/"),
   details: createRoute("/list/:skuId/"),
   edit: createRoute("/list/:skuId/edit/"),
+  duplicate: createRoute("/list/:skuId/duplicate/"),
   ...linksRoutes,
 }

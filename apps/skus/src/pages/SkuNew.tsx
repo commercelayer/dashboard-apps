@@ -2,6 +2,7 @@ import {
   Button,
   EmptyState,
   PageLayout,
+  SkeletonTemplate,
   Spacer,
   useCoreSdkProvider,
   useTokenProvider,
@@ -17,13 +18,38 @@ import {
 import { appRoutes } from "#data/routes"
 
 export function SkuNew(): React.JSX.Element {
+  return (
+    <SkuCreatePage
+      goBackUrl={appRoutes.list.makePath({})}
+      defaultValues={{
+        unitOfWeight: "gr",
+      }}
+    />
+  )
+}
+
+interface SkuCreatePageProps {
+  /** Where both `Cancel` and the permission-denied fallback lead. */
+  goBackUrl: string
+  /** While `true` the form is not rendered, since it reads its values only once. */
+  isLoading?: boolean
+  defaultValues: Partial<SkuFormValues>
+}
+
+/**
+ * The create overlay, shared by "New SKU" and "Duplicate", which differ only in
+ * the values the form starts from and in where `Cancel` leads.
+ */
+export function SkuCreatePage({
+  goBackUrl,
+  isLoading = false,
+  defaultValues,
+}: SkuCreatePageProps): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
   const [, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<any>()
-
-  const goBackUrl = appRoutes.list.makePath({})
 
   if (!canUser("create", "skus")) {
     return (
@@ -54,7 +80,7 @@ export function SkuNew(): React.JSX.Element {
 
   return (
     <PageLayout
-      title={<>New SKU</>}
+      title={<SkeletonTemplate isLoading={isLoading}>New SKU</SkeletonTemplate>}
       navigationButton={{
         onClick: () => {
           setLocation(goBackUrl)
@@ -66,25 +92,25 @@ export function SkuNew(): React.JSX.Element {
       overlay
     >
       <Spacer bottom="14">
-        <SkuForm
-          defaultValues={{
-            unitOfWeight: "gr",
-          }}
-          apiError={apiError}
-          onSubmit={(formValues) => {
-            const sku = adaptFormValuesToSku(formValues)
-            void sdkClient.skus
-              .create(sku)
-              .then((createdSku) => {
-                setLocation(
-                  appRoutes.details.makePath({ skuId: createdSku.id }),
-                )
-              })
-              .catch((error) => {
-                setApiError(error)
-              })
-          }}
-        />
+        {isLoading ? null : (
+          <SkuForm
+            defaultValues={defaultValues}
+            apiError={apiError}
+            onSubmit={(formValues) => {
+              const sku = adaptFormValuesToSku(formValues)
+              void sdkClient.skus
+                .create(sku)
+                .then((createdSku) => {
+                  setLocation(
+                    appRoutes.details.makePath({ skuId: createdSku.id }),
+                  )
+                })
+                .catch((error) => {
+                  setApiError(error)
+                })
+            }}
+          />
+        )}
       </Spacer>
     </PageLayout>
   )
