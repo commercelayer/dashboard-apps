@@ -1,8 +1,8 @@
 {
   "version": "6.2.0",
-  "$schema": "https://unpkg.com/lerna@9.0.7/schemas/lerna-schema.json",
-  "useNx": false,
+  "$schema": "https://unpkg.com/@lerna-lite/cli@5.6.4/schemas/lerna-schema.json",
   "npmClient": "pnpm",
+  "useWorkspaces": true,
   "command": {
     "version": {
       "preid": "stg",
