@@ -1,8 +1,5 @@
 import {
   Badge,
-  type CurrencyCode,
-  currencies,
-  formatCentsToCurrency,
   formatDate,
   formatDisplayName,
   getOrderDisplayStatus,
@@ -122,7 +119,7 @@ export function useOrdersTableColumns(
         // the amount alone: the payment status has a column of its own
         cell: ({ resource }) => (
           <Text weight="medium" wrap="nowrap">
-            {getFormattedTotalAmount(resource)}
+            {resource.formatted_total_amount}
           </Text>
         ),
       },
@@ -244,27 +241,6 @@ function getBillingName(order: Order): string {
         billingAddress?.first_name ?? "",
         billingAddress?.last_name ?? "",
       )
-}
-
-/**
- * This helper aims to get `formatted_total_amount` from a metrics `Order`,
- * which returns `total_amount` in units instead of a formatted string.
- */
-export function getFormattedTotalAmount(
-  order: Order,
-): string | null | undefined {
-  if ("total_amount" in order && order.currency_code != null) {
-    const currencyCode = order.currency_code as CurrencyCode
-    const subunitToUnit =
-      currencies[currencyCode.toLowerCase() as Lowercase<CurrencyCode>]
-        ?.subunit_to_unit ?? 100
-    return formatCentsToCurrency(
-      Math.round((order.total_amount as number) * subunitToUnit),
-      currencyCode,
-    )
-  }
-
-  return order.formatted_total_amount
 }
 
 /**
