@@ -160,6 +160,23 @@ describe("getPaymentSessionDisplay > Stripe", () => {
   })
 })
 
+describe("getPaymentSessionDisplay > Checkout.com", () => {
+  test("reads the card from the payment source", () => {
+    const { logoSrc, label, last4 } = getPaymentSessionDisplay(
+      makeSession({
+        settingType: "payment_setting_checkout_coms",
+        responseData: {
+          source: { type: "card", scheme: "VISA", last_4: "1111" },
+        },
+      }),
+    )
+
+    expect(logoSrc).toContain("/visa.svg")
+    expect(label).toBe("Visa")
+    expect(last4).toBe("1111")
+  })
+})
+
 describe("getPaymentSessionDisplay > payment instrument", () => {
   test("reads the card when the gateway response carries none (Braintree)", () => {
     const { logoSrc, label, last4 } = getPaymentSessionDisplay(
@@ -343,6 +360,37 @@ describe("getPaymentWalletDisplay", () => {
     expect(label).toBe("Visa")
     expect(last4).toBe("1881")
     expect(settingLabel).toBe("Braintree")
+  })
+
+  test("reads a Checkout.com card instrument", () => {
+    const { label, last4, settingLabel } = getPaymentWalletDisplay(
+      makeWallet({
+        settingType,
+        paymentData: {
+          type: "card",
+          scheme: "VISA",
+          last4: "4242",
+          expiry_month: 6,
+          expiry_year: 2030,
+        },
+      }),
+    )
+
+    expect(label).toBe("Visa")
+    expect(last4).toBe("4242")
+    expect(settingLabel).toBe("Checkout.com")
+  })
+
+  test("reads a Checkout.com card that spells it `last_4`", () => {
+    const { label, last4 } = getPaymentWalletDisplay(
+      makeWallet({
+        settingType,
+        paymentData: { type: "card", scheme: "MASTERCARD", last_4: "4444" },
+      }),
+    )
+
+    expect(label).toBe("Mastercard")
+    expect(last4).toBe("4444")
   })
 
   test("prefers the setting's own type when it names one", () => {

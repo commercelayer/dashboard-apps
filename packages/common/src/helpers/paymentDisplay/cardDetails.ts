@@ -59,6 +59,14 @@ export function readPaymentInstrument(instrument: UnknownRecord): CardDetails {
   }
 }
 
+/** Checkout.com's card source; payments spell it `last_4`, instruments `last4`. */
+function readCheckoutComCard(card: UnknownRecord | undefined): CardDetails {
+  return {
+    brand: getString(card, "scheme"),
+    last4: getString(card, "last4") ?? getString(card, "last_4"),
+  }
+}
+
 /** Where each gateway puts the card in an authorization's `response_data`. */
 export const SESSION_CARD_READERS: Partial<
   Record<PaymentSettingType, (responseData: UnknownRecord) => CardDetails>
@@ -68,6 +76,8 @@ export const SESSION_CARD_READERS: Partial<
       getObject(getObject(responseData, "payment_method_details"), "card"),
     ),
   payment_setting_adyens: readAdyenPaymentResult,
+  payment_setting_checkout_coms: (responseData) =>
+    readCheckoutComCard(getObject(responseData, "source")),
 }
 
 /** A Stripe PaymentMethod keeps its details under the key its `type` names. */
@@ -125,5 +135,13 @@ export const WALLET_SHAPES: WalletShape[] = [
       brand: getString(paymentData, "brand_code"),
       last4: getString(paymentData, "last4"),
     }),
+  },
+  {
+    // Instrument: `{ type: "card", scheme, last4 }` (or `last_4`).
+    settingType: "payment_setting_checkout_coms",
+    match: (paymentData) =>
+      paymentData.scheme != null &&
+      (paymentData.last4 != null || paymentData.last_4 != null),
+    read: readCheckoutComCard,
   },
 ]
