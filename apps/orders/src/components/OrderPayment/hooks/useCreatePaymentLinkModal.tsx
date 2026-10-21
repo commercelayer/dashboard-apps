@@ -28,8 +28,8 @@ import {
   requiresPaymentSession,
 } from "#components/OrderPayment/paymentSessionUtils"
 
-/** Placeholder `return_url` for the session behind a link, until core defaults it. */
-const TEMPORARY_SESSION_RETURN_URL = "https://commercelayer.io"
+/** Placeholder redirect URL for the session behind a link, until core defaults it. */
+const TEMPORARY_SESSION_REDIRECT_URL = "https://commercelayer.io"
 
 interface Props {
   order: Order
@@ -97,9 +97,11 @@ export function useCreatePaymentLinkModal({
             order: { id: order.id, type: "orders" },
             payment_setting: settingRel,
             amount_cents: values.amountCents,
-            // Checkout.com will require `success_url` and `failure_url` here.
+            // Adyen reads `return_url`, Checkout.com `success_url` and `failure_url`.
             client_data: {
-              return_url: TEMPORARY_SESSION_RETURN_URL,
+              return_url: TEMPORARY_SESSION_REDIRECT_URL,
+              success_url: TEMPORARY_SESSION_REDIRECT_URL,
+              failure_url: TEMPORARY_SESSION_REDIRECT_URL,
             },
           })
         : undefined
