@@ -32,7 +32,12 @@ const Main = (props: ClAppProps): React.JSX.Element => (
           loadingElement={<div />}
           {...props}
         >
-          <I18NProvider>
+          <I18NProvider
+            translations={{
+              en: async () => await import("./locales/en"),
+              it: async () => await import("./locales/it"),
+            }}
+          >
             <CoreSdkProvider>
               <MetaTags />
               <App routerBase={props?.routerBase} />
