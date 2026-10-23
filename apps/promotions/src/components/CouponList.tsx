@@ -228,7 +228,8 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
             variant="table"
             headings={[
               { label: "Code" },
-              { label: "Used" },
+              { label: "Status" },
+              { label: "Usage" },
               { label: "Expiry" },
               { label: "" },
             ]}
