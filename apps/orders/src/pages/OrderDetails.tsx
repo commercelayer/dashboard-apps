@@ -161,8 +161,23 @@ function OrderDetails(): React.JSX.Element {
               </div>
             ) : null}{" "}
             <div>in {order.market?.name} market</div>
+            {/* B2B: the name needs read access to Core agreements, which the
+                orders app's token does not have yet — the link alone still
+                says the order came through one */}
+            {order.agreement != null && (
+              <div>
+                {order.agreement.name != null
+                  ? `under the agreement ${order.agreement.name}`
+                  : "under an agreement"}
+              </div>
+            )}
           </div>
           {order.reference != null && <div>Ref. {order.reference}</div>}
+          {order.notes != null && order.notes.trim() !== "" && (
+            <div>
+              {t("resources.orders.attributes.notes")}: {order.notes}
+            </div>
+          )}
         </SkeletonTemplate>
       }
       navigationButton={{
