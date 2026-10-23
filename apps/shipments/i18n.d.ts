@@ -1,10 +1,14 @@
-import type { Translation } from "@commercelayer/app-elements"
+import type {
+  MergeTranslations,
+  Translation,
+} from "@commercelayer/app-elements"
+import type en from "./src/locales/en"
 
 declare module "i18next" {
   interface CustomTypeOptions {
     defaultNS: "translation"
     resources: {
-      translation: Translation
+      translation: MergeTranslations<Translation, typeof en>
     }
   }
 }
