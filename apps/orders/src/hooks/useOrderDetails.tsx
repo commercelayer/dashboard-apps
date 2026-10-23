@@ -9,6 +9,8 @@ import { makeOrder } from "#mocks"
 
 export const orderIncludeAttribute = [
   "market",
+  // B2B: the agreement the order was placed under, if any
+  "agreement",
   "customer",
   "customer.customer_addresses",
   "customer.customer_addresses.address",
