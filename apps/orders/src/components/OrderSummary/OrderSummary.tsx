@@ -25,6 +25,7 @@ export const OrderSummary = withSkeletonTemplate<Props>(
       CaptureDialog,
       RefundDialog,
       PaymentLinkDialog,
+      ReviewDialogs,
       SelectShippingMethodOverlay,
     } = useActionButtons({ order })
 
@@ -45,6 +46,8 @@ export const OrderSummary = withSkeletonTemplate<Props>(
         {PaymentLinkDialog}
 
         {CancelDialog}
+
+        {ReviewDialogs}
 
         <SelectShippingMethodOverlay order={order} />
       </OrderLineItems>

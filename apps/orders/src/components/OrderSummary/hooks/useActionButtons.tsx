@@ -25,6 +25,7 @@ import {
 import { useOrderDetails } from "#hooks/useOrderDetails"
 import { useOrderPaymentLinks } from "#hooks/useOrderPaymentLinks"
 import { useOrderPaymentRulesCheck } from "#hooks/useOrderPaymentRulesCheck"
+import { useOrderReview } from "#hooks/useOrderReview"
 import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 import { hasPaymentMethod } from "#utils/order"
 import {
@@ -93,6 +94,16 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     Overlay: SelectShippingMethodOverlay,
   } = useSelectShippingMethodOverlay()
 
+  // B2B: a pending or rejected customer review blocks approval, which Core
+  // refuses anyway — the footer says why instead of offering a button that fails
+  const {
+    isAwaitingReview,
+    isRejected,
+    actions: reviewActions,
+    dialogs: ReviewDialogs,
+  } = useOrderReview(order)
+  const isApprovalBlockedByReview = isAwaitingReview || isRejected
+
   /** A partial order whose remaining authorization is already gone. */
   const hasNothingToCapture =
     isNewPaymentModel(order) && getCapturableAmountCents(order) === 0
@@ -112,6 +123,16 @@ export const useActionButtons = ({ order }: { order: Order }) => {
           !(triggerAttribute === "_capture" && hasNothingToCapture),
       )
       .map((triggerAttribute) => {
+        if (triggerAttribute === "_approve" && isApprovalBlockedByReview) {
+          return {
+            label: isAwaitingReview
+              ? t("apps.orders.tasks.awaiting_customer_review")
+              : t("apps.orders.tasks.rejected_by_customer"),
+            variant: "primary",
+            disabled: true,
+            onClick: () => {},
+          }
+        }
         if (
           triggerAttribute === "_capture" &&
           ((order?.transactions ?? []).some(orderTransactionIsAnAsyncCapture) ||
@@ -154,6 +175,8 @@ export const useActionButtons = ({ order }: { order: Order }) => {
   }, [
     dispatch,
     hasNothingToCapture,
+    isApprovalBlockedByReview,
+    isAwaitingReview,
     isLoading,
     showCancelDialog,
     showCaptureDialog,
@@ -305,6 +328,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
 
   return {
     actions: [
+      ...reviewActions,
       ...standardFooterActions,
       ...editingFooterActions,
       ...refundFooterActions,
@@ -316,6 +340,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     RefundDialog: refundModal,
     PaymentLinkDialog: paymentLinkModal,
     CancelDialog,
+    ReviewDialogs,
     SelectShippingMethodOverlay,
     errors,
     dispatch,
