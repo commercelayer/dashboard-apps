@@ -37,6 +37,8 @@ function OrderDetails(): React.JSX.Element {
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
+  // B2B agreements are switched on per organization; the dashboard says so
+  const hasAgreements = extras?.organization?.isAgreementsEnabled === true
   const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path)
 
   const orderId = params?.orderId ?? ""
@@ -164,7 +166,7 @@ function OrderDetails(): React.JSX.Element {
             {/* B2B: the name needs read access to Core agreements, which the
                 orders app's token does not have yet — the link alone still
                 says the order came through one */}
-            {order.agreement != null && (
+            {hasAgreements && order.agreement != null && (
               <div>
                 {order.agreement.name != null
                   ? `under the agreement ${order.agreement.name}`
