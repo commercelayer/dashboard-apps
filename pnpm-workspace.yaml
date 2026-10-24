@@ -18,7 +18,7 @@ minimumReleaseAgeExclude:
 blockExoticSubdeps: false
 
 catalog:
-  '@commercelayer/app-elements': 'https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@2133e65'
+  '@commercelayer/app-elements': 'https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@9f9d36c'
   '@commercelayer/sdk': 'https://pkg.pr.new/@commercelayer/sdk@e820d67'
   '@hookform/resolvers': '^3.10.0'
   '@testing-library/jest-dom': '^6.10.0'
