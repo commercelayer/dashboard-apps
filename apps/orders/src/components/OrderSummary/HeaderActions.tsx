@@ -34,6 +34,9 @@ export const HeaderActions: React.FC<{ order: Order }> = ({ order }) => {
 
   const canEdit =
     order.status === "placed" &&
+    // B2B: an order waiting on the customer's review is on hold, and Core
+    // refuses to edit it until the review is answered or withdrawn
+    order.on_hold !== true &&
     arrayOf<Order["payment_status"]>(["free", "authorized", "paid"]).includes(
       order.payment_status,
     ) &&
