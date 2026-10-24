@@ -18,6 +18,7 @@ import { OrderAddresses } from "#components/OrderAddresses"
 import { OrderCustomer } from "#components/OrderCustomer"
 import { OrderPayment } from "#components/OrderPayment"
 import { OrderReturns } from "#components/OrderReturns"
+import { OrderReview } from "#components/OrderReview"
 import { OrderShipments } from "#components/OrderShipments"
 import { OrderSteps } from "#components/OrderSteps"
 import { OrderSummary } from "#components/OrderSummary"
@@ -26,6 +27,7 @@ import { Timeline } from "#components/Timeline"
 import { appRoutes } from "#data/routes"
 import { useOrderDetails } from "#hooks/useOrderDetails"
 import { useOrderReturns } from "#hooks/useOrderReturns"
+import { getLastOrderReview } from "#hooks/useOrderReview"
 import { useOrderToolbar } from "#hooks/useOrderToolbar"
 import { getOrderTitle } from "#utils/getOrderTitle"
 
@@ -223,7 +225,10 @@ function OrderDetails(): React.JSX.Element {
       // letting the sidebar sink to the bottom of the page
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <OrderSummary order={order} />
+        <OrderReview order={order} />
+        <Spacer top={getLastOrderReview(order) != null ? "14" : undefined}>
+          <OrderSummary order={order} />
+        </Spacer>
         <div className="print:hidden">
           <Spacer top="14">
             <OrderPayment
