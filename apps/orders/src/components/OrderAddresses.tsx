@@ -7,6 +7,7 @@ import {
   Stack,
   Text,
   useCoreSdkProvider,
+  useTokenProvider,
   useTranslation,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
@@ -28,7 +29,12 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
     // An agreement order points at the agreement's own address records, not at
     // copies: an edit here would change the agreement, and every order placed
     // under it from then on. The seller changes them on the agreement instead.
-    const isFromAgreement = order.agreement != null
+    const {
+      settings: { extras },
+    } = useTokenProvider()
+    const isFromAgreement =
+      extras?.organization?.isAgreementsEnabled === true &&
+      order.agreement != null
     const isEditable =
       (isEditing || order.status !== "draft") && !isFromAgreement
     const { Overlay: AssignAddressOverlay, open: openAssignAddressOverlay } =
