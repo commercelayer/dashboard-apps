@@ -31,15 +31,12 @@ const it: typeof en = {
           "Il nuovo totale è {{new_total}}, {{difference}} in più rispetto al totale originale.",
         new_total_line2: "Modifica il totale per renderlo uguale o inferiore.",
         waiting_for_successful_capture: "In attesa di catturare il pagamento",
-        customer_review: "Revisione cliente",
         review_reason: "Nota per il cliente",
         review_reason_hint:
           "Cosa hai modificato e perché. Il cliente la legge prima di confermare.",
         review_sent: "Inviato al cliente per revisione.",
         withdraw_review_description:
           "L'ordine non è più in attesa e può essere approvato senza la risposta del cliente.",
-        review_seller_note: "La tua nota",
-        review_customer_note: "Nota del cliente",
       },
       form: {
         language: "Lingua",

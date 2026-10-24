@@ -29,15 +29,12 @@ const en = {
           "The new total is {{new_total}}, {{difference}} more than the original total.",
         new_total_line2: "Adjust the total to make it equal or less.",
         waiting_for_successful_capture: "Waiting for successful capture",
-        customer_review: "Customer review",
         review_reason: "Note for the customer",
         review_reason_hint:
           "What you changed and why. The customer reads it before confirming.",
         review_sent: "Sent to the customer for review.",
         withdraw_review_description:
           "The order leaves hold and can be approved again without the customer's answer.",
-        review_seller_note: "Your note",
-        review_customer_note: "Customer's note",
       },
       form: {
         language: "Language",
