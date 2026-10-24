@@ -18,7 +18,6 @@ import { OrderAddresses } from "#components/OrderAddresses"
 import { OrderCustomer } from "#components/OrderCustomer"
 import { OrderPayment } from "#components/OrderPayment"
 import { OrderReturns } from "#components/OrderReturns"
-import { OrderReview } from "#components/OrderReview"
 import { OrderShipments } from "#components/OrderShipments"
 import { OrderSteps } from "#components/OrderSteps"
 import { OrderSummary } from "#components/OrderSummary"
@@ -27,7 +26,6 @@ import { Timeline } from "#components/Timeline"
 import { appRoutes } from "#data/routes"
 import { useOrderDetails } from "#hooks/useOrderDetails"
 import { useOrderReturns } from "#hooks/useOrderReturns"
-import { getLastOrderReview } from "#hooks/useOrderReview"
 import { useOrderToolbar } from "#hooks/useOrderToolbar"
 import { getOrderTitle } from "#utils/getOrderTitle"
 
@@ -177,11 +175,6 @@ function OrderDetails(): React.JSX.Element {
             )}
           </div>
           {order.reference != null && <div>Ref. {order.reference}</div>}
-          {order.notes != null && order.notes.trim() !== "" && (
-            <div>
-              {t("resources.orders.attributes.notes")}: {order.notes}
-            </div>
-          )}
         </SkeletonTemplate>
       }
       navigationButton={{
@@ -225,10 +218,7 @@ function OrderDetails(): React.JSX.Element {
       // letting the sidebar sink to the bottom of the page
     >
       <SkeletonTemplate isLoading={isLoading}>
-        <OrderReview order={order} />
-        <Spacer top={getLastOrderReview(order) != null ? "14" : undefined}>
-          <OrderSummary order={order} />
-        </Spacer>
+        <OrderSummary order={order} />
         <div className="print:hidden">
           <Spacer top="14">
             <OrderPayment
