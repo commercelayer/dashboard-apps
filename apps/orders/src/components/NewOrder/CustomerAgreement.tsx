@@ -1,6 +1,6 @@
 import {
   Alert,
-  HookedInputRadioGroup,
+  HookedInputSelect,
   ResourceAddress,
   SkeletonTemplate,
   Spacer,
@@ -25,8 +25,9 @@ export interface CustomerAgreementFields {
  *
  * A customer who orders under an active agreement in this market gets the
  * order linked to it, always — there is no option to leave it out. Billing is
- * the agreement's; shipping is its only address, or the one the seller picks
- * when the agreement has several. An agreement in another market blocks the
+ * the agreement's; shipping starts on the agreement's default shipping address,
+ * and the seller picks another one when the agreement has several — a select,
+ * searchable, since a chain may hold one per store. An agreement in another market blocks the
  * order instead: prices and stock follow the market, so the seller starts again
  * in the agreement's.
  *
@@ -47,9 +48,12 @@ export function CustomerAgreement({
   const agreementId = result.kind === "linked" ? result.agreement.id : undefined
   const billingAddressId =
     result.kind === "linked" ? result.agreement.billing_address?.id : undefined
-  const onlyShippingAddressId =
-    result.kind === "linked" && result.shippingAddresses.length === 1
-      ? result.shippingAddresses[0]?.address.id
+  const defaultShippingAddressId =
+    result.kind === "linked"
+      ? (
+          result.shippingAddresses.find(({ isDefault }) => isDefault) ??
+          result.shippingAddresses[0]
+        )?.address.id
       : undefined
   const otherMarket =
     result.kind === "other_market"
@@ -60,9 +64,11 @@ export function CustomerAgreement({
     setValue("agreement_id", agreementId)
     setValue("agreement_billing_address_id", billingAddressId)
     setValue("agreement_other_market", otherMarket)
-    // a single address needs no choice; several wait for the seller's
-    setValue("agreement_shipping_address_id", onlyShippingAddressId)
-  }, [agreementId, billingAddressId, onlyShippingAddressId, otherMarket])
+    // where an order under the agreement ships unless the seller says otherwise
+    setValue("agreement_shipping_address_id", defaultShippingAddressId)
+  }, [agreementId, billingAddressId, defaultShippingAddressId, otherMarket])
+
+  const selectedShippingAddressId = watch("agreement_shipping_address_id")
 
   if (isLoading) {
     return (
@@ -99,42 +105,50 @@ export function CustomerAgreement({
         <Text weight="semibold">{agreement.name}</Text>, with its billing
         address.
       </Text>
-      {shippingAddresses.length === 1 && (
-        <Spacer top="4">
-          <ResourceAddress
-            title="Ships to"
-            address={shippingAddresses[0]?.address}
-          />
-        </Spacer>
-      )}
       {shippingAddresses.length > 1 && (
         <Spacer top="4">
-          <HookedInputRadioGroup
+          <HookedInputSelect
             name="agreement_shipping_address_id"
-            title="Ships to"
+            label="Ships to"
             hint={{
-              text: "The agreement has several delivery addresses: choose where this order ships.",
+              text: "The agreement has several delivery addresses. The order ships to its default one unless you pick another.",
             }}
-            viewMode="list"
-            options={shippingAddresses.map(({ address, name, isDefault }) => ({
-              value: address.id,
-              content: (
-                <>
-                  <Text tag="div" weight="semibold" size="small">
-                    {name ??
-                      (isDefault
-                        ? "Default shipping address"
-                        : address.full_address)}
-                  </Text>
-                  <Text tag="div" size="small" variant="info">
-                    {address.full_address}
-                  </Text>
-                </>
-              ),
-            }))}
+            isSearchable
+            initialValues={shippingAddresses.map(
+              ({ address, name, isDefault }) => ({
+                value: address.id,
+                label: shippingLabel({ address, name, isDefault }),
+              }),
+            )}
           />
         </Spacer>
       )}
+      <Spacer top="4">
+        <ResourceAddress
+          title={shippingAddresses.length > 1 ? undefined : "Ships to"}
+          address={
+            shippingAddresses.find(
+              ({ address }) => address.id === selectedShippingAddressId,
+            )?.address
+          }
+        />
+      </Spacer>
     </Spacer>
   )
+}
+
+/** An address's name for the place, then the address — each said once. */
+function shippingLabel({
+  address,
+  name,
+  isDefault,
+}: {
+  address: { full_address?: string | null }
+  name?: string
+  isDefault: boolean
+}): string {
+  const title = name ?? (isDefault ? "Default shipping address" : undefined)
+  return title == null
+    ? (address.full_address ?? "")
+    : `${title} — ${address.full_address ?? ""}`
 }
