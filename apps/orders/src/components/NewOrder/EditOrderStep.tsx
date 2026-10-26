@@ -231,7 +231,7 @@ const orderSchema = z
       context.addIssue({
         code: "custom",
         path: ["customer_email"],
-        message: `This customer's agreement is in the ${values.agreement_other_market} market.`,
+        message: "Agreement in another market",
       })
     }
     if (
