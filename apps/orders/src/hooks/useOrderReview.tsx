@@ -1,14 +1,24 @@
 import {
   type ActionButtonsProps,
   InputTextArea,
+  parseApiError,
   Spacer,
+  Text,
+  useAppLinking,
   useConfirmDialog,
   useCoreSdkProvider,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Order, OrderReview } from "@commercelayer/sdk"
-import { type ReactNode, useState } from "react"
+import { type ReactNode, useRef, useState } from "react"
+import type { PaymentActionStep } from "#components/OrderPayment/hooks/usePaymentActionFlow"
+import {
+  PaymentActionConfirm,
+  type PaymentActionCopy,
+  PaymentActionModal,
+} from "#components/OrderPayment/PaymentActionModal"
+import { appRoutes } from "#data/routes"
 import { useOrderDetails } from "#hooks/useOrderDetails"
 
 /** The order's latest review, the one Core gates place and approve on. */
@@ -52,8 +62,56 @@ export function useOrderReview(order: Order): {
     settings: { extras },
   } = useTokenProvider()
   const { mutateOrder } = useOrderDetails(order.id)
+  const { goBack } = useAppLinking()
   const [reason, setReason] = useState("")
-  const { show: showSend, ConfirmDialog: SendDialog } = useConfirmDialog()
+  const [isSendOpen, setIsSendOpen] = useState(false)
+  const [sendStep, setSendStep] = useState<PaymentActionStep>("confirm")
+  const [sendError, setSendError] = useState<string>()
+  // set by Cancel while sending: a review that lands afterwards is withdrawn
+  const isSendCancelled = useRef(false)
+
+  const sendCopy: PaymentActionCopy = {
+    running: t("apps.orders.details.sending_for_review"),
+    success: t("apps.orders.details.review_sent_title"),
+    // a review is created or it is not: there is no outcome still on its way
+    pending: t("apps.orders.details.sending_for_review"),
+    error: t("apps.orders.details.send_for_review_failed"),
+  }
+
+  const closeSend = (): void => {
+    setIsSendOpen(false)
+    setSendStep("confirm")
+    setSendError(undefined)
+  }
+
+  const send = async (): Promise<void> => {
+    if (customerId == null || user == null) {
+      return
+    }
+    isSendCancelled.current = false
+    setSendStep("running")
+    try {
+      const review = await sdkClient.order_reviews.create({
+        order: sdkClient.orders.relationship(order.id),
+        owner: sdkClient.customers.relationship(customerId),
+        requester: sdkClient.users.relationship(user.id),
+        reason: reason.trim() === "" ? null : reason.trim(),
+      })
+      if (isSendCancelled.current) {
+        await sdkClient.order_reviews.delete(review.id)
+      } else {
+        setReason("")
+        setSendStep("success")
+      }
+    } catch (error) {
+      if (!isSendCancelled.current) {
+        setSendError(parseApiError(error)[0]?.detail)
+        setSendStep("error")
+      }
+    } finally {
+      await mutateOrder()
+    }
+  }
   const { show: showWithdraw, ConfirmDialog: WithdrawDialog } =
     useConfirmDialog()
 
@@ -88,7 +146,7 @@ export function useOrderReview(order: Order): {
             label: t("apps.orders.actions.send_for_review"),
             variant: "secondary" as const,
             onClick: () => {
-              showSend()
+              setIsSendOpen(true)
             },
           },
         ]
@@ -108,41 +166,77 @@ export function useOrderReview(order: Order): {
 
   const dialogs = (
     <>
-      <SendDialog
-        icon="chatCircle"
-        title={t("apps.orders.actions.send_for_review_title")}
-        description={
-          <Spacer top="4">
-            <InputTextArea
-              name="orderReviewReason"
-              label={t("apps.orders.details.review_reason")}
-              hint={{ text: t("apps.orders.details.review_reason_hint") }}
-              rows={4}
-              value={reason}
-              onChange={(event) => {
-                setReason(event.currentTarget.value)
-              }}
-            />
-          </Spacer>
+      <PaymentActionModal
+        show={isSendOpen}
+        step={sendStep}
+        copy={sendCopy}
+        detail={t("apps.orders.details.review_sent_description", {
+          customer: order.customer_email ?? t("resources.customers.name"),
+        })}
+        errorDetail={sendError}
+        runningDetail={
+          order.customer_email != null
+            ? t("apps.orders.details.sending_for_review_to", {
+                email: order.customer_email,
+              })
+            : undefined
         }
-        confirm={{
-          label: t("apps.orders.actions.send_for_review"),
-          onClick: async () => {
-            if (customerId == null || user == null) {
-              return
-            }
-            await sdkClient.order_reviews.create({
-              order: sdkClient.orders.relationship(order.id),
-              owner: sdkClient.customers.relationship(customerId),
-              requester: sdkClient.users.relationship(user.id),
-              reason: reason.trim() === "" ? null : reason.trim(),
-            })
-            setReason("")
-            await mutateOrder()
-          },
+        onCancelRunning={() => {
+          // a single request has no step to stop at: the review it creates is
+          // taken back once it lands, which also takes the order off hold
+          isSendCancelled.current = true
+          closeSend()
         }}
-        successMessage={t("apps.orders.details.review_sent")}
-      />
+        successActions={[
+          { label: t("apps.orders.details.view_order"), onClick: closeSend },
+          {
+            label: t("apps.orders.details.back_to_orders"),
+            onClick: () => {
+              closeSend()
+              goBack({
+                defaultRelativePath: appRoutes.home.makePath({}),
+                currentResourceId: order.id,
+              })
+            },
+          },
+        ]}
+        onClose={closeSend}
+      >
+        <PaymentActionConfirm
+          icon="paperPlaneTiltIcon"
+          title={t("apps.orders.actions.send_for_review_title")}
+          description={
+            // a node, so the field keeps the normal text colour: only the
+            // sentence above it is secondary text
+            <div className="w-full">
+              <Text variant="info" size="small" tag="div">
+                {t("apps.orders.details.send_for_review_description")}
+              </Text>
+              <Spacer top="4">
+                <InputTextArea
+                  name="orderReviewReason"
+                  // no visible label, as designed: the placeholder says what it
+                  // is and the accessible name says who reads it
+                  aria-label={t("apps.orders.details.review_reason")}
+                  placeholder={t(
+                    "apps.orders.details.review_reason_placeholder",
+                  )}
+                  rows={4}
+                  value={reason}
+                  onChange={(event) => {
+                    setReason(event.currentTarget.value)
+                  }}
+                />
+              </Spacer>
+            </div>
+          }
+          confirmLabel={t("apps.orders.actions.send_for_review_confirm")}
+          onConfirm={() => {
+            void send()
+          }}
+          onCancel={closeSend}
+        />
+      </PaymentActionModal>
       <WithdrawDialog
         icon="arrowUUpLeft"
         title={t("apps.orders.actions.withdraw_review_title")}
