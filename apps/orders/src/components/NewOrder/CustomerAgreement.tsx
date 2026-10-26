@@ -68,8 +68,6 @@ export function CustomerAgreement({
     setValue("agreement_shipping_address_id", defaultShippingAddressId)
   }, [agreementId, billingAddressId, defaultShippingAddressId, otherMarket])
 
-  const selectedShippingAddressId = watch("agreement_shipping_address_id")
-
   if (isLoading) {
     return (
       <Spacer top="6">
@@ -88,9 +86,8 @@ export function CustomerAgreement({
     return (
       <Spacer top="6">
         <Alert status="warning">
-          {email} orders under the agreement {result.agreement.name}, in the{" "}
-          {otherMarket} market. Start a new order in {otherMarket} to place it
-          under the agreement.
+          Agreement in <Text weight="semibold">{otherMarket}</Text>. Start the
+          order in that market.
         </Alert>
       </Spacer>
     )
@@ -101,18 +98,13 @@ export function CustomerAgreement({
   return (
     <Spacer top="6">
       <Text tag="div" size="small">
-        This order goes under the agreement{" "}
-        <Text weight="semibold">{agreement.name}</Text>, with its billing
-        address.
+        <Text weight="semibold">Agreement:</Text> {agreement.name}
       </Text>
-      {shippingAddresses.length > 1 && (
+      {shippingAddresses.length > 1 ? (
         <Spacer top="4">
           <HookedInputSelect
             name="agreement_shipping_address_id"
             label="Ships to"
-            hint={{
-              text: "The agreement has several delivery addresses. The order ships to its default one unless you pick another.",
-            }}
             isSearchable
             initialValues={shippingAddresses.map(
               ({ address, name, isDefault }) => ({
@@ -122,17 +114,15 @@ export function CustomerAgreement({
             )}
           />
         </Spacer>
+      ) : (
+        // one address leaves nothing to pick, so the address is what to show
+        <Spacer top="4">
+          <ResourceAddress
+            title="Ships to"
+            address={shippingAddresses[0]?.address}
+          />
+        </Spacer>
       )}
-      <Spacer top="4">
-        <ResourceAddress
-          title={shippingAddresses.length > 1 ? undefined : "Ships to"}
-          address={
-            shippingAddresses.find(
-              ({ address }) => address.id === selectedShippingAddressId,
-            )?.address
-          }
-        />
-      </Spacer>
     </Spacer>
   )
 }
