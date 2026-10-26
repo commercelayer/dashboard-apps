@@ -29,7 +29,11 @@ const Home: FC = () => {
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
   const { sdkClient } = useCoreSdkProvider()
-  const { canUser } = useTokenProvider()
+  const {
+    canUser,
+    settings: { extras },
+  } = useTokenProvider()
+  const isAgreementsEnabled = extras?.organization?.isAgreementsEnabled === true
   const { navigateTo } = useAppLinking()
   const { countryCodes } = useCountryCodes()
   const queryString = useSearch()
@@ -74,6 +78,7 @@ const Home: FC = () => {
         : makeInstructions({
             countryCodes,
             hiddenFilters: activeTab.hiddenFilters,
+            isAgreementsEnabled,
           }),
     predicateWhitelist: orderTabsPredicateWhitelist,
     tableSettings: makeOrdersTableSettings(activeTab),
