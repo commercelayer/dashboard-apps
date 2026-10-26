@@ -32,9 +32,17 @@ const en = {
         customer_registered: "Registered",
         customer_guest: "Guest",
         review_reason: "Note for the customer",
-        review_reason_hint:
-          "What you changed and why. The customer reads it before confirming.",
-        review_sent: "Sent to the customer for review.",
+        review_reason_placeholder: "Add a note…",
+        send_for_review_description:
+          "The customer will be notified and asked to review and confirm the updated order",
+        sending_for_review: "Sending order for review…",
+        sending_for_review_to: "to {{email}}",
+        send_for_review_failed: "Could not send the order for review",
+        review_sent_title: "Your order has been sent for review",
+        review_sent_description:
+          "{{customer}} has been notified and can now review your order",
+        view_order: "View order",
+        back_to_orders: "Back to orders",
         withdraw_review_description:
           "The order leaves hold and can be approved again without the customer's answer.",
       },
@@ -66,6 +74,7 @@ const en = {
         finish_editing: "Finish",
         send_for_review: "Send to customer for review",
         send_for_review_title: "Send order for review?",
+        send_for_review_confirm: "Send for review",
         withdraw_review: "Withdraw review",
         withdraw_review_title: "Withdraw the review?",
         adjust_total: "Adjust total",
