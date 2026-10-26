@@ -26,6 +26,7 @@ import { useOrderDetails } from "#hooks/useOrderDetails"
 import { useOrderPaymentLinks } from "#hooks/useOrderPaymentLinks"
 import { useOrderPaymentRulesCheck } from "#hooks/useOrderPaymentRulesCheck"
 import { useOrderReview } from "#hooks/useOrderReview"
+import { usePlaceAgreementOrder } from "#hooks/usePlaceAgreementOrder"
 import { useTriggerAttribute } from "#hooks/useTriggerAttribute"
 import { hasPaymentMethod } from "#utils/order"
 import {
@@ -38,7 +39,10 @@ import { useSelectShippingMethodOverlay } from "./useSelectShippingMethodOverlay
 export const useActionButtons = ({ order }: { order: Order }) => {
   const triggerAttributes = getTriggerAttributes(order)
   const { t } = useTranslation()
-  const { canUser } = useTokenProvider()
+  const {
+    canUser,
+    settings: { extras },
+  } = useTokenProvider()
 
   const { isLoading, errors, dispatch } = useTriggerAttribute(order.id)
   const { mutateOrder } = useOrderDetails(order.id)
@@ -103,6 +107,41 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     dialogs: ReviewDialogs,
   } = useOrderReview(order)
   const isApprovalBlockedByReview = isAwaitingReview || isRejected
+
+  // B2B: an order the seller builds for a buyer under an agreement has no
+  // checkout — it is placed from here, payment set up on the agreement's terms,
+  // unless the seller sends it to the buyer to confirm first
+  const isPendingAgreementOrder =
+    extras?.organization?.isAgreementsEnabled === true &&
+    order.agreement != null &&
+    order.status === "pending"
+  const {
+    place: placeAgreementOrder,
+    isPlacing: isPlacingAgreementOrder,
+    error: placeAgreementOrderError,
+  } = usePlaceAgreementOrder(order)
+  const agreementPlaceActions: ActionButtonsProps["actions"] =
+    isPendingAgreementOrder && canUser("update", "orders")
+      ? [
+          isApprovalBlockedByReview
+            ? {
+                label: isAwaitingReview
+                  ? t("apps.orders.tasks.awaiting_customer_review")
+                  : t("apps.orders.tasks.rejected_by_customer"),
+                variant: "primary",
+                disabled: true,
+                onClick: () => {},
+              }
+            : {
+                label: t("apps.orders.actions.place"),
+                variant: "primary",
+                disabled: isPlacingAgreementOrder || !hasLineItems,
+                onClick: () => {
+                  void placeAgreementOrder()
+                },
+              },
+        ]
+      : []
 
   /** A partial order whose remaining authorization is already gone. */
   const hasNothingToCapture =
@@ -329,7 +368,10 @@ export const useActionButtons = ({ order }: { order: Order }) => {
   return {
     actions: [
       ...reviewActions,
-      ...standardFooterActions,
+      ...agreementPlaceActions,
+      // a pending agreement order is placed by the action above, never through
+      // the checkout's own "Place" — which would skip setting up the payment
+      ...(isPendingAgreementOrder ? [] : standardFooterActions),
       ...editingFooterActions,
       ...refundFooterActions,
     ],
@@ -342,7 +384,10 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     CancelDialog,
     ReviewDialogs,
     SelectShippingMethodOverlay,
-    errors,
+    errors:
+      placeAgreementOrderError != null
+        ? [...(errors ?? []), placeAgreementOrderError]
+        : errors,
     dispatch,
   }
 }
