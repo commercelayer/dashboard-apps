@@ -10,9 +10,12 @@ export const makeInstructions = ({
   sortByAttribute = "placed_at",
   countryCodes,
   hiddenFilters = [],
+  isAgreementsEnabled = false,
 }: {
   sortByAttribute?: "placed_at" | "created_at"
   countryCodes?: CountryCodesFilterOptions
+  /** B2B: the organization sells under agreements, so its orders can be told apart by one. */
+  isAgreementsEnabled?: boolean
   /**
    * Filters to keep out of the drawer, because the active tab already pins them:
    * the Placed tab decides the status, so a status field there would only invite
@@ -23,6 +26,28 @@ export const makeInstructions = ({
    */
   hiddenFilters?: HideableFilter[]
 }): FiltersInstructions => [
+  {
+    // First, as the design has it: for a seller trading under agreements, which
+    // buyer an order belongs to comes before where it is in its lifecycle.
+    // Picked by name, sent as ids — Metrics filters `agreement_ids` with `in`
+    // only, as it does markets.
+    label: t("resources.agreements.name"),
+    hidden: !isAgreementsEnabled,
+    type: "options",
+    sdk: {
+      predicate: "agreement_id_in",
+    },
+    render: {
+      component: "inputSelect",
+      props: {
+        fieldForLabel: "name",
+        fieldForValue: "id",
+        resource: "agreements",
+        searchBy: "name_i_cont",
+        sortBy: { attribute: "name", direction: "asc" },
+      },
+    },
+  },
   {
     label: t("apps.orders.attributes.status"),
     hidden: hiddenFilters.includes("status_in"),

@@ -171,6 +171,31 @@ describe("orderTabs", () => {
   })
 })
 
+describe("agreement filter", () => {
+  const agreementFilter = (isAgreementsEnabled?: boolean) =>
+    makeInstructions({ isAgreementsEnabled }).find(
+      (item) =>
+        "sdk" in item &&
+        "predicate" in item.sdk &&
+        item.sdk.predicate === "agreement_id_in",
+    )
+
+  // Metrics filters `agreement_ids` with `in` only: `agreement_id` with `eq` is
+  // refused as not valid
+  test("picks agreements by id, as Metrics filters them", () => {
+    expect(agreementFilter(true)?.render).toMatchObject({
+      component: "inputSelect",
+      props: { resource: "agreements", fieldForValue: "id" },
+    })
+  })
+
+  test("is offered only to organizations that sell under agreements", () => {
+    expect(agreementFilter(true)?.hidden).toBe(false)
+    expect(agreementFilter(false)?.hidden).toBe(true)
+    expect(agreementFilter()?.hidden).toBe(true)
+  })
+})
+
 describe("fulfillment status options", () => {
   // The metrics API knows `unfulfilled`, `in_progress` and `fulfilled` only, and
   // rejects a request asking for `not_required`, so offering it can only fail.
