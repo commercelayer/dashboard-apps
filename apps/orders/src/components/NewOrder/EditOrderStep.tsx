@@ -24,6 +24,7 @@ import { z } from "zod"
 import { OrderLineItems } from "#components/OrderSummary/OrderLineItems"
 import { appRoutes } from "#data/routes"
 import { useOrderDetails } from "#hooks/useOrderDetails"
+import { CustomerAgreement } from "./CustomerAgreement"
 import { groupedLanguageList, languageList } from "./languages"
 import { SelectCustomerComponent } from "./SelectCustomerComponent"
 
@@ -127,6 +128,30 @@ export const EditOrderStep: React.FC<
                   id: order.id,
                   customer_email: formValues.customer_email,
                   language_code: formValues.language_code,
+                  // B2B: the customer's agreement, and the addresses Core
+                  // would have copied had the order been created with it
+                  ...(formValues.agreement_id != null
+                    ? {
+                        agreement: sdkClient.agreements.relationship(
+                          formValues.agreement_id,
+                        ),
+                        ...(formValues.agreement_billing_address_id != null
+                          ? {
+                              billing_address: sdkClient.addresses.relationship(
+                                formValues.agreement_billing_address_id,
+                              ),
+                            }
+                          : {}),
+                        ...(formValues.agreement_shipping_address_id != null
+                          ? {
+                              shipping_address:
+                                sdkClient.addresses.relationship(
+                                  formValues.agreement_shipping_address_id,
+                                ),
+                            }
+                          : {}),
+                      }
+                    : {}),
                 })
                 .then(() => {
                   setLocation(
@@ -147,6 +172,7 @@ export const EditOrderStep: React.FC<
             <Section title={t("resources.customers.name")}>
               <Spacer top="6">
                 <SelectCustomerComponent />
+                <CustomerAgreement market={order.market} />
               </Spacer>
 
               <Spacer top="6">
@@ -182,18 +208,43 @@ export const EditOrderStep: React.FC<
   )
 }
 
-const orderSchema = z.object({
-  at_least_one_sku: z
-    .boolean()
-    .refine((value) => value, t("apps.orders.form.error_create_order")),
-  customer_email: z.string().email(),
-  language_code: z
-    .string()
-    .refine(
-      (value) => languageList.map((l) => l.value as string).includes(value),
-      "Invalid language",
-    ),
-})
+const orderSchema = z
+  .object({
+    at_least_one_sku: z
+      .boolean()
+      .refine((value) => value, t("apps.orders.form.error_create_order")),
+    customer_email: z.string().email(),
+    language_code: z
+      .string()
+      .refine(
+        (value) => languageList.map((l) => l.value as string).includes(value),
+        "Invalid language",
+      ),
+    // B2B, filled in by `CustomerAgreement`
+    agreement_id: z.string().optional(),
+    agreement_billing_address_id: z.string().optional(),
+    agreement_shipping_address_id: z.string().optional(),
+    agreement_other_market: z.string().optional(),
+  })
+  .superRefine((values, context) => {
+    if (values.agreement_other_market != null) {
+      context.addIssue({
+        code: "custom",
+        path: ["customer_email"],
+        message: `This customer's agreement is in the ${values.agreement_other_market} market.`,
+      })
+    }
+    if (
+      values.agreement_id != null &&
+      values.agreement_shipping_address_id == null
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["agreement_shipping_address_id"],
+        message: "Choose where this order ships.",
+      })
+    }
+  })
 
 function orderIsValid(order: Order): boolean {
   return (
