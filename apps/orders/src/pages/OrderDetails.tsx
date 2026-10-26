@@ -59,6 +59,9 @@ function OrderDetails(): React.JSX.Element {
     if (
       order.status === "pending" &&
       !isPendingWithTransactions &&
+      // B2B: an agreement order is placed from the footer, or by the buyer
+      // confirming it — never through a checkout link
+      !(hasAgreements && order.agreement != null) &&
       extras?.salesChannels != null &&
       extras?.salesChannels.length > 0 &&
       order.market?.private === false

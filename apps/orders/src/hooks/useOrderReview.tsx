@@ -24,7 +24,9 @@ export function getLastOrderReview(order: Order): OrderReview | null {
  * Asking the buyer to confirm a B2B order, from the seller's side.
  *
  * Asking is always the seller's choice: a placed agreement order offers "Send to
- * customer for review" beside Approve, and the review is owned by the order's
+ * customer for review" beside Approve, and so does a pending one the seller built
+ * for the buyer, beside Place — the buyer then places it by confirming. The
+ * review is owned by the order's
  * customer — the buyer who placed it, the only one Core lets answer — with the
  * signed-in seller as requester. While it is pending the order is on hold and
  * cannot be approved; a pending review can be withdrawn, which takes the order
@@ -67,7 +69,11 @@ export function useOrderReview(order: Order): {
   const customerId = order.customer?.id
   const canSend =
     isAgreementOrder &&
-    order.status === "placed" &&
+    // a placed order the seller changed, or one the seller built for the buyer
+    // and wants confirmed before it is placed
+    (order.status === "placed" ||
+      (order.status === "pending" &&
+        (order.line_items ?? []).some((item) => item.item_type === "skus"))) &&
     !isAwaitingReview &&
     customerId != null &&
     user != null &&
