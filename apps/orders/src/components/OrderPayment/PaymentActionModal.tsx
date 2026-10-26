@@ -103,6 +103,15 @@ interface Props {
   errorDetail?: string
   /** Width of the confirm step. The result steps are always narrow. */
   size?: Extract<ModalProps["size"], "small" | "x-small">
+  /** The line under the spinner. Defaults to "This may take a few moments." */
+  runningDetail?: React.ReactNode
+  /**
+   * Offers Cancel while running. For an action that can still be taken back —
+   * the caller undoes it — not for a payment already sent to the gateway.
+   */
+  onCancelRunning?: () => void
+  /** Where to go from a success, in place of Close. The first is primary. */
+  successActions?: Array<{ label: string; onClick: () => void }>
   onClose: () => void
   children: React.ReactNode
 }
@@ -110,6 +119,10 @@ interface Props {
 /**
  * Modal for a payment action: the caller's confirm step, then running, then
  * the outcome. Stays open until the gateway answers.
+ *
+ * Not only payments: sending an order for the buyer's review walks the same
+ * steps (`useOrderReview`), with a Cancel while it runs and its own way out of
+ * the success.
  */
 export function PaymentActionModal({
   show,
@@ -118,6 +131,9 @@ export function PaymentActionModal({
   detail,
   errorDetail,
   size = "x-small",
+  runningDetail,
+  onCancelRunning,
+  successActions,
   onClose,
   children,
 }: Props) {
@@ -156,17 +172,53 @@ export function PaymentActionModal({
           </Text>
           <Spacer top="1">
             <Text align="center" variant="info" size="small" tag="div">
-              {getDetail({ step, detail, errorDetail })}
+              {step === "running" && runningDetail != null
+                ? runningDetail
+                : getDetail({ step, detail, errorDetail })}
             </Text>
           </Spacer>
         </Modal.Body>
       )}
-      {step !== "confirm" && step !== "running" && (
+      {step === "running" && onCancelRunning != null && (
         <Modal.Footer>
-          <Button type="button" fullWidth variant="secondary" onClick={onClose}>
-            Close
+          <Button
+            type="button"
+            fullWidth
+            variant="secondary"
+            onClick={onCancelRunning}
+          >
+            Cancel
           </Button>
         </Modal.Footer>
+      )}
+      {step === "success" && successActions != null ? (
+        <Modal.Footer>
+          {successActions.map(({ label, onClick }, index) => (
+            <Button
+              key={label}
+              type="button"
+              fullWidth
+              variant={index === 0 ? "primary" : "secondary"}
+              onClick={onClick}
+            >
+              {label}
+            </Button>
+          ))}
+        </Modal.Footer>
+      ) : (
+        step !== "confirm" &&
+        step !== "running" && (
+          <Modal.Footer>
+            <Button
+              type="button"
+              fullWidth
+              variant="secondary"
+              onClick={onClose}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        )
       )}
     </Modal>
   )
