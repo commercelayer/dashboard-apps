@@ -3,6 +3,8 @@ import {
   Button,
   type ResourceLineItemsProps,
   Spacer,
+  Text,
+  useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
@@ -20,6 +22,9 @@ export function useSummaryRows(order: Order): {
   const { mutateOrder } = useOrderDetails(order.id)
   const { isEditing, diffTotalAndPlacedTotal } = useOrderStatus(order)
   const { t } = useTranslation()
+  const {
+    settings: { extras },
+  } = useTokenProvider()
 
   const { Overlay: AddCouponOverlay, open: openAddCouponOverlay } =
     useAddCouponOverlay(order, () => {
@@ -89,7 +94,51 @@ export function useSummaryRows(order: Order): {
     ),
   })
 
+  const customerNote = getCustomerNote(order, {
+    isAgreementsEnabled: extras?.organization?.isAgreementsEnabled === true,
+  })
+  if (customerNote != null) {
+    summaryRows.push({
+      key: "customer_note",
+      element: (
+        <Spacer bottom="8">
+          <Alert status="info">
+            <Text tag="div" weight="semibold">
+              Note from customer
+            </Text>
+            {customerNote}
+          </Alert>
+        </Spacer>
+      ),
+    })
+  }
+
   return {
     summaryRows,
   }
+}
+
+/**
+ * B2B: the buyer's note, while the seller is deciding what to do with the order.
+ *
+ * Shown in the summary, as the design has it, from the moment the order is placed
+ * and while it is edited — the note is often what the edit is about — up to the
+ * first review sent to the buyer. From then on the conversation is the review's,
+ * and the note stays in the timeline.
+ */
+export function getCustomerNote(
+  order: Order,
+  { isAgreementsEnabled }: { isAgreementsEnabled: boolean },
+): string | null {
+  const note = order.notes?.trim()
+  if (
+    !isAgreementsEnabled ||
+    order.agreement == null ||
+    note == null ||
+    note === "" ||
+    (order.order_reviews ?? []).length > 0
+  ) {
+    return null
+  }
+  return order.status === "placed" || order.status === "editing" ? note : null
 }
