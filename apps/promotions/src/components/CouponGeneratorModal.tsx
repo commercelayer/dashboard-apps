@@ -66,7 +66,11 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
   const maxCodeLength = organization?.coupons_max_code_length ?? 40
   const prefixMaxLength = 25
 
-  const methods = useForm<CouponGeneratorFormSchema>({
+  const methods = useForm<
+    z.input<ReturnType<typeof makeFormValidationSchema>>,
+    unknown,
+    CouponGeneratorFormSchema
+  >({
     defaultValues: {
       numberOfCoupons: 1000,
       codeLength: minCodeLength,

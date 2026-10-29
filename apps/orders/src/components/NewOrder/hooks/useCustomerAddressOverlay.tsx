@@ -68,10 +68,7 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
 
     const customerAddresses = order.customer?.customer_addresses ?? []
 
-    const methods = useForm<{
-      addressId: string
-      useFor: "billing" | "shipping" | "both"
-    }>({
+    const methods = useForm({
       defaultValues: {
         addressId:
           customerAddresses.length === 1
@@ -81,7 +78,7 @@ const CustomerAddresses = withSkeletonTemplate<PropsAddresses>(
       resolver: zodResolver(
         z.object({
           addressId: z.string(),
-          useFor: z.string(),
+          useFor: z.enum(["billing", "shipping", "both"]),
         }),
       ),
     })

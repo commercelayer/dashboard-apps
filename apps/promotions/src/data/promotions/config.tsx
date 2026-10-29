@@ -50,7 +50,7 @@ export type PromotionConfig = {
     StatusDescription: React.FC<{
       promotion: Extract<Promotion, { type: type }>
     }>
-    formType: z.ZodObject<z.ZodRawShape, "strip", z.ZodTypeAny>
+    formType: z.ZodObject<z.ZodRawShape>
     Fields: React.FC<{
       promotion?: Extract<Promotion, { type: type }>
       hookFormReturn: UseFormReturn<

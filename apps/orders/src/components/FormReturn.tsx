@@ -25,7 +25,7 @@ const returnFormSchema = z.object({
         ctx.addIssue({
           code: z.ZodIssueCode.too_small,
           minimum: 1,
-          type: "array",
+          origin: "array",
           inclusive: true,
           message: t("validation.select_one_item"),
         })

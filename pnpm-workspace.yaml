@@ -18,9 +18,9 @@ minimumReleaseAgeExclude:
 blockExoticSubdeps: false
 
 catalog:
-  '@commercelayer/app-elements': 8.4.0
+  '@commercelayer/app-elements': 'https://pkg.pr.new/commercelayer/app-elements/@commercelayer/app-elements@cd1751a'
   '@commercelayer/sdk': 8.0.3
-  '@hookform/resolvers': '^3.10.0'
+  '@hookform/resolvers': '^6.0.1'
   '@testing-library/jest-dom': '^6.10.0'
   '@testing-library/react': '^16.3.3'
   '@types/lodash-es': '^4.17.12'
@@ -46,4 +46,4 @@ catalog:
   vite-tsconfig-paths: '^5.1.4'
   vitest: '^4.1.11'
   wouter: '^3.13.0'
-  zod: '^3.25.76'
+  zod: '^4.6.7'
