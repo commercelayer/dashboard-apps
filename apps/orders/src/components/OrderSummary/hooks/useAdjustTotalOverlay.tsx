@@ -53,20 +53,23 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
       z.object({
         type: z.literal("-").or(z.literal("+")),
         adjustTotal: z.number({
-          required_error: t("validation.amount_invalid"),
-          invalid_type_error: t("validation.amount_invalid"),
+          error: (issue) =>
+            issue.code === "invalid_type"
+              ? t("validation.amount_invalid")
+              : undefined,
         }),
       }),
     [],
   )
   const formMethods = useForm({
+    // with no adjustment yet the amount starts empty, and validation reports it
     defaultValues: {
       type: (manualAdjustment?.total_amount_cents ?? -1) > 0 ? "+" : "-",
       adjustTotal:
         manualAdjustment?.total_amount_cents != null
           ? Math.abs(manualAdjustment?.total_amount_cents)
           : null,
-    },
+    } as z.input<typeof validationSchema>,
     resolver: zodResolver(validationSchema),
   })
   const {

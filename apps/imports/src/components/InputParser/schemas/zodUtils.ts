@@ -1,17 +1,11 @@
 import { z } from "zod"
 import { isFalsy } from "#utils/isFalsy"
 
-type MaybeBoolean = boolean | undefined
-
 export function zodEnforceBoolean({
   optional,
 }: {
   optional?: boolean
-}): z.ZodEffects<
-  z.ZodBoolean | z.ZodOptional<z.ZodBoolean>,
-  MaybeBoolean,
-  unknown
-> {
+}): z.ZodPreprocess<z.ZodBoolean | z.ZodOptional<z.ZodBoolean>> {
   return z.preprocess(
     (value) =>
       value === undefined || value === ""
@@ -66,7 +60,7 @@ interface DefaultEnumLike {
 
 export function zodCaseInsensitiveNativeEnum<T extends DefaultEnumLike>(
   enumValue: T,
-): z.ZodEffects<z.ZodNativeEnum<T>, T[keyof T], unknown> {
+): z.ZodPreprocess<z.ZodEnum<T>> {
   return z.preprocess(
     (enumValue) => String(enumValue).toLowerCase(),
     z.nativeEnum(enumValue),

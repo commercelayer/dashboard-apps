@@ -38,12 +38,18 @@ export function PriceTierForm({
   onSubmit,
   apiError,
 }: Props): React.JSX.Element {
-  const priceTierFormMethods = useForm<PriceTierFormValues>({
+  const priceTierFormMethods = useForm<
+    | z.input<typeof priceTierVolumeFormSchema>
+    | z.input<typeof priceTierFrequencyFormSchema>,
+    unknown,
+    PriceTierFormValues
+  >({
     defaultValues,
-    resolver:
+    resolver: zodResolver(
       defaultValues?.type === "volume"
-        ? zodResolver(priceTierVolumeFormSchema)
-        : zodResolver(priceTierFrequencyFormSchema),
+        ? priceTierVolumeFormSchema
+        : priceTierFrequencyFormSchema,
+    ),
   })
   const {
     formState: { isSubmitting },

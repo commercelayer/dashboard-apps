@@ -220,11 +220,20 @@ export function useCreatePaymentLinkModal({
 }
 
 const formSchema = z.object({
-  paymentSettingId: z.string({ required_error: "Required field" }),
+  paymentSettingId: z.string({
+    error: (issue) =>
+      issue.code === "invalid_type" && issue.input === undefined
+        ? "Required field"
+        : undefined,
+  }),
   amountCents: z
     .number({
-      required_error: "Required field",
-      invalid_type_error: "Please enter a valid amount",
+      error: (issue) =>
+        issue.code !== "invalid_type"
+          ? undefined
+          : issue.input === undefined
+            ? "Required field"
+            : "Please enter a valid amount",
     })
     .positive("Please enter an amount greater than zero"),
   name: z.string().optional(),

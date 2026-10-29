@@ -25,12 +25,20 @@ const priceFormSchema = z.object({
   price_list: z.string().min(1),
   currency_code: z.string().min(1),
   price: z.number({
-    required_error: "Required",
-    invalid_type_error: "Expected number",
+    error: (issue) =>
+      issue.code !== "invalid_type"
+        ? undefined
+        : issue.input === undefined
+          ? "Required"
+          : "Expected number",
   }),
   original_price: z.number({
-    required_error: "Required",
-    invalid_type_error: "Expected number",
+    error: (issue) =>
+      issue.code !== "invalid_type"
+        ? undefined
+        : issue.input === undefined
+          ? "Required"
+          : "Expected number",
   }),
 })
 
