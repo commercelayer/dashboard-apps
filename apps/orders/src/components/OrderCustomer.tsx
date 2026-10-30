@@ -64,23 +64,31 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
             ) : null
           }
         >
-          <ListItem
+          {/* <ListItem
             icon={<StatusIcon name="user" background="teal" gap="large" />}
             {...navigateToCustomer}
-          >
-            <div>
-              <Text tag="div" weight="semibold">
-                {order.customer.email}
-              </Text>
-              <Text size="small" tag="div" variant="info" weight="medium">
-                {order.customer.total_orders_count}{" "}
-                {t("resources.orders.name", {
-                  count: order.customer.total_orders_count ?? 0,
-                }).toLowerCase()}
-              </Text>
-            </div>
-            {canAccess("customers") && <StatusIcon name="caretRight" />}
-          </ListItem>
+          > */}
+          <div className="mt-4">
+            <a {...navigateToCustomer} className="block group bg-gray-50 p-4 rounded transition-all duration-600 ease-in-out hover:bg-gray-100">
+              <div className="flex gap-4">
+                <div>
+                  <StatusIcon name="user" background="teal" gap="large" />
+                </div>
+                <div>
+                  <Text tag="div" weight="semibold" size="small">
+                    {order.customer.email}
+                  </Text>
+                  <Text size="small" tag="div" variant="info" weight="medium">
+                    {order.customer.total_orders_count}{" "}
+                    {t("resources.orders.name", {
+                      count: order.customer.total_orders_count ?? 0,
+                    }).toLowerCase()}
+                  </Text>
+                </div>
+              </div>
+            </a>
+          </div>
+          {/* </ListItem> */}
         </Section>
       </>
     )
