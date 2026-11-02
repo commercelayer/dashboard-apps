@@ -50,8 +50,10 @@ const formSchema = z
     balance_max_cents: z.number().int().optional().nullable(),
     expires_at: z
       .date({
-        required_error: "Please enter a valid date",
-        invalid_type_error: "Please enter a valid date",
+        error: (issue) =>
+          issue.code === "invalid_type"
+            ? "Please enter a valid date"
+            : undefined,
       })
       .optional()
       .nullable(),

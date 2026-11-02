@@ -59,8 +59,10 @@ const Form: React.FC<Props> = ({ order, organization, onChange, close }) => {
       z.object({
         couponCode: z
           .string({
-            required_error: t("validation.coupon_code_invalid"),
-            invalid_type_error: t("validation.coupon_code_invalid"),
+            error: (issue) =>
+              issue.code === "invalid_type"
+                ? t("validation.coupon_code_invalid")
+                : undefined,
           })
           .min(couponMinLength, {
             message: t("validation.coupon_code_too_short", {
@@ -72,9 +74,10 @@ const Form: React.FC<Props> = ({ order, organization, onChange, close }) => {
   )
 
   const formMethods = useForm({
+    // starts empty on purpose: submitting it as is reports the code as invalid
     defaultValues: {
-      couponCode: null,
-    },
+      couponCode: null as string | null,
+    } as z.input<typeof validationSchema>,
     resolver: zodResolver(validationSchema),
   })
 

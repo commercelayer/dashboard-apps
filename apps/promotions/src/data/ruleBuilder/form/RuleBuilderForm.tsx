@@ -15,12 +15,9 @@ import type {
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
+import type { z } from "zod"
 import { isDefined } from "#data/isValid"
-import {
-  type matchers,
-  type RuleBuilderConfig,
-  ruleBuilderConfig,
-} from "#data/ruleBuilder/config"
+import { ruleBuilderConfig } from "#data/ruleBuilder/config"
 import { ruleBuilderFormValidator } from "#data/ruleBuilder/form/validator"
 import { usePromotionRules } from "#data/ruleBuilder/usePromotionRules"
 import type { Promotion } from "#types"
@@ -149,13 +146,11 @@ function useRuleBuilderFormFields(
   const { rules } = usePromotionRules(promotion)
   const currencyCodes = useCurrencyCodes(promotion)
 
-  const methods = useForm<{
-    parameter: keyof RuleBuilderConfig | null
-    operator: keyof typeof matchers | null
-    value: string | number | string[] | null
-    all_skus: "any" | "all" | "number" | null
-    min_quantity: number | null
-  }>({
+  const methods = useForm<
+    z.input<typeof ruleBuilderFormValidator>,
+    unknown,
+    z.output<typeof ruleBuilderFormValidator>
+  >({
     defaultValues: {
       parameter: null,
       operator: null,
