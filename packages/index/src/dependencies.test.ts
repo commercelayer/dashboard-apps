@@ -18,11 +18,7 @@ beforeAll(() => {
   pnpmLock = yaml.load(fileContents) as PnpmLock
 })
 
-describe("Dependencies", () => {
-  if (process.env.CI === undefined) {
-    return
-  }
-
+describe.skipIf(process.env.CI === undefined)("Dependencies", () => {
   it('should have only one "@commercelayer/app-elements"', () => {
     const keys = Object.keys(pnpmLock.packages ?? {}).filter((key) =>
       key.startsWith("@commercelayer/app-elements"),
