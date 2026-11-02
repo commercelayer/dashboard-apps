@@ -5,6 +5,7 @@ import {
   HookedValidationApiError,
   PageLayout,
   Spacer,
+  t,
   useCoreSdkProvider,
   useOverlay,
   useTranslation,
@@ -41,7 +42,14 @@ export function useEditCustomerOverlay(
 }
 
 const validationSchema = z.object({
-  customer_email: z.string().email(),
+  customer_email: z
+    .string({
+      error: (issue) =>
+        issue.code === "invalid_type" && issue.input == null
+          ? t("validation.required_field")
+          : undefined,
+    })
+    .email(),
   language_code: z
     .string()
     .refine(
@@ -56,10 +64,11 @@ const Form: React.FC<Props> = ({ order, onChange, close }) => {
   const { t } = useTranslation()
 
   const formMethods = useForm({
+    // the order can still lack these, and validation is what reports them
     defaultValues: {
       customer_email: order.customer_email,
       language_code: order.language_code,
-    },
+    } as z.input<typeof validationSchema>,
     resolver: zodResolver(validationSchema),
   })
 

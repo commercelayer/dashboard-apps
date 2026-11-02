@@ -76,7 +76,7 @@ export const InputParser: FC<Props> = ({
           : parser.safeParse(csvRows)
 
         if (!parsedResources.success) {
-          setErrorList(parsedResources.error.errors)
+          setErrorList(parsedResources.error.issues)
           setErrorMessage("We have found some errors for some important fields")
           setIsParsing(false)
           return

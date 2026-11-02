@@ -20,8 +20,10 @@ const zodRequiredNumber = z.preprocess(
   },
   z
     .number({
-      message: "Please enter a valid number",
-      invalid_type_error: "Please enter a valid number",
+      error: (issue) =>
+        issue.code === "invalid_type"
+          ? "Please enter a valid number"
+          : undefined,
     })
     .positive(),
 )

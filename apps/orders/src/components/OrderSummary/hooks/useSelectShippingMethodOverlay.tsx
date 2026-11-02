@@ -29,7 +29,10 @@ interface OverlayHook {
 }
 
 const zodString = z.string({
-  required_error: t("validation.required_field"),
+  error: (issue) =>
+    issue.code === "invalid_type" && issue.input === undefined
+      ? t("validation.required_field")
+      : undefined,
 })
 
 export function useSelectShippingMethodOverlay(): OverlayHook {

@@ -48,7 +48,11 @@ export function StockItemForm({
   onSubmit,
   apiError,
 }: Props): React.JSX.Element {
-  const stockItemFormMethods = useForm<StockItemFormValues>({
+  const stockItemFormMethods = useForm<
+    z.input<typeof stockItemFormSchema>,
+    unknown,
+    StockItemFormValues
+  >({
     defaultValues,
     resolver: zodResolver(stockItemFormSchema),
   })
