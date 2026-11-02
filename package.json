@@ -5,7 +5,7 @@
     "install:local": "node install-local.mjs",
     "dev": "pnpm --filter index dev",
     "build": "pnpm build:apps",
-    "build:apps": "pnpm --parallel --aggregate-output --color --filter \"app-*\" build",
+    "build:apps": "pnpm --workspace-concurrency=4 --aggregate-output --color --filter \"app-*\" build",
     "clean": "pnpx rimraf --glob **/node_modules **/pnpm-lock.yaml",
     "check": "pnpm -r check",
     "check:fix": "pnpm -r check:fix",

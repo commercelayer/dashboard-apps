@@ -192,8 +192,12 @@ const makeFormSchema = (
   z.object({
     amountCents: z
       .number({
-        required_error: "Required field",
-        invalid_type_error: "Please enter a valid amount",
+        error: (issue) =>
+          issue.code !== "invalid_type"
+            ? undefined
+            : issue.input === undefined
+              ? "Required field"
+              : "Please enter a valid amount",
       })
       .positive()
       .max(maxRefundableAmount, {

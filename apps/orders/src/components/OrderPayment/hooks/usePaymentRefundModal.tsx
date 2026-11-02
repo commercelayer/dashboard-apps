@@ -240,10 +240,19 @@ function getCaptureLabel(
 const makeFormSchema = (captures: PaymentCapture[]) =>
   z
     .object({
-      paymentCaptureId: z.string({ required_error: "Required field" }),
+      paymentCaptureId: z.string({
+        error: (issue) =>
+          issue.code === "invalid_type" && issue.input === undefined
+            ? "Required field"
+            : undefined,
+      }),
       amountCents: z.number({
-        required_error: "Required field",
-        invalid_type_error: "Please enter a valid amount",
+        error: (issue) =>
+          issue.code !== "invalid_type"
+            ? undefined
+            : issue.input === undefined
+              ? "Required field"
+              : "Please enter a valid amount",
       }),
       note: z.string().optional(),
     })

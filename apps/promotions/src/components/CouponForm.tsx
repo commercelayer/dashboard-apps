@@ -48,7 +48,11 @@ export function CouponForm({
     () => organization?.coupons_max_code_length ?? 40,
     [organization],
   )
-  const methods = useForm<z.infer<ReturnType<typeof couponForm>>>({
+  const methods = useForm<
+    z.input<ReturnType<typeof couponForm>>,
+    unknown,
+    z.output<ReturnType<typeof couponForm>>
+  >({
     defaultValues,
     resolver: zodResolver(couponForm(minCodeLength, maxCodeLength)),
   })

@@ -7,8 +7,10 @@ const baseSchema = z.object({
   currency_code: z.string().min(1),
   price: z
     .number({
-      message: "Please enter a valid price",
-      invalid_type_error: "Please enter a valid price",
+      error: (issue) =>
+        issue.code === "invalid_type"
+          ? "Please enter a valid price"
+          : undefined,
     })
     .min(0),
 })

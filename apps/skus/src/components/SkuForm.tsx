@@ -80,7 +80,11 @@ export function SkuForm({
   onSubmit,
   apiError,
 }: Props): React.JSX.Element {
-  const skuFormMethods = useForm<SkuFormValues>({
+  const skuFormMethods = useForm<
+    z.input<typeof skuFormSchema>,
+    unknown,
+    SkuFormValues
+  >({
     defaultValues,
     resolver: zodResolver(skuFormSchema),
   })

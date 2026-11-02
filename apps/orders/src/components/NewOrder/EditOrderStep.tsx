@@ -186,7 +186,14 @@ const orderSchema = z.object({
   at_least_one_sku: z
     .boolean()
     .refine((value) => value, t("apps.orders.form.error_create_order")),
-  customer_email: z.string().email(),
+  customer_email: z
+    .string({
+      error: (issue) =>
+        issue.code === "invalid_type" && issue.input == null
+          ? t("validation.required_field")
+          : undefined,
+    })
+    .email(),
   language_code: z
     .string()
     .refine(

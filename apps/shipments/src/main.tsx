@@ -10,6 +10,7 @@ import {
 import { StrictMode } from "react"
 import { SWRConfig } from "swr"
 import { App } from "./App"
+import { translations } from "./locales"
 
 import "@commercelayer/app-elements/vendor.css"
 
@@ -32,7 +33,7 @@ const Main = (props: ClAppProps): React.JSX.Element => (
           loadingElement={<div />}
           {...props}
         >
-          <I18NProvider>
+          <I18NProvider translations={translations}>
             <CoreSdkProvider>
               <MetaTags />
               <App routerBase={props?.routerBase} />
