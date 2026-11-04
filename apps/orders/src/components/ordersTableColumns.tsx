@@ -15,6 +15,7 @@ import { TableNamesCell } from "dashboard-apps-common/src/components/TableNamesC
 import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
+import { useAgreementOrderReview } from "#components/AgreementOrderReviews"
 import { getPaymentStatusBadgeVariant } from "#components/OrderSteps"
 import { type OrderTab, orderDateLabels } from "#data/lists"
 
@@ -103,7 +104,7 @@ export function useOrdersTableColumns(
               kind: "text" as const,
               hideable: true as const,
               cell: ({ resource }: { resource: Order }) => (
-                <AgreementName agreementId={resource.agreement?.id} />
+                <AgreementName agreement={resource.agreement} />
               ),
             },
           ]
@@ -238,28 +239,29 @@ export function useOrdersTableColumns(
 }
 
 /**
- * The agreement's name, read from Core: Metrics knows an order's agreement by id
- * only. Each agreement is read once and cached, so a page costs one request per
- * agreement on it — a seller's buyers, not its orders.
+ * The agreement's name, as Metrics carries it. Read from Core only for a row
+ * that has the id alone, as Metrics payloads before `agreement.*` do: each
+ * agreement is read once and cached, a request per agreement on the page.
  */
 function AgreementName({
-  agreementId,
+  agreement,
 }: {
-  agreementId: string | undefined
+  agreement: Order["agreement"]
 }): React.JSX.Element {
-  const { data: agreement } = useCoreApi(
+  const hasName = agreement?.name != null && agreement.name !== ""
+  const { data: fromCore } = useCoreApi(
     "agreements",
     "retrieve",
-    agreementId == null
+    agreement == null || hasName
       ? null
-      : [agreementId, { fields: { agreements: ["name"] } }],
+      : [agreement.id, { fields: { agreements: ["name"] } }],
   )
 
-  if (agreementId == null) {
+  if (agreement == null) {
     return <Text variant="disabled">&#8212;</Text>
   }
 
-  return <Text>{agreement?.name ?? ""}</Text>
+  return <Text>{hasName ? agreement.name : (fromCore?.name ?? "")}</Text>
 }
 
 /**
@@ -305,6 +307,9 @@ function RowStatusBadge({
   resource: Order
   className?: string
 }): React.JSX.Element {
-  const displayStatus = getOrderDisplayStatus(resource)
+  // B2B: Metrics knows neither `on_hold` nor reviews, so an agreement order's
+  // are looked up in Core, see `AgreementOrderReviewsProvider`
+  const { order, lastReview } = useAgreementOrderReview(resource)
+  const displayStatus = getOrderDisplayStatus(order, lastReview)
   return <ResourceStatusBadge status={displayStatus} className={className} />
 }
