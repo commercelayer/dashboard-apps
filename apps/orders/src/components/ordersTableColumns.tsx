@@ -7,6 +7,7 @@ import {
   ResourceStatusBadge,
   type ResourceTableColumn,
   Text,
+  useCoreApi,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
@@ -25,6 +26,11 @@ import { type OrderTab, orderDateLabels } from "#data/lists"
  * menu (`hideable`), with Payment status, Market, Country, Origin, Reference
  * and Tags hidden until they are turned on.
  *
+ * B2B: an organization selling under agreements sees whose agreement an order
+ * is in the customer's place — Agreement shown, Customer hidden until turned on,
+ * since its orders outside an agreement still have only the customer to tell
+ * them apart.
+ *
  * @param sortBy - the metrics attribute of the date the DATE column shows, which
  * it marks as sorted: `order.placed_at`, or `order.updated_at` for carts, which
  * are never placed.
@@ -34,7 +40,11 @@ export function useOrdersTableColumns(
   // or a namespaced metrics one
   sortBy: OrderTab["dateSortBy"],
 ): Array<ResourceTableColumn<"orders">> {
-  const { user } = useTokenProvider()
+  const {
+    user,
+    settings: { extras },
+  } = useTokenProvider()
+  const isAgreementsEnabled = extras?.organization?.isAgreementsEnabled === true
 
   return useMemo(
     () => [
@@ -85,11 +95,25 @@ export function useOrdersTableColumns(
           </Text>
         ),
       },
+      ...(isAgreementsEnabled
+        ? [
+            {
+              id: "agreement",
+              header: "Agreement",
+              kind: "text" as const,
+              hideable: true as const,
+              cell: ({ resource }: { resource: Order }) => (
+                <AgreementName agreementId={resource.agreement?.id} />
+              ),
+            },
+          ]
+        : []),
       {
         id: "customer",
         header: "Customer",
         kind: "text",
         hideable: true,
+        ...(isAgreementsEnabled ? { defaultHidden: true as const } : {}),
         // the email alone, the country having a column of its own. A guest
         // checkout can have no email, and the billing name stands in for it.
         cell: ({ resource }) => {
@@ -209,8 +233,33 @@ export function useOrdersTableColumns(
         cell: ({ resource }) => <TableTagsCell tags={resource.tags} />,
       },
     ],
-    [sortBy, user?.timezone, user?.locale],
+    [sortBy, user?.timezone, user?.locale, isAgreementsEnabled],
   )
+}
+
+/**
+ * The agreement's name, read from Core: Metrics knows an order's agreement by id
+ * only. Each agreement is read once and cached, so a page costs one request per
+ * agreement on it — a seller's buyers, not its orders.
+ */
+function AgreementName({
+  agreementId,
+}: {
+  agreementId: string | undefined
+}): React.JSX.Element {
+  const { data: agreement } = useCoreApi(
+    "agreements",
+    "retrieve",
+    agreementId == null
+      ? null
+      : [agreementId, { fields: { agreements: ["name"] } }],
+  )
+
+  if (agreementId == null) {
+    return <Text variant="disabled">&#8212;</Text>
+  }
+
+  return <Text>{agreement?.name ?? ""}</Text>
 }
 
 /**
