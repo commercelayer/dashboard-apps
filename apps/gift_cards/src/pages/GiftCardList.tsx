@@ -5,12 +5,12 @@ import {
   useResourceFilters,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import type { FC } from "react"
+import { type FC, useMemo } from "react"
 import { useLocation } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
 import { useGiftCardsTableColumns } from "#components/giftCardsTableColumns"
 import { ListEmptyState } from "#components/ListEmptyState"
-import { instructions } from "#data/filters"
+import { makeInstructions } from "#data/filters"
 import { appRoutes } from "#data/routes"
 import { giftCardsTableSettings } from "#data/tableSettings"
 
@@ -19,6 +19,9 @@ const GiftCardList: FC = () => {
   const { navigateTo } = useAppLinking()
   const queryString = useSearch()
   const [, setLocation] = useLocation()
+
+  // once per visit: "expired" is relative to when the list was opened
+  const instructions = useMemo(() => makeInstructions(), [])
 
   const { FilteredTable, FiltersBar, FiltersDrawer, hasActiveFilter } =
     useResourceFilters({

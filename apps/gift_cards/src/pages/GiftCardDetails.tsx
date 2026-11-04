@@ -24,6 +24,7 @@ import { BalanceLog } from "#components/BalanceLog"
 import { DetailsImage } from "#components/DetailsImage"
 import { DetailsInfo } from "#components/DetailsInfo"
 import { GiftCardTimeline } from "#components/GiftCardTimeline"
+import { isGiftCardExpired } from "#data/giftCardStatus"
 import { appRoutes } from "#data/routes"
 import {
   giftCardIncludeAttribute,
@@ -80,7 +81,9 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
       otherToolbarButtons.push(resourceInspectorButton)
     }
 
-    if (!canUser("update", "gift_cards")) {
+    // an expired card can't be used whatever its status: moving the expiration
+    // date forward, from Edit, is what brings it back
+    if (!canUser("update", "gift_cards") || isGiftCardExpired(giftCard)) {
       return [...otherToolbarButtons]
     }
 
@@ -195,7 +198,10 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
           title={
             <SkeletonTemplate isLoading={isLoading}>
               {pageTitle}
-              <BadgeStatus status={giftCard?.status} />
+              <BadgeStatus
+                status={giftCard?.status}
+                expires_at={giftCard?.expires_at}
+              />
             </SkeletonTemplate>
           }
           navigationButton={{
