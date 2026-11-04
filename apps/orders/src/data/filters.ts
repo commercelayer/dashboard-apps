@@ -26,28 +26,10 @@ export const makeInstructions = ({
    */
   hiddenFilters?: HideableFilter[]
 }): FiltersInstructions => [
-  {
-    // First, as the design has it: for a seller trading under agreements, which
-    // buyer an order belongs to comes before where it is in its lifecycle.
-    // Picked by name, sent as ids — Metrics filters `agreement_ids` with `in`
-    // only, as it does markets.
-    label: t("resources.agreements.name"),
-    hidden: !isAgreementsEnabled,
-    type: "options",
-    sdk: {
-      predicate: "agreement_id_in",
-    },
-    render: {
-      component: "inputSelect",
-      props: {
-        fieldForLabel: "name",
-        fieldForValue: "id",
-        resource: "agreements",
-        searchBy: "name_i_cont",
-        sortBy: { attribute: "name", direction: "asc" },
-      },
-    },
-  },
+  // Left out, not hidden, when agreements are off: a hidden instruction still
+  // turns a value from the url into the query, so an old link would keep
+  // filtering by agreement with no pill to say so — or to remove it.
+  ...(isAgreementsEnabled ? [agreementInstruction()] : []),
   {
     label: t("apps.orders.attributes.status"),
     hidden: hiddenFilters.includes("status_in"),
@@ -409,4 +391,30 @@ function wrapEmailInQuotes(sentence: string): string {
 
   const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g
   return sentence.replace(emailRegex, '"$1"')
+}
+
+/**
+ * First, as the design has it: for a seller trading under agreements, which
+ * buyer an order belongs to comes before where it is in its lifecycle. Picked by
+ * name, sent as ids — Metrics filters `agreement_ids` with `in` only, as it does
+ * markets.
+ */
+function agreementInstruction(): FiltersInstructions[number] {
+  return {
+    label: t("resources.agreements.name"),
+    type: "options",
+    sdk: {
+      predicate: "agreement_id_in",
+    },
+    render: {
+      component: "inputSelect",
+      props: {
+        fieldForLabel: "name",
+        fieldForValue: "id",
+        resource: "agreements",
+        searchBy: "name_i_cont",
+        sortBy: { attribute: "name", direction: "asc" },
+      },
+    },
+  }
 }
