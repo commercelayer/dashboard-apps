@@ -1,9 +1,13 @@
 import type { BadgeProps } from "@commercelayer/app-elements"
 import {
   Badge,
+  getLastOrderReview,
+  getOrderDisplayStatus,
   getOrderFulfillmentStatusName,
   getOrderPaymentStatusName,
   getOrderStatusName,
+  ResourceStatusBadge,
+  useTokenProvider,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
@@ -66,14 +70,31 @@ function getFulfillmentStatusBadgeVariant(
 
 export const OrderSteps = withSkeletonTemplate<Props>(
   ({ order }): React.JSX.Element => {
+    const {
+      settings: { extras },
+    } = useTokenProvider()
+
+    // B2B: an agreement order's own status cannot tell where it stands between
+    // seller and buyer — customer review, customer confirmed — without its latest
+    // review, so its first badge is the display status, review included
+    const isAgreementOrder =
+      extras?.organization?.isAgreementsEnabled === true &&
+      order.agreement != null
+
     return (
       // One flex item rather than three, so the group sits 12px from the title
       // (`PageHeading`'s gap) while the badges stay 4px apart between themselves
       <div className="flex items-center gap-1 print:hidden">
-        {order.status !== undefined && (
-          <Badge variant={getOrderStatusBadgeVariant(order.status)}>
-            {getOrderStatusName(order.status)}
-          </Badge>
+        {isAgreementOrder ? (
+          <ResourceStatusBadge
+            status={getOrderDisplayStatus(order, getLastOrderReview(order))}
+          />
+        ) : (
+          order.status !== undefined && (
+            <Badge variant={getOrderStatusBadgeVariant(order.status)}>
+              {getOrderStatusName(order.status)}
+            </Badge>
+          )
         )}
 
         {order.payment_status !== undefined && (
