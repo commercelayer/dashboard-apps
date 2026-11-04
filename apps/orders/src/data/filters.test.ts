@@ -189,10 +189,12 @@ describe("agreement filter", () => {
     })
   })
 
-  test("is offered only to organizations that sell under agreements", () => {
-    expect(agreementFilter(true)?.hidden).toBe(false)
-    expect(agreementFilter(false)?.hidden).toBe(true)
-    expect(agreementFilter()?.hidden).toBe(true)
+  // left out rather than hidden: a hidden filter still applies a value from the
+  // url, so an old link would keep filtering with no pill to show it
+  test("is left out for organizations that do not sell under agreements", () => {
+    expect(agreementFilter(true)).toBeDefined()
+    expect(agreementFilter(false)).toBeUndefined()
+    expect(agreementFilter()).toBeUndefined()
   })
 })
 
