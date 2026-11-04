@@ -396,8 +396,8 @@ function wrapEmailInQuotes(sentence: string): string {
 /**
  * First, as the design has it: for a seller trading under agreements, which
  * buyer an order belongs to comes before where it is in its lifecycle. Picked by
- * name, sent as ids — Metrics filters `agreement_ids` with `in` only, as it does
- * markets.
+ * name, sent as ids — Metrics filters agreements as a group of their own,
+ * `agreement.ids` with `in`, as it does markets.
  */
 function agreementInstruction(): FiltersInstructions[number] {
   return {

@@ -198,8 +198,7 @@ describe("agreement filter", () => {
         item.sdk.predicate === "agreement_id_in",
     )
 
-  // Metrics filters `agreement_ids` with `in` only: `agreement_id` with `eq` is
-  // refused as not valid
+  // Metrics filters agreements by `agreement.ids` with `in`, as it does markets
   test("picks agreements by id, as Metrics filters them", () => {
     expect(agreementFilter(true)?.render).toMatchObject({
       component: "inputSelect",
