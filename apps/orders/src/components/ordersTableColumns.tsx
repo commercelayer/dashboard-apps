@@ -24,13 +24,14 @@ import { type OrderTab, orderDateLabels } from "#data/lists"
  *
  * NUMBER is the primary column, always shown: the number alone, since the market
  * has a column of its own. The others can be hidden by the user from the columns
- * menu (`hideable`), with Payment status, Market, Country, Origin, Reference
- * and Tags hidden until they are turned on.
+ * menu (`hideable`), with Payment status, Country, Origin, Reference and Tags
+ * hidden until they are turned on.
  *
  * B2B: an organization selling under agreements sees whose agreement an order
- * is in the customer's place — Agreement shown, Customer hidden until turned on,
- * since its orders outside an agreement still have only the customer to tell
- * them apart.
+ * is in the customer's place — Agreement shown, Customer and Market hidden until
+ * turned on, since its orders outside an agreement still have only the customer
+ * to tell them apart. Without agreements, Market takes the Agreement column's
+ * place.
  *
  * @param sortBy - the metrics attribute of the date the DATE column shows, which
  * it marks as sorted: `order.placed_at`, or `order.updated_at` for carts, which
@@ -96,6 +97,8 @@ export function useOrdersTableColumns(
           </Text>
         ),
       },
+      // B2B: whose agreement an order is in, or, without agreements, the
+      // market in its place
       ...(isAgreementsEnabled
         ? [
             {
@@ -108,7 +111,7 @@ export function useOrdersTableColumns(
               ),
             },
           ]
-        : []),
+        : [marketColumn(false)]),
       {
         id: "customer",
         header: "Customer",
@@ -166,19 +169,7 @@ export function useOrdersTableColumns(
             </Badge>
           ),
       },
-      {
-        id: "market",
-        header: "Market",
-        kind: "text",
-        hideable: true,
-        defaultHidden: true,
-        cell: ({ resource }) =>
-          resource.market?.name != null ? (
-            <Text>{resource.market?.name}</Text>
-          ) : (
-            <Text variant="disabled">&#8212;</Text>
-          ),
-      },
+      ...(isAgreementsEnabled ? [marketColumn(true)] : []),
       {
         id: "country",
         header: "Country",
@@ -236,6 +227,27 @@ export function useOrdersTableColumns(
     ],
     [sortBy, user?.timezone, user?.locale, isAgreementsEnabled],
   )
+}
+
+/**
+ * The Market column: shown after the date where an organization has no
+ * agreements, in the Agreement column's place, and further along, hidden until
+ * turned on, where it has them.
+ */
+function marketColumn(defaultHidden: boolean): ResourceTableColumn<"orders"> {
+  return {
+    id: "market",
+    header: "Market",
+    kind: "text",
+    hideable: true,
+    defaultHidden,
+    cell: ({ resource }) =>
+      resource.market?.name != null ? (
+        <Text>{resource.market?.name}</Text>
+      ) : (
+        <Text variant="disabled">&#8212;</Text>
+      ),
+  }
 }
 
 /**
