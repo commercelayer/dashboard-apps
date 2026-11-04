@@ -14,6 +14,7 @@ import { type FC, useEffect, useMemo } from "react"
 import { useCountryCodes } from "src/metricsApi/useCountryCodes"
 import { useLocation } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
+import { AgreementOrderReviewsProvider } from "#components/AgreementOrderReviews"
 import { ListEmptyState } from "#components/ListEmptyState"
 import { useOrdersTableColumns } from "#components/ordersTableColumns"
 import { makeCartsInstructions, makeInstructions } from "#data/filters"
@@ -117,7 +118,7 @@ const Home: FC = () => {
 
   const columns = useOrdersTableColumns(activeTab.dateSortBy)
 
-  const table = (
+  const filteredTable = (
     <FilteredTable
       type="orders"
       columns={columns}
@@ -129,6 +130,9 @@ const Home: FC = () => {
             "order.*",
             "billing_address.*",
             "market.*",
+            // B2B: the agreement is an object of its own in Metrics, as the
+            // market is
+            "agreement.*",
             "customer.*",
             "tags.*",
             // for the Origin column. Carts have no shipment yet (they have
@@ -166,6 +170,15 @@ const Home: FC = () => {
         />
       }
     />
+  )
+
+  // B2B: agreement rows look up their reviews in Core, one request per page
+  const table = isAgreementsEnabled ? (
+    <AgreementOrderReviewsProvider>
+      {filteredTable}
+    </AgreementOrderReviewsProvider>
+  ) : (
+    filteredTable
   )
 
   return (
