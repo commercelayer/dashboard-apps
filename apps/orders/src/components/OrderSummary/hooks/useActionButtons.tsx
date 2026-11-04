@@ -22,6 +22,7 @@ import {
   hasOrderPaymentInFlight,
   isNewPaymentModel,
 } from "#components/OrderPayment/paymentSessionUtils"
+import { useFinishAgreementOrderEdit } from "#hooks/useFinishAgreementOrderEdit"
 import { useOrderDetails } from "#hooks/useOrderDetails"
 import { useOrderPaymentLinks } from "#hooks/useOrderPaymentLinks"
 import { useOrderPaymentRulesCheck } from "#hooks/useOrderPaymentRulesCheck"
@@ -143,6 +144,16 @@ export const useActionButtons = ({ order }: { order: Order }) => {
         ]
       : []
 
+  // B2B: an agreement order is finished by authorizing whatever the edit added
+  // on top of what was placed, see `useFinishAgreementOrderEdit`
+  const isEditingAgreementOrder =
+    order.agreement != null && order.status === "editing"
+  const {
+    finish: finishAgreementOrderEdit,
+    isFinishing: isFinishingAgreementOrderEdit,
+    error: finishAgreementOrderEditError,
+  } = useFinishAgreementOrderEdit(order)
+
   /** A partial order whose remaining authorization is already gone. */
   const hasNothingToCapture =
     isNewPaymentModel(order) && getCapturableAmountCents(order) === 0
@@ -248,12 +259,17 @@ export const useActionButtons = ({ order }: { order: Order }) => {
       label: t("apps.orders.actions.finish_editing"),
       disabled:
         isLoading ||
+        isFinishingAgreementOrderEdit ||
         isEditingBlocked ||
         !hasLineItems ||
         // Not offered until the payment rules have answered: it may yet turn
         // into Request payment.
         isCheckingPaymentRules,
       onClick: () => {
+        if (isEditingAgreementOrder) {
+          void finishAgreementOrderEdit()
+          return
+        }
         void dispatch("_stop_editing")
       },
     }
@@ -295,6 +311,9 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     isCheckingPaymentRules,
     isPaymentFullyRequested,
     openPaymentLink,
+    isEditingAgreementOrder,
+    isFinishingAgreementOrderEdit,
+    finishAgreementOrderEdit,
   ])
 
   /** "Refund X" on approved orders that hold more than their total. */
@@ -384,10 +403,13 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     CancelDialog,
     ReviewDialogs,
     SelectShippingMethodOverlay,
-    errors:
-      placeAgreementOrderError != null
-        ? [...(errors ?? []), placeAgreementOrderError]
-        : errors,
+    errors: [
+      ...(errors ?? []),
+      ...(placeAgreementOrderError != null ? [placeAgreementOrderError] : []),
+      ...(finishAgreementOrderEditError != null
+        ? [finishAgreementOrderEditError]
+        : []),
+    ],
     dispatch,
   }
 }
