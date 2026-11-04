@@ -31,6 +31,9 @@ export function useOrderPaymentRulesCheck(
     // needs to know whether it would go through.
     canUser("update", "orders") &&
     order.status === "editing" &&
+    // B2B: an agreement order's Finish authorizes what is missing on its own,
+    // so the buyer is never asked for a payment
+    order.agreement == null &&
     isNewPaymentModel(order) &&
     getOrderPaymentTotals(order).toCollectCents > 0
 
