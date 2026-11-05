@@ -2,10 +2,8 @@ import {
   isMockedId,
   orderTransactionIsAnAsyncCapture,
   useCoreApi,
-  useCoreSdkProvider,
 } from "@commercelayer/app-elements"
 import isEmpty from "lodash-es/isEmpty"
-import { useCallback } from "react"
 import { hasPollableTransaction } from "#components/OrderPayment/paymentSessionUtils"
 import { makeOrder } from "#mocks"
 
@@ -52,11 +50,10 @@ export const orderIncludeAttribute = [
 ]
 
 export function useOrderDetails(id: string) {
-  const { sdkClient } = useCoreSdkProvider()
   const {
     data: order,
     isLoading,
-    mutate,
+    mutate: mutateOrder,
     isValidating,
     error,
   } = useCoreApi(
@@ -84,31 +81,6 @@ export function useOrderDetails(id: string) {
         return hasLegacyAsyncCapture || hasUnsettledPaymentSession ? 5000 : 0
       },
     },
-  )
-
-  /**
-   * B2B: an order placed under an agreement does not refresh on its own
-   * (`autorefresh` is off), so while it is edited its totals would stay the
-   * ones from before the edit. Every edit action ends by reloading the order
-   * with nothing handed in, so that reload refreshes it first. Meant to go once
-   * Core keeps these totals up to date itself.
-   */
-  const mutateOrder = useCallback<typeof mutate>(
-    async (...args) => {
-      if (
-        args[0] === undefined &&
-        order?.status === "editing" &&
-        order.agreement != null
-      ) {
-        // a failed refresh still reloads: Finish refreshes again before it
-        // checks the payment
-        await sdkClient.orders
-          .update({ id: order.id, _refresh: true })
-          .catch(() => undefined)
-      }
-      return await mutate(...args)
-    },
-    [mutate, order?.id, order?.status, order?.agreement, sdkClient],
   )
 
   return { order, isLoading, mutateOrder, isValidating, error }
