@@ -30,8 +30,8 @@ const finish = async (): Promise<Order> =>
     { pollIntervalMs: 0 },
   )
 
-/** The order as Core returns it after the refresh. */
-function refreshed({
+/** The order as Core returns it, with its totals and payment sessions. */
+function orderWithPayments({
   totalCents,
   sessions,
 }: {
@@ -86,7 +86,7 @@ beforeEach(() => {
 describe("finishAgreementOrderEdit", () => {
   test("authorizes what the edit added on a second manual session, then finishes", async () => {
     sdkClient.orders.retrieve.mockResolvedValue(
-      refreshed({
+      orderWithPayments({
         totalCents: 2400,
         sessions: [{ id: "session1", status: "authorized", heldCents: 1200 }],
       }),
@@ -94,11 +94,8 @@ describe("finishAgreementOrderEdit", () => {
 
     await finish()
 
-    // refreshed first: agreement orders do not refresh on their own
-    expect(sdkClient.orders.update.mock.calls[0]?.[0]).toEqual({
-      id: "order1",
-      _refresh: true,
-    })
+    // the edit is only stopped once the difference is authorized
+    expect(sdkClient.orders.update).toHaveBeenCalledTimes(1)
     expect(sdkClient.payment_sessions.create).toHaveBeenCalledWith(
       expect.objectContaining({
         payment_setting: { id: "manual1", type: "payment_setting_manuals" },
@@ -113,7 +110,7 @@ describe("finishAgreementOrderEdit", () => {
 
   test("only finishes when what was authorized still covers the order", async () => {
     sdkClient.orders.retrieve.mockResolvedValue(
-      refreshed({
+      orderWithPayments({
         totalCents: 1000,
         sessions: [{ id: "session1", status: "authorized", heldCents: 1200 }],
       }),
@@ -128,7 +125,7 @@ describe("finishAgreementOrderEdit", () => {
 
   test("waits for a pending authorization to succeed before finishing", async () => {
     sdkClient.orders.retrieve.mockResolvedValue(
-      refreshed({
+      orderWithPayments({
         totalCents: 2400,
         sessions: [{ id: "session1", status: "authorized", heldCents: 1200 }],
       }),
@@ -149,7 +146,7 @@ describe("finishAgreementOrderEdit", () => {
 
   test("on a retry, waits on the authorization an earlier attempt started", async () => {
     sdkClient.orders.retrieve.mockResolvedValue(
-      refreshed({
+      orderWithPayments({
         totalCents: 2400,
         sessions: [
           { id: "session1", status: "authorized", heldCents: 1200 },
@@ -175,7 +172,7 @@ describe("finishAgreementOrderEdit", () => {
 
   test("does not finish when the authorization is declined", async () => {
     sdkClient.orders.retrieve.mockResolvedValue(
-      refreshed({
+      orderWithPayments({
         totalCents: 2400,
         sessions: [{ id: "session1", status: "authorized", heldCents: 1200 }],
       }),
@@ -193,7 +190,7 @@ describe("finishAgreementOrderEdit", () => {
 
   test("on a retry, authorizes the session an earlier attempt left unpaid", async () => {
     sdkClient.orders.retrieve.mockResolvedValue(
-      refreshed({
+      orderWithPayments({
         totalCents: 2400,
         sessions: [
           { id: "session1", status: "authorized", heldCents: 1200 },
@@ -212,7 +209,7 @@ describe("finishAgreementOrderEdit", () => {
 
   test("does not finish when Core refuses the authorization", async () => {
     sdkClient.orders.retrieve.mockResolvedValue(
-      refreshed({
+      orderWithPayments({
         totalCents: 2400,
         sessions: [{ id: "session1", status: "authorized", heldCents: 1200 }],
       }),
@@ -227,7 +224,7 @@ describe("finishAgreementOrderEdit", () => {
 
   test("says what to fix when the market has no manual payment method", async () => {
     sdkClient.orders.retrieve.mockResolvedValue({
-      ...refreshed({
+      ...orderWithPayments({
         totalCents: 2400,
         sessions: [{ id: "session1", status: "authorized", heldCents: 1200 }],
       }),
