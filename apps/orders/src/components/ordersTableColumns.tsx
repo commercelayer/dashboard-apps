@@ -7,6 +7,7 @@ import {
   ResourceStatusBadge,
   type ResourceTableColumn,
   Text,
+  useCoreApi,
   useTokenProvider,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
@@ -14,6 +15,7 @@ import { TableNamesCell } from "dashboard-apps-common/src/components/TableNamesC
 import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
+import { useAgreementOrderReview } from "#components/AgreementOrderReviews"
 import { getPaymentStatusBadgeVariant } from "#components/OrderSteps"
 import { type OrderTab, orderDateLabels } from "#data/lists"
 
@@ -22,8 +24,14 @@ import { type OrderTab, orderDateLabels } from "#data/lists"
  *
  * NUMBER is the primary column, always shown: the number alone, since the market
  * has a column of its own. The others can be hidden by the user from the columns
- * menu (`hideable`), with Payment status, Market, Country, Origin, Reference
- * and Tags hidden until they are turned on.
+ * menu (`hideable`), with Payment status, Country, Origin, Reference and Tags
+ * hidden until they are turned on.
+ *
+ * B2B: an organization selling under agreements sees whose agreement an order
+ * is in the customer's place — Agreement shown, Customer and Market hidden until
+ * turned on, since its orders outside an agreement still have only the customer
+ * to tell them apart. Without agreements, Market takes the Agreement column's
+ * place.
  *
  * @param sortBy - the metrics attribute of the date the DATE column shows, which
  * it marks as sorted: `order.placed_at`, or `order.updated_at` for carts, which
@@ -34,7 +42,11 @@ export function useOrdersTableColumns(
   // or a namespaced metrics one
   sortBy: OrderTab["dateSortBy"],
 ): Array<ResourceTableColumn<"orders">> {
-  const { user } = useTokenProvider()
+  const {
+    user,
+    settings: { extras },
+  } = useTokenProvider()
+  const isAgreementsEnabled = extras?.organization?.isAgreementsEnabled === true
 
   return useMemo(
     () => [
@@ -85,11 +97,27 @@ export function useOrdersTableColumns(
           </Text>
         ),
       },
+      // B2B: whose agreement an order is in, or, without agreements, the
+      // market in its place
+      ...(isAgreementsEnabled
+        ? [
+            {
+              id: "agreement",
+              header: "Agreement",
+              kind: "text" as const,
+              hideable: true as const,
+              cell: ({ resource }: { resource: Order }) => (
+                <AgreementName agreement={resource.agreement} />
+              ),
+            },
+          ]
+        : [marketColumn(false)]),
       {
         id: "customer",
         header: "Customer",
         kind: "text",
         hideable: true,
+        ...(isAgreementsEnabled ? { defaultHidden: true as const } : {}),
         // the email alone, the country having a column of its own. A guest
         // checkout can have no email, and the billing name stands in for it.
         cell: ({ resource }) => {
@@ -141,19 +169,7 @@ export function useOrdersTableColumns(
             </Badge>
           ),
       },
-      {
-        id: "market",
-        header: "Market",
-        kind: "text",
-        hideable: true,
-        defaultHidden: true,
-        cell: ({ resource }) =>
-          resource.market?.name != null ? (
-            <Text>{resource.market?.name}</Text>
-          ) : (
-            <Text variant="disabled">&#8212;</Text>
-          ),
-      },
+      ...(isAgreementsEnabled ? [marketColumn(true)] : []),
       {
         id: "country",
         header: "Country",
@@ -209,8 +225,55 @@ export function useOrdersTableColumns(
         cell: ({ resource }) => <TableTagsCell tags={resource.tags} />,
       },
     ],
-    [sortBy, user?.timezone, user?.locale],
+    [sortBy, user?.timezone, user?.locale, isAgreementsEnabled],
   )
+}
+
+/**
+ * The Market column: shown after the date where an organization has no
+ * agreements, in the Agreement column's place, and further along, hidden until
+ * turned on, where it has them.
+ */
+function marketColumn(defaultHidden: boolean): ResourceTableColumn<"orders"> {
+  return {
+    id: "market",
+    header: "Market",
+    kind: "text",
+    hideable: true,
+    defaultHidden,
+    cell: ({ resource }) =>
+      resource.market?.name != null ? (
+        <Text>{resource.market?.name}</Text>
+      ) : (
+        <Text variant="disabled">&#8212;</Text>
+      ),
+  }
+}
+
+/**
+ * The agreement's name, as Metrics carries it. Read from Core only for a row
+ * that has the id alone, as Metrics payloads before `agreement.*` do: each
+ * agreement is read once and cached, a request per agreement on the page.
+ */
+function AgreementName({
+  agreement,
+}: {
+  agreement: Order["agreement"]
+}): React.JSX.Element {
+  const hasName = agreement?.name != null && agreement.name !== ""
+  const { data: fromCore } = useCoreApi(
+    "agreements",
+    "retrieve",
+    agreement == null || hasName
+      ? null
+      : [agreement.id, { fields: { agreements: ["name"] } }],
+  )
+
+  if (agreement == null) {
+    return <Text variant="disabled">&#8212;</Text>
+  }
+
+  return <Text>{hasName ? agreement.name : (fromCore?.name ?? "")}</Text>
 }
 
 /**
@@ -256,6 +319,9 @@ function RowStatusBadge({
   resource: Order
   className?: string
 }): React.JSX.Element {
-  const displayStatus = getOrderDisplayStatus(resource)
+  // B2B: Metrics knows neither `on_hold` nor reviews, so an agreement order's
+  // are looked up in Core, see `AgreementOrderReviewsProvider`
+  const { order, lastReview } = useAgreementOrderReview(resource)
+  const displayStatus = getOrderDisplayStatus(order, lastReview)
   return <ResourceStatusBadge status={displayStatus} className={className} />
 }

@@ -171,6 +171,32 @@ describe("orderTabs", () => {
   })
 })
 
+describe("agreement filter", () => {
+  const agreementFilter = (isAgreementsEnabled?: boolean) =>
+    makeInstructions({ isAgreementsEnabled }).find(
+      (item) =>
+        "sdk" in item &&
+        "predicate" in item.sdk &&
+        item.sdk.predicate === "agreement_id_in",
+    )
+
+  // Metrics filters agreements by `agreement.ids` with `in`, as it does markets
+  test("picks agreements by id, as Metrics filters them", () => {
+    expect(agreementFilter(true)?.render).toMatchObject({
+      component: "inputSelect",
+      props: { resource: "agreements", fieldForValue: "id" },
+    })
+  })
+
+  // left out rather than hidden: a hidden filter still applies a value from the
+  // url, so an old link would keep filtering with no pill to show it
+  test("is left out for organizations that do not sell under agreements", () => {
+    expect(agreementFilter(true)).toBeDefined()
+    expect(agreementFilter(false)).toBeUndefined()
+    expect(agreementFilter()).toBeUndefined()
+  })
+})
+
 describe("fulfillment status options", () => {
   // The metrics API knows `unfulfilled`, `in_progress` and `fulfilled` only, and
   // rejects a request asking for `not_required`, so offering it can only fail.

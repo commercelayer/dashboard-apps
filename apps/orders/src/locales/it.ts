@@ -12,6 +12,8 @@ const it: typeof en = {
         cart: "Carrello",
         archived: "Archiviati",
         request_return: "Richiedi reso",
+        awaiting_customer_review: "In attesa della revisione del cliente",
+        rejected_by_customer: "Rifiutato dal cliente",
       },
       details: {
         summary: "Riepilogo",
@@ -29,6 +31,21 @@ const it: typeof en = {
           "Il nuovo totale è {{new_total}}, {{difference}} in più rispetto al totale originale.",
         new_total_line2: "Modifica il totale per renderlo uguale o inferiore.",
         waiting_for_successful_capture: "In attesa di catturare il pagamento",
+        review_reason: "Nota per il cliente",
+        review_reason_placeholder: "Aggiungi una nota…",
+        send_for_review_description:
+          "Il cliente riceverà una notifica e dovrà rivedere e confermare l'ordine aggiornato",
+        sending_for_review: "Invio dell'ordine per revisione…",
+        sending_for_review_to: "a {{email}}",
+        send_for_review_failed:
+          "Non è stato possibile inviare l'ordine per revisione",
+        review_sent_title: "L'ordine è stato inviato per revisione",
+        review_sent_description:
+          "{{customer}} ha ricevuto una notifica e ora può rivedere l'ordine",
+        view_order: "Vedi ordine",
+        back_to_orders: "Torna agli ordini",
+        withdraw_review_description:
+          "L'ordine non è più in attesa e può essere approvato senza la risposta del cliente.",
       },
       form: {
         language: "Lingua",
@@ -56,6 +73,11 @@ const it: typeof en = {
         unarchive: "Ripristina",
         continue_editing: "Continua modifiche",
         finish_editing: "Finalizza",
+        send_for_review: "Invia al cliente per revisione",
+        send_for_review_title: "Inviare l'ordine per revisione?",
+        send_for_review_confirm: "Invia per revisione",
+        withdraw_review: "Ritira revisione",
+        withdraw_review_title: "Ritirare la revisione?",
         adjust_total: "Modifica il totale",
       },
     },
