@@ -49,16 +49,14 @@ export function useFinishAgreementOrderEdit(order: Order): {
  * something to ask the buyer to pay: the difference is authorized on a second
  * manual session, and the seller only sees Finish go through.
  *
- * 1. a refresh — agreement orders never refresh on their own (`autorefresh` is
- *    off), so the total may still be the one from before the edit;
- * 2. what the order's authorizations no longer cover, from its transactions —
+ * 1. what the order's authorizations no longer cover, from its transactions —
  *    an edit that lowers the total needs nothing, as captures are capped at it;
- * 3. if anything: a session on the manual payment setting for exactly that
+ * 2. if anything: a session on the manual payment setting for exactly that
  *    amount, then an authorization on it, waited on until it succeeds — Core
  *    accepts a manual authorization as `pending` and only counts it once it has
  *    settled, a moment later, so finishing straight away is refused as not
  *    covering the order;
- * 4. `_stop_editing`, returning the finished order.
+ * 3. `_stop_editing`, returning the finished order.
  *
  * Safe to repeat: a retry picks up the session an earlier attempt left unpaid,
  * and waits on its authorization if it already has one, instead of opening
@@ -69,8 +67,6 @@ export async function finishAgreementOrderEdit(
   orderId: string,
   { pollIntervalMs = 1000 }: { pollIntervalMs?: number } = {},
 ): Promise<Order> {
-  await sdkClient.orders.update({ id: orderId, _refresh: true })
-
   const current = await sdkClient.orders.retrieve(orderId, {
     include: [
       "market",
