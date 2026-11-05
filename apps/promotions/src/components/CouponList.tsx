@@ -12,12 +12,11 @@ import {
   useResourceList,
   useTokenProvider,
 } from "@commercelayer/app-elements"
-import type { Import, QueryFilter } from "@commercelayer/sdk"
+import type { Coupon, Import, QueryFilter } from "@commercelayer/sdk"
 import { type FC, useMemo, useState } from "react"
-import { useLocation } from "wouter"
+import { CouponFormModal } from "#components/CouponFormModal"
 import { CouponGeneratorModal } from "#components/CouponGeneratorModal"
 import { CouponRow } from "#components/CouponTable"
-import { appRoutes } from "#data/routes"
 import type { Promotion } from "#types"
 
 type FilterStatus = "all" | "active" | "expired" | "never"
@@ -27,7 +26,10 @@ interface CouponListProps {
 }
 export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   const { canUser } = useTokenProvider()
-  const [, setLocation] = useLocation()
+  // `null` when closed; an empty object opens it to create a coupon
+  const [couponFormModal, setCouponFormModal] = useState<{
+    coupon?: Coupon
+  } | null>(null)
   const [showCouponGenerator, setShowCouponGenerator] = useState(false)
   const [searchValue, setSearchValue] = useState<string>()
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all")
@@ -71,14 +73,53 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
     paginationScrollTo: "list",
   })
 
-  const addCouponLink = appRoutes.newCoupon.makePath({
-    promotionId: promotion.id,
-  })
-
   return (
     // titled here: it used to be a tab named "Coupons". `border="none"` to match
     // the "Apply when" section above it — the table draws its own top border
-    <Section title="Coupons" border="none">
+    <Section
+      title="Coupons"
+      border="none"
+      actionButton={
+        <Dropdown
+          dropdownLabel={
+            <Button alignItems="center" size="small" variant="secondary">
+              <Icon name="plus" size={16} />
+              New
+            </Button>
+          }
+          dropdownItems={
+            <>
+              <DropdownItem
+                label="Single coupon"
+                onClick={() => {
+                  setCouponFormModal({})
+                }}
+              />
+              {canUser("create", "imports") && (
+                <DropdownItem
+                  label="Multiple coupons"
+                  onClick={() => {
+                    void sdkClient.imports
+                      .list({
+                        filters: {
+                          resource_type_eq: "coupons",
+                          reference_eq: `promotion_id:${promotion.id}`,
+                          status_in: ["pending", "in_progress"],
+                        },
+                        pageSize: 1,
+                      })
+                      .then((couponImports) => {
+                        setCurrentImportJob(couponImports[0] ?? null)
+                        setShowCouponGenerator(true)
+                      })
+                  }}
+                />
+              )}
+            </>
+          }
+        />
+      }
+    >
       <div
         style={{
           display: "flex",
@@ -132,53 +173,20 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
             </Button>
           }
         />
-
-        <Dropdown
-          dropdownLabel={
-            <Button
-              alignItems="center"
-              size="small"
-              variant="secondary"
-              onClick={() => {
-                setLocation(addCouponLink)
-              }}
-            >
-              <Icon name="plus" size={16} />
-              New
-            </Button>
-          }
-          dropdownItems={
-            <>
-              <DropdownItem
-                label="Single coupon"
-                onClick={() => {
-                  setLocation(addCouponLink)
-                }}
-              />
-              {canUser("create", "imports") && (
-                <DropdownItem
-                  label="Multiple coupons"
-                  onClick={() => {
-                    void sdkClient.imports
-                      .list({
-                        filters: {
-                          resource_type_eq: "coupons",
-                          reference_eq: `promotion_id:${promotion.id}`,
-                          status_in: ["pending", "in_progress"],
-                        },
-                        pageSize: 1,
-                      })
-                      .then((couponImports) => {
-                        setCurrentImportJob(couponImports[0] ?? null)
-                        setShowCouponGenerator(true)
-                      })
-                  }}
-                />
-              )}
-            </>
-          }
-        />
       </div>
+
+      {couponFormModal != null && (
+        <CouponFormModal
+          promotionId={promotion.id}
+          coupon={couponFormModal.coupon}
+          onClose={(shouldReloadList) => {
+            if (shouldReloadList === true) {
+              refresh()
+            }
+            setCouponFormModal(null)
+          }}
+        />
+      )}
 
       <CouponGeneratorModal
         promotion={promotion}
@@ -239,6 +247,9 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
                   {...p}
                   deleteRule={list?.length === 1}
                   promotionId={promotion.id}
+                  onEdit={(coupon) => {
+                    setCouponFormModal({ coupon })
+                  }}
                 />
               )
             }}

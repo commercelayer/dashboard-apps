@@ -1,6 +1,5 @@
 import {
   Badge,
-  Button,
   Dropdown,
   DropdownDivider,
   DropdownItem,
@@ -20,9 +19,7 @@ import {
 } from "@commercelayer/app-elements"
 import type { Coupon } from "@commercelayer/sdk"
 import { makeCoupon } from "src/mocks/resources/coupons"
-import { useLocation } from "wouter"
 import { getCouponStatus } from "#data/couponStatus"
-import { appRoutes } from "#data/routes"
 
 interface Props {
   coupons: Coupon[]
@@ -92,125 +89,112 @@ export const CouponRow = withSkeletonTemplate<
   ResourceListItemTemplateProps<"coupons"> & {
     promotionId: string
     deleteRule?: boolean
+    onEdit?: (coupon: Coupon) => void
   }
->(
-  ({
-    resource: coupon = makeCoupon(),
-    promotionId,
-    remove,
-    deleteRule = false,
-  }) => {
-    const [, setLocation] = useLocation()
-    const { user } = useTokenProvider()
-    const { sdkClient } = useCoreSdkProvider()
-    const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
+>(({ resource: coupon = makeCoupon(), remove, deleteRule = false, onEdit }) => {
+  const { user } = useTokenProvider()
+  const { sdkClient } = useCoreSdkProvider()
+  const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
-    if (coupon == null) return null
+  if (coupon == null) return null
 
-    const status = getCouponStatus(coupon)
+  const status = getCouponStatus(coupon)
+  const statusBadgeVariant = status === "available" ? "success" : "secondary"
+  const usage = `${coupon.usage_count ?? 0}${coupon.usage_limit != null ? `/${coupon.usage_limit}` : ""}`
+  const expiresAt =
+    coupon.expires_at == null
+      ? null
+      : formatDate({
+          format: "full",
+          isoDate: coupon.expires_at,
+          timezone: user?.timezone,
+        })
 
-    return (
-      <>
-        <ConfirmDialog
-          icon="trash"
-          title={`Delete coupon ${coupon.code}`}
-          description="This action cannot be undone."
-          confirm={{
-            label: "Delete coupon",
-            variant: "danger",
-            onClick: async () => {
-              await sdkClient.coupons.delete(coupon.id)
-              // the last coupon takes its promotion rule with it, otherwise the
-              // promotion would keep requiring a coupon that no longer exists
-              if (deleteRule && coupon.promotion_rule?.id != null) {
-                await sdkClient.coupon_codes_promotion_rules.delete(
-                  coupon.promotion_rule.id,
-                )
-              }
-              remove?.()
-            },
-          }}
-        />
-        <Tr key={coupon.id}>
-          <Td>
-            <Text
-              weight="semibold"
-              style={{
-                display: "flex",
-                gap: "8px",
-                alignItems: "center",
-              }}
-            >
-              {coupon.code}
-              {coupon.customer_single_use === true && (
-                <Tooltip
-                  content={<>Single use per customer</>}
-                  label={<Icon name="userRectangle" size={16} />}
-                />
-              )}
-            </Text>
-            {coupon.recipient_email != null && (
-              <Text
-                tag="div"
-                weight="semibold"
-                variant="info"
-                style={{ fontSize: "11px" }}
-              >
-                To: {coupon.recipient_email}
-              </Text>
+  return (
+    <>
+      <ConfirmDialog
+        icon="trash"
+        title={`Delete coupon ${coupon.code}`}
+        description="This action cannot be undone."
+        confirm={{
+          label: "Delete coupon",
+          variant: "danger",
+          onClick: async () => {
+            await sdkClient.coupons.delete(coupon.id)
+            // the last coupon takes its promotion rule with it, otherwise the
+            // promotion would keep requiring a coupon that no longer exists
+            if (deleteRule && coupon.promotion_rule?.id != null) {
+              await sdkClient.coupon_codes_promotion_rules.delete(
+                coupon.promotion_rule.id,
+              )
+            }
+            remove?.()
+          },
+        }}
+      />
+      <Tr key={coupon.id}>
+        {/* `px-4`: on mobile cells have no inset of their own, but this table sits
+            in a bordered box rather than running edge to edge */}
+        <Td className="px-4">
+          <div className="flex items-center gap-2">
+            <Text weight="semibold">{coupon.code}</Text>
+            {coupon.customer_single_use === true && (
+              <Tooltip
+                content={<>Single use per customer</>}
+                label={<Icon name="userRectangle" size={16} />}
+              />
             )}
-          </Td>
-          <Td>
-            <Badge variant={status === "available" ? "success" : "secondary"}>
+            {/* the Status column is hidden on mobile, so the badge rides with the code */}
+            <Badge variant={statusBadgeVariant} className="md:hidden shrink-0">
               {status}
             </Badge>
-          </Td>
-          <Td>
-            {coupon.usage_count ?? 0}
-            {coupon.usage_limit != null ? `/${coupon.usage_limit}` : ""}
-          </Td>
-          <Td>
-            {coupon.expires_at == null
-              ? "—"
-              : formatDate({
-                  format: "full",
-                  isoDate: coupon.expires_at,
-                  timezone: user?.timezone,
-                })}
-          </Td>
-          <Td align="right">
-            <Dropdown
-              dropdownItems={
-                <>
-                  <DropdownItem
-                    label="Edit"
-                    onClick={() => {
-                      setLocation(
-                        appRoutes.editCoupon.makePath({
-                          promotionId,
-                          couponId: coupon.id,
-                        }),
-                      )
-                    }}
-                  />
-                  <DropdownDivider />
-                  <DropdownItem
-                    label="Delete"
-                    onClick={() => {
-                      showDeleteDialog()
-                    }}
-                  />
-                </>
-              }
-              dropdownLabel={
-                <Button variant="circle">
-                  <Icon name="dotsThree" size={16} />
-                </Button>
-              }
-            />
-          </Td>
-        </Tr>
-      </>
-    )
-  },
-)
+          </div>
+          {coupon.recipient_email != null && (
+            <Text
+              tag="div"
+              weight="semibold"
+              variant="info"
+              style={{ fontSize: "11px" }}
+            >
+              To: {coupon.recipient_email}
+            </Text>
+          )}
+          {/* mobile only: from `md` up Usage and Expiry have columns of their own */}
+          <Text tag="div" size="x-small" variant="info" className="md:hidden">
+            {usage} used ·{" "}
+            {expiresAt == null
+              ? "Never expires"
+              : `${status === "expired" ? "Expired" : "Expires"} ${expiresAt}`}
+          </Text>
+        </Td>
+        <Td className="hidden md:table-cell">
+          <Badge variant={statusBadgeVariant}>{status}</Badge>
+        </Td>
+        <Td className="hidden md:table-cell">{usage}</Td>
+        <Td className="hidden md:table-cell">{expiresAt ?? "—"}</Td>
+        <Td align="right" className="px-4">
+          <Dropdown
+            dropdownItems={
+              <>
+                <DropdownItem
+                  label="Edit"
+                  onClick={() => {
+                    onEdit?.(coupon)
+                  }}
+                />
+                <DropdownDivider />
+                <DropdownItem
+                  label="Delete"
+                  onClick={() => {
+                    showDeleteDialog()
+                  }}
+                />
+              </>
+            }
+            dropdownLabel={<Icon name="dotsThree" size={16} />}
+          />
+        </Td>
+      </Tr>
+    </>
+  )
+})

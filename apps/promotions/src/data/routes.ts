@@ -20,6 +20,4 @@ export const appRoutes = {
   newPromotionActivationRule: createRoute(
     "/list/:promotionId/activation-rules/new/",
   ),
-  newCoupon: createRoute("/list/:promotionId/coupons/new/"),
-  editCoupon: createRoute("/list/:promotionId/coupons/list/:couponId/"),
 }

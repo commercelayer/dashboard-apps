@@ -5,9 +5,7 @@ import {
   HookedInputCheckbox,
   HookedInputDate,
   HookedValidationApiError,
-  Section,
   Spacer,
-  Text,
   useCoreApi,
   useCoreSdkProvider,
   useTokenProvider,
@@ -106,87 +104,68 @@ export function CouponForm({
         onSuccess()
       }}
     >
-      <Spacer top="14">
-        <Section title="Basic info">
-          <Spacer top="6">
-            <HookedInput
-              name="code"
-              minLength={minCodeLength}
-              maxLength={maxCodeLength}
-              label="Coupon code *"
-              hint={{
-                text: `${minCodeLength} to ${maxCodeLength} characters.`,
-              }}
-            />
-          </Spacer>
-
-          <Spacer top="6">
-            <HookedInputDate
-              showTimeSelect
-              name="expires_at"
-              isClearable
-              label="Expires on"
-              hint={{
-                text: "Optionally set an expiration date for the coupon.",
-              }}
-              timezone={user?.timezone}
-            />
-          </Spacer>
-
-          <Spacer top="6">
-            <HookedInput
-              type="number"
-              label="Usage limit"
-              min={1}
-              name="usage_limit"
-              hint={{
-                text: "Optionally limit how many times this coupon can be used.",
-              }}
-            />
-          </Spacer>
-        </Section>
+      <Spacer bottom="8">
+        <HookedInput
+          name="code"
+          minLength={minCodeLength}
+          maxLength={maxCodeLength}
+          label="Coupon code *"
+          hint={{
+            text: `${minCodeLength} to ${maxCodeLength} characters.`,
+          }}
+        />
       </Spacer>
 
-      <Spacer top="14">
-        <Section title="Customer options">
-          <Spacer top="6">
-            <Spacer bottom="2">
-              <HookedInputCheckbox
-                name="show_recipient_email"
-                checkedElement={
-                  <Spacer bottom="6">
-                    <HookedInput
-                      type="text"
-                      name="recipient_email"
-                      placeholder="Recipient email"
-                    />
-                  </Spacer>
-                }
-              >
-                <Text weight="semibold">Customer email</Text>
-              </HookedInputCheckbox>
-            </Spacer>
-
-            <Spacer bottom="2">
-              <HookedInputCheckbox name="customer_single_use">
-                <Text weight="semibold">Single use per customer</Text>
-              </HookedInputCheckbox>
-            </Spacer>
-          </Spacer>
-        </Section>
+      <Spacer bottom="8">
+        <HookedInputDate
+          showTimeSelect
+          name="expires_at"
+          isClearable
+          label="Expires on"
+          hint={{
+            text: "Optionally set an expiration date for the coupon.",
+          }}
+          timezone={user?.timezone}
+        />
       </Spacer>
 
-      <Spacer top="14">
-        <Button
-          fullWidth
-          type="submit"
-          disabled={methods.formState.isSubmitting}
+      <Spacer bottom="8">
+        <HookedInput
+          type="number"
+          label="Usage limit"
+          min={1}
+          name="usage_limit"
+          hint={{
+            text: "Optionally limit how many times this coupon can be used.",
+          }}
+        />
+      </Spacer>
+
+      <Spacer bottom="2">
+        <HookedInputCheckbox
+          name="show_recipient_email"
+          checkedElement={
+            <HookedInput
+              type="text"
+              name="recipient_email"
+              placeholder="Recipient email"
+            />
+          }
         >
-          {couponId != null ? "Update" : "Create coupon"}
-        </Button>
-        <Spacer top="2">
-          <HookedValidationApiError apiError={apiError} />
-        </Spacer>
+          Customer email
+        </HookedInputCheckbox>
+      </Spacer>
+      <Spacer bottom="12">
+        <HookedInputCheckbox name="customer_single_use">
+          Single use per customer
+        </HookedInputCheckbox>
+      </Spacer>
+
+      <Button fullWidth type="submit" disabled={methods.formState.isSubmitting}>
+        {couponId != null ? "Update coupon" : "Create coupon"}
+      </Button>
+      <Spacer top="2">
+        <HookedValidationApiError apiError={apiError} />
       </Spacer>
     </HookedForm>
   )
