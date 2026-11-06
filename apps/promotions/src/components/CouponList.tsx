@@ -8,17 +8,18 @@ import {
   Section,
   Spacer,
   Text,
-  type UseResourceListConfig,
+  type UseResourceTableConfig,
+  useCoreApi,
   useCoreSdkProvider,
-  useResourceList,
+  useResourceTable,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Coupon, Import, QueryFilter } from "@commercelayer/sdk"
-import { type FC, useMemo, useState } from "react"
+import { type FC, useCallback, useMemo, useState } from "react"
 import { CouponFormModal } from "#components/CouponFormModal"
 import { CouponGeneratorModal } from "#components/CouponGeneratorModal"
-import { CouponRow } from "#components/CouponTable"
+import { useCouponsTableColumns } from "#components/couponsTableColumns"
 import type { CouponStatus } from "#data/couponStatus"
 import type { Promotion } from "#types"
 
@@ -62,7 +63,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
     never_expires: { expires_at_null: true },
   }
 
-  const query = useMemo<UseResourceListConfig<"coupons">["query"]>(() => {
+  const query = useMemo<UseResourceTableConfig<"coupons">["query"]>(() => {
     return {
       filters: {
         promotion_rule_promotion_id_eq: promotion.id,
@@ -71,26 +72,50 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
           : {}),
         ...(filterStatusPredicate[filterStatus] ?? {}),
       },
-      sort: ["-updated_at"],
       pageSize: 25,
     }
   }, [filterStatus, searchValue])
 
-  const { list, isLoading, ResourceList, refresh, Pagination } =
-    useResourceList({
-      type: "coupons",
-      query,
-      paginationType: "pagination",
-      paginationScrollTo: "list",
-    })
+  /**
+   * Whether the promotion has any coupon at all, regardless of the search and the
+   * filter: only without any are those of no use, and the empty state takes their
+   * place. Counted apart from the table so that a filter with no results, or the
+   * table refetching, never hides the toolbar the user is acting on.
+   */
+  const { data: anyCoupon, mutate: mutateAnyCoupon } = useCoreApi(
+    "coupons",
+    "list",
+    [
+      {
+        fields: ["id"],
+        filters: { promotion_rule_promotion_id_eq: promotion.id },
+        pageSize: 1,
+      },
+    ],
+  )
+  const hasNoCoupons = anyCoupon?.meta.recordCount === 0
 
-  // no coupons at all, as opposed to none matching the search or the filter:
-  // only then are the search and the filter of no use
-  const hasNoCoupons =
-    !isLoading &&
-    list?.length === 0 &&
-    (searchValue == null || searchValue === "") &&
-    filterStatus === "all"
+  const columns = useCouponsTableColumns({
+    onEdit: useCallback((coupon: Coupon) => {
+      setCouponFormModal({ coupon })
+    }, []),
+    onDeleted: useCallback(() => {
+      void mutateAnyCoupon()
+    }, [mutateAnyCoupon]),
+  })
+
+  const { ResourceTable, refresh, Pagination } = useResourceTable({
+    type: "coupons",
+    columns,
+    query,
+    sort: "-updated_at",
+    paginationScrollTo: "list",
+  })
+
+  const reload = (): void => {
+    refresh()
+    void mutateAnyCoupon()
+  }
 
   return (
     // titled here: it used to be a tab named "Coupons"
@@ -203,7 +228,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
           coupon={couponFormModal.coupon}
           onClose={(shouldReloadList) => {
             if (shouldReloadList === true) {
-              refresh()
+              reload()
             }
             setCouponFormModal(null)
           }}
@@ -216,7 +241,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         currentImportJob={currentImportJob}
         onClose={(shouldReloadList) => {
           if (shouldReloadList === true) {
-            refresh()
+            reload()
           }
           setShowCouponGenerator(false)
         }}
@@ -224,58 +249,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
       />
       {!hasNoCoupons && (
         <Spacer top="4">
-          <div
-            style={{
-              borderWidth: "1px",
-              borderBottom: 0,
-              borderRadius: "var(--radius)",
-              borderColor:
-                list?.length == null || list.length > 0
-                  ? undefined
-                  : "transparent",
-              position: "relative",
-            }}
-          >
-            {/* fake bottom border */}
-            {list?.length !== 0 && (
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: -1,
-                  right: -1,
-                  height: "5px",
-                  borderWidth: "1px",
-                  borderTop: 0,
-                  borderBottomLeftRadius: "var(--radius)",
-                  borderBottomRightRadius: "var(--radius)",
-                  pointerEvents: "none",
-                  touchAction: "none",
-                }}
-              />
-            )}
-            <ResourceList
-              variant="table"
-              headings={[
-                { label: "Code" },
-                { label: "Usage" },
-                { label: "Expires on" },
-                { label: "" },
-              ]}
-              ItemTemplate={(p) => {
-                return (
-                  <CouponRow
-                    {...p}
-                    deleteRule={list?.length === 1}
-                    promotionId={promotion.id}
-                    onEdit={(coupon) => {
-                      setCouponFormModal({ coupon })
-                    }}
-                  />
-                )
-              }}
-            />
-          </div>
+          <ResourceTable variant="boxed" />
           <Pagination />
         </Spacer>
       )}

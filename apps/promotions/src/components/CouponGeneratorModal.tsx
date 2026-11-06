@@ -1,14 +1,15 @@
 import {
   A,
   Button,
-  HookedForm,
   HookedInput,
   HookedInputCheckbox,
   HookedInputDate,
   HookedInputSelect,
+  Hr,
   Icon,
   Label,
   Modal,
+  ModalFooterButtons,
   RadialProgress,
   Spacer,
   StatusIcon,
@@ -16,11 +17,12 @@ import {
   toast,
   useCoreApi,
   useCoreSdkProvider,
+  useTranslation,
 } from "@commercelayer/app-elements"
 import { CommerceLayerStatic, type Import } from "@commercelayer/sdk"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { type FC, useCallback, useMemo, useState } from "react"
-import { useForm } from "react-hook-form"
+import { FormProvider, useForm } from "react-hook-form"
 import z from "zod"
 import type { Promotion } from "#types"
 
@@ -41,6 +43,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
   const [isGeneratingCsv, setIsGeneratingCsv] = useState(false)
   const [isDeletingImport, setIsDeletingImport] = useState(false)
   const { sdkClient } = useCoreSdkProvider()
+  const { t } = useTranslation()
   const [importId, setImportId] = useState<string | undefined>(
     currentImportJob?.id,
   )
@@ -113,167 +116,177 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
     return id
   }, [promotion.id, sdkClient])
 
+  const isForm = !isImportCompleted && !isImportInProgress
+
+  const handleGenerate = methods.handleSubmit(async (values) => {
+    setIsGeneratingCsv(true)
+    try {
+      const generatedCodes = generateUniqueCoupons({
+        numberOfCoupons: values.numberOfCoupons,
+        codeLength: values.codeLength,
+        case: values.case,
+        prefix: values.prefix,
+      })
+
+      const promotionRuleId = await getPromotionRuleId()
+
+      const csvContent = makeCsv({
+        codes: generatedCodes,
+        promotionRuleId,
+        usageLimit: values.usageLimit ?? undefined,
+        expiresAt: values.expiresAt ?? undefined,
+        customerSingleUse: values.customerSingleUse || undefined,
+      })
+
+      const couponImport = await sdkClient.imports.create({
+        format: "csv",
+        inputs: csvContent as unknown as object[],
+        resource_type: "coupons",
+        reference: `promotion_id:${promotion.id}`,
+      })
+      setImportId(couponImport.id)
+      setIsGeneratingCsv(false)
+    } catch (error) {
+      setIsGeneratingCsv(false)
+      const apiError = CommerceLayerStatic.isApiError(error) ? error : null
+      const errorMessage =
+        apiError?.errors?.map((e: any) => e.detail).join(", ") ??
+        "An error occurred while generating coupons"
+      toast(errorMessage, {
+        type: "error",
+      })
+    }
+  })
+
   return (
-    <Modal
-      show={show}
-      onClose={() => {
-        if (!isGeneratingCsv) {
-          onClose()
+    // no DOM of its own, so it can span the modal's slots: the form step is
+    // laid out as the tags and metadata modals of app-elements
+    <FormProvider {...methods}>
+      <Modal
+        show={show}
+        onClose={() => {
+          if (!isGeneratingCsv) {
+            onClose()
+          }
+        }}
+        size={isForm ? "large" : "x-small"}
+        onSubmit={
+          isForm
+            ? (event) => {
+                void handleGenerate(event)
+              }
+            : undefined
         }
-      }}
-      size={isImportCompleted || isImportInProgress ? "x-small" : "large"}
-    >
-      {isImportCompleted ? (
-        <>
-          <Modal.Body>
-            <Spacer top="4" bottom="4">
-              <StatusIcon
-                name="check"
-                background="green"
-                gap="large"
-                align="center"
-              />
-            </Spacer>
-            <Text weight="semibold" align="center" tag="div">
-              Your coupons are ready.
-            </Text>
-            <Spacer top="1">
-              <Text align="center" tag="div" size="small" variant="info">
-                Download now or find them in Imports.
+      >
+        {isImportCompleted ? (
+          <>
+            <Modal.Body>
+              <Spacer top="4" bottom="4">
+                <StatusIcon
+                  name="check"
+                  background="green"
+                  gap="large"
+                  align="center"
+                />
+              </Spacer>
+              <Text weight="semibold" align="center" tag="div">
+                Your coupons are ready.
               </Text>
-            </Spacer>
-          </Modal.Body>
-          <Modal.Footer>
-            {importedCsvFile != null && (
-              <A
-                href={importedCsvFile}
-                variant="primary"
+              <Spacer top="1">
+                <Text align="center" tag="div" size="small" variant="info">
+                  Download now or find them in Imports.
+                </Text>
+              </Spacer>
+            </Modal.Body>
+            <Modal.Footer>
+              {importedCsvFile != null && (
+                <A
+                  href={importedCsvFile}
+                  variant="primary"
+                  onClick={() => {
+                    onClose(true)
+                    setIsGeneratingCsv(false)
+                    setImportId(undefined)
+                  }}
+                  fullWidth
+                  alignItems="center"
+                >
+                  <Icon name="fileArrowDown" />
+                  Download (CSV)
+                </A>
+              )}
+              <Button
+                type="button"
+                variant="secondary"
+                fullWidth
                 onClick={() => {
                   onClose(true)
                   setIsGeneratingCsv(false)
                   setImportId(undefined)
                 }}
-                fullWidth
-                alignItems="center"
               >
-                <Icon name="fileArrowDown" />
-                Download (CSV)
-              </A>
-            )}
-            <Button
-              type="button"
-              variant="secondary"
-              fullWidth
-              onClick={() => {
-                onClose(true)
-                setIsGeneratingCsv(false)
-                setImportId(undefined)
-              }}
-            >
-              Close
-            </Button>
-          </Modal.Footer>
-        </>
-      ) : isImportInProgress ? (
-        <>
-          <Modal.Body>
-            <Spacer top="4" bottom="6">
-              <RadialProgress
-                percentage={
-                  importJob == null ? 0 : getProgressPercentage(importJob).value
-                }
-                align="center"
-              />
-            </Spacer>
-            <Text weight="semibold" align="center" tag="div">
-              Generating coupons…
-            </Text>
-            <Spacer top="1">
-              <Text align="center" tag="div" size="small" variant="info">
-                This may take a few moments.
-              </Text>
-            </Spacer>
-          </Modal.Body>
-          {importJob?.status === "pending" ? (
-            <Modal.Footer>
-              <Button
-                type="button"
-                variant="secondary"
-                fullWidth
-                disabled={isDeletingImport}
-                onClick={() => {
-                  if (importId == null) return
-                  setIsDeletingImport(true)
-                  void sdkClient.imports
-                    .delete(importId)
-                    .then(() => {
-                      onClose(true)
-                      setImportId(undefined)
-                    })
-                    .catch(() => {
-                      toast("Could not cancel the import")
-                    })
-                    .finally(() => {
-                      setIsDeletingImport(false)
-                    })
-                }}
-              >
-                Cancel generation
+                Close
               </Button>
             </Modal.Footer>
-          ) : (
-            <div style={{ paddingTop: "1rem" }} />
-          )}
-        </>
-      ) : (
-        // FORM TO GENERATE COUPONS
-        <>
-          <Modal.Header>Multiple coupons</Modal.Header>
-          <Modal.Body>
-            <HookedForm
-              {...methods}
-              onSubmit={async (values) => {
-                setIsGeneratingCsv(true)
-                try {
-                  const generatedCodes = generateUniqueCoupons({
-                    numberOfCoupons: values.numberOfCoupons,
-                    codeLength: values.codeLength,
-                    case: values.case,
-                    prefix: values.prefix,
-                  })
-
-                  const promotionRuleId = await getPromotionRuleId()
-
-                  const csvContent = makeCsv({
-                    codes: generatedCodes,
-                    promotionRuleId,
-                    usageLimit: values.usageLimit ?? undefined,
-                    expiresAt: values.expiresAt ?? undefined,
-                    customerSingleUse: values.customerSingleUse || undefined,
-                  })
-
-                  const couponImport = await sdkClient.imports.create({
-                    format: "csv",
-                    inputs: csvContent as unknown as object[],
-                    resource_type: "coupons",
-                    reference: `promotion_id:${promotion.id}`,
-                  })
-                  setImportId(couponImport.id)
-                  setIsGeneratingCsv(false)
-                } catch (error) {
-                  setIsGeneratingCsv(false)
-                  const apiError = CommerceLayerStatic.isApiError(error)
-                    ? error
-                    : null
-                  const errorMessage =
-                    apiError?.errors?.map((e: any) => e.detail).join(", ") ??
-                    "An error occurred while generating coupons"
-                  toast(errorMessage, {
-                    type: "error",
-                  })
-                }
-              }}
-            >
+          </>
+        ) : isImportInProgress ? (
+          <>
+            <Modal.Body>
+              <Spacer top="4" bottom="6">
+                <RadialProgress
+                  percentage={
+                    importJob == null
+                      ? 0
+                      : getProgressPercentage(importJob).value
+                  }
+                  align="center"
+                />
+              </Spacer>
+              <Text weight="semibold" align="center" tag="div">
+                Generating coupons…
+              </Text>
+              <Spacer top="1">
+                <Text align="center" tag="div" size="small" variant="info">
+                  This may take a few moments.
+                </Text>
+              </Spacer>
+            </Modal.Body>
+            {importJob?.status === "pending" ? (
+              <Modal.Footer>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  fullWidth
+                  disabled={isDeletingImport}
+                  onClick={() => {
+                    if (importId == null) return
+                    setIsDeletingImport(true)
+                    void sdkClient.imports
+                      .delete(importId)
+                      .then(() => {
+                        onClose(true)
+                        setImportId(undefined)
+                      })
+                      .catch(() => {
+                        toast("Could not cancel the import")
+                      })
+                      .finally(() => {
+                        setIsDeletingImport(false)
+                      })
+                  }}
+                >
+                  Cancel generation
+                </Button>
+              </Modal.Footer>
+            ) : (
+              <div style={{ paddingTop: "1rem" }} />
+            )}
+          </>
+        ) : (
+          // FORM TO GENERATE COUPONS
+          <>
+            <Modal.Header>Multiple coupons</Modal.Header>
+            <Modal.Body>
               <Spacer bottom="8">
                 <HookedInput
                   type="number"
@@ -282,7 +295,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                   suffix="codes"
                 />
               </Spacer>
-              <Spacer bottom="8">
+              <div>
                 <Label>Format</Label>
                 <Spacer top="2" bottom="2">
                   <div
@@ -329,6 +342,12 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                     Preview: <Text weight="semibold">{codeSample}</Text>
                   </Text>
                 </div>
+              </div>
+
+              {/* as in the single coupon form: the optional settings come after
+                  a dashed divider */}
+              <Spacer top="6" bottom="6">
+                <Hr variant="dashed" />
               </Spacer>
 
               <Spacer bottom="2">
@@ -362,20 +381,34 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
                   Limit usage
                 </HookedInputCheckbox>
               </Spacer>
-              <Spacer bottom="12">
+              <Spacer bottom="2">
                 <HookedInputCheckbox name="customerSingleUse">
                   Single use per customer
                 </HookedInputCheckbox>
               </Spacer>
-
-              <Button type="submit" fullWidth disabled={isGeneratingCsv}>
-                {isGeneratingCsv ? "Generating…" : "Generate coupons"}
-              </Button>
-            </HookedForm>
-          </Modal.Body>
-        </>
-      )}
-    </Modal>
+            </Modal.Body>
+            <Modal.Footer>
+              <ModalFooterButtons>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="small"
+                  disabled={isGeneratingCsv}
+                  onClick={() => {
+                    onClose()
+                  }}
+                >
+                  {t("common.cancel")}
+                </Button>
+                <Button type="submit" size="small" disabled={isGeneratingCsv}>
+                  {isGeneratingCsv ? "Generating…" : "Generate coupons"}
+                </Button>
+              </ModalFooterButtons>
+            </Modal.Footer>
+          </>
+        )}
+      </Modal>
+    </FormProvider>
   )
 }
 
