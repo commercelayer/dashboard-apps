@@ -2,6 +2,7 @@ const en = {
   apps: {
     promotions: {
       coupons: {
+        expiry: "Expiry",
         status: {
           active: "Active",
           expired: "Expired",

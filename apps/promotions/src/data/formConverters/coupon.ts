@@ -22,6 +22,7 @@ export function couponToFormValues(coupon?: Coupon) {
     ...coupon,
     expires_at:
       coupon.expires_at != null ? new Date(coupon.expires_at) : undefined,
+    show_expires_at: coupon.expires_at != null,
     show_usage_limit: coupon.usage_limit != null,
     show_recipient_email: coupon.recipient_email != null,
     customer_single_use: coupon.customer_single_use ?? false,

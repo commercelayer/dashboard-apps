@@ -46,9 +46,8 @@ export const CouponTable = ({
         thead={
           <Tr>
             <Th>Code</Th>
-            <Th>Status</Th>
             <Th>Usage</Th>
-            <Th>Expiry</Th>
+            <Th>Expires on</Th>
             <Th />
           </Tr>
         }
@@ -56,7 +55,7 @@ export const CouponTable = ({
           <>
             {!isLoading && coupons.length === 0 && (
               <Tr>
-                <Td colSpan={5}>no results</Td>
+                <Td colSpan={4}>no results</Td>
               </Tr>
             )}
             {coupons?.map((coupon) => (
@@ -100,10 +99,7 @@ export const CouponRow = withSkeletonTemplate<
 
   if (coupon == null) return null
 
-  const status = getCouponStatus(coupon)
-  // a coupon without expiry can be used as much as an active one
-  const statusBadgeVariant = status === "expired" ? "secondary" : "success"
-  const statusLabel = t(`apps.promotions.coupons.status.${status}`)
+  const isExpired = getCouponStatus(coupon) === "expired"
   const usage = `${coupon.usage_count ?? 0}${coupon.usage_limit != null ? `/${coupon.usage_limit}` : ""}`
   const expiresAt =
     coupon.expires_at == null
@@ -148,10 +144,6 @@ export const CouponRow = withSkeletonTemplate<
                 label={<Icon name="userRectangle" size={16} />}
               />
             )}
-            {/* the Status column is hidden on mobile, so the badge rides with the code */}
-            <Badge variant={statusBadgeVariant} className="md:hidden shrink-0">
-              {statusLabel}
-            </Badge>
           </div>
           {coupon.recipient_email != null && (
             <Text
@@ -166,16 +158,26 @@ export const CouponRow = withSkeletonTemplate<
           {/* mobile only: from `md` up Usage and Expiry have columns of their own */}
           <Text tag="div" size="x-small" variant="info" className="md:hidden">
             {usage} used
-            {/* without an expiry the badge already says so */}
             {expiresAt != null &&
-              ` · ${status === "expired" ? "Expired" : "Expires"} ${expiresAt}`}
+              ` · ${isExpired ? "Expired" : "Expires"} ${expiresAt}`}
           </Text>
         </Td>
-        <Td className="hidden md:table-cell">
-          <Badge variant={statusBadgeVariant}>{statusLabel}</Badge>
-        </Td>
         <Td className="hidden md:table-cell">{usage}</Td>
-        <Td className="hidden md:table-cell">{expiresAt ?? "—"}</Td>
+        <Td className="hidden md:table-cell">
+          {expiresAt == null ? (
+            <Text variant="info">—</Text>
+          ) : (
+            <div className="flex items-center gap-2">
+              {expiresAt}
+              {/* only the expired ones are flagged: the date alone tells the rest */}
+              {isExpired && (
+                <Badge variant="secondary" className="shrink-0">
+                  {t("apps.promotions.coupons.status.expired")}
+                </Badge>
+              )}
+            </div>
+          )}
+        </Td>
         <Td align="right" className="px-4">
           <Dropdown
             dropdownItems={

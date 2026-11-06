@@ -5,6 +5,9 @@ import {
   HookedInputCheckbox,
   HookedInputDate,
   HookedValidationApiError,
+  Hr,
+  Modal,
+  ModalFooterButtons,
   Spacer,
   useCoreApi,
   useCoreSdkProvider,
@@ -23,6 +26,7 @@ interface Props {
   couponId?: string
   defaultValues?: Partial<z.infer<ReturnType<typeof couponForm>>>
   onSuccess: () => void
+  onCancel: () => void
 }
 
 export function CouponForm({
@@ -30,6 +34,7 @@ export function CouponForm({
   couponId,
   defaultValues,
   onSuccess,
+  onCancel,
 }: Props): React.JSX.Element {
   const [apiError, setApiError] = useState<any>()
   const { promotion } = usePromotion(promotionId)
@@ -104,69 +109,87 @@ export function CouponForm({
         onSuccess()
       }}
     >
-      <Spacer bottom="8">
+      <Modal.Body>
         <HookedInput
           name="code"
           minLength={minCodeLength}
           maxLength={maxCodeLength}
-          label="Coupon code *"
+          label="Code"
           hint={{
-            text: `${minCodeLength} to ${maxCodeLength} characters.`,
+            text: `Enter a unique code (${minCodeLength}–${maxCodeLength} characters).`,
           }}
         />
-      </Spacer>
 
-      <Spacer bottom="8">
-        <HookedInputDate
-          showTimeSelect
-          name="expires_at"
-          isClearable
-          label="Expires on"
-          hint={{
-            text: "Optionally set an expiration date for the coupon.",
-          }}
-          timezone={user?.timezone}
-        />
-      </Spacer>
+        <Spacer top="6" bottom="6">
+          <Hr variant="dashed" />
+        </Spacer>
 
-      <Spacer bottom="8">
-        <HookedInput
-          type="number"
-          label="Usage limit"
-          min={1}
-          name="usage_limit"
-          hint={{
-            text: "Optionally limit how many times this coupon can be used.",
-          }}
-        />
-      </Spacer>
-
-      <Spacer bottom="2">
+        {/* optional settings, each revealed by its checkbox as when generating
+            multiple coupons. Unchecking one clears its field, which is then
+            saved as empty. */}
+        <Spacer bottom="2">
+          <HookedInputCheckbox
+            name="show_expires_at"
+            checkedElement={
+              <HookedInputDate
+                showTimeSelect
+                name="expires_at"
+                placeholder="Expiration date"
+                timezone={user?.timezone}
+              />
+            }
+          >
+            Set expiration date
+          </HookedInputCheckbox>
+        </Spacer>
+        <Spacer bottom="2">
+          <HookedInputCheckbox
+            name="show_usage_limit"
+            checkedElement={
+              <HookedInput
+                type="number"
+                name="usage_limit"
+                placeholder="max usage"
+                min={1}
+                step={1}
+              />
+            }
+          >
+            Limit usage
+          </HookedInputCheckbox>
+        </Spacer>
+        <Spacer bottom="2">
+          <HookedInputCheckbox name="customer_single_use">
+            Single use per customer
+          </HookedInputCheckbox>
+        </Spacer>
         <HookedInputCheckbox
           name="show_recipient_email"
           checkedElement={
             <HookedInput
-              type="text"
+              type="email"
               name="recipient_email"
-              placeholder="Recipient email"
+              placeholder="Customer email"
             />
           }
         >
-          Customer email
+          Assign to a specific customer
         </HookedInputCheckbox>
-      </Spacer>
-      <Spacer bottom="12">
-        <HookedInputCheckbox name="customer_single_use">
-          Single use per customer
-        </HookedInputCheckbox>
-      </Spacer>
 
-      <Button fullWidth type="submit" disabled={methods.formState.isSubmitting}>
-        {couponId != null ? "Update coupon" : "Create coupon"}
-      </Button>
-      <Spacer top="2">
-        <HookedValidationApiError apiError={apiError} />
-      </Spacer>
+        <Spacer top="4">
+          <HookedValidationApiError apiError={apiError} />
+        </Spacer>
+      </Modal.Body>
+      <Modal.Footer>
+        <ModalFooterButtons>
+          <Button type="button" variant="secondary" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={methods.formState.isSubmitting}>
+            {couponId != null ? "Update coupon" : "Create coupon"}
+          </Button>
+        </ModalFooterButtons>
+      </Modal.Footer>
     </HookedForm>
   )
 }

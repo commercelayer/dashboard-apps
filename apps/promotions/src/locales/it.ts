@@ -4,6 +4,7 @@ const it: typeof en = {
   apps: {
     promotions: {
       coupons: {
+        expiry: "Scadenza",
         status: {
           active: "Attivo",
           expired: "Scaduto",

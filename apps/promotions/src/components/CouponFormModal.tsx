@@ -19,23 +19,27 @@ export const CouponFormModal: FC<CouponFormModalProps> = ({
   return (
     <Modal
       show
+      size="large"
       onClose={() => {
         onClose()
       }}
     >
       <Modal.Header>
-        {coupon != null ? "Edit coupon" : "New coupon"}
+        {coupon != null ? "Edit coupon" : "Single coupon"}
       </Modal.Header>
-      <Modal.Body>
-        <CouponForm
-          promotionId={promotionId}
-          couponId={coupon?.id}
-          defaultValues={couponToFormValues(coupon)}
-          onSuccess={() => {
-            onClose(true)
-          }}
-        />
-      </Modal.Body>
+      {/* the form brings its own `Modal.Body` and `Modal.Footer`, so that the
+          submit button in the footer is inside it */}
+      <CouponForm
+        promotionId={promotionId}
+        couponId={coupon?.id}
+        defaultValues={couponToFormValues(coupon)}
+        onSuccess={() => {
+          onClose(true)
+        }}
+        onCancel={() => {
+          onClose()
+        }}
+      />
     </Modal>
   )
 }

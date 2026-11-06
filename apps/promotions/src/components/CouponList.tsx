@@ -21,7 +21,7 @@ import { CouponRow } from "#components/CouponTable"
 import type { CouponStatus } from "#data/couponStatus"
 import type { Promotion } from "#types"
 
-// the same statuses a coupon row shows, see `getCouponStatus`
+// a coupon reads as one of these from its expiry, see `getCouponStatus`
 type FilterStatus = "all" | CouponStatus
 
 interface CouponListProps {
@@ -165,7 +165,7 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
                 <Text size="small" className="flex gap-1 items-center">
                   {/* the selected status replaces the label once a filter narrows the list */}
                   {filterStatus === "all"
-                    ? "Status"
+                    ? t("apps.promotions.coupons.expiry")
                     : filterStatusLabel[filterStatus]}
                   <Icon name="caretDown" size={16} />
                 </Text>
@@ -235,9 +235,8 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
             variant="table"
             headings={[
               { label: "Code" },
-              { label: "Status" },
               { label: "Usage" },
-              { label: "Expiry" },
+              { label: "Expires on" },
               { label: "" },
             ]}
             ItemTemplate={(p) => {

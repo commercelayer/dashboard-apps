@@ -121,7 +121,7 @@ export const CouponGeneratorModal: FC<CouponGeneratorModalProps> = ({
           onClose()
         }
       }}
-      size={isImportCompleted || isImportInProgress ? "x-small" : "small"}
+      size={isImportCompleted || isImportInProgress ? "x-small" : "large"}
     >
       {isImportCompleted ? (
         <>
