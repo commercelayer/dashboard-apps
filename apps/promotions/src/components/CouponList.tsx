@@ -11,21 +11,25 @@ import {
   useCoreSdkProvider,
   useResourceList,
   useTokenProvider,
+  useTranslation,
 } from "@commercelayer/app-elements"
 import type { Coupon, Import, QueryFilter } from "@commercelayer/sdk"
 import { type FC, useMemo, useState } from "react"
 import { CouponFormModal } from "#components/CouponFormModal"
 import { CouponGeneratorModal } from "#components/CouponGeneratorModal"
 import { CouponRow } from "#components/CouponTable"
+import type { CouponStatus } from "#data/couponStatus"
 import type { Promotion } from "#types"
 
-type FilterStatus = "all" | "active" | "expired" | "never"
+// the same statuses a coupon row shows, see `getCouponStatus`
+type FilterStatus = "all" | CouponStatus
 
 interface CouponListProps {
   promotion: Promotion
 }
 export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   const { canUser } = useTokenProvider()
+  const { t } = useTranslation()
   // `null` when closed; an empty object opens it to create a coupon
   const [couponFormModal, setCouponFormModal] = useState<{
     coupon?: Coupon
@@ -37,19 +41,24 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   const [currentImportJob, setCurrentImportJob] = useState<Import | null>(null)
 
   const filterStatusLabel: Record<FilterStatus, string> = {
-    all: "All",
-    active: "Active",
-    expired: "Expired",
-    never: "Never expire",
+    all: t("common.all"),
+    active: t("apps.promotions.coupons.status.active"),
+    expired: t("apps.promotions.coupons.status.expired"),
+    never_expires: t("apps.promotions.coupons.status.never_expires"),
   }
 
-  const filterStatusList: FilterStatus[] = ["all", "active", "expired", "never"]
+  const filterStatusList: FilterStatus[] = [
+    "all",
+    "active",
+    "expired",
+    "never_expires",
+  ]
 
   const filterStatusPredicate: Record<FilterStatus, QueryFilter> = {
     all: {},
     active: { expires_at_gt: new Date().toJSON() },
     expired: { expires_at_lt: new Date().toJSON() },
-    never: { expires_at_null: true },
+    never_expires: { expires_at_null: true },
   }
 
   const query = useMemo<UseResourceListConfig<"coupons">["query"]>(() => {
@@ -74,15 +83,13 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
   })
 
   return (
-    // titled here: it used to be a tab named "Coupons". `border="none"` to match
-    // the "Apply when" section above it — the table draws its own top border
+    // titled here: it used to be a tab named "Coupons"
     <Section
       title="Coupons"
-      border="none"
       actionButton={
         <Dropdown
           dropdownLabel={
-            <Button alignItems="center" size="small" variant="secondary">
+            <Button alignItems="center" size="mini" variant="secondary">
               <Icon name="plus" size={16} />
               New
             </Button>
@@ -120,60 +127,53 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         />
       }
     >
-      <div
-        style={{
-          display: "flex",
-          gap: "0.5rem",
-          flexWrap: "nowrap",
-          alignItems: "center",
-        }}
-      >
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <SearchBar
-            initialValue={searchValue}
-            onSearch={setSearchValue}
-            placeholder="Search…"
-            onClear={() => {
-              setSearchValue("")
-            }}
-            variant="outline"
+      <Spacer top="4">
+        <div
+          style={{
+            display: "flex",
+            gap: "0.5rem",
+            flexWrap: "nowrap",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <SearchBar
+              initialValue={searchValue}
+              onSearch={setSearchValue}
+              placeholder={t("common.search")}
+              onClear={() => {
+                setSearchValue("")
+              }}
+              variant="outline"
+            />
+          </div>
+
+          <Dropdown
+            key={filterStatus}
+            dropdownItems={filterStatusList.map((status) => (
+              <DropdownItem
+                key={status}
+                label={filterStatusLabel[status]}
+                onClick={() => {
+                  setFilterStatus(status)
+                }}
+                icon={filterStatus === status ? "check" : "keep-space"}
+              />
+            ))}
+            dropdownLabel={
+              <Button variant="secondary" alignItems="center" size="small">
+                <Text size="small" className="flex gap-1 items-center">
+                  {/* the selected status replaces the label once a filter narrows the list */}
+                  {filterStatus === "all"
+                    ? "Status"
+                    : filterStatusLabel[filterStatus]}
+                  <Icon name="caretDown" size={16} />
+                </Text>
+              </Button>
+            }
           />
         </div>
-
-        <Dropdown
-          key={filterStatus}
-          dropdownItems={filterStatusList.map((status) => (
-            <DropdownItem
-              key={status}
-              label={filterStatusLabel[status]}
-              onClick={() => {
-                setFilterStatus(status)
-              }}
-              icon={filterStatus === status ? "check" : "keep-space"}
-            />
-          ))}
-          dropdownLabel={
-            <Button variant="secondary" alignItems="center" size="small">
-              <Text
-                variant="info"
-                size="small"
-                className="flex gap-1 items-center"
-              >
-                View:{" "}
-                <Text
-                  variant="primary"
-                  weight="semibold"
-                  size="small"
-                  className="flex gap-1 items-center "
-                >
-                  {filterStatusLabel[filterStatus]}
-                </Text>
-                <Icon name="caretDown" size={16} />
-              </Text>
-            </Button>
-          }
-        />
-      </div>
+      </Spacer>
 
       {couponFormModal != null && (
         <CouponFormModal
@@ -200,7 +200,6 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         }}
         key={currentImportJob?.id}
       />
-
       <Spacer top="4">
         <div
           style={{

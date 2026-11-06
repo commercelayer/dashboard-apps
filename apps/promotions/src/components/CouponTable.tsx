@@ -15,6 +15,7 @@ import {
   useConfirmDialog,
   useCoreSdkProvider,
   useTokenProvider,
+  useTranslation,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import type { Coupon } from "@commercelayer/sdk"
@@ -93,13 +94,16 @@ export const CouponRow = withSkeletonTemplate<
   }
 >(({ resource: coupon = makeCoupon(), remove, deleteRule = false, onEdit }) => {
   const { user } = useTokenProvider()
+  const { t } = useTranslation()
   const { sdkClient } = useCoreSdkProvider()
   const { show: showDeleteDialog, ConfirmDialog } = useConfirmDialog()
 
   if (coupon == null) return null
 
   const status = getCouponStatus(coupon)
-  const statusBadgeVariant = status === "available" ? "success" : "secondary"
+  // a coupon without expiry can be used as much as an active one
+  const statusBadgeVariant = status === "expired" ? "secondary" : "success"
+  const statusLabel = t(`apps.promotions.coupons.status.${status}`)
   const usage = `${coupon.usage_count ?? 0}${coupon.usage_limit != null ? `/${coupon.usage_limit}` : ""}`
   const expiresAt =
     coupon.expires_at == null
@@ -146,7 +150,7 @@ export const CouponRow = withSkeletonTemplate<
             )}
             {/* the Status column is hidden on mobile, so the badge rides with the code */}
             <Badge variant={statusBadgeVariant} className="md:hidden shrink-0">
-              {status}
+              {statusLabel}
             </Badge>
           </div>
           {coupon.recipient_email != null && (
@@ -161,14 +165,14 @@ export const CouponRow = withSkeletonTemplate<
           )}
           {/* mobile only: from `md` up Usage and Expiry have columns of their own */}
           <Text tag="div" size="x-small" variant="info" className="md:hidden">
-            {usage} used ·{" "}
-            {expiresAt == null
-              ? "Never expires"
-              : `${status === "expired" ? "Expired" : "Expires"} ${expiresAt}`}
+            {usage} used
+            {/* without an expiry the badge already says so */}
+            {expiresAt != null &&
+              ` · ${status === "expired" ? "Expired" : "Expires"} ${expiresAt}`}
           </Text>
         </Td>
         <Td className="hidden md:table-cell">
-          <Badge variant={statusBadgeVariant}>{status}</Badge>
+          <Badge variant={statusBadgeVariant}>{statusLabel}</Badge>
         </Td>
         <Td className="hidden md:table-cell">{usage}</Td>
         <Td className="hidden md:table-cell">{expiresAt ?? "—"}</Td>
