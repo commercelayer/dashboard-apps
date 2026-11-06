@@ -2,6 +2,7 @@ import {
   Button,
   Dropdown,
   DropdownItem,
+  EmptyState,
   Icon,
   SearchBar,
   Section,
@@ -75,12 +76,21 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
     }
   }, [filterStatus, searchValue])
 
-  const { list, ResourceList, refresh, Pagination } = useResourceList({
-    type: "coupons",
-    query,
-    paginationType: "pagination",
-    paginationScrollTo: "list",
-  })
+  const { list, isLoading, ResourceList, refresh, Pagination } =
+    useResourceList({
+      type: "coupons",
+      query,
+      paginationType: "pagination",
+      paginationScrollTo: "list",
+    })
+
+  // no coupons at all, as opposed to none matching the search or the filter:
+  // only then are the search and the filter of no use
+  const hasNoCoupons =
+    !isLoading &&
+    list?.length === 0 &&
+    (searchValue == null || searchValue === "") &&
+    filterStatus === "all"
 
   return (
     // titled here: it used to be a tab named "Coupons"
@@ -127,53 +137,65 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         />
       }
     >
-      <Spacer top="4">
-        <div
-          style={{
-            display: "flex",
-            gap: "0.5rem",
-            flexWrap: "nowrap",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <SearchBar
-              initialValue={searchValue}
-              onSearch={setSearchValue}
-              placeholder={t("common.search")}
-              onClear={() => {
-                setSearchValue("")
-              }}
-              variant="outline"
+      {!hasNoCoupons && (
+        <Spacer top="4">
+          <div
+            style={{
+              display: "flex",
+              gap: "0.5rem",
+              flexWrap: "nowrap",
+              alignItems: "center",
+            }}
+          >
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <SearchBar
+                initialValue={searchValue}
+                onSearch={setSearchValue}
+                placeholder={t("common.search")}
+                onClear={() => {
+                  setSearchValue("")
+                }}
+                variant="outline"
+              />
+            </div>
+
+            <Dropdown
+              key={filterStatus}
+              dropdownItems={filterStatusList.map((status) => (
+                <DropdownItem
+                  key={status}
+                  label={filterStatusLabel[status]}
+                  onClick={() => {
+                    setFilterStatus(status)
+                  }}
+                  icon={filterStatus === status ? "check" : "keep-space"}
+                />
+              ))}
+              dropdownLabel={
+                <Button variant="secondary" alignItems="center" size="small">
+                  <Text size="small" className="flex gap-1 items-center">
+                    {/* the selected status replaces the label once a filter narrows the list */}
+                    {filterStatus === "all"
+                      ? t("apps.promotions.coupons.expiry")
+                      : filterStatusLabel[filterStatus]}
+                    <Icon name="caretDown" size={16} />
+                  </Text>
+                </Button>
+              }
             />
           </div>
+        </Spacer>
+      )}
 
-          <Dropdown
-            key={filterStatus}
-            dropdownItems={filterStatusList.map((status) => (
-              <DropdownItem
-                key={status}
-                label={filterStatusLabel[status]}
-                onClick={() => {
-                  setFilterStatus(status)
-                }}
-                icon={filterStatus === status ? "check" : "keep-space"}
-              />
-            ))}
-            dropdownLabel={
-              <Button variant="secondary" alignItems="center" size="small">
-                <Text size="small" className="flex gap-1 items-center">
-                  {/* the selected status replaces the label once a filter narrows the list */}
-                  {filterStatus === "all"
-                    ? t("apps.promotions.coupons.expiry")
-                    : filterStatusLabel[filterStatus]}
-                  <Icon name="caretDown" size={16} />
-                </Text>
-              </Button>
-            }
+      {hasNoCoupons && (
+        <Spacer top="4">
+          <EmptyState
+            icon="ticket"
+            title={t("apps.promotions.coupons.empty_state.title")}
+            description={t("apps.promotions.coupons.empty_state.description")}
           />
-        </div>
-      </Spacer>
+        </Spacer>
+      )}
 
       {couponFormModal != null && (
         <CouponFormModal
@@ -200,61 +222,63 @@ export const CouponList: FC<CouponListProps> = ({ promotion }) => {
         }}
         key={currentImportJob?.id}
       />
-      <Spacer top="4">
-        <div
-          style={{
-            borderWidth: "1px",
-            borderBottom: 0,
-            borderRadius: "var(--radius)",
-            borderColor:
-              list?.length == null || list.length > 0
-                ? undefined
-                : "transparent",
-            position: "relative",
-          }}
-        >
-          {/* fake bottom border */}
-          {list?.length !== 0 && (
-            <div
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: -1,
-                right: -1,
-                height: "5px",
-                borderWidth: "1px",
-                borderTop: 0,
-                borderBottomLeftRadius: "var(--radius)",
-                borderBottomRightRadius: "var(--radius)",
-                pointerEvents: "none",
-                touchAction: "none",
+      {!hasNoCoupons && (
+        <Spacer top="4">
+          <div
+            style={{
+              borderWidth: "1px",
+              borderBottom: 0,
+              borderRadius: "var(--radius)",
+              borderColor:
+                list?.length == null || list.length > 0
+                  ? undefined
+                  : "transparent",
+              position: "relative",
+            }}
+          >
+            {/* fake bottom border */}
+            {list?.length !== 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: -1,
+                  right: -1,
+                  height: "5px",
+                  borderWidth: "1px",
+                  borderTop: 0,
+                  borderBottomLeftRadius: "var(--radius)",
+                  borderBottomRightRadius: "var(--radius)",
+                  pointerEvents: "none",
+                  touchAction: "none",
+                }}
+              />
+            )}
+            <ResourceList
+              variant="table"
+              headings={[
+                { label: "Code" },
+                { label: "Usage" },
+                { label: "Expires on" },
+                { label: "" },
+              ]}
+              ItemTemplate={(p) => {
+                return (
+                  <CouponRow
+                    {...p}
+                    deleteRule={list?.length === 1}
+                    promotionId={promotion.id}
+                    onEdit={(coupon) => {
+                      setCouponFormModal({ coupon })
+                    }}
+                  />
+                )
               }}
             />
-          )}
-          <ResourceList
-            variant="table"
-            headings={[
-              { label: "Code" },
-              { label: "Usage" },
-              { label: "Expires on" },
-              { label: "" },
-            ]}
-            ItemTemplate={(p) => {
-              return (
-                <CouponRow
-                  {...p}
-                  deleteRule={list?.length === 1}
-                  promotionId={promotion.id}
-                  onEdit={(coupon) => {
-                    setCouponFormModal({ coupon })
-                  }}
-                />
-              )
-            }}
-          />
-        </div>
-        <Pagination />
-      </Spacer>
+          </div>
+          <Pagination />
+        </Spacer>
+      )}
     </Section>
   )
 }
