@@ -119,7 +119,7 @@ export function useOrdersTableColumns(
         // the amount alone: the payment status has a column of its own
         cell: ({ resource }) => (
           <Text weight="medium" wrap="nowrap">
-            {resource.formatted_total_amount}
+            {resource.formatted_total_amount_with_taxes}
           </Text>
         ),
       },

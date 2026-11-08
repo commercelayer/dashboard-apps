@@ -119,6 +119,24 @@ describe("makeInstructions", () => {
   })
 })
 
+describe("amount filter", () => {
+  // the same amount the list shows: with prices that don't include taxes,
+  // `total_amount_cents` would leave the taxes out
+  test.each([
+    ["orders", makeInstructions({})],
+    ["carts", makeCartsInstructions()],
+  ])(
+    "%s instructions filter on the total with taxes",
+    (_name, instructions) => {
+      const predicates = instructions
+        .filter((item) => item.type === "currencyRange")
+        .map((item) => ("predicate" in item.sdk ? item.sdk.predicate : null))
+
+      expect(predicates).toEqual(["total_amount_with_taxes_cents"])
+    },
+  )
+})
+
 describe("orderTabs", () => {
   // a tab that pins a filter has to hide it, or the drawer offers the user a way
   // to contradict the tab they are on

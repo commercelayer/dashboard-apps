@@ -218,7 +218,7 @@ export const makeInstructions = ({
     label: t("common.amount"),
     type: "currencyRange",
     sdk: {
-      predicate: "total_amount_cents",
+      predicate: "total_amount_with_taxes_cents",
     },
     render: {
       component: "inputCurrencyRange",
@@ -327,7 +327,7 @@ export const makeCartsInstructions = (): FiltersInstructions => [
     label: t("common.amount"),
     type: "currencyRange",
     sdk: {
-      predicate: "total_amount_cents",
+      predicate: "total_amount_with_taxes_cents",
     },
     render: {
       component: "inputCurrencyRange",
