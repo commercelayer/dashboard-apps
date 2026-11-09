@@ -1,6 +1,5 @@
 import {
   Button,
-  Icon,
   ListItem,
   Section,
   StatusIcon,
@@ -12,7 +11,7 @@ import {
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
 import { useOrderDetails } from "#hooks/useOrderDetails"
-import { useEditCustomerOverlay } from "./NewOrder/hooks/useEditCustomerOverlay"
+import { useEditCustomerModal } from "./NewOrder/hooks/useEditCustomerModal"
 import { useOrderStatus } from "./OrderSummary/hooks/useOrderStatus"
 
 interface Props {
@@ -25,8 +24,8 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
     const { t } = useTranslation()
     const { mutateOrder } = useOrderDetails(order.id)
     const { isEditing } = useOrderStatus(order)
-    const { Overlay: EditCustomerOverlay, open: openEditCustomerOverlay } =
-      useEditCustomerOverlay(order, () => {
+    const { modal: editCustomerModal, open: openEditCustomerModal } =
+      useEditCustomerModal(order, () => {
         void mutateOrder()
       })
     const { navigateTo } = useAppLinking()
@@ -44,7 +43,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
 
     return (
       <>
-        <EditCustomerOverlay />
+        {editCustomerModal}
         <Section
           title={t("resources.customers.name")}
           actionButton={
@@ -55,40 +54,33 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
                 variant="secondary"
                 size="mini"
                 onClick={() => {
-                  openEditCustomerOverlay()
+                  openEditCustomerModal()
                 }}
               >
-                <Icon name="pencilSimple" />
                 {t("common.edit")}
               </Button>
             ) : null
           }
         >
-          {/* <ListItem
+          <ListItem
             icon={<StatusIcon name="user" background="teal" gap="large" />}
+            padding="xy"
+            borderStyle="none"
+            className={`mt-4 rounded bg-gray-50 ${canAccess("customers") ? "hover:bg-gray-100" : ""}`}
             {...navigateToCustomer}
-          > */}
-          <div className="mt-4">
-            <a {...navigateToCustomer} className="block group bg-gray-50 p-4 rounded transition-all duration-600 ease-in-out hover:bg-gray-100">
-              <div className="flex gap-4">
-                <div>
-                  <StatusIcon name="user" background="teal" gap="large" />
-                </div>
-                <div>
-                  <Text tag="div" weight="semibold" size="small">
-                    {order.customer.email}
-                  </Text>
-                  <Text size="small" tag="div" variant="info" weight="medium">
-                    {order.customer.total_orders_count}{" "}
-                    {t("resources.orders.name", {
-                      count: order.customer.total_orders_count ?? 0,
-                    }).toLowerCase()}
-                  </Text>
-                </div>
-              </div>
-            </a>
-          </div>
-          {/* </ListItem> */}
+          >
+            <div>
+              <Text tag="div" weight="semibold" size="small">
+                {order.customer.email}
+              </Text>
+              <Text size="small" tag="div" variant="info" weight="medium">
+                {order.customer.total_orders_count}{" "}
+                {t("resources.orders.name", {
+                  count: order.customer.total_orders_count ?? 0,
+                }).toLowerCase()}
+              </Text>
+            </div>
+          </ListItem>
         </Section>
       </>
     )
