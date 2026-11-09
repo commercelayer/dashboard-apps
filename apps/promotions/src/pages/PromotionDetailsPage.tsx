@@ -198,7 +198,6 @@ function Page(
         <SkeletonTemplate isLoading={isLoading}>
           <ResourceInfoBlocks
             resource={promotion}
-            title={pageTitle}
             onUpdated={async () => {
               void mutatePromotion()
             }}

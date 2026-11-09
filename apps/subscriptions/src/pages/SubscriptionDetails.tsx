@@ -219,7 +219,6 @@ function SubscriptionDetails(): React.JSX.Element {
           <Spacer top={{ base: "14", lg: "10" }}>
             <ResourceInfoBlocks
               resource={subscription}
-              title={pageTitle}
               onUpdated={async () => {
                 void mutateSubscription()
               }}

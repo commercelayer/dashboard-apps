@@ -190,7 +190,6 @@ export function StockTransferDetails(): React.JSX.Element {
           <Spacer top={{ base: "14", lg: "10" }} className="print:hidden">
             <ResourceInfoBlocks
               resource={stockTransfer}
-              title={pageTitle}
               onUpdated={async () => {
                 void mutateStockTransfer()
               }}

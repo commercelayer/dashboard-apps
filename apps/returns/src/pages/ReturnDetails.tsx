@@ -143,7 +143,6 @@ function ReturnDetails(): React.JSX.Element {
           <Spacer top={{ base: "14", lg: "10" }}>
             <ResourceInfoBlocks
               resource={returnObj}
-              title={pageTitle}
               onUpdated={async () => {
                 void mutateReturn()
               }}

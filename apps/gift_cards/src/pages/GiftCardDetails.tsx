@@ -223,7 +223,6 @@ const GiftCardDetails: FC<PageProps<typeof appRoutes.details>> = ({
                 <Spacer top="14">
                   <ResourceInfoBlocks
                     resource={giftCard}
-                    title={pageTitle}
                     onUpdated={async () => {
                       void mutateGiftCard()
                     }}

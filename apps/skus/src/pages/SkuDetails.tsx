@@ -197,7 +197,6 @@ export const SkuDetails: FC = () => {
       <Spacer top="14">
         <ResourceInfoBlocks
           resource={sku}
-          title={pageTitle}
           onUpdated={async () => {
             void mutateSku()
           }}

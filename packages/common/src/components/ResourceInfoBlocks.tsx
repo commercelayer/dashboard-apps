@@ -10,8 +10,6 @@ import type { ListableResource } from "@commercelayer/sdk"
 export interface ResourceInfoBlocksProps {
   /** The resource the page is about. Its type and id drive everything below. */
   resource: ListableResource
-  /** Title for the editing overlays, usually the page title. */
-  title: string
   /** Called after an inline edit, to refetch the resource. */
   onUpdated: () => Promise<void>
   /** When set, tags become clickable — usually to filter the list by that tag. */
@@ -38,7 +36,6 @@ export interface ResourceInfoBlocksProps {
  */
 export function ResourceInfoBlocks({
   resource,
-  title,
   onUpdated,
   onTagClick,
   className,
@@ -56,7 +53,6 @@ export function ResourceInfoBlocks({
         <ResourceTags
           resourceType={resourceType}
           resourceId={resource.id}
-          modal={{ title }}
           onTagClick={onTagClick}
         />
       )}

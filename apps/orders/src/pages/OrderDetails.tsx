@@ -191,7 +191,6 @@ function OrderDetails(): React.JSX.Element {
                 whoever works on it */}
             <ResourceInfoBlocks
               resource={order}
-              title={pageTitle}
               onUpdated={async () => {
                 void mutateOrder()
               }}

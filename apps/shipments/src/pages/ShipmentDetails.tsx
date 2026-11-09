@@ -147,7 +147,6 @@ function ShipmentDetails(): React.JSX.Element {
           <Spacer top={{ base: "14", lg: "10" }}>
             <ResourceInfoBlocks
               resource={shipment}
-              title={pageTitle}
               onUpdated={async () => {
                 void mutateShipment()
               }}
