@@ -39,14 +39,6 @@ export const App: FC<AppProps> = ({ routerBase }) => {
               await import("#pages/NewPromotionActivationRulePage"),
             overlay: true,
           },
-          newCoupon: {
-            component: async () => await import("#pages/NewCouponPage"),
-            overlay: true,
-          },
-          editCoupon: {
-            component: async () => await import("#pages/EditCouponPage"),
-            overlay: true,
-          },
         }}
       />
     </Router>
