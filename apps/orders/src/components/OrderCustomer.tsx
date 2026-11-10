@@ -77,7 +77,7 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
               >
                 {order.customer.email}
               </Text>
-              <Text size="small" tag="div" variant="info" weight="medium">
+              <Text size="x-small" tag="div" variant="info" weight="regular">
                 {order.customer.has_password === true
                   ? t("apps.orders.details.customer_registered")
                   : t("apps.orders.details.customer_guest")}
