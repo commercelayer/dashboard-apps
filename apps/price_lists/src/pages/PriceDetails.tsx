@@ -172,7 +172,6 @@ export function PriceDetails(): React.JSX.Element {
             <Spacer top="14">
               <ResourceInfoBlocks
                 resource={price}
-                title={pageTitle ?? ""}
                 onUpdated={async () => {
                   void mutatePrice()
                 }}

@@ -157,7 +157,6 @@ export const StockItemDetails: FC = () => {
             <Spacer top="14">
               <ResourceInfoBlocks
                 resource={stockItem}
-                title={pageTitle ?? ""}
                 onUpdated={async () => {
                   void mutateStockItem()
                 }}

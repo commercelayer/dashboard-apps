@@ -274,7 +274,6 @@ export const SkuListDetails = (): React.JSX.Element => {
             <Tab name="Info">
               <ResourceInfoBlocks
                 resource={skuList}
-                title={pageTitle}
                 onUpdated={async () => {
                   void mutateSkuList()
                 }}

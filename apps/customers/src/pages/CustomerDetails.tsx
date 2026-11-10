@@ -231,7 +231,6 @@ export function CustomerDetails(): React.JSX.Element {
           <Spacer top={{ base: "14", lg: "10" }}>
             <ResourceInfoBlocks
               resource={customer}
-              title={pageTitle}
               onUpdated={async () => {
                 void mutateCustomer()
               }}

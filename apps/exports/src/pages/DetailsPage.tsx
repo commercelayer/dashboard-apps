@@ -169,7 +169,6 @@ const DetailsPage = (): React.JSX.Element | null => {
                 <Spacer bottom="14">
                   <ResourceInfoBlocks
                     resource={data}
-                    title={"Back"}
                     onUpdated={async () => {
                       void refetch()
                     }}

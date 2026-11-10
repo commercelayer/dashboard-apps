@@ -146,7 +146,6 @@ export const WebhookDetails: FC = () => {
             <Spacer top="10">
               <ResourceInfoBlocks
                 resource={webhook}
-                title={pageTitle ?? ""}
                 onUpdated={async () => {
                   void mutateWebhook()
                 }}

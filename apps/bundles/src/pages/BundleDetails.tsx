@@ -168,7 +168,6 @@ export const BundleDetails: FC = () => {
               <Spacer top="14">
                 <ResourceInfoBlocks
                   resource={bundle}
-                  title={pageTitle}
                   onUpdated={async () => {
                     void mutateBundle()
                   }}
