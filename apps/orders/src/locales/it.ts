@@ -29,6 +29,8 @@ const it: typeof en = {
           "Il nuovo totale è {{new_total}}, {{difference}} in più rispetto al totale originale.",
         new_total_line2: "Modifica il totale per renderlo uguale o inferiore.",
         waiting_for_successful_capture: "In attesa di catturare il pagamento",
+        customer_registered: "Registrato",
+        customer_guest: "Ospite",
       },
       form: {
         language: "Lingua",

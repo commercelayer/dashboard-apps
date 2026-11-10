@@ -27,6 +27,8 @@ const en = {
           "The new total is {{new_total}}, {{difference}} more than the original total.",
         new_total_line2: "Adjust the total to make it equal or less.",
         waiting_for_successful_capture: "Waiting for successful capture",
+        customer_registered: "Registered",
+        customer_guest: "Guest",
       },
       form: {
         language: "Language",
