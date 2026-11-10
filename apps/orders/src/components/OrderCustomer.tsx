@@ -81,6 +81,11 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
                 {order.customer.has_password === true
                   ? t("apps.orders.details.customer_registered")
                   : t("apps.orders.details.customer_guest")}
+                {" · "}
+                {order.customer.total_orders_count ?? 0}{" "}
+                {t("resources.orders.name", {
+                  count: order.customer.total_orders_count ?? 0,
+                }).toLowerCase()}
               </Text>
             </div>
           </CustomerCard>
