@@ -22,11 +22,13 @@ export const ListItemOrder = withSkeletonTemplate<
   const { canAccess } = useTokenProvider()
   const { navigateTo } = useAppLinking()
 
+  // `navigateTo` gives no link to another app outside the dashboard (e.g. the
+  // app running standalone), so the row can be plain content even with access
   const navigateToOrder = canAccess("orders")
-    ? navigateTo({
+    ? (navigateTo({
         app: "orders",
         resourceId: resource.id,
-      })
+      }) ?? {})
     : {}
 
   return <ResourceListItem resource={resource} {...navigateToOrder} />
