@@ -1,7 +1,5 @@
 import {
-  Dropdown,
-  DropdownItem,
-  Icon,
+  Button,
   ListItem,
   ResourceAddress,
   Section,
@@ -93,28 +91,19 @@ export const CustomerAddresses = withSkeletonTemplate<Props>(
           title={t("resources.addresses.name_other")}
           actionButton={
             canCreate && (
-              <Dropdown
+              <Button
+                variant="secondary"
+                size="mini"
                 className="print:hidden"
-                dropdownLabel={
-                  <Icon
-                    name="dotsThree"
-                    weight="bold"
-                    size="16"
-                    aria-label={t("common.add_resource", {
-                      resource: t("resources.addresses.name").toLowerCase(),
-                    })}
-                  />
-                }
-                dropdownItems={
-                  <DropdownItem
-                    icon="plus"
-                    label={`${t("common.new")} ${t("resources.addresses.name").toLowerCase()}`}
-                    onClick={() => {
-                      openNewAddressModal()
-                    }}
-                  />
-                }
-              />
+                aria-label={t("common.add_resource", {
+                  resource: t("resources.addresses.name").toLowerCase(),
+                })}
+                onClick={() => {
+                  openNewAddressModal()
+                }}
+              >
+                {t("common.new")}
+              </Button>
             )
           }
         >

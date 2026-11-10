@@ -22,6 +22,7 @@ import { useState } from "react"
 import { Link, useLocation, useRoute } from "wouter"
 import { CustomerAddresses } from "#components/CustomerAddresses"
 import { CustomerAnonymization } from "#components/CustomerAnonymization"
+import { CustomerFormModal } from "#components/CustomerFormModal"
 import { CustomerInfo } from "#components/CustomerInfo"
 import { CustomerLastOrders } from "#components/CustomerLastOrders"
 import { CustomerResetPasswordDialog } from "#components/CustomerResetPasswordDialog"
@@ -53,6 +54,7 @@ export function CustomerDetails(): React.JSX.Element {
   const { sdkClient } = useCoreSdkProvider()
   const { show, ConfirmDialog } = useConfirmDialog()
   const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false)
+  const [isEditOpen, setIsEditOpen] = useState(false)
 
   /**
    * A customer with orders cannot be deleted, only anonymized, so the same
@@ -111,7 +113,7 @@ export function CustomerDetails(): React.JSX.Element {
       size: "small",
       variant: "secondary",
       onClick: () => {
-        setLocation(appRoutes.edit.makePath(customerId))
+        setIsEditOpen(true)
       },
     })
   }
@@ -272,6 +274,17 @@ export function CustomerDetails(): React.JSX.Element {
 
       {(canBeDeleted || canBeAnonymized) && (
         <ConfirmDialog {...deleteDialogProps} />
+      )}
+      {isEditOpen && (
+        <CustomerFormModal
+          customer={customer}
+          onClose={() => {
+            setIsEditOpen(false)
+          }}
+          onSaved={() => {
+            void mutateCustomer()
+          }}
+        />
       )}
       {enableResetPassword && (
         <CustomerResetPasswordDialog

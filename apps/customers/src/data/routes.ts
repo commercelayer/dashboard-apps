@@ -15,17 +15,9 @@ export const appRoutes = {
     makePath: (filters?: string) =>
       hasFilterQuery(filters) ? `/list/?${filters}` : `/list`,
   },
-  new: {
-    path: `/new`,
-    makePath: () => `/new`,
-  },
   details: {
     path: "/list/:customerId",
     makePath: (customerId: string) => `/list/${customerId}`,
-  },
-  edit: {
-    path: "/list/:customerId/edit",
-    makePath: (customerId: string) => `/list/${customerId}/edit`,
   },
 }
 
