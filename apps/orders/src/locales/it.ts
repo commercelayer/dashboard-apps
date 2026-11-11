@@ -16,6 +16,9 @@ const it: typeof en = {
         rejected_by_customer: "Rifiutato dal cliente",
       },
       details: {
+        agent: "Agente",
+        email_from: "Da {{sender}}",
+        download_email: "Scarica l'email",
         note_from_agent: "Nota dall'agente",
         note_from_customer: "Nota dal cliente",
         decline_agent_order_description:
