@@ -1,15 +1,13 @@
 import {
-  AvatarLetter,
   Badge,
   formatDate,
   formatNumber,
-  RadialProgress,
   type ResourceTableColumn,
   Text,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
-import type { Customer } from "@commercelayer/sdk"
+import { CustomerAvatar } from "dashboard-apps-common/src/components/CustomerAvatar"
 import { TableTagsCell } from "dashboard-apps-common/src/components/TableTagsCell"
 import isEmpty from "lodash-es/isEmpty"
 import { useMemo } from "react"
@@ -20,24 +18,6 @@ import { useMemo } from "react"
  */
 function EmptyValue(): React.JSX.Element {
   return <Text variant="disabled">&#8212;</Text>
-}
-
-/**
- * Avatar of a customer: initials for a registered one (the colour is derived
- * from the email, so it is stable), and the dashed pending circle for a guest,
- * who has no account to speak of.
- */
-function CustomerAvatar({
-  customer,
-}: {
-  customer: Customer
-}): React.JSX.Element {
-  return customer.has_password === true ? (
-    <AvatarLetter text={customer.email} size="medium" />
-  ) : (
-    // no `percentage`, so it renders as the dashed circle
-    <RadialProgress icon="user" size="medium" />
-  )
 }
 
 /**
