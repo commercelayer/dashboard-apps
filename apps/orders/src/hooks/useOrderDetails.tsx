@@ -16,6 +16,9 @@ export const orderIncludeAttribute = [
   "order_reviews",
   "order_reviews.requester",
   "order_reviews.owner",
+  // B2B: the email-to-order agent that built the order, and the email it came from
+  "agent",
+  "inbound_message",
   "customer",
   "customer.customer_addresses",
   "customer.customer_addresses.address",
