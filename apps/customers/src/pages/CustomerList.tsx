@@ -12,6 +12,7 @@ import {
 import { useEffect, useMemo, useState } from "react"
 import { useLocation } from "wouter"
 import { navigate, useSearch } from "wouter/use-browser-location"
+import { CustomerFormModal } from "#components/CustomerFormModal"
 import { CustomerPendingAnonymizationDialog } from "#components/CustomerPendingAnonymizationDialog"
 import { useCustomersTableColumns } from "#components/customersTableColumns"
 import { ListEmptyState } from "#components/ListEmptyState"
@@ -63,6 +64,10 @@ function CustomerList(): React.JSX.Element {
 
   const [isPendingAnonymizationOpen, setIsPendingAnonymizationOpen] =
     useState(false)
+  const [isNewCustomerOpen, setIsNewCustomerOpen] = useState(false)
+  const openNewCustomer = (): void => {
+    setIsNewCustomerOpen(true)
+  }
 
   const handleFiltersUpdate = (queryString: string): void => {
     navigate(`?${queryString}`, { replace: true })
@@ -129,7 +134,10 @@ function CustomerList(): React.JSX.Element {
         )
       }}
       emptyState={
-        <ListEmptyState scope={hasActiveFilter ? "userFiltered" : "history"} />
+        <ListEmptyState
+          scope={hasActiveFilter ? "userFiltered" : "history"}
+          onNewCustomer={openNewCustomer}
+        />
       }
     />
   )
@@ -155,9 +163,7 @@ function CustomerList(): React.JSX.Element {
       icon: "plus",
       label: `${t("common.new")} ${t("resources.customers.name").toLowerCase()}`,
       size: "small",
-      onClick: () => {
-        setLocation(appRoutes.new.makePath())
-      },
+      onClick: openNewCustomer,
     })
   }
 
@@ -211,6 +217,19 @@ function CustomerList(): React.JSX.Element {
           show={isPendingAnonymizationOpen}
           onClose={() => {
             setIsPendingAnonymizationOpen(false)
+          }}
+        />
+      )}
+
+      {isNewCustomerOpen && (
+        <CustomerFormModal
+          onClose={() => {
+            setIsNewCustomerOpen(false)
+          }}
+          // the table cannot be told to reload, and the new customer is what
+          // the user wants to look at next anyway
+          onSaved={(customer) => {
+            setLocation(appRoutes.details.makePath(customer.id))
           }}
         />
       )}

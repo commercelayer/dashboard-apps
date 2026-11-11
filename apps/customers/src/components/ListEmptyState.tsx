@@ -5,16 +5,15 @@ import {
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
-import { Link } from "wouter"
-
-import { appRoutes } from "#data/routes"
 
 interface Props {
   scope?: "history" | "userFiltered" | "presetView"
+  onNewCustomer?: () => void
 }
 
 export function ListEmptyState({
   scope = "history",
+  onNewCustomer,
 }: Props): React.JSX.Element {
   const { canUser } = useTokenProvider()
   const { t } = useTranslation()
@@ -34,13 +33,11 @@ export function ListEmptyState({
         }
         action={
           canUser("create", "customers") && (
-            <Link href={appRoutes.new.makePath()}>
-              <Button variant="primary">
-                {t("common.add_resource", {
-                  resource: t("resources.customers.name").toLowerCase(),
-                })}
-              </Button>
-            </Link>
+            <Button variant="primary" onClick={onNewCustomer}>
+              {t("common.add_resource", {
+                resource: t("resources.customers.name").toLowerCase(),
+              })}
+            </Button>
           )
         }
       />
