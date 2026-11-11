@@ -1,5 +1,6 @@
 import {
   A,
+  Card,
   Section,
   Spacer,
   StatusIcon,
@@ -32,34 +33,46 @@ export const OrderAgent = withSkeletonTemplate<Props>(
 
     return (
       <Section title={t("apps.orders.details.agent")}>
-        {/* the customer card's box, so the two cards below each other match */}
-        <div className="mt-4 flex items-center gap-4 p-4 rounded bg-gray-50 text-gray-800">
-          {/* 36px, the customer avatar's size: `large` with 8px around the icon */}
-          <StatusIcon
-            name="robot"
-            background="black"
-            gap="large"
-            className="p-2!"
-          />
-          {/* `min-w-0`, or the inbox address would widen the card instead of being truncated */}
-          <div className="min-w-0">
-            <Text tag="div" weight="semibold" size="small" className="truncate">
-              {agent.name}
-            </Text>
-            {agent.inbound_email != null && (
+        {/* the light card, so it matches the customer's box below it */}
+        <Card
+          backgroundColor="light"
+          gap="4"
+          overflow="visible"
+          className="mt-4"
+        >
+          <div className="flex items-center gap-4">
+            {/* 36px, the customer avatar's size: `large` with 8px around the icon */}
+            <StatusIcon
+              name="robot"
+              background="black"
+              gap="large"
+              className="p-2!"
+            />
+            {/* `min-w-0`, or the inbox address would widen the card instead of being truncated */}
+            <div className="min-w-0">
               <Text
-                size="x-small"
                 tag="div"
-                variant="info"
-                weight="regular"
+                weight="semibold"
+                size="small"
                 className="truncate"
-                title={agent.inbound_email}
               >
-                {agent.inbound_email}
+                {agent.name}
               </Text>
-            )}
+              {agent.inbound_email != null && (
+                <Text
+                  size="x-small"
+                  tag="div"
+                  variant="info"
+                  weight="regular"
+                  className="truncate"
+                  title={agent.inbound_email}
+                >
+                  {agent.inbound_email}
+                </Text>
+              )}
+            </div>
           </div>
-        </div>
+        </Card>
         {email != null && (
           <Spacer top="4">
             {email.subject != null && (
