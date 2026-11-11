@@ -1,6 +1,7 @@
 import {
   type ActionButtonsProps,
   InputTextArea,
+  isAgentOrderReview,
   parseApiError,
   Spacer,
   Text,
@@ -43,6 +44,13 @@ export function getLastOrderReview(order: Order): OrderReview | null {
  * off hold. A rejected one stays: removing it would unblock approve, so the
  * seller changes the order and asks again, or cancels it.
  *
+ * An order an email-to-order agent built is held by a review the other way
+ * round: the agent asks, and the seller — the agreement's account manager, who
+ * owns it — answers. Nothing is sent or withdrawn then: the seller accepts the
+ * order, which accepts the review and places it, still to be approved, or
+ * cancels it, which declines the review and archives the order, a cart nobody
+ * will place.
+ *
  * Only for agreement orders of an organization with agreements switched on.
  */
 export function useOrderReview(order: Order): {
@@ -51,6 +59,12 @@ export function useOrderReview(order: Order): {
   isAwaitingReview: boolean
   /** The latest review was rejected: Approve is not offered either. */
   isRejected: boolean
+  /** The pending review is an agent's, so the seller answers it. */
+  isAgentReview: boolean
+  /** Whether the signed-in user may answer the agent's review: Core lets only its owner. */
+  canAnswerAgentReview: boolean
+  /** Accepts the agent's review, taking the order off hold; throws when Core refuses. */
+  acceptAgentReview: () => Promise<void>
   actions: ActionButtonsProps["actions"]
   dialogs: ReactNode
 } {
@@ -114,6 +128,7 @@ export function useOrderReview(order: Order): {
   }
   const { show: showWithdraw, ConfirmDialog: WithdrawDialog } =
     useConfirmDialog()
+  const { show: showDecline, ConfirmDialog: DeclineDialog } = useConfirmDialog()
 
   const isAgreementOrder =
     extras?.organization?.isAgreementsEnabled === true &&
@@ -123,6 +138,21 @@ export function useOrderReview(order: Order): {
     isAgreementOrder &&
     (order.on_hold === true || lastReview?.status === "pending")
   const isRejected = !isAwaitingReview && lastReview?.status === "rejected"
+  const isAgentReview =
+    lastReview?.status === "pending" && isAgentOrderReview(lastReview)
+  // the owner comes with the review when the token may read users; without it
+  // Core still refuses anyone else, and says so
+  const canAnswerAgentReview =
+    isAgentReview &&
+    canUser("update", "order_reviews") &&
+    (lastReview?.owner == null || lastReview.owner.id === user?.id)
+
+  const acceptAgentReview = async (): Promise<void> => {
+    if (lastReview == null) {
+      return
+    }
+    await sdkClient.order_reviews.update({ id: lastReview.id, _accept: true })
+  }
 
   const customerId = order.customer?.id
   const canSend =
@@ -137,7 +167,9 @@ export function useOrderReview(order: Order): {
     user != null &&
     canUser("create", "order_reviews")
   const canWithdraw =
-    lastReview?.status === "pending" && canUser("destroy", "order_reviews")
+    lastReview?.status === "pending" &&
+    !isAgentReview &&
+    canUser("destroy", "order_reviews")
 
   const actions: ActionButtonsProps["actions"] = [
     ...(canSend
@@ -147,6 +179,18 @@ export function useOrderReview(order: Order): {
             variant: "secondary" as const,
             onClick: () => {
               setIsSendOpen(true)
+            },
+          },
+        ]
+      : []),
+    ...(isAgentReview
+      ? [
+          {
+            label: t("apps.orders.actions.cancel"),
+            variant: "secondary" as const,
+            disabled: !canAnswerAgentReview,
+            onClick: () => {
+              showDecline()
             },
           },
         ]
@@ -237,6 +281,28 @@ export function useOrderReview(order: Order): {
           onCancel={closeSend}
         />
       </PaymentActionModal>
+      <DeclineDialog
+        icon="warningCircle"
+        title={t("apps.orders.actions.decline_agent_order_title")}
+        description={t("apps.orders.details.decline_agent_order_description")}
+        confirm={{
+          label: t("apps.orders.actions.cancel"),
+          variant: "danger",
+          onClick: async () => {
+            if (lastReview == null) {
+              return
+            }
+            await sdkClient.order_reviews.update({
+              id: lastReview.id,
+              _reject: true,
+            })
+            // pending orders cannot be cancelled: archived, it leaves the carts
+            await sdkClient.orders.update({ id: order.id, _archive: true })
+            await mutateOrder()
+          },
+        }}
+        cancelLabel={t("common.close")}
+      />
       <WithdrawDialog
         icon="arrowUUpLeft"
         title={t("apps.orders.actions.withdraw_review_title")}
@@ -256,5 +322,14 @@ export function useOrderReview(order: Order): {
     </>
   )
 
-  return { lastReview, isAwaitingReview, isRejected, actions, dialogs }
+  return {
+    lastReview,
+    isAwaitingReview,
+    isRejected,
+    isAgentReview,
+    canAnswerAgentReview,
+    acceptAgentReview,
+    actions,
+    dialogs,
+  }
 }

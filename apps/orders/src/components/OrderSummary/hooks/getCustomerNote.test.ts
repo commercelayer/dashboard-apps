@@ -1,5 +1,5 @@
 import type { Order } from "@commercelayer/sdk"
-import { getCustomerNote } from "./useSummaryRows"
+import { getAgentNote, getCustomerNote } from "./useSummaryRows"
 
 function order(overrides: Partial<Order>): Order {
   return {
@@ -54,6 +54,58 @@ describe("getCustomerNote", () => {
     expect(getCustomerNote(order({ agreement: null }), enabled)).toBeNull()
     expect(
       getCustomerNote(order({}), { isAgreementsEnabled: false }),
+    ).toBeNull()
+  })
+})
+
+const agentReview = {
+  type: "order_reviews",
+  id: "r1",
+  status: "pending",
+  reason: "inbound_pending",
+  notes: "Two lines had prices that differ from the email.",
+  requester: { type: "agents", id: "agent1", name: "Frankie" },
+  created_at: "2026-11-11T10:00:00Z",
+} as unknown as NonNullable<Order["order_reviews"]>[number]
+
+describe("an order an email-to-order agent held", () => {
+  it("shows the buyer's note while it is a cart on hold", () => {
+    expect(
+      getCustomerNote(
+        order({ status: "pending", order_reviews: [agentReview] }),
+        enabled,
+      ),
+    ).toBe("We need delivery before September 15 if possible.")
+  })
+
+  it("shows what the agent said while the review is pending", () => {
+    expect(
+      getAgentNote(
+        order({ status: "pending", order_reviews: [agentReview] }),
+        enabled,
+      ),
+    ).not.toBeNull()
+    expect(
+      getAgentNote(
+        order({
+          status: "placed",
+          order_reviews: [{ ...agentReview, status: "accepted" }],
+        }),
+        enabled,
+      ),
+    ).toBeNull()
+  })
+
+  it("has no agent note for a review the seller sent", () => {
+    expect(
+      getAgentNote(
+        order({
+          order_reviews: [
+            { ...agentReview, requester: { type: "users", id: "u1" } },
+          ] as Order["order_reviews"],
+        }),
+        enabled,
+      ),
     ).toBeNull()
   })
 })
