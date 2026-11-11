@@ -31,7 +31,7 @@ const ReturnListItem: FC<{ returnObj: Return }> = ({ returnObj }) => {
         app: "returns",
         resourceId: returnObj.id,
       })
-    : {}
+    : null
 
   if (returnStatuses.includes(returnObj.status))
     return (
@@ -39,6 +39,7 @@ const ReturnListItem: FC<{ returnObj: Return }> = ({ returnObj }) => {
         key={returnObj.id}
         resource={returnObj}
         {...navigateToReturn}
+        showCaret={navigateToReturn != null}
       />
     )
 }

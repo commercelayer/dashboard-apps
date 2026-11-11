@@ -32,7 +32,7 @@ const OrderShipment = ({
         app: "shipments",
         resourceId: shipment.id,
       })
-    : {}
+    : null
 
   const parcelsWithTracking =
     shipment.parcels?.filter((parcel) => parcel.tracking_number) ?? []
@@ -43,10 +43,10 @@ const OrderShipment = ({
         key={shipment.id}
         resource={shipment}
         {...navigateToShipment}
-        rightContentOverride={
-          // hide caret icon if there are parcels with tracking,
-          // as the tracking button (<ShipmentTrackings>) will be the main cta
-          parcelsWithTracking.length > 0 ? <div /> : undefined
+        // no caret when there are parcels with tracking, as the tracking
+        // button (<ShipmentTrackings>) will be the main cta
+        showCaret={
+          navigateToShipment != null && parcelsWithTracking.length === 0
         }
       />
       <ShipmentTrackings parcels={parcelsWithTracking} />
