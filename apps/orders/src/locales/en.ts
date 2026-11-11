@@ -14,6 +14,9 @@ const en = {
         rejected_by_customer: "Rejected by customer",
       },
       details: {
+        agent: "Agent",
+        email_from: "From {{sender}}",
+        download_email: "Download the email",
         note_from_agent: "Note from agent",
         note_from_customer: "Note from customer",
         decline_agent_order_description:
