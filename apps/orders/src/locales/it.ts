@@ -16,6 +16,11 @@ const it: typeof en = {
         rejected_by_customer: "Rifiutato dal cliente",
       },
       details: {
+        note_from_agent: "Nota dall'agente",
+        note_from_customer: "Nota dal cliente",
+        decline_agent_order_description:
+          "La revisione dell'agente viene rifiutata e l'ordine archiviato. Non è mai stato inviato, quindi non ci sono pagamenti da annullare.",
+        accept_agent_order_failed: "Impossibile accettare l'ordine",
         summary: "Riepilogo",
         to_be_calculated: "Da calcolare",
         shipping: "Spedizione",
@@ -61,6 +66,8 @@ const it: typeof en = {
         manual_adjustment_name: "Modifica manuale",
       },
       actions: {
+        accept_order: "Accetta ordine",
+        decline_agent_order_title: "Annullare questo ordine?",
         add_item: "Aggiungi prodotto",
         approve: "Approva",
         archive: "Archivia",

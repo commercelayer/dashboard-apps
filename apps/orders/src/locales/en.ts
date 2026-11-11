@@ -14,6 +14,11 @@ const en = {
         rejected_by_customer: "Rejected by customer",
       },
       details: {
+        note_from_agent: "Note from agent",
+        note_from_customer: "Note from customer",
+        decline_agent_order_description:
+          "The agent's review is declined and the order is archived. It was never placed, so there is no payment to void.",
+        accept_agent_order_failed: "Could not accept the order",
         summary: "Summary",
         to_be_calculated: "To be calculated",
         shipping: "Shipping",
@@ -58,6 +63,8 @@ const en = {
         manual_adjustment_name: "Manual adjustment",
       },
       actions: {
+        accept_order: "Accept order",
+        decline_agent_order_title: "Cancel this order?",
         add_item: "Add item",
         approve: "Approve",
         archive: "Archive",

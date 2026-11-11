@@ -61,10 +61,11 @@ export const AgreementOrderReviewsProvider: FC<{ children: ReactNode }> = ({
       : [
           {
             filters: { id_in: orderIds.join(",") },
-            include: ["order_reviews"],
+            // the requester tells an agent's review from the seller's
+            include: ["order_reviews", "order_reviews.requester"],
             fields: {
               orders: ["id", "on_hold", "order_reviews"],
-              order_reviews: ["status", "created_at"],
+              order_reviews: ["status", "created_at", "requester"],
             },
             pageSize: 25,
           },
