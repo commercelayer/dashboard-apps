@@ -1,6 +1,10 @@
 import {
   Alert,
   Button,
+  getAgentOrderReviewNote,
+  getLastOrderReview,
+  Icon,
+  isAgentOrderReview,
   type ResourceLineItemsProps,
   Spacer,
   Text,
@@ -94,9 +98,31 @@ export function useSummaryRows(order: Order): {
     ),
   })
 
-  const customerNote = getCustomerNote(order, {
-    isAgreementsEnabled: extras?.organization?.isAgreementsEnabled === true,
-  })
+  const isAgreementsEnabled = extras?.organization?.isAgreementsEnabled === true
+
+  const agentNote = getAgentNote(order, { isAgreementsEnabled })
+  if (agentNote != null) {
+    summaryRows.push({
+      key: "agent_note",
+      element: (
+        <Spacer bottom="8">
+          <Alert status="info">
+            <Text
+              tag="div"
+              weight="semibold"
+              className="flex items-center gap-1"
+            >
+              <Icon name="robot" size={16} />
+              {t("apps.orders.details.note_from_agent")}
+            </Text>
+            {agentNote}
+          </Alert>
+        </Spacer>
+      ),
+    })
+  }
+
+  const customerNote = getCustomerNote(order, { isAgreementsEnabled })
   if (customerNote != null) {
     summaryRows.push({
       key: "customer_note",
@@ -104,7 +130,7 @@ export function useSummaryRows(order: Order): {
         <Spacer bottom="8">
           <Alert status="info">
             <Text tag="div" weight="semibold">
-              Note from customer
+              {t("apps.orders.details.note_from_customer")}
             </Text>
             {customerNote}
           </Alert>
@@ -125,20 +151,51 @@ export function useSummaryRows(order: Order): {
  * and while it is edited — the note is often what the edit is about — up to the
  * first review sent to the buyer. From then on the conversation is the review's,
  * and the note stays in the timeline.
+ *
+ * An order an email-to-order agent built and held is still a cart, and the note
+ * is what the buyer's email asked for: shown too, while the seller decides. The
+ * agent's review was not sent to the buyer, so it does not count as one.
  */
 export function getCustomerNote(
   order: Order,
   { isAgreementsEnabled }: { isAgreementsEnabled: boolean },
 ): string | null {
   const note = order.notes?.trim()
+  const reviews = order.order_reviews ?? []
   if (
     !isAgreementsEnabled ||
     order.agreement == null ||
     note == null ||
     note === "" ||
-    (order.order_reviews ?? []).length > 0
+    reviews.some((review) => !isAgentOrderReview(review))
   ) {
     return null
   }
-  return order.status === "placed" || order.status === "editing" ? note : null
+  const isHeldByAgent = reviews.some(
+    (review) => review.status === "pending" && isAgentOrderReview(review),
+  )
+  return order.status === "placed" ||
+    order.status === "editing" ||
+    (order.status === "pending" && isHeldByAgent)
+    ? note
+    : null
+}
+
+/**
+ * B2B: what an email-to-order agent says about the order it held — why it did not
+ * place it — while the seller answers. Once answered, it stays in the timeline.
+ */
+export function getAgentNote(
+  order: Order,
+  { isAgreementsEnabled }: { isAgreementsEnabled: boolean },
+): string | null {
+  const lastReview = getLastOrderReview(order)
+  if (
+    !isAgreementsEnabled ||
+    order.agreement == null ||
+    lastReview?.status !== "pending"
+  ) {
+    return null
+  }
+  return getAgentOrderReviewNote(lastReview)
 }
