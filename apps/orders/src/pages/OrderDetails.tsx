@@ -15,6 +15,7 @@ import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/Resourc
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { OrderAddresses } from "#components/OrderAddresses"
+import { OrderAgent } from "#components/OrderAgent"
 import { OrderCustomer } from "#components/OrderCustomer"
 import { OrderPayment } from "#components/OrderPayment"
 import { OrderReturns } from "#components/OrderReturns"
@@ -196,6 +197,11 @@ function OrderDetails(): React.JSX.Element {
       // supporting information sits beside the order itself, see detail.png
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
+          {order.agent?.name != null && (
+            <Spacer bottom={{ base: "14", lg: "10" }}>
+              <OrderAgent order={order} />
+            </Spacer>
+          )}
           <OrderCustomer order={order} />
           <Spacer top={{ base: "14", lg: "10" }}>
             <OrderAddresses order={order} />
