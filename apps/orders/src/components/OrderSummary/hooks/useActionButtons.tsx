@@ -4,12 +4,13 @@ import {
   formatCentsToCurrency,
   getPaymentInstrumentDetails,
   orderTransactionIsAnAsyncCapture,
+  parseApiError,
   useConfirmDialog,
   useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { useCreatePaymentLinkModal } from "#components/OrderPayment/hooks/useCreatePaymentLinkModal"
 import { useOrderCaptureModal } from "#components/OrderPayment/hooks/useOrderCaptureModal"
 import { usePaymentRefundModal } from "#components/OrderPayment/hooks/usePaymentRefundModal"
@@ -104,6 +105,9 @@ export const useActionButtons = ({ order }: { order: Order }) => {
   const {
     isAwaitingReview,
     isRejected,
+    isAgentReview,
+    canAnswerAgentReview,
+    acceptAgentReview,
     actions: reviewActions,
     dialogs: ReviewDialogs,
   } = useOrderReview(order)
@@ -121,26 +125,63 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     isPlacing: isPlacingAgreementOrder,
     error: placeAgreementOrderError,
   } = usePlaceAgreementOrder(order)
+  const [isAcceptingAgentReview, setIsAcceptingAgentReview] = useState(false)
+  const [acceptAgentReviewError, setAcceptAgentReviewError] = useState<
+    string | null
+  >(null)
+  // B2B: an order an email-to-order agent held is the seller's to accept, which
+  // takes it off hold and places it in one step. Approving it comes after, as
+  // for any placed order
+  const acceptAgentOrder = async (): Promise<void> => {
+    setIsAcceptingAgentReview(true)
+    setAcceptAgentReviewError(null)
+    try {
+      await acceptAgentReview()
+    } catch (error) {
+      setAcceptAgentReviewError(
+        parseApiError(error)[0]?.detail ??
+          t("apps.orders.details.accept_agent_order_failed"),
+      )
+      await mutateOrder()
+      return
+    } finally {
+      setIsAcceptingAgentReview(false)
+    }
+    await placeAgreementOrder()
+  }
   const agreementPlaceActions: ActionButtonsProps["actions"] =
     isPendingAgreementOrder && canUser("update", "orders")
       ? [
-          isApprovalBlockedByReview
+          isAgentReview
             ? {
-                label: isAwaitingReview
-                  ? t("apps.orders.tasks.awaiting_customer_review")
-                  : t("apps.orders.tasks.rejected_by_customer"),
+                label: t("apps.orders.actions.accept_order"),
                 variant: "primary",
-                disabled: true,
-                onClick: () => {},
-              }
-            : {
-                label: t("apps.orders.actions.place"),
-                variant: "primary",
-                disabled: isPlacingAgreementOrder || !hasLineItems,
+                disabled:
+                  !canAnswerAgentReview ||
+                  isAcceptingAgentReview ||
+                  isPlacingAgreementOrder ||
+                  !hasLineItems,
                 onClick: () => {
-                  void placeAgreementOrder()
+                  void acceptAgentOrder()
                 },
-              },
+              }
+            : isApprovalBlockedByReview
+              ? {
+                  label: isAwaitingReview
+                    ? t("apps.orders.tasks.awaiting_customer_review")
+                    : t("apps.orders.tasks.rejected_by_customer"),
+                  variant: "primary",
+                  disabled: true,
+                  onClick: () => {},
+                }
+              : {
+                  label: t("apps.orders.actions.place"),
+                  variant: "primary",
+                  disabled: isPlacingAgreementOrder || !hasLineItems,
+                  onClick: () => {
+                    void placeAgreementOrder()
+                  },
+                },
         ]
       : []
 
@@ -405,6 +446,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     SelectShippingMethodOverlay,
     errors: [
       ...(errors ?? []),
+      ...(acceptAgentReviewError != null ? [acceptAgentReviewError] : []),
       ...(placeAgreementOrderError != null ? [placeAgreementOrderError] : []),
       ...(finishAgreementOrderEditError != null
         ? [finishAgreementOrderEditError]
