@@ -5,7 +5,7 @@ import { useOrdersTableColumns } from "#components/ordersTableColumns"
 vi.mock("@commercelayer/app-elements", async (importOriginal) => {
   return {
     ...((await importOriginal()) satisfies Record<string, unknown>),
-    useTokenProvider: () => ({ user: null }),
+    useTokenProvider: () => ({ user: null, settings: {} }),
   }
 })
 
