@@ -14,6 +14,7 @@ const en = {
         rejected_by_customer: "Rejected by customer",
       },
       details: {
+        agreement: "Agreement",
         agent: "Agent",
         email_from: "From {{sender}}",
         download_email: "Download the email",
