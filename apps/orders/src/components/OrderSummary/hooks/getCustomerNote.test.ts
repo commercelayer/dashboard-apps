@@ -85,12 +85,21 @@ describe("an order an email-to-order agent held", () => {
         enabled,
       ),
     ).not.toBeNull()
+  })
+
+  it("keeps it once accepted, while the order is placed or edited", () => {
+    const accepted = {
+      ...agentReview,
+      status: "accepted",
+    } as typeof agentReview
+    for (const status of ["placed", "editing"] as const) {
+      expect(
+        getAgentNote(order({ status, order_reviews: [accepted] }), enabled),
+      ).not.toBeNull()
+    }
     expect(
       getAgentNote(
-        order({
-          status: "placed",
-          order_reviews: [{ ...agentReview, status: "accepted" }],
-        }),
+        order({ status: "approved", order_reviews: [accepted] }),
         enabled,
       ),
     ).toBeNull()

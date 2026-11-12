@@ -20,6 +20,7 @@ import {
   PaymentActionModal,
 } from "#components/OrderPayment/PaymentActionModal"
 import { appRoutes } from "#data/routes"
+import { finishAgreementOrderEdit } from "#hooks/useFinishAgreementOrderEdit"
 import { useOrderDetails } from "#hooks/useOrderDetails"
 
 /** The order's latest review, the one Core gates place and approve on. */
@@ -105,6 +106,11 @@ export function useOrderReview(order: Order): {
     isSendCancelled.current = false
     setSendStep("running")
     try {
+      // an order being edited is finished first, the way Finish does it — any
+      // increase authorized — so the buyer confirms the order as it now stands
+      if (order.status === "editing") {
+        await finishAgreementOrderEdit(sdkClient, order.id)
+      }
       const review = await sdkClient.order_reviews.create({
         order: sdkClient.orders.relationship(order.id),
         owner: sdkClient.customers.relationship(customerId),
@@ -157,9 +163,10 @@ export function useOrderReview(order: Order): {
   const customerId = order.customer?.id
   const canSend =
     isAgreementOrder &&
-    // a placed order the seller changed, or one the seller built for the buyer
-    // and wants confirmed before it is placed
+    // a placed order the seller changed — or is changing — or one the seller
+    // built for the buyer and wants confirmed before it is placed
     (order.status === "placed" ||
+      order.status === "editing" ||
       (order.status === "pending" &&
         (order.line_items ?? []).some((item) => item.item_type === "skus"))) &&
     !isAwaitingReview &&

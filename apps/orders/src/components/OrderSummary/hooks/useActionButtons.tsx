@@ -425,16 +425,33 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     />
   )
 
+  // B2B: an agreement order being edited ends either way — Finish, or sent to
+  // the buyer to confirm, which finishes it first — and the review is the one
+  // the design puts forward
+  const isEditingWithReview =
+    isEditingAgreementOrder && reviewActions.length > 0
+
   return {
-    actions: [
-      ...reviewActions,
-      ...agreementPlaceActions,
-      // a pending agreement order is placed by the action above, never through
-      // the checkout's own "Place" — which would skip setting up the payment
-      ...(isPendingAgreementOrder ? [] : standardFooterActions),
-      ...editingFooterActions,
-      ...refundFooterActions,
-    ],
+    actions: isEditingWithReview
+      ? [
+          ...editingFooterActions.map((action) => ({
+            ...action,
+            variant: "secondary" as const,
+          })),
+          ...reviewActions.map((action) => ({
+            ...action,
+            variant: "primary" as const,
+          })),
+        ]
+      : [
+          ...reviewActions,
+          ...agreementPlaceActions,
+          // a pending agreement order is placed by the action above, never through
+          // the checkout's own "Place" — which would skip setting up the payment
+          ...(isPendingAgreementOrder ? [] : standardFooterActions),
+          ...editingFooterActions,
+          ...refundFooterActions,
+        ],
     hasInvalidShipments,
     CaptureDialog: isNewPaymentModel(order)
       ? captureModal

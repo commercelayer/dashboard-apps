@@ -183,19 +183,23 @@ export function getCustomerNote(
 
 /**
  * B2B: what an email-to-order agent says about the order it held — why it did not
- * place it — while the seller answers. Once answered, it stays in the timeline.
+ * place it — while the seller answers, and after accepting while the order is
+ * placed or edited. Once it is approved, or the seller sends it to the buyer, it
+ * stays in the timeline.
  */
 export function getAgentNote(
   order: Order,
   { isAgreementsEnabled }: { isAgreementsEnabled: boolean },
 ): string | null {
   const lastReview = getLastOrderReview(order)
-  if (
-    !isAgreementsEnabled ||
-    order.agreement == null ||
-    lastReview?.status !== "pending"
-  ) {
+  if (!isAgreementsEnabled || order.agreement == null || lastReview == null) {
     return null
   }
-  return getAgentOrderReviewNote(lastReview)
+  // while the seller decides, and once accepted while it is placed or edited —
+  // the note is often why it is being edited — up to its approval
+  const isDeciding =
+    lastReview.status === "pending" ||
+    (lastReview.status === "accepted" &&
+      (order.status === "placed" || order.status === "editing"))
+  return isDeciding ? getAgentOrderReviewNote(lastReview) : null
 }
