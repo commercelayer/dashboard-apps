@@ -16,6 +16,7 @@ import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resour
 import { useLocation, useRoute } from "wouter"
 import { OrderAddresses } from "#components/OrderAddresses"
 import { OrderAgent } from "#components/OrderAgent"
+import { OrderAgreement } from "#components/OrderAgreement"
 import { OrderCustomer } from "#components/OrderCustomer"
 import { OrderPayment } from "#components/OrderPayment"
 import { OrderReturns } from "#components/OrderReturns"
@@ -203,6 +204,11 @@ function OrderDetails(): React.JSX.Element {
             </Spacer>
           )}
           <OrderCustomer order={order} />
+          {order.agreement?.name != null && (
+            <Spacer top={{ base: "14", lg: "10" }}>
+              <OrderAgreement order={order} />
+            </Spacer>
+          )}
           <Spacer top={{ base: "14", lg: "10" }}>
             <OrderAddresses order={order} />
           </Spacer>
