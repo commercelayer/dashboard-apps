@@ -38,19 +38,16 @@ const OrderShipment = ({
     shipment.parcels?.filter((parcel) => parcel.tracking_number) ?? []
 
   return (
-    <div className="flex items-center">
-      <ResourceListItem
-        key={shipment.id}
-        resource={shipment}
-        {...navigateToShipment}
-        rightContentOverride={
-          // hide caret icon if there are parcels with tracking,
-          // as the tracking button (<ShipmentTrackings>) will be the main cta
-          parcelsWithTracking.length > 0 ? <div /> : undefined
-        }
-      />
-      <ShipmentTrackings parcels={parcelsWithTracking} />
-    </div>
+    <ResourceListItem
+      key={shipment.id}
+      resource={shipment}
+      {...navigateToShipment}
+      rightContentOverride={
+        parcelsWithTracking.length > 0 ? (
+          <ShipmentTrackings parcels={parcelsWithTracking} />
+        ) : undefined
+      }
+    />
   )
 }
 
@@ -60,10 +57,15 @@ const ShipmentTrackings: FC<{ parcels?: Parcel[] | null }> = ({ parcels }) => {
   }
 
   return (
+    // the row is a link to the shipment: what is clicked here, the modal
+    // included (its events bubble through the portal), must not follow it
+    // biome-ignore lint/a11y/noStaticElementInteractions: only stops the click from reaching the row
+    // biome-ignore lint/a11y/useKeyWithClickEvents: only stops the click from reaching the row
     <div
-      className="flex items-center border-b border-gray-100"
-      style={{
-        alignSelf: "stretch",
+      className="flex items-center"
+      onClick={(event) => {
+        event.preventDefault()
+        event.stopPropagation()
       }}
     >
       {parcels.length === 1 && parcels[0] != null ? (

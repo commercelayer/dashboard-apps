@@ -3,7 +3,7 @@ import {
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
 import type { Order, OrderSubscription } from "@commercelayer/sdk"
-import { ListItemSubscriptionOrder } from "#components/ListItemSubscriptionOrder"
+import { ListItemOrder } from "dashboard-apps-common/src/components/ListItemOrder"
 
 export const allowedOrderStatuses: Array<Order["status"]> = [
   "pending",
@@ -48,7 +48,7 @@ export const SubscriptionOrders = withSkeletonTemplate<Props>(
           variant="boxed"
           // as a function, so the record count is not interpolated into it
           title={() => "Recurring orders"}
-          ItemTemplate={ListItemSubscriptionOrder}
+          ItemTemplate={ListItemOrder}
         />
         <Pagination />
       </>

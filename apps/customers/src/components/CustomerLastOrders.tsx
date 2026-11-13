@@ -3,8 +3,8 @@ import {
   useTranslation,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
+import { ListItemOrder } from "dashboard-apps-common/src/components/ListItemOrder"
 import { useRoute } from "wouter"
-import { ListItemOrder } from "#components/ListItemOrder"
 import { appRoutes } from "#data/routes"
 
 export const CustomerLastOrders = withSkeletonTemplate(
