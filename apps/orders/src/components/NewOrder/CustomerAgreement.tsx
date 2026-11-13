@@ -32,7 +32,9 @@ export interface CustomerAgreementFields {
  * in the agreement's.
  *
  * Core copies an agreement's addresses only when an order is created with it,
- * and this order exists since the market was picked, so the submit sets them.
+ * and this order exists since the market was picked, so the submit sets them —
+ * as copies, so a later change the seller makes to the agreement's addresses
+ * leaves the order as it was.
  */
 export function CustomerAgreement({
   market,

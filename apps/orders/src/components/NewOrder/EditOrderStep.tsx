@@ -128,8 +128,9 @@ export const EditOrderStep: React.FC<
                   id: order.id,
                   customer_email: formValues.customer_email,
                   language_code: formValues.language_code,
-                  // B2B: the customer's agreement, and the addresses Core
-                  // would have copied had the order been created with it
+                  // B2B: the customer's agreement, and copies of its addresses,
+                  // so a later change to them leaves this order as it was, as
+                  // the buyer shell's submit does
                   ...(formValues.agreement_id != null
                     ? {
                         agreement: sdkClient.agreements.relationship(
@@ -137,17 +138,14 @@ export const EditOrderStep: React.FC<
                         ),
                         ...(formValues.agreement_billing_address_id != null
                           ? {
-                              billing_address: sdkClient.addresses.relationship(
+                              _billing_address_clone_id:
                                 formValues.agreement_billing_address_id,
-                              ),
                             }
                           : {}),
                         ...(formValues.agreement_shipping_address_id != null
                           ? {
-                              shipping_address:
-                                sdkClient.addresses.relationship(
-                                  formValues.agreement_shipping_address_id,
-                                ),
+                              _shipping_address_clone_id:
+                                formValues.agreement_shipping_address_id,
                             }
                           : {}),
                       }
