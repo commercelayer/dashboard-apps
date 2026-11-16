@@ -1,10 +1,11 @@
 import {
-  A,
+  Button,
   Card,
   Section,
   Spacer,
   StatusIcon,
   Text,
+  useEmailMessageModal,
   useTranslation,
   withSkeletonTemplate,
 } from "@commercelayer/app-elements"
@@ -16,7 +17,7 @@ interface Props {
 
 /**
  * B2B: the email-to-order agent that built the order, and the email it built it
- * from — `#808`'s link to the email.
+ * from, which opens in a modal (`#808`).
  *
  * Shown only when the agent came with the order: an app whose token cannot read
  * agents gets it as a bare link, with nothing to show.
@@ -26,6 +27,9 @@ export const OrderAgent = withSkeletonTemplate<Props>(
     const { t } = useTranslation()
     const agent = order.agent
     const email = order.inbound_message
+    const { emailModal, openEmailModal } = useEmailMessageModal({
+      src: email?.raw_payload_url,
+    })
 
     if (agent?.name == null) {
       return null
@@ -73,33 +77,15 @@ export const OrderAgent = withSkeletonTemplate<Props>(
             </div>
           </div>
         </Card>
-        {email != null && (
+        {/* the subject and sender are in the email itself */}
+        {email?.raw_payload_url != null && (
           <Spacer top="4">
-            {email.subject != null && (
-              <Text tag="div" weight="semibold">
-                {email.subject}
-              </Text>
-            )}
-            {email.from_address != null && (
-              <Text size="small" tag="div" variant="info">
-                {t("apps.orders.details.email_from", {
-                  sender: email.from_address,
-                })}
-              </Text>
-            )}
-            {email.raw_payload_url != null && (
-              <Spacer top="2">
-                <A
-                  href={email.raw_payload_url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {t("apps.orders.details.download_email")}
-                </A>
-              </Spacer>
-            )}
+            <Button variant="link" onClick={openEmailModal}>
+              {t("common.email_message.view")}
+            </Button>
           </Spacer>
         )}
+        {emailModal}
       </Section>
     )
   },
