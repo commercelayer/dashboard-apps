@@ -15,6 +15,8 @@ import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/Resourc
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { OrderAddresses } from "#components/OrderAddresses"
+import { OrderAgent } from "#components/OrderAgent"
+import { OrderAgreement } from "#components/OrderAgreement"
 import { OrderCustomer } from "#components/OrderCustomer"
 import { OrderPayment } from "#components/OrderPayment"
 import { OrderReturns } from "#components/OrderReturns"
@@ -37,6 +39,8 @@ function OrderDetails(): React.JSX.Element {
   } = useTokenProvider()
   const [, setLocation] = useLocation()
   const { t } = useTranslation()
+  // B2B agreements are switched on per organization; the dashboard says so
+  const hasAgreements = extras?.organization?.isAgreementsEnabled === true
   const [, params] = useRoute<{ orderId: string }>(appRoutes.details.path)
 
   const orderId = params?.orderId ?? ""
@@ -57,6 +61,9 @@ function OrderDetails(): React.JSX.Element {
     if (
       order.status === "pending" &&
       !isPendingWithTransactions &&
+      // B2B: an agreement order is placed from the footer, or by the buyer
+      // confirming it — never through a checkout link
+      !(hasAgreements && order.agreement != null) &&
       extras?.salesChannels != null &&
       extras?.salesChannels.length > 0 &&
       order.market?.private === false
@@ -161,6 +168,16 @@ function OrderDetails(): React.JSX.Element {
               </div>
             ) : null}{" "}
             <div>in {order.market?.name} market</div>
+            {/* B2B: the name needs read access to Core agreements, which the
+                orders app's token does not have yet — the link alone still
+                says the order came through one */}
+            {hasAgreements && order.agreement != null && (
+              <div>
+                {order.agreement.name != null
+                  ? `under the agreement ${order.agreement.name}`
+                  : "under an agreement"}
+              </div>
+            )}
           </div>
           {order.reference != null && <div>Ref. {order.reference}</div>}
         </SkeletonTemplate>
@@ -181,7 +198,17 @@ function OrderDetails(): React.JSX.Element {
       // supporting information sits beside the order itself, see detail.png
       sidebar={
         <SkeletonTemplate isLoading={isLoading}>
+          {order.agent?.name != null && (
+            <Spacer bottom={{ base: "14", lg: "10" }}>
+              <OrderAgent order={order} />
+            </Spacer>
+          )}
           <OrderCustomer order={order} />
+          {order.agreement?.name != null && (
+            <Spacer top={{ base: "14", lg: "10" }}>
+              <OrderAgreement order={order} />
+            </Spacer>
+          )}
           <Spacer top={{ base: "14", lg: "10" }}>
             <OrderAddresses order={order} />
           </Spacer>
