@@ -30,6 +30,7 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
       <ListItem
         icon={
           <Avatar
+            size="small"
             alt={resource.sku?.name ?? ""}
             src={resource.sku?.image_url as `https://${string}`}
           />
@@ -39,11 +40,11 @@ export const ListItemSkuListItem = withSkeletonTemplate<Props>(
         padding="y"
       >
         <div>
+          <Text tag="div" weight="semibold" size="small">
+            {resource.sku?.name}
+          </Text>
           <Text tag="div" weight="medium" variant="info" size="x-small">
             {resource.sku?.code}
-          </Text>
-          <Text tag="div" weight="semibold">
-            {resource.sku?.name}
           </Text>
         </div>
         {isLoading !== true && (
