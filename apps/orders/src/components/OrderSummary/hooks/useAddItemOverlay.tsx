@@ -30,7 +30,7 @@ export function useAddItemOverlay(order: Order): OverlayHook {
       label: t("common.search"),
       type: "textSearch",
       sdk: {
-        predicate: ["name", "code"].join("_or_") + "_cont",
+        predicate: ["code", "name"].join("_or_") + "_i_cont",
       },
       render: {
         component: "searchBar",
