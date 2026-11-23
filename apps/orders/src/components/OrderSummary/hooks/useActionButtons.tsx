@@ -103,6 +103,7 @@ export const useActionButtons = ({ order }: { order: Order }) => {
   // B2B: a pending or rejected customer review blocks approval, which Core
   // refuses anyway — the footer says why instead of offering a button that fails
   const {
+    lastReview,
     isAwaitingReview,
     isRejected,
     isAgentReview,
@@ -296,6 +297,14 @@ export const useActionButtons = ({ order }: { order: Order }) => {
       },
     }
 
+    // B2B: sent to the buyer, the edit waits for their answer — Core won't
+    // finish it while the review is pending, nor after a rejection
+    const awaitingReviewAction: ActionButtonsProps["actions"][number] = {
+      label: t("apps.orders.tasks.awaiting_customer_review"),
+      disabled: true,
+      onClick: () => {},
+    }
+
     const finishAction: ActionButtonsProps["actions"][number] = {
       label: t("apps.orders.actions.finish_editing"),
       disabled:
@@ -340,8 +349,18 @@ export const useActionButtons = ({ order }: { order: Order }) => {
       ]
     }
 
+    if (isEditingAgreementOrder && isAwaitingReview) {
+      return [cancelAction, awaitingReviewAction]
+    }
+
+    if (isEditingAgreementOrder && isRejected) {
+      return [cancelAction]
+    }
+
     return [cancelAction, finishAction]
   }, [
+    isAwaitingReview,
+    isRejected,
     isLoading,
     hasLineItems,
     order,
@@ -425,24 +444,34 @@ export const useActionButtons = ({ order }: { order: Order }) => {
     />
   )
 
-  // B2B: an agreement order being edited ends either way — Finish, or sent to
-  // the buyer to confirm, which finishes it first — and the review is the one
-  // the design puts forward
+  // B2B: an agreement order being edited is sent to the buyer, still being
+  // edited, and finished once they accept. Sending is what the design puts
+  // forward; once sent the edit's own button leads, awaiting the answer, and
+  // after an acceptance Finish does.
   const isEditingWithReview =
     isEditingAgreementOrder && reviewActions.length > 0
+  const isEditLeading = isAwaitingReview || lastReview?.status === "accepted"
 
   return {
     actions: isEditingWithReview
-      ? [
-          ...editingFooterActions.map((action) => ({
-            ...action,
-            variant: "secondary" as const,
-          })),
-          ...reviewActions.map((action) => ({
-            ...action,
-            variant: "primary" as const,
-          })),
-        ]
+      ? isEditLeading
+        ? [
+            ...reviewActions.map((action) => ({
+              ...action,
+              variant: "secondary" as const,
+            })),
+            ...editingFooterActions,
+          ]
+        : [
+            ...editingFooterActions.map((action) => ({
+              ...action,
+              variant: "secondary" as const,
+            })),
+            ...reviewActions.map((action) => ({
+              ...action,
+              variant: "primary" as const,
+            })),
+          ]
       : [
           ...reviewActions,
           ...agreementPlaceActions,

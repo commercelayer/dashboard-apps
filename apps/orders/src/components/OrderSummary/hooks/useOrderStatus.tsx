@@ -23,7 +23,9 @@ export function useOrderStatus(order: Order) {
       order.status === "draft" ||
       order.status === "pending") &&
     canUser("update", "orders") &&
-    !isPendingWithTransactions
+    !isPendingWithTransactions &&
+    // Core locks the lines while a review is pending
+    order.on_hold !== true
 
   const diffTotalAndPlacedTotal =
     (order.total_amount_with_taxes_cents ?? 0) -

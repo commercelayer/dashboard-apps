@@ -20,7 +20,6 @@ import {
   PaymentActionModal,
 } from "#components/OrderPayment/PaymentActionModal"
 import { appRoutes } from "#data/routes"
-import { finishAgreementOrderEdit } from "#hooks/useFinishAgreementOrderEdit"
 import { useOrderDetails } from "#hooks/useOrderDetails"
 
 /** The order's latest review, the one Core gates place and approve on. */
@@ -106,11 +105,8 @@ export function useOrderReview(order: Order): {
     isSendCancelled.current = false
     setSendStep("running")
     try {
-      // an order being edited is finished first, the way Finish does it — any
-      // increase authorized — so the buyer confirms the order as it now stands
-      if (order.status === "editing") {
-        await finishAgreementOrderEdit(sdkClient, order.id)
-      }
+      // an order being edited is sent as it is, still being edited: the buyer
+      // authorizes any increase when accepting, and the seller then finishes
       const review = await sdkClient.order_reviews.create({
         order: sdkClient.orders.relationship(order.id),
         owner: sdkClient.customers.relationship(customerId),
