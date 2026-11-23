@@ -37,7 +37,10 @@ export function useGiftCardsTableColumns(): Array<
             {maskGiftCardCode(resource.code)}
             {/* the Status column is hidden on mobile, so the badge rides with the name */}
             <span className="md:hidden inline-block align-middle ml-2">
-              <BadgeStatus status={resource.status} />
+              <BadgeStatus
+                status={resource.status}
+                expires_at={resource.expires_at}
+              />
             </span>
           </Text>
         ),
@@ -74,7 +77,12 @@ export function useGiftCardsTableColumns(): Array<
         hideable: true,
         kind: "status",
         sortBy: "status",
-        cell: ({ resource }) => <BadgeStatus status={resource.status} />,
+        cell: ({ resource }) => (
+          <BadgeStatus
+            status={resource.status}
+            expires_at={resource.expires_at}
+          />
+        ),
       },
       {
         id: "created",
