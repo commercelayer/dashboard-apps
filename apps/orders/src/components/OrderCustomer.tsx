@@ -78,9 +78,13 @@ export const OrderCustomer = withSkeletonTemplate<Props>(
                 {order.customer.email}
               </Text>
               <Text size="x-small" tag="div" variant="info" weight="regular">
-                {order.customer.has_password === true
-                  ? t("apps.orders.details.customer_registered")
-                  : t("apps.orders.details.customer_guest")}
+                {/* B2B: a buyer signs in to the dashboard, not to Core, so
+                    their customer never has a password of its own */}
+                {order.agreement != null
+                  ? t("apps.orders.details.customer_buyer")
+                  : order.customer.has_password === true
+                    ? t("apps.orders.details.customer_registered")
+                    : t("apps.orders.details.customer_guest")}
                 {" · "}
                 {order.customer.total_orders_count ?? 0}{" "}
                 {t("resources.orders.name", {

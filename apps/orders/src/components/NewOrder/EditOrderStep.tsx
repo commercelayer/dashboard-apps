@@ -136,6 +136,9 @@ export const EditOrderStep: React.FC<
                         agreement: sdkClient.agreements.relationship(
                           formValues.agreement_id,
                         ),
+                        // Core marks an order guest unless a customer's token
+                        // creates it; this one is the buyer's, as theirs are
+                        guest: false,
                         ...(formValues.agreement_billing_address_id != null
                           ? {
                               _billing_address_clone_id:

@@ -40,6 +40,7 @@ const it: typeof en = {
         waiting_for_successful_capture: "In attesa di catturare il pagamento",
         customer_registered: "Registrato",
         customer_guest: "Ospite",
+        customer_buyer: "Acquirente",
         review_reason: "Nota per il cliente",
         review_reason_placeholder: "Aggiungi una nota…",
         send_for_review_description:

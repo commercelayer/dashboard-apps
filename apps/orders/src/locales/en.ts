@@ -38,6 +38,7 @@ const en = {
         waiting_for_successful_capture: "Waiting for successful capture",
         customer_registered: "Registered",
         customer_guest: "Guest",
+        customer_buyer: "Buyer",
         review_reason: "Note for the customer",
         review_reason_placeholder: "Add a note…",
         send_for_review_description:
