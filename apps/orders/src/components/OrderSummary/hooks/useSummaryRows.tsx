@@ -1,8 +1,14 @@
 import {
   Alert,
   Button,
+  getAgentOrderReviewNote,
+  getLastOrderReview,
+  Icon,
+  isAgentOrderReview,
   type ResourceLineItemsProps,
   Spacer,
+  Text,
+  useTokenProvider,
   useTranslation,
 } from "@commercelayer/app-elements"
 import type { Order } from "@commercelayer/sdk"
@@ -20,6 +26,9 @@ export function useSummaryRows(order: Order): {
   const { mutateOrder } = useOrderDetails(order.id)
   const { isEditing, diffTotalAndPlacedTotal } = useOrderStatus(order)
   const { t } = useTranslation()
+  const {
+    settings: { extras },
+  } = useTokenProvider()
 
   const { Overlay: AddCouponOverlay, open: openAddCouponOverlay } =
     useAddCouponOverlay(order, () => {
@@ -89,7 +98,108 @@ export function useSummaryRows(order: Order): {
     ),
   })
 
+  const isAgreementsEnabled = extras?.organization?.isAgreementsEnabled === true
+
+  const agentNote = getAgentNote(order, { isAgreementsEnabled })
+  if (agentNote != null) {
+    summaryRows.push({
+      key: "agent_note",
+      element: (
+        <Spacer bottom="8">
+          <Alert status="info">
+            <Text
+              tag="div"
+              weight="semibold"
+              className="flex items-center gap-1"
+            >
+              <Icon name="robot" size={16} />
+              {t("apps.orders.details.note_from_agent")}
+            </Text>
+            {agentNote}
+          </Alert>
+        </Spacer>
+      ),
+    })
+  }
+
+  const customerNote = getCustomerNote(order, { isAgreementsEnabled })
+  if (customerNote != null) {
+    summaryRows.push({
+      key: "customer_note",
+      element: (
+        <Spacer bottom="8">
+          <Alert status="info">
+            <Text tag="div" weight="semibold">
+              {t("apps.orders.details.note_from_customer")}
+            </Text>
+            {customerNote}
+          </Alert>
+        </Spacer>
+      ),
+    })
+  }
+
   return {
     summaryRows,
   }
+}
+
+/**
+ * B2B: the buyer's note, while the seller is deciding what to do with the order.
+ *
+ * Shown in the summary, as the design has it, from the moment the order is placed
+ * and while it is edited — the note is often what the edit is about — up to the
+ * first review sent to the buyer. From then on the conversation is the review's,
+ * and the note stays in the timeline.
+ *
+ * An order an email-to-order agent built and held is still a cart, and the note
+ * is what the buyer's email asked for: shown too, while the seller decides. The
+ * agent's review was not sent to the buyer, so it does not count as one.
+ */
+export function getCustomerNote(
+  order: Order,
+  { isAgreementsEnabled }: { isAgreementsEnabled: boolean },
+): string | null {
+  const note = order.notes?.trim()
+  const reviews = order.order_reviews ?? []
+  if (
+    !isAgreementsEnabled ||
+    order.agreement == null ||
+    note == null ||
+    note === "" ||
+    reviews.some((review) => !isAgentOrderReview(review))
+  ) {
+    return null
+  }
+  const isHeldByAgent = reviews.some(
+    (review) => review.status === "pending" && isAgentOrderReview(review),
+  )
+  return order.status === "placed" ||
+    order.status === "editing" ||
+    (order.status === "pending" && isHeldByAgent)
+    ? note
+    : null
+}
+
+/**
+ * B2B: what an email-to-order agent says about the order it held — why it did not
+ * place it — while the seller answers, and after accepting while the order is
+ * placed or edited. Once it is approved, or the seller sends it to the buyer, it
+ * stays in the timeline.
+ */
+export function getAgentNote(
+  order: Order,
+  { isAgreementsEnabled }: { isAgreementsEnabled: boolean },
+): string | null {
+  const lastReview = getLastOrderReview(order)
+  if (!isAgreementsEnabled || order.agreement == null || lastReview == null) {
+    return null
+  }
+  // while the seller decides, and once accepted while it is placed or edited —
+  // the note is often why it is being edited — up to its approval
+  const isDeciding =
+    lastReview.status === "pending" ||
+    (lastReview.status === "accepted" &&
+      (order.status === "placed" || order.status === "editing"))
+  return isDeciding ? getAgentOrderReviewNote(lastReview) : null
 }

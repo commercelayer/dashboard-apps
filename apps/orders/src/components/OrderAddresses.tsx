@@ -23,6 +23,8 @@ export const OrderAddresses = withSkeletonTemplate<Props>(
     const { t } = useTranslation()
     const { isEditing } = useOrderStatus(order)
     const { mutateOrder } = useOrderDetails(order.id)
+    // an agreement order's addresses are copies of the agreement's, made when
+    // it was placed, so editing them here leaves the agreement as it is
     const isEditable = isEditing || order.status !== "draft"
     const { Overlay: AssignAddressOverlay, open: openAssignAddressOverlay } =
       useCustomerAddressOverlay(order, () => {
