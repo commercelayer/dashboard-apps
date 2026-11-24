@@ -57,6 +57,8 @@ export function useOrdersTableColumns(
                 className="md:hidden inline-block align-middle ml-2"
               />
             </Text>
+            {/* mobile only: from `md` up the customer has a column of its own */}
+            <OrderCustomerLine resource={resource} />
             {/* mobile only: from `md` up the date has a column of its own */}
             <Text
               tag="div"
@@ -90,16 +92,13 @@ export function useOrdersTableColumns(
         header: "Customer",
         kind: "text",
         hideable: true,
-        // the email alone, the country having a column of its own. A guest
-        // checkout can have no email, and the billing name stands in for it.
+        // the email alone, the country having a column of its own
         cell: ({ resource }) => {
-          const email = resource.customer?.email
-          const label = isEmpty(email) ? getBillingName(resource) : email
-          return isEmpty(label) ? (
-            <Text variant="disabled">&#8212;</Text>
-          ) : (
-            <Text>{label}</Text>
-          )
+          const label = getCustomerLabel(resource)
+          if (label == null) {
+            return <Text variant="disabled">&#8212;</Text>
+          }
+          return <Text>{label}</Text>
         },
       },
       {
@@ -229,6 +228,43 @@ function OrderDate({ resource }: { resource: Order }): React.JSX.Element {
         locale: user?.locale,
       })}
     </>
+  )
+}
+
+/**
+ * Who the order is for: the customer's email, or the billing name for a guest
+ * checkout with no email. Shared by the Customer column and, on mobile where that
+ * column is hidden, the name cell.
+ */
+function getCustomerLabel(order: Order): string | undefined {
+  const email = order.customer?.email
+  if (email != null && !isEmpty(email)) {
+    return email
+  }
+  const billingName = getBillingName(order)
+  if (!isEmpty(billingName)) {
+    return billingName
+  }
+  return undefined
+}
+
+/**
+ * The customer under the order number on mobile, where the Customer column is
+ * hidden. Left out when the order has none, rather than a dash on its own line.
+ */
+function OrderCustomerLine({
+  resource,
+}: {
+  resource: Order
+}): React.JSX.Element | null {
+  const label = getCustomerLabel(resource)
+  if (label == null) {
+    return null
+  }
+  return (
+    <Text tag="div" size="x-small" wrap="nowrap" className="md:hidden truncate">
+      {label}
+    </Text>
   )
 }
 
