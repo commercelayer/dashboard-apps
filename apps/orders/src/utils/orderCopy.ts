@@ -96,9 +96,11 @@ function getCompletedTargetOrder(
 }
 
 /**
- * The errors of a failed copy as one sentence, from its `errors_log`
- * (e.g. `{ status: ["cannot transition from draft to placed"] }` reads
- * "Status cannot transition from draft to placed"). `null` when there are none.
+ * The errors of a failed copy as one sentence, from its `errors_log`. Core
+ * groups them by the copy step that failed, then by field (e.g.
+ * `{ copy_order: { payment_method: ["is disabled"] } }` reads
+ * "Payment method is disabled"), and repeats an error in every step it breaks,
+ * so each one is shown once. `null` when there are none.
  */
 export function getOrderCopyErrorMessage(
   orderCopy: Pick<OrderCopy, "errors_log">,
@@ -108,15 +110,41 @@ export function getOrderCopyErrorMessage(
     return null
   }
 
-  const messages = Object.entries(errorsLog).flatMap(([field, errors]) =>
-    toList(errors).map((error) => `${capitalize(lowerCase(field))} ${error}`),
-  )
-
+  const messages = [...new Set(getFieldErrors(errorsLog))]
   if (messages.length === 0) {
     return null
   }
 
   return messages.join(". ")
+}
+
+/** Every `field error` of the log, whatever step it is nested in. */
+function getFieldErrors(errorsLog: object): string[] {
+  return Object.entries(errorsLog).flatMap(([key, errors]) => {
+    if (isErrorGroup(errors)) {
+      return getFieldErrors(errors)
+    }
+
+    return toList(errors).map((error) => getFieldError(key, error))
+  })
+}
+
+/**
+ * The error as a sentence: a field's own error gets the field in front
+ * ("is disabled" reads "Payment method is disabled"), while one that already is
+ * a sentence (a record that failed to save) is shown without the generic
+ * "Validation failed:" Core puts in front of it.
+ */
+function getFieldError(field: string, error: string): string {
+  if (/^[A-Z]/.test(error)) {
+    return error.replace(/^Validation failed: /, "")
+  }
+
+  return `${capitalize(lowerCase(field))} ${error}`
+}
+
+function isErrorGroup(errors: unknown): errors is object {
+  return errors != null && typeof errors === "object" && !Array.isArray(errors)
 }
 
 function toList(errors: unknown): string[] {

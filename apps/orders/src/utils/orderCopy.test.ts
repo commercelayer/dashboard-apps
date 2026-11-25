@@ -49,6 +49,20 @@ describe("getOrderCopyErrorMessage", () => {
     )
   })
 
+  test("reads the errors grouped by copy step once each", () => {
+    expect(
+      getOrderCopyErrorMessage({
+        errors_log: {
+          copy_order: { payment_method: ["is disabled"] },
+          copy_addresses: { payment_method: ["is disabled"] },
+          copy_payment_source: {
+            order: ["Validation failed: Payment method is disabled"],
+          },
+        },
+      }),
+    ).toBe("Payment method is disabled")
+  })
+
   test("is null without errors", () => {
     expect(getOrderCopyErrorMessage({ errors_log: null })).toBeNull()
     expect(getOrderCopyErrorMessage({ errors_log: {} })).toBeNull()
