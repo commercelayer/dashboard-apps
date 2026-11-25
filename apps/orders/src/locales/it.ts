@@ -31,6 +31,7 @@ const it: typeof en = {
         waiting_for_successful_capture: "In attesa di catturare il pagamento",
         customer_registered: "Registrato",
         customer_guest: "Ospite",
+        copied_from: "Copiato dall'ordine",
       },
       form: {
         language: "Lingua",
@@ -59,6 +60,19 @@ const it: typeof en = {
         continue_editing: "Continua modifiche",
         finish_editing: "Finalizza",
         adjust_total: "Modifica il totale",
+      },
+      duplicate: {
+        action: "Duplica ordine",
+        title: "Duplicare questo ordine?",
+        description:
+          "Un nuovo ordine con lo stesso cliente, gli stessi prodotti e indirizzi si apre nell'editor, da controllare e piazzare. Questo ordine non viene modificato.",
+        copying: "Duplicazione dell'ordine in corso…",
+        confirm: "Duplica",
+        error_aborted:
+          "Questo ordine è già in fase di duplicazione. Riprova tra qualche secondo.",
+        error_failed: "Non è stato possibile duplicare l'ordine.",
+        error_timeout:
+          "La duplicazione dell'ordine sta richiedendo più tempo del previsto. Il nuovo ordine comparirà nella lista ordini appena pronto.",
       },
     },
     returns: {

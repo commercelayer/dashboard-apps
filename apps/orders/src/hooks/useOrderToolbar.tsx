@@ -19,6 +19,7 @@ import {
   getTriggerAttributes,
 } from "#components/OrderSummary/orderDictionary"
 import { appRoutes } from "#data/routes"
+import { useDuplicateOrder } from "#hooks/useDuplicateOrder"
 import { useMarketInventoryModel } from "#hooks/useMarketInventoryModel"
 import { useOrderDetails } from "#hooks/useOrderDetails"
 import { useReturnableList } from "#hooks/useReturnableList"
@@ -68,6 +69,10 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
   })
 
   const { dispatch } = useTriggerAttribute(order.id)
+  const {
+    dropdownItem: duplicateDropdownItem,
+    confirmDialog: duplicateDialog,
+  } = useDuplicateOrder(order)
   const { show: showFulfillConfirm, ConfirmDialog: FulfillConfirmDialogBase } =
     useConfirmDialog()
 
@@ -129,10 +134,14 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
 
   return {
     toolbar: {
-      dropdownItems: [dropdownItemsGroup],
+      dropdownItems: getDropdownItemsGroups(
+        dropdownItemsGroup,
+        duplicateDropdownItem,
+      ),
     },
     confirmDialogs: [
       <Fragment key="order-refund">{refundModal}</Fragment>,
+      duplicateDialog,
       <FulfillConfirmDialogBase
         key="fulfill"
         icon="packageIcon"
@@ -148,6 +157,22 @@ export function useOrderToolbar({ order }: { order: Order }): OrderToolbar {
       />,
     ],
   }
+}
+
+/**
+ * The dropdown's groups: the actions on this order, then "Duplicate order",
+ * which makes a new one, in a group of its own. An empty group is left out.
+ */
+function getDropdownItemsGroups(
+  orderActions: DropdownItemProps[],
+  duplicateItem: DropdownItemProps | undefined,
+): DropdownItemProps[][] {
+  const groups = [orderActions]
+  if (duplicateItem != null) {
+    groups.push([duplicateItem])
+  }
+
+  return groups.filter((group) => group.length > 0)
 }
 
 type UITriggerAttributes = Parameters<typeof getTriggerAttributeName>[0]

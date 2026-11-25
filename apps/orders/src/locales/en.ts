@@ -29,6 +29,7 @@ const en = {
         waiting_for_successful_capture: "Waiting for successful capture",
         customer_registered: "Registered",
         customer_guest: "Guest",
+        copied_from: "Copied from order",
       },
       form: {
         language: "Language",
@@ -57,6 +58,19 @@ const en = {
         continue_editing: "Continue editing",
         finish_editing: "Finish",
         adjust_total: "Adjust total",
+      },
+      duplicate: {
+        action: "Duplicate order",
+        title: "Duplicate this order?",
+        description:
+          "A new order with the same customer, items and addresses opens in the editor, to be reviewed and placed. This order isn't changed.",
+        copying: "Duplicating the order…",
+        confirm: "Duplicate",
+        error_aborted:
+          "This order is already being duplicated. Try again in a few seconds.",
+        error_failed: "The order could not be duplicated.",
+        error_timeout:
+          "Duplicating the order is taking longer than expected. The new order will appear in the orders list once it's ready.",
       },
     },
     returns: {

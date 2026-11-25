@@ -15,6 +15,7 @@ import { ResourceInfoBlocks } from "dashboard-apps-common/src/components/Resourc
 import { getResourceModalButton } from "dashboard-apps-common/src/helpers/resourceModal"
 import { useLocation, useRoute } from "wouter"
 import { OrderAddresses } from "#components/OrderAddresses"
+import { OrderCopiedFrom } from "#components/OrderCopiedFrom"
 import { OrderCustomer } from "#components/OrderCustomer"
 import { OrderPayment } from "#components/OrderPayment"
 import { OrderReturns } from "#components/OrderReturns"
@@ -163,6 +164,7 @@ function OrderDetails(): React.JSX.Element {
             <div>in {order.market?.name} market</div>
           </div>
           {order.reference != null && <div>Ref. {order.reference}</div>}
+          <OrderCopiedFrom orderId={orderId} />
         </SkeletonTemplate>
       }
       navigationButton={{
